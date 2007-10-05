@@ -10,5 +10,13 @@ HOW THIS APPLICATION WAS CREATED
   # note: cannot use script/plugin here or Haml will install as "stable"
   svn export svn://svn.hamptoncatlin.com/haml/tags/stable vendor/plugins/haml
 
+  # set up databases
+  sudo -b mysqld_safe
+  mysql -u root -e "CREATE DATABASE wincent_on_rails_development CHARACTER SET 'UTF8';"
+  mysql -u root -e "CREATE DATABASE wincent_on_rails_test CHARACTER SET 'UTF8';"
+  rake db:migrate
+
+  # bootstrap rspec
   script/generate rspec
+  rake spec
 
