@@ -5,4 +5,5 @@ cd wincent_on_rails
 rake rails:freeze:gems
 script/plugin install svn://rubyforge.org/var/svn/rspec/tags/CURRENT/rspec
 script/plugin install svn://rubyforge.org/var/svn/rspec/tags/CURRENT/rspec_on_rails
+script/plugin install http://thmadb.com/public_svn/plugins/fixture_replacement
 
