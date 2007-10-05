@@ -20,3 +20,6 @@ HOW THIS APPLICATION WAS CREATED
   script/generate rspec
   rake spec
 
+  # bootstrap FixtureReplacement
+  script/generate fixture_replacement
+
