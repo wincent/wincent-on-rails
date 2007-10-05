@@ -1,0 +1,6 @@
+HOW THIS APPLICATION WAS CREATED
+
+rails wincent_on_rails
+cd wincent_on_rails
+rake rails:freeze:gems
+
