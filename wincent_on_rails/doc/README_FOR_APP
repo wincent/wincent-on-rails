@@ -16,7 +16,7 @@ HOW THIS APPLICATION WAS CREATED
   mysql -u root -e "CREATE DATABASE wincent_on_rails_test CHARACTER SET 'UTF8';"
   rake db:migrate
 
-  # bootstrap rspec
+  # bootstrap RSpec
   script/generate rspec
   rake spec
 
