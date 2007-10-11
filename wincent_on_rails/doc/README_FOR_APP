@@ -23,3 +23,9 @@ HOW THIS APPLICATION WAS CREATED
   # bootstrap FixtureReplacement
   script/generate fixture_replacement
 
+  # upgrade to Rails 2.0 preview (1.2.4.7499)
+  cd ..
+  rails wincent_on_rails
+  cd wincent_on_rails
+  rake rails:freeze:gems
+

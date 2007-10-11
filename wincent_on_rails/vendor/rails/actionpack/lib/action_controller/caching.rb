@@ -11,9 +11,13 @@ module ActionController #:nodoc:
   # Note: To turn off all caching and sweeping, set Base.perform_caching = false.
   module Caching
     def self.included(base) #:nodoc:
-      base.send(:include, Pages, Actions, Fragments, Sweeping)
-
       base.class_eval do
+        include Pages, Actions, Fragments
+
+        if defined? ActiveRecord
+          include Sweeping, SqlCache
+        end
+
         @@perform_caching = true
         cattr_accessor :perform_caching
       end
@@ -117,21 +121,36 @@ module ActionController #:nodoc:
       #   expire_page :controller => "lists", :action => "show"
       def expire_page(options = {})
         return unless perform_caching
-        if options[:action].is_a?(Array)
-          options[:action].dup.each do |action|
-            self.class.expire_page(url_for(options.merge(:only_path => true, :skip_relative_url_root => true, :action => action)))
+
+        if options.is_a?(Hash)
+          if options[:action].is_a?(Array)
+            options[:action].dup.each do |action|
+              self.class.expire_page(url_for(options.merge(:only_path => true, :skip_relative_url_root => true, :action => action)))
+            end
+          else
+            self.class.expire_page(url_for(options.merge(:only_path => true, :skip_relative_url_root => true)))
           end
         else
-          self.class.expire_page(url_for(options.merge(:only_path => true, :skip_relative_url_root => true)))
+          self.class.expire_page(options)
         end
       end
 
       # Manually cache the +content+ in the key determined by +options+. If no content is provided, the contents of response.body is used
-      # If no options are provided, the current +options+ for this action is used. Example:
+      # If no options are provided, the requested url is used. Example:
       #   cache_page "I'm the cached content", :controller => "lists", :action => "show"
-      def cache_page(content = nil, options = {})
+      def cache_page(content = nil, options = nil)
         return unless perform_caching && caching_allowed
-        self.class.cache_page(content || response.body, url_for(options.merge(:only_path => true, :skip_relative_url_root => true, :format => params[:format])))
+
+        path = case options
+          when Hash
+            url_for(options.merge(:only_path => true, :skip_relative_url_root => true, :format => params[:format]))
+          when String
+            options
+          else
+            request.path
+        end
+
+        self.class.cache_page(content || response.body, path)
       end
 
       private
@@ -161,17 +180,26 @@ module ActionController #:nodoc:
     # Different representations of the same resource, e.g. <tt>http://david.somewhere.com/lists</tt> and <tt>http://david.somewhere.com/lists.xml</tt>
     # are treated like separate requests and so are cached separately. Keep in mind when expiring an action cache that <tt>:action => 'lists'</tt> is not the same
     # as <tt>:action => 'list', :format => :xml</tt>.
+    #
+    # You can set modify the default action cache path by passing a :cache_path option.  This will be passed directly to ActionCachePath.path_for.  This is handy
+    # for actions with multiple possible routes that should be cached differently.  If a block is given, it is called with the current controller instance.
+    #
+    #   class ListsController < ApplicationController
+    #     before_filter :authenticate, :except => :public
+    #     caches_page   :public
+    #     caches_action :show, :cache_path => { :project => 1 }
+    #     caches_action :show, :cache_path => Proc.new { |controller| 
+    #       controller.params[:user_id] ? 
+    #         controller.send(:user_list_url, c.params[:user_id], c.params[:id]) :
+    #         controller.send(:list_url, c.params[:id]) }
+    #   end
     module Actions
       def self.included(base) #:nodoc:
         base.extend(ClassMethods)
-        base.class_eval do
-          attr_accessor :rendered_action_cache, :action_cache_path
-          alias_method_chain :protected_instance_variables, :action_caching
-        end
-      end
-
-      def protected_instance_variables_with_action_caching
-        protected_instance_variables_without_action_caching + %w(@action_cache_path)
+          base.class_eval do
+            attr_accessor :rendered_action_cache, :action_cache_path
+            alias_method_chain :protected_instance_variables, :action_caching
+          end
       end
 
       module ClassMethods
@@ -179,10 +207,12 @@ module ActionController #:nodoc:
         # See ActionController::Caching::Actions for details.
         def caches_action(*actions)
           return unless perform_caching
-          action_cache_filter = ActionCacheFilter.new(*actions)
-          before_filter action_cache_filter
-          after_filter action_cache_filter
+          around_filter(ActionCacheFilter.new(*actions))
         end
+      end
+
+      def protected_instance_variables_with_action_caching
+        protected_instance_variables_without_action_caching + %w(@action_cache_path)
       end
 
       def expire_action(options = {})
@@ -197,17 +227,18 @@ module ActionController #:nodoc:
       end
 
       class ActionCacheFilter #:nodoc:
-        def initialize(*actions)
+        def initialize(*actions, &block)
+          @options = actions.extract_options!
           @actions = Set.new actions
         end
 
         def before(controller)
-          return unless @actions.include?(controller.action_name.to_sym)
-          cache_path = ActionCachePath.new(controller, {})
+          return unless @actions.include?(controller.action_name.intern)
+          cache_path = ActionCachePath.new(controller, path_options_for(controller, @options))
           if cache = controller.read_fragment(cache_path.path)
             controller.rendered_action_cache = true
             set_content_type!(controller, cache_path.extension)
-            controller.send(:render_text, cache)
+            controller.send!(:render_for_text, cache)
             false
           else
             controller.action_cache_path = cache_path
@@ -215,15 +246,22 @@ module ActionController #:nodoc:
         end
 
         def after(controller)
-          return if !@actions.include?(controller.action_name.to_sym) || controller.rendered_action_cache
+          return if !@actions.include?(controller.action_name.intern) || controller.rendered_action_cache || !caching_allowed(controller)
           controller.write_fragment(controller.action_cache_path.path, controller.response.body)
         end
-        
+
         private
           def set_content_type!(controller, extension)
             controller.response.content_type = Mime::EXTENSION_LOOKUP[extension].to_s if extension
           end
-          
+
+          def path_options_for(controller, options)
+            ((path_options = options[:cache_path]).respond_to?(:call) ? path_options.call(controller) : path_options) || {}
+          end
+
+          def caching_allowed(controller)
+            controller.request.get? && controller.response.headers['Status'].to_i == 200
+          end
       end
       
       class ActionCachePath
@@ -253,7 +291,7 @@ module ActionController #:nodoc:
           end
           
           def extract_extension(file_path)
-            # Don't want just what comes after the last '.' to accomodate multi part extensions
+            # Don't want just what comes after the last '.' to accommodate multi part extensions
             # such as tar.gz.
             file_path[/^[^.]+\.(.+)$/, 1]
           end
@@ -331,7 +369,7 @@ module ActionController #:nodoc:
       def cache_erb_fragment(block, name = {}, options = nil)
         unless perform_caching then block.call; return end
 
-        buffer = eval("_erbout", block.binding)
+        buffer = eval(ActionView::Base.erb_variable, block.binding)
 
         if cache = read_fragment(name, options)
           buffer.concat(cache)
@@ -386,12 +424,6 @@ module ActionController #:nodoc:
         end
       end
 
-      # Deprecated -- just call expire_fragment with a regular expression
-      def expire_matched_fragments(matcher = /.*/, options = nil) #:nodoc:
-        expire_fragment(matcher, options)
-      end
-      deprecate :expire_matched_fragments => :expire_fragment
-
 
       class UnthreadedMemoryStore #:nodoc:
         def initialize #:nodoc:
@@ -438,7 +470,7 @@ module ActionController #:nodoc:
           super
           if ActionController::Base.allow_concurrency
             @mutex = Mutex.new
-            MemoryStore.send(:include, ThreadSafety)
+            MemoryStore.module_eval { include ThreadSafety }
           end
         end
       end
@@ -453,6 +485,8 @@ module ActionController #:nodoc:
         end
       end
 
+    begin
+      require_library_or_gem 'memcache'
       class MemCacheStore < MemoryStore #:nodoc:
         attr_reader :addresses
 
@@ -464,6 +498,9 @@ module ActionController #:nodoc:
           @data = MemCache.new(*addresses)
         end
       end
+    rescue LoadError
+      # MemCache wasn't available so neither can the store be
+    end
 
       class UnthreadedFileStore #:nodoc:
         attr_reader :cache_path
@@ -528,7 +565,7 @@ module ActionController #:nodoc:
             super(cache_path)
             if ActionController::Base.allow_concurrency
               @mutex = Mutex.new
-              FileStore.send(:include, ThreadSafety)
+              FileStore.module_eval { include ThreadSafety }
             end
           end
         end
@@ -564,7 +601,7 @@ module ActionController #:nodoc:
       module ClassMethods #:nodoc:
         def cache_sweeper(*sweepers)
           return unless perform_caching
-          configuration = sweepers.last.is_a?(Hash) ? sweepers.pop : {}
+          configuration = sweepers.extract_options!
           sweepers.each do |sweeper|
             ActiveRecord::Base.observers << sweeper if defined?(ActiveRecord) and defined?(ActiveRecord::Base)
             sweeper_instance = Object.const_get(Inflector.classify(sweeper)).instance
@@ -583,10 +620,6 @@ module ActionController #:nodoc:
       class Sweeper < ActiveRecord::Observer #:nodoc:
         attr_accessor :controller
 
-        # ActiveRecord::Observer will mark this class as reloadable even though it should not be.
-        # However, subclasses of ActionController::Caching::Sweeper should be Reloadable
-        include Reloadable::Deprecated
-        
         def before(controller)
           self.controller = controller
           callback(:before)
@@ -598,19 +631,44 @@ module ActionController #:nodoc:
           self.controller = nil
         end
 
+        protected
+          # gets the action cache path for the given options.
+          def action_path_for(options)
+            ActionController::Caching::Actions::ActionCachePath.path_for(controller, options)
+          end
+
+          # Retrieve instance variables set in the controller.
+          def assigns(key)
+            controller.instance_variable_get("@#{key}")
+          end
+
         private
           def callback(timing)
             controller_callback_method_name = "#{timing}_#{controller.controller_name.underscore}"
             action_callback_method_name     = "#{controller_callback_method_name}_#{controller.action_name}"
 
-            send(controller_callback_method_name) if respond_to?(controller_callback_method_name)
-            send(action_callback_method_name)     if respond_to?(action_callback_method_name)
+            send!(controller_callback_method_name) if respond_to?(controller_callback_method_name, true)
+            send!(action_callback_method_name)     if respond_to?(action_callback_method_name, true)
           end
 
           def method_missing(method, *arguments)
             return if @controller.nil?
-            @controller.send(method, *arguments)
+            @controller.send!(method, *arguments)
           end
+      end
+    end
+
+    module SqlCache
+      def self.included(base) #:nodoc:
+        if defined?(ActiveRecord) && ActiveRecord::Base.respond_to?(:cache)
+          base.alias_method_chain :perform_action, :caching
+        end
+      end
+
+      def perform_action_with_caching
+        ActiveRecord::Base.cache do
+          perform_action_without_caching
+        end
       end
     end
   end

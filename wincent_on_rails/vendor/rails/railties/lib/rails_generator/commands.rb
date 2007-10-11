@@ -260,7 +260,7 @@ module Rails
         end
 
         # Generate a file for a Rails application using an ERuby template.
-        # Looks up and evalutes a template by name and writes the result.
+        # Looks up and evaluates a template by name and writes the result.
         #
         # The ERB template uses explicit trim mode to best control the
         # proliferation of whitespace in generated code.  <%- trims leading
@@ -559,7 +559,7 @@ end_message
              return
            end
 
-           logger.refreshing "#{template_options[:insert].gsub(/\.rhtml/,'')} inside #{relative_destination}"
+           logger.refreshing "#{template_options[:insert].gsub(/\.erb/,'')} inside #{relative_destination}"
 
            begin_mark = Regexp.quote(template_part_mark(template_options[:begin_mark], template_options[:mark_id]))
            end_mark = Regexp.quote(template_part_mark(template_options[:end_mark], template_options[:mark_id]))

@@ -1,8 +1,10 @@
 module ActionController #:nodoc:
   module Filters #:nodoc:
     def self.included(base)
-      base.extend(ClassMethods)
-      base.send(:include, ActionController::Filters::InstanceMethods)
+      base.class_eval do
+        extend ClassMethods
+        include ActionController::Filters::InstanceMethods
+      end
     end
 
     # Filters enable controllers to run shared pre and post processing code for its actions. These filters can be used to do
@@ -244,7 +246,7 @@ module ActionController #:nodoc:
     # If #around returns before yielding, #after will still not be run. The #before
     # filter and controller action will not be run. If #before returns false,
     # the second half of #around and will still run but #after and the
-    # action will not. If #around does not yield, #after will not be run.
+    # action will not. If #around fails to yield, #after will not be run.
     module ClassMethods
       # The passed <tt>filters</tt> will be appended to the filter_chain and
       # will execute before the action on this controller is performed.
@@ -440,7 +442,7 @@ module ActionController #:nodoc:
         def run(controller)
           # only filters returning false are halted.
           if false == @filter.call(controller)
-            controller.send :halt_filter_chain, @filter, :returned_false
+            controller.send! :halt_filter_chain, @filter, :returned_false
           end
         end
 
@@ -466,7 +468,7 @@ module ActionController #:nodoc:
 
       class SymbolFilter < Filter #:nodoc:
         def call(controller, &block)
-          controller.send(@filter, &block)
+          controller.send!(@filter, &block)
         end
       end
 
@@ -601,7 +603,7 @@ module ActionController #:nodoc:
 
         def extract_conditions(*filters, &block) #:nodoc:
           filters.flatten!
-          conditions = filters.last.is_a?(Hash) ? filters.pop : {}
+          conditions = filters.extract_options!
           filters << block if block_given?
           return filters, conditions
         end
@@ -656,7 +658,7 @@ module ActionController #:nodoc:
           return filter unless filter_responds_to_before_and_after(filter)
           Proc.new do |controller, action|
             if filter.before(controller) == false
-              controller.send :halt_filter_chain, filter, :returned_false
+              controller.send! :halt_filter_chain, filter, :returned_false
             else
               begin
                 action.call
@@ -673,7 +675,6 @@ module ActionController #:nodoc:
         base.class_eval do
           alias_method_chain :perform_action, :filters
           alias_method_chain :process, :filters
-          alias_method_chain :process_cleanup, :filters
         end
       end
 
@@ -752,14 +753,6 @@ module ActionController #:nodoc:
         @before_filter_chain_aborted = true
         logger.info "Filter chain halted as [#{filter.inspect}] #{reason}." if logger
         false
-      end
-
-      def process_cleanup_with_filters
-        if @before_filter_chain_aborted
-          close_session
-        else
-          process_cleanup_without_filters
-        end
       end
     end
   end

@@ -45,6 +45,13 @@ module ActionView
       #     :url => { :action => "destroy", :id => post.id }
       #   link_to_remote(image_tag("refresh"), :update => "emails", 
       #     :url => { :action => "list_emails" })
+      # 
+      # You can override the generated HTML options by specifying a hash in
+      # <tt>options[:html]</tt>.
+      #  
+      #   link_to_remote "Delete this post", :update => "posts",
+      #     :url  => post_url(@post), :method => :delete, 
+      #     :html => { :class  => "destructive" } 
       #
       # You can also specify a hash for <tt>options[:update]</tt> to allow for
       # easy redirection of output to an other DOM element if a server-side 
@@ -129,8 +136,8 @@ module ActionView
       #                          default this is the current form, but
       #                          it could just as well be the ID of a
       #                          table row or any other DOM element.
-      def link_to_remote(name, options = {}, html_options = {})  
-        link_to_function(name, remote_function(options), html_options)
+      def link_to_remote(name, options = {}, html_options = nil)  
+        link_to_function(name, remote_function(options), html_options || options.delete(:html))
       end
 
       # Periodically calls the specified url (<tt>options[:url]</tt>) every 
@@ -180,9 +187,58 @@ module ActionView
         form_tag(options[:html].delete(:action) || url_for(options[:url]), options[:html], &block)
       end
 
-      # Works like form_remote_tag, but uses form_for semantics.
-      def remote_form_for(object_name, *args, &proc)
-        options = args.last.is_a?(Hash) ? args.pop : {}
+      # Creates a form that will submit using XMLHttpRequest in the background 
+      # instead of the regular reloading POST arrangement and a scope around a 
+      # specific resource that is used as a base for questioning about
+      # values for the fields.  
+      #
+      # === Resource 
+      #
+      # Example:
+      #   <% remote_form_for(@post) do |f| %>
+      #     ...
+      #   <% end %>
+      #
+      # This will expand to be the same as:
+      #
+      #   <% remote_form_for :post, @post, :url => post_path(@post), :html => { :method => :put, :class => "edit_post", :id => "edit_post_45" } do |f| %>
+      #     ...
+      #   <% end %>
+      #
+      # === Nested Resource 
+      #
+      # Example:
+      #   <% remote_form_for([@post, @comment]) do |f| %>
+      #     ...
+      #   <% end %>
+      #
+      # This will expand to be the same as:
+      #
+      #   <% remote_form_for :comment, @comment, :url => post_comment_path(@post, @comment), :html => { :method => :put, :class => "edit_comment", :id => "edit_comment_45" } do |f| %>
+      #     ...
+      #   <% end %>
+      #
+      # If you don't need to attach a form to a resource, then check out form_remote_tag.
+      #
+      # See FormHelper#form_for for additional semantics.
+      def remote_form_for(record_or_name_or_array, *args, &proc)
+        options = args.extract_options!
+
+        case record_or_name_or_array
+        when String, Symbol
+          object_name = record_or_name_or_array
+        when Array
+          object = record_or_name_or_array.last
+          object_name = ActionController::RecordIdentifier.singular_class_name(object)
+          apply_form_for_options!(record_or_name_or_array, options)
+          args.unshift object
+        else
+          object      = record_or_name_or_array
+          object_name = ActionController::RecordIdentifier.singular_class_name(record_or_name_or_array)
+          apply_form_for_options!(object, options)
+          args.unshift object
+        end
+
         concat(form_remote_tag(options), proc.binding)
         fields_for(object_name, *(args << options), &proc)
         concat('</form>', proc.binding)
@@ -400,8 +456,19 @@ module ActionView
           #   page['blank_slate']                  # => $('blank_slate');
           #   page['blank_slate'].show             # => $('blank_slate').show();
           #   page['blank_slate'].show('first').up # => $('blank_slate').show('first').up();
+          #
+          # You can also pass in a record, which will use ActionController::RecordIdentifier.dom_id to lookup
+          # the correct id:
+          #
+          #   page[@post]     # => $('post_45')
+          #   page[Post.new]  # => $('new_post')
           def [](id)
-            JavaScriptElementProxy.new(self, id)
+            case id
+              when String, Symbol, NilClass
+                JavaScriptElementProxy.new(self, id)
+              else
+                JavaScriptElementProxy.new(self, ActionController::RecordIdentifier.dom_id(id))
+            end
           end
           
           # Returns an object whose <tt>#to_json</tt> evaluates to +code+. Use this to pass a literal JavaScript 
@@ -444,7 +511,7 @@ module ActionView
           #                    element's existing content.
           # <tt>:bottom</tt>:: HTML is inserted inside the element, after the
           #                    element's existing content.
-          # <tt>:before</tt>:: HTML is inserted immediately preceeding the element.
+          # <tt>:before</tt>:: HTML is inserted immediately preceding the element.
           # <tt>:after</tt>::  HTML is inserted immediately following the element.
           #
           # +options_for_render+ may be either a string of HTML to insert, or a hash
@@ -609,9 +676,13 @@ module ActionView
             end
           
             def render(*options_for_render)
+              old_format = @context && @context.template_format
+              @context.template_format = :html if @context
               Hash === options_for_render.first ? 
                 @context.render(*options_for_render) : 
                   options_for_render.first.to_s
+            ensure
+              @context.template_format = old_format if @context
             end
           
             def javascript_object_for(object)
@@ -667,6 +738,15 @@ module ActionView
         elsif options[:with]
           js_options['parameters'] = options[:with]
         end
+        
+        if protect_against_forgery?
+          if js_options['parameters']
+            js_options['parameters'] << " + '&"
+          else
+            js_options['parameters'] = "'"
+          end
+          js_options['parameters'] << "#{request_forgery_protection_token}=' + encodeURIComponent('#{escape_javascript form_authenticity_token}')"
+        end
       
         options_for_javascript(js_options)
       end
@@ -676,7 +756,7 @@ module ActionView
       end
     
       def build_observer(klass, name, options = {})
-        if options[:with] && (options[:with] !~ /[=(.]/)
+        if options[:with] && (options[:with] !~ /[\{=(.]/)
           options[:with] = "'#{options[:with]}=' + value"
         else
           options[:with] ||= 'value' unless options[:function]
@@ -705,7 +785,7 @@ module ActionView
     end
 
     # Converts chained method calls on DOM proxy elements into JavaScript chains 
-    class JavaScriptProxy < Builder::BlankSlate #:nodoc:
+    class JavaScriptProxy < BasicObject #:nodoc:
       def initialize(generator, root = nil)
         @generator = generator
         @generator << root if root
@@ -800,7 +880,7 @@ module ActionView
     end
 
     class JavaScriptCollectionProxy < JavaScriptProxy #:nodoc:
-      ENUMERABLE_METHODS_WITH_RETURN = [:all, :any, :collect, :map, :detect, :find, :find_all, :select, :max, :min, :partition, :reject, :sort_by] unless defined? ENUMERABLE_METHODS_WITH_RETURN
+      ENUMERABLE_METHODS_WITH_RETURN = [:all, :any, :collect, :map, :detect, :find, :find_all, :select, :max, :min, :partition, :reject, :sort_by, :in_groups_of, :each_slice] unless defined? ENUMERABLE_METHODS_WITH_RETURN
       ENUMERABLE_METHODS = ENUMERABLE_METHODS_WITH_RETURN + [:each] unless defined? ENUMERABLE_METHODS
       attr_reader :generator
       delegate :arguments_for_call, :to => :generator
@@ -808,11 +888,27 @@ module ActionView
       def initialize(generator, pattern)
         super(generator, @pattern = pattern)
       end
-
+      
+      def each_slice(variable, number, &block)
+        if block
+          enumerate :eachSlice, :variable => variable, :method_args => [number], :yield_args => %w(value index), :return => true, &block
+        else
+          add_variable_assignment!(variable)
+          append_enumerable_function!("eachSlice(#{number.to_json});")
+        end
+      end
+      
       def grep(variable, pattern, &block)
         enumerate :grep, :variable => variable, :return => true, :method_args => [pattern], :yield_args => %w(value index), &block
       end
-
+      
+      def in_groups_of(variable, number, fill_with = nil)
+        arguments = [number]
+        arguments << fill_with unless fill_with.nil?
+        add_variable_assignment!(variable)
+        append_enumerable_function!("inGroupsOf(#{arguments_for_call arguments});")
+      end  
+      
       def inject(variable, memo, &block)
         enumerate :inject, :variable => variable, :method_args => [memo], :yield_args => %w(memo value index), :return => true, &block
       end
@@ -860,7 +956,7 @@ module ActionView
           add_variable_assignment!(options[:variable]) if options[:variable]
           append_enumerable_function!("#{enumerable.to_s.camelize(:lower)}(#{method_args}function(#{yield_args}) {")
           # only yield as many params as were passed in the block
-          yield *options[:yield_args].collect { |p| JavaScriptVariableProxy.new(@generator, p) }[0..block.arity-1]
+          yield(*options[:yield_args].collect { |p| JavaScriptVariableProxy.new(@generator, p) }[0..block.arity-1])
           add_return_statement! if options[:return]
           @generator << '});'
         end
@@ -889,4 +985,4 @@ module ActionView
   end
 end
 
-require File.dirname(__FILE__) + '/javascript_helper'
+require 'action_view/helpers/javascript_helper'

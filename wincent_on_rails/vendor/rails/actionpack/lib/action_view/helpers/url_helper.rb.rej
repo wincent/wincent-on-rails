@@ -1,0 +1,47 @@
+***************
+*** 32,39 ****
+        # of +options+. See the valid options in the documentation for 
+        # ActionController::Base#url_for. It's also possible to pass a string instead 
+        # of an options hash to get a link tag that uses the value of the string as the 
+-       # href for the link. If nil is passed as a name, the link itself will become 
+-       # the name.
+        #
+        # The +html_options+ will accept a hash of html attributes for the link tag.
+        # It also accepts 3 modifiers that specialize the link behavior. 
+--- 32,40 ----
+        # of +options+. See the valid options in the documentation for 
+        # ActionController::Base#url_for. It's also possible to pass a string instead 
+        # of an options hash to get a link tag that uses the value of the string as the 
++       # href for the link, or use +:back+ to link to the referrer - a JavaScript back
++       # link will be used in place of a referrer if none exists. If nil is passed as 
++       # a name, the link itself will become the name.
+        #
+        # The +html_options+ will accept a hash of html attributes for the link tag.
+        # It also accepts 3 modifiers that specialize the link behavior. 
+***************
+*** 71,78 ****
+          else
+            tag_options = nil
+          end
+  
+-         url = options.is_a?(String) ? options : self.url_for(options, *parameters_for_method_reference)
+          "<a href=\"#{url}\"#{tag_options}>#{name || url}</a>"
+        end
+  
+--- 72,87 ----
+          else
+            tag_options = nil
+          end
++         
++         url = case options
++           when String
++             options
++           when Symbol
++             @controller.request.env["HTTP_REFERER"] || 'javascript:history.back()' if options == :back
++           else
++             self.url_for(options, *parameters_for_method_reference)
++           end
+  
+          "<a href=\"#{url}\"#{tag_options}>#{name || url}</a>"
+        end
+  

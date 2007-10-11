@@ -40,7 +40,7 @@ module Rails
   # directory.
   #
   # The filenames of the templates don't matter, but choose something that
-  # will be self-explatatory since you will be referencing these in the 
+  # will be self-explanatory since you will be referencing these in the 
   # +manifest+ method inside your generator subclass.
   #
   # 
@@ -228,7 +228,7 @@ module Rails
           @name = name
           base_name, @class_path, @file_path, @class_nesting, @class_nesting_depth = extract_modules(@name)
           @class_name_without_nesting, @singular_name, @plural_name = inflect_names(base_name)
-          @table_name = ActiveRecord::Base.pluralize_table_names ? plural_name : singular_name
+          @table_name = (!defined?(ActiveRecord::Base) || ActiveRecord::Base.pluralize_table_names) ? plural_name : singular_name
           if @class_nesting.empty?
             @class_name = @class_name_without_nesting
           else

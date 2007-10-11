@@ -176,8 +176,8 @@ CREATE TABLE `authors` (
 
 CREATE TABLE `tasks` (
   `id` int(11) NOT NULL auto_increment,
-  `starting` datetime NOT NULL default '0000-00-00 00:00:00',
-  `ending` datetime NOT NULL default '0000-00-00 00:00:00',
+  `starting` datetime NOT NULL default '1000-01-01 00:00:00',
+  `ending` datetime NOT NULL default '1000-01-01 00:00:00',
   PRIMARY KEY  (`id`)
 ) TYPE=InnoDB;
 
@@ -232,3 +232,7 @@ CREATE TABLE mixed_case_monkeys (
  `fleaCount` int(11),
  PRIMARY KEY (`monkeyID`)
 ) TYPE=InnoDB;
+
+CREATE TABLE `minimalistics` (
+  `id` INTEGER NOT NULL auto_increment PRIMARY KEY
+);

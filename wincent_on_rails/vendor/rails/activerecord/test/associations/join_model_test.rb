@@ -2,6 +2,7 @@ require 'abstract_unit'
 require 'fixtures/tag'
 require 'fixtures/tagging'
 require 'fixtures/post'
+require 'fixtures/item'
 require 'fixtures/comment'
 require 'fixtures/author'
 require 'fixtures/category'
@@ -11,7 +12,7 @@ require 'fixtures/edge'
 
 class AssociationsJoinModelTest < Test::Unit::TestCase
   self.use_transactional_fixtures = false
-  fixtures :posts, :authors, :categories, :categorizations, :comments, :tags, :taggings, :author_favorites, :vertices
+  fixtures :posts, :authors, :categories, :categorizations, :comments, :tags, :taggings, :author_favorites, :vertices, :items
 
   def test_has_many
     assert authors(:david).categories.include?(categories(:general))
@@ -34,8 +35,8 @@ class AssociationsJoinModelTest < Test::Unit::TestCase
     author = authors(:mary)
     assert !authors(:mary).unique_categorized_posts.loaded?
     assert_queries(1) { assert_equal 1, author.unique_categorized_posts.count }
-    assert_queries(1) { assert_equal 1, author.unique_categorized_posts.count(:title, {}) }
-    assert_queries(1) { assert_equal 0, author.unique_categorized_posts.count(:title, { :conditions => "title is NULL" }) }
+    assert_queries(1) { assert_equal 1, author.unique_categorized_posts.count(:title) }
+    assert_queries(1) { assert_equal 0, author.unique_categorized_posts.count(:title, :conditions => "title is NULL") }
     assert !authors(:mary).unique_categorized_posts.loaded?
   end
   
@@ -238,7 +239,15 @@ class AssociationsJoinModelTest < Test::Unit::TestCase
       assert_equal tagging, post.tagging
     end
   end
-
+  
+  def test_include_polymorphic_has_one_defined_in_abstract_parent
+    item    = Item.find_by_id(items(:dvd).id, :include => :tagging)
+    tagging = taggings(:godfather)
+    assert_no_queries do
+      assert_equal tagging, item.tagging
+    end
+  end
+  
   def test_include_polymorphic_has_many_through
     posts           = Post.find(:all, :order => 'posts.id')
     posts_with_tags = Post.find(:all, :include => :tags, :order => 'posts.id')
@@ -303,20 +312,20 @@ class AssociationsJoinModelTest < Test::Unit::TestCase
 
   def test_has_many_polymorphic
     assert_raises ActiveRecord::HasManyThroughAssociationPolymorphicError do
-      assert_equal [posts(:welcome), posts(:thinking)], tags(:general).taggables
+      assert_equal posts(:welcome, :thinking), tags(:general).taggables
     end
     assert_raises ActiveRecord::EagerLoadPolymorphicError do
-      assert_equal [posts(:welcome), posts(:thinking)], tags(:general).taggings.find(:all, :include => :taggable)
+      assert_equal posts(:welcome, :thinking), tags(:general).taggings.find(:all, :include => :taggable)
     end
   end
   
   def test_has_many_polymorphic_with_source_type
-    assert_equal [posts(:welcome), posts(:thinking)], tags(:general).tagged_posts
+    assert_equal posts(:welcome, :thinking), tags(:general).tagged_posts
   end
 
   def test_eager_has_many_polymorphic_with_source_type
     tag_with_include = Tag.find(tags(:general).id, :include => :tagged_posts)
-    desired = [posts(:welcome), posts(:thinking)]
+    desired = posts(:welcome, :thinking)
     assert_no_queries do
       assert_equal desired, tag_with_include.tagged_posts
     end
@@ -348,12 +357,12 @@ class AssociationsJoinModelTest < Test::Unit::TestCase
   end
 
   def test_has_many_through_polymorphic_has_many
-    assert_equal [taggings(:welcome_general), taggings(:thinking_general)], authors(:david).taggings.uniq.sort_by { |t| t.id }
+    assert_equal taggings(:welcome_general, :thinking_general), authors(:david).taggings.uniq.sort_by { |t| t.id }
   end
 
   def test_include_has_many_through_polymorphic_has_many
     author            = Author.find_by_id(authors(:david).id, :include => :taggings)
-    expected_taggings = [taggings(:welcome_general), taggings(:thinking_general)]
+    expected_taggings = taggings(:welcome_general, :thinking_general)
     assert_no_queries do
       assert_equal expected_taggings, author.taggings.uniq.sort_by { |t| t.id }
     end
@@ -422,7 +431,7 @@ class AssociationsJoinModelTest < Test::Unit::TestCase
     assert_equal(count + 1, post_thinking.tags.size)
     assert_equal(count + 1, post_thinking.tags(true).size)
 
-    assert_nothing_raised { post_thinking.tags.create!(:name => 'foo') }
+    assert_kind_of Tag, post_thinking.tags.create!(:name => 'foo')
     assert_nil( wrong = post_thinking.tags.detect { |t| t.class != Tag },
                 message = "Expected a Tag in tags collection, got #{wrong.class}.")
     assert_nil( wrong = post_thinking.taggings.detect { |t| t.class != Tagging },
@@ -440,6 +449,21 @@ class AssociationsJoinModelTest < Test::Unit::TestCase
 
     # Raises if the wrong reflection name is used to set the Edge belongs_to
     assert_nothing_raised { vertices(:vertex_1).sinks << vertices(:vertex_5) }
+  end
+
+  def test_has_many_through_collection_size_doesnt_load_target_if_not_loaded
+    author = authors(:david)
+    assert_equal 9, author.comments.size
+    assert !author.comments.loaded?
+  end
+
+  uses_mocha('has_many_through_collection_size_uses_counter_cache_if_it_exists') do
+    def test_has_many_through_collection_size_uses_counter_cache_if_it_exists
+      author = authors(:david)
+      author.stubs(:read_attribute).with('comments_count').returns(100)
+      assert_equal 100, author.comments.size
+      assert !author.comments.loaded?
+    end
   end
 
   def test_adding_junk_to_has_many_through_should_raise_type_mismatch

@@ -5,6 +5,8 @@ require 'pathname'
 $LOAD_PATH.unshift File.dirname(__FILE__)
 require 'railties_path'
 require 'rails/version'
+require 'rails/plugin/locator'
+require 'rails/plugin/loader'
 
 
 RAILS_ENV = (ENV['RAILS_ENV'] || 'development').dup unless defined?(RAILS_ENV)
@@ -21,7 +23,7 @@ module Rails
   # through the block running:
   #
   #   Rails::Initializer.run do |config|
-  #     config.frameworks -= [ :action_web_service ]
+  #     config.frameworks -= [ :action_mailer ]
   #   end
   #
   # This will use the default configuration options from Rails::Configuration,
@@ -58,31 +60,30 @@ module Rails
     # Sequentially step through all of the available initialization routines,
     # in order:
     #
+    # * #check_ruby_version
     # * #set_load_path
-    # * #set_connection_adapters
     # * #require_frameworks
+    # * #set_autoload_paths
     # * #load_environment
+    # * #initialize_encoding
     # * #initialize_database
     # * #initialize_logger
     # * #initialize_framework_logging
     # * #initialize_framework_views
     # * #initialize_dependency_mechanism
-    # * #initialize_breakpoints
     # * #initialize_whiny_nils
+    # * #initialize_whiny_protected_attributes
+    # * #initialize_temporary_directories
     # * #initialize_framework_settings
-    # * #load_environment
+    # * #add_support_load_paths
     # * #load_plugins
     # * #load_observers
     # * #initialize_routing
-    #
-    # (Note that #load_environment is invoked twice, once at the start and
-    # once at the end, to support the legacy configuration style where the
-    # environment could overwrite the defaults directly, instead of via the
-    # Configuration instance.
+    # * #after_initialize
+    # * #load_application_initializers
     def process
       check_ruby_version
       set_load_path
-      set_connection_adapters
 
       require_frameworks
       set_autoload_paths
@@ -94,15 +95,10 @@ module Rails
       initialize_framework_logging
       initialize_framework_views
       initialize_dependency_mechanism
-      initialize_breakpoints
       initialize_whiny_nils
+      initialize_whiny_protected_attributes
       initialize_temporary_directories
       initialize_framework_settings
-
-      # Support for legacy configuration style where the environment
-      # could overwrite anything set from the defaults/global through
-      # the individual base class configurations.
-      load_environment
 
       add_support_load_paths
 
@@ -116,6 +112,8 @@ module Rails
 
       # the framework is now fully initialized
       after_initialize
+
+      load_application_initializers
     end
 
     # Check for valid Ruby version
@@ -151,19 +149,14 @@ module Rails
       configuration.load_once_paths.freeze
     end
 
-    # Sets the +RAILS_CONNECTION_ADAPTERS+ constant based on the value of
-    # Configuration#connection_adapters. This constant is used to determine
-    # which database adapters should be loaded (by default, all adapters are
-    # loaded).
-    def set_connection_adapters
-      Object.const_set("RAILS_CONNECTION_ADAPTERS", configuration.connection_adapters) if configuration.connection_adapters
-    end
-
     # Requires all frameworks specified by the Configuration#frameworks
     # list. By default, all frameworks (ActiveRecord, ActiveSupport,
-    # ActionPack, ActionMailer, and ActionWebService) are loaded.
+    # ActionPack, ActionMailer, and ActiveResource) are loaded.
     def require_frameworks
       configuration.frameworks.each { |framework| require(framework.to_s) }
+    rescue LoadError => e
+      # re-raise because Mongrel would swallow it
+      raise e.to_s
     end
 
     # Add the load paths used by support functions such as the info controller
@@ -173,36 +166,36 @@ module Rails
     # Loads all plugins in <tt>config.plugin_paths</tt>.  <tt>plugin_paths</tt>
     # defaults to <tt>vendor/plugins</tt> but may also be set to a list of
     # paths, such as
-    #   config.plugin_paths = ['lib/plugins', 'vendor/plugins']
+    #   config.plugin_paths = ["#{RAILS_ROOT}/lib/plugins", "#{RAILS_ROOT}/vendor/plugins"]
     #
     # Each plugin discovered in <tt>plugin_paths</tt> is initialized:
     # * add its +lib+ directory, if present, to the beginning of the load path
     # * evaluate <tt>init.rb</tt> if present
     #
     # After all plugins are loaded, duplicates are removed from the load path.
-    # If an array of plugin names is specified in config.plugins, the plugins
-    # will be loaded in that order. Otherwise, plugins are loaded in alphabetical
+    # If an array of plugin names is specified in config.plugins, only those plugins will be loaded
+    # and they plugins will be loaded in that order. Otherwise, plugins are loaded in alphabetical
     # order.
+    #
+    # if config.plugins ends contains :all then the named plugins will be loaded in the given order and all other
+    # plugins will be loaded in alphabetical order
     def load_plugins
-      if configuration.plugins.nil?
-        # a nil value implies we don't care about plugins; load 'em all in a reliable order
-        find_plugins(configuration.plugin_paths).sort.each { |path| load_plugin path }
-      elsif !configuration.plugins.empty?
-        # we've specified a config.plugins array, so respect that order
-        plugin_paths = find_plugins(configuration.plugin_paths)
-        configuration.plugins.each do |name|
-          path = plugin_paths.find { |p| File.basename(p) == name }
-          raise(LoadError, "Cannot find the plugin '#{name}'!") if path.nil?
-          load_plugin path
+      configuration.plugin_locators.each do |locator|
+        locator.new(self).each do |plugin|
+          plugin.load
         end
       end
+      ensure_all_registered_plugins_are_loaded!
       $LOAD_PATH.uniq!
     end
 
     # Loads the environment specified by Configuration#environment_path, which
-    # is typically one of development, testing, or production.
+    # is typically one of development, test, or production.
     def load_environment
       silence_warnings do
+        return if @environment_loaded
+        @environment_loaded = true
+        
         config = configuration
         constants = self.class.constants
         
@@ -215,7 +208,9 @@ module Rails
     end
 
     def load_observers
-      ActiveRecord::Base.instantiate_observers
+      if configuration.frameworks.include?(:active_record)
+        ActiveRecord::Base.instantiate_observers
+      end
     end
 
     # This initialzation sets $KCODE to 'u' to enable the multibyte safe operations.
@@ -230,9 +225,10 @@ module Rails
     # this sets the database configuration from Configuration#database_configuration
     # and then establishes the connection.
     def initialize_database
-      return unless configuration.frameworks.include?(:active_record)
-      ActiveRecord::Base.configurations = configuration.database_configuration
-      ActiveRecord::Base.establish_connection
+      if configuration.frameworks.include?(:active_record)
+        ActiveRecord::Base.configurations = configuration.database_configuration
+        ActiveRecord::Base.establish_connection
+      end
     end
 
     # If the +RAILS_DEFAULT_LOGGER+ constant is already set, this initialization
@@ -249,11 +245,12 @@ module Rails
 
       unless logger = configuration.logger
         begin
-          logger = Logger.new(configuration.log_path)
-          logger.level = Logger.const_get(configuration.log_level.to_s.upcase)
-        rescue StandardError
-          logger = Logger.new(STDERR)
-          logger.level = Logger::WARN
+          logger = ActiveSupport::BufferedLogger.new(configuration.log_path)
+          logger.level = ActiveSupport::BufferedLogger.const_get(configuration.log_level.to_s.upcase)
+          logger.auto_flushing = false if configuration.environment == "production"
+        rescue StandardError =>e
+          logger = ActiveSupport::BufferedLogger.new(STDERR)
+          logger.level = ActiveSupport::BufferedLogger::WARN
           logger.warn(
             "Rails Error: Unable to access log file. Please ensure that #{configuration.log_path} exists and is chmod 0666. " +
             "The log level has been raised to WARN and the output directed to STDERR until the problem is fixed."
@@ -274,14 +271,13 @@ module Rails
       end
     end
 
-    # Sets the +template_root+ for ActionController::Base and ActionMailer::Base
+    # Sets +ActionController::Base#view_paths+ and +ActionMailer::Base#template_root+
     # (but only for those frameworks that are to be loaded). If the framework's
-    # +template_root+ has already been set, it is not changed, otherwise it is
+    # paths have already been set, it is not changed, otherwise it is
     # set to use Configuration#view_path.
     def initialize_framework_views
-      for framework in ([ :action_controller, :action_mailer ] & configuration.frameworks)
-        framework.to_s.camelize.constantize.const_get("Base").template_root ||= configuration.view_path
-      end
+      ActionMailer::Base.template_root ||= configuration.view_path  if configuration.frameworks.include?(:action_mailer)
+      ActionController::Base.view_paths = [configuration.view_path] if configuration.frameworks.include?(:action_controller) && ActionController::Base.view_paths.empty?
     end
 
     # If ActionController is not one of the loaded frameworks (Configuration#frameworks)
@@ -299,16 +295,18 @@ module Rails
       Dependencies.mechanism = configuration.cache_classes ? :require : :load
     end
 
-    # Sets the +BREAKPOINT_SERVER_PORT+ if Configuration#breakpoint_server
-    # is true.
-    def initialize_breakpoints
-      silence_warnings { Object.const_set("BREAKPOINT_SERVER_PORT", 42531) if configuration.breakpoint_server }
-    end
-
     # Loads support for "whiny nil" (noisy warnings when methods are invoked
     # on +nil+ values) if Configuration#whiny_nils is true.
     def initialize_whiny_nils
       require('active_support/whiny_nil') if configuration.whiny_nils
+    end
+    
+    # Sets +ActiveRecord::Base#whiny_protected_attributes+ which determines whether to
+    # raise on mass-assigning attributes protected with +attr_protected+/+attr_accessible+.
+    def initialize_whiny_protected_attributes
+      if configuration.frameworks.include?(:active_record)
+        ActiveRecord::Base.whiny_protected_attributes = configuration.whiny_protected_attributes
+      end
     end
 
     def initialize_temporary_directories
@@ -338,75 +336,25 @@ module Rails
 
     # Fires the user-supplied after_initialize block (Configuration#after_initialize)
     def after_initialize
-      configuration.after_initialize_block.call if configuration.after_initialize_block
+      configuration.after_initialize_blocks.each do |block|
+        block.call
+      end
     end
 
-    protected
-      # Return a list of plugin paths within base_path.  A plugin path is
-      # a directory that contains either a lib directory or an init.rb file.
-      # This recurses into directories which are not plugin paths, so you
-      # may organize your plugins within the plugin path.
-      def find_plugins(*base_paths)
-        base_paths.flatten.inject([]) do |plugins, base_path|
-          Dir.glob(File.join(base_path, '*')).each do |path|
-            if plugin_path?(path)
-              plugins << path if plugin_enabled?(path)
-            elsif File.directory?(path)
-              plugins += find_plugins(path)
-            end
+    def load_application_initializers
+      Dir["#{configuration.root_path}/config/initializers/**/*.rb"].sort.each do |initializer|
+        load(initializer)
+      end
+    end
+
+    private
+      def ensure_all_registered_plugins_are_loaded!
+        unless configuration.plugins.nil?
+          if configuration.plugins.detect {|plugin| plugin != :all && !loaded_plugins.include?( plugin)}
+            missing_plugins = configuration.plugins - (loaded_plugins + [:all])
+            raise LoadError, "Could not locate the following plugins: #{missing_plugins.to_sentence}"
           end
-          plugins
         end
-      end
-
-      def plugin_path?(path)
-        File.directory?(path) and (File.directory?(File.join(path, 'lib')) or File.file?(File.join(path, 'init.rb')))
-      end
-
-      def plugin_enabled?(path)
-        configuration.plugins.nil? || configuration.plugins.include?(File.basename(path))
-      end
-
-      # Load the plugin at <tt>path</tt> unless already loaded.
-      #
-      # Each plugin is initialized:
-      # * add its +lib+ directory, if present, to the beginning of the load path
-      # * evaluate <tt>init.rb</tt> if present
-      #
-      # Returns <tt>true</tt> if the plugin is successfully loaded or
-      # <tt>false</tt> if it is already loaded (similar to Kernel#require).
-      # Raises <tt>LoadError</tt> if the plugin is not found.
-      def load_plugin(directory)
-        name = File.basename(directory)
-        return false if loaded_plugins.include?(name)
-
-        # Catch nonexistent and empty plugins.
-        raise LoadError, "No such plugin: #{directory}" unless plugin_path?(directory)
-
-        lib_path  = File.join(directory, 'lib')
-        init_path = File.join(directory, 'init.rb')
-        has_lib   = File.directory?(lib_path)
-        has_init  = File.file?(init_path)
-
-        # Add lib to load path *after* the application lib, to allow
-        # application libraries to override plugin libraries.
-        if has_lib
-          application_lib_index = $LOAD_PATH.index(File.join(RAILS_ROOT, "lib")) || 0
-          $LOAD_PATH.insert(application_lib_index + 1, lib_path)
-          Dependencies.load_paths << lib_path
-          Dependencies.load_once_paths << lib_path
-        end
-
-        # Allow plugins to reference the current configuration object
-        config = configuration
-	
-        # Add to set of loaded plugins before 'name' collapsed in eval.
-        loaded_plugins << name
-
-        # Evaluate init.rb.
-        silence_warnings { eval(IO.read(init_path), binding, init_path) } if has_init
-
-        true
       end
   end
 
@@ -432,23 +380,15 @@ module Rails
     # A stub for setting options on ActionView::Base
     attr_accessor :action_view
 
-    # A stub for setting options on ActionWebService::Base
-    attr_accessor :action_web_service
-
     # A stub for setting options on ActiveRecord::Base
     attr_accessor :active_record
 
-    # Whether or not to use the breakpoint server (boolean)
-    attr_accessor :breakpoint_server
+    # A stub for setting options on ActiveRecord::Base
+    attr_accessor :active_resource
 
     # Whether or not classes should be cached (set to false if you want
     # application classes to be reloaded on each request)
     attr_accessor :cache_classes
-
-    # The list of connection adapters to load. (By default, all connection
-    # adapters are loaded. You can set this to be just the adapter(s) you
-    # will use to reduce your application's load time.)
-    attr_accessor :connection_adapters
 
     # The list of paths that should be searched for controllers. (Defaults
     # to <tt>app/controllers</tt> and <tt>components</tt>.)
@@ -461,7 +401,7 @@ module Rails
     # The list of rails framework components that should be loaded. (Defaults
     # to <tt>:active_record</tt>, <tt>:action_controller</tt>,
     # <tt>:action_view</tt>, <tt>:action_mailer</tt>, and
-    # <tt>:action_web_service</tt>).
+    # <tt>:active_resource</tt>).
     attr_accessor :frameworks
 
     # An array of additional paths to prepend to the load path. By default,
@@ -493,15 +433,44 @@ module Rails
     # Set to +true+ if you want to be warned (noisily) when you try to invoke
     # any method of +nil+. Set to +false+ for the standard Ruby behavior.
     attr_accessor :whiny_nils
+    
+    # The default value of +true+ means an exception will be raised on attempts
+    # to mass-assign to protected attributes. Set to +false+ to discard them
+    # without raising (an error will be logged instead).
+    attr_accessor :whiny_protected_attributes
 
     # The list of plugins to load. If this is set to <tt>nil</tt>, all plugins will
     # be loaded. If this is set to <tt>[]</tt>, no plugins will be loaded. Otherwise,
     # plugins will be loaded in the order specified.
-    attr_accessor :plugins
+    attr_reader :plugins
+    def plugins=(plugins)
+      @plugins = plugins.nil? ? nil : plugins.map { |p| p.to_sym }
+    end
 
     # The path to the root of the plugins directory. By default, it is in
     # <tt>vendor/plugins</tt>.
     attr_accessor :plugin_paths
+
+    # The classes that handle finding the desired plugins that you'd like to load for
+    # your application. By default it is the Rails::Plugin::FileSystemLocator which finds
+    # plugins to load in <tt>vendor/plugins</tt>. You can hook into gem location by subclassing
+    # Rails::Plugin::Locator and adding it onto the list of <tt>plugin_locators</tt>.
+    attr_accessor :plugin_locators
+
+    # The class that handles loading each plugin. Defaults to Rails::Plugin::Loader, but
+    # a sub class would have access to fine grained modification of the loading behavior. See
+    # the implementation of Rails::Plugin::Loader for more details.
+    attr_accessor :plugin_loader
+    
+    # Deprecated options:
+    def breakpoint_server(_ = nil)
+      $stderr.puts %(
+      *******************************************************************
+      * config.breakpoint_server has been deprecated and has no effect. *
+      *******************************************************************
+      )
+    end
+    alias_method :breakpoint_server=, :breakpoint_server
 
     # Create a new Configuration instance, initialized with the default
     # values.
@@ -516,10 +485,12 @@ module Rails
       self.view_path                    = default_view_path
       self.controller_paths             = default_controller_paths
       self.cache_classes                = default_cache_classes
-      self.breakpoint_server            = default_breakpoint_server
       self.whiny_nils                   = default_whiny_nils
+      self.whiny_protected_attributes   = default_whiny_protected_attributes
       self.plugins                      = default_plugins
       self.plugin_paths                 = default_plugin_paths
+      self.plugin_locators              = default_plugin_locators
+      self.plugin_loader                = default_plugin_loader
       self.database_configuration_file  = default_database_configuration_file
 
       for framework in default_frameworks
@@ -542,6 +513,9 @@ module Rails
         else
           Pathname.new(::RAILS_ROOT).realpath.to_s
         end
+      
+      Object.const_set(:RELATIVE_RAILS_ROOT, ::RAILS_ROOT.dup) unless defined?(::RELATIVE_RAILS_ROOT)
+      ::RAILS_ROOT.replace @root_path
     end
 
     # Loads and returns the contents of the #database_configuration_file. The
@@ -563,16 +537,16 @@ module Rails
       ::RAILS_ENV
     end
 
-    # Sets a block which will be executed after rails has been fully initialized.
+    # Adds a block which will be executed after rails has been fully initialized.
     # Useful for per-environment configuration which depends on the framework being
     # fully initialized.
     def after_initialize(&after_initialize_block)
-      @after_initialize_block = after_initialize_block
+      after_initialize_blocks << after_initialize_block if after_initialize_block
     end
 
-    # Returns the block set in Configuration#after_initialize
-    def after_initialize_block
-      @after_initialize_block
+    # Returns the blocks added with Configuration#after_initialize
+    def after_initialize_blocks
+      @after_initialize_blocks ||= []
     end
 
     # Add a preparation callback that will run before every request in development
@@ -590,16 +564,14 @@ module Rails
     end
 
     def framework_paths
-      # TODO: Don't include dirs for frameworks that are not used
-      %w(
-        railties
-        railties/lib
-        actionpack/lib
-        activesupport/lib
-        activerecord/lib
-        actionmailer/lib
-        actionwebservice/lib
-      ).map { |dir| "#{framework_root_path}/#{dir}" }.select { |dir| File.directory?(dir) }
+      paths = %w(railties railties/lib activesupport/lib)
+      paths << 'actionpack/lib' if frameworks.include? :action_controller or frameworks.include? :action_view
+      
+      [:active_record, :action_mailer, :active_resource, :action_web_service].each do |framework|
+        paths << "#{framework.to_s.gsub('_', '')}/lib" if frameworks.include? framework
+      end
+      
+      paths.map { |dir| "#{framework_root_path}/#{dir}" }.select { |dir| File.directory?(dir) }
     end
 
     private
@@ -608,7 +580,7 @@ module Rails
       end
 
       def default_frameworks
-        [ :active_record, :action_controller, :action_view, :action_mailer, :action_web_service ]
+        [ :active_record, :action_controller, :action_view, :action_mailer, :active_resource ]
       end
 
       def default_load_paths
@@ -627,7 +599,6 @@ module Rails
           app/controllers
           app/helpers
           app/services
-          app/apis
           components
           config
           lib
@@ -659,7 +630,7 @@ module Rails
       end
 
       def default_controller_paths
-        paths = [ File.join(root_path, 'app', 'controllers'), File.join(root_path, 'components') ]
+        paths = [File.join(root_path, 'app', 'controllers')]
         paths.concat builtin_directories
         paths
       end
@@ -672,12 +643,12 @@ module Rails
         false
       end
 
-      def default_breakpoint_server
-        false
-      end
-
       def default_whiny_nils
         false
+      end
+      
+      def default_whiny_protected_attributes
+        true
       end
 
       def default_plugins
@@ -686,6 +657,14 @@ module Rails
 
       def default_plugin_paths
         ["#{root_path}/vendor/plugins"]
+      end
+
+      def default_plugin_locators
+        [Plugin::FileSystemLocator]
+      end
+
+      def default_plugin_loader
+        Plugin::Loader
       end
   end
 end
