@@ -29,3 +29,9 @@ HOW THIS APPLICATION WAS CREATED
   cd wincent_on_rails
   rake rails:freeze:gems
 
+  # RSpec 1.0.8 (latest release) doesn't work with the preview; must move to trunk
+  rm -r vendor/plugins/rspec vendor/plugins/rspec_on_rails
+  script/plugin install svn://rubyforge.org/var/svn/rspec/trunk/rspec
+  script/plugin install svn://rubyforge.org/var/svn/rspec/trunk/rspec_on_rails
+  script/generate rspec
+
