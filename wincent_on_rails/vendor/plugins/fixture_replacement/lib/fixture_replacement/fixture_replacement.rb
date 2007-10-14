@@ -71,7 +71,7 @@ module FixtureReplacement
           merged_hash = self.send(attributes_method).merge(hash_given)
           evaluated_hash = Generator.merge_unevaluated_method(self, :create, merged_hash)        
           obj = class_name.new
-          evaluated_hash.each { |k, v| obj.update_attribute(k, v) }
+          evaluated_hash.each { |k, v| obj.send("#{k}=", v) }
           obj.save!
           obj          
         end
@@ -89,7 +89,7 @@ module FixtureReplacement
           merged_hash = self.send(attributes_method).merge(hash_given)
           evaluated_hash = Generator.merge_unevaluated_method(self, :create, merged_hash)
           obj = class_name.new
-          evaluated_hash.each { |k, v| obj.update_attribute(k, v) }
+          evaluated_hash.each { |k, v| obj.send("#{k}=", v) }
           obj
         end
       end
