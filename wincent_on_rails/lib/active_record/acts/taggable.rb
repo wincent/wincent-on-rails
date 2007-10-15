@@ -8,7 +8,7 @@ module ActiveRecord
       module ClassMethods
         def acts_as_taggable
           class_eval do
-            has_many :taggings, :as => :taggable
+            has_many :taggings, :as => :taggable, :dependent => :destroy
             has_many :tags,     :through => :taggings
             include ActiveRecord::Acts::Taggable::InstanceMethods
             extend ActiveRecord::Acts::Taggable::ClassMethods
@@ -50,7 +50,8 @@ module ActiveRecord
         def parse_tag_list args
           tags = []
           args.flatten.each do |arg|
-            tags + arg.downcase.split(/[\s,]+/)
+            # without the strip leading whitespace will cause an extra, empty element to be returned
+            tags += arg.downcase.strip.split(/[\s,]+/)
           end
           tags.uniq
         end
@@ -70,7 +71,7 @@ module ActiveRecord
           # could optimize this by querying the Tagging model directly with :conditions
           # but this is an infrequently-travelled code path
           tag_object = Tag.find_by_name(tag)
-          self.tags.delete(tag) if tag_object # no error if tag not present in this model
+          self.tags.delete(tag_object) if tag_object # no error if tag not present in this model
         end
       end # module InstanceMethods
     end # module Taggable
