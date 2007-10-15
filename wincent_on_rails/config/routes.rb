@@ -1,4 +1,17 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :translations
+  map.resources :locales
+  map.resources :tags
+  map.resources :taggings
+  map.resources :statuses
+  map.resources :emails
+  map.resources :users
+  map.resources :comments
+  map.resources :issues
+  map.resources :sessions
+  map.login     'login', :controller => 'sessions', :action => 'new'
+  map.logout    'logout', :controller => 'sessions', :action => 'destroy'
+
   # The priority is based upon order of creation: first created -> highest priority.
 
   # Sample of regular route:
