@@ -7,7 +7,7 @@ class CreateTaggings < ActiveRecord::Migration
       t.timestamps
     end
 
-    # don't allow  the same tag to be applied twice to the same target
+    # don't allow the same tag to be applied twice to the same target
     add_index     :taggings, [:tag_id, :taggable_id, :taggable_type], :unique => true
   end
 
