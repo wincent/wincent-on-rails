@@ -2,7 +2,7 @@ require File.dirname(__FILE__) + '/../spec_helper'
 
 describe User, 'creation' do
   it 'should promote (only) the first-created user to superuser' do
-    User.delete(:all)
+    User.delete_all
     create_user.should be_superuser
     create_user.should_not be_superuser
   end
