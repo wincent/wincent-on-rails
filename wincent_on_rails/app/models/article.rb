@@ -3,6 +3,5 @@
 class Article < ActiveRecord::Base
   has_many    :revisions
   has_many    :comments,  :as => :commentable
-  has_many    :taggings,  :as => :taggable
-  has_many    :tags,      :through => :taggings
+  acts_as_taggable
 end

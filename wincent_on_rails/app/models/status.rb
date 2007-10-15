@@ -1,7 +1,7 @@
 class Status < ActiveRecord::Base
   MINIMUM_STATUS_NAME_LENGTH  = 3
 
-  #acts_as_list
+  #acts_as_list # this is now a separate plug-in
   has_many                :issues
   #attr_accessible         :name, :description, :closed, :default
   validates_presence_of   :name

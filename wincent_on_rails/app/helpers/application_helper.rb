@@ -1,4 +1,4 @@
-require 'time_additions'
+require 'additions/time'
 
 module ApplicationHelper
 

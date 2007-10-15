@@ -1,5 +1,5 @@
-require File.dirname(__FILE__) + '/../spec_helper'
-require 'time_additions'
+require File.dirname(__FILE__) + '/../../spec_helper'
+require 'additions/time'
 
 describe Time, '"distance in words" addition' do
   it 'should return "future" for times in the future' do

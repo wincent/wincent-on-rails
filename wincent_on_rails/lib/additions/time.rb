@@ -1,4 +1,4 @@
-require 'string_additions'
+require 'additions/string'
 
 class Time
 

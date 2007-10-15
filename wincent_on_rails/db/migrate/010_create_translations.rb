@@ -29,7 +29,7 @@ class CreateTranslations < ActiveRecord::Migration
       es.learn  'Created %s',                         'Creado %s'
       es.learn  'Created %s, updated %s',             'Creado %s, modificado %s'
 
-      # lib/time_additions.rb
+      # lib/additions/time.rb
       es.learn  'in the future',                      'en el futuro'
       es.learn  'now',                                'ahora'
       es.learn  'a few seconds ago',                  'hace unos segundos'
