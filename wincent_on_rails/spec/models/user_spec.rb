@@ -202,8 +202,8 @@ describe User, 'validating the display name' do
 
   it 'should disallow all other characters' do
     new_user(:display_name => 'foo/bar').should fail_validation_for(:display_name)
-    new_user(:display_name => 'foo$bar').should  fail_validation_for(:display_name)
-    new_user(:display_name => 'foo#bar').should  fail_validation_for(:display_name)
+    new_user(:display_name => 'foo$bar').should fail_validation_for(:display_name)
+    new_user(:display_name => 'foo#bar').should fail_validation_for(:display_name)
   end
 end
 
