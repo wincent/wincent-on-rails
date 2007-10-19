@@ -16,8 +16,7 @@ class SessionsController < ApplicationController
   end
 
   def destroy
-    session.delete
-    current_user    = nil
+    current_user    = nil # deletes some info from session; can't call session.delete because it will break the flash
     flash[:notice]  = 'You have logged out successfully.'.localized
     redirect_to home_path
   end

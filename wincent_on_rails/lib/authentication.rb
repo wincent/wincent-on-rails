@@ -58,7 +58,7 @@ protected
       # BUG: session_key and session_expiry don't seem to be getting set in the database
       # doing a user.save here has no apparent effect
     else
-      session[:user_id]     = cookies[:user_id]     = nil
+      @current_user = session[:user_id] = cookies[:user_id] = nil
     end
   end
 

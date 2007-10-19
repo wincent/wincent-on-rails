@@ -1,4 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
+  map.home      '', :controller => 'issues', :action => 'index' # temporary only
+
   map.resources :translations
   map.resources :locales
   map.resources :tags
