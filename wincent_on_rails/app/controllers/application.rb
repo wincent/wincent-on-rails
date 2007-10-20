@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::Base
-  include                   Authentication
+  include                   Authentication::Controller::InstanceMethods
+  extend                    Authentication::Controller::ClassMethods
   filter_parameter_logging  'passphrase'
   before_filter             :login_with_session_key
   before_filter             :setup_locale

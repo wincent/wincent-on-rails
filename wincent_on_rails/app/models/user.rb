@@ -34,7 +34,7 @@ class User < ActiveRecord::Base
     record_in_database = User.find(model.id)
     if value.blank? # mimic validates_presence_of
       model.errors.add(att, ActiveRecord::Errors.default_error_messages[:empty])
-    elsif Authentication::digest(value, record_in_database.passphrase_salt) != record_in_database.passphrase_hash
+    elsif User.digest(value, record_in_database.passphrase_salt) != record_in_database.passphrase_hash
       model.errors.add(att, 'must match existing passphrase on record')
       false
     end
@@ -82,18 +82,14 @@ class User < ActiveRecord::Base
     @passphrase = nil
   end
 
+  # pull in User.digest and User.random_salt from Authentication module
+  extend Authentication::Model::ClassMethods
+
   def self.authenticate(login, passphrase)
     if user = find_by_login_name(login)
-      user = nil if user.passphrase_hash != Authentication::digest(passphrase, user.passphrase_salt)
+      user = nil if user.passphrase_hash != User.digest(passphrase, user.passphrase_salt)
     end
     user
-  end
-
-  GENERATED_PASSWORD_LENGTH = 8
-
-  # Generates a psuedo-random passphrase string.
-  def self.passphrase
-    random_string(GENERATED_PASSWORD_LENGTH)
   end
 
   # Stores a new passphrase_salt and combines it with passphrase to generate and store a new passphrase_hash.
@@ -101,25 +97,8 @@ class User < ActiveRecord::Base
   def passphrase=(passphrase)
     return if passphrase.blank?
     @passphrase = passphrase
-    salt = random_salt
-    self.passphrase_salt, self.passphrase_hash = salt, Authentication::digest(passphrase, salt)
-  end
-
-  PASSWORD_CHARS            = 'abcdefghjkmnpqrstuvwxyz23456789'.split(//)
-  PASSWORD_CHARS_LENGTH     = PASSWORD_CHARS.length
-
-  # Returns a psuedo-random string of length letters and digits, excluding potentially ambiguous characters (0, O, 1, l, I).
-  def self.random_string(length)
-    Array.new(length) { PASSWORD_CHARS[rand(PASSWORD_CHARS_LENGTH)] }.join
-  end
-
-private
-
-  SALT_BYTES = 16
-
-  # Returns a psuedo-random salt string.
-  def random_salt
-    Authentication::random_base64_string(SALT_BYTES)
+    salt = User.random_salt
+    self.passphrase_salt, self.passphrase_hash = salt, User.digest(passphrase, salt)
   end
 
 end
