@@ -10,6 +10,8 @@ class ApplicationController < ActionController::Base
   # Uncomment the :secret if you're not using the cookie session store
   protect_from_forgery      :secret => '1b8b0816466a6f55b2a2a860c59d3ba0'
 
+protected
+
   # Before filter that sets up the current locale according to the currently-logged-in user's preferences.
   def setup_locale
     if logged_in?
