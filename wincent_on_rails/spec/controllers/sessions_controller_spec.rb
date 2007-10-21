@@ -1,4 +1,9 @@
 require File.dirname(__FILE__) + '/../spec_helper'
+require File.dirname(__FILE__) + '/application_spec'
+
+describe SessionsController do
+  it_should_behave_like 'ApplicationController'
+end
 
 describe SessionsController, 'logging in with a valid username and passphrase' do
   before do
