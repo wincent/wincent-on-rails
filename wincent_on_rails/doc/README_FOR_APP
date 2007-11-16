@@ -51,3 +51,8 @@ HOW THIS APPLICATION WAS CREATED
   script/plugin install svn://rubyforge.org/var/svn/rspec/trunk/rspec
   script/plugin install svn://rubyforge.org/var/svn/rspec/trunk/rspec_on_rails
   script/generate rspec
+
+  # also update FixtureReplacement (revision 83)
+  rm -r vendor/plugins/fixture_replacement
+  script/plugin install http://thmadb.com/public_svn/plugins/fixture_replacement
+
