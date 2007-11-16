@@ -67,13 +67,6 @@ end
 class BasicsTest < Test::Unit::TestCase
   fixtures :topics, :companies, :developers, :projects, :computers, :accounts, :minimalistics
 
-  # whiny_protected_attributes is turned off since several tests were
-  # not written with it in mind, and would otherwise raise exceptions
-  # as an irrelevant side-effect.
-  def setup
-    ActiveRecord::Base.whiny_protected_attributes = false
-  end
-
   def test_table_exists
     assert !NonExistentTable.table_exists?
     assert Topic.table_exists?
@@ -569,29 +562,26 @@ class BasicsTest < Test::Unit::TestCase
     assert_equal -2, Topic.find(2).replies_count
   end
 
-  # The ADO library doesn't support the number of affected rows
-  unless current_adapter?(:SQLServerAdapter)
-    def test_update_all
-      assert_equal 2, Topic.update_all("content = 'bulk updated!'")
-      assert_equal "bulk updated!", Topic.find(1).content
-      assert_equal "bulk updated!", Topic.find(2).content
+  def test_update_all
+    assert_equal 2, Topic.update_all("content = 'bulk updated!'")
+    assert_equal "bulk updated!", Topic.find(1).content
+    assert_equal "bulk updated!", Topic.find(2).content
 
-      assert_equal 2, Topic.update_all(['content = ?', 'bulk updated again!'])
-      assert_equal "bulk updated again!", Topic.find(1).content
-      assert_equal "bulk updated again!", Topic.find(2).content
+    assert_equal 2, Topic.update_all(['content = ?', 'bulk updated again!'])
+    assert_equal "bulk updated again!", Topic.find(1).content
+    assert_equal "bulk updated again!", Topic.find(2).content
 
-      assert_equal 2, Topic.update_all(['content = ?', nil])
-      assert_nil Topic.find(1).content
-    end
+    assert_equal 2, Topic.update_all(['content = ?', nil])
+    assert_nil Topic.find(1).content
+  end
 
-    def test_update_all_with_hash
-      assert_not_nil Topic.find(1).last_read
-      assert_equal 2, Topic.update_all(:content => 'bulk updated with hash!', :last_read => nil)
-      assert_equal "bulk updated with hash!", Topic.find(1).content
-      assert_equal "bulk updated with hash!", Topic.find(2).content
-      assert_nil Topic.find(1).last_read
-      assert_nil Topic.find(2).last_read
-    end
+  def test_update_all_with_hash
+    assert_not_nil Topic.find(1).last_read
+    assert_equal 2, Topic.update_all(:content => 'bulk updated with hash!', :last_read => nil)
+    assert_equal "bulk updated with hash!", Topic.find(1).content
+    assert_equal "bulk updated with hash!", Topic.find(2).content
+    assert_nil Topic.find(1).last_read
+    assert_nil Topic.find(2).last_read
   end
 
   if current_adapter?(:MysqlAdapter)
@@ -610,9 +600,6 @@ class BasicsTest < Test::Unit::TestCase
   end
 
   def test_delete_all
-    # The ADO library doesn't support the number of affected rows
-    return true if current_adapter?(:SQLServerAdapter)
-
     assert_equal 2, Topic.delete_all
   end
 
@@ -867,17 +854,6 @@ class BasicsTest < Test::Unit::TestCase
     assert_equal [ :name, :address, :phone_number  ], TightDescendant.accessible_attributes
   end
   
-  def test_whiny_protected_attributes
-    ActiveRecord::Base.whiny_protected_attributes = true
-    assert_raise(ActiveRecord::ProtectedAttributeAssignmentError) do
-      LoosePerson.create!(:administrator => true)
-    end
-    ActiveRecord::Base.whiny_protected_attributes = false
-    assert_nothing_raised do
-      LoosePerson.create!(:administrator => true)
-    end
-  end
-
   def test_readonly_attributes
     assert_equal [ :title ], ReadonlyTitlePost.readonly_attributes
     
@@ -1008,6 +984,10 @@ class BasicsTest < Test::Unit::TestCase
     cloned_topic.title["a"] = "c" 
     assert_equal "b", topic.title["a"]
 
+    #test if attributes set as part of after_initialize are cloned correctly
+    assert_equal topic.author_email_address, cloned_topic.author_email_address
+
+    # test if saved clone object differs from original
     cloned_topic.save
     assert !cloned_topic.new_record?
     assert cloned_topic.id != topic.id

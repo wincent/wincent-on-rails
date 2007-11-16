@@ -208,6 +208,10 @@ module ActiveRecord
         "`#{name}`"
       end
 
+      def quote_table_name(name) #:nodoc:
+        quote_column_name(name).gsub('.', '`.`')
+      end
+
       def quote_string(string) #:nodoc:
         @connection.quote(string)
       end
@@ -220,6 +224,18 @@ module ActiveRecord
         "0"
       end
 
+      # REFERENTIAL INTEGRITY ====================================
+
+      def disable_referential_integrity(&block) #:nodoc:
+        old = select_value("SELECT @@FOREIGN_KEY_CHECKS")
+
+        begin
+          update("SET FOREIGN_KEY_CHECKS = 0")
+          yield
+        ensure
+          update("SET FOREIGN_KEY_CHECKS = #{old}")
+        end
+      end
 
       # CONNECTION MANAGEMENT ====================================
 
@@ -322,7 +338,7 @@ module ActiveRecord
 
         select_all(sql).inject("") do |structure, table|
           table.delete('Table_type')
-          structure += select_one("SHOW CREATE TABLE #{table.to_a.first.last}")["Create Table"] + ";\n\n"
+          structure += select_one("SHOW CREATE TABLE #{quote_table_name(table.to_a.first.last)}")["Create Table"] + ";\n\n"
         end
       end
 
@@ -370,10 +386,14 @@ module ActiveRecord
         tables
       end
 
+      def drop_table(table_name, options = {})
+        super(table_name, options)
+      end
+
       def indexes(table_name, name = nil)#:nodoc:
         indexes = []
         current_index = nil
-        execute("SHOW KEYS FROM #{table_name}", name).each do |row|
+        execute("SHOW KEYS FROM #{quote_table_name(table_name)}", name).each do |row|
           if current_index != row[2]
             next if row[2] == "PRIMARY" # skip the primary key
             current_index = row[2]
@@ -386,24 +406,24 @@ module ActiveRecord
       end
 
       def columns(table_name, name = nil)#:nodoc:
-        sql = "SHOW FIELDS FROM #{table_name}"
+        sql = "SHOW FIELDS FROM #{quote_table_name(table_name)}"
         columns = []
         execute(sql, name).each { |field| columns << MysqlColumn.new(field[0], field[4], field[1], field[2] == "YES") }
         columns
       end
 
-      def create_table(name, options = {}) #:nodoc:
-        super(name, {:options => "ENGINE=InnoDB"}.merge(options))
+      def create_table(table_name, options = {}) #:nodoc:
+        super(table_name, options.reverse_merge(:options => "ENGINE=InnoDB"))
       end
 
-      def rename_table(name, new_name)
-        execute "RENAME TABLE #{name} TO #{new_name}"
+      def rename_table(table_name, new_name)
+        execute "RENAME TABLE #{quote_table_name(table_name)} TO #{quote_table_name(new_name)}"
       end
 
       def change_column_default(table_name, column_name, default) #:nodoc:
-        current_type = select_one("SHOW COLUMNS FROM #{table_name} LIKE '#{column_name}'")["Type"]
+        current_type = select_one("SHOW COLUMNS FROM #{quote_table_name(table_name)} LIKE '#{column_name}'")["Type"]
 
-        execute("ALTER TABLE #{table_name} CHANGE #{quote_column_name(column_name)} #{quote_column_name(column_name)} #{current_type} DEFAULT #{quote(default)}")
+        execute("ALTER TABLE #{quote_table_name(table_name)} CHANGE #{quote_column_name(column_name)} #{quote_column_name(column_name)} #{current_type} DEFAULT #{quote(default)}")
       end
 
       def change_column(table_name, column_name, type, options = {}) #:nodoc:
@@ -415,14 +435,14 @@ module ActiveRecord
           end
         end
 
-        change_column_sql = "ALTER TABLE #{table_name} CHANGE #{quote_column_name(column_name)} #{quote_column_name(column_name)} #{type_to_sql(type, options[:limit], options[:precision], options[:scale])}"
+        change_column_sql = "ALTER TABLE #{quote_table_name(table_name)} CHANGE #{quote_column_name(column_name)} #{quote_column_name(column_name)} #{type_to_sql(type, options[:limit], options[:precision], options[:scale])}"
         add_column_options!(change_column_sql, options)
         execute(change_column_sql)
       end
 
       def rename_column(table_name, column_name, new_column_name) #:nodoc:
-        current_type = select_one("SHOW COLUMNS FROM #{table_name} LIKE '#{column_name}'")["Type"]
-        execute "ALTER TABLE #{table_name} CHANGE #{quote_column_name(column_name)} #{quote_column_name(new_column_name)} #{current_type}"
+        current_type = select_one("SHOW COLUMNS FROM #{quote_table_name(table_name)} LIKE '#{column_name}'")["Type"]
+        execute "ALTER TABLE #{quote_table_name(table_name)} CHANGE #{quote_column_name(column_name)} #{quote_column_name(new_column_name)} #{current_type}"
       end
 
 
@@ -430,6 +450,15 @@ module ActiveRecord
       def show_variable(name)
         variables = select_all("SHOW VARIABLES LIKE '#{name}'")
         variables.first['Value'] unless variables.empty?
+      end
+
+      # Returns a table's primary key and belonging sequence.
+      def pk_and_sequence_for(table) #:nodoc:
+        keys = []
+        execute("describe #{quote_table_name(table)}").each_hash do |h|
+          keys << h["Field"]if h["Key"] == "PRI"
+        end
+        keys.length == 1 ? [keys.first, nil] : nil
       end
 
       private

@@ -35,3 +35,13 @@ HOW THIS APPLICATION WAS CREATED
   script/plugin install svn://rubyforge.org/var/svn/rspec/trunk/rspec_on_rails
   script/generate rspec
 
+  # upgrade to Rails 2.0 RC 1
+  rake rails
+  rake rails:freeze:edge TAG=rel_2-0-0_RC1
+
+  # upgrade gem as well (for rails tool); should have done it this way all along
+  sudo gem install rails --source http://gems.rubyonrails.org --version 1.99.0
+  rm vendor/rails/TAG_rel_2-0-0_RC1
+  rake rails:freeze:gems
+  cd ..
+  rails wincent_on_rails

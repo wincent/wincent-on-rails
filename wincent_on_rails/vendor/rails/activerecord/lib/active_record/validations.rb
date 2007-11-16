@@ -15,7 +15,7 @@ module ActiveRecord
   end
 
   # Active Record validation is reported to and from this object, which is used by Base#save to
-  # determine whether the object in a valid state to be saved. See usage example in Validations.
+  # determine whether the object is in a valid state to be saved. See usage example in Validations.
   class Errors
     include Enumerable
 
@@ -45,7 +45,7 @@ module ActiveRecord
       :even => "must be even"
     }
 
-    # Holds a hash with all the default error messages, such that they can be replaced by your own copy or localizations.
+    # Holds a hash with all the default error messages that can be replaced by your own copy or localizations.
     cattr_accessor :default_error_messages
 
 
@@ -118,7 +118,7 @@ module ActiveRecord
 
     alias :[] :on
 
-    # Returns errors assigned to base object through add_to_base according to the normal rules of on(attribute).
+    # Returns errors assigned to the base object through add_to_base according to the normal rules of on(attribute).
     def on_base
       on(:base)
     end
@@ -633,7 +633,21 @@ module ActiveRecord
             condition_params << record.send(:id)
           end
 
-          if find(:first, :conditions => [condition_sql, *condition_params])
+          # The check for an existing value should be run from a class that
+          # isn't abstract. This means working down from the current class
+          # (self), to the first non-abstract class. Since classes don't know
+          # their subclasses, we have to build the hierarchy between self and
+          # the record's class.
+          class_hierarchy = [record.class]
+          while class_hierarchy.first != self
+            class_hierarchy.insert(0, class_hierarchy.first.superclass)
+          end
+
+          # Now we can work our way down the tree to the first non-abstract
+          # class (which has a database table to query from).
+          finder_class = class_hierarchy.detect { |klass| !klass.abstract_class? }
+
+          if finder_class.find(:first, :conditions => [condition_sql, *condition_params])
             record.errors.add(attr_name, configuration[:message])
           end
         end

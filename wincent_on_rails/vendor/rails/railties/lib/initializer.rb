@@ -34,7 +34,7 @@ module Rails
 
     # The set of loaded plugins.
     attr_reader :loaded_plugins
-
+    
     # Runs the initializer. By default, this will invoke the #process method,
     # which simply executes all of the initialization routines. Alternately,
     # you can specify explicitly which initialization routine you want:
@@ -64,6 +64,7 @@ module Rails
     # * #set_load_path
     # * #require_frameworks
     # * #set_autoload_paths
+    # * add_plugin_load_paths
     # * #load_environment
     # * #initialize_encoding
     # * #initialize_database
@@ -72,7 +73,6 @@ module Rails
     # * #initialize_framework_views
     # * #initialize_dependency_mechanism
     # * #initialize_whiny_nils
-    # * #initialize_whiny_protected_attributes
     # * #initialize_temporary_directories
     # * #initialize_framework_settings
     # * #add_support_load_paths
@@ -84,9 +84,10 @@ module Rails
     def process
       check_ruby_version
       set_load_path
-
+      
       require_frameworks
       set_autoload_paths
+      add_plugin_load_paths
       load_environment
 
       initialize_encoding
@@ -96,7 +97,6 @@ module Rails
       initialize_framework_views
       initialize_dependency_mechanism
       initialize_whiny_nils
-      initialize_whiny_protected_attributes
       initialize_temporary_directories
       initialize_framework_settings
 
@@ -163,14 +163,20 @@ module Rails
     def add_support_load_paths
     end
 
+    # Adds all load paths from plugins to the global set of load paths, so that
+    # code from plugins can be required (explicitly or automatically via Dependencies).
+    def add_plugin_load_paths
+      plugin_loader.add_plugin_load_paths
+    end
+
     # Loads all plugins in <tt>config.plugin_paths</tt>.  <tt>plugin_paths</tt>
     # defaults to <tt>vendor/plugins</tt> but may also be set to a list of
     # paths, such as
     #   config.plugin_paths = ["#{RAILS_ROOT}/lib/plugins", "#{RAILS_ROOT}/vendor/plugins"]
     #
-    # Each plugin discovered in <tt>plugin_paths</tt> is initialized:
-    # * add its +lib+ directory, if present, to the beginning of the load path
-    # * evaluate <tt>init.rb</tt> if present
+    # In the default implementation, as each plugin discovered in <tt>plugin_paths</tt> is initialized:
+    # * its +lib+ directory, if present, is added to the load path (immediately after the applications lib directory)
+    # * <tt>init.rb</tt> is evalutated, if present
     #
     # After all plugins are loaded, duplicates are removed from the load path.
     # If an array of plugin names is specified in config.plugins, only those plugins will be loaded
@@ -180,13 +186,11 @@ module Rails
     # if config.plugins ends contains :all then the named plugins will be loaded in the given order and all other
     # plugins will be loaded in alphabetical order
     def load_plugins
-      configuration.plugin_locators.each do |locator|
-        locator.new(self).each do |plugin|
-          plugin.load
-        end
-      end
-      ensure_all_registered_plugins_are_loaded!
-      $LOAD_PATH.uniq!
+      plugin_loader.load_plugins
+    end
+
+    def plugin_loader
+      @plugin_loader ||= configuration.plugin_loader.new(self)
     end
 
     # Loads the environment specified by Configuration#environment_path, which
@@ -300,14 +304,6 @@ module Rails
     def initialize_whiny_nils
       require('active_support/whiny_nil') if configuration.whiny_nils
     end
-    
-    # Sets +ActiveRecord::Base#whiny_protected_attributes+ which determines whether to
-    # raise on mass-assigning attributes protected with +attr_protected+/+attr_accessible+.
-    def initialize_whiny_protected_attributes
-      if configuration.frameworks.include?(:active_record)
-        ActiveRecord::Base.whiny_protected_attributes = configuration.whiny_protected_attributes
-      end
-    end
 
     def initialize_temporary_directories
       if configuration.frameworks.include?(:action_controller)
@@ -347,15 +343,6 @@ module Rails
       end
     end
 
-    private
-      def ensure_all_registered_plugins_are_loaded!
-        unless configuration.plugins.nil?
-          if configuration.plugins.detect {|plugin| plugin != :all && !loaded_plugins.include?( plugin)}
-            missing_plugins = configuration.plugins - (loaded_plugins + [:all])
-            raise LoadError, "Could not locate the following plugins: #{missing_plugins.to_sentence}"
-          end
-        end
-      end
   end
 
   # The Configuration class holds all the parameters for the Initializer and
@@ -433,11 +420,6 @@ module Rails
     # Set to +true+ if you want to be warned (noisily) when you try to invoke
     # any method of +nil+. Set to +false+ for the standard Ruby behavior.
     attr_accessor :whiny_nils
-    
-    # The default value of +true+ means an exception will be raised on attempts
-    # to mass-assign to protected attributes. Set to +false+ to discard them
-    # without raising (an error will be logged instead).
-    attr_accessor :whiny_protected_attributes
 
     # The list of plugins to load. If this is set to <tt>nil</tt>, all plugins will
     # be loaded. If this is set to <tt>[]</tt>, no plugins will be loaded. Otherwise,
@@ -486,7 +468,6 @@ module Rails
       self.controller_paths             = default_controller_paths
       self.cache_classes                = default_cache_classes
       self.whiny_nils                   = default_whiny_nils
-      self.whiny_protected_attributes   = default_whiny_protected_attributes
       self.plugins                      = default_plugins
       self.plugin_paths                 = default_plugin_paths
       self.plugin_locators              = default_plugin_locators
@@ -645,10 +626,6 @@ module Rails
 
       def default_whiny_nils
         false
-      end
-      
-      def default_whiny_protected_attributes
-        true
       end
 
       def default_plugins

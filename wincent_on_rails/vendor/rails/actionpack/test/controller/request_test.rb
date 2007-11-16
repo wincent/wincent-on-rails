@@ -51,6 +51,12 @@ class RequestTest < Test::Unit::TestCase
     @request.host = "192.168.1.200"
     assert_nil @request.domain
 
+    @request.host = "foo.192.168.1.200"
+    assert_nil @request.domain
+
+    @request.host = "192.168.1.200.com"
+    assert_equal "200.com", @request.domain
+
     @request.host = nil
     assert_nil @request.domain
   end
@@ -67,6 +73,15 @@ class RequestTest < Test::Unit::TestCase
 
     @request.host = "foobar.foobar.com"
     assert_equal %w( foobar ), @request.subdomains
+
+    @request.host = "192.168.1.200"
+    assert_equal [], @request.subdomains
+
+    @request.host = "foo.192.168.1.200"
+    assert_equal [], @request.subdomains
+
+    @request.host = "192.168.1.200.com"
+    assert_equal %w( 192 168 1 ), @request.subdomains
 
     @request.host = nil
     assert_equal [], @request.subdomains
@@ -354,6 +369,15 @@ class RequestTest < Test::Unit::TestCase
   
   def test_user_agent
     assert_not_nil @request.user_agent
+  end
+  
+  def test_parameters
+    @request.instance_eval { @request_parameters = { "foo" => 1 } }
+    @request.instance_eval { @query_parameters = { "bar" => 2 } }
+    
+    assert_equal({"foo" => 1, "bar" => 2}, @request.parameters)
+    assert_equal({"foo" => 1}, @request.request_parameters)
+    assert_equal({"bar" => 2}, @request.query_parameters)
   end
 
   protected
@@ -768,7 +792,7 @@ class XmlParamsParsingTest < Test::Unit::TestCase
     def parse_body(body)
       env = { 'CONTENT_TYPE'   => 'application/xml',
               'CONTENT_LENGTH' => body.size.to_s }
-      cgi = ActionController::Integration::Session::MockCGI.new(env, body)
+      cgi = ActionController::Integration::Session::StubCGI.new(env, body)
       ActionController::CgiRequest.new(cgi).request_parameters
     end
 end
@@ -778,7 +802,7 @@ class LegacyXmlParamsParsingTest < XmlParamsParsingTest
     def parse_body(body)
       env = { 'HTTP_X_POST_DATA_FORMAT' => 'xml',
               'CONTENT_LENGTH' => body.size.to_s }
-      cgi = ActionController::Integration::Session::MockCGI.new(env, body)
+      cgi = ActionController::Integration::Session::StubCGI.new(env, body)
       ActionController::CgiRequest.new(cgi).request_parameters
     end
 end

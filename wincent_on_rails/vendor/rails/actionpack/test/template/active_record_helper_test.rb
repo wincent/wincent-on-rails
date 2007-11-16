@@ -91,6 +91,8 @@ class ActiveRecordHelperTest < Test::Unit::TestCase
     setup_post
     setup_user
 
+    @response = ActionController::TestResponse.new
+    
     @controller = Object.new
     def @controller.url_for(options)
       options = options.symbolize_keys
@@ -137,6 +139,13 @@ class ActiveRecordHelperTest < Test::Unit::TestCase
       %(<form action="update/1" method="post"><input id="post_id" name="post[id]" type="hidden" value="1" /><p><label for="post_title">Title</label><br /><input id="post_title" name="post[title]" size="30" type="text" value="Hello World" /></p>\n<p><label for="post_body">Body</label><br /><div class="fieldWithErrors"><textarea cols="40" id="post_body" name="post[body]" rows="20">Back to the hill and over it again!</textarea></div></p><input name="commit" type="submit" value="Update" /></form>),
       form("post")
     )
+  end
+
+  def test_form_with_action_option
+    @response.body = form("post", :action => "sign")
+    assert_select "form[action=sign]" do |form|
+      assert_select "input[type=submit][value=Sign]"
+    end
   end
 
   def test_form_with_date
@@ -207,6 +216,14 @@ class ActiveRecordHelperTest < Test::Unit::TestCase
 
     # should space object name
     assert_dom_equal %(<div class="errorExplanation" id="errorExplanation"><h2>2 errors prohibited this chunky bacon from being saved</h2><p>There were problems with the following fields:</p><ul><li>User email can't be empty</li><li>Author name can't be empty</li></ul></div>), error_messages_for(:user, :post, :object_name => "chunky_bacon")
+
+    # hide header and explanation messages with nil or empty string
+    assert_dom_equal %(<div class="errorExplanation" id="errorExplanation"><ul><li>User email can't be empty</li><li>Author name can't be empty</li></ul></div>), error_messages_for(:user, :post, :header_message => nil, :message => "")
+
+    # override header and explanation messages
+    header_message = "Yikes! Some errors"
+    message = "Please fix the following fields and resubmit:"
+    assert_dom_equal %(<div class="errorExplanation" id="errorExplanation"><h2>#{header_message}</h2><p>#{message}</p><ul><li>User email can't be empty</li><li>Author name can't be empty</li></ul></div>), error_messages_for(:user, :post, :header_message => header_message, :message => message)
   end
   
   def test_error_messages_for_non_instance_variable

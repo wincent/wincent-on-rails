@@ -18,7 +18,7 @@ module ActiveRecord
         raise ArgumentError, "No database specified. Missing argument: database."
       end
 
-      # The postgres drivers don't allow to create an unconnected PGconn object,
+      # The postgres drivers don't allow the creation of an unconnected PGconn object,
       # so just pass a nil connection object for the time being.
       ConnectionAdapters::PostgreSQLAdapter.new(nil, logger, [host, port, nil, nil, database, username, password], config)
     end
@@ -160,45 +160,45 @@ module ActiveRecord
         def self.extract_value_from_default(default)
           case default
             # Numeric types
-            when /^-?\d+(\.\d*)?$/
+            when /\A-?\d+(\.\d*)?\z/
               default
             # Character types
-            when /^'(.*)'::(?:character varying|bpchar|text)$/
+            when /\A'(.*)'::(?:character varying|bpchar|text)\z/m
               $1
             # Binary data types
-            when /^'(.*)'::bytea$/
+            when /\A'(.*)'::bytea\z/m
               $1
             # Date/time types
-            when /^'(.+)'::(?:time(?:stamp)? with(?:out)? time zone|date)$/
+            when /\A'(.+)'::(?:time(?:stamp)? with(?:out)? time zone|date)\z/
               $1
-            when /^'(.*)'::interval$/
+            when /\A'(.*)'::interval\z/
               $1
             # Boolean type
-            when /^true$/
+            when 'true'
               true
-            when /^false$/
+            when 'false'
               false
             # Geometric types
-            when /^'(.*)'::(?:point|line|lseg|box|"?path"?|polygon|circle)$/
+            when /\A'(.*)'::(?:point|line|lseg|box|"?path"?|polygon|circle)\z/
               $1
             # Network address types
-            when /^'(.*)'::(?:cidr|inet|macaddr)$/
+            when /\A'(.*)'::(?:cidr|inet|macaddr)\z/
               $1
             # Bit string types
-            when /^B'(.*)'::"?bit(?: varying)?"?$/
+            when /\AB'(.*)'::"?bit(?: varying)?"?\z/
               $1
             # XML type
-            when /^'(.*)'::xml$/
+            when /\A'(.*)'::xml\z/m
               $1
             # Arrays
-            when /^'(.*)'::"?\D+"?\[\]$/
+            when /\A'(.*)'::"?\D+"?\[\]\z/
               $1
             # Object identifier types
-            when /^-?\d+$/
+            when /\A-?\d+\z/
               $1
             else
               # Anything else is blank, some user type, or some function
-              # and we can't know the value of that, so return nil.            
+              # and we can't know the value of that, so return nil.
               nil
           end
         end
@@ -217,8 +217,8 @@ module ActiveRecord
     # * <tt>:password</tt> -- Defaults to nothing
     # * <tt>:database</tt> -- The name of the database. No default, must be provided.
     # * <tt>:schema_search_path</tt> -- An optional schema search path for the connection given as a string of comma-separated schema names.  This is backward-compatible with the :schema_order option.
-    # * <tt>:encoding</tt> -- An optional client encoding that is using in a SET client_encoding TO <encoding> call on connection.
-    # * <tt>:min_messages</tt> -- An optional client min messages that is using in a SET client_min_messages TO <min_messages> call on connection.
+    # * <tt>:encoding</tt> -- An optional client encoding that is used in a SET client_encoding TO <encoding> call on the connection.
+    # * <tt>:min_messages</tt> -- An optional client min messages that is used in a SET client_min_messages TO <min_messages> call on the connection.
     # * <tt>:allow_concurrency</tt> -- If true, use async query methods so Ruby threads don't deadlock; otherwise, use blocking query methods.
     class PostgreSQLAdapter < AbstractAdapter
       # Returns 'PostgreSQL' as adapter name for identification purposes.
@@ -364,6 +364,14 @@ module ActiveRecord
         end
       end
 
+      # REFERENTIAL INTEGRITY ====================================
+
+      def disable_referential_integrity(&block) #:nodoc:
+        execute(tables.collect { |name| "ALTER TABLE #{quote_table_name(name)} DISABLE TRIGGER ALL" }.join(";"))
+        yield
+      ensure
+        execute(tables.collect { |name| "ALTER TABLE #{quote_table_name(name)} ENABLE TRIGGER ALL" }.join(";"))
+      end
 
       # DATABASE STATEMENTS ======================================
 
@@ -390,7 +398,7 @@ module ActiveRecord
         end
       end
 
-      # Executes a SQL statement, returning a PGresult object on success
+      # Executes an SQL statement, returning a PGresult object on success
       # or raising a PGError exception otherwise.
       def execute(sql, name = nil)
         log(sql, name) do
@@ -470,7 +478,7 @@ module ActiveRecord
 
       # Returns the list of all column definitions for a table.
       def columns(table_name, name = nil)
-        # Limit, precision, and scale are all handled by superclass.
+        # Limit, precision, and scale are all handled by the superclass.
         column_definitions(table_name).collect do |name, type, default, notnull|
           PostgreSQLColumn.new(name, default, type, notnull == 'f')
         end
@@ -661,7 +669,7 @@ module ActiveRecord
         sql << order_columns * ', '
       end
       
-      # Returns a ORDER BY clause for the passed order option.
+      # Returns an ORDER BY clause for the passed order option.
       # 
       # PostgreSQL does not allow arbitrary ordering when using DISTINCT ON, so we work around this
       # by wrapping the sql as a sub-select and ordering in that query.
@@ -753,7 +761,7 @@ module ActiveRecord
         end
 
         # Executes a SELECT query and returns the results, performing any data type
-        # conversions that require to be performed here instead of in PostgreSQLColumn.
+        # conversions that are required to be performed here instead of in PostgreSQLColumn.
         def select(sql, name = nil)
           fields, rows = select_raw(sql, name)
           result = []
@@ -783,7 +791,7 @@ module ActiveRecord
                 # fields that call value_before_type_cast.
                 if res.type(cell_index) == MONEY_COLUMN_TYPE_OID
                   # Because money output is formatted according to the locale, there are two
-                  # cases to consider (note the decimal seperators):
+                  # cases to consider (note the decimal separators):
                   #  (1) $12,345,678.12        
                   #  (2) $12.345.678,12
                   case column = row[cell_index]
