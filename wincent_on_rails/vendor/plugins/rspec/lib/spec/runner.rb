@@ -8,6 +8,7 @@ require 'spec/runner/backtrace_tweaker'
 require 'spec/runner/reporter'
 require 'spec/runner/extensions/object'
 require 'spec/runner/spec_parser'
+require 'spec/runner/class_and_arguments_parser'
 
 module Spec
   # == Behaviours and Examples
@@ -134,6 +135,31 @@ module Spec
   #
   #  describe SmallEdition do
   #    it_should_behave_like "All Editions"
+  #  
+  #    it "should do small edition stuff" do
+  #      ...
+  #    end
+  #  end
+  #
+  # You can also assign the shared behaviour to a module and include that
+  #
+  #  AllEditions = describe "All Editions", :shared => true do
+  #    it "all editions behaviour" ...
+  #  end
+  #
+  #  describe SmallEdition do
+  #    it_should_behave_like AllEditions
+  #  
+  #    it "should do small edition stuff" do
+  #      ...
+  #    end
+  #  end
+  #
+  # And, for those of you who prefer to use something more like Ruby, you
+  # can just include the module directly
+  #
+  #  describe SmallEdition do
+  #    include AllEditions
   #  
   #    it "should do small edition stuff" do
   #      ...

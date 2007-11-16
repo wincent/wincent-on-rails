@@ -10,14 +10,15 @@ module Spec
         's'        => Formatter::SpecdocFormatter,
         'html'     => Formatter::HtmlFormatter,
         'h'        => Formatter::HtmlFormatter,
-        'rdoc'     => Formatter::RdocFormatter,
-        'r'        => Formatter::RdocFormatter,
         'progress' => Formatter::ProgressBarFormatter,
         'p'        => Formatter::ProgressBarFormatter,
         'failing_examples' => Formatter::FailingExamplesFormatter,
         'e'        => Formatter::FailingExamplesFormatter,
         'failing_behaviours' => Formatter::FailingBehavioursFormatter,
-        'b'        => Formatter::FailingBehavioursFormatter
+        'b'        => Formatter::FailingBehavioursFormatter,
+        'profile'  => Formatter::ProfileFormatter,
+        'o'        => Formatter::ProfileFormatter,
+        'textmate' => Formatter::TextMateFormatter,
       }
 
       attr_accessor(
@@ -25,10 +26,9 @@ module Spec
         :context_lines,
         :diff_format,
         :dry_run,
+        :profile,
         :examples,
-        :failure_file,
         :formatters,
-        :generate,
         :heckle_runner,
         :line_number,
         :loadby,
@@ -36,14 +36,13 @@ module Spec
         :reverse,
         :timeout,
         :verbose,
-        # TODO: BT - Rename to something better
-        :runner_arg,
+        :user_input_for_runner,
         :error_stream,
         :output_stream,
         # TODO: BT - Figure out a better name
-        :current_argv
+        :argv
       )
-      attr_reader :colour, :differ_class, :files, :behaviours
+      attr_reader :colour, :differ_class, :files, :example_groups
 
       def initialize(error_stream, output_stream)
         @error_stream = error_stream
@@ -52,30 +51,43 @@ module Spec
         @examples = []
         @formatters = []
         @colour = false
+        @profile = false
         @dry_run = false
         @reporter = Reporter.new(self)
         @context_lines = 3
         @diff_format  = :unified
         @files = []
-        @behaviours = []
-        @runner_arg = nil
+        @example_groups = []
+        @user_input_for_runner = nil
         @examples_run = false
       end
 
-      def add_behaviour(behaviour)
-        @behaviours << behaviour
+      def add_example_group(example_group)
+        @example_groups << example_group
       end
 
       def run_examples
+        return true unless examples_should_be_run?
         runner = custom_runner || BehaviourRunner.new(self)
-        success = runner.run
-        @examples_run = true
-        success
+
+        runner.load_files(files_to_load)
+        if example_groups.empty?
+          true
+        else
+          success = runner.run
+          @examples_run = true
+          heckle if heckle_runner
+          success
+        end
       end
 
       def examples_run?
         @examples_run
       end
+
+      def examples_should_not_be_run
+        @examples_should_be_run = false
+      end      
 
       def colour=(colour)
         @colour = colour
@@ -84,23 +96,6 @@ module Spec
         rescue LoadError ; \
           raise "You must gem install win32console to use colour on Windows" ; \
         end
-      end
-
-      def custom_runner?
-        return @runner_arg ? true : false
-      end
-
-      def custom_runner
-        return nil unless custom_runner?
-        klass_name, arg = split_at_colon(@runner_arg)
-        runner_type = load_class(klass_name, 'behaviour runner', '--runner')
-        return runner_type.new(self, arg)
-      end
-
-      def differ_class=(klass)
-        return unless klass
-        @differ_class = klass
-        Spec::Expectations.differ = self.differ_class.new(self)
       end
 
       def parse_diff(format)
@@ -126,8 +121,7 @@ module Spec
       end
 
       def parse_format(format_arg)
-        format, where = split_at_colon(format_arg)
-        # This funky regexp checks whether we have a FILE_NAME or not
+        format, where = ClassAndArgumentsParser.parse(format_arg)
         unless where
           raise "When using several --format options only one of them can be without a file" if @out_used
           where = @output_stream
@@ -144,23 +138,31 @@ module Spec
         formatter
       end
 
-      def parse_require(req)
-        req.split(",").each{|file| require file}
-      end
-
-      def parse_heckle(heckle)
-        heckle_require = [/mswin/, /java/].detect{|p| p =~ RUBY_PLATFORM} ? 'spec/runner/heckle_runner_unsupported' : 'spec/runner/heckle_runner'
-        require heckle_require
+      def load_heckle_runner(heckle)
+        if [/mswin/, /java/].detect{|p| p =~ RUBY_PLATFORM}
+          require 'spec/runner/heckle_runner_unsupported'
+        else
+          require 'spec/runner/heckle_runner'
+        end
         @heckle_runner = HeckleRunner.new(heckle)
       end
 
-      def split_at_colon(s)
-        if s =~ /([a-zA-Z_]+(?:::[a-zA-Z_]+)*):?(.*)/
-          arg = $2 == "" ? nil : $2
-          [$1, arg]
-        else
-          raise "Couldn't parse #{s.inspect}"
+      def number_of_examples
+        @example_groups.inject(0) do |sum, example_group|
+          sum + example_group.number_of_examples
         end
+      end
+
+      protected
+      def examples_should_be_run?
+        return @examples_should_be_run unless @examples_should_be_run.nil?
+        @examples_should_be_run = true
+      end
+      
+      def differ_class=(klass)
+        return unless klass
+        @differ_class = klass
+        Spec::Expectations.differ = self.differ_class.new(self)
       end
 
       def load_class(name, kind, option)
@@ -180,14 +182,8 @@ module Spec
           if $_spec_spec ; raise e ; else exit(1) ; end
         end
       end
-
-      def load_paths
-        paths.each do |path|
-          load path
-        end
-      end
-
-      def paths
+      
+      def files_to_load
         result = []
         sorted_files.each do |file|
           if test ?d, file
@@ -200,12 +196,24 @@ module Spec
         end
         result
       end
-
-      def number_of_examples
-        @behaviours.inject(0) {|sum, behaviour| sum + behaviour.number_of_examples}
+      
+      def custom_runner
+        return nil unless custom_runner?
+        klass_name, arg = ClassAndArgumentsParser.parse(user_input_for_runner)
+        runner_type = load_class(klass_name, 'behaviour runner', '--runner')
+        return runner_type.new(self, arg)
       end
 
-      protected
+      def custom_runner?
+        return user_input_for_runner ? true : false
+      end
+      
+      def heckle
+        returns = self.heckle_runner.heckle_with
+        self.heckle_runner = nil
+        returns
+      end
+      
       def sorted_files
         return sorter ? files.sort(&sorter) : files
       end

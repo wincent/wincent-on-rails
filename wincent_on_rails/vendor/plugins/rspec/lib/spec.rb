@@ -1,3 +1,4 @@
+require 'test/unit'
 require 'spec/version'
 require 'spec/matchers'
 require 'spec/expectations'
@@ -6,7 +7,19 @@ require 'spec/dsl'
 require 'spec/extensions'
 require 'spec/runner'
 require 'spec/story'
-require 'spec/test' if Object.const_defined?(:Test)
-at_exit do
-  unless $! || rspec_options.examples_run?; exit rspec_options.run_examples; end
+require 'spec/test'
+module Spec
+  class << self
+    def run?
+      @run || rspec_options.examples_run?
+    end
+
+    def run; \
+      return true if run?; \
+      result = rspec_options.run_examples; \
+      @run = true; \
+      result; \
+    end
+    attr_writer :run
+  end
 end
