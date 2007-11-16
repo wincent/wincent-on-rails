@@ -22,7 +22,7 @@ module FixtureReplacement
       end
       
       # This uses a DelayedEvaluationProc, not a typical proc, for type checking.
-      # It maybe absurd to try to store a proc in a database, but even if someone tries,
+      # It may be absurd to try to store a proc in a database, but even if someone tries,
       # they won't get an error from FixtureReplacement, since the error would be incredibly unclear
       def merge_unevaluated_method(obj, method_for_instantiation, hash={})
         hash.each do |key, value|
@@ -40,7 +40,7 @@ module FixtureReplacement
     
     def initialize(method_name, fixture_mod=FixtureReplacement)
       @model_name = method_name
-      @model_class = method_name.classify
+      @model_class = method_name.camelize
       @fixture_module = fixture_mod
       
       add_to_class_singleton(@model_class)
@@ -70,8 +70,11 @@ module FixtureReplacement
           hash_given = args[0] || Hash.new
           merged_hash = self.send(attributes_method).merge(hash_given)
           evaluated_hash = Generator.merge_unevaluated_method(self, :create, merged_hash)        
+          
+          # we are NOT doing the following, because of attr_protected:
+          #   obj = class_name.create!(evaluated_hash)
           obj = class_name.new
-          evaluated_hash.each { |k, v| obj.send("#{k}=", v) }
+          evaluated_hash.each { |key, value| obj.send("#{key}=", value) }
           obj.save!
           obj          
         end
@@ -88,8 +91,10 @@ module FixtureReplacement
           hash_given = args[0] || Hash.new
           merged_hash = self.send(attributes_method).merge(hash_given)
           evaluated_hash = Generator.merge_unevaluated_method(self, :create, merged_hash)
+          
+          # we are also doing the following because of attr_protected:
           obj = class_name.new
-          evaluated_hash.each { |k, v| obj.send("#{k}=", v) }
+          evaluated_hash.each { |key, value| obj.send("#{key}=", value) }
           obj
         end
       end
