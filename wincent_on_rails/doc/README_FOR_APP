@@ -45,3 +45,9 @@ HOW THIS APPLICATION WAS CREATED
   rake rails:freeze:gems
   cd ..
   rails wincent_on_rails
+
+  # update RSpec at the same time (revision 2902)
+  rm -r vendor/plugins/rspec vendor/plugins/rspec_on_rails
+  script/plugin install svn://rubyforge.org/var/svn/rspec/trunk/rspec
+  script/plugin install svn://rubyforge.org/var/svn/rspec/trunk/rspec_on_rails
+  script/generate rspec
