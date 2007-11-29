@@ -61,3 +61,7 @@ HOW THIS APPLICATION WAS CREATED
   rake rails:freeze:gems
   cd ..
   rails wincent_on_rails
+
+  # also update FixtureReplacement (revision 140)
+  rm -r vendor/plugins/fixture_replacement
+  script/plugin install http://thmadb.com/public_svn/plugins/fixture_replacement
