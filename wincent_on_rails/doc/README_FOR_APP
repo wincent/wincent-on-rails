@@ -65,3 +65,12 @@ HOW THIS APPLICATION WAS CREATED
   # also update FixtureReplacement (revision 140)
   rm -r vendor/plugins/fixture_replacement
   script/plugin install http://thmadb.com/public_svn/plugins/fixture_replacement
+
+  # update RSpec at the same time (revision 3014)
+  git rm -r vendor/plugins/rspec vendor/plugins/rspec_on_rails
+  script/plugin install svn://rubyforge.org/var/svn/rspec/trunk/rspec
+  script/plugin install svn://rubyforge.org/var/svn/rspec/trunk/rspec_on_rails
+  git add vendor/plugins/rspec vendor/plugins/rspec_on_rails
+  script/generate rspec
+  # manually merge spec/spec_helper.rb, then:
+  git add spec/spec_helper.rb
