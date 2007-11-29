@@ -56,3 +56,8 @@ HOW THIS APPLICATION WAS CREATED
   rm -r vendor/plugins/fixture_replacement
   script/plugin install http://thmadb.com/public_svn/plugins/fixture_replacement
 
+  # upgrade to Rails 2.0 RC 2 (gem version 1.99.1)
+  sudo gem install rails --source http://gems.rubyonrails.org --version 1.99.1
+  rake rails:freeze:gems
+  cd ..
+  rails wincent_on_rails

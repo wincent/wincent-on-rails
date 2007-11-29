@@ -15,6 +15,8 @@ class Author < ActiveRecord::Base
     end
   end
   has_many :comments, :through => :posts
+  has_many :comments_desc, :through => :posts, :source => :comments, :order => 'comments.id DESC'
+  has_many :limited_comments, :through => :posts, :source => :comments, :limit => 1
   has_many :funky_comments, :through => :posts, :source => :comments
 
   has_many :special_posts
@@ -22,6 +24,7 @@ class Author < ActiveRecord::Base
   
   has_many :special_nonexistant_posts, :class_name => "SpecialPost", :conditions => "posts.body = 'nonexistant'"
   has_many :special_nonexistant_post_comments, :through => :special_nonexistant_posts, :source => :comments, :conditions => "comments.post_id = 0"
+  has_many :nonexistant_comments, :through => :posts
 
   has_many :hello_posts, :class_name => "Post", :conditions => "posts.body = 'hello'"
   has_many :hello_post_comments, :through => :hello_posts, :source => :comments
