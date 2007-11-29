@@ -74,3 +74,6 @@ HOW THIS APPLICATION WAS CREATED
   script/generate rspec
   # manually merge spec/spec_helper.rb, then:
   git add spec/spec_helper.rb
+
+  # install mysql gem for Leopard
+  sudo env ARCHFLAGS="-arch i386" gem install mysql -- --with-mysql-config=/usr/local/bin/mysql_config
