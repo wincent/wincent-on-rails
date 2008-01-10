@@ -94,3 +94,12 @@ HOW THIS APPLICATION WAS CREATED
   rake rails:freeze:gems
   rails .
 
+  # upgrade to latest RSpec (1.1.1)
+  git rm -r vendor/plugins/rspec
+  git rm -r vendor/plugins/rspec_on_rails
+  script/plugin install svn://rubyforge.org/var/svn/rspec/tags/CURRENT/rspec
+  script/plugin install --force svn://rubyforge.org/var/svn/rspec/tags/CURRENT/rspec_on_rails
+  git add vendor/plugins/rspec
+  git add vendor/plugins/rspec_on_rails
+  script/generate rspec
+
