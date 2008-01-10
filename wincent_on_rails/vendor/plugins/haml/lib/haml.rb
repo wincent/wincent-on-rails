@@ -25,22 +25,31 @@ $LOAD_PATH << dir unless $LOAD_PATH.include?(dir)
 #
 # Haml can be used in two ways:
 # as a plugin for Ruby on Rails,
-# and as a standalong Ruby module.
+# and as a standalone Ruby module.
 #
-# === Rails
+# Sass can be used in several ways:
+# As a template engine for Ruby on Rails or Merb,
+# or as a standalone engine.
+# The first step for all of these is to install the Haml gem:
+#
+#   gem install haml
+#
+# To enable it as a Rails plugin,
+# then run
 # 
-# Haml is most commonly used as a plugin.
-# It can be installed as a plugin using the Rails plugin installer:
+#   haml --rails path/to/rails/app
 # 
-#   ./script/plugin install http://svn.hamptoncatlin.com/haml/tags/stable
+# Haml is enabled in Merb by default,
+# so Merb users don't have to do anything more.
 #
 # Once it's installed, all view files with the ".haml" extension
+# (or ".html.haml" for Merb or edge Rails)
 # will be compiled using Haml.
 #
 # You can access instance variables in Haml templates
 # the same way you do in ERb templates.
 # Helper methods are also available in Haml templates.
-# For example:
+# For example (this example uses Rails, but the principle for Merb is the same):
 # 
 #   # file: app/controllers/movies_controller.rb
 # 
@@ -50,7 +59,7 @@ $LOAD_PATH << dir unless $LOAD_PATH.include?(dir)
 #     end
 #   end
 # 
-#   # file: app/views/movies/index.haml
+#   -# file: app/views/movies/index.haml
 # 
 #   #content
 #    .title
@@ -134,6 +143,45 @@ $LOAD_PATH << dir unless $LOAD_PATH.include?(dir)
 #     <script src='javascripts/script_9' type='text/javascript'>
 #     </script>
 #   </head>
+#
+# A Ruby method call that returns a hash
+# can be substituted for the hash contents.
+# For example, Haml::Helpers defines the following method:
+#
+#   def html_attrs(lang = 'en-US')
+#     {:xmlns => "http://www.w3.org/1999/xhtml", 'xml:lang' => lang, :lang => lang}
+#   end
+#
+# This can then be used in Haml, like so:
+#
+#   %html{html_attrs('fr-fr')}
+#
+# This is compiled to:
+#
+#   <html lang='fr-fr' xml:lang='fr=fr' xmlns='http://www.w3.org/1999/xhtml'>
+#   </html>
+#
+# You can use as many such attribute methods as you want
+# by separating them with commas,
+# like a Ruby argument list.
+# All the hashes will me merged together, from left to right.
+# For example, if you defined
+#
+#   def hash1
+#     {:bread => 'white', :filling => 'peanut butter and jelly'}
+#   end
+#
+#   def hash2
+#     {:bread => 'whole wheat'}
+#   end
+#
+# then
+#
+#   %sandwich{hash1, hash2, :delicious => true}/
+#
+# would compile to:
+#
+#   <sandwich bread='whole wheat' delicious='true' filling='peanut butter and jelly' />
 # 
 # ==== []
 # 
@@ -152,7 +200,7 @@ $LOAD_PATH << dir unless $LOAD_PATH.include?(dir)
 #     @user = CrazyUser.find(15)
 #   end
 # 
-#   # file: app/views/users/show.haml
+#   -# file: app/views/users/show.haml
 # 
 #   %div[@user]
 #     %bar[290]/
@@ -357,7 +405,7 @@ $LOAD_PATH << dir unless $LOAD_PATH.include?(dir)
 # 
 #   <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 # 
-# If you're not using the UTF-8 characterset for your document,
+# If you're not using the UTF-8 character set for your document,
 # you can specify which encoding should appear
 # in the XML prolog in a similar way.
 # For example:
@@ -374,16 +422,16 @@ $LOAD_PATH << dir unless $LOAD_PATH.include?(dir)
 # wraps all text after it in an HTML comment.
 # For example:
 # 
-#   %billabong
-#     / This is the billabong element
-#     I like billabongs!
+#   %peanutbutterjelly
+#     / This is the peanutbutterjelly element
+#     I like sandwiches!
 # 
 # is compiled to:
 # 
-#   <billabong>
-#     <!-- This is the billabong element -->
-#     I like billabongs!
-#   </billabong>
+#   <peanutbutterjelly>
+#     <!-- This is the peanutbutterjelly element -->
+#     I like sandwiches!
+#   </peanutbutterjelly>
 # 
 # The forward slash can also wrap indented sections of code. For example:
 # 
@@ -574,7 +622,7 @@ $LOAD_PATH << dir unless $LOAD_PATH.include?(dir)
 #   <p>
 #     hello there you!
 #   </p>
-#
+# 
 # ===== Blocks
 # 
 # Ruby blocks, like XHTML tags, don't need to be explicitly closed in Haml.
@@ -641,6 +689,21 @@ $LOAD_PATH << dir unless $LOAD_PATH.include?(dir)
 #
 # <p>foo</p>
 # <p>bar</p>
+#
+# You can also nest text beneath a silent comment.
+# None of this text will be rendered.
+# For example:
+#
+# %p foo
+# -#
+#   This won't be displayed
+#     Nor will this
+# %p bar
+#
+# is compiled to:
+#
+# <p>foo</p>
+# <p>bar</p>
 # 
 # == Other Useful Things
 #
@@ -684,16 +747,20 @@ $LOAD_PATH << dir unless $LOAD_PATH.include?(dir)
 #                           * An +initialize+ method that accepts one parameter,
 #                             the text to be filtered.
 #                           * A +render+ method that returns the result of the filtering.
-# 
-# [<tt>:locals</tt>]        The local variables that will be available within the
-#                           template. For instance, if <tt>:locals</tt> is
-#                           <tt>{ :foo => "bar" }</tt>, then within the template,
-#                           <tt>= foo</tt> will produce <tt>bar</tt>.
 #
 # [<tt>:autoclose</tt>]     A list of tag names that should be automatically self-closed
 #                           if they have no content.
 #                           Defaults to <tt>['meta', 'img', 'link', 'script', 'br', 'hr']</tt>.
 #
-module Haml; end
+module Haml
+  # This method is called by init.rb,
+  # which is run by Rails on startup.
+  # We use it rather than putting stuff straight into init.rb
+  # so we can change the initialization behavior
+  # without modifying the file itself.
+  def self.init_rails(binding)
+    %w[haml/template sass sass/plugin].each(&method(:require))
+  end
+end
 
 require 'haml/engine'

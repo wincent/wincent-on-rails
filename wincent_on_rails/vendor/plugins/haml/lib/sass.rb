@@ -20,19 +20,29 @@ $LOAD_PATH << dir unless $LOAD_PATH.include?(dir)
 #
 # == Using Sass
 #
-# Sass can be used in two ways:
-# As a plugin for Ruby on Rails
-# and as a standalone parser.
+# Sass can be used in several ways:
+# As a plugin for Ruby on Rails or Merb,
+# or as a standalone parser.
 # Sass is bundled with Haml,
 # so if the Haml plugin or RubyGem is installed,
 # Sass will already be installed as a plugin or gem, respectively.
+# The first step for all of these is to install the Haml gem:
 #
-# To install Haml and Sass as a Ruby on Rails plugin,
-# use the normal Rails plugin installer:
+#   gem install haml
 #
-#   ./script/plugin install http://svn.hamptoncatlin.com/haml/tags/stable
+# To enable it as a Rails plugin,
+# then run
+# 
+#   haml --rails path/to/rails/app
+# 
+# To enable Sass in Merb,
+# add
 #
-# Sass templates in Rails don't quite function in the same way as views,
+#   dependency "haml"
+#
+# to config/dependencies.rb.
+#
+# Sass templates in Rails and Merb don't quite function in the same way as views,
 # because they don't contain dynamic content,
 # and so only need to be compiled when the template file has been updated.
 # By default (see options, below),
@@ -41,11 +51,8 @@ $LOAD_PATH << dir unless $LOAD_PATH.include?(dir)
 # For instance, public/stylesheets/sass/main.sass would be compiled to public/stylesheets/main.css.
 #
 # Using Sass in Ruby code is very simple.
-# First install the Haml/Sass RubyGem:
-#
-#   gem install haml
-#
-# Then you can use it by including the "sass" gem
+# After installing the Haml gem,
+# you can use it by running <tt>require "sass"</tt>
 # and using Sass::Engine like so:
 #
 #   engine = Sass::Engine.new("#main\n  :background-color #0000ff")
@@ -74,6 +81,15 @@ $LOAD_PATH << dir unless $LOAD_PATH.include?(dir)
 #     <attribute>
 #     <attribute>
 #     ...
+#
+# Like CSS, you can stretch rules over multiple lines.
+# However, unlike CSS, you can only do this if each line but the last
+# ends with a comma.
+# For example:
+#
+#   .users #userTab,
+#   .posts #postsTab
+#     <attributes>
 #
 # === Attributes
 #
@@ -109,6 +125,10 @@ $LOAD_PATH << dir unless $LOAD_PATH.include?(dir)
 #   #main p {
 #     color: #00ff00;
 #     width: 97% }
+#
+# By default, either attribute syntax may be used.
+# If you want to force one or the other,
+# see the :attribute_syntax option below.
 #
 # === Nested Rules
 #
@@ -394,7 +414,7 @@ $LOAD_PATH << dir unless $LOAD_PATH.include?(dir)
 # but all constants in that file are made available in the current file.
 #
 # Sass looks for other Sass files in the working directory,
-# and the Sass file directory under Rails.
+# and the Sass file directory under Rails or Merb.
 # Additional search directories may be specified
 # using the :load_paths option (see below).
 #
@@ -454,6 +474,21 @@ $LOAD_PATH << dir unless $LOAD_PATH.include?(dir)
 #   #awesome.rule {
 #     awesomeness: very; }
 #
+# You can also nest text beneath a comment to comment out a whole block.
+# For example:
+#
+#   // A very awesome rule
+#   #awesome.rule
+#     // Don't use these attributes
+#       color: green
+#       font-size: 10em
+#     color: red
+#
+# becomes
+#
+#   #awesome.rule {
+#     color: red; }
+#
 # === Loud Comments
 #
 # "Loud" comments are just as easy as silent ones.
@@ -472,6 +507,26 @@ $LOAD_PATH << dir unless $LOAD_PATH.include?(dir)
 #   #awesome.rule {
 #     /* An equally awesome attribute. */
 #     awesomeness: very; }
+#
+# You can also nest content beneath loud comments. For example:
+#
+#   #pbj
+#     /* This rule describes
+#       the styling of the element
+#       that represents
+#       a peanut butter and jelly sandwich.
+#     :background-image url(/images/pbj.png)
+#     :color red
+#
+# becomes
+#
+#   #pbj {
+#     /* This rule describes
+#      * the styling of the element
+#      * that represents
+#      * a peanut butter and jelly sandwich. */
+#     background-image: url(/images/pbj.png);
+#     color: red; }
 #
 # == Output Style
 #
@@ -548,6 +603,16 @@ $LOAD_PATH << dir unless $LOAD_PATH.include?(dir)
 #
 #   .huge { font-size: 10em; font-weight: bold; text-decoration: underline; } 
 #
+# === <tt>:compressed</tt>
+#
+# Compressed style takes up the minimum amount of space possible,
+# having no whitespace except that necessary to separate selectors
+# and a newline at the end of the file.
+# It's not meant to be human-readable.
+# For example:
+#
+#   #main{color:#fff;background-color:#000}#main p{width:10em}.huge{font-size:10em;font-weight:bold;text-decoration:underline} 
+#
 # == Sass Options
 #
 # Options can be set by setting the hash <tt>Sass::Plugin.options</tt>
@@ -558,39 +623,66 @@ $LOAD_PATH << dir unless $LOAD_PATH.include?(dir)
 # [<tt>:style</tt>]             Sets the style of the CSS output.
 #                               See the section on Output Style, above.
 #
+# [<tt>:attribute_syntax</tt>]  Forces the document to use one syntax for attributes.
+#                               If the correct syntax isn't used, an error is thrown.
+#                               <tt>:normal</tt> forces the use of a colon
+#                               before the attribute name.
+#                               For example: <tt>:color #0f3</tt>
+#                               or <tt>:width = !main_width</tt>.
+#                               <tt>:alternate</tt> forces the use of a colon or equals sign
+#                               after the attribute name.
+#                               For example: <tt>color: #0f3</tt>
+#                               or <tt>width = !main_width</tt>.
+#                               By default, either syntax is valid.
+#                               
+# [<tt>:never_update</tt>]      Whether the CSS files should never be updated,
+#                               even if the template file changes.
+#                               Setting this to true may give small performance gains.
+#                               It always defaults to false.
+#                               Only has meaning within Ruby on Rails or Merb.
+#
 # [<tt>:always_update</tt>]     Whether the CSS files should be updated every
 #                               time a controller is accessed,
 #                               as opposed to only when the template has been modified.
 #                               Defaults to false.
-#                               Only has meaning within Ruby on Rails.
+#                               Only has meaning within Ruby on Rails or Merb.
 #                               
 # [<tt>:always_check</tt>]      Whether a Sass template should be checked for updates every
 #                               time a controller is accessed,
 #                               as opposed to only when the Rails server starts.
 #                               If a Sass template has been updated,
 #                               it will be recompiled and will overwrite the corresponding CSS file.
-#                               Defaults to false if Rails is running in production mode,
-#                               true otherwise.
-#                               Only has meaning within Ruby on Rails.
+#                               Defaults to false in production mode, true otherwise.
+#                               Only has meaning within Ruby on Rails or Merb.
+#
+# [<tt>:full_exception</tt>]    Whether an error in the Sass code
+#                               should cause Sass to provide a detailed description.
+#                               If set to true, the specific error will be displayed
+#                               along with a line number and source snippet.
+#                               Otherwise, a simple uninformative error message will be displayed.
+#                               Defaults to false in production mode, true otherwise.
+#                               Only has meaning within Ruby on Rails or Merb.
 #
 # [<tt>:template_location</tt>] The directory where Sass templates should be read from.
-#                               Defaults to <tt>RAILS_ROOT + "/public/stylesheets/sass"</tt>.
-#                               Only has meaning within Ruby on Rails.
+#                               Defaults to <tt>RAILS_ROOT + "/public/stylesheets/sass"</tt>
+#                               or <tt>MERB_ROOT + "/public/stylesheets/sass"</tt>.
+#                               Only has meaning within Ruby on Rails or Merb.
 #
 # [<tt>:css_location</tt>]      The directory where CSS output should be written to.
-#                               Defaults to <tt>RAILS_ROOT + "/public/stylesheets"</tt>.
-#                               Only has meaning within Ruby on Rails.
+#                               Defaults to <tt>RAILS_ROOT + "/public/stylesheets"</tt>
+#                               or <tt>MERB_ROOT + "/public/stylesheets"</tt>.
+#                               Only has meaning within Ruby on Rails or Merb.
 #
 # [<tt>:filename</tt>]          The filename of the file being rendered.
 #                               This is used solely for reporting errors,
-#                               and is automatically set when using Rails.
+#                               and is automatically set when using Rails or Merb.
 #
 # [<tt>:load_paths</tt>]        An array of filesystem paths which should be searched
 #                               for Sass templates imported with the "@import" directive.
-#                               This defaults to the working directory and, in Rails,
-#                               whatever <tt>:template_location</tt> is
-#                               (by default <tt>RAILS_ROOT + "/public/stylesheets/sass"</tt>).
+#                               This defaults to the working directory and, in Rails or Merb,
+#                               whatever <tt>:template_location</tt> is.
 # 
 module Sass; end
 
 require 'sass/engine'
+require 'sass/plugin' if defined?(Merb::Plugins)

@@ -1,14 +1,4 @@
-begin
-  require 'rubygems'
-  require 'active_support'
-  require 'action_controller'
-  require 'action_view'
-  action_view_included = true
-rescue LoadError
-  action_view_included = false
-end
-
-if action_view_included  
+if defined?(ActionView) and not defined?(Merb::Plugins)
   module ActionView
     class Base # :nodoc:
       def render_with_haml(*args, &block)
@@ -54,7 +44,7 @@ if action_view_included
         def form_tag_with_haml(url_for_options = {}, options = {}, *parameters_for_url, &proc)
           if is_haml?
             if block_given?
-              oldproc = proc 
+              oldproc = proc
               proc = bind_proc do |*args|
                 concat "\n"
                 tab_up

@@ -77,3 +77,15 @@ HOW THIS APPLICATION WAS CREATED
 
   # install mysql gem for Leopard
   sudo env ARCHFLAGS="-arch i386" gem install mysql -- --with-mysql-config=/usr/local/bin/mysql_config
+
+  # recreate databases for Leopard
+  sudo -b mysqld_safe
+  mysql -u root -e "CREATE DATABASE wincent_on_rails_development CHARACTER SET 'UTF8';"
+  mysql -u root -e "CREATE DATABASE wincent_on_rails_test CHARACTER SET 'UTF8';"
+  rake db:migrate
+
+  # Haml 1.8.0 upgrade
+  git rm -r vendor/plugins/haml
+  svn export svn://hamptoncatlin.com/haml/tags/rel_1-8-0 vendor/plugins/haml
+  git add vendor/plugins/haml
+
