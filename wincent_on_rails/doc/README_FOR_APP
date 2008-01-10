@@ -89,3 +89,8 @@ HOW THIS APPLICATION WAS CREATED
   svn export svn://hamptoncatlin.com/haml/tags/rel_1-8-0 vendor/plugins/haml
   git add vendor/plugins/haml
 
+  # upgrade to Rails 2.0.2 (vastly simplifying)
+  sudo gem install rails
+  rake rails:freeze:gems
+  rails .
+

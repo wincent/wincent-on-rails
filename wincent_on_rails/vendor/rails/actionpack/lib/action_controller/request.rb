@@ -4,7 +4,7 @@ require 'strscan'
 
 module ActionController
   # HTTP methods which are accepted by default. 
-  ACCEPTED_HTTP_METHODS = Set.new(%w( get head put post delete ))
+  ACCEPTED_HTTP_METHODS = Set.new(%w( get head put post delete options ))
 
   # CgiRequest and TestRequest provide concrete implementations.
   class AbstractRequest
@@ -297,11 +297,12 @@ module ActionController
       @symbolized_path_parameters ||= path_parameters.symbolize_keys
     end
 
-    # Returns a hash with the parameters used to form the path of the request 
+    # Returns a hash with the parameters used to form the path of the request.
+    # Returned hash keys are strings.  See <tt>symbolized_path_parameters</tt> for symbolized keys.
     #
     # Example: 
     #
-    #   {:action => 'my_action', :controller => 'my_controller'}
+    #   {'action' => 'my_action', 'controller' => 'my_controller'}
     def path_parameters
       @path_parameters ||= {}
     end
@@ -587,7 +588,13 @@ module ActionController
           end
           raise EOFError, "bad boundary end of body part" unless boundary_end=~/--/
 
-          body.rewind if body.respond_to?(:rewind)
+	  begin
+            body.rewind if body.respond_to?(:rewind)
+	  rescue Errno::ESPIPE
+            # Handles exceptions raised by input streams that cannot be rewound
+            # such as when using plain CGI under Apache
+	  end
+
           params
         end
     end

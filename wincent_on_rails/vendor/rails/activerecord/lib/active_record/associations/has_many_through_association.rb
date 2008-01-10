@@ -120,7 +120,7 @@ module ActiveRecord
       def count(*args)
         column_name, options = @reflection.klass.send(:construct_count_options_from_args, *args)
         if @reflection.options[:uniq]
-          # This is needed becase 'SELECT count(DISTINCT *)..' is not valid sql statement.
+          # This is needed because 'SELECT count(DISTINCT *)..' is not valid sql statement.
           column_name = "#{@reflection.klass.table_name}.#{@reflection.klass.primary_key}" if column_name == :all
           options.merge!(:distinct => true) 
         end
@@ -148,7 +148,8 @@ module ActiveRecord
             :include    => @reflection.options[:include] || @reflection.source_reflection.options[:include]
           )
 
-          @reflection.options[:uniq] ? records.to_set.to_a : records
+          records.uniq! if @reflection.options[:uniq]
+          records
         end
 
         # Construct attributes for associate pointing to owner.
