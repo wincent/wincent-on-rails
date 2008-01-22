@@ -7,6 +7,7 @@ class SessionsController < ApplicationController
   # BUG: This is only secure if connecting over HTTPS; must modify this to force SSL connections
   def create
     if current_user = User.authenticate(params[:login_name], params[:passphrase])
+      reset_session
       flash[:notice]  = 'Successfully logged in.'.localized
       redirect_to home_path
     else
@@ -16,6 +17,7 @@ class SessionsController < ApplicationController
   end
 
   def destroy
+    reset_session
     current_user    = nil # deletes some info from session; can't call session.delete because it will break the flash
     flash[:notice]  = 'You have logged out successfully.'.localized
     redirect_to home_path
