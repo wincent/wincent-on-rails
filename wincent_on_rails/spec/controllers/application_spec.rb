@@ -61,8 +61,6 @@ describe ApplicationController, 'parameter filtering', :shared => true do
 end
 
 describe ApplicationController, :shared => true do
-  # BUG: probably harmless, currently investigating, but nesting like this causes the specs to be run twice:
-  # http://rubyforge.org/pipermail/rspec-users/2007-October/003989.html
   it_should_behave_like 'ApplicationController protected methods'
   it_should_behave_like 'ApplicationController parameter filtering'
 end
