@@ -69,61 +69,61 @@ end
 
 describe User, 'accessible attributes' do
   it 'should allow mass-assignment to the login name' do
-    lambda { new_user.update_attributes(:login_name => String.random) }.should_not raise_error
+    new_user.should allow_mass_assignment_of(:login_name => String.random)
   end
 
   it 'should allow mass-assignment to the display name' do
-    lambda { new_user.update_attributes(:display_name => String.random) }.should_not raise_error
+    new_user.should allow_mass_assignment_of(:display_name => String.random)
   end
 
   it 'should allow mass-assignment to the passphrase' do
-    lambda { new_user.update_attributes(:passphrase => String.random) }.should_not raise_error
+    new_user.should allow_mass_assignment_of(:passphrase => String.random)
   end
 
   it 'should allow mass-assignment to the passphrase confirmation' do
-    lambda { new_user.update_attributes(:passphrase_confirmation => String.random) }.should_not raise_error
+    new_user.should allow_mass_assignment_of(:passphrase_confirmation => String.random)
   end
 
   it 'should allow mass-assignment to the old passphrase' do
-    lambda { new_user.update_attributes(:old_passphrase => String.random) }.should_not raise_error
+    new_user.should allow_mass_assignment_of(:old_passphrase => String.random)
   end
 
   it 'should allow mass-assignment to the locale' do
-    lambda { new_user.update_attributes(:locale => new_locale) }.should_not raise_error
+    new_user.should allow_mass_assignment_of(:locale => new_locale)
   end
 end
 
 describe User, 'protected attributes' do
   it 'should deny mass-assignment to the passphrase hash' do
-    lambda { new_user.update_attributes(:passphrase_hash => String.random) }.should raise_error
+    new_user.should_not allow_mass_assignment_of(:passphrase_hash => String.random)
   end
 
   it 'should deny mass-assignment to the passphrase salt' do
-    lambda { new_user.update_attributes(:passphrase_salt => String.random) }.should raise_error
+    new_user.should_not allow_mass_assignment_of(:passphrase_salt => String.random)
   end
 
   it 'should deny mass-assignment to the superuser flag' do
-    lambda { new_user.update_attributes(:superuser => true) }.should raise_error
+    new_user.should_not allow_mass_assignment_of(:superuser => true)
   end
 
   it 'should deny mass-assignment to the verified flag' do
-    lambda { new_user.update_attributes(:verified => true) }.should raise_error
+    new_user.should_not allow_mass_assignment_of(:verified => true)
   end
 
   it 'should deny mass-assignment to the suspended flag' do
-    lambda { new_user.update_attributes(:suspended => true) }.should raise_error
+    new_user.should_not allow_mass_assignment_of(:suspended => true)
   end
 
   it 'should deny mass-assignment to the session key' do
-    lambda { new_user.update_attributes(:session_key => String.random) }.should raise_error
+    new_user.should_not allow_mass_assignment_of(:session_key => String.random)
   end
 
   it 'should deny mass-assignment to the session expiry' do
-    lambda { new_user.update_attributes(:session_expiry => Time.now) }.should raise_error
+    new_user.should_not allow_mass_assignment_of(:session_expiry => Time.now)
   end
 
   it 'should deny mass-assignment to the deleted at field' do
-    lambda { new_user.update_attributes(:deleted_at => Time.now) }.should raise_error
+    new_user.should_not allow_mass_assignment_of(:deleted_at => Time.now)
   end
 end
 
