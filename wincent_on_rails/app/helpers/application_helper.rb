@@ -1,7 +1,6 @@
 require 'additions/time'
 
 module ApplicationHelper
-
   # Pretty formatting for model creation/update information.
   #
   # Examples:
@@ -25,6 +24,39 @@ module ApplicationHelper
         'Created %s'.localized % created
       else
         'Created %s, updated %s'.localized % [created, updated]
+      end
+    end
+  end
+
+  def simple_concat string = nil, &block
+    if string
+      concat string, block.binding
+    else
+      concat block.call, block.binding
+    end
+  end
+
+  def logged_in?
+    controller.send :logged_in?
+  end
+
+  def admin?
+    controller.send :admin?
+  end
+
+  def current_user
+    controller.send :current_user
+  end
+
+  def logged_in_only &block
+    simple_concat(&block) if logged_in?
+  end
+
+  def admin_only &block
+    if admin?
+      # instead of passing a string to simple_concat, use open, thus saving the need to do tab_up and tab_down manually
+      open :div, { :class => 'admin' } do
+        simple_concat &block
       end
     end
   end

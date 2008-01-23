@@ -39,32 +39,50 @@ module Authentication
 
       # Generate a random string for use as a session key.
       def random_session_key
-        random_base64_string(SESSION_KEY_LENGTH)
+        Authentication::random_base64_string(SESSION_KEY_LENGTH)
       end
     end # module ClassMethods
 
     module InstanceMethods
     protected
 
-      # Intended for use as a before_filter in the ApplicationController.
-      def login_with_session_key
-        unless logged_in?
-          if cookies[:user_id] and cookies[:session_key]
-            user = User.find_by_id_and_session_key(cookies[:user_id], cookies[:session_key])
-            self.current_user = user if user.session_expiry > Time.now
-          end
-        end
-        true
+      # Intended for use as a before_filter in the ApplicationController for all actions.
+      def login_before
+        self.current_user = self.login_with_session_key or self.login_with_http_basic
+        true # this is a before filter, always return true so as not to abort the action
       end
 
       # Intended for use as a before_filter to protect adminstrator-only actions.
       def require_admin
-        admin?
+        self.admin?
       end
 
-      # Intended for use as a before_fitler to protect actions that are only for logged-in users.
+      # Intended for use as a before_filter to protect actions that are only for logged-in users.
       def require_user
-        logged_in?
+        self.logged_in?
+      end
+
+      # only secure over SSL
+      def login_with_session_key
+        if cookies[:user_id] and cookies[:session_key]
+          user = User.find_by_id_and_session_key(cookies[:user_id], cookies[:session_key])
+          if user
+            expiry = user.session_expiry
+            if expiry and expiry > Time.now
+              return user
+            end
+          end
+        end
+        nil
+      end
+
+      # needed for AJAX
+      # only secure over SSL
+      def login_with_http_basic
+        authenticate_with_http_basic do |login, passphrase|
+           return User.authenticate(login, passphrase)
+        end
+        nil
       end
 
       # TODO: allow user to adjust this in their preferences
@@ -73,25 +91,25 @@ module Authentication
       def current_user=(user)
         if user
           session[:user_id]     = cookies[:user_id]     = user.id.to_s
-          user.session_key      = cookies[:session_key] = User.random_session_key
+          user.session_key      = cookies[:session_key] = self.class.random_session_key
           user.session_expiry   = DEFAULT_SESSION_EXPIRY.days.from_now
-          # BUG: session_key and session_expiry don't seem to be getting set in the database
-          # doing a user.save here has no apparent effect
+          user.save
+          @current_user = user
         else
           @current_user = session[:user_id] = cookies[:user_id] = nil
         end
       end
 
       def current_user
-        @current_user ||= session[:user_id] && User.find_by_id(session[:user_id])
+        @current_user
       end
 
       def logged_in?
-        not current_user.nil?
+        not self.current_user.nil?
       end
 
       def admin?
-        logged_in? && current_user.superuser?
+        self.logged_in? && self.current_user.superuser?
       end
     end # module InstanceMethods
   end # module Controller

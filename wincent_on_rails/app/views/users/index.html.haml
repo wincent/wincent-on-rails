@@ -1,0 +1,14 @@
+%h1 Users
+-for @user in @users
+  %li
+    .label Display name
+    .attribute=h @user.display_name
+    -editable do
+      you see this if you are the currently logged in user, or the admin
+      more details if you are the current user
+      edit link etc
+    -logged_in_only do
+      only logged in users see this
+      some special link here
+    -admin_only do
+      delete

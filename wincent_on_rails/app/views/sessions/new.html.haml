@@ -1,0 +1,14 @@
+#login
+  %h1 Login
+  -if logged_in?
+    you are already logged in
+    here I provide a link for you to log out if you want
+  -else
+    -form_tag sessions_path do
+      %p
+        .label Login name
+        =text_field_tag :login_name, params[:login_name]
+      %p
+        .label Password
+        =password_field_tag :passphrase, params[:passphrase]
+      %p=submit_tag 'Log in'

@@ -1,10 +1,10 @@
 class ApplicationController < ActionController::Base
   include                   Authentication::Controller::InstanceMethods
   extend                    Authentication::Controller::ClassMethods
+  #helper                    :all # include all helpers, all the time
   filter_parameter_logging  'passphrase'
-  before_filter             :login_with_session_key
+  before_filter             :login_before
   before_filter             :setup_locale
-  helper                    :all # include all helpers, all the time
 
   # See ActionController::RequestForgeryProtection for details
   # Uncomment the :secret if you're not using the cookie session store

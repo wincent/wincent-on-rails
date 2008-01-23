@@ -1,6 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
-  map.home      '', :controller => 'issues', :action => 'index' # temporary only
 
+  # resource routes
   map.resources :translations
   map.resources :locales
   map.resources :tags
@@ -11,8 +11,11 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :comments
   map.resources :issues
   map.resources :sessions
-  map.login     'login', :controller => 'sessions', :action => 'new'
-  map.logout    'logout', :controller => 'sessions', :action => 'destroy'
+
+  # named routes
+  map.login     'login',  :controller => 'sessions',  :action => 'new'
+  map.logout    'logout', :controller => 'sessions',  :action => 'destroy'
+  map.home      '',       :controller => 'users'      # defaults to index
 
   # The priority is based upon order of creation: first created -> highest priority.
 
