@@ -62,12 +62,13 @@ module Spec
         def matches? model
           old = {}
           @attributes.each do |key, val|
-            raise if val == model.attributes[key.to_s]
-            old[key] = model.attributes[key.to_s]
+            current = model.send(key.to_s)
+            raise if val == current
+            old[key] = current
           end
-          model.update_attributes(@attributes)
+          raise unless model.update_attributes(@attributes)
           @attributes.keys.all? do |key|
-            model.attributes[key.to_s] != old[key]
+            model.send(key.to_s) != old[key]
           end
         end
 
