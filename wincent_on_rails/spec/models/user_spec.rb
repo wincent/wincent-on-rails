@@ -103,6 +103,7 @@ describe User, 'protected attributes' do
   end
 
   it 'should deny mass-assignment to the superuser flag' do
+    create_user # first user is superuser by default, so skip over that one
     new_user.should_not allow_mass_assignment_of(:superuser => true)
   end
 
