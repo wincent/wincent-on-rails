@@ -160,8 +160,8 @@ describe User, 'validating the login name' do
 
   it 'should disallow all other characters' do
     new_user(:login_name => 'foo/bar').should fail_validation_for(:login_name)
-    new_user(:login_name => 'foo$bar').should  fail_validation_for(:login_name)
-    new_user(:login_name => 'foo#bar').should  fail_validation_for(:login_name)
+    new_user(:login_name => 'foo$bar').should fail_validation_for(:login_name)
+    new_user(:login_name => 'foo#bar').should fail_validation_for(:login_name)
   end
 end
 
