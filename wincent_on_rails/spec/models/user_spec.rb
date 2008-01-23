@@ -76,12 +76,10 @@ describe User, 'accessible attributes' do
     new_user.should allow_mass_assignment_of(:display_name => String.random)
   end
 
-  it 'should allow mass-assignment to the passphrase' do
-    new_user.should allow_mass_assignment_of(:passphrase => String.random)
-  end
-
-  it 'should allow mass-assignment to the passphrase confirmation' do
-    new_user.should allow_mass_assignment_of(:passphrase_confirmation => String.random)
+  it 'should allow mass-assignment to the passphrase (and confirmation)' do
+    # have to test these two together otherwise validation fails
+    passphrase = String.random
+    new_user.should allow_mass_assignment_of(:passphrase => passphrase, :passphrase_confirmation => passphrase)
   end
 
   it 'should allow mass-assignment to the old passphrase' do
