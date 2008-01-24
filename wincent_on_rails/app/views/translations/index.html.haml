@@ -1,0 +1,13 @@
+%h1 Translations
+-for translation in @translations
+  %li
+    -# this might need to be in a partial?
+    -# TODO: pagination
+    .label Locale code
+    .attribute=h translation.locale.code
+    .lable Description
+    .attribute=h translation.locale.description
+    .lable Key
+    .attribute=h translation.key
+    .lable Translation
+    .attribute=h translation.translation

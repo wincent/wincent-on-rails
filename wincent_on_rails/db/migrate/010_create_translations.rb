@@ -24,6 +24,7 @@ class CreateTranslations < ActiveRecord::Migration
       es.learn  'Successfully logged in.',            'Sesión iniciada con éxito.'
       es.learn  'Invalid login or passphrase.',       'Nombre de usuario o contraseña no válido.'
       es.learn  'You have logged out successfully.',  'Sesión cerrada con éxito.'
+      es.learn  "Can't log out (weren't logged in).", 'No se ha podido cerrar la sesión (sesión no estaba iniciada).'
 
       # app/helpers/application_helper.rb
       es.learn  'Created %s',                         'Creado %s'

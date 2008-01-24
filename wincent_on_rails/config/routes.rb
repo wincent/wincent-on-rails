@@ -1,8 +1,9 @@
 ActionController::Routing::Routes.draw do |map|
 
   # resource routes
-  map.resources :translations
-  map.resources :locales
+  map.resources :locales do |locales|
+    locales.resources :translations
+  end
   map.resources :tags
   map.resources :taggings
   map.resources :statuses

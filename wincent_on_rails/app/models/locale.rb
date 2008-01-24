@@ -5,6 +5,7 @@ class Locale < ActiveRecord::Base
 
   # Can safely store the current locale in a class variable only because Rails is single-threaded.
   # The current locale should be set using a before_filter in the application controller.
+  # BUG: I don't like relying on the single-threaded thing; would be nice if I could change it
   cattr_accessor        :current_locale
 
   # Looks up and returns a translation for the passed in string in the current locale.
