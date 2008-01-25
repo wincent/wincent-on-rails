@@ -1,8 +1,8 @@
 class CreateLocales < ActiveRecord::Migration
   def self.up
     create_table :locales do |t|
-      t.string      :code         # RFC 3066 locale code
-      t.string      :description  # human-readable description
+      t.string      :code,          :null => false  # RFC 3066 locale code (serves as permalink id)
+      t.string      :description,   :null => false  # human-readable description
       t.timestamps
     end
 

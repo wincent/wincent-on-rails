@@ -20,6 +20,10 @@ class CreateUsers < ActiveRecord::Migration
       t.timestamps
     end
 
+    # database-level constraint to ensure uniqueness (validates_uniqueness_of vulnerable to races)
+    add_index     :users, :login_name, :unique => true
+    add_index     :users, :display_name, :unique => true
+
     # create new account with a psuedo-random passphrase (check the log to find out the passphrase)
     passphrase = User.passphrase
     u = User.create :login_name => 'admin', :display_name  => 'Administrator',
@@ -41,6 +45,8 @@ class CreateUsers < ActiveRecord::Migration
   end
 
   def self.down
-    drop_table :users
+    remove_index  :users, :column => :login_name
+    remove_index  :users, :column => :display_name
+    drop_table    :users
   end
 end

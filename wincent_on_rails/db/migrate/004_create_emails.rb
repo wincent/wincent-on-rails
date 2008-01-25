@@ -9,12 +9,12 @@ class CreateEmails < ActiveRecord::Migration
       t.timestamps
     end
 
-    # database-level constraint to ensure uniqueness of address (validates_uniqueness_of vulnerable to races)
-    #add_index     :emails, :address, :unique => true
+    # database-level constraint to ensure uniqueness (validates_uniqueness_of vulnerable to races)
+    add_index     :emails, :address, :unique => true
   end
 
   def self.down
-    #remove_index  :emails, :column => :address
+    remove_index  :emails, :column => :address
     drop_table    :emails
   end
 end

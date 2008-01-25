@@ -9,6 +9,9 @@ class CreateStatuses < ActiveRecord::Migration
       t.timestamps
     end
 
+    # database-level constraint to ensure uniqueness (validates_uniqueness_of vulnerable to races)
+    add_index :statuses, :name, :unique => true
+
     # problem here is that some statuses only make sense for bug reports, others for feedback etc
     # TODO: think about how to localize these model fields
     Status.create! :name => 'Open (new)',                 :description => 'Newly submitted issues awaiting further classification',
@@ -27,6 +30,7 @@ class CreateStatuses < ActiveRecord::Migration
   end
 
   def self.down
-    drop_table :statuses
+    remove_index  :statuses, :column => :name
+    drop_table    :statuses
   end
 end
