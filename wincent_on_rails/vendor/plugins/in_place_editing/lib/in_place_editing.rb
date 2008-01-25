@@ -19,14 +19,12 @@ module InPlaceEditing
         @item = object.to_s.camelize.constantize.find(params[:id])
         old_value = @item.send(attribute)
         @item.send(attribute.to_s + '=', params[:value])
-
-        # format will be something like: locale_description_1_in_place_editor
         render :update do |page|
           unless @item.save
             @item.send(attribute.to_s + '=', old_value)
             page.alert(@item.errors.full_messages.join("\n"))
           end
-          page.replace_html("#{object}_#{attribute}_#{params[:id]}_in_place_editor", @item.send(attribute))
+          page.replace_html(in_place_editor_field_id(object, attribute, params[:id]), @item.send(attribute))
         end
       end
     end
