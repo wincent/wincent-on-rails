@@ -35,7 +35,7 @@ class CreateUsers < ActiveRecord::Migration
 #{bold_green}#{stars}#{reset}
 
     END
-    RAILS_DEFAULT_LOGGER.info msg
+    #RAILS_DEFAULT_LOGGER.info msg # commented out for increased security (in case the user forgets to clean out the log)
     STDERR.puts msg
 
   end
