@@ -1,6 +1,9 @@
 class TranslationsController < ApplicationController
+  # TODO: could potentially later allow users to contribute to the translations
+  # could even provide something for localizing my Cocoa applications online
+  before_filter :require_admin
 
-  # translations route is nested inside locale route
+  # translations route is nested inside locale route so some set up is necessary
   before_filter :get_locale
 
   # TODO: provide UI for setting up new translations
