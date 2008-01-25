@@ -59,5 +59,5 @@ Rails::Initializer.run do |config|
 end
 
 require 'active_record/acts/taggable'
-require 'active_record/extras'
+#require 'active_record/extras'
 require 'additions/string'
