@@ -55,4 +55,9 @@ class Locale < ActiveRecord::Base
   def translate &block
     yield Learner.new(self.translations)
   end
+
+  def to_param
+    # pretty permalinks ie. en-US, es-ES instead of 1, 2
+    self.code
+  end
 end
