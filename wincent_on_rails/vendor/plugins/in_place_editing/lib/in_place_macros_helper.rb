@@ -52,7 +52,7 @@ module InPlaceMacrosHelper
     js_options['evalScripts'] = options[:script] if options[:script]
     if protect_against_forgery?
       additional_params = "&#{request_forgery_protection_token}=#{form_authenticity_token}"
-      js_options['callback'] = "function(form, value) { return Form.serialize(form) + '#{additonal_params}' }"
+      js_options['callback'] = "function(form, value) { return Form.serialize(form) + '#{additional_params}' }"
     end
     js_options['clickToEditText'] = %('#{options[:click_to_edit_text]}') if options[:click_to_edit_text]
     function << (', ' + options_for_javascript(js_options)) unless js_options.empty?
