@@ -29,9 +29,8 @@ module InPlaceMacrosHelper
   # <tt>:saving_text</tt>::       The text to display when submitting to the server (default: "Saving...")
   # <tt>:external_control</tt>::  The id of an external control used to enter edit mode.
   # <tt>:load_text_url</tt>::     URL where initial value of editor (content) is retrieved.
-  # <tt>:with</tt>::              JavaScript snippet that should return what is to be sent
-  #                               in the AJAX call, +form+ is an implicit parameter
-  # <tt>:script</tt>::            Instructs the in-place editor to evaluate the remote JavaScript response (default: false)
+  # <tt>:options</tt>::           Pass through options to the AJAX call (see prototype's Ajax.Updater)
+  # <tt>:script</tt>::            Instructs the in-place editor to evaluate the remote JavaScript response (default: true)
   # <tt>:click_to_edit_text</tt>::The text shown during mouseover the editable text (default: "Click to edit")
   def in_place_editor(field_id, options = {})
     function =  "new Ajax.InPlaceEditor("
@@ -49,7 +48,13 @@ module InPlaceMacrosHelper
     js_options['externalControl'] = "'#{options[:external_control]}'" if options[:external_control]
     js_options['loadTextURL'] = "'#{url_for(options[:load_text_url])}'" if options[:load_text_url]        
     js_options['ajaxOptions'] = options[:options] if options[:options]
-    js_options['evalScripts'] = options[:script] if options[:script]
+    unless options[:script] == false
+      # with evalScripts the form is no longer editable
+      # looks like I am not the only one to run into this bug:
+      # http://www.pluitsolutions.com/2007/03/20/custom-in_place_edit-with-validation/
+      #js_options['evalScripts'] = options[:script]
+      js_options['htmlResponse'] = false
+    end
     if protect_against_forgery?
       additional_params = "&#{request_forgery_protection_token}=#{form_authenticity_token}"
       js_options['callback'] = "function(form, value) { return Form.serialize(form) + '#{additional_params}' }"

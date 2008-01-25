@@ -18,13 +18,16 @@ module InPlaceEditing
       define_method("set_#{object}_#{attribute}") do
         @item = object.to_s.camelize.constantize.find(params[:id])
         old_value = @item.send(attribute)
-        begin
-          @item.update_attribute!(attribute, params[:value])
-        rescue ActiveRecord::RecordInvalid => e
-          @item.send(attribute.to_s + '=', old_value)
-          # return 444 or similar here so that AJAX can pick it up
+        @item.send(attribute.to_s + '=', params[:value])
+
+        # format will be something like: locale_description_1_in_place_editor
+        render :update do |page|
+          unless @item.save
+            @item.send(attribute.to_s + '=', old_value)
+            page.alert(@item.errors.full_messages.join("\n"))
+          end
+          page.replace_html("#{object}_#{attribute}_#{params[:id]}_in_place_editor", @item.send(attribute))
         end
-        render :text => @item.send(attribute).to_s
       end
     end
   end
