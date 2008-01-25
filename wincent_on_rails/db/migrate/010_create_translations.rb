@@ -44,6 +44,12 @@ class CreateTranslations < ActiveRecord::Migration
       es.learn  '%d days ago',                        'hace %d días'
       es.learn  'a week ago',                         'hace una semana'
       es.learn  '%d weeks ago',                       'hace %d semanas'
+
+      # lib/authentication.rb
+      es.learn  'The requested resource requires administrator privileges',
+                'Para acceder al recurso pedido se requieren privilegios de administrador'
+      es.learn  'You must be logged in to access the requested resource',
+                'Para acceder al recurso pedido debe iniciar una sesión.'
     end
   end
 

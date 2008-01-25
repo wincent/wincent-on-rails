@@ -49,17 +49,24 @@ module Authentication
       # Intended for use as a before_filter in the ApplicationController for all actions.
       def login_before
         self.current_user = self.login_with_session_key or self.login_with_http_basic
-        true # this is a before filter, always return true so as not to abort the action
       end
 
       # Intended for use as a before_filter to protect adminstrator-only actions.
       def require_admin
-        self.admin?
+        unless self.admin?
+          flash[:notice]          = 'The requested resource requires administrator privileges'.localized
+          session[:original_uri]  = request.request_uri
+          redirect_to login_path
+        end
       end
 
       # Intended for use as a before_filter to protect actions that are only for logged-in users.
       def require_user
-        self.logged_in?
+        unless self.logged_in?
+          flash[:notice]          = 'You must be logged in to access the requested resource'.localized
+          session[:original_uri]  = request.request_uri
+          redirect_to login_path
+        end
       end
 
       # only secure over SSL

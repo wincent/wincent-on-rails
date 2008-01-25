@@ -16,7 +16,12 @@ class SessionsController < ApplicationController
     #reset_session # must do this _before_ calling self.current_user (which manipulates the session)
     if self.current_user = User.authenticate(params[:login_name], params[:passphrase])
       flash[:notice]    = 'Successfully logged in.'.localized
-      redirect_to home_path # BUG: doesn't redirect to home (/users/), redirects to localhost:3000/
+      if original_uri = session[:original_uri]
+        session[:original_uri] = nil
+        redirect_to original_uri
+      else
+        redirect_to home_path
+      end
     else
       flash[:error]     = 'Invalid login or passphrase.'.localized
       render :action => 'new'
@@ -29,7 +34,7 @@ class SessionsController < ApplicationController
       self.current_user = nil # deletes some info from the cookies
       flash[:notice]    = 'You have logged out successfully.'.localized
     else
-      flash[:warning]   = "Can't log out (weren't logged in).".localized
+      flash[:error]     = "Can't log out (weren't logged in).".localized
     end
     redirect_to home_path
   end
