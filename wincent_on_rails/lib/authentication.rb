@@ -48,7 +48,7 @@ module Authentication
 
       # Intended for use as a before_filter in the ApplicationController for all actions.
       def login_before
-        self.current_user = self.login_with_session_key or self.login_with_http_basic
+        self.current_user = self.login_with_cookie or self.login_with_http_basic
       end
 
       # Intended for use as a before_filter to protect adminstrator-only actions.
@@ -70,8 +70,20 @@ module Authentication
       end
 
       # only secure over SSL
-      def login_with_session_key
+      def login_with_cookie
         if cookies[:user_id] and cookies[:session_key]
+          # we're not vulnerable to session fixation attacks because
+          # 1. we use a server-generated session key
+          # 2. it only works if paired with the correct user_id
+          # 3. upon successful login the session key is immediately updated anyway (in self.current_user)
+          # 4. in fact, it's not just on successful login; we regenerate the sessions keys on every single request
+          # 5. we destroy old sessions on logout (including invalidating the old session key in the database)
+          # 6. we expire old sessions
+          # Additional measures would be possible (see below), but what's implemented here is probably more than
+          # enough for a "defense in depth" strategy.
+          # - store user agent in new sessions and bail if it changes during the session
+          # - check referrer and possibly bail if it's external
+          # See: http://en.wikipedia.org/wiki/Session_fixation
           user = User.find_by_id_and_session_key(cookies[:user_id], cookies[:session_key])
           if user
             expiry = user.session_expiry
@@ -97,13 +109,19 @@ module Authentication
 
       def current_user=(user)
         if user
-          session[:user_id]     = cookies[:user_id]     = user.id.to_s
+          # don't trust Rails' session management; manually manage the relevant cookies here
+          # (Rails sets a session key but doesn't tie it to the user id, making session fixation attacks a little easier)
+          cookies[:user_id]     = user.id.to_s
           user.session_key      = cookies[:session_key] = self.class.random_session_key
           user.session_expiry   = DEFAULT_SESSION_EXPIRY.days.from_now
           user.save
           @current_user = user
         else
-          @current_user = session[:user_id] = cookies[:user_id] = nil
+          if user = self.current_user
+            user.update_attribute(:session_key, nil)
+          end
+          @current_user = cookies[:user_id] = nil
+          reset_session
         end
       end
 
