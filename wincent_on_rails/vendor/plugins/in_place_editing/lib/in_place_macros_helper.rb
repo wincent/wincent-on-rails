@@ -29,7 +29,6 @@ module InPlaceMacrosHelper
   # <tt>:saving_text</tt>::       The text to display when submitting to the server (default: "Saving...")
   # <tt>:external_control</tt>::  The id of an external control used to enter edit mode.
   # <tt>:load_text_url</tt>::     URL where initial value of editor (content) is retrieved.
-  # <tt>:options</tt>::           Pass through options to the AJAX call (see prototype's Ajax.Updater)
   # <tt>:with</tt>::              JavaScript snippet that should return what is to be sent
   #                               in the AJAX call, +form+ is an implicit parameter
   # <tt>:script</tt>::            Instructs the in-place editor to evaluate the remote JavaScript response (default: false)
@@ -51,7 +50,10 @@ module InPlaceMacrosHelper
     js_options['loadTextURL'] = "'#{url_for(options[:load_text_url])}'" if options[:load_text_url]        
     js_options['ajaxOptions'] = options[:options] if options[:options]
     js_options['evalScripts'] = options[:script] if options[:script]
-    js_options['callback']   = "function(form) { return #{options[:with]} }" if options[:with]
+    if protect_against_forgery?
+      additional_params = "&#{request_forgery_protection_token}=#{form_authenticity_token}"
+      js_options['callback'] = "function(form, value) { return Form.serialize(form) + '#{additonal_params}' }"
+    end
     js_options['clickToEditText'] = %('#{options[:click_to_edit_text]}') if options[:click_to_edit_text]
     function << (', ' + options_for_javascript(js_options)) unless js_options.empty?
     
