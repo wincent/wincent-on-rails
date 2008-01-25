@@ -120,8 +120,7 @@ module Authentication
           if user = self.current_user
             user.update_attribute(:session_key, nil)
           end
-          @current_user = cookies[:user_id] = nil
-          reset_session
+          @current_user = cookies[:user_id] = cookies[:session_key] = nil
         end
       end
 
