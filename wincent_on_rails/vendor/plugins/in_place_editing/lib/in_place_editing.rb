@@ -17,7 +17,13 @@ module InPlaceEditing
     def in_place_edit_for(object, attribute, options = {})
       define_method("set_#{object}_#{attribute}") do
         @item = object.to_s.camelize.constantize.find(params[:id])
-        @item.update_attribute(attribute, params[:value])
+        old_value = @item.send(attribute)
+        begin
+          @item.update_attribute!(attribute, params[:value])
+        rescue ActiveRecord::RecordInvalid => e
+          @item.send(attribute.to_s + '=', old_value)
+          # return 444 or similar here so that AJAX can pick it up
+        end
         render :text => @item.send(attribute).to_s
       end
     end
