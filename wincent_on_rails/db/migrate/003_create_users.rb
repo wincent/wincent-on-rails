@@ -24,7 +24,19 @@ class CreateUsers < ActiveRecord::Migration
     passphrase = User.passphrase
     u = User.create :login_name => 'admin', :display_name  => 'Administrator',
                     :passphrase => passphrase, :passphrase_confirmation => passphrase
-    RAILS_DEFAULT_LOGGER.info "Created user #{u.login_name} with passphrase #{passphrase}"
+    bold_green  = "\e[32;1m"
+    msg         = "**** Created user #{u.login_name} with passphrase #{passphrase} ****"
+    stars       = '*' * msg.length
+    reset       = "\e[0m"
+    msg         = <<-END
+
+#{bold_green}#{stars}#{reset}
+#{bold_green}#{msg}#{reset}
+#{bold_green}#{stars}#{reset}
+
+    END
+    RAILS_DEFAULT_LOGGER.info msg
+    STDERR.puts msg
 
   end
 
