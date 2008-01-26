@@ -10,7 +10,5 @@
     .lable Key
     .attribute=h @translation.key
     .lable Translation
-    -# not quite as easy to use with nested routes: can probably simplify this
-    -# without specifying the URL explicitly the "get_locale" (before_filter) method doesn't know the locale id and an exception is thrown
-    .attribute=in_place_editor_field :translation, :translation, {}, :url => url_for({ :action => 'set_translation_translation', :id => @translation.id, :locale_id => @translation.locale.id}) 
+    .attribute=in_place_editor_field :translation, :translation, {}, :nested => :locale
     -# TODO: link_to editor
