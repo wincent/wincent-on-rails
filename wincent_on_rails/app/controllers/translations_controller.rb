@@ -6,10 +6,9 @@ class TranslationsController < ApplicationController
   # translations route is nested inside locale route so some set up is necessary
   before_filter :get_locale
 
-  # TODO: provide UI for setting up new translations
-  # probably need nested resources here
-  # eg. translations/locale/1
-  # possibly paginate as well
+  in_place_edit_for     :translation, :translation
+
+  # TODO: possibly paginate here
   def index
     @translations = @locale.translations
   end
