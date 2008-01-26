@@ -23,10 +23,20 @@ module InPlaceEditing
         @item.send(attribute.to_s + '=', params[:value])
         render :update do |page|
           unless @item.save
+            # here we restore the old value; comment this out to leave the old value in place for further editing
+            # (with special case perhaps for empty strings, which aren't clickable)
+            #  tried to default to this, but couldn't find a way to keep the editor field active
             @item.send(attribute.to_s + '=', old_value)
             page.alert(@item.errors.full_messages.join("\n"))
           end
+          field_id = in_place_editor_field_id(object, attribute, params[:id])
           page.replace_html(in_place_editor_field_id(object, attribute, params[:id]), @item.send(attribute))
+
+          # we return early from the enterEditMode function because self._saving and self._editing return true
+          #page.call "#{field_id}_var.leaveEditMode"
+          # calling leaveEditMode doesn't seem to fix the issue
+          # this works when single stepping in Firebug, but the editor gets removed immediately afterwards
+          #page.call "#{field_id}_var.enterEditMode"
         end
       end
     end

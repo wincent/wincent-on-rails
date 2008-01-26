@@ -19,7 +19,7 @@ module InPlaceMacrosHelper
   # <tt>:url</tt>::       Specifies the url where the updated value should
   #                       be sent after the user presses "ok".
   # 
-  # Addtional +options+ are:
+  # Additional +options+ are:
   # <tt>:rows</tt>::              Number of rows (more than 1 will use a TEXTAREA)
   # <tt>:cols</tt>::              Number of characters the text input should span (works for both INPUT and TEXTAREA)
   # <tt>:size</tt>::              Synonym for :cols when using a single line text input.
@@ -33,6 +33,7 @@ module InPlaceMacrosHelper
   # <tt>:script</tt>::            Instructs the in-place editor to evaluate the remote JavaScript response (default: true)
   # <tt>:click_to_edit_text</tt>::The text shown during mouseover the editable text (default: "Click to edit")
   def in_place_editor(field_id, options = {})
+    #function =  "#{field_id}_var = new Ajax.InPlaceEditor("
     function =  "new Ajax.InPlaceEditor("
     function << "'#{field_id}', "
     function << "'#{url_for(options[:url])}'"
@@ -72,6 +73,9 @@ module InPlaceMacrosHelper
   end
 
   # Renders the value of the specified object and method with in-place editing capabilities.
+  #
+  # Possible +in_place_editor_options+:
+  # <tt>:nested</tt>::  The name of the resource the field is nested inside.
   def in_place_editor_field(object, method, tag_options = {}, in_place_editor_options = {})
     tag = ::ActionView::Helpers::InstanceTag.new(object, method, self)
     tag_options = {
