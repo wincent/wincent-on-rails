@@ -17,5 +17,4 @@ class Link < ActiveRecord::Base
     # pretty permalinks if available, otherwise fall back to id
     self.permalink || self.id
   end
-
 end
