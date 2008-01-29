@@ -14,7 +14,18 @@ class LinksController < ApplicationController
   end
 
   def create
-
+    @link = Link.new(params[:link])
+    respond_to do |format|
+      if @link.save
+        flash[:notice] = 'Successfully created new link.'
+        format.html { redirect_to links_path } # don't redirect to actual link ("show" itself is just a redirect)
+        #format.xml  { render :xml => @link, :status => :created, :location => @link }
+      else
+        flash[:error] = 'Failed to create new link.'
+        format.html { render :action => 'new' }
+        #format.xml  { render :xml => @link.errors, :status => :unprocessable_entity }
+      end
+    end
   end
 
   def show
