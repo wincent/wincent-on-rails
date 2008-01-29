@@ -1,0 +1,75 @@
+// basic appearance
+
+body
+  background:       #fff
+  margin:           0pt
+  padding:          0pt
+  font-family:      "Lucida Grande", Geneva, Arial, Verdana, sans-serif
+  font-size:        75%
+
+h1, h2, h3, h4, h5, h6
+  color:            #333333
+
+p
+  color:            #585858
+
+// links
+
+a
+  color:            #2971a7
+  font-weight:      bold
+  text-decoration:  none
+  &:hover
+    text-decoration:  underline
+  &:visited
+    font-weight:    normal
+
+// overall page layout
+
+#header
+  #logo
+    padding:          0em 1em 1em 1em
+    float:            left
+  h1
+    padding-top:      8px
+    a
+      color:          #333333
+      font-weight:    bold
+//  background:       url(../images/logo.png) no-repeat
+//  height: 48px
+//  min-height:       48px // the height of logo.png
+//  padding-left:     50px // the width of logo.png
+
+#navbar
+  font-size:        x-small
+  clear:            both
+  border:
+    top:            1px solid gray
+    bottom:         1px solid gray
+  padding:          0.25em 1em 0.25em 1em
+
+#content
+  padding:          0em 1em 1em 1em
+
+#footer
+  text-align:       center
+  font-size:        x-small
+
+// flashes
+
+#error, #notice, #warning
+  font-weight:      bold
+  border:           1px solid gray
+  margin:           1em
+  padding:          1em
+
+#error
+  background:       #f9b8be
+
+#notice
+  background:       #c3e3b5
+
+#warning
+  background:       #959af9
+
+
