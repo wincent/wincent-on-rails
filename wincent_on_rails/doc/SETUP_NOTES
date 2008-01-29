@@ -103,3 +103,7 @@ HOW THIS APPLICATION WAS CREATED
   git add vendor/plugins/rspec_on_rails
   script/generate rspec
 
+  # Haml 1.8.1 upgrade
+  git rm -r vendor/plugins/haml
+  svn export svn://hamptoncatlin.com/haml/tags/rel_1-8-1 vendor/plugins/haml
+  git add vendor/plugins/haml

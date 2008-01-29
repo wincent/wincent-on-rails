@@ -93,6 +93,10 @@ class EngineTest < Test::Unit::TestCase
     assert_equal("<img alt='' src='/foo.png' />\n", render("%img{:width => nil, :src => '/foo.png', :alt => String.new}"))
   end
 
+  def test_end_of_file_multiline
+    assert_equal("<p>0</p>\n<p>1</p>\n<p>2</p>\n", render("- for i in (0...3)\n  %p= |\n   i |"))
+  end
+
   # Options tests
 
   def test_stop_eval
@@ -135,6 +139,19 @@ class EngineTest < Test::Unit::TestCase
     assert_equal("<p>nil</p>\n", render("%p{ :attr => x } nil", :locals => {:x => nil}))
   end
 
+  def test_nil_id_with_syntactic_id
+    assert_equal("<p id='foo'>nil</p>\n", render("%p#foo{:id => nil} nil"))
+    assert_equal("<p id='foo_bar'>nil</p>\n", render("%p#foo{{:id => 'bar'}, :id => nil} nil"))
+    assert_equal("<p id='foo_bar'>nil</p>\n", render("%p#foo{{:id => nil}, :id => 'bar'} nil"))
+  end
+
+  def test_nil_class_with_syntactic_class
+    assert_equal("<p class='foo'>nil</p>\n", render("%p.foo{:class => nil} nil"))
+    assert_equal("<p class='bar foo'>nil</p>\n", render("%p.bar.foo{:class => nil} nil"))
+    assert_equal("<p class='bar foo'>nil</p>\n", render("%p.foo{{:class => 'bar'}, :class => nil} nil"))
+    assert_equal("<p class='bar foo'>nil</p>\n", render("%p.foo{{:class => nil}, :class => 'bar'} nil"))
+  end
+
   def test_locals
     assert_equal("<p>Paragraph!</p>\n", render("%p= text", :locals => { :text => "Paragraph!" }))
   end
@@ -154,6 +171,10 @@ class EngineTest < Test::Unit::TestCase
   def test_dynamic_attrs_shouldnt_register_as_literal_values
     assert_equal("<p a='b2c'>\n</p>\n", render('%p{:a => "b#{1 + 1}c"}'))
     assert_equal("<p a='b2c'>\n</p>\n", render("%p{:a => 'b' + (1 + 1).to_s + 'c'}"))
+  end
+
+  def test_dynamic_attrs_with_self_closed_tag
+    assert_equal("<a b='2' />\nc\n", render("%a{'b' => 1 + 1}/\n= 'c'\n"))
   end
 
   def test_rec_merge
