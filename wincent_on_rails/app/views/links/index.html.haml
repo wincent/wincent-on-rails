@@ -1,0 +1,17 @@
+%h1 Links
+%table
+  %tr
+    -sortable_header_cell :uri, 'URI'
+    -sortable_header_cell :permalink, 'Permalink'
+    -sortable_header_cell :click_count, 'Click count'
+    %th Actions
+  -for @link in @links
+    %tr{:class => cycle('odd', 'even')}
+      %td=in_place_editor_field :link, :uri
+      %td=in_place_editor_field :link, :permalink
+      %td=@link.click_count
+      %td
+        = link_to 'edit', edit_link_path(@link)
+        &nbsp;|&nbsp;
+        = link_to 'destroy', @link, :confirm => 'Are you sure?', :method => :delete
+%p=link_to 'new', new_link_path

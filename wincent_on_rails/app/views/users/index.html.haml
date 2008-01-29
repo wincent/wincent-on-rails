@@ -1,12 +1,13 @@
 %h1 Users
 -for @user in @users
   %li
+    -# TODO: allow in-place editing
+    -# TODO: use partials here?
+    -# TODO: helper to show attribute as editable if editable, and non-editable if non-editable
     .label Display name
     .attribute=h @user.display_name
     -editable do
-      you see this if you are the currently logged in user, or the admin
-      more details if you are the current user
-      edit link etc
+      -link_to 'edit', edit_user_path(@user)
     -logged_in_only do
       only logged in users see this
       some special link here

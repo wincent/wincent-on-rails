@@ -4,7 +4,8 @@ class Needle < ActiveRecord::Base
   # but with some pre-coded exception regexps
   # like URLs and emails
   # return an array
-  def self.tokenize
+  def self.tokenize string
+    string.split # crude approximation for now
   end
 
   # Options:

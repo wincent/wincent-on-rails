@@ -1,0 +1,21 @@
+TOKENIZER
+
+$40.23      one token
+$20-$35     two tokens ($20, $35)
+http://...  one token
+
+Whitespace always separates tokens.
+
+SPAM DATABASE
+
+Need to track words, how many spam messages they appear in (not how many times they appear), and total spam count
+
+HAM DATABASE
+
+Do we need one? I think we just combine the others:
+
+SUPPORT TICKET DATABASE
+FEATURE REQUEST DATABASE
+etc
+
+Could store this in a single database table in reality, I think. In fact, could even combine the spam database as well. Note that words can appear in all categories (ie. "free" could appear as a spam word and a support ticket word).

@@ -1,14 +1,14 @@
+-# TODO: localize all this text
 %h1 Translations
--for @translation in @translations
-  %li
-    -# this might need to be in a partial?
-    -# TODO: pagination
-    .label Locale code
-    .attribute=h @translation.locale.code
-    .lable Description
-    .attribute=h @translation.locale.description
-    .lable Key
-    .attribute=h @translation.key
-    .lable Translation
-    .attribute=in_place_editor_field :translation, :translation, {}, :nested => :locale
-    -# TODO: link_to editor
+%h2
+  ==Locale #{h @locale.code} &mdash; #{h @locale.description}
+%table
+  %tr
+    %th Key
+    %th Translation
+    %th
+  -for @translation in @translations
+    %tr
+      %td=h @translation.key
+      %td=in_place_editor_field :translation, :translation, {}, :nested => :locale
+      %td=link_to 'edit', edit_locale_translation_path(@translation.locale, @translation)

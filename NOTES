@@ -1,0 +1,76 @@
+Want nice view helper methods so that I can do stuff like:
+
+if admin
+  show this bit only for admins
+end
+
+admin_only do
+  same using blocks...
+end
+
+Also need helper methods for altering the forms... eg. a read-only version, and a read/write version
+ie. if it is a public ticket but you don't own it then you see the read-only version
+
+In some cases will use JavaScript to toggle editability on and off... display looks nice, but switch to text field when you actually need to edit something
+
+need way to easily move comments to other issues
+eg. user replies via email, changes subject line, new ticket gets opened instead of old one
+alternatively, consider setting up reply-to: addresses which include the ticket number (bad spam possibilities there)
+likewise, need to be able to convert tickets to comments (eg. reply which gets opened as new ticket when it should have been
+a comment)
+
+do we need normal "pages"? I don't think so
+they may as well be versioned pages, ie a wiki
+there are really only two types of content: blog posts and wiki articles
+no sense in introducing any other distinction
+help docs will go in the pages static folder
+
+as for revisions:
+
+Article model
+Article has_many revisions
+Revision model
+Revision belongs_to Article
+
+this is not wikipedia, so don't worry about storing diffs
+just store whole versions
+Revision will hold both source, and parsed/processed HTML (for speed; storage is not the bottleneck)
+
+how to implement redirects?
+Revisions will have a redirect attribute,
+which can be a URL (http://...) or a wiki link [[foo]]
+
+still need to decide how to link to other things; probably will use:
+[[Forum:1]]
+[[Post:2]] etc
+
+
+
+
+FogBugz ideas
+http://www.joelonsoftware.com/items/2007/10/24austindemo.html
+
+- use tracker as a TODO manager: perhaps need a new issue category: tasks (admin use only, no tasks@wincent.com); FB calls these "cases" and does it with AJAX. click the add button you've got a text field, type hit return and it's entered and a new row appears below
+- easy bug entry: can be blank, no required fields
+- ajax: just click on title to turn it into text field etc
+- resizeable columns
+- double-click to automatically resize to right size
+- drag to reorder columns
+- click in header to change sort order
+- add/remove columns
+- "starred" items: quick access to items in "starred" menu
+- "filters"
+- *** treat changes to issues status (changes to meta data) as comments: eg. "status changed from X to Y"; in this way the history of the issue appears right in the comments, interleaved (could model this separately, but maybe just sticking it in the comments is enough)
+- color code issues if cases have changed since you last looked at it
+- custom search engine: "color:blue assignedto:me"
+- bayseian filtering of spam, sorting email into piles (support, feature req etc):
+  http://en.wikipedia.org/wiki/Bayesian_spam_filtering
+  http://en.wikipedia.org/wiki/Bayes%27s_theorem
+- snippets (like MailTemplate) for oft-used replies
+- "New case" button in forums; converts a forum post into a case, case has link back to forum; after case has been created the "New case" link turns into a "case #123" link
+- "See also" links... eg, if you type "this is the same as case 12, right?", "case 12" becomes a hyperlink and in case 12 under "see also" you get a link back to the other case
+- hovering over hyperlinks to "case x" shows a pop-up with some info
+
+Show recent and "most active" bugs when going to bugs section... when an issue crops up
+with a release you tend to have to navigate to the same thing over and over again, and
+this would help that.

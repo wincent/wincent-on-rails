@@ -1,0 +1,39 @@
+body { background: #fff; margin: 0pt; padding: 0pt; font-family: "Lucida Grande", Geneva, Arial, Verdana, sans-serif; font-size: 75%; }
+
+h1, h2, h3, h4, h5, h6 { color: #333333; }
+
+p { color: #585858; }
+
+a { color: #2971a7; font-weight: bold; text-decoration: none; }
+a:hover { text-decoration: underline; }
+a:visited { font-weight: normal; }
+
+#header #logo { padding: 0em 1em 1em 1em; float: left; }
+#header h1 { padding-top: 8px; }
+#header h1 a { color: #333333; font-weight: bold; }
+
+#navbar { font-size: x-small; clear: both; border-top: 1px solid gray; border-bottom: 1px solid gray; padding: 0.25em 1em 0.25em 1em; }
+
+#content { padding: 0em 1em 1em 1em; }
+
+#footer { text-align: center; font-size: x-small; }
+
+#error, #notice, #warning { font-weight: bold; border: 1px solid gray; margin: 1em; padding: 1em; }
+
+#error { background: #f9b8be; }
+
+#notice { background: #c3e3b5; }
+
+#warning { background: #959af9; }
+
+td, th { padding: 0.5em; }
+
+th { background: #f7f7f7; }
+
+th.ascending a { font-weight: bold; background: url(../images/upwards-sort-triangle.png) no-repeat right center; padding-right: 16px; }
+
+th.descending a { font-weight: bold; background: url(../images/downwards-sort-triangle.png) no-repeat right center; padding-right: 16px; }
+
+tr.odd td { background: #fff; }
+
+tr.even td { background: #f7f7f7; }

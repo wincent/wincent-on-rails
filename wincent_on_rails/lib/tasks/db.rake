@@ -42,6 +42,8 @@ namespace :db do
 end
 
 def migrate_in_environment env
+  # could use Rake::Task['db:migrate'].invoke here, but that won't work when we try to modify all environments at once
+  # (it will only run for the first environment and then will think that it's already run for the others)
   puts `env RAILS_ENV=#{env} rake db:migrate`
 end
 

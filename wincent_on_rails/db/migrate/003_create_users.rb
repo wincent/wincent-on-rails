@@ -1,16 +1,16 @@
 class CreateUsers < ActiveRecord::Migration
   def self.up
     create_table :users do |t|
-      t.string      :login_name,      :null => false
-      t.string      :display_name,    :null => false
-      t.string      :passphrase_hash, :null => false
-      t.string      :passphrase_salt, :null => false
+      t.string      :login_name,          :null => false
+      t.string      :display_name,        :null => false
+      t.string      :passphrase_hash,     :null => false
+      t.string      :passphrase_salt,     :null => false
       t.integer     :locale_id
-      t.boolean     :superuser,     :default => false
-      t.boolean     :verified,      :default => false
+      t.boolean     :superuser,           :default => false
+      t.boolean     :verified,            :default => false
 
       # can suspend (ban) users who abuse the system (for example, spammers)
-      t.boolean     :suspended,     :default => false
+      t.boolean     :suspended,           :default => false
 
       t.string      :session_key
       t.datetime    :session_expiry
@@ -21,8 +21,8 @@ class CreateUsers < ActiveRecord::Migration
     end
 
     # database-level constraint to ensure uniqueness (validates_uniqueness_of vulnerable to races)
-    add_index     :users, :login_name, :unique => true
-    add_index     :users, :display_name, :unique => true
+    add_index     :users, :login_name,    :unique => true
+    add_index     :users, :display_name,  :unique => true
 
     # create new account with a psuedo-random passphrase (check the log to find out the passphrase)
     passphrase = User.passphrase

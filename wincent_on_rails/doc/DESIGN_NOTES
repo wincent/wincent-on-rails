@@ -39,3 +39,6 @@ assumes that the superuser can do everything and everybody else has limited
 privileges. For example, a user can see or edit his own bug report while other
 users can see it but not edit; there is no system for granting additional
 privileges.
+
+Likewise we don't bother implementing infrastructure for deleting anything
+(this is similar to Bugzilla); rather we just hide stuff.

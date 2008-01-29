@@ -1,17 +1,18 @@
 ActionController::Routing::Routes.draw do |map|
 
   # resource routes
+  map.resources :comments
+  map.resources :emails
+  map.resources :issues
+  map.resources :links
   map.resources :locales do |locales|
     locales.resources :translations
   end
+  map.resources :sessions
+  map.resources :statuses
   map.resources :tags
   map.resources :taggings
-  map.resources :statuses
-  map.resources :emails
   map.resources :users
-  map.resources :comments
-  map.resources :issues
-  map.resources :sessions
 
   # named routes
   map.login     'login',  :controller => 'sessions',  :action => 'new'
@@ -46,9 +47,8 @@ ActionController::Routing::Routes.draw do |map|
   # You can have the root of your site routed with map.root -- just remember to delete public/index.html.
   # map.root :controller => "welcome"
 
-  # See how all your routes lay out with "rake routes"
-
-  # Install the default routes as the lowest priority.
+  # the default routes, at lowest priority, needed for AJAX in-place editing
+  # the alternative is to specify explicit ":member" parameters above
   map.connect ':controller/:action/:id'
   map.connect ':controller/:action/:id.:format'
 end

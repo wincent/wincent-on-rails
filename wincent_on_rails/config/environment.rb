@@ -56,8 +56,15 @@ Rails::Initializer.run do |config|
 
   # Make Active Record use UTC-base instead of local time
   # config.active_record.default_timezone = :utc
+
 end
 
+Sass::Plugin.options[:style] = :compact
+
 require 'active_record/acts/taggable'
+require 'active_record/acts/searchable'
 #require 'active_record/extras'
 require 'additions/string'
+# no need to explictly require top-level files, authentication.rb and sortable.rb
+require 'authentication'
+require 'sortable'

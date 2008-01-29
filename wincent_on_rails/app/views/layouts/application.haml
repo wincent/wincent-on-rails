@@ -4,14 +4,23 @@
   %head
     %meta{'http-equiv' => 'Content-Type', :content => 'text/html;charset=UTF-8'}
     %title==wincent.com: #{controller.controller_name}
+    =stylesheet_link_tag 'display'
     =javascript_include_tag :defaults
   %body
     #header
-      #navbar
+      #logo
+        -# TODO: make logo clickable as well, what's the best way to do this?
+        -# may want to consider making it just read "Wincent" or "wincent", lose the "software for your mac"
+        -# and possibly move the logo to the right and move the navup up into the space liberated space
+        -# (right align the "Wincent" text)
+        =image_tag('logo.png')
+      %h1=link_to 'Wincent: software for your Mac', home_path
+      #navbar navbar
     #content
       -flash.each do |key, message|
         =content_tag :div, message, :id => key
       =yield
     #footer
-      ==Copyright &copy; 1997-#{Time.new.year} <a href="mailto:win@wincent.com">Wincent Colaiuta</a>.
+      -# TODO: consider using link_to here... or is that really just for rails paths?
+      ==Copyright &copy; 1997-#{Time.new.year} #{mail_to('win@wincent.com', 'Wincent Colaiuta')}.
 

@@ -13,6 +13,8 @@ class User < ActiveRecord::Base
   attr_accessible           :login_name, :display_name, :passphrase, :passphrase_confirmation, :old_passphrase, :locale
 
   validates_presence_of     :login_name
+
+  # NOTE: validates_uniqueness_of causes an extra SELECT every time you save, one for each attribute whose uniqueness you validate
   validates_uniqueness_of   :login_name,    :case_sensitive => false
   validates_length_of       :login_name,    :minimum => MINIMUM_LOGIN_NAME_LENGTH
   validates_format_of       :login_name,    :with => /\A[a-z]{2}( ?\w+)+\z/i, :allow_nil => true, :message =>
@@ -83,7 +85,7 @@ class User < ActiveRecord::Base
   end
 
   # pull in User.digest and User.random_salt from Authentication module
-  extend Authentication::Model::ClassMethods
+  extend ActiveRecord::Authentication::ClassMethods
 
   def self.authenticate(login, passphrase)
     if user = find_by_login_name(login)
@@ -99,6 +101,10 @@ class User < ActiveRecord::Base
     @passphrase = passphrase
     salt = User.random_salt
     self.passphrase_salt, self.passphrase_hash = salt, User.digest(passphrase, salt)
+  end
+
+  def to_param
+    super
   end
 
 end

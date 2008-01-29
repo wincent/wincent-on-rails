@@ -2,8 +2,8 @@ class CreateTranslations < ActiveRecord::Migration
   def self.up
     create_table :translations do |t|
       t.integer     :locale_id
-      t.string      :key
-      t.string      :translation
+      t.string      :key,         :null => false
+      t.string      :translation, :null => false
       t.timestamps
     end
 
@@ -20,11 +20,42 @@ class CreateTranslations < ActiveRecord::Migration
       es.learn  'US English',                         'inglés (Estados Unidos)'
       es.learn  'Spanish (Spain)',                    'español (España)'
 
+      # app/controllers/application.rb
+      es.learn  'Requested %s not found',             'No se ha encontrado el %s pedido' # BUG: gender concordance can fail here
+
+      # app/controllers/comments_controller.rb
+      es.learn  'comment',                            'comentario'
+
+      # app/controllers/emails_controller.rb
+      es.learn  'email',                              'dirección de correo'
+
+      # app/controllers/issues_controller.rb
+      es.learn  'issue',                              'ficha'
+
+      # app/controllers/locales_controller.rb
+      es.learn  'locale',                             'locale'
+
       # app/controllers/sessions_controller.rb
+      es.learn  'session',                            'sesión'
       es.learn  'Successfully logged in.',            'Sesión iniciada con éxito.'
       es.learn  'Invalid login or passphrase.',       'Nombre de usuario o contraseña no válido.'
       es.learn  'You have logged out successfully.',  'Sesión cerrada con éxito.'
       es.learn  "Can't log out (weren't logged in).", 'No se ha podido cerrar la sesión (sesión no estaba iniciada).'
+
+      # app/controllers/statuses_controller.rb
+      es.learn  'status',                             'estado'
+
+      # app/controllers/taggings_controller.rb
+      es.learn  'tagging',                            'etiquetaje'
+
+      # app/controllers/tags_controller.rb
+      es.learn  'tag',                                'etiqueta'
+
+      # app/controllers/translations_controller.rb
+      es.learn  'translation',                        'traducción'
+
+      # app/controllers/users_controller.rb
+      es.learn  'user',                               'usuario'
 
       # app/helpers/application_helper.rb
       es.learn  'Created %s',                         'Creado %s'

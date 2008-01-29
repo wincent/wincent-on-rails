@@ -36,18 +36,7 @@ module ApplicationHelper
     end
   end
 
-  def logged_in?
-    controller.send :logged_in?
-  end
-
-  def admin?
-    controller.send :admin?
-  end
-
-  def current_user
-    controller.send :current_user
-  end
-
+  # TODO: potentially move these methods into authentication.rb as well
   def logged_in_only &block
     simple_concat(&block) if logged_in?
   end
