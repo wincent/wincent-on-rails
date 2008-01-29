@@ -1,5 +1,9 @@
-
 module FixtureReplacement
+  def article_attributes
+    {
+    }
+  end
+
   def comment_attributes
     {
     }
@@ -15,6 +19,13 @@ module FixtureReplacement
     }
   end
 
+  def link_attributes
+    {
+      :uri                    => "http://#{String.random}/",
+      :permalink              => String.random
+    }
+  end
+
   def locale_attributes
     {
       :code                   => String.random,
@@ -22,12 +33,22 @@ module FixtureReplacement
     }
   end
 
-  def tagging_attributes
+  def needle_attributes
+    {
+    }
+  end
+
+  def revision_attributes
     {
     }
   end
 
   def tag_attributes
+    {
+    }
+  end
+
+  def tagging_attributes
     {
     }
   end
@@ -47,4 +68,8 @@ module FixtureReplacement
     }
   end
 
+  def word_attributes
+    {
+    }
+  end
 end
