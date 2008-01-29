@@ -1,0 +1,14 @@
+%h1 Create new link
+- form_for @link do |f|
+  %table
+    %tr
+      %th URI
+      %td=f.text_field :uri
+    %tr
+      %th
+        Permalink
+        %br
+        %span.annotation (optional)
+      %td=f.text_field :permalink
+  %p=f.submit 'Create'
+%p=link_to 'back', links_path

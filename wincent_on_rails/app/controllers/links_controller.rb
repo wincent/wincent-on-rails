@@ -10,7 +10,7 @@ class LinksController < ApplicationController
   end
 
   def new
-    #render
+    render
   end
 
   def create
