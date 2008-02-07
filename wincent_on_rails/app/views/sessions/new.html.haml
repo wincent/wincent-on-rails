@@ -1,10 +1,2 @@
-#login
-  %h1 Login
-  -form_tag sessions_path do
-    %p
-      .label Login name
-      =text_field_tag :login_name, params[:login_name]
-    %p
-      .label Password
-      =password_field_tag :passphrase, params[:passphrase]
-    %p=submit_tag 'Log in'
+=render :partial => 'shared/login'
+-# TODO: lost passphrase
