@@ -1,0 +1,6 @@
+Autotest.add_hook :initialize do |a|
+  all_specs = %r%^spec/.+_spec\.rb$%
+  a.add_mapping(%r%^db/example_data\.rb$%) {
+    a.files_matching all_specs
+  }
+end
