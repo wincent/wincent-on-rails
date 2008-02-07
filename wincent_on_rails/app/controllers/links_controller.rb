@@ -1,6 +1,6 @@
 class LinksController < ApplicationController
   before_filter     :require_admin, :except => :show
-  before_filter     :get_link,      :except => [:index, :show]
+  before_filter     :get_link,      :only => [:edit, :update, :destroy]
   in_place_edit_for :link, :uri
   in_place_edit_for :link, :permalink
   acts_as_sortable  :by => [:uri, :permalink, :click_count]

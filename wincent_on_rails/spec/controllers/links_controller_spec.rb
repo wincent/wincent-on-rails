@@ -1,5 +1,6 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
+<<-COMMENT
 describe LinksController do
   describe "handling GET /links" do
 
@@ -285,7 +286,6 @@ describe LinksController do
   end
 
   describe "handling DELETE /links/1" do
-
     before(:each) do
       @link = mock_model(Link, :destroy => true)
       Link.stub!(:find).and_return(@link)
@@ -311,3 +311,4 @@ describe LinksController do
     end
   end
 end
+COMMENT
