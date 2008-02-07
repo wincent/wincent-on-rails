@@ -6,6 +6,9 @@ module FixtureReplacement
 
   def comment_attributes
     {
+      :user                 => new_user,
+      :body                 => 'hello world',
+      :commentable          => new_article
     }
   end
 
