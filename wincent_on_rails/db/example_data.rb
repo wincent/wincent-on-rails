@@ -14,6 +14,8 @@ module FixtureReplacement
 
   def email_attributes
     {
+      :address              => "#{String.random}@example.com",
+      :user                 => new_user
     }
   end
 
