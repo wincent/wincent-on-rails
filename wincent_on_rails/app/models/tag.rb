@@ -16,6 +16,11 @@ class Tag < ActiveRecord::Base
     (count - min).to_f / range
   end
 
+  # normalize tag names to lowercase
+  def name= string
+    super(string ? string.downcase : string)
+  end
+
   def to_param
     self.name
   end

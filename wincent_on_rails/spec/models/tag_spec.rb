@@ -17,6 +17,12 @@ describe Tag, 'name validation' do
     new_tag(:name => name).should fail_validation_for(:name)
   end
 
+  it 'should compare names in a case-insensitive manner' do
+    name = String.random
+    create_tag(:name => name.upcase)
+    new_tag(:name => name.downcase).should fail_validation_for(:name)
+  end
+
   it 'should accept names containing only letters' do
     create_tag(:name => 'foobar').should be_valid
   end
@@ -53,5 +59,20 @@ describe Tag, 'name validation' do
   it 'should reject names containing other punctuation' do
     new_tag(:name => 'foo,bar').should fail_validation_for(:name)
     new_tag(:name => 'foo-bar').should fail_validation_for(:name)
+  end
+end
+
+describe Tag, 'name normalization' do
+  it 'should normalize names to lowercase upon creation' do
+    name = String.random.upcase
+    tag = new_tag(:name => name)
+    tag.name.should == name.downcase
+  end
+
+  it 'should normalize names when updating attributes via the accessor' do
+    name = String.random
+    tag = create_tag
+    tag.name = name.upcase
+    tag.name.should == name.downcase
   end
 end
