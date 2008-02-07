@@ -3,4 +3,7 @@ Autotest.add_hook :initialize do |a|
   a.add_mapping(%r%^db/example_data\.rb$%) {
     a.files_matching all_specs
   }
+  a.add_mapping(%r%^db/schema\.rb$%) {
+    a.files_matching all_specs
+  }
 end
