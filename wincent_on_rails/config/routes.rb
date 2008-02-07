@@ -5,9 +5,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :emails
   map.resources :issues
   map.resources :links
-  map.resources :locales do |locales|
-    locales.resources :translations
-  end
+  map.resources :locales, :has_many => [ :translations ]
   map.resources :sessions
   map.resources :statuses
   map.resources :tags
