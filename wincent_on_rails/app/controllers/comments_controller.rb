@@ -8,4 +8,8 @@ class CommentsController < ApplicationController
       @comments = Comment.find_by_user_id(current_user.id)
     end
   end
+
+  def show
+    render
+  end
 end
