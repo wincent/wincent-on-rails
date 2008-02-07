@@ -28,6 +28,15 @@ module ApplicationHelper
     end
   end
 
+  # TODO: localize
+  def item_count number
+    if number == 1
+      '1 item'
+    else
+      "#{number} items"
+    end
+  end
+
   # TODO: potentially move these methods into authentication.rb as well
   def logged_in_only &block
     if logged_in?
