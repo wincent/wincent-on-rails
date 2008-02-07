@@ -15,9 +15,20 @@ module ActionController
           sortable_attributes = sortable_attributes.map { |a| "\"#{a}\""}
           sortable_attributes = sortable_attributes.join ", "
 
+          if options[:default]
+            default_attributes = %Q{:order => "#{options[:default].to_s}"}
+          else
+            default_attributes = ''
+          end
+
+          # here we define methods: could also use class_variable_set
           class_eval <<-END
               def sortable_attributes
                 [#{sortable_attributes}]
+              end
+
+              def default_sort_options
+                {#{default_attributes}}
               end
             END
 
@@ -31,7 +42,6 @@ module ActionController
 
       module InstanceMethods
         def sort_options
-          options = {}
           if self.sortable_attributes.include? params[:sort]
             @sort_by = params[:sort]  # for use in view
             if params[:order] and params[:order].downcase == 'desc'
@@ -40,6 +50,8 @@ module ActionController
             else
               options = { :order => params[:sort] }
             end
+          else
+            options = default_sort_options
           end
           options
         end
