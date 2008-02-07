@@ -1,7 +1,6 @@
 %h1 Tags
 .cloud
-  %ul
-    -for tag in @tags
-      %li=scaled_tag(tag)
+  -for tag in @tags
+    =scaled_tag(tag)
 -admin_only do
   %p=link_to 'new', new_tag_path
