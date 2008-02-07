@@ -21,7 +21,7 @@ class String
     end
   end
 
-  # Convenience short cut for invoking the String.localized method.
+  # Convenience shortcut for invoking the String.localized method.
   alias :l :localized
 
   def to_wikitext
