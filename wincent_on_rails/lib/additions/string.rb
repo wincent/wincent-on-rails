@@ -1,3 +1,5 @@
+require 'wikitext'
+
 class String
 
   # Return a localized version of the receiver in the specified locale, where locale is a string such as "en-US" or "es-ES".
@@ -21,5 +23,13 @@ class String
 
   # Convenience short cut for invoking the String.localized method.
   alias :l :localized
+
+  def to_wikitext
+    @@shared_wikitext_parser ||= Wikitext::Parser.new
+    @@shared_wikitext_parser.parse self
+  end
+
+  # Convenience shortcut
+  alias :w :to_wikitext
 
 end
