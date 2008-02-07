@@ -48,6 +48,12 @@ module FixtureReplacement
     }
   end
 
+  def status_attributes
+    {
+      :name                     => String.random
+    }
+  end
+
   def tag_attributes
     {
     }
@@ -60,6 +66,9 @@ module FixtureReplacement
 
   def translation_attributes
     {
+      :locale                   => new_locale,
+      :key                      => String.random,
+      :translation              => String.random
     }
   end
 
