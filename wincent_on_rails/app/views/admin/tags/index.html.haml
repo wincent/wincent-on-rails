@@ -8,8 +8,9 @@
     %tr{:class => cycle('odd', 'even')}
       %td=in_place_editor_field :tag, :name
       %td=@tag.taggings_count
-      %td
+      %td.links
         =link_to 'edit', edit_tag_path(@tag)
-        &nbsp;|&nbsp;
         =link_to 'destroy', @tag, :confirm => 'Are you sure?', :method => :delete
-%p=link_to 'new', new_tag_path
+%p.links
+  =link_to 'new', new_tag_path
+  =link_to 'cloud', tags_path

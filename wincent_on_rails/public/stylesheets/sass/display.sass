@@ -16,13 +16,13 @@ p
 // links
 
 a
-  color:            #2971a7
-  font-weight:      bold
-  text-decoration:  none
+  color:              #2971a7
+  font-weight:        bold
+  text-decoration:    none
   &:hover
     text-decoration:  underline
   &:visited
-    font-weight:    normal
+    font-weight:      normal
 
 // overall page layout
 
@@ -95,8 +95,9 @@ tr.even td
   background:       #f7f7f7
 
 span.annotation
-  font-size:        xx-small
-  font-weight:      normal
+  font:
+    size:           xx-small
+    weight:         normal
   color:            #666
 
 // tag clouds
@@ -105,3 +106,14 @@ span.annotation
   text-align:       center
   a
     padding:        0.5em
+
+// general appearance
+.links
+  a
+    margin:
+      left:             0.25em
+      right:            0.25em
+    &:hover
+      border-bottom:    dotted 1px gray
+      text-decoration:  none
+
