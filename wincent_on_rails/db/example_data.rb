@@ -56,6 +56,7 @@ module FixtureReplacement
 
   def tag_attributes
     {
+      :name                     => String.random
     }
   end
 
