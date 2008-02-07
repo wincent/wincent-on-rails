@@ -19,8 +19,12 @@ protected
   end
 
   def record_not_found(uri = nil)
+    if uri.class != String
+      # beware that in the default case uri will be an instance of ActiveRecord::RecordNotFound
+      uri = home_path
+    end
     flash[:error] = 'Requested %s not found'.localized % controller_name.singularize.localized
-    redirect_to(uri ? uri : home_path)
+    redirect_to uri
   end
 
   # uncomment this method to test what remote users will see when there are errors in production mode
