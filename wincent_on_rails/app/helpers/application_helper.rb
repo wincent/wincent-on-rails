@@ -28,24 +28,17 @@ module ApplicationHelper
     end
   end
 
-  def simple_concat string = nil, &block
-    if string
-      concat string, block.binding
-    else
-      concat block.call, block.binding
-    end
-  end
-
   # TODO: potentially move these methods into authentication.rb as well
   def logged_in_only &block
-    simple_concat(&block) if logged_in?
+    if logged_in?
+      yield
+    end
   end
 
   def admin_only &block
     if admin?
-      # instead of passing a string to simple_concat, use open, thus saving the need to do tab_up and tab_down manually
       open :div, { :class => 'admin' } do
-        simple_concat &block
+        yield
       end
     end
   end

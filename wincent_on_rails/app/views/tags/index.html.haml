@@ -1,16 +1,7 @@
 %h1 Tags
-%table
-  %tr
-    -sortable_header_cell :name, 'Name'
-    -sortable_header_cell :taggings_count, 'Taggings count'
-    %th Actions
-  -for @tag in @tags
-    %tr{:class => cycle('odd', 'even')}
-      -# for admin do in_place_editor_field
-      %td=in_place_editor_field :tag, :name
-      %td=@tag.taggings_count
-      %td
-        = link_to 'edit', edit_tag_path(@tag)
-        &nbsp;|&nbsp;
-        = link_to 'destroy', @tag, :confirm => 'Are you sure?', :method => :delete
-%p=link_to 'new', new_tag_path
+.cloud
+  %ul
+    -for tag in @tags
+      %li=scaled_tag(tag)
+-admin_only do
+  %p=link_to 'new', new_tag_path

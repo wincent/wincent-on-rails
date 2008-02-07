@@ -20,6 +20,10 @@ ActionController::Routing::Routes.draw do |map|
   map.logout    'logout', :controller => 'sessions',  :action => 'destroy'
   map.home      '',       :controller => 'users'      # defaults to index
 
+  map.namespace :admin do |admin|
+    admin.resources :tags
+  end
+
   # The priority is based upon order of creation: first created -> highest priority.
 
   # Sample of regular route:
