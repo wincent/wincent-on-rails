@@ -1,7 +1,7 @@
 class CreateEmails < ActiveRecord::Migration
   def self.up
     create_table :emails do |t|
-      t.integer     :user_id
+      t.integer     :user_id,             :null => false
       t.string      :address,             :null => false
       t.boolean     :verified,            :null => false, :default => false
       t.string      :verification_key

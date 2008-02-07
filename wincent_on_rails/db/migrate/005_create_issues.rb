@@ -5,7 +5,7 @@ class CreateIssues < ActiveRecord::Migration
       t.string      :summary,             :null => false
       t.integer     :status_id,           :null => false
       t.boolean     :public
-      t.integer     :user_id
+      t.integer     :user_id              # issues may be created by anonymous users
       t.text        :description
       t.boolean     :awaiting_moderation, :default => true
       t.boolean     :spam,                :default => false

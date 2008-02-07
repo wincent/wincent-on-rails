@@ -8,7 +8,7 @@ class CreateLinks < ActiveRecord::Migration
     end
 
     # database-level constraint to ensure uniqueness (validates_uniqueness_of vulnerable to races)
-    add_index     :links, :uri, :unique => true
+    add_index     :links, :uri,       :unique => true
     add_index     :links, :permalink, :unique => true
   end
 

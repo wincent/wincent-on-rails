@@ -1,7 +1,7 @@
 class CreateTranslations < ActiveRecord::Migration
   def self.up
     create_table :translations do |t|
-      t.integer     :locale_id
+      t.integer     :locale_id,   :null => false
       t.string      :key,         :null => false
       t.string      :translation, :null => false
       t.timestamps
