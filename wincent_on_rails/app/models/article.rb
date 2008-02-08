@@ -5,6 +5,8 @@ class Article < ActiveRecord::Base
   has_many    :comments,  :as => :commentable
   acts_as_taggable
 
+  attr_accessor :pending_tags
+
   # returns nil if the receiver has no revisions
   def latest_revision
     revisions.find(:first, :order => 'created_at DESC')
@@ -21,5 +23,13 @@ class Article < ActiveRecord::Base
   # given @article with title "foo bar", wiki_path(@article) will return /wiki/foo%20bar
   def to_param
     title
+  end
+
+  def after_create
+    # taggings are a "has many through" association so can only be set up after saving for the first time
+    if pending_tags
+      tag pending_tags
+      pending_tags = nil
+    end
   end
 end

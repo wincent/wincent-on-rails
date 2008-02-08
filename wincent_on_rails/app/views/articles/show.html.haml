@@ -1,6 +1,11 @@
 %h1=h @article.title
 .article
   =@article.latest_revision.body.w
+.cloud
+  %h1 Tags
+  -# consider moving this into a partial
+  -for tag in @article.tags
+    =scaled_tag tag
 %p.links
   -if admin?
     =link_to 'edit', edit_wiki_path(@article)
