@@ -3,6 +3,10 @@
 class Article < ActiveRecord::Base
   has_many    :revisions
   has_many    :comments,  :as => :commentable
+
+  validates_presence_of :title
+  # TODO: validate format of title etc
+
   acts_as_taggable
 
   attr_accessor :pending_tags
