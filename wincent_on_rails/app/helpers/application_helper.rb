@@ -44,17 +44,13 @@ module ApplicationHelper
       :title => "#{item_count(tag.taggings_count)} tagged with '#{tag.name}'"
   end
 
-  # prevent Haml from whitespace-damaging <pre> blocks which might be in wikitext markup
-  # very hacky, and unfortunately doesn't entirely work
-  # (either engine or precompiler seems to be inserting additional space)
-  # so for now just use preserve() helper although it has shortcomings
+  # prevent Haml from whitespace-damaging <pre> blocks which might be in wikitext markup (very hacky)
   def preserving &block
-    tabs      = buffer.instance_variable_get :@tabulation
     real_tabs = buffer.instance_variable_get :@real_tabs
-    buffer.instance_variable_set :@tabulation, 0
     buffer.instance_variable_set :@real_tabs, 0
+    buffer.buffer << "<!-- Haml: start pre -->\n"
     yield
-    buffer.instance_variable_set :@tabulation, tabs
+    buffer.buffer << "<!-- Haml: end pre -->\n"
     buffer.instance_variable_set :@real_tabs, real_tabs
   end
 

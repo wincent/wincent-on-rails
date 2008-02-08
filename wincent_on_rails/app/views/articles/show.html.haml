@@ -1,6 +1,7 @@
 %h1=h @article.title
 .article
-  =preserve @article.latest_revision.body.w
+  -preserving do
+    =@article.latest_revision.body.w
 .cloud
   %h1 Tags
   -# consider moving this into a partial
