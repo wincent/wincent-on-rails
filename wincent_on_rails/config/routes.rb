@@ -13,6 +13,10 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :users
 
   # the wiki is built on the Article model, but we want routes like /wiki/Article%20Title, not /article/1
+  # BUG: not all routes work; eg. this gives us a routing error ("No route matches")
+  #     /wiki/Upgrading%20to%20Git%201.5.2.4%20on%20Red%20Hat%20Enterprise%20Linux
+  # but this works fine:
+  #     /wiki/Setting%20up%20the%20Git%20documentation%20build%20chain%20on%20Mac%20OS%20X%20Leopard
   map.resources :wiki,    :controller => 'articles',  :has_many => [ :revisions, :comments ]
 
   # named routes
