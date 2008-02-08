@@ -1,0 +1,29 @@
+%h1 Create new article
+=error_messages_for :article
+-form_for @article, :url => wiki_index_path do |f|
+  %table
+    %tr
+      %th Title
+      %td=f.text_field :title
+    %tr
+      %th
+        Redirect
+        %br
+        %span.annotation (optional)
+      %td=f.text_field :redirect
+    %tr
+      %th
+        Body
+        %br
+        %span.annotation link to wikitext markup help
+      %td
+        -fields_for 'article', @revision do |revision|
+          =revision.text_area :body, :cols => 80, :rows => 30
+    %tr
+      %th Public
+      %td=f.check_box :public
+    %tr
+      %th Accepts comments
+      %td=f.check_box :accepts_comments
+  %p=f.submit 'Create'
+%p=link_to 'back', wiki_index_path

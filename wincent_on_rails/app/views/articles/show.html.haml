@@ -1,0 +1,7 @@
+%h1=h @article.title
+.article
+  =@article.latest_revision.body.w
+%p.links
+  -if admin?
+    =link_to 'edit', edit_wiki_path(@article)
+  =link_to 'back', wiki_index_path

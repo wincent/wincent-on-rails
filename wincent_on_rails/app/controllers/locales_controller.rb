@@ -1,10 +1,17 @@
 class LocalesController < ApplicationController
   before_filter     :require_admin
-  before_filter     :get_locale, :except => :index
+  before_filter     :get_locale, :except => [:index, :new]
   in_place_edit_for :locale, :description
 
   def index
     @locales = Locale.find(:all)
+  end
+
+  def new
+    render
+  end
+
+  def create
   end
 
   def show

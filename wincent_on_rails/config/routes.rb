@@ -12,7 +12,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :taggings
   map.resources :users
 
-  # the wiki is build on the Article model, but we want routes like /wiki/Article%20Title, not /article/1
+  # the wiki is built on the Article model, but we want routes like /wiki/Article%20Title, not /article/1
   map.resources :wiki,    :controller => 'articles',  :has_many => [ :revisions, :comments ]
 
   # named routes
