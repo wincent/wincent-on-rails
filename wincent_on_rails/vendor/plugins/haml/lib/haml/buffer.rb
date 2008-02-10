@@ -78,22 +78,8 @@ module Haml
           @buffer << "\n"
         end
         
-        tab = tabs(tabulation)
-        pre = false
-        result.each do |line|
-          case line
-          when /<!-- Haml: start pre -->/
-            pre = true
-          when /<!-- Haml: end pre -->/
-            pre = false
-          else
-            if pre
-              @buffer << "#{line}"
-            else
-              @buffer << "#{tab}#{line}"
-            end
-          end
-        end
+        result = result.gsub(/^/m, tabs(tabulation))
+        @buffer << "#{result}\n"
         
         if close_tag
           @buffer << "#{tabs(tabulation-1)}</#{close_tag}>\n"
@@ -166,7 +152,7 @@ module Haml
     # Gets <tt>count</tt> tabs. Mostly for internal use.
     def tabs(count)
       tabs = count + @tabulation
-      '  ' * tabs # BUG: <-- this line has no effect
+      '  ' * tabs
       @@tab_cache[tabs] ||= '  ' * tabs
     end
 
