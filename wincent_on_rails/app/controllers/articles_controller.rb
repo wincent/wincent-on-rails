@@ -6,9 +6,19 @@ class ArticlesController < ApplicationController
   end
 
   def new
-    @article = Article.new(session[:new_article_params])
-    session[:new_article_params] = nil
-    @revision = @article.revisions.build
+    respond_to do |format|
+      format.html {
+        @article = Article.new(session[:new_article_params])
+        session[:new_article_params] = nil
+        @revision = @article.revisions.build
+      }
+
+      # this is the AJAX preview
+      format.js {
+        @preview = params[:body]
+        render :partial => 'preview'
+      }
+    end
   end
 
   # NOTE: will need to sanitize titles here in some way
