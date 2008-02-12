@@ -1,4 +1,9 @@
 %h1=h @article.title
+-if @redirected_from
+  -if admin?
+    %p==(Redirected from #{link_to h(@redirected_from.title), edit_wiki_path(@redirected_from)})
+  -else
+    %p==(Redirected from #{h @redirected_from.title})
 .article
   =preserve @article.body.w
 .cloud

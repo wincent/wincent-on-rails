@@ -1,6 +1,6 @@
 class ArticlesController < ApplicationController
-  before_filter :require_admin, :except => [:index, :show]
-
+  before_filter :require_admin, :except => [ :index, :show ]
+  before_filter :get_article, :only => [ :show, :edit, :update ]
   def index
     @articles = Article.find(:all)
   end
@@ -14,7 +14,7 @@ class ArticlesController < ApplicationController
 
       # this is the AJAX preview
       format.js {
-        @preview = params[:body]
+        @preview = params[:body] || ''
         render :partial => 'preview'
       }
     end
@@ -40,19 +40,47 @@ class ArticlesController < ApplicationController
 
   def show
     # NOTE: MySQL will do a case-insensitive find here, so "foo" and "FOO" refer to the same article
-    @article = Article.find_by_title(params[:id]) || Article.find(params[:id])
     if @article.redirect.blank?
+      @redirected_from = Article.find_by_title(session[:redirected_from]) || Article.find(session[:redirected_from]) rescue nil
       render
-    else
-      # must decide what to do here
+      clear_redirection_info
+    else # this is a redirect
+      if session[:redirection_count] and session[:redirection_count] > 5
+        clear_redirection_info
+        flash[:error] = 'Too many redirections'
+        redirect_to wiki_index_path
+      else
+        session[:redirection_count] = session[:redirection_count] ? session[:redirection_count] + 1 : 1
+        session[:redirected_from] = params[:id]
+        redirect_to url_or_path_for_redirect
+      end
     end
   end
 
   def edit
-    # must set up new revision here
+    render
+  end
+
+  def update
+    if @article.update_attributes(params[:article])
+      flash[:notice] = 'Successfully updated'
+      redirect_to wiki_path(@article)
+    else
+      flash[:error] = 'Update failed'
+      render :action => 'edit'
+    end
   end
 
 private
+
+  def get_article
+    @article = Article.find_by_title(params[:id]) || Article.find(params[:id])
+  end
+
+  def clear_redirection_info
+    session[:redirected_from]   = nil
+    session[:redirection_count] = 0
+  end
 
   def record_not_found
     if admin?
@@ -61,7 +89,18 @@ private
       redirect_to new_wiki_path
     else
       # potentially offer a similar notice to the above and a login link here instead
+      # could also send an email to the administrator, although would have to turn that off if it lead to abuse
       super wiki_index_path
+    end
+  end
+
+  def url_or_path_for_redirect
+    if @article.redirect =~ /\A\s*\[\[(.+)\]\]\s*\z/
+      wiki_path $~[1]
+    elsif @article.redirect =~ /\A\s*(http:\/\/.+)\s*\z/
+      $~[1]
+    else
+      nil
     end
   end
 end

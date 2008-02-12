@@ -8,9 +8,13 @@ class CreateArticles < ActiveRecord::Migration
       t.boolean     :accepts_comments,  :default => false, :null => false
       t.timestamps
     end
+
+    # database-level constraint to ensure uniqueness (validates_uniqueness_of vulnerable to races)
+    add_index     :articles, :title, :unique => true
   end
 
   def self.down
-    drop_table :articles
+    remove_index  :articles, :column => :title
+    drop_table    :articles
   end
 end

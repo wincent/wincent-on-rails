@@ -1,10 +1,15 @@
 # This is not intended to be a community-driven wiki, so there are no author attributes or spam and moderation flags.
 # Although note that the admin may selectively enable comments on a particular article.
 class Article < ActiveRecord::Base
-  has_many              :comments,  :as => :commentable
-  validates_presence_of :title
-  # TODO: validate format of title etc
-
+  has_many                :comments,  :as => :commentable
+  validates_presence_of   :title
+  validates_uniqueness_of :title
+  validates_presence_of   :redirect,  :if => Proc.new { |a| a.body.blank? },
+    :message => 'must be present if body is blank'
+  validates_presence_of   :body,      :if => Proc.new { |a| a.redirect.blank? },
+    :message => 'must be present if redirect is blank'
+  validates_format_of     :redirect,  :with => /\A\s*(\[\[.+\]\])|(https?:\/\/.+)\s*\z/, :if => Proc.new { |a| !a.redirect.blank? },
+    :message => 'must be a [[wikitext]] link or HTTP URL'
   acts_as_taggable
 
   attr_accessor :pending_tags
