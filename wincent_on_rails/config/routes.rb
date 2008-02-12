@@ -8,7 +8,10 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :locales, :has_many => [ :translations ]
   map.resources :sessions
   map.resources :statuses
-  map.resources :tags
+
+  # must explicitly allow period in the id part of the route otherwise it will be classified as a route separator
+  map.resources :tags, :requirements => { :id => /[a-z.]+/ }
+
   map.resources :taggings
   map.resources :users
 
@@ -16,11 +19,8 @@ ActionController::Routing::Routes.draw do |map|
   # for now doing it using an explicit :controller
   # with next Rails release will be able to use:
   #   map.resources :articles, :as => :wiki
-  # BUG: not all routes work; eg. this gives us a routing error ("No route matches")
-  #     /wiki/Upgrading%20to%20Git%201.5.2.4%20on%20Red%20Hat%20Enterprise%20Linux
-  # but this works fine:
-  #     /wiki/Setting%20up%20the%20Git%20documentation%20build%20chain%20on%20Mac%20OS%20X%20Leopard
-  map.resources :wiki,    :controller => 'articles',  :has_many => [ :comments ]
+  # again, must explicitly allow period in the id part of the route otherwise it will be classified as a route separator
+  map.resources :wiki,    :requirements => { :id => /[^\/]+/ }, :controller => 'articles',  :has_many => [ :comments ]
 
   # named routes
   map.login     'login',  :controller => 'sessions',  :action => 'new'
