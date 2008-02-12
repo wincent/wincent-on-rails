@@ -16,9 +16,8 @@
         Body
         %br
         %span.annotation link to wikitext markup help
-      %td
-        -fields_for 'article', @revision do |revision|
-          =revision.text_area :body, :cols => 80, :rows => 30
+      -# TODO: make text area grow with window
+      %td=f.text_area :body, :cols => 80, :rows => 30
     %tr
       %th Tags
       %td=f.text_field :pending_tags

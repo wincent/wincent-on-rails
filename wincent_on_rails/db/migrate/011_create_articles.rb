@@ -3,6 +3,7 @@ class CreateArticles < ActiveRecord::Migration
     create_table :articles do |t|
       t.string      :title,             :null => false
       t.string      :redirect           # can redirect with a URLs (http://example.com/) or a wiki link ([[example]])
+      t.text        :body,              :null => false
       t.boolean     :public,            :default => true, :null => false
       t.boolean     :accepts_comments,  :default => false, :null => false
       t.timestamps

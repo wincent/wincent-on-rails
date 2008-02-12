@@ -10,7 +10,6 @@ class ArticlesController < ApplicationController
       format.html {
         @article = Article.new(session[:new_article_params])
         session[:new_article_params] = nil
-        @revision = @article.revisions.build
       }
 
       # this is the AJAX preview
@@ -42,7 +41,6 @@ class ArticlesController < ApplicationController
   def show
     # NOTE: MySQL will do a case-insensitive find here, so "foo" and "FOO" refer to the same article
     @article = Article.find_by_title(params[:id]) || Article.find(params[:id])
-    @revision = @article.latest_revision # may be nil!
     if @article.redirect.blank?
       render
     else
