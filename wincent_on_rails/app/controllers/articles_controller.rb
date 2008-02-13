@@ -6,10 +6,21 @@ class ArticlesController < ApplicationController
   end
 
   def new
+    @article = Article.new(session[:new_article_params])
+    session[:new_article_params] = nil
+  end
+
+  def create
     respond_to do |format|
       format.html {
-        @article = Article.new(session[:new_article_params])
-        session[:new_article_params] = nil
+        @article = Article.new(params[:article])
+        if @article.save
+          flash[:notice] = 'Successfully created new article.'
+          redirect_to wiki_path(@article)
+        else
+          flash[:error] = 'Failed to create new article.'
+          render :action => 'new'
+        end
       }
 
       # this is the AJAX preview
@@ -17,24 +28,6 @@ class ArticlesController < ApplicationController
         @preview = params[:body] || ''
         render :partial => 'preview'
       }
-    end
-  end
-
-  # NOTE: will need to sanitize titles here in some way
-  # "foo € bar" is stored literally and the URL becomes "foo%20€%20bar"
-  # (we want the € URL-encoded as well)
-  def create
-    @article = Article.new(params[:article])
-    respond_to do |format|
-      if @article.save
-        flash[:notice] = 'Successfully created new article.'
-        format.html { redirect_to wiki_path(@article) }
-        #format.xml  { render :xml => @article, :status => :created, :location => @article }
-      else
-        flash[:error] = 'Failed to create new article.'
-        format.html { render :action => 'new' }
-        #format.xml  { render :xml => @article.errors, :status => :unprocessable_entity }
-      end
     end
   end
 
