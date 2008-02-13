@@ -14,8 +14,18 @@
         -# and possibly move the logo to the right and move the navup up into the space liberated space
         -# (right align the "Wincent" text)
         =image_tag('logo.png')
-      %h1=link_to 'Wincent: software for your Mac', home_path
-      #navbar navbar
+      %h1=link_to 'Wincent', home_path
+      #navbar
+        =link_to 'Products'
+        =link_to 'Store'
+        =link_to 'Support'
+        =link_to 'News'
+        =link_to 'Wiki'
+        =link_to 'About'
+      #sidebar
+        -# not sure if i even want a side bar
+        -# maybe a secondary navigation bar under the main one, context sensitive
+        -# content for sidebar
     #content
       -flash.each do |key, message|
         =content_tag :div, message, :id => key
