@@ -1,0 +1,5 @@
+%h1 Latest articles
+%ul
+  -for article in @articles
+    %li=link_to h(article.title), wiki_path(article)
+-# TODO: add search box here

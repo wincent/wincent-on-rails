@@ -1,0 +1,36 @@
+%h1 Create new article
+=error_messages_for :article
+-form_for @article, :url => wiki_path, :method => 'put' do |f|
+  %table
+    %tr
+      %th Title
+      %td=f.text_field :title
+    %tr
+      %th
+        Redirect
+        %br
+        %span.annotation (optional)
+      %td=f.text_field :redirect
+    %tr
+      %th
+        Body
+        %br
+        %span.annotation link to wikitext markup help
+      -# TODO: make text area grow with window
+      %td=f.text_area :body, :cols => 80, :rows => 30
+    %tr
+      %th Tags
+      %td=f.text_field :pending_tags
+    %tr
+      %th Public
+      %td=f.check_box :public
+    %tr
+      %th Accepts comments
+      %td=f.check_box :accepts_comments
+  %p=f.submit 'Create'
+%h2
+  ==Preview (#{link_to_remote 'update', :url => new_wiki_path, :method => 'get', :update => 'preview', :with => "'body=' + encodeURIComponent($('article_body').value)"})
+  =observe_field 'article_body', :url => new_wiki_path, :method => 'get', :frequency => 30.0, :update => 'preview', :with => "'body=' + encodeURIComponent($('article_body').value)"
+-# TODO: graceful non-JS fallback
+#preview Preview content
+%p=link_to 'back', wiki_index_path
