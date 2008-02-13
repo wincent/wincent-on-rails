@@ -5,11 +5,6 @@ describe SessionsController do
   it_should_behave_like 'ApplicationController'
 end
 
-def login_as user
-  controller.instance_eval { @current_user = user }
-  controller.stub!(:login_before).and_return(nil)   # don't let the before filter clear the user again
-end
-
 def current_user
   controller.send :current_user
 end
