@@ -1,10 +1,6 @@
 module ArticlesHelper
   def body_html
-    if @article
-      preserve(@article.body.w)
-    else
-      ''
-    end
+    @article ? preserve(@article.body.w) : ''
   end
 
   def link_to_update_preview
