@@ -1,0 +1,14 @@
+.post
+  %h1=h @post.title
+  .when=timeinfo @post
+  .excerpt=excerpt_html
+  .body=body_html
+.cloud
+  %h1 Tags
+  -# consider moving this into a partial
+  -for tag in @post.tags
+    =scaled_tag tag
+%p.links
+  -if admin?
+    =link_to 'edit', edit_blog_path(@post)
+  =link_to 'back', blog_index_path

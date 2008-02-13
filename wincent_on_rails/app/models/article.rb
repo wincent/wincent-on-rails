@@ -12,20 +12,10 @@ class Article < ActiveRecord::Base
     :if => Proc.new { |a| !a.redirect.blank? },
     :message => 'must be a [[wikitext]] link or HTTP URL'
   acts_as_taggable
-
-  attr_accessor   :pending_tags
-  attr_accessible :title, :redirect, :body, :public, :accepts_comments, :pending_tags
+  attr_accessible :title, :redirect, :body, :public, :accepts_comments, :pending_tags, :tag_names_as_string
 
   # given @article with title "foo bar", wiki_path(@article) will return /wiki/foo%20bar
   def to_param
     title
-  end
-
-  def after_create
-    # taggings are a "has many through" association so can only be set up after saving for the first time
-    if pending_tags
-      tag pending_tags
-      pending_tags = nil
-    end
   end
 end

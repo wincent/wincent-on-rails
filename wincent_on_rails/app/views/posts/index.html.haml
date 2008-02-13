@@ -1,0 +1,11 @@
+%h1 Latest posts
+-for @post in @posts
+  .post
+    %h2=link_to h(@post.title), blog_path(@post)
+    .when=timeinfo @post
+    %p=excerpt_html
+    -admin_only do
+      =link_to 'edit', edit_blog_path(@post)
+      =link_to 'destroy', blog_path(@post), :confirm => 'Are you sure?', :method => :delete
+      =link_to 'new', new_blog_path
+-# TODO: add search box here

@@ -8,8 +8,9 @@ module ActiveRecord
       module ClassMethods
         def acts_as_taggable
           class_eval do
-            has_many :taggings, :as => :taggable, :dependent => :destroy
-            has_many :tags,     :through => :taggings
+            has_many      :taggings, :as => :taggable, :dependent => :destroy
+            has_many      :tags,     :through => :taggings
+            attr_accessor :pending_tags
             include ActiveRecord::Acts::Taggable::InstanceMethods
             extend ActiveRecord::Acts::Taggable::ClassMethods
           end
@@ -38,6 +39,30 @@ module ActiveRecord
         # Use the tags method to get the actual Tags objects.
         def tag_names
           self.tags.collect { |tag| tag.name }
+        end
+
+      public
+
+        def tag_names_as_string
+          tag_names.join(' ')
+        end
+
+        # Replace the receiver's existing tag array.
+        def tag_names_as_string= *args
+          taggings.destroy_all
+          tag args
+        end
+
+      protected
+
+        # unfortunately this will clash with any model that wants its own after_create method
+        # so need to come up with a solution for that
+        def after_create
+          # taggings are a "has many through" association so can only be set up after saving for the first time
+          if pending_tags
+            tag pending_tags
+            pending_tags = nil
+          end
         end
 
       private

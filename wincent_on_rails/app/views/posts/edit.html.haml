@@ -1,16 +1,16 @@
-%h1 Edit article
-=error_messages_for :article
--form_for @article, :url => wiki_path, :method => 'put' do |f|
+%h1 Edit post
+=error_messages_for :post
+-form_for @post, :url => blog_path, :method => 'put' do |f|
   %table
     %tr
       %th Title
       %td=f.text_field :title
     %tr
-      %th
-        Redirect
-        %br
-        %span.annotation (optional)
-      %td=f.text_field :redirect
+      %th Permalink
+      %td=f.text_field :permalink
+    %tr
+      %th Excerpt
+      %td=preserve(f.text_area(:excerpt, :cols => 80))
     %tr
       %th
         Body
@@ -30,9 +30,10 @@
   %p=f.submit 'Save'
 %h2
   ==Preview (#{link_to_update_preview})
+  =observe_excerpt
   =observe_body
   =image_tag 'spinner.gif', :id => 'spinner', :style => 'display:none;'
   -# TODO: graceful non-JS fallback
-#preview=body_html
-%p=link_to 'show', wiki_path(@article)
-%p=link_to 'back', wiki_index_path
+#preview=excerpt_and_body_html
+%p=link_to 'show', blog_path(@post)
+%p=link_to 'back', blog_index_path

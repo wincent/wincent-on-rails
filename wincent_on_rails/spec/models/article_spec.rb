@@ -20,15 +20,6 @@ describe Article, 'comments association' do
   end
 end
 
-describe Article, 'virtual attributes' do
-  it 'should have a pending_tags virtual attribute' do
-    article = new_article
-    tags    = 'foo bar baz'
-    article.pending_tags = tags
-    article.pending_tags.should == tags
-  end
-end
-
 describe Article, 'acting as taggable' do
   before do
     @article = create_article
@@ -47,6 +38,15 @@ describe Article, 'acting as taggable' do
 
   it 'should respond to the tag_names message' do
     @article.tag_names.should == []
+  end
+
+  # consider moving this into the acts_as_taggable module tests
+  # this code is no longer specific just to this class
+  it 'should have a pending_tags virtual attribute' do
+    article = new_article
+    tags    = 'foo bar baz'
+    article.pending_tags = tags
+    article.pending_tags.should == tags
   end
 
   it 'should allow tagging at creation time' do
