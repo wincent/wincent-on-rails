@@ -29,8 +29,10 @@
       %td=f.check_box :accepts_comments
   %p=f.submit 'Create'
 %h2
-  ==Preview (#{link_to_remote 'update', :url => wiki_index_path, :method => 'post', :update => 'preview', :with => "'body=' + encodeURIComponent($('article_body').value)"})
-  =observe_field 'article_body', :url => wiki_index_path, :method => 'post', :frequency => 30.0, :update => 'preview', :with => "'body=' + encodeURIComponent($('article_body').value)"
--# TODO: graceful non-JS fallback
+  -# TODO: add spinning progress indicator? this can be slow for big articles
+  ==Preview (#{link_to_remote 'update', :url => wiki_index_path, :method => 'post', :update => 'preview', :with => "'body=' + encodeURIComponent($('article_body').value)", :before => "Element.show('spinner')", :complete => "Element.hide('spinner')"})
+  =observe_field 'article_body', :url => wiki_index_path, :method => 'post', :frequency => 30.0, :update => 'preview', :with => "'body=' + encodeURIComponent($('article_body').value)", :before => "Element.show('spinner')", :complete => "Element.hide('spinner')"
+  =image_tag 'spinner.gif', :id => 'spinner', :style => 'display:none;'
+  -# TODO: graceful non-JS fallback
 #preview Preview content
 %p=link_to 'back', wiki_index_path
