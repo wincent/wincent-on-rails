@@ -13,7 +13,8 @@ class Article < ActiveRecord::Base
     :message => 'must be a [[wikitext]] link or HTTP URL'
   acts_as_taggable
 
-  attr_accessor :pending_tags
+  attr_accessor   :pending_tags
+  attr_accessible :title, :redirect, :body, :public, :accepts_comments, :pending_tags
 
   # given @article with title "foo bar", wiki_path(@article) will return /wiki/foo%20bar
   def to_param
