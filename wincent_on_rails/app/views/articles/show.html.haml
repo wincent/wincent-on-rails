@@ -5,7 +5,7 @@
   -else
     %p==(Redirected from #{h @redirected_from.title})
 .article
-  =preserve @article.body.w
+  =body_html
 .cloud
   %h1 Tags
   -# consider moving this into a partial
