@@ -1,6 +1,8 @@
 module FixtureReplacement
   def article_attributes
     {
+      :title                => String.random,
+      :body                 => String.random
     }
   end
 

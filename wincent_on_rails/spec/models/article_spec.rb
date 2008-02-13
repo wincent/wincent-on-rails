@@ -3,12 +3,6 @@ require File.dirname(__FILE__) + '/../spec_helper'
 describe Article do
 end
 
-describe Article, 'revisions association' do
-  it 'should respond to the revisions message' do
-    create_article.revisions.should == []
-  end
-end
-
 describe Article, 'comments association' do
   it 'should respond to the comments message' do
     create_article.comments.should == []
