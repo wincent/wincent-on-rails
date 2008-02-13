@@ -8,7 +8,8 @@ class Article < ActiveRecord::Base
     :message => 'must be present if body is blank'
   validates_presence_of   :body,      :if => Proc.new { |a| a.redirect.blank? },
     :message => 'must be present if redirect is blank'
-  validates_format_of     :redirect,  :with => /\A\s*(\[\[.+\]\])|(https?:\/\/.+)\s*\z/, :if => Proc.new { |a| !a.redirect.blank? },
+  validates_format_of     :redirect,  :with => /\A\s*((\[\[.+\]\])|(https?:\/\/.+))\s*\z/,
+    :if => Proc.new { |a| !a.redirect.blank? },
     :message => 'must be a [[wikitext]] link or HTTP URL'
   acts_as_taggable
 
