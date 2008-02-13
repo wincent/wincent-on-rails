@@ -43,11 +43,6 @@ module FixtureReplacement
     }
   end
 
-  def revision_attributes
-    {
-    }
-  end
-
   def status_attributes
     {
       :name                     => String.random
