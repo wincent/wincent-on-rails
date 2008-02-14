@@ -35,5 +35,6 @@
   =image_tag 'spinner.gif', :id => 'spinner', :style => 'display:none;'
   -# TODO: graceful non-JS fallback
 #preview=excerpt_and_body_html
-%p=link_to 'show', blog_path(@post)
-%p=link_to 'back', blog_index_path
+.links
+  =link_to 'back', blog_index_path, :class => 'back_link'
+  =link_to 'show', blog_path(@post), :class => 'show_link'

@@ -4,7 +4,7 @@ module ArticlesHelper
   end
 
   def link_to_update_preview
-    link_to_remote 'update', common_options
+    link_to_remote 'update', common_options, :class => 'update_link'
   end
 
   def observe_body

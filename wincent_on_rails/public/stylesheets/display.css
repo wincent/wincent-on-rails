@@ -4,7 +4,11 @@ h1, h2, h3, h4, h5, h6 { color: #333333; }
 
 p { color: #585858; }
 
-pre { background-color: #f9f9f9; border: 1px dashed #2f6fab; padding: 1em; line-height: 1.1em; }
+pre { background-color: #f9f9f9; border: 1px dashed #2f6fab; padding: 1em; font-size: 125%; line-height: 1.1em; }
+
+tt { color: #600; font-size: 125%; border: 1px dashed #ddd; background-color: #f9f9f9; padding: 0.25em; }
+
+blockquote { padding-left: 24px; min-height: 32px; margin-left: 1em; margin-right: 2em; background: url(../images/blockquote.png) no-repeat left top; }
 
 a { color: #2971a7; font-weight: bold; text-decoration: none; }
 a:hover { text-decoration: underline; }
@@ -45,5 +49,23 @@ span.annotation { font-size: xx-small; font-weight: normal; color: #666; }
 .cloud { text-align: center; }
 .cloud a { padding: 0.5em; }
 
+.tag_info { text-align: right; }
+
+.post { margin-top: 3em; }
+.post .info { padding: 1em; background: #eee; }
+
+.comments_link { background: url(../images/comment-bubble.png) no-repeat left center; padding-left: 22px; padding-top: 2px; padding-bottom: 2px; min-height: 22px; }
+
+.edit_link { background: url(../images/edit.png) no-repeat left center; padding-left: 22px; padding-top: 2px; padding-bottom: 2px; min-height: 22px; }
+
+.destroy_link { background: url(../images/destroy.png) no-repeat left center; padding-left: 22px; min-height: 22px; }
+
+.new_link { background: url(../images/new.png) no-repeat left center; padding-left: 22px; padding-top: 2px; padding-bottom: 2px; min-height: 22px; }
+
+.back_link { background: url(../images/back.png) no-repeat left center; padding-left: 22px; padding-top: 2px; padding-bottom: 2px; min-height: 22px; }
+
+.show_link { background: url(../images/show.png) no-repeat left center; padding-left: 22px; padding-top: 2px; padding-bottom: 2px; min-height: 22px; }
+
+.update_link { background: url(../images/update.png) no-repeat left center; padding-left: 22px; padding-top: 2px; padding-bottom: 2px; min-height: 22px; }
+
 .links a { margin-left: 0.25em; margin-right: 0.25em; }
-.links a:hover { border-bottom: dotted 1px gray; text-decoration: none; }

@@ -26,9 +26,9 @@ class PostsController < ApplicationController
 
       # this is the AJAX preview
       format.js {
-        @title    = params[:post][:title]   || ''
-        @excerpt  = params[:post][:excerpt] || ''
-        @body     = params[:post][:body]    || ''
+        @title    = params[:title]   || ''
+        @excerpt  = params[:excerpt] || ''
+        @body     = params[:body]    || ''
         render :partial => 'preview'
       }
     end

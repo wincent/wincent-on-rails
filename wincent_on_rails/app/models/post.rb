@@ -18,6 +18,7 @@ class Post < ActiveRecord::Base
   def before_validation
     if permalink.blank?
       # come up with own permalink
+      title.downcase.gsub(/\W+/, '-') # but need to make sure it is unique...
     end
     true
   end

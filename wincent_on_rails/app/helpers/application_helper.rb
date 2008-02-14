@@ -5,7 +5,7 @@ module ApplicationHelper
   #
   # Examples:
   #   - Created yesterday
-  #   - Created 4 hours ago, updated a few seconds ago
+  #   - Created 4 hours ago, last updated a few seconds ago
   #
   def timeinfo(model, precise = false)
     # BUG: in Spanish localization will be translated as "creado" (masculine) etc for both masculine and feminine models
@@ -15,7 +15,7 @@ module ApplicationHelper
       if created == updated
         'Created %s'.localized % created.to_s(:long)
       else
-        'Created %s, updated %s' % [created.to_s(:long), updated.to_s(:long)]
+        'Created %s, last updated %s' % [created.to_s(:long), updated.to_s(:long)]
       end
     else        # show human-friendly dates ("yesterday", "2 hours ago" etc)
       created = created.distance_in_words
@@ -23,18 +23,22 @@ module ApplicationHelper
       if created == updated
         'Created %s'.localized % created
       else
-        'Created %s, updated %s'.localized % [created, updated]
+        'Created %s, last updated %s'.localized % [created, updated]
       end
+    end
+  end
+
+  def pluralizing_count number, thing
+    if number == 1
+      "1 #{thing.singularize}"
+    else
+      "#{number} #{thing.pluralize}"
     end
   end
 
   # TODO: localize
   def item_count number
-    if number == 1
-      '1 item'
-    else
-      "#{number} items"
-    end
+    pluralizing_count number, 'item'
   end
 
   def scaled_tag tag
@@ -42,6 +46,13 @@ module ApplicationHelper
     link_to tag.name, tag_path(tag),
       :style => "font-size: #{1 + tag.normalized_taggings_count * 1}em;",
       :title => "#{item_count(tag.taggings_count)} tagged with '#{tag.name}'"
+  end
+
+  def tag_links object
+    links = object.tags.collect do |tag|
+      link_to tag.name, tag_path(tag), :title => "#{item_count(tag.taggings_count)} tagged with '#{tag.name}'"
+    end
+    links.length == 0 ? 'none' : links.join(", ")
   end
 
   # prevent Haml from whitespace-damaging <pre> blocks which might be in wikitext markup (very hacky)

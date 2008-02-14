@@ -30,7 +30,7 @@ ActionController::Routing::Routes.draw do |map|
   # named routes
   map.login     'login',  :controller => 'sessions',  :action => 'new'
   map.logout    'logout', :controller => 'sessions',  :action => 'destroy'
-  map.home      '',       :controller => 'users'      # defaults to index
+  map.home      '',       :controller => 'posts'      # defaults to index
 
   map.namespace :admin do |admin|
     admin.resources :tags
