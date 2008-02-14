@@ -1,10 +1,10 @@
 module PostsHelper
   def excerpt_html
-    @post.excerpt.w
+    preserve @post.excerpt.w
   end
 
   def body_html
-    @post.body ? @post.body.w : ''
+    preserve(@post.body ? @post.body.w : '')
   end
 
   def excerpt_and_body_html

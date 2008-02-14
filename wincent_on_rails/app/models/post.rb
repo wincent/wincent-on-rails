@@ -6,13 +6,21 @@ class Post < ActiveRecord::Base
   validates_presence_of   :permalink
   validates_uniqueness_of :permalink
   validates_presence_of   :excerpt
+
   acts_as_taggable
 
-  # def before_save
-  #   if permalink.blank?
-  #     permalink = title
-  #   end
-  # end
+  # doesn't work because the accessor will always return only valid values
+  #validates_format_of     :pending_tags, :with => /\A[a-z \.]*\z/, :message => 'may only contain letters or periods'
+
+  # too late as well: by the time this is called we have already run the after_save filter, which effectively clean up the tags
+  #validates_associated  :tags
+
+  def before_validation
+    if permalink.blank?
+      # come up with own permalink
+    end
+    true
+  end
 
   def to_param
     if permalink and !permalink.blank?
