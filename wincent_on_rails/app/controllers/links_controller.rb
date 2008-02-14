@@ -34,7 +34,7 @@ class LinksController < ApplicationController
       get_link :lock => true
       @link.increment! :click_count
     end
-    redirect_to @link.uri
+    redirect_to @link.uri, :status => 303 # "See other", GET request
   end
 
   def edit
