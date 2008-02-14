@@ -19,7 +19,7 @@
 -else
   .comment_info
     ==#{comment_count @post.comments.published_count} published, #{comment_count @post.comments.unmoderated_count} awaiting moderation, #{comment_count @post.comments.spam_count} marked as spam
-  -for comment in (admin? ? @post.comments.unmoderated : @post.comments.published)
+  -for comment in (admin? ? @post.comments.ham : @post.comments.published)
     -next if comment.new_record?
     %div{:id => "comment_#{comment.id}"}
       .comment
@@ -29,10 +29,11 @@
           .links
             =link_to 'edit', edit_blog_comment_path(@post, comment), :class => 'edit_link'
             =link_to 'destroy', blog_comment_path(@post, comment), :confirm => 'Are you sure?', :method => :delete, :class => 'destroy_link'
-            %form{:id => "comment_#{comment.id}_spam_form"}
-              =submit_to_remote 'button', 'spam', :url => blog_comment_path(@post, comment), :method => 'put', :failure => "alert('Failed to mark as spam')"
-            %form{:id => "comment_#{comment.id}_ham_form"}
-              =submit_to_remote 'button', 'ham', :url => blog_comment_path(@post, comment), :method => 'put', :failure => "alert('Failed to mark as ham')"
+            -if comment.awaiting_moderation?
+              %form{:id => "comment_#{comment.id}_spam_form"}
+                =submit_to_remote 'button', 'spam', :url => blog_comment_path(@post, comment), :method => 'put', :failure => "alert('Failed to mark as spam')"
+              %form{:id => "comment_#{comment.id}_ham_form"}
+                =submit_to_remote 'button', 'ham', :url => blog_comment_path(@post, comment), :method => 'put', :failure => "alert('Failed to mark as ham')"
   -if @comment
     =render :partial => 'comments/comment'
   -else
