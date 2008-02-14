@@ -1,5 +1,5 @@
 class Post < ActiveRecord::Base
-  has_many                :comments, :as => :commentable
+  has_many                :comments, :as => :commentable, :extend => Commentable
   validates_presence_of   :title
   validates_format_of     :permalink, :with => /\A[a-z\-]+\z/, :if => Proc.new { |p| !p.permalink.blank? },
     :message => 'must contain only lowercase letters and hypens'

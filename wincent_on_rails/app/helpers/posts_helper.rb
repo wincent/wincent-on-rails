@@ -46,7 +46,7 @@ module PostsHelper
   end
 
   def comments_link post
-    link_to "#{comment_count(post.comments.count)}",
+    link_to "#{comment_count(post.comments.ham_count)}",
       { :controller => 'posts', :action => 'show', :id => @post.to_param, :anchor => 'comments'},
       :class => 'comments_link'
   end
