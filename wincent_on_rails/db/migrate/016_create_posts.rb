@@ -7,6 +7,7 @@ class CreatePosts < ActiveRecord::Migration
       t.text        :body
       t.boolean     :public,            :default => true, :null => false
       t.boolean     :accepts_comments,  :default => false, :null => false
+      t.integer     :comments_count,    :default => 0
       t.timestamps
     end
 

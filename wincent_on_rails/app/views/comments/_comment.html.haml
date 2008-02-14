@@ -1,0 +1,20 @@
+%h3 Create new comment
+=error_messages_for :comment
+-form_for @comment, :url => polymorphic_comments_path(@comment) do |f|
+  %table
+    %tr
+      %th
+        Body
+        %br
+        %span.annotation link to wikitext markup help
+      -# TODO: make text area grow with window
+      %td=preserve(f.text_area(:body, :cols => 80, :rows => 10))
+      -# TODO: set up protected attributes for comments
+  %p=f.submit 'Create'
+%h4
+-#  ==Preview (#{link_to_update_preview})
+-#  =observe_body
+-#  =image_tag 'spinner.gif', :id => 'spinner', :style => 'display:none;'
+-#  -# TODO: graceful non-JS fallback
+-##preview=body_html
+-#%p=link_to 'back', wiki_index_path

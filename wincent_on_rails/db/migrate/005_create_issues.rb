@@ -9,6 +9,7 @@ class CreateIssues < ActiveRecord::Migration
       t.text        :description
       t.boolean     :awaiting_moderation, :default => true
       t.boolean     :spam,                :default => false
+      t.integer     :comments_count,      :default => 0
       t.timestamps
     end
   end

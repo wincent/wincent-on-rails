@@ -1,4 +1,4 @@
-%h1=h @article.title
+-page_title @article.title
 -if @redirected_from
   -if admin?
     %p==(Redirected from #{link_to h(@redirected_from.title), edit_wiki_path(@redirected_from)})

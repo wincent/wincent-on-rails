@@ -6,6 +6,7 @@ class CreateArticles < ActiveRecord::Migration
       t.text        :body,              :null => false
       t.boolean     :public,            :default => true, :null => false
       t.boolean     :accepts_comments,  :default => false, :null => false
+      t.integer     :comments_count,    :default => 0
       t.timestamps
     end
 

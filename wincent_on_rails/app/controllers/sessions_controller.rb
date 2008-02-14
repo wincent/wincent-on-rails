@@ -13,7 +13,7 @@ class SessionsController < ApplicationController
   def create
     if self.current_user = User.authenticate(params[:login_name], params[:passphrase])
       flash[:notice]    = 'Successfully logged in.'.localized
-      if original_uri = session[:original_uri]
+      if (original_uri = session[:original_uri]) || (original_uri = params[:original_uri])
         session[:original_uri] = nil
         redirect_to original_uri
       else

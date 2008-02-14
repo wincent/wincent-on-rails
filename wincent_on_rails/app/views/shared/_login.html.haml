@@ -1,6 +1,7 @@
 #login
   %h1 Login
   -form_tag sessions_path do
+    =hidden_field_tag :original_uri, params[:original_uri]
     %p
       .label Login name
       =text_field_tag :login_name, params[:login_name]

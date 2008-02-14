@@ -1,5 +1,5 @@
 .post
-  %h1=h @post.title
+  -page_title @post.title
   .when=timeinfo @post
   .excerpt=excerpt_html
   .body=body_html
@@ -12,3 +12,20 @@
   -if admin?
     =link_to 'edit', edit_blog_path(@post), :class => 'edit_link'
   =link_to 'back', blog_index_path, :class => 'back_link'
+=named_anchor 'comments'
+%h2 Comments
+-if !@post.accepts_comments?
+  %p Comments disabled for this post
+-else
+  -for comment in @post.comments
+    -next if comment.new_record?
+    .comment
+      .body=preserve comment.body.w
+      .info==Posted by #{comment.user.display_name} at #{comment.created_at}
+      -# if admin will also see awaiting_moderation form, spam flag
+  -if @comment
+    =render :partial => 'comments/comment'
+  -else
+    %p
+      =link_to 'login', login_path(:original_uri => blog_path(@post))
+      to post a comment

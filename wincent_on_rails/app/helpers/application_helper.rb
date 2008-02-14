@@ -1,6 +1,15 @@
 require 'additions/time'
 
 module ApplicationHelper
+  def page_title string
+    @page_title = string # picked up in application layout
+    open :h1, h(string)
+  end
+
+  def named_anchor name
+    content_tag :a, '', :id => name, :name => name
+  end
+
   # Pretty formatting for model creation/update information.
   #
   # Examples:
@@ -78,5 +87,19 @@ module ApplicationHelper
         yield
       end
     end
+  end
+
+  # I would have preferred to stick this in the Comments helper seeing as it pertains to that model,
+  # but given that the comment form is a partial, the only way it can find this method is if it is here.
+  def polymorphic_comments_path comment
+    # the case statement is a temporary hack until Rails 2.1 comes out
+    class_str = comment.commentable.class.to_s
+    case class_str
+    when 'Post'
+      class_str = 'blog'
+    when 'Aritcle'
+      class_str = 'wiki'
+    end
+    send "#{class_str.underscore}_comments_path", comment.commentable
   end
 end
