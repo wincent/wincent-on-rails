@@ -1,8 +1,8 @@
 module Commentable
 
-  # All comments which have passed moderation and are not flagged as spam.
+  # All public comments which have passed moderation and are not flagged as spam.
   def published
-    find(:all, :conditions => { :awaiting_moderation => false, :spam => false})
+    find(:all, :conditions => { :awaiting_moderation => false, :spam => false, :public => true})
   end
 
   # Returns all comments for this record which haven't yet been moderated and are not marked as spam.
@@ -22,20 +22,20 @@ module Commentable
 
   # The count of all published (not awaiting moderation, not flagged as spam) comments.
   def published_count
-    count(:conditions => 'awaiting_moderation = false AND spam = false')
+    count(:conditions => 'awaiting_moderation = FALSE AND spam = FALSE AND public = TRUE')
   end
 
   # The count of comments awaiting moderation.
   def unmoderated_count
-    count(:conditions => 'awaiting_moderation = true')
+    count(:conditions => 'awaiting_moderation = TRUE')
   end
 
   def ham_count
-    count(:conditions => 'spam = false')
+    count(:conditions => 'spam = FALSE')
   end
 
   # The count of comments that have been flagged as spam.
   def spam_count
-    count(:conditions => 'spam = true')
+    count(:conditions => 'spam = TRUE')
   end
 end

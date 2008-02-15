@@ -1,4 +1,6 @@
 %h1 Latest posts
+-if @paginator
+  .pagination=@paginator.pagination_links
 -for @post in @posts
   .post
     %h2=link_to h(@post.title), blog_path(@post)
@@ -6,7 +8,7 @@
     %p=excerpt_html
     .info
       =comments_link(@post)
-      =link_to_if !@post.body.blank?, 'more...', (blog_path(@post)) do; end
+      =link_to 'more...', (blog_path(@post)) if !@post.body.blank?
       .tag_info==Tags: #{tag_links(@post)}
       -admin_only do
         .links
@@ -14,3 +16,5 @@
           =link_to 'destroy', blog_path(@post), :confirm => 'Are you sure?', :method => :delete, :class => 'destroy_link'
           =link_to 'new', new_blog_path, :class => 'new_link'
 -# TODO: add search box here
+-if @paginator
+  .pagination=@paginator.pagination_links

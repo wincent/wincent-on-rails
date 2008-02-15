@@ -25,9 +25,12 @@ pre
 tt
   color:            #600
   font-size:        125%
-  border:           1px dashed #ddd
+  //line-height:      1.1em
+  //border:           1px dashed #ddd
   background-color: #f9f9f9
-  padding:          0.25em
+  padding:
+    left:          0.1em
+    right:         0.1em
 
 // blockquote.png: 32 x 32
 blockquote
@@ -96,6 +99,34 @@ a
 
 #warning
   background:       #959af9
+
+// pagination
+
+.pagination
+  font-size:        x-small
+  text-align:       right
+  .disabled
+    color:          gray
+  .first
+    padding-left:   18px
+    background:     url(../images/first.png) no-repeat left center
+  .first.disabled
+    background:     url(../images/first-disabled.png) no-repeat left center
+  .prev
+    padding-left:   18px
+    background:     url(../images/previous.png) no-repeat left center
+  .prev.disabled
+    background:     url(../images/previous-disabled.png) no-repeat left center
+  .next
+    padding-right:  18px
+    background:     url(../images/next.png) no-repeat right center
+  .next.disabled
+    background:     url(../images/next-disabled.png) no-repeat right center
+  .last
+    padding-right:  18px
+    background:     url(../images/last.png) no-repeat right center
+  .last.disabled
+    background:     url(../images/last-disabled.png) no-repeat right center
 
 // tables
 

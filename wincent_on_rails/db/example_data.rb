@@ -45,6 +45,14 @@ module FixtureReplacement
     }
   end
 
+  def post_attributes
+    {
+      :title                    => String.random,
+      :permalink                => String.random,
+      :excerpt                  => String.random,
+    }
+  end
+
   def status_attributes
     {
       :name                     => String.random

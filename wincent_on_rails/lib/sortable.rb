@@ -71,7 +71,7 @@ module ActionView
         url               = url_for(:action => params[:action], :controller => params[:controller], :sort => attribute_name)
         tooltip           = { :title => "Click to sort by #{display_name}" }
         if @sort_by == attribute_name # boldface this attribute
-          tooltip         = { :title => "Click to toggle sort order"}
+          tooltip         = { :title => 'Click to toggle sort order'}
           if @sort_descending
             css_class_options = { :class => 'descending' }
           else
