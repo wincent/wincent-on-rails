@@ -4,7 +4,7 @@ h1, h2, h3, h4, h5, h6 { color: #333333; }
 
 p { color: #585858; }
 
-pre { background-color: #f9f9f9; border: 1px dashed #2f6fab; padding: 1em; font-size: 125%; line-height: 1.1em; }
+pre { background-color: #f9f9f9; border: 1px dashed #2f6fab; padding: 1em; font-size: 125%; line-height: 1.1em; overflow: scroll; }
 
 tt { color: #600; font-size: 125%; background-color: #f9f9f9; padding-left: 0.1em; padding-right: 0.1em; }
 
@@ -14,15 +14,22 @@ a { color: #2971a7; font-weight: bold; text-decoration: none; }
 a:hover { text-decoration: underline; }
 a:visited { font-weight: normal; }
 
-#header #logo { padding: 0em 1em 1em 1em; float: left; }
-#header h1 { padding-top: 8px; }
-#header h1 a { color: #333333; font-weight: bold; }
+a.external:after { content: url(../images/external.png); }
 
-#navbar { font-size: x-small; clear: both; border-top: 1px solid gray; border-bottom: 1px solid gray; padding: 0.25em 1em 0.25em 1em; }
+a.mailto:after { content: url(../images/mailto.png); }
 
-#content { padding: 0em 1em 1em 1em; }
+#header #logo { padding: 0px; position: absolute; top: 2px; right: 2px; }
+#header h1 { font-size: small; position: absolute; top: 5px; right: 50px; }
+#header h1 a { color: white; font-weight: bold; }
 
-#footer { text-align: center; font-size: x-small; }
+#navbar { font-size: small; background: url(../images/navbar.png) center center repeat-x; margin: 0em; padding-top: 1em; padding-bottom: 1em; }
+#navbar li { display: inline; }
+#navbar a { padding: 1em; margin-left: -0.35em; border-right: 1px solid white; color: white; }
+#navbar a:hover { background: url(../images/navbar-current.png) center center repeat-x; }
+
+#content { clear: both; padding: 0em 1em 1em 1em; }
+
+#footer { text-align: center; font-size: x-small; margin: 1em; }
 
 #error, #notice, #warning { font-weight: bold; border: 1px solid gray; margin: 1em; padding: 1em; }
 

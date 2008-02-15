@@ -21,6 +21,7 @@ pre
   padding:          1em
   font-size:        125%
   line-height:      1.1em
+  overflow:         scroll
 
 tt
   color:            #600
@@ -52,36 +53,56 @@ a
   &:visited
     font-weight:      normal
 
+// IE6/7 doesn't support the :after pseudo selector
+a.external:after
+  content:            url(../images/external.png)
+
+a.mailto:after
+  content:            url(../images/mailto.png)
+
 // overall page layout
 
 #header
   #logo
-    padding:          0em 1em 1em 1em
-    float:            left
+    padding:        0px
+    position:       absolute
+    top:            2px
+    right:          2px
   h1
-    padding-top:      8px
+    font-size: small
+    position:       absolute
+    top:            5px
+    right:          50px
     a
-      color:          #333333
+      color:          white
       font-weight:    bold
-//  background:       url(../images/logo.png) no-repeat
-//  height: 48px
-//  min-height:       48px // the height of logo.png
-//  padding-left:     50px // the width of logo.png
 
 #navbar
-  font-size:        x-small
-  clear:            both
-  border:
-    top:            1px solid gray
-    bottom:         1px solid gray
-  padding:          0.25em 1em 0.25em 1em
+  font-size:        small
+  background:       url(../images/navbar.png) center center repeat-x
+  margin: 0em
+  padding:
+    top:              1em
+    bottom:           1em
+  li
+    display:        inline
+  a
+    padding: 1em
+    // why I need this to make the highlight reach the previous border is a mystery
+    margin-left:    -0.35em
+    border-right:   1px solid white
+    color:          white
+  a:hover
+    background:     url(../images/navbar-current.png) center center repeat-x
 
 #content
+  clear:            both
   padding:          0em 1em 1em 1em
 
 #footer
   text-align:       center
   font-size:        x-small
+  margin:           1em
 
 // flashes
 

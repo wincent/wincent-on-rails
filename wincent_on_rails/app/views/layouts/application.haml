@@ -5,38 +5,30 @@
     %meta{'http-equiv' => 'Content-Type', :content => 'text/html;charset=UTF-8'}
     %title
       wincent.com:
-      -if @page_title.blank?
-        =controller.controller_name
-      -else
-        =h @page_title
+      =@page_title.blank? ? controller.controller_name : h(@page_title)
     =stylesheet_link_tag 'display'
     =javascript_include_tag :defaults
   %body
     =named_anchor 'top'
     #header
       #logo
-        -# TODO: make logo clickable as well, what's the best way to do this?
-        -# may want to consider making it just read "Wincent" or "wincent", lose the "software for your mac"
-        -# and possibly move the logo to the right and move the navup up into the space liberated space
-        -# (right align the "Wincent" text)
-        =image_tag('logo.png')
+        -open :a, :href => home_path, :title => 'Wincent front page' do
+          =image_tag('logo.png')
       %h1=link_to 'Wincent', home_path
-      #navbar
-        =link_to 'Products'
-        =link_to 'Store'
-        =link_to 'Support'
-        =link_to 'News'
-        =link_to 'Wiki'
-        =link_to 'About'
-      #sidebar
-        -# not sure if i even want a side bar
-        -# maybe a secondary navigation bar under the main one, context sensitive
-        -# content for sidebar
+      %ul#navbar
+        %li=link_to 'Products'
+        %li=link_to 'Store'
+        %li=link_to 'Support', issues_path
+        %li=link_to 'Blog', blog_index_path
+        %li=link_to 'Wiki', wiki_index_path
+        %li=link_to 'About'
+    #sidebar
+      -# not sure if i even want a side bar
+      -# maybe a secondary navigation bar under the main one, context sensitive
+      -# content for sidebar
     #content
       -flash.each do |key, message|
         =content_tag :div, message, :id => key
       =yield
     #footer
-      -# TODO: consider using link_to here... or is that really just for rails paths?
       ==Copyright &copy; 1997-#{Time.new.year} #{mail_to('win@wincent.com', 'Wincent Colaiuta')}.
-
