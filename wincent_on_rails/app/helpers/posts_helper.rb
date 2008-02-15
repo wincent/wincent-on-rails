@@ -46,8 +46,12 @@ module PostsHelper
   end
 
   def comments_link post
-    link_to "#{comment_count(post.comments.ham_count)}",
-      { :controller => 'posts', :action => 'show', :id => @post.to_param, :anchor => 'comments'},
-      :class => 'comments_link'
+    if post.accepts_comments? || post.comments.ham_count > 0
+      link_to comment_count(post.comments.ham_count),
+        { :controller => 'posts', :action => 'show', :id => @post.to_param, :anchor => 'comments'},
+        :class => 'comments_link'
+    else
+      ''
+    end
   end
 end

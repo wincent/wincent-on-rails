@@ -12,11 +12,16 @@
   -if admin?
     =link_to 'edit', edit_blog_path(@post), :class => 'edit_link'
   =link_to 'back', blog_index_path, :class => 'back_link'
-=named_anchor 'comments'
-%h2 Comments
 -if !@post.accepts_comments?
-  %p Comments disabled for this post
+  -if @post.comments_count != 0
+    =named_anchor 'comments'
+    %h2 Comments
+    %p
+      Comments closed for this post. You can discuss this further in the forums.
+      -# TODO: add forums link
 -else
+  =named_anchor 'comments'
+  %h2 Comments
   .comment_info
     ==#{comment_count @post.comments.published_count} published, #{comment_count @post.comments.unmoderated_count} awaiting moderation, #{comment_count @post.comments.spam_count} marked as spam
   -for comment in (admin? ? @post.comments.ham : @post.comments.published)
