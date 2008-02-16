@@ -11,6 +11,7 @@ module ActiveRecord
             has_many      :taggings, :as => :taggable, :dependent => :destroy
             has_many      :tags,     :through => :taggings
             attr_writer   :pending_tags
+            validate      :check_pending_tag_format
             after_save    :save_pending_tags
             include ActiveRecord::Acts::Taggable::InstanceMethods
             extend ActiveRecord::Acts::Taggable::ClassMethods
@@ -59,6 +60,15 @@ module ActiveRecord
             @pending_tags = nil
           end
           true
+        end
+
+        def check_pending_tag_format
+          # can't use a normal validates_format_of here because that uses an accessor
+          # (which will always return only valid values)
+          # must check the instance variable directly
+          if @pending_tags and not (@pending_tags =~ /\A([a-z]+(.[a-z]+)*)*\z/)
+            errors.add :tags, 'may only contain letters or periods'
+          end
         end
 
       private

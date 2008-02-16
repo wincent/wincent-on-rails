@@ -1,33 +1,42 @@
 class Post < ActiveRecord::Base
   has_many                :comments, :as => :commentable, :extend => Commentable
   validates_presence_of   :title
-  validates_format_of     :permalink, :with => /\A[a-z\-]+\z/, :if => Proc.new { |p| !p.permalink.blank? },
-    :message => 'must contain only lowercase letters and hypens'
+  validates_format_of     :permalink, :with => /\A[a-z0-9\.\-]+\z/,
+    :message => 'must contain only lowercase letters, numbers, periods and hypens'
   validates_presence_of   :permalink
   validates_uniqueness_of :permalink
   validates_presence_of   :excerpt
 
   acts_as_taggable
 
-  # doesn't work because the accessor will always return only valid values
-  #validates_format_of     :pending_tags, :with => /\A[a-z \.]*\z/, :message => 'may only contain letters or periods'
-
-  # too late as well: by the time this is called we have already run the after_save filter, which effectively clean up the tags
-  #validates_associated  :tags
-
   def before_validation
     if permalink.blank?
-      # come up with own permalink
-      title.downcase.gsub(/\W+/, '-') # but need to make sure it is unique...
+      self.permalink = self.suggested_permalink
     end
     true
   end
 
-  def to_param
-    if permalink and !permalink.blank?
-      permalink
+  def suggested_permalink
+    # iconv can't be trusted to behave the same across platforms
+    # this doesn't handle non-ASCII characters very well (they just get eaten), but for my uses it will be fine
+    base = title.downcase.split(/[^a-z1-9\.]+/).join('-')
+
+    # now need to make sure it is unique
+    # there is a race here, but seeing as I am the only user creating articles it is not a problem
+    last =  Post.find(:first, :conditions => ['permalink LIKE ?', "#{base}%"], :order => 'permalink DESC')
+    if last.nil?
+      base
     else
-      id
+      if last.permalink =~ /\-(\d+)$/
+        num = $~[1].to_i + 1
+      else
+        num = 2
+      end
+      "#{base}-#{num}"
     end
+  end
+
+  def to_param
+    permalink
   end
 end

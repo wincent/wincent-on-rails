@@ -1,5 +1,3 @@
-# This file is copied to ~/spec when you run 'ruby script/generate rspec'
-# from the project root directory.
 ENV["RAILS_ENV"] = "test"
 require File.expand_path(File.dirname(__FILE__) + "/../config/environment")
 require 'spec'
@@ -16,7 +14,7 @@ end
 # used in controller specs
 def login_as user
   controller.instance_eval { @current_user = user }
-  controller.stub!(:login_before).and_return(nil)   # don't let the before filter clear the user again
+  controller.stub!(:login_before) # don't let the before filter clear the user again
 end
 
 # used in controller specs
@@ -25,7 +23,7 @@ def login_as_admin
     @current_user = User.find_by_superuser(true)
     raise if @current_user.nil?
   end
-  controller.stub!(:login_before).and_return(nil)   # don't let the before filter clear the user again
+  controller.stub!(:login_before) # don't let the before filter clear the user again
 end
 
 module Spec

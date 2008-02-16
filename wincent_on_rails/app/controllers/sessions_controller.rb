@@ -12,7 +12,7 @@ class SessionsController < ApplicationController
   # BUG: This is only secure if connecting over HTTPS; must modify this to force SSL connections
   def create
     if self.current_user = User.authenticate(params[:login_name], params[:passphrase])
-      flash[:notice]    = 'Successfully logged in.'.localized
+      flash[:notice]    = 'Successfully logged in.'
       if (original_uri = session[:original_uri]) || (original_uri = params[:original_uri])
         session[:original_uri] = nil
         redirect_to original_uri
@@ -20,7 +20,7 @@ class SessionsController < ApplicationController
         redirect_to home_path
       end
     else
-      flash[:error]     = 'Invalid login or passphrase.'.localized
+      flash[:error]     = 'Invalid login or passphrase.'
       render :action => 'new'
     end
   end
@@ -29,9 +29,9 @@ class SessionsController < ApplicationController
     if self.logged_in?
       reset_session
       self.current_user = nil # delete some info from the cookies, invalidate the session key in the database, reset the session
-      flash[:notice]    = 'You have logged out successfully.'.localized
+      flash[:notice]    = 'You have logged out successfully.'
     else
-      flash[:error]     = "Can't log out (weren't logged in).".localized
+      flash[:error]     = "Can't log out (weren't logged in)."
     end
     redirect_to home_path
   end

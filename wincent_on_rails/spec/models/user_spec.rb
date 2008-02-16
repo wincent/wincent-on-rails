@@ -85,10 +85,6 @@ describe User, 'accessible attributes' do
   it 'should allow mass-assignment to the old passphrase' do
     new_user.should allow_mass_assignment_of(:old_passphrase => String.random)
   end
-
-  it 'should allow mass-assignment to the locale' do
-    new_user.should allow_mass_assignment_of(:locale => new_locale)
-  end
 end
 
 describe User, 'protected attributes' do

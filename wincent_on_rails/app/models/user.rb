@@ -5,12 +5,11 @@ class User < ActiveRecord::Base
   has_many    :emails
   has_many    :issues
   has_many    :comments
-  belongs_to  :locale
 
   attr_reader               :passphrase
   attr_accessor             :passphrase_confirmation, :old_passphrase
 
-  attr_accessible           :login_name, :display_name, :passphrase, :passphrase_confirmation, :old_passphrase, :locale
+  attr_accessible           :login_name, :display_name, :passphrase, :passphrase_confirmation, :old_passphrase
 
   validates_presence_of     :login_name
 

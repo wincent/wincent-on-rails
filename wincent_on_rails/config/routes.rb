@@ -8,7 +8,8 @@ ActionController::Routing::Routes.draw do |map|
 
   # later this will be map.resources :posts, :as => :blog
   # (see comment for wiki/articles controller)
-  map.resources :blog, :controller => 'posts', :has_many => [ :comments ]
+  # must explicitly allow period in the id part of the route otherwise it will be classified as a route separator
+  map.resources :blog, :requirements => { :id => /[a-z0-9\-\.]+/ }, :controller => 'posts', :has_many => [ :comments ]
 
   map.resources :sessions
 

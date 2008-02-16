@@ -12,7 +12,7 @@ protected
       # beware that in the default case uri will be an instance of ActiveRecord::RecordNotFound
       uri = home_path
     end
-    flash[:error] = 'Requested %s not found'.localized % controller_name.singularize.localized
+    flash[:error] = 'Requested %s not found' % controller_name.singularize
     redirect_to uri
   end
 

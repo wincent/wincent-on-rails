@@ -43,10 +43,13 @@ describe Article, 'acting as taggable' do
   # consider moving this into the acts_as_taggable module tests
   # this code is no longer specific just to this class
   it 'should have a pending_tags virtual attribute' do
-    article = new_article
-    tags    = 'foo bar baz'
-    article.pending_tags = tags
-    article.pending_tags.should == tags
+    # writing stores to the instance variable
+    @article.pending_tags = 'hello world'
+    @article.instance_eval { @pending_tags }.should == 'hello world'
+
+    # reading reads from the database
+    @article.tag 'foo bar baz'
+    @article.pending_tags.should == 'foo bar baz'
   end
 
   it 'should allow tagging at creation time' do
@@ -97,7 +100,7 @@ end
 
 describe Article, 'validating the redirect' do
   it 'should require it to be present if the body is absent' do
-    new_article(:redirect => nil, :body => nil).should fail_validation_for(:redirect)
+    new_article(:redirect => nil, :body => nil).should fail_validation_for(:base)
   end
 
   it 'should accept an HTTP URL' do
@@ -139,7 +142,7 @@ end
 
 describe Article, 'validating the body' do
   it 'should require it to be present if the redirect is absent' do
-    new_article(:redirect => nil, :body => nil).should fail_validation_for(:body)
+    new_article(:redirect => nil, :body => nil).should fail_validation_for(:base)
   end
 end
 

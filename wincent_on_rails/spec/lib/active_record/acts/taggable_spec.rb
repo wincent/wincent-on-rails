@@ -1,7 +1,7 @@
 require File.dirname(__FILE__) + '/../../../spec_helper'
 require 'active_record/acts/taggable.rb'
 
-# There are no plans to extact this into a separate plug-in, so piggy-back on the application's own test database.
+# There are no plans to extract this into a separate plug-in, so piggy-back on the application's own test database.
 # (An extracted version would need to set up an in-memory SQLite database; see the acts_as_list plug-in for an example.)
 def setup_db
   ActiveRecord::Migration.verbose = false
@@ -42,10 +42,6 @@ describe ActiveRecord::Acts::Taggable, 'adding tag(s)' do
     lambda { @model.tag 'foo bar baz' }.should change { @model.tags.size }.by(3)
   end
 
-  it 'should add multiple, comma-separated tags' do
-    lambda { @model.tag 'foo, bar, baz' }.should change { @model.tags.size }.by(3)
-  end
-
   it 'should ignore excess trailing or leading whitespace' do
     lambda { @model.tag '    foo   ,  bar  ,   baz  ' }.should change { @model.tags.size }.by(3)
   end
@@ -64,7 +60,7 @@ describe ActiveRecord::Acts::Taggable, 'adding tag(s)' do
   end
 
   it 'should handle nested arrays' do
-    lambda { @model.tag ['foo', ['bar', 'baz, abc']] }.should change { @model.tags.size }.by(4)
+    lambda { @model.tag ['foo', ['bar', 'baz abc']] }.should change { @model.tags.size }.by(4)
   end
 
   after(:all) do
@@ -95,11 +91,6 @@ describe ActiveRecord::Acts::Taggable, 'removing tag(s)' do
   it 'should remove multiple, space-delimited tags' do
     @model.tag 'foo bar baz'
     lambda { @model.untag 'foo bar' }.should change { @model.tags.size }.by(-2)
-  end
-
-  it 'should remove multiple, comma-separated tags' do
-    @model.tag 'foo bar baz'
-    lambda { @model.untag 'foo, bar' }.should change { @model.tags.size }.by(-2)
   end
 
   it 'should ignore excess trailing or leading whitespace' do

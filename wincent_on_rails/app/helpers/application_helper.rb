@@ -22,7 +22,7 @@ module ApplicationHelper
     updated = model.updated_at
     if precise  # always show exact date and time
       if created == updated
-        'Created %s'.localized % created.to_s(:long)
+        'Created %s' % created.to_s(:long)
       else
         'Created %s, last updated %s' % [created.to_s(:long), updated.to_s(:long)]
       end
@@ -30,9 +30,9 @@ module ApplicationHelper
       created = created.distance_in_words
       updated = updated.distance_in_words
       if created == updated
-        'Created %s'.localized % created
+        'Created %s' % created
       else
-        'Created %s, last updated %s'.localized % [created, updated]
+        'Created %s, last updated %s' % [created, updated]
       end
     end
   end

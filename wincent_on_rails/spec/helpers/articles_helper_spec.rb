@@ -36,12 +36,17 @@ describe ArticlesHelper, 'link_to_update_preview method' do
   end
 
   it 'should use "update" as the link text' do
-    should_receive(:link_to_remote).with('update', anything())
+    should_receive(:link_to_remote).with('update', anything(), anything())
     link_to_update_preview
   end
 
   it 'should pass the common options to link_to_remote' do
-    should_receive(:link_to_remote).with(anything(), common_options)
+    should_receive(:link_to_remote).with(anything(), common_options, anything())
+    link_to_update_preview
+  end
+
+  it 'should pass a class of "update_link" to link_to_remote' do
+    should_receive(:link_to_remote).with(anything(), anything(), :class => 'update_link')
     link_to_update_preview
   end
 end

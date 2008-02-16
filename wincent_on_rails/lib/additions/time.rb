@@ -1,46 +1,43 @@
 require 'additions/string'
 
 class Time
-
   def distance_in_words
     now     = Time.now
     seconds = (now - self).to_i
     if seconds < 0
-      'in the future'.localized
+      'in the future'
     elsif seconds == 0
-      'now'.localized
+      'now'
     elsif seconds < 60
-      'a few seconds ago'.localized
+      'a few seconds ago'
     elsif seconds < 120
-      'a minute ago'.localized
+      'a minute ago'
     elsif seconds < 180
-      'a couple of minutes ago'.localized
+      'a couple of minutes ago'
     elsif seconds < 300 # 5 minutes
-      'a few minutes ago'.localized
+      'a few minutes ago'
     elsif seconds < 3600 # 60 minutes
-      '%d minutes ago'.localized % (seconds / 60)
+      '%d minutes ago' % (seconds / 60)
     elsif seconds < 7200
-      'an hour ago'.localized
+      'an hour ago'
     elsif seconds < 86400 # 24 hours
-      '%d hours ago'.localized % (seconds / 3600)
+      '%d hours ago' % (seconds / 3600)
     else
       days = seconds / 86400
       if days == 1
-        'yesterday'.localized
+        'yesterday'
       elsif days <= 7
-        '%d days ago'.localized % days
+        '%d days ago' % days
       else
         weeks = days / 7
         if weeks == 1
-          'a week ago'.localized
+          'a week ago'
         elsif weeks <= 6
-          '%d weeks ago'.localized % weeks
+          '%d weeks ago' % weeks
         else
-          # TODO: localize time/date formats as well
           self.strftime('%d %B %Y')
         end
       end
     end
   end
-
 end

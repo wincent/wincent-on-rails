@@ -41,7 +41,7 @@ module ActionController
     # Intended for use as a before_filter to protect adminstrator-only actions.
     def require_admin
       unless self.admin?
-        flash[:notice]          = 'The requested resource requires administrator privileges'.localized
+        flash[:notice]          = 'The requested resource requires administrator privileges'
         session[:original_uri]  = request.request_uri
         redirect_to login_path
       end
@@ -50,7 +50,7 @@ module ActionController
     # Intended for use as a before_filter to protect actions that are only for logged-in users.
     def require_user
       unless self.logged_in?
-        flash[:notice]          = 'You must be logged in to access the requested resource'.localized
+        flash[:notice]          = 'You must be logged in to access the requested resource'
         session[:original_uri]  = request.request_uri
         redirect_to login_path
       end

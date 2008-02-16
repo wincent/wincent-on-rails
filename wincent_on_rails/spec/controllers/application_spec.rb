@@ -1,10 +1,6 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
 describe ApplicationController, 'protected methods', :shared => true do
-  it 'should restrict access to the setup_locale method' do
-    lambda { controller.setup_locale }.should raise_error(NoMethodError, /protected/)
-  end
-
   it 'should restrict access to the login_with_cookie method' do
     lambda { controller.login_with_cookie }.should raise_error(NoMethodError, /protected/)
   end
