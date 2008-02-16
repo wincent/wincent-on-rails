@@ -1,7 +1,17 @@
 class Paginator
   attr_reader :offset
 
-  def initialize page, count, path
+  def initialize params, count, path
+    # unpack params
+    @params           = params
+    page              = params[:page].to_i
+
+    # preserve sort information in links
+    @additonal_params = ''
+    @additonal_params << "&sort=#{params[:sort]}" if params[:sort]
+    @additonal_params << "&order=#{params[:order]}" if params[:order]
+
+    # process page, count and path
     @page   = page > 0 ? page : 1
     @offset = (@page - 1) * 10
     @count  = count
@@ -40,7 +50,7 @@ private
     if on_first_page?
       %Q{<span class="first disabled">First</span>}
     else
-      %Q{<a href="#{@path}?page=1" class="first">First</a>}
+      %Q{<a href="#{@path}?page=1#{@additonal_params}" class="first">First</a>}
     end
   end
 
@@ -48,7 +58,7 @@ private
     if on_last_page?
       %Q{<span class="last disabled">Last</span>}
     else
-      %Q{<a href="#{@path}?page=#{(@count / 10.0).ceil}" class="last">Last</a>}
+      %Q{<a href="#{@path}?page=#{(@count / 10.0).ceil}#{@additonal_params}" class="last">Last</a>}
     end
   end
 
@@ -56,7 +66,7 @@ private
     if on_first_page?
       %Q{<span class="prev disabled">Previous</span>}
     else
-      %Q{<a href="#{@path}?page=#{@page - 1}" class="prev">Previous</a>}
+      %Q{<a href="#{@path}?page=#{@page - 1}#{@additonal_params}" class="prev">Previous</a>}
     end
   end
 
@@ -64,7 +74,7 @@ private
     if on_last_page?
       %Q{<span class="next disabled">Next</span>}
     else
-      %Q{<a href="#{@path}?page=#{@page + 1}" class="next">Next</a>}
+      %Q{<a href="#{@path}?page=#{@page + 1}#{@additonal_params}" class="next">Next</a>}
     end
   end
 end # class Paginator

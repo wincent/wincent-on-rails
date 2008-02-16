@@ -12,7 +12,6 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :blog, :controller => 'posts', :has_many => [ :comments ]
 
   map.resources :sessions
-  map.resources :statuses
 
   # must explicitly allow period in the id part of the route otherwise it will be classified as a route separator
   map.resources :tags, :requirements => { :id => /[a-z.]+/ }

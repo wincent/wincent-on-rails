@@ -53,12 +53,6 @@ module FixtureReplacement
     }
   end
 
-  def status_attributes
-    {
-      :name                     => String.random
-    }
-  end
-
   def tag_attributes
     {
       :name                     => String.random

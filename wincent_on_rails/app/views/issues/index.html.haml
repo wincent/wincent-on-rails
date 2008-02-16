@@ -1,0 +1,16 @@
+%h1 Issues
+%h2 Recently modified
+.pagination=@paginator.pagination_links if @paginator
+%table
+  %tr
+    -sortable_header_cell :kind, 'Kind'
+    -sortable_header_cell :id, '#'
+    -sortable_header_cell :summary, 'Summary'
+    -sortable_header_cell :updated_at, 'When'
+  -for issue in @issues
+    %tr
+      %td{:class => issue.kind_string.tableize}=issue.kind_string.capitalize
+      %td=issue.id
+      %td{:title => h(issue.summary)}=h(truncate(issue.summary, 60))
+      %td=timeinfo issue
+.pagination=@paginator.pagination_links if @paginator

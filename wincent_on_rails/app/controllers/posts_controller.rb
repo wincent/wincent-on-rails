@@ -3,7 +3,8 @@ class PostsController < ApplicationController
   before_filter :get_post, :only => [ :show, :edit, :update ]
 
   def index
-    @paginator  = Paginator.new(params[:page].to_i, Post.count, blog_index_path)
+    # instead of Post.count, should be using only public count
+    @paginator  = Paginator.new(params, Post.count, blog_index_path)
     @posts      = Post.find(:all, :order => 'created_at DESC', :offset => @paginator.offset, :limit => 10)
   end
 

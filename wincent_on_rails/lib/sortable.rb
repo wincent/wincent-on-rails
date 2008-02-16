@@ -16,7 +16,8 @@ module ActionController
           sortable_attributes = sortable_attributes.join ", "
 
           if options[:default]
-            default_attributes = %Q{:order => "#{options[:default].to_s}"}
+            order = (options[:descending] == true) ? 'DESC' : 'ASC'
+            default_attributes = %Q{:order => "#{options[:default].to_s} #{order}"}
           else
             default_attributes = ''
           end
@@ -63,12 +64,14 @@ end # module ActionController
 module ActionView
   module Helpers
     module SortableHelper
-      # TODO: localize these strings
+
+      # Note that this is designed to play nicely with the paginator, preserving the "page" parameter if it is set.
       def sortable_header_cell attribute_name, display_name = nil
         attribute_name    = attribute_name.to_s
         display_name      ||= attribute_name
         css_class_options = {}
-        url               = url_for(:action => params[:action], :controller => params[:controller], :sort => attribute_name)
+        url               = url_for(:action => params[:action], :controller => params[:controller], :sort => attribute_name,
+          :page => params[:page])
         tooltip           = { :title => "Click to sort by #{display_name}" }
         if @sort_by == attribute_name # boldface this attribute
           tooltip         = { :title => 'Click to toggle sort order'}
@@ -77,7 +80,7 @@ module ActionView
           else
             css_class_options = { :class => 'ascending' }
             url = url_for(:action => params[:action], :controller => params[:controller], :sort => attribute_name,
-              :order => 'desc')
+              :order => 'desc', :page => params[:page])
           end
         end
         open :th, css_class_options do
