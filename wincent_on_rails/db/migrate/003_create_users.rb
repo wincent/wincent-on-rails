@@ -5,7 +5,6 @@ class CreateUsers < ActiveRecord::Migration
       t.string      :display_name,        :null => false
       t.string      :passphrase_hash,     :null => false
       t.string      :passphrase_salt,     :null => false
-      t.integer     :locale_id
       t.boolean     :superuser,           :default => false
       t.boolean     :verified,            :default => false
 

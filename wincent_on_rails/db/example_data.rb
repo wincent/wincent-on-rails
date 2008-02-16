@@ -33,13 +33,6 @@ module FixtureReplacement
     }
   end
 
-  def locale_attributes
-    {
-      :code                   => String.random,
-      :description            => String.random
-    }
-  end
-
   def needle_attributes
     {
     }
@@ -61,14 +54,6 @@ module FixtureReplacement
 
   def tagging_attributes
     {
-    }
-  end
-
-  def translation_attributes
-    {
-      :locale                   => new_locale,
-      :key                      => String.random,
-      :translation              => String.random
     }
   end
 

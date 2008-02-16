@@ -1,9 +1,0 @@
-%h1 Locales
--for @locale in @locales
-  %li
-    .label Locale code
-    .attribute=h @locale.code
-    .label Description
-    .attribute= in_place_editor_field :locale, :description
-    =link_to 'edit', edit_locale_path(@locale)
-    =link_to 'translations', locale_translations_path(@locale)

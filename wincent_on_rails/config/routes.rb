@@ -5,7 +5,6 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :emails
   map.resources :issues
   map.resources :links
-  map.resources :locales, :has_many => [ :translations ]
 
   # later this will be map.resources :posts, :as => :blog
   # (see comment for wiki/articles controller)

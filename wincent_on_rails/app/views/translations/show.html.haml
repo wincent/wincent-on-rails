@@ -1,6 +1,0 @@
-%p
-  =h @translation.key
-%p
-  =in_place_editor_field :translation, :translation, {}, :nested => :locale
-%p
-  =link_to 'edit', edit_locale_translation_path(@translation.locale, @translation)
