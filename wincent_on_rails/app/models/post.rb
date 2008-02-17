@@ -17,9 +17,13 @@ class Post < ActiveRecord::Base
   end
 
   def suggested_permalink
-    # iconv can't be trusted to behave the same across platforms
+    # iconv can't be trusted to behave the same across platforms, so don't use it
     # this doesn't handle non-ASCII characters very well (they just get eaten), but for my uses it will be fine
-    base = title.downcase.split(/[^a-z1-9\.]+/).join('-')
+    base = title.downcase.split(/[^a-z0-9\.]+/).join('-')
+    if base.length == 0
+      # handle pathological case
+      base = id.nil? ? 'post' : id.to_s
+    end
 
     # now need to make sure it is unique
     # there is a race here, but seeing as I am the only user creating articles it is not a problem
