@@ -5,6 +5,9 @@ class ApplicationController < ActionController::Base
   protect_from_forgery      :secret => '1b8b0816466a6f55b2a2a860c59d3ba0'
   rescue_from               ActiveRecord::RecordNotFound, :with => :record_not_found
 
+  # all feeds are public, so turn off session management for them
+  session :off,             :if => Proc.new { |req| req.format.atom? }
+
 protected
 
   def record_not_found(uri = nil)

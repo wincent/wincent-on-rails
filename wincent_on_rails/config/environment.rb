@@ -65,6 +65,6 @@ require 'active_record/acts/taggable'
 require 'active_record/acts/searchable'
 #require 'active_record/extras'
 require 'additions/string'
-# no need to explictly require top-level files, authentication.rb and sortable.rb
+require 'custom_atom_feed_helper'
 require 'authentication'
 require 'sortable'

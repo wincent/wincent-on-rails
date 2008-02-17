@@ -1,6 +1,12 @@
 require 'additions/time'
 
 module ApplicationHelper
+  include CustomAtomFeedHelper
+
+  def atom_link
+    @atom_link = auto_discovery_link_tag(:atom, :format => 'atom') # picked up in application layout
+  end
+
   def page_title string
     @page_title = string # picked up in application layout
     open :h1, h(string)

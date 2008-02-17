@@ -3,9 +3,20 @@ class PostsController < ApplicationController
   before_filter :get_post, :only => [ :show, :edit, :update ]
 
   def index
-    # instead of Post.count, should be using only public count
-    @paginator  = Paginator.new(params, Post.count, blog_index_path)
-    @posts      = Post.find(:all, :order => 'created_at DESC', :offset => @paginator.offset, :limit => 10)
+    respond_to do |format|
+      format.html {
+        # instead of Post.count, should be using only public count
+        @paginator  = Paginator.new(params, Post.count, blog_index_path)
+        # TODO: possibly shift this kind of query into the model
+        @posts      = Post.find(:all, :conditions => {'public' => true}, :order => 'created_at DESC',
+          :offset => @paginator.offset, :limit => 10)
+      }
+
+      # auto_discovery_link_tag
+      format.atom {
+        @posts      = Post.find(:all, :conditions => {'public' => true}, :order => 'created_at DESC', :limit => 10)
+      }
+    end
   end
 
   def new
