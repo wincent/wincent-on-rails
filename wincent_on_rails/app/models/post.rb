@@ -26,8 +26,11 @@ class Post < ActiveRecord::Base
     end
 
     # now need to make sure it is unique
-    # there is a race here, but seeing as I am the only user creating articles it is not a problem
-    last =  Post.find(:first, :conditions => ['permalink LIKE ?', "#{base}%"], :order => 'permalink DESC')
+    # there is a race here, but it is harmless for two reasons:
+    # - I am the only user creating articles
+    # - if the proposed permalink is not unique validation will fail and the user can correct the problem
+    # worst case scenario is that validation passes and then the database-level constraint kicks in
+    last =  Post.find(:first, :conditions => ['permalink REGEXP ?', "^#{base}(-[0-9]+)?$"], :order => 'permalink DESC')
     if last.nil?
       base
     else
