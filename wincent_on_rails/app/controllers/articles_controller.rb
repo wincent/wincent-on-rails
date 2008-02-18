@@ -67,7 +67,7 @@ class ArticlesController < ApplicationController
 private
 
   def get_article
-    @article = Article.find_by_title(params[:id]) || Article.find(params[:id])
+    @article = Article.find_by_title(params[:id].gsub('_', ' ')) || Article.find(params[:id])
   end
 
   def clear_redirection_info
@@ -78,7 +78,7 @@ private
   def record_not_found
     if admin?
       flash[:notice] = 'Requested article not found: create it?'
-      session[:new_article_params] = { :title => params[:id] }
+      session[:new_article_params] = { :title => params[:id].gsub('_', ' ') }
       redirect_to new_wiki_path
     else
       # potentially offer a similar notice to the above and a login link here instead

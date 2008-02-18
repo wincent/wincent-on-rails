@@ -67,6 +67,10 @@ describe Article, 'validating the title' do
     create_article(:title => title).should be_valid
     new_article(:title => title).should fail_validation_for(:title)
   end
+
+  it 'should disallow underscores' do
+    article = new_article(:title => 'foo_bar').should fail_validation_for(:title)
+  end
 end
 
 describe Article, 'validating the redirect' do
@@ -121,5 +125,10 @@ describe Article, 'parametrization' do
   it 'should use the title as the param' do
     title = String.random
     new_article(:title => title).to_param.should == title
+  end
+
+  it 'should convert spaces into underscores' do
+    title = 'foo bar'
+    new_article(:title => title).to_param.should == title.gsub(' ', '_')
   end
 end

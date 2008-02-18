@@ -4,6 +4,8 @@ class Article < ActiveRecord::Base
   has_many                :comments,  :as => :commentable
   validates_presence_of   :title
   validates_uniqueness_of :title
+  validates_format_of     :title,     :with => /\A[^_]+\z/,
+    :message => 'must not contain underscores'
   validates_format_of     :redirect,  :with => /\A\s*((\[\[.+\]\])|(https?:\/\/.+))\s*\z/,
     :if => Proc.new { |a| !a.redirect.blank? },
     :message => 'must be a [[wikitext]] link or HTTP URL'
@@ -17,6 +19,6 @@ class Article < ActiveRecord::Base
   end
 
   def to_param
-    title
+    title.gsub(' ', '_')
   end
 end
