@@ -5,16 +5,11 @@ class PostsController < ApplicationController
   def index
     respond_to do |format|
       format.html {
-        # instead of Post.count, should be using only public count
-        @paginator  = Paginator.new(params, Post.count, blog_index_path)
-        # TODO: possibly shift this kind of query into the model
-        @posts      = Post.find(:all, :conditions => {'public' => true}, :order => 'created_at DESC',
-          :offset => @paginator.offset, :limit => 10)
+        @paginator  = Paginator.new(params, Post.count(:conditions => {:public => true}), blog_index_path)
+        @posts      = Post.find_recent(:offset => @paginator.offset)
       }
-
-      # auto_discovery_link_tag
       format.atom {
-        @posts      = Post.find(:all, :conditions => {'public' => true}, :order => 'created_at DESC', :limit => 10)
+        @posts      = Post.find_recent
       }
     end
   end

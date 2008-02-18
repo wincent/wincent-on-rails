@@ -9,6 +9,11 @@ class Post < ActiveRecord::Base
 
   acts_as_taggable
 
+  def self.find_recent options = {}
+    base_options = {:conditions => {'public' => true}, :order => 'created_at DESC', :limit => 10}
+    find(:all, base_options.merge(options))
+  end
+
   def before_validation
     if permalink.blank?
       self.permalink = self.suggested_permalink
