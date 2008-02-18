@@ -1,8 +1,6 @@
-%h1==Tag: #{@tag.name}
-%h2
-  =item_count @tag.taggings_count
-  tagged with
-  =@tag.name
+%h1
+  Tags:
+  =(@tags[:found].collect {|t| t.name}).join ', '
 -@taggings.each do |group, taggings|
   %h3=pluralizing_count taggings.length, group.downcase
   %table

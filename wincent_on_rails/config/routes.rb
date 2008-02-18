@@ -14,7 +14,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :sessions
 
   # must explicitly allow period in the id part of the route otherwise it will be classified as a route separator
-  map.resources :tags, :requirements => { :id => /[a-z.]+/ }
+  map.resources :tags, :requirements => { :id => /[a-z.]+/ }, :collection => { :search => :get }
 
   map.resources :taggings
   map.resources :users
