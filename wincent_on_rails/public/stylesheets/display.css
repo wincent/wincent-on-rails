@@ -26,6 +26,9 @@ a.mailto:after { content: url(../images/mailto.png); }
 #navbar li { display: inline; }
 #navbar a { padding: 1em; margin-left: -0.35em; border-right: 1px solid white; color: white; }
 #navbar a:hover { background: url(../images/navbar-current.png) center center repeat-x; }
+#navbar li.last a { border-right: none; }
+
+#navbar form { position: absolute; top: 1em; display: inline; font-size: 0.75em; }
 
 #content { clear: both; padding: 0em 1em 1em 1em; }
 
