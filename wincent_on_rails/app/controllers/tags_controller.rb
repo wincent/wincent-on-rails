@@ -5,7 +5,7 @@ class TagsController < ApplicationController
 
   def show
     @tag      = Tag.find_by_name(params[:id]) || Tag.find(params[:id])
-    @taggings = Tagging.find_all_by_tag_id(@tag.id)
+    @taggings = Tagging.grouped_taggings_for_tag @tag
   end
 
 private

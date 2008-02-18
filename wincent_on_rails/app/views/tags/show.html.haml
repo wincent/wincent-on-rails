@@ -1,0 +1,15 @@
+%h1==Tag: #{@tag.name}
+%h2
+  =item_count @tag.taggings_count
+  tagged with
+  =@tag.name
+-@taggings.each do |group, taggings|
+  %h3=pluralizing_count taggings.length, group.downcase
+  %table
+    %tr
+      %th Description
+      %th When
+    -for tagging in taggings
+      %tr
+        %td=taggable_link tagging.taggable
+        %td=timeinfo tagging.taggable
