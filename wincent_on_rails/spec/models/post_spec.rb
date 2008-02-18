@@ -1,4 +1,5 @@
-require File.dirname(__FILE__) + '/../spec_helper'
+require File.join(File.dirname(__FILE__), '..', 'spec_helper')
+require File.join(File.dirname(__FILE__), '..', 'lib', 'active_record', 'acts', 'shared_taggable_spec')
 
 describe Post do
   it 'should be valid' do
@@ -28,42 +29,11 @@ end
 
 describe Post, 'acting as taggable' do
   before do
-    @post = create_post
+    @object     = create_post
+    @new_object = new_post
   end
 
-  it 'should respond to the tag message' do
-    @post.tag 'foo'
-    @post.tag_names.should == ['foo']
-  end
-
-  it 'should respond to the untag message' do
-    @post.tag 'foo'
-    @post.untag 'foo'
-    @post.tag_names.should == []
-  end
-
-  it 'should respond to the tag_names message' do
-    @post.tag_names.should == []
-  end
-
-  # consider moving this into the acts_as_taggable module tests
-  # this code is no longer specific just to this class
-  # there may be some way of doing this in a shared behaviour block
-  it 'should have a pending_tags virtual attribute' do
-    # writing stores to the instance variable
-    @post.pending_tags = 'hello world'
-    @post.instance_eval { @pending_tags }.should == 'hello world'
-
-    # reading reads from the database
-    @post.tag 'foo bar baz'
-    @post.pending_tags.should == 'foo bar baz'
-  end
-
-  it 'should allow tagging at creation time' do
-    # we explicitly test this because this is a "has many through" association and so isn't automatic
-    post = create_post(:pending_tags => 'foo bar baz')
-    post.tag_names.should == ['foo', 'bar', 'baz']
-  end
+  it_should_behave_like 'ActiveRecord::Acts::Taggable'
 end
 
 # :title, :permalink, :excerpt, :body, :public, :accepts_comments, :pending_tags

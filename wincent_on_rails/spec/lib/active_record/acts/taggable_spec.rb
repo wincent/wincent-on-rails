@@ -1,5 +1,5 @@
 require File.dirname(__FILE__) + '/../../../spec_helper'
-require 'active_record/acts/taggable.rb'
+require File.join(File.dirname(__FILE__), 'shared_taggable_spec')
 
 # There are no plans to extract this into a separate plug-in, so piggy-back on the application's own test database.
 # (An extracted version would need to set up an in-memory SQLite database; see the acts_as_list plug-in for an example.)
@@ -19,6 +19,24 @@ end
 # Create a model purely for testing purposes so as to avoid dependening on a real model from the application.
 class ActsAsTaggableTestModel < ActiveRecord::Base
   acts_as_taggable
+end
+
+describe ActiveRecord::Acts::Taggable, 'shared' do
+  before(:all) do
+    setup_db
+  end
+
+  before do
+    @object     = ActsAsTaggableTestModel.create
+    @new_object = ActsAsTaggableTestModel.new
+  end
+
+  after(:all) do
+    ActsAsTaggableTestModel.destroy_all
+    teardown_db
+  end
+
+  it_should_behave_like 'ActiveRecord::Acts::Taggable'
 end
 
 describe ActiveRecord::Acts::Taggable, 'adding tag(s)' do
@@ -153,4 +171,3 @@ describe ActiveRecord::Acts::Taggable, 'getting a list of tag name(s)' do
     teardown_db
   end
 end
-
