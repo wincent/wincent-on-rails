@@ -32,6 +32,8 @@ module CustomAtomFeedHelper
         @xml.updated model.updated_at.xmlschema
 
         # polymorphic_url fails: tries to call post_url on view (needs to be blog_url)
+        # see: http://dev.rubyonrails.org/ticket/11141
+        # unlikely to be fixed as an easy workaround exists in Edge Rails post 2.0.2
         @xml.link :rel => 'alternate', :type => 'text/html', :href => options[:url] || @view.polymorphic_url(model)
         yield @xml
       end

@@ -24,6 +24,7 @@ ActionController::Routing::Routes.draw do |map|
   # with next Rails release will be able to use:
   #   map.resources :articles, :as => :wiki
   # which will be nice because I'll have helper methods like "new_article_path" instead of "new_wiki_path"
+  # will also fix the AtomFeedHelper breakage (polymorphic_url won't work with these kinds of routes)
   # again, must explicitly allow period in the id part of the route otherwise it will be classified as a route separator
   map.resources :wiki,    :requirements => { :id => /[^\/]+/ }, :controller => 'articles',  :has_many => [ :comments ]
 
