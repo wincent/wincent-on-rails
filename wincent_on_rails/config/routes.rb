@@ -4,7 +4,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :comments
   map.resources :emails
   map.resources :issues
-  map.resources :links
+  map.resources :links, :requirements => { :id => /[a-z0-9\-]+/ }
 
   # later this will be map.resources :posts, :as => :blog
   # (see comment for wiki/articles controller)

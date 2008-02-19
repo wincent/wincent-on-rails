@@ -11,6 +11,8 @@ class Link < ActiveRecord::Base
   validates_presence_of   :uri
   validates_uniqueness_of :uri
   validates_uniqueness_of :permalink, :allow_nil => true
+  validates_format_of     :permalink, :with => /\A[a-z0-9\-]*\z/, :allow_nil => true,
+    :message => 'may only contain lowercase letters, numbers and hypens'
   attr_accessible         :uri,       :permalink
 
   def to_param
