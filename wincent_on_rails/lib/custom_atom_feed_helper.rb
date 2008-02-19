@@ -1,12 +1,20 @@
 # Simplified version of the official AtomFeedHelper module from the official Rails repo:
+#
 # - get rid of a lot of overridable, dynamic stuff and replace it with hard-coded values
 # - require "updated" to be specifically specified rather than defaulting to "now"
-# - fix one bug (use of "id" rather than "to_param")
 # - work around failure of polymorphic_url method when resource has :controller override in routes.rb
+#
+# For information on the Atom format see:
+# - http://www.atomenabled.org/developers/syndication/                      (nice summary)
+# - http://www.atomenabled.org/developers/syndication/atom-format-spec.php  (exhaustive description)
 module CustomAtomFeedHelper
   def custom_atom_feed &block
     xml = eval 'xml', block.binding
     xml.instruct!
+
+    # Required feed elements:     title, id, updated
+    # Recommended feed elements:  author, link
+    # Optional feed elements:     category, contributor, generator, icon, logo, rights, subtitle
     xml.feed 'xml:lang' => 'en-US', 'xmlns' => 'http://www.w3.org/2005/Atom' do
       xml.id "tag:#{request.host},2008:#{request.request_uri.split('.')[0]}"
       xml.link :rel => 'alternate', :type => 'text/html', :href => request.url.gsub(/\.atom$/, '')
@@ -25,9 +33,15 @@ module CustomAtomFeedHelper
       @xml.updated date_or_time.xmlschema
     end
 
+    # Required entry elements:    id, title, updated
+    # Recommended entry elements: author, content, link, summary
+    # Optional entry elements:    category, contributor, published, source, rights
     def entry model, options = {}, &block
       @xml.entry do
-        @xml.id "tag:#{@view.request.host},2008:#{model.class}/#{model.to_param}"
+        # on generating unique tag URIs:  http://diveintomark.org/archives/2004/05/28/howto-atom-id
+        # see also:                       http://www.taguri.org/
+        # =>                              http://www.faqs.org/rfcs/rfc4151.html
+        @xml.id "tag:#{@view.request.host},2008:#{model.class.to_s.tableize}/#{model.id}"
         @xml.published model.created_at.xmlschema
         @xml.updated model.updated_at.xmlschema
 
