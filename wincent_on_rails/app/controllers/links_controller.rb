@@ -3,7 +3,7 @@ class LinksController < ApplicationController
   before_filter     :get_link,      :only => [:edit, :update, :destroy]
   in_place_edit_for :link, :uri
   in_place_edit_for :link, :permalink
-  acts_as_sortable  :by => [:uri, :permalink, :click_count]
+  acts_as_sortable  :by => [:id, :uri, :permalink, :click_count]
 
   def index
     @links = Link.find(:all, sort_options)
