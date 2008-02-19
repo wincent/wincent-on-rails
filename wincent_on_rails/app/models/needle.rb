@@ -5,17 +5,17 @@ class Needle < ActiveRecord::Base
   # like URLs and emails
   # return an array
   def self.tokenize string
-    string.split # crude approximation for now
+    string.blank? ? [] : string.split # crude approximation for now
   end
 
   # Options:
   #   <tt>:user</tt>:: a user model object (if admin finds all records, if nil finds only public records, otherwise finds
   #                    records visible to that user)
   #   <tt>:type</tt>:: either <tt>:or</tt> to find models which feature any of the words in the query string, or <tt>:and</tt>
-  #                    (the default) to find models which featuer all of the words in the query string.
+  #                    (the default) to find models which feature all of the words in the query string.
   def self.find_using_query_string query, options = {}
     needle_query = NeedleQuery.new(query, options)
-    needle_query.sql
+    Needle.find_by_sql needle_query.sql
   end
 
   class NeedleQuery

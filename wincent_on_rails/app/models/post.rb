@@ -8,6 +8,7 @@ class Post < ActiveRecord::Base
   validates_presence_of   :excerpt
 
   acts_as_taggable
+  acts_as_searchable      :attributes => [:title, :excerpt, :body]
 
   def self.find_recent options = {}
     base_options = {:conditions => {'public' => true}, :order => 'created_at DESC', :limit => 10}

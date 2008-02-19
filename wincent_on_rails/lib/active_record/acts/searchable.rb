@@ -3,6 +3,7 @@ module ActiveRecord
     module Searchable
       def self.included base
         base.extend(ClassMethods)
+        base.class_inheritable_accessor  :searchable_attributes
       end
 
       module ClassMethods
@@ -11,11 +12,10 @@ module ActiveRecord
         # <tt>:attributes</tt>:: a hash of attribute names to be indexed
         def acts_as_searchable options = {}
           class_eval do
-            @@searchable_attributes = options[:attributes] || []
-            after_create  :create_needles
-            after_update  :update_needles
-            after_destroy :destroy_needles
-            # if this becomes a performance problem look at using an observer (background process) instead
+            after_create                :create_needles
+            after_update                :update_needles
+            after_destroy               :destroy_needles
+            self.searchable_attributes  = options[:attributes] || [] # the "self" is _not_ optional
             include ActiveRecord::Acts::Searchable::InstanceMethods
             extend ActiveRecord::Acts::Searchable::ClassMethods
           end
@@ -60,11 +60,11 @@ module ActiveRecord
         def create_needles
           model_class     = self.class.to_s
           model_id        = self.id
-          user            = self.needle_user_id
-          @@searchable_attributes.each do |attribute|
+          user            = needle_user_id
+          searchable_attributes.each do |attribute|
             attribute_name  = attribute.to_s
             value           = self.send(attribute)
-            Needle.tokenize(value) do |token|
+            Needle.tokenize(value).each do |token|
               Needle.create :model_class    => model_class,
                             :model_id       => model_id,
                             :attribute_name => attribute_name,
@@ -75,8 +75,8 @@ module ActiveRecord
         end
 
         def update_needles
-          self.destroy_needles
-          self.create_needles
+          destroy_needles
+          create_needles
         end
 
         def destroy_needles
