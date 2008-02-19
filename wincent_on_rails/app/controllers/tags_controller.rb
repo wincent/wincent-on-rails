@@ -11,7 +11,7 @@ class TagsController < ApplicationController
 
   # NOTE/BUG: can never have a tag named "search"
   def search
-    if params[:q]
+    unless params[:q].blank?
       # first get the tags
       tags = params[:q].downcase.split(' ')
       @tags, @taggings = Tagging.grouped_taggings_for_tag_names tags, current_user
@@ -19,7 +19,7 @@ class TagsController < ApplicationController
         flash[:notice] = "Non-existent tags excluded from search results: #{@tags[:not_found].join ', '}"
       end
     else
-      redirect_to tags_path
+      render
     end
   end
 

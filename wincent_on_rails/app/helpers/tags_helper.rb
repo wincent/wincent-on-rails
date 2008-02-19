@@ -9,4 +9,12 @@ module TagsHelper
       raise 'not yet implemented'
     end
   end
+
+  def search_page_title
+    if @tags
+      page_title "Tags: #{(@tags[:found].collect {|t| t.name}).join ', '}"
+    else
+      page_title "Tag search"
+    end
+  end
 end
