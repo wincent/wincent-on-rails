@@ -13,13 +13,15 @@ class TagsController < ApplicationController
   def search
     unless params[:q].blank?
       # first get the tags
-      tags = params[:q].downcase.split(' ')
+      tags = params[:q].downcase.split(' ').uniq
+      if tags.length > 10
+        tags = tags[0..9]
+        flash[:warning] = 'Excess tags stripped from search (maximum of 10 allowed)'
+      end
       @tags, @taggings = Tagging.grouped_taggings_for_tag_names tags, current_user
       if @tags[:not_found].length > 0
         flash[:notice] = "Non-existent tags excluded from search results: #{@tags[:not_found].join ', '}"
       end
-    else
-      render
     end
   end
 
