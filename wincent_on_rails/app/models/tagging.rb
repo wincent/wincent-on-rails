@@ -40,6 +40,7 @@ class Tagging < ActiveRecord::Base
       QUERY
 
       # here we require that each taggable have _all_ the tags in order to survive
+      # an alternative would be to accept all and order them from highest count to lowest in the search results
       taggings = Tagging.find_by_sql([query, *tag_ids]).reject { |t| t.tag_count.to_i < tag_ids.length }
       @taggings = {}
       taggings.each do |t|
