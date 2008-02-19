@@ -1,7 +1,7 @@
 %h1 Edit post
 =error_messages_for :post
 -form_for @post, :url => blog_path, :method => 'put' do |f|
-  %table
+  %table.main_form
     %tr
       %th Title
       %td=f.text_field :title

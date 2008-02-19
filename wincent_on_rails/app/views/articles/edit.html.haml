@@ -1,7 +1,7 @@
 %h1 Edit article
 =error_messages_for :article
 -form_for @article, :url => wiki_path, :method => 'put' do |f|
-  %table
+  %table.main_form
     %tr
       %th Title
       %td=f.text_field :title
