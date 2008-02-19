@@ -8,6 +8,12 @@ class Needle < ActiveRecord::Base
     string.blank? ? [] : string.split # crude approximation for now
   end
 
+  # Will return an array of Needle objects. Example:
+  #   [#<Needle model_class: "Post", model_id: 13>]
+  #
+  # To actual get any useful information out of this array requires an additional database query
+  # per result, so it could get quite expensive.
+  #
   # Options:
   #   <tt>:user</tt>:: a user model object (if admin finds all records, if nil finds only public records, otherwise finds
   #                    records visible to that user)

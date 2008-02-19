@@ -60,16 +60,35 @@ module ActiveRecord
         def create_needles
           model_class     = self.class.to_s
           model_id        = self.id
-          user            = needle_user_id
+          user            = needle_user_id || 'NULL'
           searchable_attributes.each do |attribute|
             attribute_name  = attribute.to_s
             value           = self.send(attribute)
             Needle.tokenize(value).each do |token|
-              Needle.create :model_class    => model_class,
-                            :model_id       => model_id,
-                            :attribute_name => attribute_name,
-                            :content        => token,
-                            :user_id        => user
+              # ActiveRecord is just _too_ slow to do it this way
+              # with a relatively big post (40+KB) it took about 30 seconds to save the article in development mode,
+              # which is of course, ridiculous
+              # so either look at updating this lazily in the background
+              # or inserting multiple records at once
+              # or bypassing ActiveRecord entirely
+              # the searching itself seems fast enough for now, it's the insertion which sucks
+              #Needle.create :model_class    => model_class,
+              #              :model_id       => model_id,
+              #              :attribute_name => attribute_name,
+              #              :content        => token,
+              #              :user_id        => user
+
+              # TODO: if we go this way, must properly sanitize token variable
+              next if token =~ /'/
+
+              # this way our query drops to about 3 seconds in development mode
+              # still far too long, but it is a 10-fold improvement over the above
+              # until I decide what to do I am going to disable "acts_as_searchable"
+              Needle.connection.insert <<-SQL
+                INSERT INTO needles (model_class, model_id, attribute_name, content, user_id, created_at, updated_at)
+                VALUES ('#{model_class}', #{model_id}, '#{attribute_name}', '#{token}', #{user}, NOW(), NOW())
+              SQL
+
             end
           end
         end
