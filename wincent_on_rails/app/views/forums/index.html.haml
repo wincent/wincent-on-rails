@@ -1,0 +1,10 @@
+%h1 Forums
+-for forum in @forums
+  .forum
+    %h2=link_to forum.name, forum_path(forum)
+    =topic_count forum.topics_count
+    description
+    -admin_only do
+      =link_to 'edit', edit_forum_path(forum)
+-admin_only do
+  =link_to 'new', new_forum_path

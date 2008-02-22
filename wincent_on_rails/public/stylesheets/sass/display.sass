@@ -99,6 +99,10 @@ a.mailto:after
   display:    inline
   font-size:  0.75em
 
+#breadcrumbs
+  margin:     1em
+  font-size:  0.9em
+
 #content
   clear:            both
   padding:          0em 1em 1em 1em
@@ -123,6 +127,24 @@ a.mailto:after
   background:       #c3e3b5
 
 #warning
+  background:       #959af9
+
+// pseudo-flashes
+// just like the real flashes, but class-based rather than id-based so that they can be used multiple times
+
+.error, .notice, .warning
+  font-weight:      bold
+  border:           1px solid gray
+  margin:           1em
+  padding:          1em
+
+.error
+  background:       #f9b8be
+
+.notice
+  background:       #c3e3b5
+
+.warning
   background:       #959af9
 
 // pagination

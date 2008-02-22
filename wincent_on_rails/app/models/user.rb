@@ -16,14 +16,14 @@ class User < ActiveRecord::Base
   # NOTE: validates_uniqueness_of causes an extra SELECT every time you save, one for each attribute whose uniqueness you validate
   validates_uniqueness_of   :login_name,    :case_sensitive => false
   validates_length_of       :login_name,    :minimum => MINIMUM_LOGIN_NAME_LENGTH
-  validates_format_of       :login_name,    :with => /\A[a-z]{2}( ?\w+)+\z/i, :allow_nil => true, :message =>
-  'may only contain letters, numbers, underscores and non-consecutive, non-trailing spaces; must start with at least two letters'
+  validates_format_of       :login_name,    :with => /\A[a-z]{2}[a-z0-9]+\z/i, :allow_nil => true, :message =>
+  'may only contain letters and numbers; must start with at least two letters'
 
   before_validation         { |u| u.display_name = u.login_name if u.display_name.blank? }
   validates_uniqueness_of   :display_name,  :case_sensitive => false
   validates_length_of       :display_name,  :minimum => MINIMUM_LOGIN_NAME_LENGTH
-  validates_format_of       :display_name,  :with => /\A[a-z]{2}( ?\w+)+\z/i, :allow_nil => true, :message =>
-  'may only contain letters, numbers, underscores and non-consecutive, non-trailing spaces; must start with at least two letters'
+  validates_format_of       :display_name,  :with => /\A[a-z]{2}( ?[a-z0-9]+)+\z/i, :allow_nil => true, :message =>
+  'may only contain letters, numbers and non-consecutive, non-trailing spaces; must start with at least two letters'
 
   validates_presence_of     :passphrase,      :on => :create
   validates_length_of       :passphrase,      :minimum => MINIMUM_PASSWORD_LENGTH,  :if => Proc.new { |u| !u.passphrase.blank? }
@@ -44,9 +44,6 @@ class User < ActiveRecord::Base
 
   # model the registration event? (email confirmation etc)
   #has_one                   :registration
-
-  #has_many                  :memberships
-  #has_many                  :groups,        :through => :memberships
 
   # the first created user is the superuser
   before_create             { |u| u.superuser = true if User.count == 0 }
@@ -103,7 +100,7 @@ class User < ActiveRecord::Base
   end
 
   def to_param
-    super
+    display_name.downcase.gsub ' ', '-'
   end
 
 end

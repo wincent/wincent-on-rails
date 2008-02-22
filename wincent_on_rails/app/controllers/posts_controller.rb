@@ -43,8 +43,7 @@ class PostsController < ApplicationController
   end
 
   def show
-    @comment = @post.comments.build if @post.accepts_comments? && logged_in?
-    render
+    @comment = @post.comments.build if @post.accepts_comments?
   end
 
   def edit

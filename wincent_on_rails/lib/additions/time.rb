@@ -1,5 +1,3 @@
-require 'additions/string'
-
 class Time
   def distance_in_words
     now     = Time.now

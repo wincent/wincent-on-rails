@@ -1,0 +1,13 @@
+#breadcrumbs
+  =link_to 'Home', home_path
+  &raquo;
+  =link_to 'Forums', forums_path
+  &raquo;
+  =link_to @forum.name, forum_path(@forum)
+  &raquo;
+  =h @topic.title
+=page_title @topic.title
+%div[@topic]
+  =preserve @topic.body.w
+-if admin? or (!current_user.nil? and current_user == @topic.user_id)
+  you can edit this

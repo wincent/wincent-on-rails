@@ -30,6 +30,8 @@ a.mailto:after { content: url(../images/mailto.png); }
 
 #navbar form { position: absolute; top: 1em; display: inline; font-size: 0.75em; }
 
+#breadcrumbs { margin: 1em; font-size: 0.9em; }
+
 #content { clear: both; padding: 0em 1em 1em 1em; }
 
 #footer { text-align: center; font-size: x-small; margin: 1em; }
@@ -41,6 +43,14 @@ a.mailto:after { content: url(../images/mailto.png); }
 #notice { background: #c3e3b5; }
 
 #warning { background: #959af9; }
+
+.error, .notice, .warning { font-weight: bold; border: 1px solid gray; margin: 1em; padding: 1em; }
+
+.error { background: #f9b8be; }
+
+.notice { background: #c3e3b5; }
+
+.warning { background: #959af9; }
 
 .pagination { font-size: x-small; text-align: right; }
 .pagination .disabled { color: gray; }

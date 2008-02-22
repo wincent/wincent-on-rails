@@ -63,8 +63,9 @@ Sass::Plugin.options[:style] = :compact
 
 require 'active_record/acts/taggable'
 require 'active_record/acts/searchable'
-#require 'active_record/extras'
-require 'additions/string'
 require 'custom_atom_feed_helper'
 require 'authentication'
 require 'sortable'
+require 'wikitext'
+require 'wikitext/string'
+require 'wikitext/rails'

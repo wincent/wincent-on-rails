@@ -8,5 +8,9 @@
     %p
       .label Password
       =password_field_tag :passphrase, params[:passphrase]
-    %p=submit_tag 'Log in'
-%p=link_to 'New account', new_user_path
+    %p
+      =submit_tag 'Log in'
+      &nbsp;login via OpenID
+%ul
+  %li=link_to 'Sign up', new_user_path
+  %li=link_to 'Lost password'

@@ -2,10 +2,13 @@ class CommentsController < ApplicationController
   before_filter :require_user, :only => [ :index ]
 
   def index
-    if admin?         # admins can see all comments
-      @comments = Comment.find(:all)
-    else              # all other in users can only see their own
-      @comments = Comment.find_by_user_id(current_user.id)
+    if admin? # admin can see all comments
+      @paginator  = Paginator.new(params, Comment.count(:conditions => {:spam => false}), comments_path)
+      @posts      = Comment.find_recent(:offset => @paginator.offset)
+    else      # all other in users can only see their own
+      @paginator  = Paginator.new(params, Comment.count(:conditions => ['public = TRUE OR user_id = ?', current_user.id]),
+        comments_path)
+      @comments   = Comment.find_by_user_id(current_user.id)
     end
   end
 
@@ -34,15 +37,22 @@ class CommentsController < ApplicationController
     # now create comment and try to add it
     @comment = parent_instance.comments.build(params[:comment])
     @comment.user = current_user
-    @comment.awaiting_moderation = false if admin? # consider turning off moderation: can turn it on if needed
+    @comment.awaiting_moderation = (!admin? or !logged_in?)
     if @comment.save
-      # again this is quite ugly due to the polymorphic association
-      flash[:notice] = 'Successfully added new comment.'
+      if @comment.awaiting_moderation
+        flash[:notice] = 'Your comment is awaiting moderation.'
+      else
+        flash[:notice] = 'Successfully added new comment.'
+      end
       redirect_to (send "#{parent}_path", parent_instance)
     else
       flash[:error] = 'Failed to add new comment.'
       render :action => 'new'
     end
+  end
+
+  def edit
+    render
   end
 
   def update

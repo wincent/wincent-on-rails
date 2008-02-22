@@ -4,17 +4,21 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :comments
   map.resources :emails
   map.resources :issues
-  map.resources :links, :requirements => { :id => /[a-z0-9\-]+/ }
+  map.resources :links
 
   # later this will be map.resources :posts, :as => :blog
   # (see comment for wiki/articles controller)
   # must explicitly allow period in the id part of the route otherwise it will be classified as a route separator
   map.resources :blog, :requirements => { :id => /[a-z0-9\-\.]+/ }, :controller => 'posts', :has_many => [ :comments ]
 
+  map.resources :forums do |forum|
+    forum.resources :topics, :has_many => [ :comments ]
+  end
+
   map.resources :sessions
 
   # must explicitly allow period in the id part of the route otherwise it will be classified as a route separator
-  map.resources :tags, :requirements => { :id => /[a-z.]+/ }, :collection => { :search => :get }
+  map.resources :tags, :requirements => { :id => /[a-z\.]+/ }, :collection => { :search => :get }
 
   map.resources :taggings
   map.resources :users
@@ -27,6 +31,9 @@ ActionController::Routing::Routes.draw do |map|
   # will also fix the AtomFeedHelper breakage (polymorphic_url won't work with these kinds of routes)
   # again, must explicitly allow period in the id part of the route otherwise it will be classified as a route separator
   map.resources :wiki,    :requirements => { :id => /[^\/]+/ }, :controller => 'articles',  :has_many => [ :comments ]
+
+  # regular routes
+  map.connect 'misc/:action', :controller => 'misc'
 
   # named routes
   map.login     'login',  :controller => 'sessions',  :action => 'new'

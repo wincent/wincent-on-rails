@@ -1,5 +1,6 @@
 %h3 Create new comment
 =error_messages_for :comment
+=render :partial => 'shared/anonymous' unless logged_in?
 -form_for @comment, :url => polymorphic_comments_path(@comment) do |f|
   %table
     %tr

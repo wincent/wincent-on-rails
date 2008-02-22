@@ -150,8 +150,8 @@ describe User, 'validating the login name' do
     new_user(:login_name => 'foo  bar').should fail_validation_for(:login_name)
   end
 
-  it 'should allow letters, numbers, underscores, and non-consecutive spaces' do
-    new_user(:login_name => 'foo bar_baz9').should be_valid
+  it 'should allow letters and numbers' do
+    new_user(:login_name => 'foobarbaz9').should be_valid
   end
 
   it 'should disallow all other characters' do
@@ -191,8 +191,8 @@ describe User, 'validating the display name' do
     new_user(:display_name => 'foo  bar').should fail_validation_for(:display_name)
   end
 
-  it 'should allow letters, numbers, underscores, and non-consecutive spaces' do
-    new_user(:display_name => 'foo bar_baz9').should be_valid
+  it 'should allow letters, numbers and non-consecutive spaces' do
+    new_user(:display_name => 'foo bar baz9').should be_valid
   end
 
   it 'should disallow all other characters' do

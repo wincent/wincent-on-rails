@@ -12,7 +12,10 @@
         %span.annotation (optional)
       %td=f.text_field :permalink
     %tr
-      %th Excerpt
+      %th
+        Excerpt
+        %br
+        %span.annotation==(#{wikitext_cheatsheet})
       %td=preserve(f.text_area(:excerpt, :cols => 80))
     %tr
       %th

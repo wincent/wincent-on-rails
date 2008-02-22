@@ -25,16 +25,10 @@ module PostsHelper
   end
 
   def common_options
-    # form ID will either be "new_post" or "edit_post_1", "edit_post_2" etc
-    #form_id = "#{request.parameters['action']}_post"
-    #(form_id << "_#{@post.id}") if (@post && @post.id)
-    # for some reason if I use Form.serialize at all Rails adds _method='put' to my query as a hidden param
     {
       :url => blog_index_path,
       :method => 'post',
       :update => 'preview',
-      #:with => "Form.serialize('#{form_id}')",
-      #:with => "form=Form.serialize('#{form_id}')",
       :with => "'title=' + encodeURIComponent($('post_title').value) + '&excerpt=' + encodeURIComponent($('post_excerpt').value) + '&body=' + encodeURIComponent($('post_body').value)",
       :before => "Element.show('spinner')",
       :complete => "Element.hide('spinner')"

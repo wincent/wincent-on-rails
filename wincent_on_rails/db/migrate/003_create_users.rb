@@ -5,11 +5,11 @@ class CreateUsers < ActiveRecord::Migration
       t.string      :display_name,        :null => false
       t.string      :passphrase_hash,     :null => false
       t.string      :passphrase_salt,     :null => false
-      t.boolean     :superuser,           :default => false
-      t.boolean     :verified,            :default => false
+      t.boolean     :superuser,           :default => false,  :null => false
+      t.boolean     :verified,            :default => false,  :null => false
 
       # can suspend (ban) users who abuse the system (for example, spammers)
-      t.boolean     :suspended,           :default => false
+      t.boolean     :suspended,           :default => false,  :null => false
 
       t.string      :session_key
       t.datetime    :session_expiry

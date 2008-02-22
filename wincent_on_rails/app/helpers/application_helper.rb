@@ -16,6 +16,11 @@ module ApplicationHelper
     content_tag :a, '', :id => name, :name => name
   end
 
+  def wikitext_cheatsheet
+    link_to 'wikitext cheatsheet', url_for(:controller => 'misc', :action => 'wikitext_cheatsheet'),
+      :popup => ['height=500,width=400']
+  end
+
   # Pretty formatting for model creation/update information.
   #
   # Examples:
@@ -23,7 +28,6 @@ module ApplicationHelper
   #   - Created 4 hours ago, last updated a few seconds ago
   #
   def timeinfo(model, precise = false)
-    # BUG: in Spanish localization will be translated as "creado" (masculine) etc for both masculine and feminine models
     created = model.created_at
     updated = model.updated_at
     if precise  # always show exact date and time
@@ -47,13 +51,17 @@ module ApplicationHelper
     if number == 1
       "1 #{thing.singularize}"
     else
-      "#{number} #{thing.pluralize}"
+      "#{number_with_delimiter(number)} #{thing.pluralize}"
     end
   end
 
-  # TODO: localize
   def item_count number
     pluralizing_count number, 'item'
+  end
+
+  # declared here because used by both Forums and Topics controllers
+  def topic_count number
+    pluralizing_count number, 'topic'
   end
 
   def scaled_tag tag
@@ -68,6 +76,16 @@ module ApplicationHelper
       link_to tag.name, tag_path(tag), :title => "#{item_count(tag.taggings_count)} tagged with '#{tag.name}'"
     end
     links.length == 0 ? 'none' : links.join(", ")
+  end
+
+  # Use whenever an item might be posted by an anonymous (nil) user;
+  # comments, topics, issues and so forth.
+  def link_to_user user
+    if user.nil?
+      'anonymous'
+    else
+      link_to user.display_name, user_path(user)
+    end
   end
 
   # prevent Haml from whitespace-damaging <pre> blocks which might be in wikitext markup (very hacky)

@@ -1,0 +1,12 @@
+!!! XML
+!!!
+%html
+  %head
+    %meta{'http-equiv' => 'Content-Type', :content => 'text/html;charset=UTF-8'}
+    %title wincent.com
+    =stylesheet_link_tag 'display'
+  %body
+    #content
+      =yield
+    #footer
+      ==Copyright &copy; 1997-#{Time.new.year} #{mail_to('win@wincent.com', 'Wincent Colaiuta')}.
