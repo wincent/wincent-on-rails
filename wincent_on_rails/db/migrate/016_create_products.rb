@@ -4,6 +4,9 @@ class CreateProducts < ActiveRecord::Migration
       t.string      :name, :null => false
       t.timestamps
     end
+
+     # database-level constraint to ensure uniqueness (validates_uniqueness_of vulnerable to races)
+     add_index  :products, :name, :unique => true
   end
 
   def self.down
