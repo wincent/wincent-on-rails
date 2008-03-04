@@ -9,6 +9,7 @@ module ApplicationHelper
 
   def page_title string
     @page_title = string # picked up in application layout
+    # NOTE: open will become haml_tag in next Haml release
     open :h1, h(string)
   end
 
@@ -105,8 +106,15 @@ module ApplicationHelper
     end
   end
 
+  def logged_in_and_verified_only &block
+    if logged_in_and_verified?
+      yield
+    end
+  end
+
   def admin_only &block
     if admin?
+      # NOTE: open will become haml_tag in next Haml release
       open :div, { :class => 'admin' } do
         yield
       end
@@ -120,10 +128,31 @@ module ApplicationHelper
     class_str = comment.commentable.class.to_s
     case class_str
     when 'Post'
-      class_str = 'blog'
+      post = comment.commentable
+      blog_comment_path post, comment
     when 'Aritcle'
-      class_str = 'wiki'
+      article = comment.commentable
+      wiki_comment_path article, comment
+    when 'Topic'
+      topic = comment.commentable
+      forum = topic.forum
+      forum_topic_comment_path forum, topic, comment
     end
-    send "#{class_str.underscore}_comments_path", comment.commentable
   end
+
+  def link_to_commentable commentable
+    case commentable
+    when Article
+      link_to commentable.title, wiki_path(commentable)
+    when Issue
+      raise "not implemented yet"
+    when Post
+      link_to commentable.title, blog_path(commentable)
+    when Topic
+      link_to commentable.title, forum_topic_path(commentable.forum, commentable)
+    else
+      raise
+    end
+  end
+
 end

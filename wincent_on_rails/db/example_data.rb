@@ -14,6 +14,12 @@ module FixtureReplacement
     }
   end
 
+  def confirmation_attributes
+    {
+      :email                => new_email
+    }
+  end
+
   def email_attributes
     {
       :address              => "#{String.random}@example.com",
@@ -60,7 +66,6 @@ module FixtureReplacement
   def user_attributes
     passphrase = String.random
     {
-      :login_name               => String.random,
       :display_name             => String.random,
       :passphrase               => passphrase,
       :passphrase_confirmation  => passphrase

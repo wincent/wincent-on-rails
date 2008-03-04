@@ -11,7 +11,7 @@ class TopicsController < ApplicationController
       format.html {
         @topic = @forum.topics.build(params[:topic])
         @topic.user = current_user
-        @topic.awaiting_moderation = true unless logged_in?
+        @topic.awaiting_moderation = true unless logged_in_and_verified?
         if @topic.save
           flash[:notice] = 'Successfully created new topic.'
           redirect_to forum_topic_path(@forum, @topic)

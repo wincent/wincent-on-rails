@@ -2,24 +2,18 @@ class User < ActiveRecord::Base
   MINIMUM_LOGIN_NAME_LENGTH = 3
   MINIMUM_PASSWORD_LENGTH   = 8
 
-  has_many    :emails
-  has_many    :issues
-  has_many    :comments
+  has_many                  :emails, :dependent => :destroy
+  has_many                  :issues
+  has_many                  :comments
+  has_many                  :topics
 
   attr_reader               :passphrase
-  attr_accessor             :passphrase_confirmation, :old_passphrase
+  attr_accessor             :passphrase_confirmation, :old_passphrase, :email
 
-  attr_accessible           :login_name, :display_name, :passphrase, :passphrase_confirmation, :old_passphrase
-
-  validates_presence_of     :login_name
+  attr_accessible           :display_name, :passphrase, :passphrase_confirmation, :old_passphrase, :email
 
   # NOTE: validates_uniqueness_of causes an extra SELECT every time you save, one for each attribute whose uniqueness you validate
-  validates_uniqueness_of   :login_name,    :case_sensitive => false
-  validates_length_of       :login_name,    :minimum => MINIMUM_LOGIN_NAME_LENGTH
-  validates_format_of       :login_name,    :with => /\A[a-z]{2}[a-z0-9]+\z/i, :allow_nil => true, :message =>
-  'may only contain letters and numbers; must start with at least two letters'
 
-  before_validation         { |u| u.display_name = u.login_name if u.display_name.blank? }
   validates_uniqueness_of   :display_name,  :case_sensitive => false
   validates_length_of       :display_name,  :minimum => MINIMUM_LOGIN_NAME_LENGTH
   validates_format_of       :display_name,  :with => /\A[a-z]{2}( ?[a-z0-9]+)+\z/i, :allow_nil => true, :message =>
@@ -41,9 +35,6 @@ class User < ActiveRecord::Base
     end
     true
   end
-
-  # model the registration event? (email confirmation etc)
-  #has_one                   :registration
 
   # the first created user is the superuser
   before_create             { |u| u.superuser = true if User.count == 0 }
@@ -83,8 +74,10 @@ class User < ActiveRecord::Base
   # pull in User.digest and User.random_salt from Authentication module
   extend ActiveRecord::Authentication::ClassMethods
 
-  def self.authenticate(login, passphrase)
-    if user = find_by_login_name(login)
+  # User accounts may have multiple email addresses associated with them,
+  # but any of them can be used in combination with the passphrase to authenticate.
+  def self.authenticate(email, passphrase)
+    if user = find(:first, :include => :emails, :conditions => ['emails.address = ?', email])
       user = nil if user.passphrase_hash != User.digest(passphrase, user.passphrase_salt)
     end
     user
@@ -102,5 +95,4 @@ class User < ActiveRecord::Base
   def to_param
     display_name.downcase.gsub ' ', '-'
   end
-
 end

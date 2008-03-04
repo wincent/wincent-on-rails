@@ -1,20 +1,14 @@
-%h3 Create new comment
+%h1 Edit comment
 =error_messages_for :comment
--if !logged_in?
-  =render :partial => 'shared/anonymous'
--elsif !current_user.verified?
-  =render :partial => 'shared/unverified'
 -form_for @comment, :url => polymorphic_comments_path(@comment) do |f|
-  %table
+  %table.main_form
     %tr
       %th
         Body
         %br
         %span.annotation link to wikitext markup help
-      -# TODO: make text area grow with window
       %td=preserve(f.text_area(:body, :cols => 80, :rows => 10))
-      -# TODO: set up protected attributes for comments
-  %p=f.submit 'Create'
+  %p=f.submit 'Save'
 %h4
 -#  ==Preview (#{link_to_update_preview})
 -#  =observe_body
@@ -22,3 +16,5 @@
 -#  -# TODO: graceful non-JS fallback
 -##preview=body_html
 -#%p=link_to 'back', wiki_index_path
+
+

@@ -1,0 +1,10 @@
+=page_title "User profile for #{@user.display_name}"
+everybody sees this
+-if logged_in_and_verified?
+  logged in and verified see this; probably combine with following
+-elsif logged_in?
+  logged in users see this
+-if admin?
+  admin sees this
+-if @user == current_user
+  if user looking at own profile sees this

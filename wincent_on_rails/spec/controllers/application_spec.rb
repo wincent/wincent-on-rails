@@ -9,6 +9,10 @@ describe ApplicationController, 'protected methods', :shared => true do
     lambda { controller.require_admin }.should raise_error(NoMethodError, /protected/)
   end
 
+  it 'should restrict access to the require_verified method' do
+    lambda { controller.require_verified }.should raise_error(NoMethodError, /protected/)
+  end
+
   it 'should restrict access to the require_user method' do
     lambda { controller.require_user }.should raise_error(NoMethodError, /protected/)
   end
@@ -23,6 +27,10 @@ describe ApplicationController, 'protected methods', :shared => true do
 
   it 'should restrict access to the logged_in? method' do
     lambda { controller.logged_in? }.should raise_error(NoMethodError, /protected/)
+  end
+
+  it 'should restrict access to the logged_in_and_verified? method' do
+    lambda { controller.logged_in_and_verified? }.should raise_error(NoMethodError, /protected/)
   end
 
   it 'should restrict access to the admin? method' do

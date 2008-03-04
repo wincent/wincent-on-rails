@@ -10,6 +10,23 @@ class ApplicationController < ActionController::Base
 
 protected
 
+  # URL to the comment nested in the context of its parent (resources), including an anchor.
+  # TODO: possibly make this a helper method, but I need it in the controller too because I need it for use with redirect_to
+  def url_for_comment comment
+    commentable     = comment.commentable
+    common_options  = { :action => 'show', :id => commentable.to_param, :anchor => "comment_#{comment.id}"}
+    case commentable
+    when Article
+      url_for common_options.merge({:controller => 'articles'})
+    when Issue
+      url_for common_options.merge({:controller => 'issues'})
+    when Post
+      url_for common_options.merge({:controller => 'posts'})
+    when Topic
+      url_for common_options.merge({:controller => 'topics'})
+    end
+  end
+
   def record_not_found(uri = nil)
     if uri.class != String
       # beware that in the default case uri will be an instance of ActiveRecord::RecordNotFound

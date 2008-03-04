@@ -16,6 +16,7 @@ module ActionController
     def self.included base
       base.class_eval do
         helper_method :logged_in?
+        helper_method :logged_in_and_verified?
         helper_method :admin?
         helper_method :current_user
       end
@@ -47,13 +48,27 @@ module ActionController
       end
     end
 
-    # Intended for use as a before_filter to protect actions that are only for logged-in users.
+    # Intended for use as a before_filter to protect actions that are only for logged-in, verified users.
+    def require_verified
+      if !self.logged_in?
+        redirect_to_login
+      elsif !self.logged_in_and_verified?
+        flash[:notice]          = 'You must verify your account before accessing the requested resource'
+        redirect_to edit_user_path(current_user)
+      end
+    end
+
+    # before_filter: requires a logged-in user, but doesn't need the user to be verified yet.
     def require_user
       unless self.logged_in?
-        flash[:notice]          = 'You must be logged in to access the requested resource'
-        session[:original_uri]  = request.request_uri
-        redirect_to login_path
+        redirect_to_login
       end
+    end
+
+    def redirect_to_login
+      flash[:notice]          = 'You must be logged in to access the requested resource'
+      session[:original_uri]  = request.request_uri
+      redirect_to login_path
     end
 
     # only secure over SSL
@@ -85,8 +100,8 @@ module ActionController
     # needed for AJAX
     # only secure over SSL
     def login_with_http_basic
-      authenticate_with_http_basic do |login, passphrase|
-         return User.authenticate(login, passphrase)
+      authenticate_with_http_basic do |email, passphrase|
+         return User.authenticate(email, passphrase)
       end
       nil
     end
@@ -102,6 +117,8 @@ module ActionController
         user.session_key      = cookies[:session_key] = self.class.random_session_key
         user.session_expiry   = DEFAULT_SESSION_EXPIRY.days.from_now
         user.save
+        # TODO: may want to save in such a way as to skip validatons here
+        # each validates_uniqueness_of adds an additional query on every single save...
         @current_user = user
       else
         if user = self.current_user
@@ -113,6 +130,10 @@ module ActionController
 
     def current_user
       @current_user
+    end
+
+    def logged_in_and_verified?
+      self.logged_in? && self.current_user.verified?
     end
 
     def logged_in?

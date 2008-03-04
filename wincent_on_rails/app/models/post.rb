@@ -1,5 +1,5 @@
 class Post < ActiveRecord::Base
-  has_many                :comments, :as => :commentable, :extend => Commentable
+  has_many                :comments, :as => :commentable, :extend => Commentable, :order => 'created_at ASC'
   validates_presence_of   :title
   validates_format_of     :permalink, :with => /\A[a-z0-9\.\-]+\z/,
     :message => 'must contain only lowercase letters, numbers, periods and hypens'

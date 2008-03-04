@@ -1,15 +1,26 @@
 %h1 Users
--for @user in @users
-  %li
-    -# TODO: allow in-place editing
-    -# TODO: use partials here?
-    -# TODO: helper to show attribute as editable if editable, and non-editable if non-editable
-    .label Display name
-    .attribute=h @user.display_name
-    -editable do
-      -link_to 'edit', edit_user_path(@user)
-    -logged_in_only do
-      only logged in users see this
-      some special link here
-    -admin_only do
-      delete
+%table
+  %tr
+    -if admin?
+      %th ID
+    %th Display name
+    -if admin?
+      %th Login name
+      %th Email
+    %th Created
+  -for @user in @users
+    %tr
+      -if admin?
+        %td=@user.id
+      %td=h @user.display_name
+      -if admin?
+        %td= @user.login_name
+        %td= @user.emails.collect { |email| email.address + (email.verified? ? ' (verified)' : ' (unverified)')}.join(', ')
+      %td=@user.created_at.distance_in_words
+      -#-editable do
+      -#  -link_to 'edit', edit_user_path(@user)
+      -#-logged_in_only do
+      -#  only logged in users see this
+      -#  some special link here
+      -#-admin_only do
+      -#  delete

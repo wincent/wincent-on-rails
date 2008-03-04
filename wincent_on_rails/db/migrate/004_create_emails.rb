@@ -3,9 +3,8 @@ class CreateEmails < ActiveRecord::Migration
     create_table :emails do |t|
       t.integer     :user_id,             :null => false
       t.string      :address,             :null => false
+      t.boolean     :default,             :null => false, :default => true
       t.boolean     :verified,            :null => false, :default => false
-      t.string      :verification_key
-      t.datetime    :verification_limit
       t.timestamps
     end
 

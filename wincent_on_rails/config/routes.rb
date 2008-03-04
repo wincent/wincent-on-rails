@@ -2,7 +2,9 @@ ActionController::Routing::Routes.draw do |map|
 
   # resource routes
   map.resources :comments
-  map.resources :emails
+  map.resources :emails do |email|
+    email.resources :confirm, :controller => 'confirmations'
+  end
   map.resources :issues
   map.resources :links
 
@@ -33,7 +35,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :wiki,    :requirements => { :id => /[^\/]+/ }, :controller => 'articles',  :has_many => [ :comments ]
 
   # regular routes
-  map.connect 'misc/:action', :controller => 'misc'
+  map.connect   'misc/:action', :controller => 'misc'
 
   # named routes
   map.login     'login',  :controller => 'sessions',  :action => 'new'

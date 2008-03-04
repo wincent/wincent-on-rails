@@ -1,6 +1,9 @@
 =page_title "#{@forum.name}: new topic"
 =error_messages_for :topic
-=render :partial => 'shared/anonymous' unless logged_in?
+-if !logged_in?
+  =render :partial => 'shared/anonymous'
+-elsif !current_user.verified?
+  =render :partial => 'shared/unverified'
 -form_for :topic, :url => forum_topics_path(@forum), :method => :post do |f|
   %table.main_form
     %tr

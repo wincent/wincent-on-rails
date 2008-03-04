@@ -1,15 +1,39 @@
-set :application, "set your application name here"
-set :repository,  "set your repository location here"
+# without this we don't get password prompts from Git
+default_run_options[:pty] = true
 
-# If you aren't deploying to /u/apps/#{application} on the target
-# servers (which is the default), you can specify the actual location
-# via the :deploy_to variable:
-# set :deploy_to, "/var/www/#{application}"
+set :application,       'rails.wincent.com'
 
-# If you aren't using Subversion to manage your source code, specify
-# your SCM below:
-# set :scm, :subversion
+# note that the application is in a subdir of the repository
+# so we need to set up NGinx to look for public files at:
+#   #{current_path}/wincent_on_rails/public
+# and Mongrel needs to know that the app root is actually:
+#   #{current_path}/wincent_on_rails
+set :repository,        'user@host:/pub/git/private/wincent.com'
+set :branch,            'origin/maint'
 
-role :app, "your app-server here"
-role :web, "your web-server here"
-role :db,  "your db-server here", :primary => true
+set :deploy_to,         "/var/www/#{application}"
+set :scm,               :git
+
+# the SSH user
+set :user,              'wincent.com'
+
+role :app,              'rails.wincent.com'
+role :web,              'rails.wincent.com'
+role :db,               'rails.wincent.com', :primary => true
+
+namespace :deploy do
+  desc 'Set up links in "public" to persistent folders'
+  task :public_links do
+    run <<-CMD
+      cd #{release_path} &&
+      ln -s #{shared_path}/persisent #{release_path}/public/persistent
+    CMD
+  end
+end
+after 'deploy:update_code', 'deploy:public_links'
+
+desc 'Run all specs'
+task :spec, :roles => :app do
+  run "spec #{release_path}/spec"
+end
+before 'deploy:symlink', :spec
