@@ -52,6 +52,12 @@ module FixtureReplacement
     }
   end
 
+  def product_attributes
+    {
+      :name                     => String.random
+    }
+  end
+
   def tag_attributes
     {
       :name                     => String.random
