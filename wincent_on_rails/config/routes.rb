@@ -17,6 +17,7 @@ ActionController::Routing::Routes.draw do |map|
     forum.resources :topics, :has_many => [ :comments ]
   end
 
+  map.resource  :products
   map.resources :sessions
 
   # must explicitly allow period in the id part of the route otherwise it will be classified as a route separator
@@ -40,7 +41,7 @@ ActionController::Routing::Routes.draw do |map|
   # named routes
   map.login     'login',  :controller => 'sessions',  :action => 'new'
   map.logout    'logout', :controller => 'sessions',  :action => 'destroy'
-  map.home      '',       :controller => 'posts'      # defaults to index
+  map.home      '',       :controller => 'products'   # action defaults to index
 
   map.namespace :admin do |admin|
     admin.resources :tags
