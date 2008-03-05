@@ -6,6 +6,11 @@ describe ProductsController do
 end
 
 describe ProductsController, 'index action' do
+  before do
+    @products = [mock_model(Product)]
+    Product.stub!(:find).and_return(@products)
+  end
+
   it 'should be successful' do
     get :index
     response.should be_success
@@ -14,5 +19,10 @@ describe ProductsController, 'index action' do
   it 'should render the index template' do
     get :index
     response.should render_template('index')
+  end
+
+  it 'should find all products' do
+    Product.should_receive(:find).with(:all).and_return(@products)
+    get :index
   end
 end
