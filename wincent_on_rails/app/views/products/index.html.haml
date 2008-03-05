@@ -1,1 +1,4 @@
 =page_title 'Products'
+-for product in @products
+  %div[product]
+    %h2=link_to product.name, product_path(product)
