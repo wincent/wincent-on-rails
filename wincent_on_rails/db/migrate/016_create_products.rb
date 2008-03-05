@@ -1,8 +1,10 @@
 class CreateProducts < ActiveRecord::Migration
   def self.up
     create_table :products do |t|
-      t.string      :name,      :null => false
-      t.string      :permalink, :null => false
+      t.string      :name,          :null => false
+      t.string      :permalink,     :null => false
+      t.string      :icon_extension
+      t.text        :description    # wikitext, appears on index page
       t.timestamps
     end
 
