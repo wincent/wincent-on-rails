@@ -11,3 +11,9 @@ describe Product, 'validating the name' do
     new_product(:name => name).should fail_validation_for(:name)
   end
 end
+
+describe Product, 'validating the permalink' do
+  it 'should require it to be present' do
+    new_product(:permalink => nil).should fail_validation_for(:permalink)
+  end
+end

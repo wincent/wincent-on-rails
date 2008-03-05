@@ -54,7 +54,8 @@ module FixtureReplacement
 
   def product_attributes
     {
-      :name                     => String.random
+      :name                     => String.random,
+      :permalink                => String.random
     }
   end
 
