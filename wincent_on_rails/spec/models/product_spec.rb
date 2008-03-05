@@ -16,4 +16,10 @@ describe Product, 'validating the permalink' do
   it 'should require it to be present' do
     new_product(:permalink => nil).should fail_validation_for(:permalink)
   end
+
+  it 'should require it to be unique' do
+    permalink = String.random
+    create_product(:permalink => permalink).should be_valid
+    new_product(:permalink => permalink).should fail_validation_for(:permalink)
+  end
 end
