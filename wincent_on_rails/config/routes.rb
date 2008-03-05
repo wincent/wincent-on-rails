@@ -17,7 +17,7 @@ ActionController::Routing::Routes.draw do |map|
     forum.resources :topics, :has_many => [ :comments ]
   end
 
-  map.resource  :products
+  map.resources :products
   map.resources :sessions
 
   # must explicitly allow period in the id part of the route otherwise it will be classified as a route separator
