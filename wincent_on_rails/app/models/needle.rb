@@ -1,11 +1,15 @@
+# Full text search is like finding a needle in a hay stack.
 class Needle < ActiveRecord::Base
 
-  # split on space, period, comma etc
-  # but with some pre-coded exception regexps
-  # like URLs and emails
-  # return an array
   def self.tokenize string
-    string.blank? ? [] : string.split # crude approximation for now
+    # crude approximation for now: only return "words", punctuation not included
+    # if speed later becomes an issue can look at doing a Ragel tokenizer
+    # would probably build such a tokenizer into the wikitext module so that it could helpfully tokenize things like:
+    #   <nowiki>foo</nowiki> bar
+    # as:
+    #   foo, bar
+    # most likely could just be built on top of the existing Ragel scanner with minimal effort
+    string.blank? ? [] : string.split(/\W+/)
   end
 
   # Will return an array of Needle objects. Example:

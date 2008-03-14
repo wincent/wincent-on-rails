@@ -58,38 +58,41 @@ module ActiveRecord
         end
 
         def create_needles
+          # ActiveRecord is just _too_ slow to do it this way
+          # with a relatively big post (40+KB) this takes about 30 seconds to save the article in development mode
+          #   Needle.create :model_class    => model_class,
+          #                 :model_id       => model_id,
+          #                 :attribute_name => attribute_name,
+          #                 :content        => token,
+          #                 :user_id        => user
+          #
+          # Inidividually inserting like this, one needle at a time, is 10 times faster (3 seconds), but still too slow:
+          #   Needle.connection.insert <<-SQL
+          #     INSERT INTO needles (model_class, model_id, attribute_name, content, user_id, created_at, updated_at)
+          #     VALUES ('#{model_class}', #{model_id}, '#{attribute_name}', '#{token}', #{user}, NOW(), NOW())
+          #   SQL
+          #
+          # So the approach we take is to build up one big query and do it all at once; I tested this with a 10,000 word
+          # article and it took less than a second in development mode.
           model_class     = self.class.to_s
           model_id        = self.id
           user            = needle_user_id || 'NULL'
+          values          = []
           searchable_attributes.each do |attribute|
             attribute_name  = attribute.to_s
             value           = self.send(attribute)
             Needle.tokenize(value).each do |token|
-              # ActiveRecord is just _too_ slow to do it this way
-              # with a relatively big post (40+KB) it took about 30 seconds to save the article in development mode,
-              # which is of course, ridiculous
-              # so either look at updating this lazily in the background
-              # or inserting multiple records at once
-              # or bypassing ActiveRecord entirely
-              # the searching itself seems fast enough for now, it's the insertion which sucks
-              #Needle.create :model_class    => model_class,
-              #              :model_id       => model_id,
-              #              :attribute_name => attribute_name,
-              #              :content        => token,
-              #              :user_id        => user
-
-              # TODO: if we go this way, must properly sanitize token variable
-              next if token =~ /'/
-
-              # this way our query drops to about 3 seconds in development mode
-              # still far too long, but it is a 10-fold improvement over the above
-              # until I decide what to do I am going to disable "acts_as_searchable"
-              Needle.connection.insert <<-SQL
-                INSERT INTO needles (model_class, model_id, attribute_name, content, user_id, created_at, updated_at)
-                VALUES ('#{model_class}', #{model_id}, '#{attribute_name}', '#{token}', #{user}, NOW(), NOW())
-              SQL
-
+              # for now quoting isn't needed because we only ever return "words" (in the \w sense)
+              # but we perform quoting anyway just to keep us future-proof
+              token = Needle.connection.quote_string(token)
+              values << "('#{model_class}', #{model_id}, '#{attribute_name}', '#{token}', #{user}, NOW(), NOW())"
             end
+          end
+
+          if values.length > 0
+            sql = 'INSERT INTO needles (model_class, model_id, attribute_name, content, user_id, created_at, updated_at) VALUES '
+            sql << values.join(', ')
+            Needle.connection.execute sql
           end
         end
 
