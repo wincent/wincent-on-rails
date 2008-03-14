@@ -31,6 +31,7 @@ class Product < ActiveRecord::Base
   end
 
 private
+
   def icon_filename
     "#{self.permalink}.#{self.icon_extension}"
   end

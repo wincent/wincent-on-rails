@@ -5,8 +5,8 @@ class TagsController < ApplicationController
   end
 
   def show
-    @tag      = Tag.find_by_name(params[:id]) || Tag.find(params[:id])
-    @taggings = Tagging.grouped_taggings_for_tag @tag, current_user
+    @tag        = Tag.find_by_name(params[:id]) || Tag.find(params[:id])
+    @taggables  = Tagging.grouped_taggables_for_tag @tag, current_user
   end
 
   # NOTE/BUG: can never have a tag named "search"
@@ -18,7 +18,7 @@ class TagsController < ApplicationController
         tags = tags[0..9]
         flash[:warning] = 'Excess tags stripped from search (maximum of 10 allowed)'
       end
-      @tags, @taggings = Tagging.grouped_taggings_for_tag_names tags, current_user
+      @tags, @taggables = Tagging.grouped_taggables_for_tag_names tags, current_user
       if @tags[:not_found].length > 0
         flash[:notice] = "Non-existent tags excluded from search results: #{@tags[:not_found].join ', '}"
       end

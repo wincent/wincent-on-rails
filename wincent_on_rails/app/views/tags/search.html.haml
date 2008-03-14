@@ -1,5 +1,5 @@
 =search_page_title
--if @taggings
+-if @taggables
   =render :partial => 'taggings'
 %h2 Search
 -form_tag search_tags_path, :method => 'get' do

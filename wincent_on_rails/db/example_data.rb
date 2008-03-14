@@ -1,29 +1,41 @@
 module FixtureReplacement
   def article_attributes
     {
-      :title                => String.random,
-      :body                 => String.random
+      :title                    => String.random,
+      :body                     => String.random
     }
   end
 
   def comment_attributes
     {
-      :user                 => new_user,
-      :body                 => 'hello world',
-      :commentable          => new_article
+      :user                     => new_user,
+      :body                     => 'hello world',
+      :commentable              => new_article
     }
   end
 
-  def confirmation_attributes
+  def confirmation_attribute    s
     {
-      :email                => new_email
+      :email                    => new_email
     }
   end
 
   def email_attributes
     {
-      :address              => "#{String.random}@example.com",
-      :user                 => new_user
+      :address                  => "#{String.random}@example.com",
+      :user                     => new_user
+    }
+  end
+
+  def forum_attributes
+    {
+      :name                     => String.random
+    }
+  end
+
+  def topic_attributes
+    {
+      :forum                    => new_forum
     }
   end
 
@@ -34,8 +46,8 @@ module FixtureReplacement
 
   def link_attributes
     {
-      :uri                    => "http://#{String.random}/",
-      :permalink              => String.random
+      :uri                      => "http://#{String.random}/",
+      :permalink                => String.random
     }
   end
 
