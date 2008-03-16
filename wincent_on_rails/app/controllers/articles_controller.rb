@@ -89,7 +89,7 @@ private
 
   def url_or_path_for_redirect
     if @article.redirect =~ /\A\s*\[\[(.+)\]\]\s*\z/
-      wiki_path $~[1]
+      wiki_path $~[1].gsub(' ', '_')
     elsif @article.redirect =~ /\A\s*(http:\/\/.+)\s*\z/
       $~[1]
     else
