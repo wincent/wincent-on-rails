@@ -109,16 +109,24 @@ module ActionController
     # TODO: allow user to adjust this in their preferences
     DEFAULT_SESSION_EXPIRY = 7 # days
 
-    def current_user=(user)
+    # this does a little bit more than the current_user= method
+    # (which just sets the @current_user instance variable)
+    # this is intended to be called from the SessionsController,
+    # whereras the current_user= method is suitable for being called from a before filter
+    def set_current_user=(user)
+      self.current_user = user
       if user
-        # don't trust Rails' session management; manually manage the relevant cookies here
-        # (Rails sets a session key but doesn't tie it to the user id, making session fixation attacks a little easier)
         cookies[:user_id]     = user.id.to_s
         user.session_key      = cookies[:session_key] = self.class.random_session_key
         user.session_expiry   = DEFAULT_SESSION_EXPIRY.days.from_now
         user.save
-        # TODO: may want to save in such a way as to skip validatons here
-        # each validates_uniqueness_of adds an additional query on every single save...
+      end
+    end
+
+    def current_user=(user)
+      if user
+        # don't trust Rails' session management; manually manage the relevant cookies here
+        # (Rails sets a session key but doesn't tie it to the user id, making session fixation attacks a little easier)
         @current_user = user
       else
         if user = self.current_user
