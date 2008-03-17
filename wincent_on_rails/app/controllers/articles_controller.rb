@@ -34,7 +34,8 @@ class ArticlesController < ApplicationController
   def show
     # NOTE: MySQL will do a case-insensitive find here, so "foo" and "FOO" refer to the same article
     if @article.redirect.blank?
-      @redirected_from = Article.find_by_title(session[:redirected_from]) || Article.find(session[:redirected_from]) rescue nil
+      redirected_from = session[:redirected_from] ? session[:redirected_from].gsub('_', ' ') : nil
+      @redirected_from = Article.find_by_title(redirected_from) || Article.find(redirected_from) rescue nil
       render
       clear_redirection_info
     else # this is a redirect
