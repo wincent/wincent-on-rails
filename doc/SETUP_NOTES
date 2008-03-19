@@ -107,3 +107,14 @@ HOW THIS APPLICATION WAS CREATED
   git rm -r vendor/plugins/haml
   svn export svn://hamptoncatlin.com/haml/tags/rel_1-8-1 vendor/plugins/haml
   git add vendor/plugins/haml
+
+  # Haml 1.8.2 upgrade: now we just unpack the gem into vendor
+  sudo gem install haml
+  git rm -rf vendor/plugins/haml
+  mkdir -p vendor/gems
+  $(cd vendor/gems && gem unpack haml)
+  git add vendor/gems
+
+  # seeing as this is the first time we're unpacking into vendor, must tweak environment as well
+  git add environment.rb
+
