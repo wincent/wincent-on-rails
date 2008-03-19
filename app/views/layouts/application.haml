@@ -13,7 +13,7 @@
     =named_anchor 'top'
     #header
       #logo
-        -open :a, :href => home_path, :title => 'Wincent front page' do
+        -haml_tag :a, :href => home_path, :title => 'Wincent front page' do
           =image_tag('logo.png')
       %h1=link_to 'Wincent', home_path
       %ul#navbar

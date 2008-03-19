@@ -9,8 +9,7 @@ module ApplicationHelper
 
   def page_title string
     @page_title = string # picked up in application layout
-    # NOTE: open will become haml_tag in next Haml release
-    open :h1, h(string)
+    haml_tag :h1, h(string)
   end
 
   def named_anchor name
@@ -114,8 +113,7 @@ module ApplicationHelper
 
   def admin_only &block
     if admin?
-      # NOTE: open will become haml_tag in next Haml release
-      open :div, { :class => 'admin' } do
+      haml_tag :div, { :class => 'admin' } do
         yield
       end
     end

@@ -83,7 +83,7 @@ module ActionView
               :order => 'desc', :page => params[:page])
           end
         end
-        open :th, css_class_options do
+        haml_tag :th, css_class_options do
           puts link_to(display_name, url, tooltip)
         end
       end
