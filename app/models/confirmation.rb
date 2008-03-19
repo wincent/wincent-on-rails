@@ -1,4 +1,4 @@
-require 'digest'
+require 'digest/sha1'
 
 class Confirmation < ActiveRecord::Base
   belongs_to :email
