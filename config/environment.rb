@@ -26,9 +26,7 @@ Rails::Initializer.run do |config|
   # config.plugins = [ :exception_notification, :ssl_requirement, :all ]
 
   # Add additional load paths for your own custom dirs
-  config.load_paths += Dir["#{RAILS_ROOT}/vendor/gems/**"].map do |dir|
-    File.directory?(lib = "#{dir}/lib") ? lib: dir
-  end
+  #config.load_paths += %W( #{RAILS_ROOT}/extras )
 
   # Force all environments to use the same logger level
   # (by default production uses :info, the others :debug)
@@ -61,15 +59,13 @@ Rails::Initializer.run do |config|
 
 end
 
-Sass::Plugin.options[:style] = :compact
-
 require 'active_record/acts/taggable'
 require 'active_record/acts/searchable'
 require 'custom_atom_feed_helper'
 require 'authentication'
 require 'sortable'
-require 'haml'
 require 'wikitext'
 require 'wikitext/string'
 require 'wikitext/rails'
 
+Sass::Plugin.options[:style] = :compact

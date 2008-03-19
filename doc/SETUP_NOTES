@@ -118,3 +118,9 @@ HOW THIS APPLICATION WAS CREATED
   # seeing as this is the first time we're unpacking into vendor, must tweak environment as well
   git add environment.rb
 
+NOTE: I later had to undo all this because Haml is a bit of an odd one out
+and will prevent the server from starting if installed in this way. So I
+ended up moving it back to vendor/plugins, which funnily enough works:
+
+  git mv vendor/gems/haml-1.8.2 vendor/plugins/
+
