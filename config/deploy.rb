@@ -61,7 +61,6 @@ on :start, :check_target_environment, :except => [ :production, :staging ]
 namespace :deploy do
   desc 'Restart the mongrel cluster via monit.'
   task :restart, :roles => :app do
-    # this overrides the built-in deploy:restart task
     sudo "/usr/local/bin/monit restart all -g #{cluster}"
   end
 
