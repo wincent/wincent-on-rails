@@ -99,17 +99,17 @@ on :start, :check_target_environment, :except => [ :production, :staging ]
 namespace :deploy do
   desc 'Restart the mongrel cluster via monit.'
   task :restart, :roles => :app do
-    sudo "/usr/local/bin/monit restart all -g #{cluster}"
+    sudo "/usr/local/bin/monit -g #{cluster} restart all"
   end
 
   desc 'Start the mongrel cluster via monit.'
   task :start, :roles => :app do
-    sudo "/usr/local/bin/monit start all -g #{cluster}"
+    sudo "/usr/local/bin/monit -g #{cluster} start all"
   end
 
   desc 'Stop the mongrel cluster via monit.'
   task :stop, :roles => :app do
-    sudo "/usr/local/bin/monit stop all -g #{cluster}"
+    sudo "/usr/local/bin/monit -g #{cluster} stop all"
   end
 
   desc 'Migrate test, production and development databases'
