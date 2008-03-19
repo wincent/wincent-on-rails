@@ -12,7 +12,7 @@ depend :remote, :command, 'git'
 depend :remote, :command, 'monit'
 
 desc <<-END
-Target the staging environment
+Target the staging environment.
 
 For example, to deploy to the staging environment you could do:
 
@@ -31,7 +31,7 @@ task :staging do
 end
 
 desc <<-END
-Target the production environment
+Target the production environment.
 
 This is the default unless otherwise specified so the following
 are equivalent:
@@ -59,18 +59,18 @@ end
 on :start, :check_target_environment, :except => [ :production, :staging ]
 
 namespace :deploy do
-  desc 'Restart the mongrel cluster via monit'
+  desc 'Restart the mongrel cluster via monit.'
   task :restart, :roles => :app do
     # this overrides the built-in deploy:restart task
     sudo "/usr/local/bin/monit restart all -g #{cluster}"
   end
 
-  desc 'Start the mongrel cluster via monit'
+  desc 'Start the mongrel cluster via monit.'
   task :start, :roles => :app do
     sudo "/usr/local/bin/monit start all -g #{cluster}"
   end
 
-  desc 'Stop the mongrel cluster via monit'
+  desc 'Stop the mongrel cluster via monit.'
   task :stop, :roles => :app do
     sudo "/usr/local/bin/monit stop all -g #{cluster}"
   end
@@ -82,7 +82,7 @@ task :after_symlink, :roles => :app do
 end
 
 # eventually will run this whenever deploying before going live
-desc 'Run all specs'
+desc 'Run all specs.'
 task :spec, :roles => :app do
   run "spec #{release_path}/#{application}/spec"
 end
