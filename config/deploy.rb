@@ -73,6 +73,31 @@ namespace :deploy do
   task :stop, :roles => :app do
     sudo "/usr/local/bin/monit stop all -g #{cluster}"
   end
+
+  desc 'Migrate test, production and development databases'
+  task :migrate_all do
+    set :rails_env, 'test'
+    migrate
+    set :rails_env, 'development'
+    migrate
+    set :rails_env, 'migrations' # this is production, but with additional privileges necessary for migrations
+    migrate
+  end
+
+  desc <<-END
+Deploys and starts a "cold" (not running) application.
+
+This is an override of the default "deploy:cold" recipe that comes with
+Capistrano. Rather than performing an update/migrate/start sequence
+(which would fail because the default migrate precipe doesn't run with
+enough privileges to complete a migration of the production database)
+it instead does an update/migrate_all/start.
+  END
+  task :cold do
+    update
+    migrate_all
+    start
+  end
 end
 after 'deploy:update_code', 'deploy:public_links'
 
