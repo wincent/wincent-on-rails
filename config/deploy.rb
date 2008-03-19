@@ -58,15 +58,6 @@ end
 on :start, :check_target_environment, :except => [ :production, :staging ]
 
 namespace :deploy do
-  desc 'Set up persistent-folder links in "public"'
-  task :public_links do
-    # this is a subfolder of the "public" directory suitable for receiving file uploads and the like
-    run <<-CMD
-      cd #{release_path}/#{application} &&
-      ln -nfs #{shared_path}/persistent #{release_path}/#{application}/public/persistent
-    CMD
-  end
-
   desc 'Restart the mongrel cluster via monit'
   task :restart, :roles => :app do
     # this overrides the built-in deploy:restart task

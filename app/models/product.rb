@@ -7,10 +7,10 @@ class Product < ActiveRecord::Base
   after_destroy :cleanup_icons
 
   # path on disk relative to application root
-  ICON_DIR  = 'public/persistent/products/icons'
+  ICON_DIR  = 'public/system/products/icons'
 
   # path for use when constructing URLs
-  ICON_PATH = '/persistent/products/icons'
+  ICON_PATH = '/system/products/icons'
 
   def icon= icon
     # if no icon was supplied file_field will pass a StringIO object
