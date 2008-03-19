@@ -33,7 +33,7 @@
 #   cap spec
 #   cap deploy:restart
 
-set :application, 'test_app'
+set :application, 'wincent_on_rails'
 set :repository, '/pub/git/private/wincent.com.git'
 set :branch, 'origin/maint'
 set :scm, :git
@@ -136,12 +136,12 @@ it instead does an update/migrate_all/start.
 end
 
 task :after_symlink, :roles => :app do
-  run "ln -s #{shared_path}/database.yml #{release_path}/#{application}/config/database.yml"
+  run "ln -s #{shared_path}/database.yml #{release_path}/config/database.yml"
 end
 
 # eventually will run this whenever deploying before going live
 desc 'Run all specs.'
 task :spec, :roles => :app do
-  run "spec #{release_path}/#{application}/spec"
+  run "spec #{release_path}/spec"
 end
 #before 'deploy:symlink', :spec
