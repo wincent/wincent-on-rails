@@ -32,10 +32,11 @@ end
 desc <<-END
 Target the production environment
 
-This is the default unless otherwise specified, but to explicitly
-target the production environment you could do:
+This is the default unless otherwise specified so the following
+are equivalent:
 
   cap production deploy
+  cap deploy
 
 END
 task :production do
