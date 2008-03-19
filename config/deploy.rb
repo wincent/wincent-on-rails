@@ -1,3 +1,38 @@
+# Initial setup (once only):
+#
+#   cap staging deploy:prepare
+#   cap deploy:prepare
+#
+# Run preliminary checks before deploying:
+#
+#   cap staging deploy:check
+#   cap deploy:check
+#
+# Starting a cold (stopped) application (runs migrations as well):
+#
+#   cap staging deploy:cold
+#   cap deploy:cold
+#
+# Deploy latest version of application and restart (no migrations):
+#
+#   cap staging deploy
+#   cap deploy
+#
+# Putting it all together:
+#   - deploy latest version of application (no restart, no migrations)
+#   - perform migrations
+#   - run spec suite
+#   - restart application server
+#
+#   cap staging deploy:update
+#   cap staging deploy:migrate_all
+#   cap staging spec
+#   cap staging deploy:restart
+#   cap deploy:update
+#   cap deploy:migrate_all
+#   cap spec
+#   cap deploy:restart
+
 set :application, 'test_app'
 set :repository, '/pub/git/private/wincent.com.git'
 set :branch, 'origin/maint'
