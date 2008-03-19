@@ -1,6 +1,6 @@
 set :application, 'test_app'
 set :repository, '/pub/git/private/wincent.com.git'
-set :branch, 'origin/master' # later this will be maint, but maint doesn't exist yet
+set :branch, 'origin/maint'
 set :scm, :git
 
 depend :remote, :gem, :wikitext, '>= 1.0'
