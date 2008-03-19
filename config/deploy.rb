@@ -2,6 +2,7 @@ set :application, 'test_app'
 set :repository, '/pub/git/private/wincent.com.git'
 set :branch, 'origin/maint'
 set :scm, :git
+set :group_writable, :false
 
 depend :remote, :gem, :wikitext, '>= 1.0'
 depend :remote, :gem, :haml, '>= 1.8.2'
