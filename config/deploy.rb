@@ -99,7 +99,6 @@ it instead does an update/migrate_all/start.
     start
   end
 end
-after 'deploy:update_code', 'deploy:public_links'
 
 task :after_symlink, :roles => :app do
   run "ln -s #{shared_path}/database.yml #{release_path}/#{application}/config/database.yml"
