@@ -2,7 +2,8 @@ class ArticlesController < ApplicationController
   before_filter :require_admin, :except => [ :index, :show ]
   before_filter :get_article, :only => [ :show, :edit, :update ]
   def index
-    @articles = Article.find(:all, :order => 'updated_at DESC', :limit => 20)
+    @articles = Article.find(:all, :order => 'updated_at DESC', :limit => 10)
+    @tags     = Article.top_tags
   end
 
   def new

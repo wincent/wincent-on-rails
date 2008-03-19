@@ -12,6 +12,19 @@ class Article < ActiveRecord::Base
   acts_as_taggable
   attr_accessible :title, :redirect, :body, :public, :accepts_comments, :pending_tags, :tag_names_as_string
 
+  # NOTE: this could be defined dynamically in acts_as_taggable
+  def self.top_tags
+    Tag.find_by_sql <<-SQL
+      SELECT    tags.id, name, taggings_count
+      FROM      tags
+      JOIN      taggings
+      ON        tags.id = taggings.tag_id
+      WHERE     taggings.taggable_type = 'Article'
+      GROUP BY  tags.id
+      ORDER BY  taggings_count DESC LIMIT 10
+    SQL
+  end
+
   def validate
     if redirect.blank? && body.blank?
       errors.add_to_base 'must supply either redirect or body'

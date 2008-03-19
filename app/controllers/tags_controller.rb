@@ -1,6 +1,6 @@
 class TagsController < ApplicationController
   def index
-    # TODO: perhaps should restrict visibility here as well, not sure though
+    # BUG: information leak here (should really exclude tags which apply to items we can't access)
     @tags = Tag.find(:all, :order => 'name')
   end
 

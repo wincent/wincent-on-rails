@@ -1,5 +1,16 @@
-%h1 Latest articles
-%ul
+%h1 Articles
+%h2 Recently updated
+%table
+  %tr
+    %th Title
+    %th When
   -for article in @articles
-    %li=link_to h(article.title), wiki_path(article)
+    %tr
+      %td=link_to h(article.title), wiki_path(article)
+      %td=timeinfo article
+%h2 Top tags
+.cloud
+  -for tag in @tags
+    -# BUG: the tags link to a page showing _all_ taggable types, not just tagged articles
+    =scaled_tag tag
 -# TODO: add search box here
