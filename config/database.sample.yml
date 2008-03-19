@@ -1,0 +1,15 @@
+production:
+  adapter: mysql
+  encoding: utf8
+  database: wincent_on_rails_production
+  username: foo
+  password: bar
+  host: localhost
+
+migrations:
+  adapter: mysql
+  encoding: utf8
+  database: wincent_on_rails_production
+  username: baz
+  password: bing
+  host: localhost

@@ -1,0 +1,21 @@
+%h1 Create new product
+=error_messages_for :product
+-form_for @product, :url => products_path, :html => { :multipart => true } do |f|
+  %table.main_form
+    %tr
+      %th Name
+      %td=f.text_field :name
+    %tr
+      %th Permalink
+      %td=f.text_field :permalink
+    %tr
+      %th Description
+      %td=f.text_area :description
+    %tr
+      %th
+        Icon image
+        %br
+        %span.annotation (optional)
+      %td=f.file_field :icon, :accept => 'image/png,image/jpeg,image/gif'
+  %p=f.submit 'Create'
+%p=link_to 'back', products_path

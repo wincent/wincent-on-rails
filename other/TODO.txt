@@ -1,0 +1,33 @@
+acts_as_rateable
+"was this article helpful for you?":
+- yes, very helpful
+- somewhat helpful
+- no, not helpful
+
+data importers from bugzilla, UBB.threads etc
+- importing users should be relatively easy
+- harder will be importing posts, comments etc due to ordering issues
+- MT is easy, just copy static files
+- MediaWiki may be easy, depending on how deltas are stored
+  (if need be can just do the static thing again)
+
+do I need to support multiple weblogs?
+- on the old site I had news, personal, mini-log, quicklinks, git-log,
+  nightlies log
+- on the new site it may be simpler to just have one weblog
+- and add separate model/controller for git-log (basically have to do
+  that anyway because it won't use wikitext markup)
+- mini-log, not sure if it can go away
+- quicklinks most definitely can go away as it is effectively abandoned
+- might replace mini-log with twitter model and controller
+- nightlies is essential, not sure what to do with that
+- and not sure whether the separation of the news and personal
+  weblogs is essential or not
+
+comments on wiki articles:
+- better might be the "rateable" idea above with optional feedback textarea
+
+wikitext cheatsheet:
+- should mention that bug #12 in PRE or similar can get pretty ugly
+- the solution is to use an entity: &#x0023; for the hash
+
