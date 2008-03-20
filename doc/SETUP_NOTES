@@ -124,3 +124,6 @@ ended up moving it back to vendor/plugins, which funnily enough works:
 
   git mv vendor/gems/haml-1.8.2 vendor/plugins/
 
+  # installing webrat (for testing)
+  script/plugin install http://svn.eastmedia.net/public/plugins/webrat/
+  git add vendor/plugins/webrat
