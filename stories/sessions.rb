@@ -3,11 +3,7 @@ require File.join(File.dirname(__FILE__), 'helper')
 
 steps = Spec::Story::StepGroup.new do |define|
   define.given 'a user with email "$email" and passphrase "$passphrase"' do |email, passphrase|
-    # since adding the email field the simple FixtureReplacement way doesn't work any more;
-    # need to look into how to make it work again
-    #create_user :email => email, :passphrase => passphrase, :passphrase_confirmation => passphrase
-    user = create_user(:passphrase => passphrase, :passphrase_confirmation => passphrase)
-    user.emails.build(:address => email).save
+    create_email(:address => email, :user => create_user(:passphrase => passphrase, :passphrase_confirmation => passphrase))
   end
 
   define.when 'I go to the login form' do
