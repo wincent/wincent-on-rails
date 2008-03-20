@@ -3,7 +3,8 @@ require File.join(File.dirname(__FILE__), 'helper')
 
 steps = Spec::Story::StepGroup.new do |define|
   define.given 'a user with email "$email" and passphrase "$passphrase"' do |email, passphrase|
-    create_email(:address => email, :user => create_user(:passphrase => passphrase, :passphrase_confirmation => passphrase))
+    user = create_user(:passphrase => passphrase, :passphrase_confirmation => passphrase)
+    create_email(:address => email, :user => user)
   end
 
   define.when 'I go to the login form' do
