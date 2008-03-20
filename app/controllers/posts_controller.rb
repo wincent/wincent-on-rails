@@ -1,6 +1,6 @@
 class PostsController < ApplicationController
   before_filter :require_admin, :except => [ :index, :show ]
-  before_filter :get_post, :only => [ :show, :edit, :update ]
+  before_filter :get_post, :except => [ :index, :new, :create ]
 
   def index
     respond_to do |format|
