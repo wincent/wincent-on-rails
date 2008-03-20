@@ -11,7 +11,7 @@ class SessionsController < ApplicationController
   # TODO: OpenID support
   # BUG: This is only secure if connecting over HTTPS; must modify this to force SSL connections
   def create
-    if self.set_current_user = User.authenticate(params[:login_name], params[:passphrase])
+    if self.set_current_user = User.authenticate(params[:email], params[:passphrase])
       flash[:notice]    = 'Successfully logged in.'
       if (original_uri = session[:original_uri]) || (original_uri = params[:original_uri])
         session[:original_uri] = nil

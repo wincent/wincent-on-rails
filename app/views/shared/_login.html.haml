@@ -4,9 +4,9 @@
     =hidden_field_tag :original_uri, params[:original_uri]
     %p
       .label Email address
-      =text_field_tag :login_name, params[:login_name]
+      =text_field_tag :email, params[:email]
     %p
-      .label Password
+      .label Passphrase
       =password_field_tag :passphrase, params[:passphrase]
     %p
       =submit_tag 'Log in'
