@@ -6,7 +6,7 @@ steps = Spec::Story::StepGroup.new do |define|
     Article.destroy_all
   end
 
-  define.given 'an article titled "$title" is addded to the wiki' do |title|
+  define.when 'an article titled "$title" is addded to the wiki' do |title|
     create_article(:title => title)
   end
 
@@ -34,10 +34,10 @@ Story 'accessing the wiki index', %{
 
   Scenario 'articles are added to the wiki' do
     Given 'no articles in the wiki'
-    And 'an article titled "foo" is addded to the wiki'
+    When 'an article titled "foo" is addded to the wiki'
     And 'an article titled "bar" is addded to the wiki'
     And 'an article titled "baz" is addded to the wiki'
-    When 'I access the wiki index'
+    And 'I access the wiki index'
     Then 'the page should show "Recently updated"'
     And 'the page should show "foo"'
     And 'the page should show "bar"'
