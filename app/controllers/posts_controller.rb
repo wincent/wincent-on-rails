@@ -55,6 +55,12 @@ class PostsController < ApplicationController
     end
   end
 
+  def destroy
+    @post.destroy
+    flash[:notice] = "Destroyed post: #{@post.title}"
+    redirect_to blog_index_path
+  end
+
   def show
     @comment = @post.comments.build if @post.accepts_comments?
   end
