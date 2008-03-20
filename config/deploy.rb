@@ -1,38 +1,3 @@
-# Initial setup (once only):
-#
-#   cap staging deploy:prepare
-#   cap deploy:prepare
-#
-# Run preliminary checks before deploying:
-#
-#   cap staging deploy:check
-#   cap deploy:check
-#
-# Starting a cold (stopped) application (runs migrations as well):
-#
-#   cap staging deploy:cold
-#   cap deploy:cold
-#
-# Deploy latest version of application and restart (no migrations):
-#
-#   cap staging deploy
-#   cap deploy
-#
-# Putting it all together:
-#   - deploy latest version of application (no restart, no migrations)
-#   - perform migrations
-#   - run spec suite
-#   - restart application server
-#
-#   cap staging deploy:update
-#   cap staging deploy:migrate_all
-#   cap staging spec
-#   cap staging deploy:restart
-#   cap deploy:update
-#   cap deploy:migrate_all
-#   cap spec
-#   cap deploy:restart
-
 set :application, 'wincent_on_rails'
 set :repository, '/pub/git/private/wincent.com.git'
 set :branch, 'origin/maint'
@@ -48,6 +13,50 @@ depend :remote, :gem, :rails, '>= 2.0.2'
 depend :remote, :gem, :rspec, '>= 1.1.3'
 depend :remote, :command, 'git'
 depend :remote, :command, 'monit'
+
+desc 'Show common usage patterns.'
+task :help do
+  puts <<-HELP
+
+  COMMON USAGE PATTERNS
+
+  Initial setup (once only):
+
+    cap staging deploy:prepare      # production: cap deploy:prepare
+
+  Run preliminary checks before deploying:
+
+    cap staging deploy:check        # production: cap deploy:check
+
+  Starting a cold (stopped) application (runs migrations as well):
+
+    cap staging deploy:cold         # production: cap deploy:cold
+
+  Deploy latest version of application and restart (no migrations):
+
+    cap staging deploy              # production: cap deploy
+
+  Putting it all together (staging environment, then production):
+
+    cap staging deploy:check        # check dependencies
+    cap staging deploy:update       # deploy latest, no restart, no migrations
+    cap staging deploy:migrate_all  # run the migrations
+    cap staging spec                # run the spec suite
+    cap staging deploy:restart      # restart server (changes go live)
+
+    cap deploy:check
+    cap deploy:update
+    cap deploy:migrate_all
+    cap spec
+    cap deploy:restart
+
+  HELP
+end
+
+desc '(synonym for "help").'
+task :usage do
+  help
+end
 
 desc <<-END
 Target the staging environment.
@@ -94,7 +103,7 @@ task :check_target_environment do
     production
   end
 end
-on :start, :check_target_environment, :except => [ :production, :staging ]
+on :start, :check_target_environment, :except => [ :production, :staging, :help, :usage ]
 
 namespace :deploy do
   desc 'Restart the mongrel cluster via monit.'
