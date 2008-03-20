@@ -76,7 +76,11 @@ class PostsController < ApplicationController
 private
 
   def get_post
-    @post = Post.find_by_permalink(params[:id]) || Post.find(params[:id])
+    if admin?
+      @post = Post.find_by_permalink(params[:id]) || (raise ActiveRecord::RecordNotFound)
+    else
+      @post = Post.find_by_permalink_and_public(params[:id], true) || (raise ActiveRecord::RecordNotFound)
+    end
   end
 
   def record_not_found
