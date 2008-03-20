@@ -15,11 +15,6 @@ describe ProductsController, 'index action' do
     response.should be_success
   end
 
-  it 'should render the index template' do
-    get :index
-    response.should render_template('index')
-  end
-
   it 'should find all products' do
     Product.should_receive(:find).with(:all).and_return(@products)
     get :index
@@ -29,5 +24,10 @@ describe ProductsController, 'index action' do
     Product.stub!(:find).and_return(@products)
     get :index
     assigns[:products].should == @products
+  end
+
+  it 'should render the index template' do
+    get :index
+    response.should render_template('index')
   end
 end
