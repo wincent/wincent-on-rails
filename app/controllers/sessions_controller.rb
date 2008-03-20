@@ -20,7 +20,7 @@ class SessionsController < ApplicationController
         redirect_to home_path
       end
     else
-      flash[:error]     = 'Invalid login or passphrase.'
+      flash[:error]     = 'Invalid email or passphrase.'
       render :action => 'new'
     end
   end
