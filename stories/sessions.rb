@@ -38,4 +38,22 @@ Story 'logging in', %{
     And 'I click the "Log in" button'
     Then 'the page should show "Successfully logged in"'
   end
+
+  Scenario 'logging in with a bad passphrase' do
+    Given 'a user with email "user@example.com" and passphrase "passphrase1000"'
+    When 'I go to the login form'
+    And 'I fill in the "email" field with "user@example.com"'
+    And 'I fill in the "passphrase" field with "whoops!"'
+    And 'I click the "Log in" button'
+    Then 'the page should show "Invalid email or passphrase"'
+  end
+
+  Scenario 'logging in with a bad email' do
+    Given 'a user with email "user@example.com" and passphrase "passphrase1000"'
+    When 'I go to the login form'
+    And 'I fill in the "email" field with "bad@bad.com"'
+    And 'I fill in the "passphrase" field with "passphrase1000"'
+    And 'I click the "Log in" button'
+    Then 'the page should show "Invalid email or passphrase"'
+  end
 end
