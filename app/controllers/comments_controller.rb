@@ -29,10 +29,9 @@ class CommentsController < ApplicationController
     raise if uri =~ /\?/
     components = uri.split '/'
 
-    # blog/:id/comments
-    # wiki/:id/comments
-    # forums/:id/topic/:id/comments
     if components.length == 4
+      # blog/:id/comments
+      # wiki/:id/comments
       root, parent, parent_id, nested = components
       case parent
       when 'blog'
@@ -43,6 +42,7 @@ class CommentsController < ApplicationController
         raise
       end
     elsif components.lenth == 6
+      # forums/:id/topic/:id/comments
       root, grandparent, grandparent_id, parent, parent_id, nested = components
       raise unless grandparent == 'forums'
       grandparent_instance = Forum.find_with_param(grandparent_id)
@@ -52,6 +52,7 @@ class CommentsController < ApplicationController
       raise
     end
     raise if root != ''
+    raise if not parent_instance.accepts_comments
 
     # now create comment and try to add it
     @comment = parent_instance.comments.build(params[:comment])
