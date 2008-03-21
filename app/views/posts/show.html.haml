@@ -26,7 +26,7 @@
       -admin_only do
         .links
           =link_to 'edit', edit_blog_comment_path(@post, comment), :class => 'edit_link'
-          -form_tag comment_path(@comment), :method => :delete, :style => 'display:inline;' do
+          -form_tag comment_path(comment), :method => :delete, :style => 'display:inline;' do
             =submit_tag 'destroy', :onclick => "return #{confirm_javascript_function('Are you sure?')}"
           -if comment.awaiting_moderation?
             %form{:id => "comment_#{comment.id}_spam_form", :style => 'display:inline;'}
