@@ -3,7 +3,7 @@
   .forum
     %h2=link_to forum.name, forum_path(forum)
     =topic_count forum.topics_count
-    description
+    =h forum.description unless forum.description.empty?
     -admin_only do
       =link_to 'edit', edit_forum_path(forum)
 -admin_only do
