@@ -9,7 +9,8 @@ class Post < ActiveRecord::Base
   validates_presence_of   :excerpt
 
   acts_as_taggable
-  acts_as_searchable      :attributes => [:title, :excerpt, :body]
+  # for now run without this: can always turn it on later:
+  #acts_as_searchable      :attributes => [:title, :excerpt, :body]
 
   def self.find_recent options = {}
     # we use "posts.created_at" rather than just "created_at" to disambiguate in the case where we
