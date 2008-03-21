@@ -1,7 +1,7 @@
 class Paginator
-  attr_reader :offset
+  attr_reader :offset, :limit
 
-  def initialize params, count, path
+  def initialize params, count, path, per_page = 10
     # unpack params
     @params           = params
     page              = params[:page].to_i
@@ -12,8 +12,9 @@ class Paginator
     @additonal_params << "&order=#{params[:order]}" if params[:order]
 
     # process page, count and path
+    @limit  = per_page
     @page   = page > 0 ? page : 1
-    @offset = (@page - 1) * 10
+    @offset = (@page - 1) * @limit
     @count  = count
     @path   = path
     if @offset > @count
@@ -34,11 +35,11 @@ private
   end
 
   def on_last_page?
-    @offset >= @count - 10
+    @offset >= @count - @limit
   end
 
   def upper_offset
-    upper_limit = @offset + 10
+    upper_limit = @offset + @limit
     upper_limit > @count ? @count : upper_limit
   end
 
@@ -58,7 +59,7 @@ private
     if on_last_page?
       %Q{<span class="last disabled">Last</span>}
     else
-      %Q{<a href="#{@path}?page=#{(@count / 10.0).ceil}#{@additonal_params}" class="last">Last</a>}
+      %Q{<a href="#{@path}?page=#{(@count / @limit.to_f).ceil}#{@additonal_params}" class="last">Last</a>}
     end
   end
 
