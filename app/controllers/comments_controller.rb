@@ -1,6 +1,6 @@
 class CommentsController < ApplicationController
   before_filter :require_admin, :except => [ :create, :show ]
-  before_filter :get_comment, :only => [ :update, :destroy ]
+  before_filter :get_comment, :only => [ :edit, :update, :destroy ]
 
   # Admin only.
   # The admin is allowed to see all unmoderated comments at once, for the purposes of moderation.
@@ -72,38 +72,32 @@ class CommentsController < ApplicationController
   end
 
   def edit
-    if admin?
-      @comment = Comment.find(params[:id])
-    else
-      @comment = Comment.find(params[:id], :conditions => {:user_id => current_user.id, :spam => false})
-    end
+    render
   end
 
   def update
     respond_to do |format|
       format.html {
-        # not yet implemented
+        raise 'not yet implemented'
       }
 
       format.js {
-        comment = Comment.find(params[:id])
-        comment.awaiting_moderation = false
+        @comment.awaiting_moderation = false
         if params[:button] == 'spam'
-          comment.spam = true  # protected attributes, so can't use mass assignment
-          comment.save
+          @comment.spam = true  # protected attributes, so can't use mass assignment
+          @comment.save
           render :update do |page|
-            page.visual_effect :fade, "comment_#{comment.id}"
+            page.visual_effect :fade, "comment_#{@comment.id}"
           end
         elsif params[:button] == 'ham'
-          comment.save
+          @comment.save
           render :update do |page|
-            page.visual_effect :highlight, "comment_#{comment.id}", :duration => 1.5
-            page.visual_effect :fade, "comment_#{comment.id}_ham_form"
-            page.visual_effect :fade, "comment_#{comment.id}_spam_form"
+            page.visual_effect :highlight, "comment_#{@comment.id}", :duration => 1.5
+            page.visual_effect :fade, "comment_#{@comment.id}_ham_form"
+            page.visual_effect :fade, "comment_#{@comment.id}_spam_form"
           end
         else
-          # error
-          raise # should do somethign else
+          raise 'unrecognized AJAX action'
         end
       }
     end
