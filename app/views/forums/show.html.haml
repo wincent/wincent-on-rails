@@ -1,3 +1,9 @@
+#breadcrumbs
+  =link_to 'Home', home_path
+  &raquo;
+  =link_to 'Forums', forums_path
+  &raquo;
+  =h @forum.name
 #forum
   =page_title "Forum: #{@forum.name}"
   %h2=@forum.description unless @forum.description.blank?
