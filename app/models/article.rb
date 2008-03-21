@@ -2,6 +2,7 @@
 # Although note that the admin may selectively enable comments on a particular article.
 class Article < ActiveRecord::Base
   has_many                :comments,  :as => :commentable
+  belongs_to              :last_commenter, :class_name => 'User'
   validates_presence_of   :title
   validates_uniqueness_of :title
   validates_format_of     :title,     :with => /\A[^_\/]+\z/,

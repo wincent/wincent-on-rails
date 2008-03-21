@@ -15,6 +15,7 @@ class Issue < ActiveRecord::Base
   end
 
   belongs_to  :user
+  belongs_to  :last_commenter, :class_name => 'User'
   #belongs_to  :product
   has_many    :comments,  :as => :commentable
   acts_as_taggable

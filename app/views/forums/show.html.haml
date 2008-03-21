@@ -19,7 +19,7 @@
         %td=number_with_delimiter topic.comments_count
         %td=number_with_delimiter topic.view_count
         %td
-          =link_to_user topic.user
+          =link_to_user topic.last_commenter
           =topic.updated_at.distance_in_words
   =link_to 'new topic', new_forum_topic_path(@forum)
 =link_to 'all forums', forums_path

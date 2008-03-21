@@ -1,5 +1,5 @@
 class Forum < ActiveRecord::Base
-  has_many                :topics, :order => 'topics.updated_at DESC'
+  has_many                :topics, :order => 'topics.updated_at DESC', :dependent => :delete_all
   validates_presence_of   :name
   validates_format_of     :name, :with => /\A[a-z ]+\z/i, :message => 'may only contain letters and spaces'
   validates_uniqueness_of :name

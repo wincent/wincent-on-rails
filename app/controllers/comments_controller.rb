@@ -35,9 +35,9 @@ class CommentsController < ApplicationController
       root, parent, parent_id, nested = components
       case parent
       when 'blog'
-        parent_instance = Post.find_by_permalink(parent_id) || Post.find(parent_id)
+        parent_instance = Post.find_by_permalink(parent_id) || (raise ActiveRecord::RecordNotFound)
       when 'wiki'
-        parent_instance = Article.find_by_title(parent.id) || Article.find(parent_id)
+        parent_instance = Article.find_by_title(parent.id) || (raise ActiveRecord::RecordNotFound)
       else
         raise
       end
