@@ -13,13 +13,10 @@
     %div=@comment.body.w
     .links
       =link_to 'edit', edit_comment_path(@comment), :class => 'edit_link'
-      -# can't use button_to here because if we pass it a style attribute it will be applied to the button, not the form
-      -# also, it nests the button input inside a div inside the form, making inline display difficult or impossible
-      -#=button_to 'destroy', comment_path(@comment), :confirm => 'Really destroy?', :method => :delete
-      -form_tag comment_path(@comment), :method => :delete, :style => 'display:inline;' do
-        =submit_tag 'destroy', :onclick => "return #{confirm_javascript_function('Are you sure?')}"
+      %form{:id => "comment_#{@comment.id}_destroy_form", :style => 'display:inline;'}
+        =submit_to_remote 'button', 'destroy', :url => comment_path(@comment), :method => :delete, :failure => "alert('Failed to delete')", :confirm => 'Really delete?'
       %form{:id => "comment_#{@comment.id}_spam_form", :style => 'display:inline;'}
-        =submit_to_remote 'button', 'spam', :url => comment_path(@comment), :method => :put, :failure => "alert('Failed to mark as spam')"
+        =submit_to_remote 'button', 'spam', :url => comment_path(@comment), :method => :put, :failure => "alert('Failed to mark as spam')", :confirm => 'Really mark as spam?'
       %form{:id => "comment_#{@comment.id}_ham_form", :style => 'display:inline;'}
         =submit_to_remote 'button', 'ham', :url => comment_path(@comment), :method => :put, :failure => "alert('Failed to mark as ham')"
 -if @paginator

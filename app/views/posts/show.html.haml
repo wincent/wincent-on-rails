@@ -26,11 +26,11 @@
       -admin_only do
         .links
           =link_to 'edit', edit_blog_comment_path(@post, comment), :class => 'edit_link'
-          -form_tag comment_path(comment), :method => :delete, :style => 'display:inline;' do
-            =submit_tag 'destroy', :onclick => "return #{confirm_javascript_function('Are you sure?')}"
+          %form{:id => "comment_#{comment.id}_destroy_form", :style => 'display:inline;'}
+            =submit_to_remote 'button', 'destroy', :url => comment_path(comment), :method => :delete, :failure => "alert('Failed to delete')", :confirm => 'Really delete?'
           -if comment.awaiting_moderation?
             %form{:id => "comment_#{comment.id}_spam_form", :style => 'display:inline;'}
-              =submit_to_remote 'button', 'spam', :url => blog_comment_path(@post, comment), :method => 'put', :failure => "alert('Failed to mark as spam')"
+              =submit_to_remote 'button', 'spam', :url => blog_comment_path(@post, comment), :method => 'put', :failure => "alert('Failed to mark as spam')", :confirm => 'Really mark as spam?'
             %form{:id => "comment_#{comment.id}_ham_form", :style => 'display:inline;'}
               =submit_to_remote 'button', 'ham', :url => blog_comment_path(@post, comment), :method => 'put', :failure => "alert('Failed to mark as ham')"
   -if @comment

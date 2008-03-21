@@ -111,7 +111,14 @@ class CommentsController < ApplicationController
 
   def destroy
     @comment.destroy
-    redirect_to comments_path
+    respond_to do |format|
+      format.html { redirect_to comments_path }
+      format.js {
+        render :update do |page|
+          page.visual_effect :fade, "comment_#{@comment.id}"
+        end
+      }
+    end
   end
 
 private
