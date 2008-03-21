@@ -16,10 +16,9 @@
     -for topic in @forum.topics
       %tr
         %td=link_to topic.title, forum_topic_path(@forum, topic)
-        %td=topic.comments_count
-        %td=topic.view_count
+        %td=number_with_delimiter topic.comments_count
+        %td=number_with_delimiter topic.view_count
         %td
-          by
           =link_to_user topic.user
           =topic.updated_at.distance_in_words
   =link_to 'new topic', new_forum_topic_path(@forum)
