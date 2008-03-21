@@ -6,8 +6,7 @@ def ubb_text_to_wikitext text
   # unsophisticated approximation for now: can think about doing more later
   # may end up just stripping all HTML except for links
   text.gsub!('<br />', "\n")
-  text.gsub!(/<i>|<\/i>/, "''")
-  text.gsub!(/<b>|<\/b>/, "'''")
+  text
 end
 
 # convention here is local variables for the UBB records and instance variables for the new records
@@ -15,6 +14,8 @@ UbbUser.find(:all).each do |user|
   @user = user_for_ubb_user user
   if @user
     puts "skipping: #{user.USER_REGISTRATION_EMAIL} (already exists)"
+  elsif user.USER_ID == 1
+    puts "skipping: USER_ID 1 (the UBB.threads anonymous user)"
   elsif user.USER_IS_APPROVED != 'yes'
     puts "skipping: #{user.USER_REGISTRATION_EMAIL} (not approved)"
   elsif user.USER_IS_BANNED != 0
@@ -50,31 +51,43 @@ UbbForum.find(:all).each do |forum|
   puts "forum: #{@forum.name}"
   forum.ubb_topics.each do |topic|
     @user = user_for_ubb_user topic.ubb_user
+    next if @user.nil? && topic.ubb_user.USER_ID != 1 # allow UBB.threads anonymous user
 
     # create topic, iterating over posts
     posts = topic.ubb_posts.sort { |a,b| a.POST_POSTED_TIME <=> b.POST_POSTED_TIME }
     if posts.length > 0
       @topic = @forum.topics.build(:title => topic.TOPIC_SUBJECT, :body => ubb_text_to_wikitext(posts[0].POST_BODY))
+      @topic.view_count = topic.TOPIC_VIEWS
       @topic.user = @user
       @topic.save!
       puts "saved topic: #{topic.TOPIC_SUBJECT}"
       posts.shift
       posts.each do |post|
         @user = user_for_ubb_user post.ubb_user
-        next if @user.nil? # ie. banned or not approved user
+        next if @user.nil? && post.ubb_user.USER_ID != 1 # allow UBB.threads anonymous user
         @comment = @topic.comments.build(:body => ubb_text_to_wikitext(post.POST_BODY))
         @comment.user = @user
         @comment.save!
-        puts "saved comment by: #{@user.display_name}"
+        puts "saved comment by: #{@user ? @user.display_name : 'anonymous'}"
 
-        # TODO: update comment timestamps
+        # now update the comment timestamps: have to go behind ActiveRecord's back to do this otherwise it will override us
+        created = Time.at(post.POST_POSTED_TIME).to_s(:db)
+        updated = Time.at(post.POST_LAST_EDITED_TIME).to_s(:db)
+        Comment.connection.execute <<-SQL
+          UPDATE  comments
+          SET     created_at = '#{created}', updated_at = '#{updated}'
+          WHERE   id = #{@comment.id}
+        SQL
       end
 
-      # TODO: update post timestamps
+      # now update the topic timestamps: have to go behind ActiveRecord's back to do this otherwise it will override us
+      created = Time.at(topic.TOPIC_CREATED_TIME).to_s(:db)
+      updated = Time.at(topic.TOPIC_LAST_REPLY_TIME).to_s(:db)
+      Topic.connection.execute <<-SQL
+        UPDATE  topics
+        SET     created_at = '#{created}', updated_at = '#{updated}'
+        WHERE   id = #{@topic.id}
+      SQL
     end
-
-    # TOPIC_CREATED_TIME 1070503998     <-- Time.at(number)
-    # TOPIC_LAST_REPLY_TIME 1070594946
-
   end
 end
