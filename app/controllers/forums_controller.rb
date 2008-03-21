@@ -22,7 +22,10 @@ class ForumsController < ApplicationController
   end
 
   def show
-    render
+    # TODO: remove hard-coded limit of 10 in paginator
+    # although it is probably appropriate for the weblog, a higher limit would suit the forums (20, for example)
+    @paginator = Paginator.new(params, @forum.topics.count(:conditions => { :public => true }), forum_path(@forum))
+    @topics = @forum.topics.find(:all, :conditions => { :public => true }, :limit => 10, :offset => @paginator.offset)
   end
 
 private

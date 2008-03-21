@@ -7,13 +7,15 @@
 #forum
   =page_title "Forum: #{@forum.name}"
   %h2=@forum.description unless @forum.description.blank?
+  -if @paginator
+    .pagination=@paginator.pagination_links
   %table
     %tr
       %th Topic
       %th Replies
       %th Views
       %th Last post
-    -for topic in @forum.topics
+    -for topic in @topics
       %tr
         %td=link_to h(topic.title), forum_topic_path(@forum, topic)
         %td=number_with_delimiter topic.comments_count
