@@ -19,13 +19,31 @@ class Comment < ActiveRecord::Base
 protected
 
   def update_caches_after_create
-    # will also probably hit the updated_at column at this point too
-    commentable.class.update_all ['comments_count = comments_count + 1, last_commenter_id = ?', user], ['id = ?', commentable.id]
+    updates = <<-UPDATES
+      comments_count = comments_count + 1,
+      last_commenter_id = ?,
+      last_comment_id = ?,
+      last_commented_at = ?
+    UPDATES
+    commentable.class.update_all [updates, user, id, created_at], ['id = ?', commentable.id]
   end
 
   def update_caches_after_destroy
-    last_comment = commentable.comments.find(:first, :order => 'created_at DESC')
-    user = last_comment ? last_comment.user : nil
-    commentable.class.update_all ['comments_count = comments_count - 1, last_commenter_id = ?', user], ['id = ?', commentable.id]
+    if last_comment = commentable.comments.find(:first, :order => 'created_at DESC')
+      user        = last_comment.user
+      comment_id  = last_comment.id
+      timestamp   = last_comment.created_at
+    else
+      user        = nil
+      comment_id  = nil
+      timestamp   = commentable.created_at
+    end
+    updates = <<-UPDATES
+      comments_count = comments_count - 1,
+      last_commenter_id = ?,
+      last_comment_id = ?,
+      last_commented_at = ?
+    UPDATES
+    commentable.class.update_all [updates, user, comment_id, timestamp], ['id = ?', commentable.id]
   end
 end

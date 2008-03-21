@@ -15,12 +15,17 @@
       %th Last post
     -for topic in @forum.topics
       %tr
-        %td=link_to topic.title, forum_topic_path(@forum, topic)
+        %td=link_to h(topic.title), forum_topic_path(@forum, topic)
         %td=number_with_delimiter topic.comments_count
         %td=number_with_delimiter topic.view_count
         %td
           =link_to_user topic.last_commenter
-          =topic.updated_at.distance_in_words
+          -if topic.last_commented_at
+            =topic.last_commented_at.distance_in_words
+          -else # no comments yet
+            =topic.updated_at.distance_in_words
+          -if topic.last_comment_id
+            =link_to h('view'), forum_topic_path(@forum, topic) + "\#comment_#{topic.last_comment_id}"
   =link_to 'new topic', new_forum_topic_path(@forum)
 =link_to 'all forums', forums_path
 =link_to 'new forum', new_forum_path if admin?

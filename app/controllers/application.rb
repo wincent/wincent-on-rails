@@ -11,7 +11,9 @@ class ApplicationController < ActionController::Base
 protected
 
   # URL to the comment nested in the context of its parent (resources), including an anchor.
-  # TODO: possibly make this a helper method, but I need it in the controller too because I need it for use with redirect_to
+  # NOTE: this method is dog slow if called in an "N + 1 SELECT" situation
+  # this is needed in both controllers (for redirect_to) and views, hence the helper_method call here
+  helper_method :url_for_comment
   def url_for_comment comment
     commentable     = comment.commentable
     common_options  = { :action => 'show', :id => commentable.to_param, :anchor => "comment_#{comment.id}"}
@@ -23,7 +25,7 @@ protected
     when Post
       url_for common_options.merge({:controller => 'posts'})
     when Topic
-      url_for common_options.merge({:controller => 'topics'})
+      forum_topic_path(commentable.forum, commentable) + "\#comment_#{comment.id}"
     end
   end
 

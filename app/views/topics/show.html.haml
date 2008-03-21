@@ -10,6 +10,7 @@
 %div[@topic]
   =preserve @topic.body.w
   -for comment in @topic.comments
-    =preserve comment.body.w
+    %div[comment]
+      =preserve comment.body.w
 -if admin? or (!current_user.nil? and current_user == @topic.user_id)
   you can edit this

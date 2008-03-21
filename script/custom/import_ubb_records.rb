@@ -62,17 +62,22 @@ UbbForum.find(:all).each do |forum|
       @topic.save!
       puts "saved topic: #{topic.TOPIC_SUBJECT}"
       posts.shift
+      comment_count = 0
       posts.each do |post|
         @user = user_for_ubb_user post.ubb_user
         next if @user.nil? && post.ubb_user.USER_ID != 1 # allow UBB.threads anonymous user
         @comment = @topic.comments.build(:body => ubb_text_to_wikitext(post.POST_BODY))
         @comment.user = @user
         @comment.save!
+        comment_count += 1
         puts "saved comment by: #{@user ? @user.display_name : 'anonymous'}"
 
         # now update the comment timestamps: have to go behind ActiveRecord's back to do this otherwise it will override us
-        created = Time.at(post.POST_POSTED_TIME).to_s(:db)
-        updated = Time.at(post.POST_LAST_EDITED_TIME).to_s(:db)
+        created = Time.at(post.POST_POSTED_TIME)
+        updated = Time.at(post.POST_LAST_EDITED_TIME)
+        created = updated if updated < created
+        created = created.to_s(:db)
+        updated = updated.to_s(:db)
         Comment.connection.execute <<-SQL
           UPDATE  comments
           SET     created_at = '#{created}', updated_at = '#{updated}'
@@ -81,11 +86,15 @@ UbbForum.find(:all).each do |forum|
       end
 
       # now update the topic timestamps: have to go behind ActiveRecord's back to do this otherwise it will override us
-      created = Time.at(topic.TOPIC_CREATED_TIME).to_s(:db)
-      updated = Time.at(topic.TOPIC_LAST_REPLY_TIME).to_s(:db)
+      created = Time.at(topic.TOPIC_CREATED_TIME)
+      updated = Time.at(topic.TOPIC_LAST_REPLY_TIME)
+      created = updated if updated < created
+      created = created.to_s(:db)
+      updated = updated.to_s(:db)
+      commented = comment_count > 0 ? updated : nil
       Topic.connection.execute <<-SQL
         UPDATE  topics
-        SET     created_at = '#{created}', updated_at = '#{updated}'
+        SET     created_at = '#{created}', updated_at = '#{updated}', last_commented_at = '#{commented}'
         WHERE   id = #{@topic.id}
       SQL
     end
