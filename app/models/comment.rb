@@ -18,32 +18,46 @@ class Comment < ActiveRecord::Base
 
 protected
 
+  # By implementing the optional update_timestamps_for_comment_changes?
+  # method commentable classes can control whether their timestamps get
+  # updated whenever new comments are created or destroyed.
+  #
+  # For example, an Issue or a (forum) Topic should be considered
+  # "updated" whenever a new comment is added, but a Post or Article
+  # should not.
+  def update_timestamps_for_changes?
+    if commentable.respond_to?(:update_timestamps_for_comment_changes?)
+      commentable.update_timestamps_for_comment_changes
+    else
+      false
+    end
+  end
+
   def update_caches_after_create
     updates = <<-UPDATES
-      comments_count = comments_count + 1,
+      comments_count    = comments_count + 1,
       last_commenter_id = ?,
-      last_comment_id = ?,
-      last_commented_at = ?
+      last_comment_id   = ?,
+      last_commented_at = ?,
+      updated_at        = ?
     UPDATES
-    commentable.class.update_all [updates, user, id, created_at], ['id = ?', commentable.id]
+    timestamp = update_timestamps_for_changes? ? created_at : commentable.updated_at
+    commentable.class.update_all [updates, user, id, created_at, timestamp], ['id = ?', commentable.id]
   end
 
   def update_caches_after_destroy
-    if last_comment = commentable.comments.find(:first, :order => 'created_at DESC')
-      user        = last_comment.user
-      comment_id  = last_comment.id
-      timestamp   = last_comment.created_at
-    else
-      user        = nil
-      comment_id  = nil
-      timestamp   = commentable.created_at
-    end
+    last_comment    = commentable.comments.find(:first, :order => 'created_at DESC')
+    last_user       = last_comment ? last_comment.user : nil
+    comment_id      = last_comment ? last_comment.id : nil
+    last_commented  = last_comment ? last_comment.created_at : nil
     updates = <<-UPDATES
-      comments_count = comments_count - 1,
+      comments_count    = comments_count - 1,
       last_commenter_id = ?,
-      last_comment_id = ?,
-      last_commented_at = ?
+      last_comment_id   = ?,
+      last_commented_at = ?,
+      updated_at        = ?
     UPDATES
-    commentable.class.update_all [updates, user, comment_id, timestamp], ['id = ?', commentable.id]
+    timestamp = (update_timestamps_for_changes? && !last_commented.nil?) ? last_commented : commentable.created_at
+    commentable.class.update_all [updates, last_user, comment_id, last_commented, timestamp], ['id = ?', commentable.id]
   end
 end
