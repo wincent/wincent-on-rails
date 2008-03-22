@@ -35,4 +35,8 @@ class Issue < ActiveRecord::Base
       'ticket'
     end
   end
+
+  def update_timestamps_for_comment_changes?
+    true
+  end
 end
