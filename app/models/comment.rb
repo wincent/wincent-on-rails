@@ -27,7 +27,7 @@ protected
   # should not.
   def update_timestamps_for_changes?
     if commentable.respond_to?(:update_timestamps_for_comment_changes?)
-      commentable.update_timestamps_for_comment_changes
+      commentable.update_timestamps_for_comment_changes?
     else
       false
     end
