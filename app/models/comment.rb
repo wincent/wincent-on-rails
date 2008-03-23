@@ -1,7 +1,7 @@
 class Comment < ActiveRecord::Base
   # can we use nested routes for polymorphic associations?
-  belongs_to            :user
-  belongs_to            :commentable, :polymorphic => true # no counter cache: see notes below
+  belongs_to            :user                               # no counter cache: see notes below
+  belongs_to            :commentable, :polymorphic => true  # no counter cache: see notes below
   validates_presence_of :body
   validates_presence_of :commentable
   acts_as_taggable
@@ -43,6 +43,7 @@ protected
     UPDATES
     timestamp = update_timestamps_for_changes? ? created_at : commentable.updated_at
     commentable.class.update_all [updates, user, id, created_at, timestamp], ['id = ?', commentable.id]
+    User.update_all ['comments_count = comments_count + 1'], ['id = ?', user]
   end
 
   def update_caches_after_destroy
@@ -59,5 +60,6 @@ protected
     UPDATES
     timestamp = (update_timestamps_for_changes? && !last_commented.nil?) ? last_commented : commentable.created_at
     commentable.class.update_all [updates, last_user, comment_id, last_commented, timestamp], ['id = ?', commentable.id]
+    User.update_all ['comments_count = comments_count - 1'], ['id = ?', user]
   end
 end
