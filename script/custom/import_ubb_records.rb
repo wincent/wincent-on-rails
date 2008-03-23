@@ -36,6 +36,11 @@ UbbUser.find(:all).each do |user|
       @email = @user.emails.build(:address => user.USER_REGISTRATION_EMAIL)
       @email.save!
       @user.update_attribute(:verified, true)
+
+      # timestamps can only be updated behind ActiveRecord's back
+      registered = Time.at(user.USER_REGISTERED_ON).to_s(:db)
+      User.update_all ['created_at = ?, updated_at = ?', registered, Time.now], ['id = ?', @user]
+
       puts "success: #{user.USER_REGISTRATION_EMAIL} (user created)"
     rescue Exception => exception
       puts "error: #{user.USER_REGISTRATION_EMAIL} (exception caught: #{exception})"
