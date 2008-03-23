@@ -11,11 +11,6 @@
       =comments_link(@post)
       =link_to 'more...', (blog_path(@post)) if !@post.body.blank?
       .tag_info==Tags: #{tag_links(@post)}
-      -admin_only do
-        .links
-          =link_to 'edit', edit_blog_path(@post), :class => 'edit_link'
-          =link_to 'destroy', blog_path(@post), :confirm => 'Are you sure?', :method => :delete, :class => 'destroy_link'
-          =link_to 'new', new_blog_path, :class => 'new_link'
 -# TODO: add search box here
 -if @paginator
   .pagination=@paginator.pagination_links
