@@ -2,9 +2,16 @@ module TagsHelper
   def taggable_link model
     case model
     when Article
-      link_to model.title, wiki_path(model)
+      link_to h(model.title), wiki_path(model)
     when Post
-      link_to model.title, blog_path(model)
+      link_to h(model.title), blog_path(model)
+    when Topic
+      # BUG: another "n + 1 SELECT" issue here
+      # if we present a list of model tags, each model here does a model.forum, which means an additional database query for each
+      # for now the workaround will be to simply avoid tagging forum topics!
+      # but a long-term solution will need to be found,
+      # most likely involving "pre-seeding" in some way
+      link_to h(model.title), forum_topic_path(model.forum, model)
     else
       raise 'not yet implemented'
     end
