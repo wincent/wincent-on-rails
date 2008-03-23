@@ -36,14 +36,16 @@ class ForumsController < ApplicationController
     #@topics = @forum.topics.find(:all, :conditions => { :public => true }, :limit => @paginator.limit,
     #  :offset => @paginator.offset, :include => ['user', 'last_commenter'])
 
-    # option 4: custom SQL
+    # option 4: custom SQL, one LEFT OUTER JOIN and only pulls in only the columns required
     sql = <<-SQL
       SELECT topics.id, topics.title, topics.comments_count, topics.view_count, topics.updated_at, topics.last_comment_id,
              users.id AS last_active_user_id,
              users.display_name AS last_active_user_display_name
       FROM topics
       LEFT OUTER JOIN users ON (users.id = IFNULL(topics.last_commenter_id, topics.user_id))
-      WHERE topics.forum_id = ? AND public = ? LIMIT ?, ?
+      WHERE topics.forum_id = ? AND public = ?
+      ORDER BY topics.updated_at DESC
+      LIMIT ?, ?
     SQL
     @topics = Topic.find_by_sql [sql, @forum.id, true, @paginator.offset, @paginator.limit]
   end
