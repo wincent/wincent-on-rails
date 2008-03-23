@@ -1,0 +1,18 @@
+=page_title 'Posts administration'
+%table
+  %tr
+    -sortable_header_cell :title, 'Title'
+    -sortable_header_cell :permalink, 'Permalink'
+    -sortable_header_cell :created_at, 'When'
+    %th Actions
+  -for @post in @posts
+    %tr{:class => cycle('odd', 'even')}
+      %td=in_place_editor_field :post, :title
+      %td=in_place_editor_field :post, :permalink
+      %td=timeinfo @post
+      %td.links
+        =link_to 'edit', edit_blog_path(@post)
+        =link_to 'destroy', blog_path(@post), :confirm => 'Are you sure?', :method => :delete
+%p.links
+  =link_to 'new', new_blog_path
+  =link_to 'public index', blog_index_path
