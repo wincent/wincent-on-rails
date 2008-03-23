@@ -43,7 +43,11 @@ ActionController::Routing::Routes.draw do |map|
   map.logout    'logout', :controller => 'sessions',  :action => 'destroy'
   map.home      '',       :controller => 'products'   # action defaults to index
 
+  # although conditionally inlining admin functionality in the standard resources is elegant
+  # it makes page caching difficult because the page looks different for admin users
+  # so we provide a separate admin interface for some resources
   map.namespace :admin do |admin|
+    admin.resources :posts
     admin.resources :tags
   end
 
