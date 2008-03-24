@@ -39,7 +39,7 @@ UbbUser.find(:all).each do |user|
       @user.update_attribute(:verified, true)
 
       # timestamps can only be updated behind ActiveRecord's back
-      registered = Time.at(user.USER_REGISTERED_ON).to_s(:db)
+      registered = Time.at(user.USER_REGISTERED_ON)
       User.update_all ['created_at = ?, updated_at = ?', registered, Time.now], ['id = ?', @user]
 
       puts "success: #{user.USER_REGISTRATION_EMAIL} (user created)"
@@ -78,31 +78,19 @@ UbbForum.find(:all).each do |forum|
         comment_count += 1
         puts "saved comment by: #{@user ? @user.display_name : 'anonymous'}"
 
-        # now update the comment timestamps: have to go behind ActiveRecord's back to do this otherwise it will override us
+        # timestamps can only be updated behind ActiveRecord's back
         created = Time.at(post.POST_POSTED_TIME)
         updated = Time.at(post.POST_LAST_EDITED_TIME)
         created = updated if updated < created
-        created = created.to_s(:db)
-        updated = updated.to_s(:db)
-        Comment.connection.execute <<-SQL
-          UPDATE  comments
-          SET     created_at = '#{created}', updated_at = '#{updated}'
-          WHERE   id = #{@comment.id}
-        SQL
+        Comment.update_all ['created_at = ?, updated_at = ?', created, updated], ['id = ?', @comment]
       end
 
-      # now update the topic timestamps: have to go behind ActiveRecord's back to do this otherwise it will override us
+      # timestamps can only be updated behind ActiveRecord's back
       created = Time.at(topic.TOPIC_CREATED_TIME)
       updated = Time.at(topic.TOPIC_LAST_REPLY_TIME)
       created = updated if updated < created
-      created = created.to_s(:db)
-      updated = updated.to_s(:db)
       commented = comment_count > 0 ? updated : nil
-      Topic.connection.execute <<-SQL
-        UPDATE  topics
-        SET     created_at = '#{created}', updated_at = '#{updated}', last_commented_at = '#{commented}'
-        WHERE   id = #{@topic.id}
-      SQL
+      Topic.update_all ['created_at = ?, updated_at = ?, last_commented_at = ?', created, updated, commented], ['id = ?', @topic]
     end
   end
 end
