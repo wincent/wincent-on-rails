@@ -64,6 +64,11 @@ module ApplicationHelper
     pluralizing_count number, 'topic'
   end
 
+  # used in user#show, topic#show etc
+  def comment_count number
+    pluralizing_count number, 'comment'
+  end
+
   def scaled_tag tag
     # NOTE: that we report the full taggings count here: may want to exclude taggables to which the user doesn't have access
     link_to tag.name, tag_path(tag),
