@@ -1,12 +1,13 @@
+include ActionView::Helpers::SanitizeHelper
+
 def user_for_ubb_user user
   User.find(:first, :include => :emails, :conditions => ['emails.address = ?', user.USER_REGISTRATION_EMAIL])
 end
 
 def ubb_text_to_wikitext text
   # unsophisticated approximation for now: can think about doing more later
-  # may end up just stripping all HTML except for links
   text.gsub!('<br />', "\n")
-  text
+  strip_tags text
 end
 
 # convention here is local variables for the UBB records and instance variables for the new records
