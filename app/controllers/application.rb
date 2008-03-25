@@ -18,12 +18,8 @@ protected
     commentable     = comment.commentable
     common_options  = { :action => 'show', :id => commentable.to_param, :anchor => "comment_#{comment.id}"}
     case commentable
-    when Article
-      url_for common_options.merge({:controller => 'articles'})
-    when Issue
-      url_for common_options.merge({:controller => 'issues'})
-    when Post
-      url_for common_options.merge({:controller => 'posts'})
+    when Article, Issue, Post
+      url_for common_options.merge({:controller => commentable.class.to_s.tableize})
     when Topic
       forum_topic_path(commentable.forum, commentable) + "\#comment_#{comment.id}"
     end
