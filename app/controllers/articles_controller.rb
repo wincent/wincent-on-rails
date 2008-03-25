@@ -83,8 +83,6 @@ private
       session[:new_article_params] = { :title => params[:id].gsub('_', ' ') }
       redirect_to new_wiki_path
     else
-      # potentially offer a similar notice to the above and a login link here instead
-      # could also send an email to the administrator, although would have to turn that off if it lead to abuse
       super wiki_index_path
     end
   end
