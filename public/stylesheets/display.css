@@ -2,17 +2,19 @@ body { background: #fff; margin: 0pt; padding: 0pt; font-family: "Lucida Grande"
 
 h1, h2, h3, h4, h5, h6 { color: #333333; }
 
-p { color: #585858; }
+p, li { color: #343434; }
 
-pre { background-color: #f9f9f9; border: 1px dashed #2f6fab; padding: 1em; font-size: 125%; line-height: 1.1em; overflow: auto; }
+pre { color: #999; background-color: #f9f9f9; border: 1px dashed #2f6fab; padding: 1em; font-size: 125%; line-height: 1.1em; overflow: auto; }
 
-tt { color: #600; font-size: 125%; background-color: #f9f9f9; padding-left: 0.1em; padding-right: 0.1em; }
+tt { color: #966; font-size: 125%; padding-left: 0.1em; padding-right: 0.1em; }
 
-blockquote { padding-left: 24px; min-height: 32px; margin-left: 1em; margin-right: 2em; background: url(../images/blockquote.png) no-repeat left top; }
+blockquote { padding-left: 24px; min-height: 32px; background: url(../images/blockquote.png) no-repeat left top; margin-left: 1em; margin-right: 2em; }
+blockquote p, blockquote li { color: #999; }
 
 a { color: #2971a7; font-weight: bold; text-decoration: none; }
 a:hover { text-decoration: underline; }
 a:visited { font-weight: normal; }
+a img { border: none; }
 
 a.external:after { content: url(../images/external.png); }
 
@@ -88,9 +90,10 @@ span.annotation { font-size: xx-small; font-weight: normal; color: #666; }
 
 .tag_info { text-align: right; }
 
-.when { color: gray; }
+.when { color: #bbb; }
 
 .post { margin-top: 3em; }
+.post .when { margin-top: -1em; }
 .post .info { padding: 1em; border-top: 1px dotted #eee; border-bottom: 1px solid #eee; }
 
 .comments_link { background: url(../images/comment-bubble.png) no-repeat left center; padding-left: 22px; padding-top: 2px; padding-bottom: 2px; min-height: 22px; }

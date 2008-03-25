@@ -10,10 +10,12 @@ body
 h1, h2, h3, h4, h5, h6
   color:            #333333
 
-p
-  color:            #585858
+p, li
+  color:            #343434
+  //#585858
 
 pre
+  color:            #999
   background-color: #f9f9f9
   border:           1px dashed #2f6fab
   padding:          1em
@@ -22,9 +24,9 @@ pre
   overflow:         auto
 
 tt
-  color:            #600
+  color:            #966
   font-size:        125%
-  background-color: #f9f9f9
+  //background-color: #f9f9f9
   padding:
     left:          0.1em
     right:         0.1em
@@ -33,10 +35,12 @@ tt
 blockquote
   padding-left:     24px
   min-height:       32px
+  background:       url(../images/blockquote.png) no-repeat left top
   margin:
     left:           1em
     right:          2em
-  background:       url(../images/blockquote.png) no-repeat left top
+  p, li
+    color:          #999
 
 // links
 
@@ -48,6 +52,9 @@ a
     text-decoration:  underline
   &:visited
     font-weight:      normal
+  img
+    // for Firefox:
+    border:           none
 
 // IE6/7 doesn't support the :after pseudo selector
 a.external:after
@@ -230,10 +237,15 @@ span.annotation
 // general appearance
 
 .when
-  color: gray
+  color:            #bbb
 
+// consider per-controller custom CSS for this kind of class
 .post
   margin-top:       3em
+  .when
+    // we do this rather than special casing the h2 (posts#index)
+    // and the h1 (posts#show), because the title varies depending on where it appears
+    margin-top:     -1em
   .info
     padding:        1em
     border-top:     1px dotted #eee

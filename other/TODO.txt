@@ -64,4 +64,5 @@ get signup email working:
 mailing list imports:
 - list model
 - user has many lists through subscriptions
+- subscription model can go into suspended state if we get too many bounces
 

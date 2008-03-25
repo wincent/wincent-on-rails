@@ -5,12 +5,15 @@
 -for @post in @posts
   .post
     %h2=link_to h(@post.title), blog_path(@post)
-    .when=timeinfo @post, :precise
+    .when=timeinfo @post
     %p=excerpt_html
     .info
       =comments_link(@post)
       =link_to 'more...', (blog_path(@post)) if !@post.body.blank?
-      .tag_info==Tags: #{tag_links(@post)}
+      .tag_info
+        =link_to 'Tags', tags_path
+        \:
+        =tag_links(@post)
 -# TODO: add search box here
 -if @paginator
   .pagination=@paginator.pagination_links
