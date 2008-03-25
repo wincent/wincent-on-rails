@@ -52,7 +52,7 @@ a.mailto:after { content: url(../images/mailto.png); }
 
 .warning { background: #959af9; }
 
-.pagination { font-size: x-small; text-align: right; }
+.pagination { margin: 1em; font-size: xx-small; text-align: right; }
 .pagination .disabled { color: gray; }
 .pagination .first { padding-left: 18px; background: url(../images/first.png) no-repeat left center; }
 .pagination .first.disabled { background: url(../images/first-disabled.png) no-repeat left center; }
@@ -88,8 +88,10 @@ span.annotation { font-size: xx-small; font-weight: normal; color: #666; }
 
 .tag_info { text-align: right; }
 
+.when { color: gray; }
+
 .post { margin-top: 3em; }
-.post .info { padding: 1em; background: #eee; }
+.post .info { padding: 1em; border-top: 1px dotted #eee; border-bottom: 1px solid #eee; }
 
 .comments_link { background: url(../images/comment-bubble.png) no-repeat left center; padding-left: 22px; padding-top: 2px; padding-bottom: 2px; min-height: 22px; }
 
