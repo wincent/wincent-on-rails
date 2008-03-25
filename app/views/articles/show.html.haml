@@ -11,6 +11,8 @@
   -# consider moving this into a partial
   -for tag in @article.tags
     =scaled_tag tag
+-# TODO: CSS style this
+=timeinfo @article
 %p.links
   -if admin?
     =link_to 'edit', edit_wiki_path(@article)
