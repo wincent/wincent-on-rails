@@ -30,6 +30,11 @@ class Article < ActiveRecord::Base
     find(:all, options)
   end
 
+  # for the Atom feed
+  def self.find_recent_excluding_redirects
+    find :all, :conditions => "public = TRUE AND (redirect IS NULL OR redirect = '')", :order => 'updated_at DESC', :limit => 10
+  end
+
   # NOTE: this could be defined dynamically in acts_as_taggable
   def self.top_tags
     Tag.find_by_sql <<-SQL

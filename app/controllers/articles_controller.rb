@@ -10,8 +10,7 @@ class ArticlesController < ApplicationController
         @tags       = Article.top_tags # could fragment cache this to avoid the query
       }
       format.atom {
-        # will be able to page cache this
-        @articles   = Article.find_recent
+        @articles   = Article.find_recent_excluding_redirects
       }
     end
   end
