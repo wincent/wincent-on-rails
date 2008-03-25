@@ -43,11 +43,7 @@ class ArticlesController < ApplicationController
 
   def show
     # NOTE: MySQL will do a case-insensitive find here, so "foo" and "FOO" refer to the same article
-    if @article.redirect.blank?
-      @redirected_from = Article.from_param(session[:redirected_from]) if session[:redirected_from]
-      render
-      clear_redirection_info
-    else # this is a redirect
+    if @article.redirect?
       if session[:redirection_count] and session[:redirection_count] > 5
         clear_redirection_info
         flash[:error] = 'Too many redirections'
@@ -57,6 +53,10 @@ class ArticlesController < ApplicationController
         session[:redirected_from] = params[:id]
         redirect_to url_or_path_for_redirect
       end
+    else # not a redirect
+      @redirected_from = Article.from_param(session[:redirected_from]) if session[:redirected_from]
+      render
+      clear_redirection_info
     end
   end
 
