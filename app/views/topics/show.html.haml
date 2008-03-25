@@ -9,7 +9,7 @@
 =page_title @topic.title
 %div[@topic]
   =preserve @topic.body.w
-  -for comment in @topic.comments
+  -for comment in @comments
     %div[comment]
       =preserve comment.body.w
 -if admin? or (!current_user.nil? and current_user == @topic.user_id)
