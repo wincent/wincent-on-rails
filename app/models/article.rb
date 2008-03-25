@@ -24,6 +24,12 @@ class Article < ActiveRecord::Base
     find_by_title(deparametrize(param)) if param
   end
 
+  def self.find_recent paginator = nil
+    options = { :conditions => { :public => true }, :order => 'updated_at DESC', :limit => 10 }
+    options.merge!({ :offset => paginator.offset, :limit => paginator.limit }) if paginator
+    find(:all, options)
+  end
+
   # NOTE: this could be defined dynamically in acts_as_taggable
   def self.top_tags
     Tag.find_by_sql <<-SQL

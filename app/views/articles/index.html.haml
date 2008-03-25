@@ -1,5 +1,8 @@
+-# TODO: atom feed
 %h1 Articles
 %h2 Recently updated
+-if @paginator
+  .pagination=@paginator.pagination_links
 %table
   %tr
     %th Title

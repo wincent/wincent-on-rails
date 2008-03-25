@@ -3,8 +3,17 @@ class ArticlesController < ApplicationController
   before_filter :get_article, :only => [ :show, :edit, :update ]
 
   def index
-    @articles = Article.find(:all, :order => 'updated_at DESC', :limit => 10)
-    @tags     = Article.top_tags
+    respond_to do |format|
+      format.html {
+        @paginator  = Paginator.new(params, Article.count(:conditions => { :public => true }), wiki_index_path)
+        @articles   = Article.find_recent @paginator
+        @tags       = Article.top_tags # could fragment cache this to avoid the query
+      }
+      format.atom {
+        # will be able to page cache this
+        @articles   = Article.find_recent
+      }
+    end
   end
 
   def new
