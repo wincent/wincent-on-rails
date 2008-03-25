@@ -1,6 +1,7 @@
 class TopicsController < ApplicationController
   before_filter :get_forum
   before_filter :get_topic, :only => [ :show ]
+  after_filter :cache_show_feed, :only => :show # page-cache the atom feed
 
   def new
     @topic = Topic.new
@@ -31,17 +32,32 @@ class TopicsController < ApplicationController
   end
 
   def show
-    @topic.hit!
+    @comments = Comment.find \
+      :all,
+      :conditions => { :public => true, :commentable_id => @topic.id, :commentable_type => 'Topic' },
+      :include => 'user',
+      :order => 'comments.created_at'
+
+    respond_to do |format|
+      format.html { @topic.hit! }
+      format.atom
+    end
   end
 
 private
 
   def get_forum
+    # TODO: handle private forums?
     @forum = Forum.find_with_param params[:forum_id]
   end
 
   def get_topic
-    @topic = @forum.topics.find(params[:id], :include => 'comments')
+    # TODO: handle private topics
+    @topic = @forum.topics.find params[:id]
   end
 
+  def cache_show_feed
+    # TODO: sweep cache whenever topic created/deleted or comment created/deleted/updated
+    cache_page if params[:format] == 'atom'
+  end
 end
