@@ -80,7 +80,7 @@ private
   def record_not_found
     if admin?
       flash[:notice] = 'Requested article not found: create it?'
-      session[:new_article_params] = { :title => Article.deparametrize(params[:id]) }
+      session[:new_article_params] = { :title => Article.deparametrize(params[:id]).capitalize }
       redirect_to new_wiki_path
     else
       super wiki_index_path
