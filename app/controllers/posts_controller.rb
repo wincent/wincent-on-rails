@@ -4,27 +4,17 @@ class PostsController < ApplicationController
 
   def index
     respond_to do |format|
-      # TODO: for admins (only) show non-public posts too
       format.html {
-        # BUG: we have another "n + 1" SELECT problem here
-        # for each post we do a query to get its tags (involving a JOIN to the taggings table)
-        # may be worth caching the tags in a field in the model? not sure
-        # could do this automatically as part of acts_as_taggable
         @paginator  = Paginator.new(params, Post.count(:conditions => {:public => true}), blog_index_path)
-        #@posts      = Post.find_recent(:offset => @paginator.offset)
-        
-        
-        # this eliminates the tag-related queries, but there is a remaining "n + 1" problem
-        # with the comment counts; each post causes a query like this one:
+
+        # BUG: with the comment counts; each post causes a query like this one:
         #   SELECT count(*) AS count_all
         #   FROM `comments`
         #   WHERE (comments.commentable_id = 44 AND comments.commentable_type = 'Post' AND (spam = FALSE))
         # the incorporation of the spam condition makes the counter cache useless (and unused)
         @posts      = Post.find_recent(:include => :tags, :offset => @paginator.offset)
       }
-      format.atom {
-        @posts      = Post.find_recent
-      }
+      format.atom { @posts = Post.find_recent }
     end
   end
 
@@ -63,6 +53,7 @@ class PostsController < ApplicationController
   end
 
   def show
+    # TODO: would be nice to have prev/next links here as well
     @comment = @post.comments.build if @post.accepts_comments?
   end
 
