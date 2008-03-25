@@ -28,6 +28,10 @@ class Paginator
     [label_text, first_link, prev_link, next_link, last_link].join " | "
   end
 
+  def query_string
+    @offset > 1 ? "?page=#{@offset}": ''
+  end
+
 private
   include ActionView::Helpers::NumberHelper # for number_with_delimiter
 
