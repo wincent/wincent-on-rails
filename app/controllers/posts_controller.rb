@@ -4,6 +4,7 @@ class PostsController < ApplicationController
 
   def index
     respond_to do |format|
+      # TODO: for admins (only) show non-public posts too
       format.html {
         # BUG: we have another "n + 1" SELECT problem here
         # for each post we do a query to get its tags (involving a JOIN to the taggings table)

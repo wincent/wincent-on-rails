@@ -31,3 +31,37 @@ wikitext cheatsheet:
 - should mention that bug #12 in PRE or similar can get pretty ugly
 - the solution is to use an entity: &#x0023; for the hash
 
+UI bug:
+- if you mark a blog post as non-public there is no way to get to its edit page
+- but it's not really non-public: it's just omitted from the index
+- you can get to it by navigating to the URL
+
+Bug:
+- try to create wiki article and fail validation, any tags you set won't appear in the form
+
+full-text search:
+- still not convinced that I am doing this the right way
+- acts_as_sphinx looks like the best contender
+- but i am not sure about access control in that case; can sphinx handle that?
+- i guess I just have to test this thing in the staging environment with a _lot_ of data
+
+events:
+- add "Event" model
+- will record things like "user created", "confirmation sent" etc
+- probably using Observers
+- for admin only
+- will provide an overview of what's been happening
+- alert me to possible abuse
+
+get signup email working:
+- first signup
+- then password forgotten
+- we don't want to reset the password because some attacker guesses somebody else's email
+- we want to generate a token that is valid for short period (1 hour?)
+- and they visit the link
+- and can enter a new password
+
+mailing list imports:
+- list model
+- user has many lists through subscriptions
+

@@ -25,21 +25,8 @@ there are really only two types of content: blog posts and wiki articles
 no sense in introducing any other distinction
 help docs will go in the pages static folder
 
-as for revisions:
-
-Article model
-Article has_many revisions
-Revision model
-Revision belongs_to Article
-
-this is not wikipedia, so don't worry about storing diffs
-just store whole versions
-Revision will hold both source, and parsed/processed HTML (for speed; storage is not the bottleneck)
 
 how to implement redirects?
-Revisions will have a redirect attribute,
-which can be a URL (http://...) or a wiki link [[foo]]
-
 still need to decide how to link to other things; probably will use:
 [[Forum:1]]
 [[Post:2]] etc
@@ -74,3 +61,42 @@ http://www.joelonsoftware.com/items/2007/10/24austindemo.html
 Show recent and "most active" bugs when going to bugs section... when an issue crops up
 with a release you tend to have to navigate to the same thing over and over again, and
 this would help that.
+
+
+
+
+
+
+MediaWiki import... failed articles:
+
+  "title must not contain underscores or slashes":
+
+    'Using Apache's mod proxy to proxy for LightTPD/Ruby on Rails on Red Hat Enterprise Linux ES 3'
+    'Building ee/aee on Mac OS X Leopard'
+    'Avoiding mutual/circular/recursive requires'
+    'GNU/Linux'
+    'Importing hosts information from /etc/hosts into NetInfo on Mac OS X Tiger'
+    'Reserved MySQL column/Rails model attribute names'
+
+  "title already taken":
+
+    'Mb'
+    'Garbage Collection'
+    'Knowledge Base'
+    'Xcode Tools'
+    'Irb'
+    'RSpec'
+    'Continuous Integration'
+    'Command line interface'
+    'Rcov'
+    'Rubyforge'
+    'Behaviour-Driven'
+    'Search Engine Optimization'
+    'Zentest'
+    'Wikitext'
+    'Object-Oriented'
+    'MLDonkey'
+
+  "must supply either redirect or body":
+
+    'Ruby recipes'

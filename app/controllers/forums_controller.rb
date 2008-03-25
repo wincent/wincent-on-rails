@@ -19,6 +19,9 @@ class ForumsController < ApplicationController
 
   def index
     # TODO: sort by something less arbitary than forums.id (admin-settable sort order would be nice)
+    # TODO: consider moving this down into the Forum model
+    # it is a better candidate for it than the show action because it isn't paginated
+    # although maybe it is too simple to warrant it...
     @forums = Forum.find_by_sql <<-SQL
       SELECT forums.id, forums.name, forums.description, forums.topics_count,
              MAX(topics.updated_at) AS last_active_at, topics.id AS last_topic_id
