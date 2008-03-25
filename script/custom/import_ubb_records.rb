@@ -54,7 +54,7 @@ UbbForum.find(:all).each do |forum|
   # loop through all forums
   @forum =  Forum.find_by_name(forum.FORUM_TITLE) ||
             Forum.create!(:name => forum.FORUM_TITLE, :description => forum.FORUM_DESCRIPTION)
-  puts "forum: #{@forum.name}"
+  puts "created forum: #{@forum.name}"
   forum.ubb_topics.each do |topic|
     @user = user_for_ubb_user topic.ubb_user
     next if @user.nil? && topic.ubb_user.USER_ID != 1 # allow UBB.threads anonymous user
@@ -80,7 +80,8 @@ UbbForum.find(:all).each do |forum|
 
         # timestamps can only be updated behind ActiveRecord's back
         created = Time.at(post.POST_POSTED_TIME)
-        updated = Time.at(post.POST_LAST_EDITED_TIME)
+        updated = Time.at(post.POST_LAST_EDITED_TIME) # will be 0 (epoch) if no edits
+        updated = created if updated == Time.at(0)    # ignore if epoch
         created = updated if updated < created
         Comment.update_all ['created_at = ?, updated_at = ?', created, updated], ['id = ?', @comment]
       end
