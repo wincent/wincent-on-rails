@@ -3,8 +3,16 @@ require 'additions/time'
 module ApplicationHelper
   include CustomAtomFeedHelper
 
-  def atom_link
-    @atom_link = auto_discovery_link_tag(:atom, :format => 'atom') # picked up in application layout
+  # sets up the application layout
+  def atom_link model = nil
+    case model
+    when NilClass
+      # works for posts#index
+      @atom_link = auto_discovery_link_tag(:atom, :format => 'atom')
+    when Topic
+      # this is a nested resource, so needs special handling
+      @atom_link = auto_discovery_link_tag(:atom, forum_topic_url(model.forum, model) + '.atom')
+    end
   end
 
   def page_title string
