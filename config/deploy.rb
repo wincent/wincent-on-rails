@@ -37,6 +37,11 @@ task :help do
 
     cap staging deploy              # production: cap deploy
 
+  Uploading a single file:
+
+    FILES=config/routes.rb cap staging deploy:upload
+    FILES=config/routes.rb cap deploy:upload
+
   Putting it all together (staging environment, then production):
 
     cap staging deploy:check        # check dependencies
