@@ -1,10 +1,25 @@
 %h1 Forums
--for forum in @forums
-  .forum
-    %h2=link_to forum.name, forum_path(forum)
-    =topic_count forum.topics_count
-    =h forum.description unless forum.description.empty?
-    -admin_only do
-      =link_to 'edit', edit_forum_path(forum)
+%table
+  %tr
+    %th Forum
+    %th Description
+    %th Topics
+    %th Last active
+    -if admin?
+      %th Actions
+  -for forum in @forums
+    %tr.forum
+      %td
+        %h2=link_to forum.name, forum_path(forum)
+      %td
+        =h forum.description unless forum.description.empty?
+      %td
+        =topic_count forum.topics_count
+      %td
+        =Time.parse(forum.last_active_at).distance_in_words
+        =link_to_topic_for_forum forum
+      -if admin?
+        %td
+          =link_to 'edit', edit_forum_path(forum)
 -admin_only do
-  =link_to 'new', new_forum_path
+  =link_to 'new forum', new_forum_path

@@ -21,7 +21,7 @@
         %td=number_with_delimiter topic.comments_count
         %td=number_with_delimiter topic.view_count
         %td
-          =topic_user_link topic
+          =link_to_user_for_topic topic
           =topic.updated_at.distance_in_words
           -if topic.last_comment_id
             =link_to 'view &raquo;', forum_topic_path(@forum, topic) + "\#comment_#{topic.last_comment_id}"

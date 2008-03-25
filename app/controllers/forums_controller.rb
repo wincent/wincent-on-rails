@@ -18,7 +18,15 @@ class ForumsController < ApplicationController
   end
 
   def index
-    @forums = Forum.find(:all)
+    # TODO: sort by something less arbitary than forums.id (admin-settable sort order would be nice)
+    @forums = Forum.find_by_sql <<-SQL
+      SELECT forums.id, forums.name, forums.description, forums.topics_count,
+             MAX(topics.updated_at) AS last_active_at, topics.id AS last_topic_id
+      FROM forums
+      JOIN topics WHERE forums.id = topics.forum_id
+      GROUP BY topics.forum_id
+      ORDER BY forums.id
+    SQL
   end
 
   def show
