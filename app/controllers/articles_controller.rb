@@ -1,6 +1,7 @@
 class ArticlesController < ApplicationController
   before_filter :require_admin, :except => [ :index, :show ]
   before_filter :get_article, :only => [ :show, :edit, :update ]
+
   def index
     @articles = Article.find(:all, :order => 'updated_at DESC', :limit => 10)
     @tags     = Article.top_tags
@@ -35,8 +36,7 @@ class ArticlesController < ApplicationController
   def show
     # NOTE: MySQL will do a case-insensitive find here, so "foo" and "FOO" refer to the same article
     if @article.redirect.blank?
-      redirected_from = session[:redirected_from] ? session[:redirected_from].gsub('_', ' ') : nil
-      @redirected_from = Article.find_by_title(redirected_from) || Article.find(redirected_from) rescue nil
+      @redirected_from = Article.from_param(session[:redirected_from]) if session[:redirected_from]
       render
       clear_redirection_info
     else # this is a redirect
@@ -69,7 +69,7 @@ class ArticlesController < ApplicationController
 private
 
   def get_article
-    @article = Article.find_by_title(params[:id].gsub('_', ' ')) || Article.find(params[:id])
+    @article = Article.from_param(params[:id]) || (raise ActiveRecord::RecordNotFound)
   end
 
   def clear_redirection_info
@@ -80,7 +80,7 @@ private
   def record_not_found
     if admin?
       flash[:notice] = 'Requested article not found: create it?'
-      session[:new_article_params] = { :title => params[:id].gsub('_', ' ') }
+      session[:new_article_params] = { :title => Article.deparametrize(params[:id]) }
       redirect_to new_wiki_path
     else
       super wiki_index_path

@@ -13,6 +13,17 @@ class Article < ActiveRecord::Base
   acts_as_taggable
   attr_accessible :title, :redirect, :body, :public, :accepts_comments, :pending_tags, :tag_names_as_string
 
+  # this is a string-to-string transformation, unlike to_param/from_param
+  def self.deparametrize param
+    param.gsub('_', ' ')
+  end
+
+  # to_param takes a model and gives us a string,
+  # so from_param takes a string and gives us a model
+  def self.from_param param
+    find_by_title(deparametrize(param)) if param
+  end
+
   # NOTE: this could be defined dynamically in acts_as_taggable
   def self.top_tags
     Tag.find_by_sql <<-SQL
