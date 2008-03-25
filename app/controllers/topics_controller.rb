@@ -1,7 +1,8 @@
 class TopicsController < ApplicationController
   before_filter :get_forum
   before_filter :get_topic, :only => [ :show ]
-  after_filter :cache_show_feed, :only => :show # page-cache the atom feed
+  after_filter  :cache_show_feed, :only => :show
+  cache_sweeper :topic_sweeper, :only => [ :create, :update, :destroy ]
 
   def new
     @topic = Topic.new
@@ -57,7 +58,6 @@ private
   end
 
   def cache_show_feed
-    # TODO: sweep cache whenever topic created/deleted or comment created/deleted/updated
     cache_page if params[:format] == 'atom'
   end
 end
