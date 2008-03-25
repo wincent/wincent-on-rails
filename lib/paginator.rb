@@ -44,7 +44,9 @@ private
   end
 
   def label_text
-    "Displaying #{@offset}-#{upper_offset} of #{@count}:"
+    upper = upper_offset
+    lower = @offset < upper ? @offset + 1 : @offset # @offset is zero-based, so adjust up by 1 if we can
+    "Displaying #{lower}-#{upper} of #{@count}:"
   end
 
   def first_link
