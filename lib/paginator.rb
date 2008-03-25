@@ -29,6 +29,7 @@ class Paginator
   end
 
 private
+  include ActionView::Helpers::NumberHelper # for number_with_delimiter
 
   def on_first_page?
     @offset == 0
@@ -46,7 +47,7 @@ private
   def label_text
     upper = upper_offset
     lower = @offset < upper ? @offset + 1 : @offset # @offset is zero-based, so adjust up by 1 if we can
-    "Displaying #{lower}-#{upper} of #{@count}:"
+    "Displaying #{number_with_delimiter(lower)}-#{number_with_delimiter(upper)} of #{number_with_delimiter(@count)}:"
   end
 
   def first_link
