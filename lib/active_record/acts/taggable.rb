@@ -19,8 +19,21 @@ module ActiveRecord
         end
       end # module ClassMethods
 
-      # no class methods yet: may potentially add some later, like "find_with_tag" etc
-      module ClassMethods; end
+      # only 1 class method so far: may potentially add some others later, like "find_with_tag" etc
+      module ClassMethods
+        def find_top_tags
+          # note how we override the global taggings_count value with one scoped just to Articles
+          Tag.find_by_sql <<-SQL
+            SELECT    tags.id, name, COUNT(taggings.id) AS taggings_count
+            FROM      tags
+            JOIN      taggings
+            ON        tags.id = taggings.tag_id
+            WHERE     taggings.taggable_type = '#{self.to_s.downcase}'
+            GROUP BY  tags.id
+            ORDER BY  taggings_count DESC LIMIT 10
+          SQL
+        end
+      end # module ClassMethods
 
       module InstanceMethods
 

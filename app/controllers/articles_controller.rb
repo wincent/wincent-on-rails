@@ -10,7 +10,7 @@ class ArticlesController < ApplicationController
         # can't use RestfulPaginator + page caching here because the view features relative dates
         @paginator  = Paginator.new(params, Article.count(:conditions => { :public => true }), wiki_index_path)
         @articles   = Article.find_recent @paginator
-        @tags       = Article.top_tags
+        @tags       = Article.find_top_tags
       }
       format.atom {
         @articles   = Article.find_recent_excluding_redirects

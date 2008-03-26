@@ -35,20 +35,6 @@ class Article < ActiveRecord::Base
     find :all, :conditions => "public = TRUE AND (redirect IS NULL OR redirect = '')", :order => 'updated_at DESC', :limit => 10
   end
 
-  # NOTE: this could be defined dynamically in acts_as_taggable
-  def self.top_tags
-    # note how we override the global taggings_count value with one scoped just to Articles
-    Tag.find_by_sql <<-SQL
-      SELECT    tags.id, name, COUNT(taggings.id) AS taggings_count
-      FROM      tags
-      JOIN      taggings
-      ON        tags.id = taggings.tag_id
-      WHERE     taggings.taggable_type = 'Article'
-      GROUP BY  tags.id
-      ORDER BY  taggings_count DESC LIMIT 10
-    SQL
-  end
-
   def validate
     if redirect.blank? && body.blank?
       errors.add_to_base 'must supply either redirect or body'
