@@ -5,8 +5,14 @@ class TagsController < ApplicationController
   end
 
   def show
-    @tag        = Tag.find_by_name(params[:id]) || Tag.find(params[:id])
-    @taggables  = Tagging.grouped_taggables_for_tag @tag, current_user
+    if params[:type]
+      # this is a limited scope search (ie. only articles, only posts etc)
+      @taggables  = Tagging.taggable_group_for_tag_name params[:id], current_user, params[:type]
+      render :template => 'tags/show_subset'
+    else
+      @tag        = Tag.find_by_name(params[:id]) || (raise ActiveRecord::RecordNotFound)
+      @taggables  = Tagging.grouped_taggables_for_tag @tag, current_user
+    end
   end
 
   # NOTE/BUG: can never have a tag named "search"

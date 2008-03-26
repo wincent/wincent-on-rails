@@ -37,8 +37,9 @@ class Article < ActiveRecord::Base
 
   # NOTE: this could be defined dynamically in acts_as_taggable
   def self.top_tags
+    # note how we override the global taggings_count value with one scoped just to Articles
     Tag.find_by_sql <<-SQL
-      SELECT    tags.id, name, taggings_count
+      SELECT    tags.id, name, COUNT(taggings.id) AS taggings_count
       FROM      tags
       JOIN      taggings
       ON        tags.id = taggings.tag_id

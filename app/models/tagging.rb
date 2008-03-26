@@ -5,7 +5,7 @@ class Tagging < ActiveRecord::Base
   # Expects an actual Tag instance.
   # If user is a superuser, returns all taggables.
   # If user is a normal user, returns all taggables which are either public or belong to the user.
-  # If user is nul, returns only public taggables.
+  # If user is nil, returns only public taggables.
   def self.grouped_taggables_for_tag tag, user
     taggings = {}
     # not really "grouped" in the SQL sense (GROUP BY); rather, ordered
@@ -17,6 +17,28 @@ class Tagging < ActiveRecord::Base
       end
     end
     find_and_filter_taggables taggings, user
+  end
+
+  # Returns only the taggables for the specified group.
+  # NOTE: this _may_ belong in acts_as_taggable, but for now I am only accessing it from the tags_controller, so keep it here
+  def self.taggable_group_for_tag_name tag_name, user, group
+    group = group.to_s.capitalize
+    begin
+      klass = group.constantize
+      klass.respond_to?(:find_by_sql) or (raise ActiveRecord::RecordNotFound) # likely attack
+    rescue NameError                                                          # likely attack
+      raise ActiveRecord::RecordNotFound
+    end
+    table = group.tableize
+    sql   = <<-SQL
+      SELECT  #{table}.*
+      FROM    #{table}, taggings, tags
+      WHERE   #{table}.id = taggings.taggable_id
+      AND     taggings.taggable_type = ?
+      AND     taggings.tag_id = tags.id
+      AND     tags.name = ?
+    SQL
+    klass.find_by_sql([sql, group, tag_name ]).select { |taggable| accessible taggable, user }
   end
 
   # Expects an array of tag names (String objects).

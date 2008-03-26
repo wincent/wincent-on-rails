@@ -1,0 +1,15 @@
+%h1==Tag: #{h params[:id]}
+%h2
+  =pluralizing_count @taggables.length, params[:type].downcase
+  tagged with
+  =h params[:id]
+%table
+  %tr
+    %th Item
+    %th When
+  -@taggables.each do |taggable|
+    %tr
+      %td=taggable_link taggable
+      %td=timeinfo taggable
+.links
+  =link_to 'all tags', tags_path

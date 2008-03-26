@@ -14,6 +14,6 @@
 %h2 Top tags
 .cloud
   -for tag in @tags
-    -# BUG: the tags link to a page showing _all_ taggable types, not just tagged articles
-    =scaled_tag tag
+    -# TODO: get max and min taggings_count and pass them in to this method to make the scaling correct
+    =scaled_tag_for_type tag, 'article'
 -# TODO: add search box here
