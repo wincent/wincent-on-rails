@@ -14,14 +14,10 @@
 %h2 Top tags in the wiki
 .cloud
   -for tag in @tags
-    -# TODO: get max and min taggings_count and pass them in to this method to make the scaling correct
-    =scaled_tag_for_type tag, 'article'
+    =scaled_tag tag
 %h2 Tag search
 -form_tag search_tags_path, :method => 'get' do
   %span.annotation Find items which feature <em>all</em> of the specified tags
   %br
   =text_field_tag :q, params[:q], :size => 40
   =submit_tag 'Search'
-  %br
-  =check_box_tag 'type', 'article', true
-  %span.annotation only in the wiki

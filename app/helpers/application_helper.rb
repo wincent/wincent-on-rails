@@ -85,16 +85,6 @@ module ApplicationHelper
       :title => "#{item_count(tag.taggings_count)} tagged with '#{tag.name}'"
   end
 
-  # Like the scaled_tag method but restricted to a single class (eg Article, Post etc)
-  def scaled_tag_for_type tag, type
-    # note that the normalized taggings count may be off a bit here
-    # this is because it's normalized globally against all tags
-    # but the count itself is scoped to the specified type only
-    link_to tag.name, tag_path(tag) + "?type=#{type}",
-      :style => "font-size: #{1 + tag.normalized_taggings_count * 1}em;",
-      :title => "#{pluralizing_count(tag.taggings_count, type)} tagged with '#{tag.name}'"
-  end
-
   def tag_links object
     links = object.tags.collect do |tag|
       link_to tag.name, tag_path(tag), :title => "#{item_count(tag.taggings_count)} tagged with '#{tag.name}'"

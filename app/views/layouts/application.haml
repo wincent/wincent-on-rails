@@ -28,13 +28,11 @@
           -form_tag search_tags_path, :method => 'get', :id => 'search', :style => 'display:none;' do
             =text_field_tag :q, params[:q], :size => 12, :id => :search_box
       -# TODO: show logout link when logged in (not sure _where_ though! probably next to "wincent")
-    #sidebar
-      -# not sure if i even want a side bar
-      -# maybe a secondary navigation bar under the main one, context sensitive
-      -# content for sidebar
     #content
       -flash.each do |key, message|
         =content_tag :div, message, :id => key
       =yield
+    #sidebar
+      -# on many pages this won't even be used, but there are some places where it is appropriate
     #footer
       ==Copyright &copy; 1997-#{Time.new.year} #{mail_to('win@wincent.com', 'Wincent Colaiuta')}.

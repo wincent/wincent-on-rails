@@ -34,7 +34,7 @@ module TagsHelper
   end
 
   def taggables_search_summary
-    count = @taggables.keys.inject(0) { |acc, value| acc += @taggables[value].length }
+    count = @taggables.inject(0) { |acc, value| acc += value.taggables.length }
     "#{item_count(count)} tagged with #{tag_names}"
   end
 end

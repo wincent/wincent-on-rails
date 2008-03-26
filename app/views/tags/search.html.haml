@@ -8,12 +8,5 @@
   %br
   =text_field_tag :q, params[:q], :size => 40
   =submit_tag 'Search'
-  -# TODO: possibly split this out into a helper method
-  -# where we can filter out bogus types like "1" etc
-  -# they are harmless but it would be nice to close that door anyway
-  -if params[:type]
-    %br
-    =check_box_tag 'type', params[:type], true
-    %span.annotation==only #{h params[:type].to_s.downcase.pluralize}
 .links
   =link_to 'all tags', tags_path
