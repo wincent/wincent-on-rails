@@ -1,13 +1,13 @@
 class ArticlesController < ApplicationController
   before_filter :require_admin, :except => [ :index, :show ]
   before_filter :get_article, :only => [ :show, :edit, :update ]
-  after_filter  :cache_index, :only => :index
+  caches_page   :index
   cache_sweeper :article_sweeper, :only => [ :create, :update, :destroy ]
 
   def index
     respond_to do |format|
       format.html {
-        @paginator  = Paginator.new(params, Article.count(:conditions => { :public => true }), wiki_index_path)
+        @paginator  = RestfulPaginator.new(params, Article.count(:conditions => { :public => true }), wiki_index_path)
         @articles   = Article.find_recent @paginator
         @tags       = Article.top_tags
       }
@@ -81,17 +81,6 @@ private
   def get_article
     @article = Article.from_param(params[:id]) || (raise ActiveRecord::RecordNotFound)
   end
-
-   def cache_index
-     if params[:format] == 'atom'
-       cache_page # /wiki.atom
-     else
-       # this unfortunately won't work because if we cache /wiki to /wiki.html
-       # then a request for /wiki?page=2 will (rightly) hit /wiki.html rather than /wiki?page=2.html
-       # would have to change the pagination scheme to /wiki/2 etc, and that could clash with article names
-       #cache_page response.body, "/wiki#{@paginator.query_string}"
-     end
-   end
 
   def clear_redirection_info
     session[:redirected_from]   = nil

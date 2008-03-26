@@ -1,2 +1,3 @@
 forums
-*.atom
+wiki.*
+wiki/*
