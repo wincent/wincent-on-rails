@@ -43,7 +43,7 @@ class Tagging < ActiveRecord::Base
 
   # Expects an array of tag names (String objects).
   # As above, restricts visibility of returned taggable objects according to who the current user is.
-  def self.grouped_taggables_for_tag_names tag_names, user
+  def self.grouped_taggables_for_tag_names tag_names, user, type = nil
     # first get the tags
     taggables         = nil
     query             = []
@@ -69,8 +69,13 @@ class Tagging < ActiveRecord::Base
       # here we require that each taggable have _all_ the tags in order to survive
       # (an alternative would be to accept all and order them from highest count to lowest in the search results)
       taggings = {}
+      type = type.to_s.capitalize if type
       unfiltered_taggings = Tagging.find_by_sql([query, *tag_ids]).reject { |t| t.tag_count.to_i < tag_ids.length }
       unfiltered_taggings.each do |t|
+        # excluding other types here is not the most efficient approach
+        # but the query above is already ugly enough as it is
+        # may try to clean it up later
+        next if type && t.taggable_type != type
         if taggings[t.taggable_type].nil?
           taggings[t.taggable_type] = [t]
         else
