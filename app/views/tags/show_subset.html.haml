@@ -1,4 +1,4 @@
-%h1==Tag: #{h params[:id]}
+%h1==Tag: #{h @tag.name}
 %h2
   =pluralizing_count @taggables.length, params[:type].downcase
   tagged with
@@ -12,4 +12,5 @@
       %td=taggable_link taggable
       %td=timeinfo taggable
 .links
+  =link_to "all items tagged with #{h @tag.name}", tag_path(@tag)
   =link_to 'all tags', tags_path

@@ -7,6 +7,7 @@ class TagsController < ApplicationController
   def show
     if params[:type]
       # this is a limited scope search (ie. only articles, only posts etc)
+      @tag        = Tag.new(:name => params[:id])
       @taggables  = Tagging.taggable_group_for_tag_name params[:id], current_user, params[:type]
       render :template => 'tags/show_subset'
     else
