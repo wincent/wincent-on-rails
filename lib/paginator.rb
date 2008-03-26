@@ -3,7 +3,6 @@ class Paginator
 
   def initialize params, count, path, per_page = 10
     # unpack params
-    @params           = params
     page              = params[:page].to_i
 
     # preserve sort information in links
@@ -28,12 +27,12 @@ class Paginator
     [label_text, first_link, prev_link, next_link, last_link].join " | "
   end
 
-  def query_string
-    @offset > 1 ? "?page=#{@offset}": ''
-  end
-
 private
   include ActionView::Helpers::NumberHelper # for number_with_delimiter
+
+  def param_for_page page
+    page > 1 ? "?page=#{page}" : ''
+  end
 
   def on_first_page?
     @offset == 0
@@ -58,7 +57,7 @@ private
     if on_first_page?
       %Q{<span class="first disabled">First</span>}
     else
-      %Q{<a href="#{@path}?page=1#{@additonal_params}" class="first">First</a>}
+      %Q{<a href="#{@path}#{@additonal_params}" class="first">First</a>}
     end
   end
 
@@ -66,7 +65,7 @@ private
     if on_last_page?
       %Q{<span class="last disabled">Last</span>}
     else
-      %Q{<a href="#{@path}?page=#{(@count / @limit.to_f).ceil}#{@additonal_params}" class="last">Last</a>}
+      %Q{<a href="#{@path}#{param_for_page((@count / @limit.to_f).ceil)}#{@additonal_params}" class="last">Last</a>}
     end
   end
 
@@ -74,7 +73,7 @@ private
     if on_first_page?
       %Q{<span class="prev disabled">Previous</span>}
     else
-      %Q{<a href="#{@path}?page=#{@page - 1}#{@additonal_params}" class="prev">Previous</a>}
+      %Q{<a href="#{@path}#{param_for_page(@page - 1)}#{@additonal_params}" class="prev">Previous</a>}
     end
   end
 
@@ -82,7 +81,7 @@ private
     if on_last_page?
       %Q{<span class="next disabled">Next</span>}
     else
-      %Q{<a href="#{@path}?page=#{@page + 1}#{@additonal_params}" class="next">Next</a>}
+      %Q{<a href="#{@path}#{param_for_page(@page + 1)}#{@additonal_params}" class="next">Next</a>}
     end
   end
 end # class Paginator
