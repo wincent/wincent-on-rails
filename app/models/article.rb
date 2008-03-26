@@ -52,9 +52,6 @@ class Article < ActiveRecord::Base
     if redirect.blank? && body.blank?
       errors.add_to_base 'must supply either redirect or body'
     end
-    if title && title =~ /\A\d+\z/
-      errors.add('title', 'must not be only a number') # only-number titles are reserved for pagination
-    end
   end
 
   def to_param

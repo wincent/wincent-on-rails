@@ -5,6 +5,7 @@ class PostsController < ApplicationController
   def index
     respond_to do |format|
       format.html {
+        # NOTE: don't be tempted to page cache this action/format (it shows relative timestamps)
         @paginator  = Paginator.new(params, Post.count(:conditions => {:public => true}), blog_index_path)
 
         # BUG: with the comment counts; each post causes a query like this one:

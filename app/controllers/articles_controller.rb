@@ -1,13 +1,14 @@
 class ArticlesController < ApplicationController
   before_filter :require_admin, :except => [ :index, :show ]
   before_filter :get_article, :only => [ :show, :edit, :update ]
-  caches_page   :index
+  after_filter  :cache_index_feed, :only => [ :index ]
   cache_sweeper :article_sweeper, :only => [ :create, :update, :destroy ]
 
   def index
     respond_to do |format|
       format.html {
-        @paginator  = RestfulPaginator.new(params, Article.count(:conditions => { :public => true }), wiki_index_path)
+        # can't use RestfulPaginator + page caching here because the view features relative dates
+        @paginator  = Paginator.new(params, Article.count(:conditions => { :public => true }), wiki_index_path)
         @articles   = Article.find_recent @paginator
         @tags       = Article.top_tags
       }
@@ -80,6 +81,10 @@ private
 
   def get_article
     @article = Article.from_param(params[:id]) || (raise ActiveRecord::RecordNotFound)
+  end
+
+  def cache_index_feed
+    cache_page if params[:format] == 'atom'
   end
 
   def clear_redirection_info
