@@ -2,7 +2,6 @@ require File.dirname(__FILE__) + '/../spec_helper'
 
 describe ArticlesController do
   describe 'route generation' do
-
     it "should map { :controller => 'articles', :action => 'index' } to /wiki" do
       route_for(:controller => "articles", :action => "index").should == "/wiki"
     end
@@ -29,7 +28,6 @@ describe ArticlesController do
   end
 
   describe "route recognition" do
-
     it "should generate params { :controller => 'articles', action => 'index' } from GET /wiki" do
       params_from(:get, "/wiki").should == {:controller => "articles", :action => "index"}
     end
