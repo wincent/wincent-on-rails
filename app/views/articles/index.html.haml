@@ -1,5 +1,5 @@
 -atom_link
-%h1 Articles
+%h1 Wiki articles
 %h2 Recently updated
 -if @paginator
   .pagination=@paginator.pagination_links
@@ -11,12 +11,11 @@
     %tr
       %td=link_to h(article.title), wiki_path(article)
       %td=timeinfo article
-%h2 Top tags
+%h2 Top tags in the wiki
 .cloud
   -for tag in @tags
     -# TODO: get max and min taggings_count and pass them in to this method to make the scaling correct
     =scaled_tag_for_type tag, 'article'
--# TODO: add a checkbox to this form: "Search only within the wiki"
 %h2 Tag search
 -form_tag search_tags_path, :method => 'get' do
   %span.annotation Find items which feature <em>all</em> of the specified tags
