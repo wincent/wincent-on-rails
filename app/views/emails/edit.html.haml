@@ -3,8 +3,11 @@
 -form_for @email, :url => user_email_path(@user, @email) do |f|
   %table.main_form
     %tr
-      %th User display name
-      %td=link_to @user.display_name, user_path(@user)
+      %th User
+      %td
+        =link_to @user.display_name, user_path(@user)
+        |
+        =link_to 'edit', edit_user_path(@user)
     %tr
       %th Address
       %td=f.text_field :address
