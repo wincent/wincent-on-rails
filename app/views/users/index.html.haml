@@ -12,9 +12,9 @@
       %td=link_to @user.display_name, user_path(@user)
       %td
         -for email in @user.emails do
-          =link_to email.address, edit_user_email_path(@user, email)
-          =(email.verified? ? ' (verified)' : ' (unverified)')
-          %br
+          %div{:class => email.deleted? ? 'deleted' : nil}
+            =link_to email.address, edit_user_email_path(@user, email)
+            =email_status email
       %td=@user.created_at.distance_in_words
       %td
         =link_to 'edit', edit_user_path(@user)

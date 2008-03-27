@@ -92,6 +92,26 @@ class User < ActiveRecord::Base
     self.passphrase_salt, self.passphrase_hash = salt, User.digest(passphrase, salt)
   end
 
+  def update_emails options = {}
+    p options
+    remove_emails(options[:delete]) unless options[:delete].blank?
+    add_email(options[:add]) unless options[:add].blank?
+  end
+
+  def add_email address
+    p "add"
+    p address
+    emails.build(:address => address)
+  end
+
+  # The emails variable should be form input like {"1"=>"1", "408"=>"1"}, meaning "delete emails with ids 1 and 408"
+  def remove_emails emails
+    emails = emails.collect { |k, v| v == '1' ? k.to_i : nil }.select {|a| !a.nil? }
+    p "remove"
+    p emails
+    Email.update_all(['deleted_at = ?', Time.now], ['user_id = ? AND id IN (?)', self.id, emails]) if emails.length > 0
+  end
+
   def self.find_with_param! param
     # TODO: submit Rails patch which would allow find_by_display_name! as a shorthand for this
     # would need to patch activerecord/lib/active_record/base.rb method_missing for this

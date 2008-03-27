@@ -3,7 +3,7 @@ class ConfirmationMailer < ActionMailer::Base
     subject     'wincent.com requests that you confirm your email address'
     body({
       :address          => confirmation.email.address,
-      :confirmation_url => email_confirm_url(confirmation.email, confirmation, :host => 'wincent.com'),
+      :confirmation_url => confirm_url(confirmation, :host => 'wincent.com'),
       :cutoff           => confirmation.cutoff.utc
       })
     recipients  confirmation.email.address

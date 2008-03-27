@@ -1,8 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
   map.resources :comments
-  map.resources :emails do |email|
-    email.resources :confirm, :controller => 'confirmations'
-  end
+  map.resources :confirm, :controller => 'confirmations'
   map.resources :issues
   map.resources :links
 

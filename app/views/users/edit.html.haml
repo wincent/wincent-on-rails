@@ -12,6 +12,7 @@
     %tr
       %th=@emails.length != 1 ? 'Emails' : 'Email'
       %td
+        -# TODO: radio buttons or similar UI here to select default?
         -for email in @emails
           -if admin?
             =link_to email.address, edit_user_email_path(@user, email)
@@ -45,4 +46,8 @@
     -if admin?
       -# admins can manipulate some additional attributes at creation time
   %p=f.submit 'Save changes'
-%p=link_to 'back', users_path
+  -# TODO: consider adding an "undelete emails" button here
+.links
+  =link_to 'user profile', user_path(@user)
+  -if admin?
+    =link_to 'all users', users_path
