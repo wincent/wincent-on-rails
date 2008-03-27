@@ -1,7 +1,7 @@
 %h1 Edit user
 =error_messages_for :user
 =error_messages_for :email
--form_for @user, :url => users_path do |f|
+-form_for @user, :url => user_path(@user) do |f|
   %table.main_form
     %tr
       %th
@@ -10,16 +10,17 @@
         %span.annotation what other users will see
       %td=f.text_field :display_name
     %tr
-      %th Existing email addresses
+      %th=@emails.length != 1 ? 'Emails' : 'Email'
       %td
-        -for email in @user.emails
+        -for email in @emails
           -if admin?
             =link_to email.address, edit_user_email_path(@user, email)
           -else
             =mail_to(email.address)
-          =check_box_tag 'delete'
+          =check_box_tag "delete_email[#{email.id}]"
           delete
           %br
+          -# would be nice to offer the user an undo for this deletion on landing on the next page
     %tr
       %th
         Add a new email
@@ -27,13 +28,19 @@
         %span.annotation a confirmation email will be sent to this address
       %td=f.text_field :email
     %tr
-      %th Set new passphrase
+      %th
+        Old passphrase
+        %br
+        %span.annotation leave blank unless you want to set a new passphrase
+      %td=f.password_field :old_passphrase
+    %tr
+      %th New passphrase
       %td=f.password_field :passphrase
     %tr
       %th
-        Passhrase again
+        New passhrase again
         %br
-        %span.annotation confirm your passphrase
+        %span.annotation confirm your new passphrase
       %td=f.password_field :passphrase_confirmation
     -if admin?
       -# admins can manipulate some additional attributes at creation time

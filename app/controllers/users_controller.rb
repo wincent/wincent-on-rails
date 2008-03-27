@@ -1,7 +1,8 @@
 class UsersController < ApplicationController
   before_filter     :require_user, :only => [ :edit, :update ]
   before_filter     :require_verified, :only => [ :index ]
-  before_filter     :get_user, :only => [ :edit, :show ]
+  before_filter     :get_user, :only => [ :edit, :show, :update ]
+  before_filter     :get_emails, :only => [ :edit, :update ]
   before_filter     :require_edit_privileges, :only => [ :edit, :update ]
   acts_as_sortable  :by => [:id, :display_name, :login_name, :created_at]
 
@@ -49,7 +50,15 @@ class UsersController < ApplicationController
   end
 
   def update
-    # if user updates email want to confirm the address again
+    if @user.update_attributes params[:user]
+      flash[:notice] = 'Successfully updated'
+      redirect_to user_path(@user)
+      # if user updates email want to confirm the address again:    params[:user][:email]
+      # must handle email deletions as well                         params[:user][:delete_email] {"1"=>"1", "408"=>"1"}
+    else
+      flash[:error] = 'Update failed'
+      render :action => 'edit'
+    end
   end
 
 private
@@ -67,5 +76,9 @@ private
 
   def get_user
     @user = User.find_with_param! params[:id]
+  end
+
+  def get_emails
+    @emails = @user.emails.find(:all, :conditions => 'deleted_at IS NULL')
   end
 end
