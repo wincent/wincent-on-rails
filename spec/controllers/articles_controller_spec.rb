@@ -1,5 +1,46 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
+describe ArticlesController do
+  describe 'GET /wiki/new' do
+    before do
+      @article = mock_model Article
+      Article.stub!(:new).and_return(@article)
+    end
+
+    def do_get
+      get '/wiki/new' # this doesn't work either, nor does 'new', nor :new
+      # I suspect it's because the controller is _articles_ and the route is _wiki_
+      # so rspec is trying to hit "/articles/new" when we ask for :new
+      # it's probably trying to hit "/articles/wiki/new" when we ask for "/wiki/new"
+    end
+
+    it 'should succeed' do
+      do_get
+      response.should be_success
+    end
+
+    it 'should create a new article' do
+      Article.should_receive(:new).and_return(@article)
+      do_get
+    end
+
+    it 'should not save the new article' do
+      @article.should_not_receive(:save)
+      do_get
+    end
+
+    it 'should assign the new article for the view' do
+      do_get
+      assigns[:article].should = @article
+    end
+
+    it 'should render the new template' do
+      do_get
+      response.should render_template('new')
+    end
+  end
+end
+
 <<-DISABLED
 describe ArticlesController do
   describe "handling GET /articles" do

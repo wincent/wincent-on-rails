@@ -77,9 +77,9 @@ th.ascending a { font-weight: bold; background: url(../images/upwards-sort-trian
 
 th.descending a { font-weight: bold; background: url(../images/downwards-sort-triangle.png) no-repeat right center; padding-right: 16px; }
 
-tr.odd td { background: #fff; }
+tr.odd { background: #fff; }
 
-tr.even td { background: #f7f7f7; }
+tr.even { background: #f7f7f7; }
 
 span.annotation { font-size: xx-small; font-weight: normal; color: #666; }
 
@@ -90,7 +90,7 @@ span.annotation { font-size: xx-small; font-weight: normal; color: #666; }
 
 .tag_info { text-align: right; }
 
-.when { color: #bbb; }
+.when { font-size: x-small; color: #bbb; }
 
 .post { margin-top: 3em; }
 .post .when { margin-top: -1em; }

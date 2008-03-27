@@ -1,4 +1,6 @@
 -atom_link @topic
+-content_for :css do
+  =stylesheet_link_tag 'topics'
 #breadcrumbs
   =link_to 'Home', home_path
   &raquo;
@@ -8,10 +10,28 @@
   &raquo;
   =h @topic.title
 =page_title @topic.title
-%div[@topic]
-  =preserve @topic.body.w
+%table[@topic]
+  -#%tr.header
+  -#  %th Meta
+  -#  %th Content
+  %tr{ :class => 'comment odd' }
+    %td
+      =link_to_user @topic.user
+      %br
+      =pluralizing_count(@topic.user.comments_count, 'post') if @topic.user
+      %br
+      %span.when
+        =timeinfo_for_topic @topic
+    %td=preserve @topic.body.w
   -for comment in @comments
-    %div[comment]
-      =preserve comment.body.w
--if admin? or (!current_user.nil? and current_user == @topic.user_id)
-  you can edit this
+    %tr{ :class => "comment #{cycle('even', 'odd')}", :id => "comment_#{comment.id}" }
+      %td
+        =link_to_user comment.user
+        %br
+        =pluralizing_count(comment.user.comments_count, 'post') if comment.user
+        %br
+        %span.when
+          =timeinfo_for_topic_comment comment
+      %td=preserve comment.body.w
+-#-if admin? or (!current_user.nil? and current_user == @topic.user_id)
+-#  you can edit this

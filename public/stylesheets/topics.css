@@ -1,0 +1,2 @@
+.topic td { padding-top: 1.5em; padding-left: 1em; padding-right: 1em; vertical-align: top; }
+.topic td + td { padding-top: 0em; border: 1px solid #ccc; }

@@ -33,6 +33,7 @@ class TopicsController < ApplicationController
   end
 
   def show
+    # TODO: move this into Topic model
     @comments = Comment.find \
       :all,
       :conditions => { :public => true, :commentable_id => @topic.id, :commentable_type => 'Topic' },
@@ -40,7 +41,10 @@ class TopicsController < ApplicationController
       :order => 'comments.created_at'
 
     respond_to do |format|
-      format.html { @topic.hit! }
+      format.html {
+        @topic.hit!
+        @comment = @topic.comments.build if @topic.accepts_comments?
+      }
       format.atom
     end
   end
