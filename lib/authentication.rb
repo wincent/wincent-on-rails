@@ -60,9 +60,7 @@ module ActionController
 
     # before_filter: requires a logged-in user, but doesn't need the user to be verified yet.
     def require_user
-      unless self.logged_in?
-        redirect_to_login
-      end
+      redirect_to_login unless self.logged_in?
     end
 
     def redirect_to_login
