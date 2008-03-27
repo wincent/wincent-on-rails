@@ -56,10 +56,9 @@ class UsersController < ApplicationController
   end
 
 private
+
   def get_user
-    # TODO: submit Rails patch which would allow find_by_display_name! as a shorthand for this
-    # would need to patch activerecord/lib/active_record/base.rb method_missing for this
-    @user = User.find_by_display_name(params[:id]) or
-      (raise ActiveRecord::RecordNotFound, "Couldn't find User with display name '#{params[:id]}'")
+    @user = User.find_with_param params[:id]
   end
+
 end

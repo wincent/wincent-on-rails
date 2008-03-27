@@ -92,7 +92,21 @@ class User < ActiveRecord::Base
     self.passphrase_salt, self.passphrase_hash = salt, User.digest(passphrase, salt)
   end
 
+  def self.find_with_param param
+    # TODO: submit Rails patch which would allow find_by_display_name! as a shorthand for this
+    # would need to patch activerecord/lib/active_record/base.rb method_missing for this
+    find_by_display_name(deparametrize(param)) || (raise ActiveRecord::RecordNotFound)
+  end
+
+  def self.deparametrize string
+    string.gsub '-', ' '
+  end
+
+  def self.parametrize string
+    string.downcase.gsub ' ', '-'
+  end
+
   def to_param
-    display_name.downcase.gsub ' ', '-'
+    User.parametrize display_name
   end
 end
