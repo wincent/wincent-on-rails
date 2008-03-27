@@ -10,14 +10,14 @@ class Forum < ActiveRecord::Base
   end
 
   def self.deparametrize string
-    string.gsub('-', ' ')
+    string.gsub '-', ' '
   end
 
-  def parametrize string
-    string.downcase.gsub(' ', '-')
+  def self.parametrize string
+    string.downcase.gsub ' ', '-'
   end
 
   def to_param
-    parametrize name
+    Forum.parametrize name
   end
 end
