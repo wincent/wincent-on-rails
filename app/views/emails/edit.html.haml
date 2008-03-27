@@ -1,0 +1,14 @@
+=page_title "Edit email: #{@email.address}"
+=error_messages_for :email
+-form_for @email, :url => user_email_path(@user, @email) do |f|
+  %table.main_form
+    %tr
+      %th User display name
+      %td=link_to @user.display_name, user_path(@user)
+    %tr
+      %th Address
+      %td=f.text_field :address
+    %tr
+      %th Verified?
+      %td=f.check_box :verified
+  %p=f.submit 'Save changes'

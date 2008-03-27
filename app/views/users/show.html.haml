@@ -1,16 +1,21 @@
-=page_title "User profile for #{@user.display_name}"
-
-=comment_count @user.comments_count
-
--# TODO: when importing UBB users etc should set created_at field accordingly
-Signed up
-=@user.created_at.distance_in_words
+=page_title "User: #{@user.display_name}"
+%h2 Public profile
+%table
+  %tr
+    %th Display name
+    %th=@user.display_name
+  %tr
+    %th Posts
+    %td=@user.comments_count
+  %tr
+    %th Signed up
+    %td=@user.created_at.distance_in_words
 
 -if logged_in_and_verified?
-  logged in and verified see this; probably combine with following
+  -#
 -elsif logged_in?
-  logged in users see this
+  -#
 -if admin?
-  admin sees this
+  -#
 -if @user == current_user
-  if user looking at own profile sees this
+  -# user looking at own profile sees this (email addresses etc)

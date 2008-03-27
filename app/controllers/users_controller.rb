@@ -2,10 +2,11 @@ class UsersController < ApplicationController
   before_filter     :require_user, :only => [ :edit, :update ]
   before_filter     :require_verified, :only => [ :index ]
   before_filter     :get_user, :only => [ :edit, :show ]
+  before_filter     :require_edit_privileges, :only => [ :edit, :update ]
   acts_as_sortable  :by => [:id, :display_name, :login_name, :created_at]
 
   def index
-    @users = User.find(:all)
+    @users = User.find :all, :include => :emails
   end
 
   def new
@@ -44,21 +45,27 @@ class UsersController < ApplicationController
   end
 
   def edit
-    unless admin? or (logged_in? and @user.id == self.current_user.id)
-      redirect_to user_path(@user)
-    else
-      render
-    end
+    render
   end
 
   def update
-
+    # if user updates email want to confirm the address again
   end
 
 private
 
+  def can_edit?
+    admin? or (logged_in? and @user.id == self.current_user.id)
+  end
+
+  def require_edit_privileges
+    unless can_edit?
+      flash[:notice] = 'You are not allowed to edit this user'
+      redirect_to user_path(@user)
+    end
+  end
+
   def get_user
     @user = User.find_with_param! params[:id]
   end
-
 end

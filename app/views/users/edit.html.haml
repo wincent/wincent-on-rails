@@ -1,1 +1,41 @@
-no content yet
+%h1 Edit user
+=error_messages_for :user
+=error_messages_for :email
+-form_for @user, :url => users_path do |f|
+  %table.main_form
+    %tr
+      %th
+        Display name
+        %br
+        %span.annotation what other users will see
+      %td=f.text_field :display_name
+    %tr
+      %th Existing email addresses
+      %td
+        -for email in @user.emails
+          -if admin?
+            =link_to email.address, edit_user_email_path(@user, email)
+          -else
+            =mail_to(email.address)
+          =check_box_tag 'delete'
+          delete
+          %br
+    %tr
+      %th
+        Add a new email
+        %br
+        %span.annotation a confirmation email will be sent to this address
+      %td=f.text_field :email
+    %tr
+      %th Set new passphrase
+      %td=f.password_field :passphrase
+    %tr
+      %th
+        Passhrase again
+        %br
+        %span.annotation confirm your passphrase
+      %td=f.password_field :passphrase_confirmation
+    -if admin?
+      -# admins can manipulate some additional attributes at creation time
+  %p=f.submit 'Save changes'
+%p=link_to 'back', users_path

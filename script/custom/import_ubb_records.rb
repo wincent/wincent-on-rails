@@ -36,6 +36,7 @@ UbbUser.find(:all).each do |user|
       @user.save!
       @email = @user.emails.build(:address => user.USER_REGISTRATION_EMAIL)
       @email.save!
+      @email.update_attribute(:verified, true)
       @user.update_attribute(:verified, true)
 
       # timestamps can only be updated behind ActiveRecord's back
