@@ -25,7 +25,7 @@ describe SessionsController, 'logging in with a valid username and passphrase' d
   end
 
   it 'should redirect to the home path' do
-    response.should redirect_to(home_path)
+    response.should redirect_to(root_path)
   end
 end
 
@@ -59,7 +59,7 @@ describe SessionsController, 'logging out when previously logged in' do
   end
 
   it 'should redirect to the home path' do
-    response.should redirect_to(home_path)
+    response.should redirect_to(root_path)
   end
 end
 
@@ -73,6 +73,6 @@ describe SessionsController, 'logging out when not previously logged in' do
   end
 
   it 'should redirect to the home path' do
-    response.should redirect_to(home_path)
+    response.should redirect_to(root_path)
   end
 end

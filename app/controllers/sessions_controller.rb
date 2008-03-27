@@ -17,7 +17,7 @@ class SessionsController < ApplicationController
         session[:original_uri] = nil
         redirect_to original_uri
       else
-        redirect_to home_path
+        redirect_to root_path
       end
     else
       flash[:error]     = 'Invalid email or passphrase.'
@@ -33,6 +33,6 @@ class SessionsController < ApplicationController
     else
       flash[:error]     = "Can't log out (weren't logged in)."
     end
-    redirect_to home_path
+    redirect_to root_path
   end
 end
