@@ -64,7 +64,7 @@ class ForumsController < ApplicationController
 private
 
   def get_forum
-    @forum = Forum.find_with_param params[:id]
+    @forum = Forum.find_with_param! params[:id]
   end
 
   def record_not_found

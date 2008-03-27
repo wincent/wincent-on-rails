@@ -57,7 +57,7 @@ class ArticlesController < ApplicationController
         redirect_to url_or_path_for_redirect
       end
     else # not a redirect
-      @redirected_from = Article.from_param(session[:redirected_from]) if session[:redirected_from]
+      @redirected_from = Article.find_with_param!(session[:redirected_from]) if session[:redirected_from]
       render
       clear_redirection_info
     end
@@ -80,7 +80,7 @@ class ArticlesController < ApplicationController
 private
 
   def get_article
-    @article = Article.from_param(params[:id]) || (raise ActiveRecord::RecordNotFound)
+    @article = Article.find_with_param! params[:id]
   end
 
   def cache_index_feed

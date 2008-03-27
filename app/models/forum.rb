@@ -4,7 +4,7 @@ class Forum < ActiveRecord::Base
   validates_format_of     :name, :with => /\A[a-z ]+\z/i, :message => 'may only contain letters and spaces'
   validates_uniqueness_of :name
 
-  def self.find_with_param param
+  def self.find_with_param! param
     # forum name will be downcased in the URL, but MySQL will do a case-insensitive search for us anyway
     find_by_name(deparametrize(param)) || (raise ActiveRecord::RecordNotFound)
   end

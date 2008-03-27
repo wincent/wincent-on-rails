@@ -13,15 +13,8 @@ class Article < ActiveRecord::Base
   acts_as_taggable
   attr_accessible :title, :redirect, :body, :public, :accepts_comments, :pending_tags, :tag_names_as_string
 
-  # this is a string-to-string transformation, unlike to_param/from_param
-  def self.deparametrize param
-    param.gsub('_', ' ')
-  end
-
-  # to_param takes a model and gives us a string,
-  # so from_param takes a string and gives us a model
-  def self.from_param param
-    find_by_title(deparametrize(param)) if param
+  def self.find_with_param! param
+    find_by_title(deparametrize(param)) || (raise ActiveRecord::RecordNotFound)
   end
 
   def self.find_recent paginator = nil
@@ -41,7 +34,16 @@ class Article < ActiveRecord::Base
     end
   end
 
+  # this is a string-to-string transformation, unlike to_param/from_param
+  def self.deparametrize string
+    string.gsub '_', ' '
+  end
+
+  def self.parametrize string
+    string.gsub ' ', '_'
+  end
+
   def to_param
-    title.gsub(' ', '_')
+    Article.parametrize title
   end
 end

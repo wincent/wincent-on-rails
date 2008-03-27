@@ -53,7 +53,7 @@ private
 
   def get_forum
     # TODO: handle private forums?
-    @forum = Forum.find_with_param params[:forum_id]
+    @forum = Forum.find_with_param! params[:forum_id]
   end
 
   def get_topic

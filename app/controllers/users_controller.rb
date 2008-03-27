@@ -58,7 +58,7 @@ class UsersController < ApplicationController
 private
 
   def get_user
-    @user = User.find_with_param params[:id]
+    @user = User.find_with_param! params[:id]
   end
 
 end

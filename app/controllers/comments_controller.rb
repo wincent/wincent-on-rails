@@ -45,7 +45,7 @@ class CommentsController < ApplicationController
       # forums/:id/topic/:id/comments
       root, grandparent, grandparent_id, parent, parent_id, nested = components
       raise unless grandparent == 'forums'
-      grandparent_instance = Forum.find_with_param(grandparent_id)
+      grandparent_instance = Forum.find_with_param! grandparent_id
       parent_instance = Topic.find(:first, :conditions => {:forum_id => grandparent_instance.id, :id => parent_id })
       raise unless parent_instance
     else
