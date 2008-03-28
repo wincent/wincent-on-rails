@@ -1,5 +1,5 @@
 -@taggables.each do |group|
-  %h3=pluralizing_count group.taggables.length, group.name.downcase
+  %h3=pluralizing_count group.taggables.length, taggable_name(group.name)
   %table
     %tr
       %th Item

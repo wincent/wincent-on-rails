@@ -37,4 +37,18 @@ module TagsHelper
     count = @taggables.inject(0) { |acc, value| acc += value.taggables.length }
     "#{item_count(count)} tagged with #{tag_names}"
   end
+
+  # make the search results a little more user-friendly
+  # users shouldn't need to know the meaning of the internal model names
+  # especially in cases like Article and Post
+  # (which have totally different URL components, "wiki" and "blog" respectively)
+  def taggable_name string
+    string = string.downcase
+    case string
+    when 'article' : 'wiki article'
+    when 'post' : 'blog post'
+    else
+      string
+    end
+  end
 end
