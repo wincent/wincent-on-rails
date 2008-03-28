@@ -20,4 +20,5 @@
   %span.annotation Find items which feature <em>all</em> of the specified tags
   %br
   =text_field_tag :q, params[:q], :size => 40
+  =hidden_field_tag 'type', 'article'
   =submit_tag 'Search'
