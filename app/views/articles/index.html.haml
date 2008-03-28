@@ -14,7 +14,7 @@
 %h2 Top tags in the wiki
 .cloud
   -for tag in @tags
-    =scaled_tag tag
+    =scaled_tag tag, 'article'
 %h2 Tag search
 -form_tag search_tags_path, :method => 'get' do
   %span.annotation Find items which feature <em>all</em> of the specified tags
