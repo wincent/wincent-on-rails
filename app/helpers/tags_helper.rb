@@ -1,10 +1,8 @@
 module TagsHelper
   def taggable_link model
     case model
-    when Article
+    when Article, Post
       link_to h(model.title), wiki_path(model)
-    when Post
-      link_to h(model.title), blog_path(model)
     when Topic
       # BUG: another "n + 1 SELECT" issue here
       # if we present a list of model tags, each model here does a model.forum, which means an additional database query for each
