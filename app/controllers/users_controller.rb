@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   before_filter     :require_user, :only => [ :edit, :update ]
-  before_filter     :require_verified, :only => [ :index ]
+  before_filter     :require_admin, :only => [ :index ]
   before_filter     :get_user, :only => [ :edit, :show, :update ]
   before_filter     :get_emails, :only => [ :edit ]
   before_filter     :require_edit_privileges, :only => [ :edit, :update ]
