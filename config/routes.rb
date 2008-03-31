@@ -48,7 +48,8 @@ ActionController::Routing::Routes.draw do |map|
     admin.resources :tags
   end
 
-  map.root :controller => 'products' # action defaults to index
+  #map.root :controller => 'products' # action defaults to index
+  map.root :controller => 'posts' # temporary only
 
   # the default routes, at lowest priority, needed for AJAX in-place editing
   # the alternative is to specify explicit ":member" parameters above
