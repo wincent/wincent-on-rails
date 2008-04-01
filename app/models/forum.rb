@@ -9,6 +9,23 @@ class Forum < ActiveRecord::Base
     find_by_name(deparametrize(param)) || (raise ActiveRecord::RecordNotFound)
   end
 
+  def self.find_all
+    # TODO: sort by something less arbitary than forums.id (admin-settable sort order would be nice, position)
+    find_by_sql <<-SQL
+      SELECT forums.id, forums.name, forums.description, forums.topics_count,
+             outer_t.updated_at AS last_active_at, outer_t.id AS last_topic_id
+      FROM forums
+      JOIN (SELECT id, forum_id, updated_at
+            FROM (SELECT id, forum_id, updated_at
+                  FROM topics
+                  ORDER BY forum_id, updated_at DESC)
+                  AS inner_t GROUP BY forum_id)
+            AS outer_t
+      WHERE forums.id = outer_t.forum_id
+      ORDER BY forums.id
+    SQL
+  end
+
   def self.deparametrize string
     string.gsub '-', ' '
   end

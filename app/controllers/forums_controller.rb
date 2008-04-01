@@ -18,51 +18,14 @@ class ForumsController < ApplicationController
   end
 
   def index
-    # TODO: sort by something less arbitary than forums.id (admin-settable sort order would be nice)
-    # TODO: consider moving this down into the Forum model
-    @forums = Forum.find_by_sql <<-SQL
-      SELECT forums.id, forums.name, forums.description, forums.topics_count,
-             outer_t.updated_at AS last_active_at,
-             outer_t.id AS last_topic_id
-      FROM forums
-      JOIN (SELECT id, forum_id, updated_at
-            FROM (SELECT id, forum_id, updated_at
-                  FROM topics
-                  ORDER BY forum_id, updated_at DESC) AS inner_t GROUP BY forum_id) AS outer_t
-      WHERE forums.id = outer_t.forum_id
-      ORDER BY forums.id
-    SQL
+    @forums = Forum.find_all
   end
 
   def show
     # for now we exclude topics awaiting moderation, could potentially include them and show them only to the admin
     @paginator = Paginator.new(params, @forum.topics.count(:conditions => { :public => true, :awaiting_moderation => false }),
       forum_path(@forum), 20)
-
-    # option 1: full "N + 1" SELECT problem caused when the view does topic.last_commenter.display_name on each topic
-    #@topics = @forum.topics.find(:all, :conditions => { :public => true, :awaiting_moderation => false },
-    #  :limit => @paginator.limit, :offset => @paginator.offset)
-
-    # option 2: "N + some": still incurring a topic.user.display_name query for each topic which doesn't have comments yet
-    #@topics = @forum.topics.find(:all, :conditions => { :public => true, :awaiting_moderation => false },
-    #  :limit => @paginator.limit, :offset => @paginator.offset, :include => 'last_commenter')
-
-    # option 3: "N + none": no extra queries, but two LEFT OUTER JOINS which make for a complex query
-    #@topics = @forum.topics.find(:all, :conditions => { :public => true, :awaiting_moderation => false },
-    #  :limit => @paginator.limit, :offset => @paginator.offset, :include => ['user', 'last_commenter'])
-
-    # option 4: custom SQL, one LEFT OUTER JOIN and only pulls in only the columns required
-    sql = <<-SQL
-      SELECT topics.id, topics.title, topics.comments_count, topics.view_count, topics.updated_at, topics.last_comment_id,
-             users.id AS last_active_user_id,
-             users.display_name AS last_active_user_display_name
-      FROM topics
-      LEFT OUTER JOIN users ON (users.id = IFNULL(topics.last_commenter_id, topics.user_id))
-      WHERE topics.forum_id = ? AND public = ? AND awaiting_moderation = FALSE
-      ORDER BY topics.updated_at DESC
-      LIMIT ?, ?
-    SQL
-    @topics = Topic.find_by_sql [sql, @forum.id, true, @paginator.offset, @paginator.limit]
+    @topics = Topic.find_topics_for_forum @forum, @paginator.offset, @paginator.limit
   end
 
 private
