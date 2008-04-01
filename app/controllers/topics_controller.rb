@@ -15,8 +15,13 @@ class TopicsController < ApplicationController
         @topic.user = current_user
         @topic.awaiting_moderation = true unless logged_in_and_verified?
         if @topic.save
-          flash[:notice] = 'Successfully created new topic.'
-          redirect_to forum_topic_path(@forum, @topic)
+          if logged_in_and_verified?
+            flash[:notice] = 'Successfully created new topic.'
+            redirect_to forum_topic_path(@forum, @topic)
+          else
+            flash[:notice] = 'Successfully submitted topic: it is currently being held for moderation.'
+            redirect_to forum_path(@forum)
+          end
         else
           flash[:error] = 'Failed to create new topic.'
           render :action => 'new'
