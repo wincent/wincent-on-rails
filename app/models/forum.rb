@@ -33,6 +33,13 @@ class Forum < ActiveRecord::Base
     string.downcase.gsub ' ', '-'
   end
 
+  def after_create
+    if self.position.nil?
+      max = Forum.maximum(:position)
+      self.position = max ? max + 1 : 0
+    end
+  end
+
   def to_param
     Forum.parametrize name
   end
