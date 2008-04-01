@@ -4,15 +4,10 @@ class Topic < ActiveRecord::Base
   belongs_to            :last_commenter, :class_name => 'User', :foreign_key => 'last_commenter_id'
   has_many              :comments, :as => :commentable, :extend => Commentable, :order => 'comments.updated_at DESC',
                         :dependent => :destroy
-
   validates_presence_of :title
   validates_presence_of :body
-
+  attr_accessible       :title, :body
   acts_as_taggable
-
-  # TODO: attr_accessible here to prevent taking over posts
-  # current have some params that I want only the admin to be able to set
-  # like "public" and "accepts comments"
 
   def self.find_topics_for_forum forum, offset, limit
     # option 1: full "N + 1" SELECT problem caused when the view does topic.last_commenter.display_name on each topic:
