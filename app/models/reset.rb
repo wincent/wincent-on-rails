@@ -4,6 +4,7 @@ require 'digest/sha1'
 # consider extracting some methods into a common abstract superclass
 class Reset < ActiveRecord::Base
   belongs_to            :user
+  validates_presence_of :user
   validates_presence_of :email_address, :on => :update
   validates_each        :email_address, :on => :update do |reset, att, value|
     # guard against brute force attacks by requiring the user to supply an associated email address

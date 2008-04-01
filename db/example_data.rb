@@ -71,6 +71,12 @@ module FixtureReplacement
     }
   end
 
+  def reset_attributes
+    {
+      :user                     => default_user
+    }
+  end
+
   def tag_attributes
     {
       :name                     => String.random
