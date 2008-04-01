@@ -36,6 +36,12 @@ class Topic < ActiveRecord::Base
     find_by_sql [sql, forum.id, offset, limit]
   end
 
+  def visible_comments
+    conditions = { :public => true, :awaiting_moderation => false, :spam => false, :commentable_id => self.id,
+      :commentable_type => 'Topic' }
+    Comment.find:all, :conditions => conditions, :include => 'user', :order => 'comments.created_at'
+  end
+
   def hit!
     Topic.increment_counter :view_count, id
   end

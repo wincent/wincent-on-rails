@@ -38,13 +38,7 @@ class TopicsController < ApplicationController
   end
 
   def show
-    # TODO: move this into Topic model
-    @comments = Comment.find \
-      :all,
-      :conditions => { :public => true, :awaiting_moderation => false, :commentable_id => @topic.id, :commentable_type => 'Topic' },
-      :include => 'user',
-      :order => 'comments.created_at'
-
+    @comments = @topic.visible_comments # public, not awaiting moderation, not spam
     respond_to do |format|
       format.html {
         @topic.hit!
