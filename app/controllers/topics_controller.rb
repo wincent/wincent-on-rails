@@ -19,7 +19,7 @@ class TopicsController < ApplicationController
             flash[:notice] = 'Successfully created new topic.'
             redirect_to forum_topic_path(@forum, @topic)
           else
-            flash[:notice] = 'Successfully submitted topic: it is currently being held for moderation.'
+            flash[:notice] = 'Successfully submitted topic (awaiting moderation).'
             redirect_to forum_path(@forum)
           end
         else
