@@ -66,3 +66,5 @@ mailing list imports:
 - user has many lists through subscriptions
 - subscription model can go into suspended state if we get too many bounces
 
+confirm that admin-only AJAX actions are being protected by HTTP Basic auth (I think they are, but just in case)
+
