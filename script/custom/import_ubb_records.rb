@@ -66,6 +66,7 @@ UbbForum.find(:all).each do |forum|
       @topic = @forum.topics.build(:title => topic.TOPIC_SUBJECT, :body => ubb_text_to_wikitext(posts[0].POST_BODY))
       @topic.view_count = topic.TOPIC_VIEWS
       @topic.user = @user
+      @topic.awaiting_moderation = false
       @topic.save!
       puts "saved topic: #{topic.TOPIC_SUBJECT}"
       posts.shift
@@ -75,6 +76,7 @@ UbbForum.find(:all).each do |forum|
         next if @user.nil? && post.ubb_user.USER_ID != 1 # allow UBB.threads anonymous user
         @comment = @topic.comments.build(:body => ubb_text_to_wikitext(post.POST_BODY))
         @comment.user = @user
+        @comment.awaiting_moderation = false
         @comment.save!
         comment_count += 1
         puts "saved comment by: #{@user ? @user.display_name : 'anonymous'}"
