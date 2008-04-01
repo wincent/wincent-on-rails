@@ -10,7 +10,7 @@
       =password_field_tag :passphrase, params[:passphrase]
     %p
       =submit_tag 'Log in'
-      &nbsp;login via OpenID
+      -# TODO: &nbsp;login via OpenID
 %ul
   %li=link_to 'Sign up', new_user_path
   %li=link_to 'Forgot your passphrase?', new_reset_path
