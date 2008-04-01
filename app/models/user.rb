@@ -6,9 +6,10 @@ class User < ActiveRecord::Base
   has_many                  :issues
   has_many                  :comments
   has_many                  :topics
+  has_many                  :resets, :dependent => :destroy
 
   attr_reader               :passphrase
-  attr_accessor             :passphrase_confirmation, :old_passphrase, :email
+  attr_accessor             :passphrase_confirmation, :old_passphrase, :email, :resetting_passphrase
 
   attr_accessible           :display_name, :passphrase, :passphrase_confirmation, :old_passphrase, :email
 
@@ -19,11 +20,13 @@ class User < ActiveRecord::Base
   validates_format_of       :display_name,  :with => /\A[a-z]{2}( ?[a-z0-9]+)+\z/i, :allow_nil => true, :message =>
   'may only contain letters, numbers and non-consecutive, non-trailing spaces; must start with at least two letters'
 
-  validates_presence_of     :passphrase,      :on => :create
+  validates_presence_of     :passphrase,      :if => Proc.new { |u| u.new_record? || u.resetting_passphrase }
   validates_length_of       :passphrase,      :minimum => MINIMUM_PASSWORD_LENGTH,  :if => Proc.new { |u| !u.passphrase.blank? }
   validates_confirmation_of :passphrase,      :if => Proc.new { |u| !u.passphrase.blank? }
 
-  validates_each            :old_passphrase,  :on => :update, :if => Proc.new { |u| !u.passphrase.blank? } do |model, att, value|
+  validates_each            :old_passphrase,  :on => :update,
+    :if => Proc.new { |u| !u.passphrase.blank? && !u.resetting_passphrase } \
+  do |model, att, value|
     # Guard against cookie-capture attacks for passphrase changes.
     # TODO: same for email updates
     record_in_database = User.find(model.id)
@@ -31,9 +34,7 @@ class User < ActiveRecord::Base
       model.errors.add(att, ActiveRecord::Errors.default_error_messages[:empty])
     elsif User.digest(value, record_in_database.passphrase_salt) != record_in_database.passphrase_hash
       model.errors.add(att, 'must match existing passphrase on record')
-      false
     end
-    true
   end
 
   # the first created user is the superuser
@@ -74,13 +75,19 @@ class User < ActiveRecord::Base
   # pull in User.digest and User.random_salt from Authentication module
   extend ActiveRecord::Authentication::ClassMethods
 
+  def self.find_by_email email
+    find :first, :include => :emails, :conditions => ['emails.address = ?', email]
+  end
+
   # User accounts may have multiple email addresses associated with them,
   # but any of them can be used in combination with the passphrase to authenticate.
-  def self.authenticate(email, passphrase)
-    if user = find(:first, :include => :emails, :conditions => ['emails.address = ?', email])
-      user = nil if user.passphrase_hash != User.digest(passphrase, user.passphrase_salt)
+  # Returns the user instance on success.
+  def self.authenticate email, passphrase
+    if (user = find_by_email(email)) and user.passphrase_hash == User.digest(passphrase, user.passphrase_salt)
+      user # TODO: could later add last_login update here
+    else
+      nil
     end
-    user
   end
 
   # Stores a new passphrase_salt and combines it with passphrase to generate and store a new passphrase_hash.

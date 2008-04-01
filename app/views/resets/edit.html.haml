@@ -1,0 +1,21 @@
+%h1 Reset passphrase
+=error_messages_for :reset
+=error_messages_for :user
+-form_for @reset, :url => reset_path(@reset) do |f|
+  %table.main_form
+    %tr
+      %th
+        Email address
+        %br
+        %span.annotation confirm your identity
+      %td=f.text_field :email_address
+    %tr
+      %th New passphrase
+      %td=password_field_tag :passphrase
+    %tr
+      %th
+        New passhrase again
+        %br
+        %span.annotation confirm your new passphrase
+      %td=password_field_tag :passphrase_confirmation
+  %p=f.submit 'Save changes'

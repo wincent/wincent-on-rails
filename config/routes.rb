@@ -23,6 +23,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :users do |user|
     user.resources :emails, :requirements => { :id => /[^\/]+/ }
   end
+  map.resources :resets
 
   # the wiki is built on the Article model, but we want routes like /wiki/Article_title, not /article/1
   # for now doing it using an explicit :controller
