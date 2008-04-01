@@ -10,7 +10,6 @@ class Forum < ActiveRecord::Base
   end
 
   def self.find_all
-    # TODO: sort by something less arbitary than forums.id (admin-settable sort order would be nice, position)
     find_by_sql <<-SQL
       SELECT forums.id, forums.name, forums.description, forums.topics_count,
              outer_t.updated_at AS last_active_at, outer_t.id AS last_topic_id
@@ -22,7 +21,7 @@ class Forum < ActiveRecord::Base
                   AS inner_t GROUP BY forum_id)
             AS outer_t
       WHERE forums.id = outer_t.forum_id
-      ORDER BY forums.id
+      ORDER BY forums.position
     SQL
   end
 
