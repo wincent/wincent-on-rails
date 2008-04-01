@@ -64,4 +64,8 @@ private
   def cache_show_feed
     cache_page if params[:format] == 'atom'
   end
+
+  def record_not_found
+    super @forum ? forum_path(@forum) : forums_path
+  end
 end
