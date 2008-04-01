@@ -41,7 +41,7 @@ class TopicsController < ApplicationController
     # TODO: move this into Topic model
     @comments = Comment.find \
       :all,
-      :conditions => { :public => true, :commentable_id => @topic.id, :commentable_type => 'Topic' },
+      :conditions => { :public => true, :awaiting_moderation => false, :commentable_id => @topic.id, :commentable_type => 'Topic' },
       :include => 'user',
       :order => 'comments.created_at'
 
@@ -63,7 +63,7 @@ private
 
   def get_topic
     # TODO: handle private topics
-    @topic = @forum.topics.find params[:id]
+    @topic = @forum.topics.find params[:id], :conditions => { :public => true, :awaiting_moderation => false }
   end
 
   def cache_show_feed
