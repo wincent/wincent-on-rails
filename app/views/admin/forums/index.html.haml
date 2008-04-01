@@ -1,17 +1,20 @@
 =page_title 'Forums administration'
 %table
-  %tr
-    %th Position
-    %th Name
-    %th Description
-    %th Actions
-  -for @forum in @forums
-    %tr{:class => cycle('odd', 'even')}
-      %td=@forum.position
-      %td=in_place_editor_field :forum, :name
-      %td=in_place_editor_field :forum, :description
-      %td.links
-        =link_to 'edit', edit_forum_path(@forum)
+  %thead
+    %tr
+      %th Position
+      %th Name
+      %th Description
+      %th Actions
+  %tbody
+    -for @forum in @forums
+      %tr{:class => cycle('odd', 'even')}
+        %td=in_place_editor_field :forum, :position
+        %td=in_place_editor_field :forum, :name
+        %td=in_place_editor_field :forum, :description
+        %td.links
+          =link_to 'edit', edit_forum_path(@forum)
+          =link_to 'view', forum_path(@forum)
 %p.links
   =link_to 'new', new_forum_path
   =link_to 'public index', forums_path
