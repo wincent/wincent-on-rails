@@ -79,7 +79,7 @@ module Spec
             raise if val == current
             old[key] = current
           end
-          raise unless model.update_attributes(@attributes)
+          model.update_attributes(@attributes)
           @attributes.keys.all? do |key|
             model.send(key.to_s) != old[key]
           end
