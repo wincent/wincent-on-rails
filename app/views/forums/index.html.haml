@@ -16,7 +16,7 @@
       %td
         =topic_count forum.topics_count
       %td
-        =Time.parse(forum.last_active_at).distance_in_words
+        =timeinfo_for_forum forum
         =link_to_topic_for_forum forum
       -if admin?
         %td

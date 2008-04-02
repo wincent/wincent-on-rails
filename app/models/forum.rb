@@ -10,16 +10,15 @@ class Forum < ActiveRecord::Base
   end
 
   def self.find_all
-    # BUG: forums with no topics won't appear in list
     find_by_sql <<-SQL
       SELECT forums.id, forums.name, forums.description, forums.topics_count,
              t.updated_at AS last_active_at, t.id AS last_topic_id
       FROM forums
-      JOIN (SELECT id, forum_id, updated_at
+      LEFT OUTER JOIN (SELECT id, forum_id, updated_at
             FROM topics
             ORDER BY forum_id, updated_at DESC) AS t
-      WHERE forums.id = t.forum_id
-      GROUP BY t.forum_id
+      ON forums.id = t.forum_id
+      GROUP BY forums.id
       ORDER BY forums.position
     SQL
   end
