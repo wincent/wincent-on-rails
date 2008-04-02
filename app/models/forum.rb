@@ -31,7 +31,7 @@ class Forum < ActiveRecord::Base
     string.downcase.gsub ' ', '-'
   end
 
-  def after_create
+  def before_create
     if self.position.nil?
       max = Forum.maximum(:position)
       self.position = max ? max + 1 : 0
