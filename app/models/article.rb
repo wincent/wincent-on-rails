@@ -1,7 +1,11 @@
 # This is not intended to be a community-driven wiki, so there are no author attributes or spam and moderation flags.
 # Although note that the admin may selectively enable comments on a particular article.
 class Article < ActiveRecord::Base
-  has_many                :comments, :as => :commentable
+  has_many                :comments,
+                          :as         => :commentable,
+                          :extend     => Commentable,
+                          :order      => 'comments.updated_at DESC',
+                          :dependent  => :destroy
   belongs_to              :last_commenter, :class_name => 'User'
   validates_presence_of   :title
   validates_uniqueness_of :title

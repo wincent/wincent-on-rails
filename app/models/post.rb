@@ -1,5 +1,9 @@
 class Post < ActiveRecord::Base
-  has_many                :comments, :as => :commentable, :extend => Commentable, :order => 'created_at ASC'
+  has_many                :comments,
+                          :as         => :commentable,
+                          :extend     => Commentable,
+                          :order      => 'comments.updated_at DESC',
+                          :dependent  => :destroy
   belongs_to              :last_commenter, :class_name => 'User'
   validates_presence_of   :title
   validates_format_of     :permalink,

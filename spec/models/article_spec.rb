@@ -1,5 +1,6 @@
 require File.join(File.dirname(__FILE__), '..', 'spec_helper')
 require File.join(File.dirname(__FILE__), '..', 'lib', 'active_record', 'acts', 'shared_taggable_spec')
+require File.join(File.dirname(__FILE__), '..', 'lib', 'shared_commentable_spec')
 
 describe Article, 'creation' do
   before do
@@ -19,6 +20,14 @@ describe Article, 'comments association' do
   it 'should respond to the comments message' do
     create_article.comments.should == []
   end
+end
+
+describe Article, 'acting as commentable' do
+  before do
+    @commentable = create_article
+  end
+
+  it_should_behave_like 'Commentable'
 end
 
 describe Article, 'acting as taggable' do

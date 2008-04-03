@@ -26,8 +26,9 @@ protected
   # "updated" whenever a new comment is added, but a Post or Article
   # should not.
   def update_timestamps_for_changes?
-    if commentable.respond_to? :update_timestamps_for_comment_changes?
-      commentable.update_timestamps_for_comment_changes?
+    klass = commentable.class
+    if klass.respond_to? :update_timestamps_for_comment_changes?
+      klass.update_timestamps_for_comment_changes?
     else
       false
     end

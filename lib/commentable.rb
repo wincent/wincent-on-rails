@@ -2,32 +2,32 @@ module Commentable
 
   # All public comments which have passed moderation and are not flagged as spam.
   def published
-    find(:all, :conditions => { :awaiting_moderation => false, :spam => false, :public => true})
+    find :all, :conditions => { :awaiting_moderation => false, :spam => false, :public => true }
   end
 
   # Returns all comments for this record which haven't yet been moderated and are not marked as spam.
   def unmoderated
-    find(:all, :conditions => { :awaiting_moderation => true, :spam => false})
+    find :all, :conditions => { :awaiting_moderation => true, :spam => false }
   end
 
   # All comments which have not been flagged as spam (both moderated and unmoderated).
   def ham
-    find_all_by_spam(false)
+    find_all_by_spam false
   end
 
   # All comments which have been flagged as spam.
   def spam
-    find_all_by_spam(true)
+    find_all_by_spam true
   end
 
   # The count of all published (not awaiting moderation, not flagged as spam) comments.
   def published_count
-    count(:conditions => 'awaiting_moderation = FALSE AND spam = FALSE AND public = TRUE')
+    count :conditions => 'awaiting_moderation = FALSE AND spam = FALSE AND public = TRUE'
   end
 
   # The count of comments awaiting moderation.
   def unmoderated_count
-    count(:conditions => 'awaiting_moderation = TRUE')
+    count :conditions => 'awaiting_moderation = TRUE'
   end
 
   def ham_count
@@ -36,12 +36,12 @@ module Commentable
     # at the moment we have no choice but to show the full count (ham + spam) from the comments counter_cache
     # but it would be nice to instead display the ham count
     # see notes on this below
-    count(:conditions => 'spam = FALSE')
+    count :conditions => 'spam = FALSE'
   end
 
   # The count of comments that have been flagged as spam.
   def spam_count
-    count(:conditions => 'spam = TRUE')
+    count :conditions => 'spam = TRUE'
   end
 end
 

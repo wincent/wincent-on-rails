@@ -12,7 +12,7 @@
       %td
         %h2=link_to forum.name, forum_path(forum)
       %td
-        =h forum.description unless forum.description.empty?
+        =h forum.description unless forum.description.blank?
       %td
         =topic_count forum.topics_count
       %td

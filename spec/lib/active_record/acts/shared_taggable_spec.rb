@@ -17,9 +17,6 @@ describe ActiveRecord::Acts::Taggable, :shared => true do
     @object.tag_names.should == []
   end
 
-  # consider moving this into the acts_as_taggable module tests
-  # this code is no longer specific just to this class
-  # there may be some way of doing this in a shared behaviour block
   it 'should have a pending_tags virtual attribute' do
     # writing stores to the instance variable
     @object.pending_tags = 'hello world'

@@ -14,11 +14,15 @@ class Issue < ActiveRecord::Base
     FEEDBACK        = 3
   end
 
-  belongs_to      :user
-  belongs_to      :last_commenter, :class_name => 'User'
-  #belongs_to      :product
-  has_many        :comments, :as => :commentable
-  attr_accessible :status, :description # and probably more to come
+  belongs_to        :user
+  belongs_to        :last_commenter, :class_name => 'User'
+  #belongs_to        :product
+  has_many          :comments,
+                    :as         => :commentable,
+                    :extend     => Commentable,
+                    :order      => 'comments.updated_at DESC',
+                    :dependent  => :destroy
+  attr_accessible   :status, :description # and probably more to come
   acts_as_taggable
 
   def kind_string
@@ -33,7 +37,7 @@ class Issue < ActiveRecord::Base
     end
   end
 
-  def update_timestamps_for_comment_changes?
+  def self.update_timestamps_for_comment_changes?
     true
   end
 end
