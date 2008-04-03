@@ -13,7 +13,7 @@ class TopicsController < ApplicationController
       format.html {
         @topic = @forum.topics.build(params[:topic])
         @topic.user = current_user
-        @topic.awaiting_moderation = true unless logged_in_and_verified?
+        @topic.awaiting_moderation = (!admin? or !logged_in_and_verified?)
         if @topic.save
           if logged_in_and_verified?
             flash[:notice] = 'Successfully created new topic.'
