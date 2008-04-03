@@ -10,7 +10,6 @@ class User < ActiveRecord::Base
 
   attr_reader               :passphrase
   attr_accessor             :passphrase_confirmation, :old_passphrase, :email, :resetting_passphrase
-
   attr_accessible           :display_name, :passphrase, :passphrase_confirmation, :old_passphrase, :email
 
   # NOTE: validates_uniqueness_of causes an extra SELECT every time you save, one for each attribute whose uniqueness you validate
@@ -24,8 +23,9 @@ class User < ActiveRecord::Base
   validates_length_of       :passphrase,      :minimum => MINIMUM_PASSWORD_LENGTH,  :if => Proc.new { |u| !u.passphrase.blank? }
   validates_confirmation_of :passphrase,      :if => Proc.new { |u| !u.passphrase.blank? }
 
-  validates_each            :old_passphrase,  :on => :update,
-    :if => Proc.new { |u| !u.passphrase.blank? && !u.resetting_passphrase } \
+  validates_each            :old_passphrase,
+                            :on => :update,
+                            :if => Proc.new { |u| !u.passphrase.blank? && !u.resetting_passphrase } \
   do |model, att, value|
     # Guard against cookie-capture attacks for passphrase changes.
     # TODO: same for email updates
@@ -83,7 +83,7 @@ class User < ActiveRecord::Base
   # but any of them can be used in combination with the passphrase to authenticate.
   # Returns the user instance on success.
   def self.authenticate email, passphrase
-    if (user = find_by_email(email)) and user.passphrase_hash == User.digest(passphrase, user.passphrase_salt)
+    if (user = find_by_email email) and user.passphrase_hash == User.digest(passphrase, user.passphrase_salt)
       user # TODO: could later add last_login update here
     else
       nil
@@ -92,7 +92,7 @@ class User < ActiveRecord::Base
 
   # Stores a new passphrase_salt and combines it with passphrase to generate and store a new passphrase_hash.
   # Does nothing if passphrase is blank.
-  def passphrase=(passphrase)
+  def passphrase= passphrase
     return if passphrase.blank?
     @passphrase = passphrase
     salt = User.random_salt
