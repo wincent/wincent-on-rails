@@ -23,8 +23,8 @@ class ForumsController < ApplicationController
 
   def show
     # for now we exclude topics awaiting moderation, could potentially include them and show them only to the admin
-    @paginator = Paginator.new(params, @forum.topics.count(:conditions => { :public => true, :awaiting_moderation => false }),
-      forum_path(@forum), 20)
+    @paginator = Paginator.new params, @forum.topics.count(:conditions => { :public => true, :awaiting_moderation => false }),
+      forum_path(@forum), 20
     @topics = Topic.find_topics_for_forum @forum, @paginator.offset, @paginator.limit
   end
 
