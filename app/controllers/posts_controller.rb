@@ -6,28 +6,28 @@ class PostsController < ApplicationController
     respond_to do |format|
       format.html {
         # NOTE: don't be tempted to page cache this action/format (it shows relative timestamps)
-        @paginator  = Paginator.new(params, Post.count(:conditions => {:public => true}), blog_index_path)
+        @paginator  = Paginator.new params, Post.count(:conditions => { :public => true }), blog_index_path
 
         # BUG: with the comment counts; each post causes a query like this one:
         #   SELECT count(*) AS count_all
         #   FROM `comments`
         #   WHERE (comments.commentable_id = 44 AND comments.commentable_type = 'Post' AND (spam = FALSE))
         # the incorporation of the spam condition makes the counter cache useless (and unused)
-        @posts      = Post.find_recent(:include => :tags, :offset => @paginator.offset)
+        @posts      = Post.find_recent :include => :tags, :offset => @paginator.offset
       }
       format.atom { @posts = Post.find_recent }
     end
   end
 
   def new
-    @post = Post.new(session[:new_post_params])
+    @post = Post.new session[:new_post_params]
     session[:new_post_params] = nil
   end
 
   def create
     respond_to do |format|
       format.html {
-        @post = Post.new(params[:post])
+        @post = Post.new params[:post]
         if @post.save
           flash[:notice] = 'Successfully created new post.'
           redirect_to blog_path(@post)
@@ -66,7 +66,7 @@ class PostsController < ApplicationController
   end
 
   def update
-    if @post.update_attributes(params[:post])
+    if @post.update_attributes params[:post]
       flash[:notice] = 'Successfully updated'
       redirect_to blog_path(@post)
     else

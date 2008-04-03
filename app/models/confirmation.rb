@@ -3,6 +3,9 @@ require 'digest/sha1'
 class Confirmation < ActiveRecord::Base
   belongs_to :email
 
+  attr_accessor   :nothing
+  attr_accessible :nothing
+
   SECRET_SALT = '96218e6ec4622f8aae7248c003154997bcace26e'
   def self.secret
     Digest::SHA1.hexdigest(Time.now.to_s + rand.to_s + SECRET_SALT)

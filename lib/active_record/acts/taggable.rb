@@ -2,7 +2,7 @@ module ActiveRecord
   module Acts
     module Taggable
       def self.included base
-        base.extend(ClassMethods)
+        base.extend ClassMethods
       end
 
       module ClassMethods
@@ -22,7 +22,7 @@ module ActiveRecord
       # only 1 class method so far: may potentially add some others later, like "find_with_tag" etc
       module ClassMethods
         def find_top_tags
-          # note how we override the global taggings_count value with one scoped just to Articles
+          # note how we override the global taggings_count value with one scoped just to the taggable model
           Tag.find_by_sql <<-SQL
             SELECT    tags.id, name, COUNT(taggings.id) AS taggings_count
             FROM      tags
@@ -41,13 +41,13 @@ module ActiveRecord
         # See the documentation for the parse_tag_list method for information on how the tag names are extracted.
         # Duplicate tags are not re-added.
         def tag *args
-          parse_tag_list(args).each { |tag| add_tag(tag) }
+          parse_tag_list(args).each { |tag| add_tag tag }
         end
 
         # Remove tags from the receiver.
         # See the documentation for the parse_tag_list method for information on how the tag names are extracted.
         def untag *args
-          parse_tag_list(args).each { |tag| remove_tag(tag) }
+          parse_tag_list(args).each { |tag| remove_tag tag }
         end
 
         # Returns an array of tag names indicating which tags have been applied to the receiver.
@@ -59,7 +59,7 @@ module ActiveRecord
         # For use in forms.
         # See the save_pending_tags method for more information.
         def pending_tags
-          tag_names.join(' ')
+          tag_names.join ' '
         end
 
       protected
@@ -103,7 +103,7 @@ module ActiveRecord
         # Adds the specified tag to the receiver, where tag is a String specifying the tag name.
         # Database level constraints are used to ensure that the same tag is not applied more than once to a given model.
         def add_tag tag
-          t = Tag.find_or_create_by_name(tag)
+          t = Tag.find_or_create_by_name tag
           if t.id == nil
             # tag didn't save: probably because of a failed validation
             # what to do here? for now just silently ignore
@@ -120,7 +120,7 @@ module ActiveRecord
         def remove_tag tag
           # could optimize this by querying the Tagging model directly with :conditions
           # but this is an infrequently-travelled code path
-          tag_object = Tag.find_by_name(tag)
+          tag_object = Tag.find_by_name tag
           self.tags.delete(tag_object) if tag_object # no error if tag not present in this model
         end
       end # module InstanceMethods

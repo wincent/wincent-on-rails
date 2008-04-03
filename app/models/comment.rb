@@ -4,8 +4,8 @@ class Comment < ActiveRecord::Base
   belongs_to            :commentable, :polymorphic => true  # no counter cache: see notes below
   validates_presence_of :body
   validates_presence_of :commentable
+  attr_accessible       :body
   acts_as_taggable
-  attr_accessible       :body, :commentable
 
   # NOTE: by defining an after_create action we break the built-in counter-cache, so we must roll our own
   after_create          :update_caches_after_create
@@ -13,7 +13,7 @@ class Comment < ActiveRecord::Base
 
   def self.find_recent options = {}
     base_options = {:conditions => {'public' => true}, :order => 'created_at DESC', :limit => 10}
-    find(:all, base_options.merge(options))
+    find :all, base_options.merge(options)
   end
 
 protected
@@ -26,7 +26,7 @@ protected
   # "updated" whenever a new comment is added, but a Post or Article
   # should not.
   def update_timestamps_for_changes?
-    if commentable.respond_to?(:update_timestamps_for_comment_changes?)
+    if commentable.respond_to? :update_timestamps_for_comment_changes?
       commentable.update_timestamps_for_comment_changes?
     else
       false

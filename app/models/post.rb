@@ -2,21 +2,23 @@ class Post < ActiveRecord::Base
   has_many                :comments, :as => :commentable, :extend => Commentable, :order => 'created_at ASC'
   belongs_to              :last_commenter, :class_name => 'User'
   validates_presence_of   :title
-  validates_format_of     :permalink, :with => /\A[a-z0-9\.\-]+\z/,
-    :message => 'must contain only lowercase letters, numbers, periods and hypens'
+  validates_format_of     :permalink,
+                          :with => /\A[a-z0-9\.\-]+\z/,
+                          :message => 'must contain only lowercase letters, numbers, periods and hypens'
   validates_presence_of   :permalink
   validates_uniqueness_of :permalink
   validates_presence_of   :excerpt
-
+  attr_accessible         :title, :permalink, :excerpt, :body, :public, :accepts_comments, :pending_tags
   acts_as_taggable
-  # for now run without this: can always turn it on later:
+
+  # for now run without this: can always turn it on later (no sense in using it until the Ragel-based tokenizer is done)
   #acts_as_searchable      :attributes => [:title, :excerpt, :body]
 
   def self.find_recent options = {}
     # we use "posts.created_at" rather than just "created_at" to disambiguate in the case where we
     # pass an :include option (which will cause a join)
     base_options = {:conditions => {'public' => true}, :order => 'posts.created_at DESC', :limit => 10}
-    find(:all, base_options.merge(options))
+    find :all, base_options.merge(options)
   end
 
   def before_validation
@@ -40,7 +42,7 @@ class Post < ActiveRecord::Base
     # - I am the only user creating articles
     # - if the proposed permalink is not unique validation will fail and the user can correct the problem
     # worst case scenario is that validation passes and then the database-level constraint kicks in
-    last =  Post.find(:first, :conditions => ['permalink REGEXP ?', "^#{base}(-[0-9]+)?$"], :order => 'permalink DESC')
+    last =  Post.find :first, :conditions => ['permalink REGEXP ?', "^#{base}(-[0-9]+)?$"], :order => 'permalink DESC'
     if last.nil?
       base
     else

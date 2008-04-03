@@ -1,8 +1,10 @@
 require 'ostruct'
 
 class Tagging < ActiveRecord::Base
-  belongs_to  :tag, :counter_cache => true
-  belongs_to  :taggable, :polymorphic => true
+  belongs_to      :tag, :counter_cache => true
+  belongs_to      :taggable, :polymorphic => true
+  attr_accessor   :nothing
+  attr_accessible :nothing
 
   # Expects an actual Tag instance.
   # If user is a superuser, returns all taggables.
@@ -71,6 +73,7 @@ class Tagging < ActiveRecord::Base
 
 private
 
+  # TODO: investigate Rails' own group_by method; they _might_ make this a little cleaner, but I suspect not
   def self.find_and_filter_taggables taggings, user, type = nil
     # here we get all the taggable objects to avoid the "n + 1" SELECT problem
     # instead of taggings.length queries, we now do just taggings.keys.length queries (ie. the number of groups)

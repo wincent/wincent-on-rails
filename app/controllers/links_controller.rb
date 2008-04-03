@@ -1,12 +1,12 @@
 class LinksController < ApplicationController
   before_filter     :require_admin, :except => :show
-  before_filter     :get_link,      :only => [:edit, :update, :destroy]
+  before_filter     :find_link, :only => [:edit, :update, :destroy]
   in_place_edit_for :link, :uri
   in_place_edit_for :link, :permalink
   acts_as_sortable  :by => [:id, :uri, :permalink, :click_count]
 
   def index
-    @links = Link.find(:all, sort_options)
+    @links = Link.find :all, sort_options
   end
 
   def new
@@ -14,7 +14,7 @@ class LinksController < ApplicationController
   end
 
   def create
-    @link = Link.new(params[:link])
+    @link = Link.new params[:link]
     respond_to do |format|
       if @link.save
         flash[:notice] = 'Successfully created new link.'
@@ -29,11 +29,7 @@ class LinksController < ApplicationController
   end
 
   def show
-    Link.transaction do
-      # lock here to avoid races while incrementing
-      get_link :lock => true
-      @link.increment! :click_count
-    end
+    Link.increment_counter :click_count, @link.id
     redirect_to @link.uri, :status => 303 # "See other", GET request
   end
 
@@ -51,8 +47,8 @@ class LinksController < ApplicationController
 
 private
 
-  def get_link options = {}
-    @link = Link.find_by_permalink(params[:id], options) || Link.find(params[:id], options)
+  def find_link
+    @link = Link.find_by_permalink(params[:id]) || Link.find(params[:id])
   end
 
   def record_not_found

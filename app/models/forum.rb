@@ -3,7 +3,7 @@ class Forum < ActiveRecord::Base
   validates_presence_of   :name
   validates_format_of     :name, :with => /\A[a-z ]+\z/i, :message => 'may only contain letters and spaces'
   validates_uniqueness_of :name
-  attr_accessible         :name, :description # NOTE: find out whether a user can update this through the topic association...?
+  attr_accessible         :name, :description
 
   def self.find_with_param! param
     # forum name will be downcased in the URL, but MySQL will do a case-insensitive search for us anyway

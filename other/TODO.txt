@@ -53,18 +53,16 @@ events:
 - will provide an overview of what's been happening
 - alert me to possible abuse
 
-get signup email working:
-- first signup
-- then password forgotten
-- we don't want to reset the password because some attacker guesses somebody else's email
-- we want to generate a token that is valid for short period (1 hour?)
-- and they visit the link
-- and can enter a new password
-
 mailing list imports:
 - list model
 - user has many lists through subscriptions
 - subscription model can go into suspended state if we get too many bounces
 
 confirm that admin-only AJAX actions are being protected by HTTP Basic auth (I think they are, but just in case)
+
+welcome email to imported users only:
+- User.find :all, :conditions => [ 'created_at < ?', Time.now ]
+- welcome emailer sends message
+- visit URL to choose new passphrase
+- but URL expires, so go to login page and click: forgotten password/reset password
 

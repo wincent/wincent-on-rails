@@ -5,6 +5,9 @@ class Word < ActiveRecord::Base
   BUG_REPORT      = 4 # classifier for words that appear in bug reports
   FEEDBACK        = 5 # classifier for words that appear in feedback
 
+  attr_accessor   :nothing
+  attr_accessible :nothing
+
   # Expects a block of input text and a classification.
   # On training a message need to increment the message count someone (not in this table, therefore need another model).
   # Perhaps this needs to be dynamic: a Classifications table.

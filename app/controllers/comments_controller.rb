@@ -5,19 +5,19 @@ class CommentsController < ApplicationController
   # Admin only.
   # The admin is allowed to see all unmoderated comments at once, for the purposes of moderation.
   def index
-    @paginator  = Paginator.new(params, Comment.count(:conditions => {:awaiting_moderation => true}), comments_path)
-    @comments   = Comment.find_recent(:offset => @paginator.offset, :conditions => {:awaiting_moderation => true})
+    @paginator  = Paginator.new params, Comment.count(:conditions => { :awaiting_moderation => true }), comments_path
+    @comments   = Comment.find_recent :offset => @paginator.offset, :conditions => { :awaiting_moderation => true }
   end
 
   # Rather than showing a comment in isolation, always show it nested in the context of its parent resource
   def show
     if admin?
-      @comment = Comment.find(params[:id], :conditions => {:spam => false})
+      @comment = Comment.find params[:id], :conditions => { :spam => false }
     elsif logged_in?
-      @comment = Comment.find(params[:id], :conditions =>
-        ['spam = FALSE AND awaiting_moderation = FALSE AND (public = TRUE OR user_id = ?)', current_user.id])
+      @comment = Comment.find params[:id],
+        :conditions => ['spam = FALSE AND awaiting_moderation = FALSE AND (public = TRUE OR user_id = ?)', current_user.id]
     else # anonymous user
-      @comment = Comment.find(params[:id], :conditions => {:public => true, :spam => false, :awaiting_moderation => false})
+      @comment = Comment.find params[:id], :conditions => { :public => true, :spam => false, :awaiting_moderation => false }
     end
     redirect_to url_for_comment(@comment)
   end
@@ -119,9 +119,9 @@ private
 
   def get_comment
     if admin?
-      @comment = Comment.find(params[:id])
+      @comment = Comment.find params[:id]
     elsif logged_in?
-      @comment = Comment.find(params[:id], :conditions => {:user_id => current_user.id, :spam => false})
+      @comment = Comment.find params[:id], :conditions => { :user_id => current_user.id, :spam => false }
     else
       raise "anonymous users can't manipulate comments"
     end

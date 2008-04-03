@@ -4,6 +4,6 @@ class Admin::TagsController < ApplicationController
   acts_as_sortable  :by => [:name, :taggings_count], :default => :name
 
   def index
-    @tags = Tag.find(:all, sort_options)
+    @tags = Tag.find :all, sort_options
   end
 end

@@ -3,9 +3,10 @@ class Tag < ActiveRecord::Base
   has_many                :taggables, :through => :taggings
   validates_presence_of   :name
   validates_format_of     :name,
-    :with     => /\A[a-z]+(\.[a-z]+)*\z/i,
-    :message  => 'may only contain letters with words separated by periods'
+                          :with => /\A[a-z]+(\.[a-z]+)*\z/i,
+                          :message => 'may only contain letters with words separated by periods'
   validates_uniqueness_of :name
+  attr_accessible         :name
 
   # returns a floating point number between 0 and 1 to denote a tag's relative popularity
   def normalized_taggings_count
