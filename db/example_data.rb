@@ -35,7 +35,9 @@ module FixtureReplacement
 
   def topic_attributes
     {
-      :forum                    => new_forum
+      :forum                    => default_forum,
+      :title                    => String.random,
+      :body                     => String.random
     }
   end
 
