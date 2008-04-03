@@ -2,14 +2,17 @@ class Topic < ActiveRecord::Base
   belongs_to            :forum, :counter_cache => true
   belongs_to            :user
   belongs_to            :last_commenter, :class_name => 'User', :foreign_key => 'last_commenter_id'
-  has_many              :comments, :as => :commentable, :extend => Commentable, :order => 'comments.updated_at DESC',
-                        :dependent => :destroy
+  has_many              :comments,
+                        :as         => :commentable,
+                        :extend     => Commentable,
+                        :order      => 'comments.updated_at DESC',
+                        :dependent  => :destroy
   validates_presence_of :title
   validates_presence_of :body
   attr_accessible       :title, :body
   acts_as_taggable
 
-  def self.find_topics_for_forum forum, offset, limit
+  def self.find_topics_for_forum forum, offset = 0, limit = 20
     # option 1: full "N + 1" SELECT problem caused when the view does topic.last_commenter.display_name on each topic:
     #   forum.topics.find :all, :conditions => { :public => true, :awaiting_moderation => false },
     #     :limit => limit, :offset => offset
@@ -29,7 +32,7 @@ class Topic < ActiveRecord::Base
              users.display_name AS last_active_user_display_name
       FROM topics
       LEFT OUTER JOIN users ON (users.id = IFNULL(topics.last_commenter_id, topics.user_id))
-      WHERE topics.forum_id = ? AND public = TRUE AND awaiting_moderation = FALSE
+      WHERE topics.forum_id = ? AND public = TRUE AND awaiting_moderation = FALSE AND spam = FALSE
       ORDER BY topics.updated_at DESC
       LIMIT ?, ?
     SQL
@@ -37,16 +40,17 @@ class Topic < ActiveRecord::Base
   end
 
   def visible_comments
+    # can't use the Commentable association mixin methods here becuse we need to specify an :include and :order clause
     conditions = { :public => true, :awaiting_moderation => false, :spam => false, :commentable_id => self.id,
       :commentable_type => 'Topic' }
-    Comment.find:all, :conditions => conditions, :include => 'user', :order => 'comments.created_at'
+    Comment.find :all, :conditions => conditions, :include => 'user', :order => 'comments.created_at DESC'
   end
 
   def hit!
     Topic.increment_counter :view_count, id
   end
 
-  def update_timestamps_for_comment_changes?
+  def self.update_timestamps_for_comment_changes?
     true
   end
 end
