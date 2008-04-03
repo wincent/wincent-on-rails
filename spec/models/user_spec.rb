@@ -48,30 +48,27 @@ describe User, 'setting a passphrase' do
 end
 
 describe User, 'authenticating' do
-  it 'should return nil if invalid login name' do
-    passphrase = String.random
-    create_user(:passphrase => passphrase, :passphrase_confirmation => passphrase)
-    User.authenticate(String.random, passphrase).should be_nil
+  before do
+    @email      = "#{String.random}@example.com"
+    @passphrase = String.random
+    @user       = create_user :passphrase => @passphrase, :passphrase_confirmation => @passphrase
+    @user.emails.create :address => @email
+  end
+
+  it 'should return nil if invalid email address' do
+    User.authenticate(String.random, @passphrase).should be_nil
   end
 
   it 'should return nil if invalid passphrase' do
-    login = String.random
-    create_user(:login_name => login)
-    User.authenticate(login, String.random)
+    User.authenticate(@email, String.random).should be_nil
   end
 
-  it 'should return the user if valid login and passphrase' do
-    login, passphrase = String.random, String.random
-    u = create_user(:login_name => login, :passphrase => passphrase, :passphrase_confirmation => passphrase)
-    User.authenticate(login, passphrase).should == u
+  it 'should return the user if valid email and passphrase' do
+    User.authenticate(@email, @passphrase).should == @user
   end
 end
 
 describe User, 'accessible attributes' do
-  it 'should allow mass-assignment to the login name' do
-    new_user.should allow_mass_assignment_of(:login_name => String.random)
-  end
-
   it 'should allow mass-assignment to the display name' do
     new_user.should allow_mass_assignment_of(:display_name => String.random)
   end
@@ -122,52 +119,7 @@ describe User, 'protected attributes' do
   end
 end
 
-describe User, 'validating the login name' do
-  it 'should require it to be present' do
-     new_user(:login_name => nil).should fail_validation_for(:login_name)
-  end
-
-  it 'should require it to be unique' do
-    name = String.random
-    create_user(:login_name => name).should be_valid
-    new_user(:login_name => name).should fail_validation_for(:login_name)
-  end
-
-  it 'should require it to be at least 3 characters long' do
-    new_user(:login_name => String.random(2)).should fail_validation_for(:login_name)
-  end
-
-  it 'should require it to begin with at least 2 letters' do
-    new_user(:login_name => '12345678').should fail_validation_for(:login_name)
-    new_user(:login_name => '__foobar').should fail_validation_for(:login_name)
-  end
-
-  it 'should disallow trailing spaces' do
-    new_user(:login_name => 'foobar ').should fail_validation_for(:login_name)
-  end
-
-  it 'should disallow consecutive spaces' do
-    new_user(:login_name => 'foo  bar').should fail_validation_for(:login_name)
-  end
-
-  it 'should allow letters and numbers' do
-    new_user(:login_name => 'foobarbaz9').should be_valid
-  end
-
-  it 'should disallow all other characters' do
-    new_user(:login_name => 'foo/bar').should fail_validation_for(:login_name)
-    new_user(:login_name => 'foo$bar').should fail_validation_for(:login_name)
-    new_user(:login_name => 'foo#bar').should fail_validation_for(:login_name)
-  end
-end
-
 describe User, 'validating the display name' do
-  it 'should use the login name as a display name if display name not present' do
-     u = new_user(:display_name => nil)
-     u.should be_valid
-     u.display_name.should == u.login_name
-  end
-
   it 'should require it to be unique' do
     name = String.random
     create_user(:display_name => name).should be_valid
