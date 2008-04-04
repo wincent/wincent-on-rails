@@ -87,15 +87,13 @@ class CommentsController < ApplicationController
       }
 
       format.js {
-        @comment.awaiting_moderation = false
         if params[:button] == 'spam'
-          @comment.spam = true  # protected attributes, so can't use mass assignment
-          @comment.save
+          @comment.moderate_as_spam!
           render :update do |page|
             page.visual_effect :fade, "comment_#{@comment.id}"
           end
         elsif params[:button] == 'ham'
-          @comment.save
+          @comment.moderate_as_ham!
           render :update do |page|
             page.visual_effect :highlight, "comment_#{@comment.id}", :duration => 1.5
             page.visual_effect :fade, "comment_#{@comment.id}_ham_form"

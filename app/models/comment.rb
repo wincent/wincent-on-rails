@@ -16,7 +16,22 @@ class Comment < ActiveRecord::Base
     find :all, base_options.merge(options)
   end
 
+  def moderate_as_spam!
+    moderate! true
+  end
+
+  def moderate_as_ham!
+    moderate! false
+  end
+
 protected
+
+  def moderate! is_spam
+    # we don't want moderating a comment to mark it as updated, so use update_all
+    self.awaiting_moderation  = false
+    self.spam                 = is_spam
+    Comment.update_all ['awaiting_moderation = FALSE, spam = ?', is_spam], ['id = ?', self.id]
+  end
 
   # By implementing the optional update_timestamps_for_comment_changes?
   # method commentable classes can control whether their timestamps get
