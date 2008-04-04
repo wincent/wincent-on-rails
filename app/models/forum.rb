@@ -19,6 +19,7 @@ class Forum < ActiveRecord::Base
             FROM topics
             ORDER BY forum_id, updated_at DESC) AS t
       ON forums.id = t.forum_id
+      WHERE forums.public = TRUE
       GROUP BY forums.id
       ORDER BY forums.position
     SQL
