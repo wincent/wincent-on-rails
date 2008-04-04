@@ -20,7 +20,7 @@ class Issue < ActiveRecord::Base
   has_many          :comments,
                     :as         => :commentable,
                     :extend     => Commentable,
-                    :order      => 'comments.updated_at DESC',
+                    :order      => 'comments.created_at',
                     :dependent  => :destroy
   attr_accessible   :status, :description # and probably more to come
   acts_as_taggable

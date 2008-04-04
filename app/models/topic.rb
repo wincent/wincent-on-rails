@@ -5,7 +5,7 @@ class Topic < ActiveRecord::Base
   has_many              :comments,
                         :as         => :commentable,
                         :extend     => Commentable,
-                        :order      => 'comments.updated_at DESC',
+                        :order      => 'comments.created_at',
                         :dependent  => :destroy
   validates_presence_of :title
   validates_presence_of :body

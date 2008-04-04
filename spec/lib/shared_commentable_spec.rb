@@ -21,6 +21,13 @@ describe Commentable, :shared => true do
     comment
   end
 
+  it 'should find comments in ascending (chronological) order by creation date' do
+    @commentable.comments.each do |comment|
+      Comment.update_all ['created_at = ?', comment.id.days.ago], ['id = ?', comment.id]
+    end
+    @commentable.reload.comments.collect(&:id).should == @commentable.comments.collect(&:id).sort.reverse
+  end
+
   it 'should find all published comments' do
     set_up_comments
     @commentable.comments.published.collect(&:id).sort.should == [@comment3.id]

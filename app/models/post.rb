@@ -2,7 +2,7 @@ class Post < ActiveRecord::Base
   has_many                :comments,
                           :as         => :commentable,
                           :extend     => Commentable,
-                          :order      => 'comments.updated_at DESC',
+                          :order      => 'comments.created_at',
                           :dependent  => :destroy
   belongs_to              :last_commenter, :class_name => 'User'
   validates_presence_of   :title
