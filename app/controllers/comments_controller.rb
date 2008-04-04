@@ -1,6 +1,7 @@
 class CommentsController < ApplicationController
   before_filter :require_admin, :except => [ :create, :show ]
   before_filter :get_comment, :only => [ :edit, :update, :destroy ]
+  cache_sweeper :comment_sweeper, :only => [ :create, :update, :destroy ]
 
   # Admin only.
   # The admin is allowed to see all unmoderated comments at once, for the purposes of moderation.
