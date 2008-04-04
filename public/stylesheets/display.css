@@ -36,7 +36,9 @@ a.mailto:after { content: url(../images/mailto.png); }
 
 #content { clear: both; padding: 0em 1em 1em 1em; }
 
-#footer { text-align: center; font-size: x-small; margin: 1em; }
+#footer { clear: both; text-align: center; font-size: x-small; margin: 1em; }
+
+div.two-columns { float: left; width: 50%; margin-bottom: 3em; }
 
 #error, #notice, #warning { font-weight: bold; border: 1px solid gray; margin: 1em; padding: 1em; }
 
