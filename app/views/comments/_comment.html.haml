@@ -10,11 +10,11 @@
       %th
         Body
         %br
-        %span.annotation link to wikitext markup help
+        %span.annotation=wikitext_cheatsheet
       -# TODO: make text area grow with window
       %td=preserve(f.text_area(:body, :cols => 80, :rows => 10))
       -# TODO: set up protected attributes for comments
-  %p=f.submit 'Create'
+  %p=f.submit 'Submit comment'
 %h4
 -#  ==Preview (#{link_to_update_preview})
 -#  =observe_body
