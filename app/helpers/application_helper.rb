@@ -25,8 +25,8 @@ module ApplicationHelper
   end
 
   def wikitext_cheatsheet
-    link_to 'wikitext cheatsheet', url_for(:controller => 'misc', :action => 'wikitext_cheatsheet'),
-      :popup => ['height=500,width=400']
+    link_to 'wikitext markup help', url_for(:controller => 'misc', :action => 'wikitext_cheatsheet'),
+      :popup => ['height=700,width=400']
   end
 
   # Pretty formatting for model creation/update information.
