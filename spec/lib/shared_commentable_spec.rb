@@ -22,6 +22,7 @@ describe Commentable, :shared => true do
   end
 
   it 'should find comments in ascending (chronological) order by creation date' do
+    set_up_comments
     @commentable.comments.each do |comment|
       Comment.update_all ['created_at = ?', comment.id.days.ago], ['id = ?', comment.id]
     end
