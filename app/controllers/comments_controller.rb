@@ -37,18 +37,22 @@ class CommentsController < ApplicationController
       case parent
       when 'blog'
         parent_instance = Post.find_by_permalink(parent_id) || (raise ActiveRecord::RecordNotFound)
+        parent_path = blog_path parent_instance
       when 'wiki'
         parent_instance = Article.find_by_title(parent.id) || (raise ActiveRecord::RecordNotFound)
+        parent_path = wiki_path parent_instance
       else
         raise
       end
-    elsif components.lenth == 6
-      # forums/:id/topic/:id/comments
+    elsif components.length == 6
+      # forums/:id/topics/:id/comments
       root, grandparent, grandparent_id, parent, parent_id, nested = components
       raise unless grandparent == 'forums'
+      raise unless parent == 'topics'
       grandparent_instance = Forum.find_with_param! grandparent_id
-      parent_instance = Topic.find(:first, :conditions => {:forum_id => grandparent_instance.id, :id => parent_id })
+      parent_instance = Topic.find :first, :conditions => { :forum_id => grandparent_instance.id, :id => parent_id }
       raise unless parent_instance
+      parent_path = forum_topic_path grandparent_instance, parent_instance
     else
       raise
     end
@@ -56,7 +60,7 @@ class CommentsController < ApplicationController
     raise if not parent_instance.accepts_comments
 
     # now create comment and try to add it
-    @comment = parent_instance.comments.build(params[:comment])
+    @comment = parent_instance.comments.build params[:comment]
     @comment.user = current_user
     @comment.awaiting_moderation = (!admin? or !logged_in_and_verified?)
     if @comment.save
@@ -65,7 +69,7 @@ class CommentsController < ApplicationController
       else
         flash[:notice] = 'Successfully added new comment.'
       end
-      redirect_to (send "#{parent}_path", parent_instance)
+      redirect_to parent_path
     else
       flash[:error] = 'Failed to add new comment.'
       render :action => 'new'

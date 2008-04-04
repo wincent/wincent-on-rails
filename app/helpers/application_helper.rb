@@ -143,7 +143,7 @@ module ApplicationHelper
     when 'Post'
       post = comment.commentable
       blog_comment_path post, comment
-    when 'Aritcle'
+    when 'Article'
       article = comment.commentable
       wiki_comment_path article, comment
     when 'Topic'

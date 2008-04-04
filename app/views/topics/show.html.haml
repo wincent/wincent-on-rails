@@ -33,5 +33,10 @@
         %span.when
           =timeinfo_for_topic_comment comment
       %td=preserve comment.body.w
+%h2 Reply
+-if @topic.accepts_comments
+  =render :partial => 'comments/comment'
+-else
+  %p This topic is now closed.
 -#-if admin? or (!current_user.nil? and current_user == @topic.user_id)
 -#  you can edit this

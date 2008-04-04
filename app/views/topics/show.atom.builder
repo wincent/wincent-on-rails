@@ -10,7 +10,7 @@ custom_atom_feed do |feed|
   for comment in @comments
     feed.entry(comment, :url => forum_topic_url(@forum, @topic) + "\#comment_#{comment.id}") do |entry|
       entry.title "#{@topic.title}: comment #{@comments.index(comment) + 1}"
-      entry.author { |author| author.name comment.user.display_name }
+      entry.author { |author| author.name(comment.user ? comment.user.display_name : 'anonymous') }
       entry.content comment.body.w, :type => 'html'
     end
   end
