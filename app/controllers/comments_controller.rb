@@ -62,7 +62,7 @@ class CommentsController < ApplicationController
     # now create comment and try to add it
     @comment = parent_instance.comments.build params[:comment]
     @comment.user = current_user
-    @comment.awaiting_moderation = (!admin? or !logged_in_and_verified?)
+    @comment.awaiting_moderation = !(admin? or logged_in_and_verified?)
     if @comment.save
       if @comment.awaiting_moderation
         flash[:notice] = 'Your comment has been queued for moderation.'
