@@ -152,6 +152,10 @@ it instead does an update/migrate_all/start.
     migrate_all
     start
   end
+
+  task :before_cleanup, :roles => :app do
+    set :use_sudo, false
+  end
 end
 
 task :after_symlink, :roles => :app do
