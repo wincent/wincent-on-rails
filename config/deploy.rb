@@ -1,6 +1,5 @@
 set :application, 'wincent_on_rails'
 set :repository, '/pub/git/private/wincent.com.git'
-set :branch, 'origin/maint'
 set :scm, :git
 set :group_writable, :false
 
@@ -79,6 +78,7 @@ task :staging do
   role    :db,        'kreacher.wincent.com', :primary => true
   set     :deploy_to, '/home/kreacher.wincent.com/deploy'
   set     :cluster,   'staging'
+  set     :branch,    'origin/master'
   depend  :remote,    :directory, '/home/kreacher.wincent.com/deploy'
   depend  :remote,    :directory, '/home/kreacher.wincent.com/deploy/shared'
 end
@@ -100,6 +100,7 @@ task :production do
   role    :db,        'rails.wincent.com', :primary => true
   set     :deploy_to, '/home/rails.wincent.com/deploy'
   set     :cluster,   'production'
+  set     :branch,    'origin/maint'
   depend  :remote,    :directory, '/home/rails.wincent.com/deploy'
   depend  :remote,    :directory, '/home/rails.wincent.com/deploy/shared'
 end
