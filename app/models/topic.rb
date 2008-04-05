@@ -1,6 +1,6 @@
 class Topic < ActiveRecord::Base
   belongs_to            :forum, :counter_cache => true
-  belongs_to            :user
+  belongs_to            :user, :counter_cache => true
   belongs_to            :last_commenter, :class_name => 'User', :foreign_key => 'last_commenter_id'
   has_many              :comments,
                         :as         => :commentable,
