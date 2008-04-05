@@ -2,6 +2,8 @@
 -for @topic in @topics
   %div[@topic]
     %h2
+      =h @topic.title
+    %h3
       Topic in
       =link_to h(@topic.forum.name), forum_path(@topic.forum)
       by
@@ -16,3 +18,5 @@
         =submit_to_remote 'button', 'spam', :url => forum_topic_path(@topic.forum, @topic), :method => :put, :failure => "alert('Failed to mark as spam')", :confirm => 'Really mark as spam?'
       %form{:id => "topic_#{@topic.id}_ham_form", :style => 'display:inline;'}
         =submit_to_remote 'button', 'ham', :url => forum_topic_path(@topic.forum, @topic), :method => :put, :failure => "alert('Failed to mark as ham')"
+.links
+  =link_to 'forums index', forums_path
