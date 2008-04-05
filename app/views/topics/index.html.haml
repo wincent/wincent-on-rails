@@ -1,0 +1,18 @@
+=page_title "Topics awaiting moderation"
+-for @topic in @topics
+  %div[@topic]
+    %h2
+      Topic in
+      =link_to h(@topic.forum.name), forum_path(@topic.forum)
+      by
+      =link_to_user @topic.user
+    .when=timeinfo @topic
+    %div=@topic.body.w
+    .links
+      =link_to 'edit', edit_forum_topic_path(@topic.forum, @topic), :class => 'edit_link'
+      %form{:id => "topic_#{@topic.id}_destroy_form", :style => 'display:inline;'}
+        =submit_to_remote 'button', 'destroy', :url => forum_topic_path(@topic.forum, @topic), :method => :delete, :failure => "alert('Failed to delete')", :confirm => 'Really delete?'
+      %form{:id => "topic_#{@topic.id}_spam_form", :style => 'display:inline;'}
+        =submit_to_remote 'button', 'spam', :url => forum_topic_path(@topic.forum, @topic), :method => :put, :failure => "alert('Failed to mark as spam')", :confirm => 'Really mark as spam?'
+      %form{:id => "topic_#{@topic.id}_ham_form", :style => 'display:inline;'}
+        =submit_to_remote 'button', 'ham', :url => forum_topic_path(@topic.forum, @topic), :method => :put, :failure => "alert('Failed to mark as ham')"

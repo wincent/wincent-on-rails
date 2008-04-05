@@ -54,7 +54,7 @@ module ActionController
         redirect_to_login
       elsif !self.logged_in_and_verified?
         flash[:notice]          = 'You must verify your account before accessing the requested resource'
-        redirect_to edit_user_path(current_user)
+        redirect_to new_confirm_path
       end
     end
 
@@ -75,10 +75,9 @@ module ActionController
         # we're not vulnerable to session fixation attacks because
         # 1. we use a server-generated session key
         # 2. it only works if paired with the correct user_id
-        # 3. upon successful login the session key is immediately updated anyway (in self.current_user)
-        # 4. in fact, it's not just on successful login; we regenerate the sessions keys on every single request
-        # 5. we destroy old sessions on logout (including invalidating the old session key in the database)
-        # 6. we expire old sessions
+        # 3. upon successful login the session key is immediately updated anyway (in self.set_current_user)
+        # 4. we destroy old sessions on logout (including invalidating the old session key in the database)
+        # 5. we expire old sessions
         # Additional measures would be possible (see below), but what's implemented here is probably more than
         # enough for a "defense in depth" strategy.
         # - store user agent in new sessions and bail if it changes during the session

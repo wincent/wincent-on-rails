@@ -41,4 +41,23 @@ class Topic < ActiveRecord::Base
   def self.update_timestamps_for_comment_changes?
     true
   end
+
+  # NOTE: the moderate_as_spam!, moderate_as_ham! and moderate! methods are repeated in the comment model as well
+  # may be worth refactoring to remove the duplication (either via a mix-in or an abstract superclass)
+  def moderate_as_spam!
+    moderate! true
+  end
+
+  def moderate_as_ham!
+    moderate! false
+  end
+
+protected
+
+  def moderate! is_spam
+    # we don't want moderating a topic to mark it as updated, so use update_all
+    self.awaiting_moderation  = false
+    self.spam                 = is_spam
+    Topic.update_all ['awaiting_moderation = FALSE, spam = ?', is_spam], ['id = ?', self.id]
+  end
 end

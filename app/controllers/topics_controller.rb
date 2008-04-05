@@ -1,8 +1,15 @@
 class TopicsController < ApplicationController
-  before_filter :get_forum
-  before_filter :get_topic, :only => [ :show ]
+  before_filter :require_admin,   :except => [ :create, :new, :show ]
+  before_filter :get_forum,       :except => [ :index ]
+  before_filter :get_topic,       :only => [ :show ]
   after_filter  :cache_show_feed, :only => :show
-  cache_sweeper :topic_sweeper, :only => [ :create, :update, :destroy ]
+  cache_sweeper :topic_sweeper,   :only => [ :create, :update, :destroy ]
+
+  # Admin only.
+  # The admin is allowed to see all unmoderated topics at once, for the purposes of moderation.
+  def index
+    @topics = Topic.find :all, :conditions => { :awaiting_moderation => true }
+  end
 
   def new
     @topic = Topic.new
@@ -48,20 +55,70 @@ class TopicsController < ApplicationController
     end
   end
 
+  # Admin only for now.
+  def update
+    topic = @forum.topics.find(params[:id])
+    respond_to do |format|
+      format.html { raise 'not yet implemented' }
+      format.js {
+        if params[:button] == 'spam'
+          topic.moderate_as_spam!
+          render :update do |page|
+            page.visual_effect :fade, "topic_#{topic.id}"
+          end
+        elsif params[:button] == 'ham'
+          topic.moderate_as_ham!
+          render :update do |page|
+            page.visual_effect :highlight, "topic_#{topic.id}", :duration => 1.5
+            page.visual_effect :fade, "topic_#{topic.id}_ham_form"
+            page.visual_effect :fade, "topic_#{topic.id}_spam_form"
+          end
+        else
+          raise 'unrecognized AJAX action'
+        end
+      }
+    end
+  end
+
+  # Admin only.
+  def destroy
+    # TODO: mark topics as deleted_at rather than really destroying them
+    topic = @forum.topics.find(params[:id])
+    topic.destroy
+    respond_to do |format|
+      format.html { redirect_to forum_path(@forum) }
+      format.js {
+        render :update do |page|
+          page.visual_effect :fade, "topic_#{topic.id}"
+        end
+      }
+    end
+  end
+
 private
 
+  def public_only?
+    is_atom? || !admin?
+  end
+
   def get_forum
-    # TODO: handle private forums?
-    @forum = Forum.find_with_param! params[:forum_id]
+    if public_only?
+      @forum = Forum.find_with_param! params[:forum_id], :public => true
+    else
+      @forum = Forum.find_with_param! params[:forum_id]
+    end
   end
 
   def get_topic
-    # TODO: handle private topics
-    @topic = @forum.topics.find params[:id], :conditions => { :public => true, :awaiting_moderation => false }
+    if public_only?
+      @topic = @forum.topics.find params[:id], :conditions => { :public => true, :awaiting_moderation => false }
+    else
+      @topic = @forum.topics.find params[:id], :conditions => { :awaiting_moderation => false }
+    end
   end
 
   def cache_show_feed
-    cache_page if params[:format] == 'atom'
+    cache_page if is_atom?
   end
 
   def record_not_found

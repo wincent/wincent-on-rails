@@ -34,6 +34,10 @@ protected
     redirect_to uri
   end
 
+  def is_atom?
+    params[:format] == 'atom'
+  end
+
   # uncomment this method to test what remote users will see when there are errors in production mode
   # def local_request?
   #   false

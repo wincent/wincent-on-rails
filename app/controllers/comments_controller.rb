@@ -107,6 +107,7 @@ class CommentsController < ApplicationController
   end
 
   def destroy
+    # TODO: mark comments as deleted_at rather than really destroying them
     @comment.destroy
     respond_to do |format|
       format.html { redirect_to comments_path }

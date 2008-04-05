@@ -48,6 +48,9 @@ protected
     end
   end
 
+  # NOTE: possible bug here: when a comment is queued for moderation the commentable will get updated
+  # if the comment is later marked as spam then we will have updated the commentable for nothing
+  # therefore may need to consider adding yet another callback to hand this kind of case (an after save callback)
   def update_caches_after_create
     updates = <<-UPDATES
       comments_count    = comments_count + 1,
