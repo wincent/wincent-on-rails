@@ -1,5 +1,4 @@
 class Comment < ActiveRecord::Base
-  # can we use nested routes for polymorphic associations?
   belongs_to            :user                               # no counter cache: see notes below
   belongs_to            :commentable, :polymorphic => true  # no counter cache: see notes below
   validates_presence_of :body
@@ -12,7 +11,7 @@ class Comment < ActiveRecord::Base
   after_destroy         :update_caches_after_destroy
 
   def self.find_recent options = {}
-    base_options = {:conditions => {'public' => true}, :order => 'created_at DESC', :limit => 10}
+    base_options = { :conditions => { :public => true }, :order => 'created_at DESC', :limit => 10 }
     find :all, base_options.merge(options)
   end
 

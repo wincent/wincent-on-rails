@@ -17,7 +17,7 @@
           -if admin?
             =link_to email.address, edit_user_email_path(@user, email)
           -else
-            =mail_to(email.address)
+            =mail_to email.address
           =check_box_tag "delete_email[#{email.id}]"
           delete
           %br
