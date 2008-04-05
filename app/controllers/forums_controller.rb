@@ -31,11 +31,10 @@ class ForumsController < ApplicationController
 private
 
   def get_forum
-    @forum = Forum.find_with_param! params[:id]
+    @forum = Forum.find_with_param! params[:id], :public => !admin?
   end
 
   def record_not_found
     super forums_path
   end
-
 end
