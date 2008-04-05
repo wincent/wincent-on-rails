@@ -11,14 +11,11 @@
   =h @topic.title
 =page_title @topic.title
 %table[@topic]
-  -#%tr.header
-  -#  %th Meta
-  -#  %th Content
   %tr{ :class => 'comment odd' }
     %td
       =link_to_user @topic.user
       %br
-      =pluralizing_count(@topic.user.comments_count, 'post') if @topic.user
+      =pluralizing_count(@topic.user.utterances_count, 'post') if @topic.user
       %br
       %span.when
         =timeinfo_for_topic @topic
@@ -28,7 +25,7 @@
       %td
         =link_to_user comment.user
         %br
-        =pluralizing_count(comment.user.comments_count, 'post') if comment.user
+        =pluralizing_count(comment.user.utterances_count, 'post') if comment.user
         %br
         %span.when
           =timeinfo_for_topic_comment comment

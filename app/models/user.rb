@@ -99,6 +99,11 @@ class User < ActiveRecord::Base
     self.passphrase_salt, self.passphrase_hash = salt, User.digest(passphrase, salt)
   end
 
+  def utterances_count
+    # later on this will also include self.issues_count
+    self.comments_count + self.topics_count
+  end
+
   def update_emails options = {}
     remove_emails(options[:delete]) unless options[:delete].blank?
     add_email(options[:add]) unless options[:add].blank?
