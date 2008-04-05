@@ -2,6 +2,7 @@ class ApplicationController < ActionController::Base
   #helper                    :all # include all helpers, all the time
   filter_parameter_logging  'passphrase'
   before_filter             :login_before
+  after_filter              :clear_redirection_info
   protect_from_forgery      :secret => '1b8b0816466a6f55b2a2a860c59d3ba0'
   rescue_from               ActiveRecord::RecordNotFound, :with => :record_not_found
 
@@ -36,6 +37,17 @@ protected
 
   def is_atom?
     params[:format] == 'atom'
+  end
+
+  # This method is needed because wiki articles can be redirections to any URL.
+  # In the case were we redirect to another wiki article, the articles controller can handle
+  # the clearing of the session, but when we redirect to another section of the site (the forums,
+  # for instance) we need all other controllers to know how to clear the redirection info as well.
+  # The articles controller itself overrides this filter as it is the only controller which requires
+  # custom behaviour.
+  def clear_redirection_info
+    session[:redirected_from]   = nil
+    session[:redirection_count] = 0
   end
 
   # uncomment this method to test what remote users will see when there are errors in production mode

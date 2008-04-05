@@ -1,8 +1,9 @@
 class ArticlesController < ApplicationController
-  before_filter :require_admin, :except => [ :index, :show ]
-  before_filter :get_article, :only => [ :show, :edit, :update ]
-  after_filter  :cache_index_feed, :only => [ :index ]
-  cache_sweeper :article_sweeper, :only => [ :create, :update, :destroy ]
+  before_filter     :require_admin, :except => [ :index, :show ]
+  before_filter     :get_article, :only => [ :show, :edit, :update ]
+  after_filter      :cache_index_feed, :only => [ :index ]
+  skip_after_filter :clear_redirection_info, :only => [ :show ]
+  cache_sweeper     :article_sweeper, :only => [ :create, :update, :destroy ]
 
   def index
     respond_to do |format|
@@ -85,11 +86,6 @@ private
 
   def cache_index_feed
     cache_page if params[:format] == 'atom'
-  end
-
-  def clear_redirection_info
-    session[:redirected_from]   = nil
-    session[:redirection_count] = 0
   end
 
   def record_not_found
