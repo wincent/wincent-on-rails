@@ -16,6 +16,7 @@ class TopicsController < ApplicationController
   end
 
   def create
+    # TODO: tagging support (admin sees tag fields in the UI, but they have no effect yet)
     respond_to do |format|
       format.html {
         @topic = @forum.topics.build(params[:topic])
