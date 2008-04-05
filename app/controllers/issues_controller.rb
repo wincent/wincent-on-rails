@@ -1,5 +1,5 @@
 class IssuesController < ApplicationController
-  acts_as_sortable  :by => [:kind, :id, :product, :summary, :updated_at], :default => :updated_at, :descending => true
+  acts_as_sortable  :by => [:kind, :id, :product_id, :summary, :updated_at], :default => :updated_at, :descending => true
 
   def index
     @paginator    = Paginator.new(params, Issue.count(:conditions => { :public => true }), issues_path)
