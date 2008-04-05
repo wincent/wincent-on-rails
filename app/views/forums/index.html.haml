@@ -1,3 +1,5 @@
+-content_for :css do
+  =stylesheet_link_tag 'forums'
 %h1 Forums
 %table
   %tr
@@ -8,7 +10,7 @@
     -if admin?
       %th Actions
   -for forum in @forums
-    %tr.forum
+    %tr{ :class => "forum #{cycle('odd', 'even')}" }
       %td
         %h2=link_to forum.name, forum_path(forum)
       %td
