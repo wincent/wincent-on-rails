@@ -6,9 +6,9 @@ class Paginator
     page              = params[:page].to_i
 
     # preserve sort information in links
-    @additonal_params = ''
-    @additonal_params << "&sort=#{params[:sort]}" if params[:sort]
-    @additonal_params << "&order=#{params[:order]}" if params[:order]
+    @additional_params = []
+    @additional_params << "sort=#{params[:sort]}" if params[:sort]
+    @additional_params << "order=#{params[:order]}" if params[:order]
 
     # process page, count and path
     @limit  = per_page
@@ -30,8 +30,10 @@ class Paginator
 private
   include ActionView::Helpers::NumberHelper # for number_with_delimiter
 
-  def param_for_page page
-    page > 1 ? "?page=#{page}" : ''
+  def params_for_page page
+    params = @additional_params.clone
+    params.unshift "page=#{page}" if page > 1
+    params.length > 0 ? "?#{params.join('&')}" : ''
   end
 
   def on_first_page?
@@ -57,7 +59,7 @@ private
     if on_first_page?
       %Q{<span class="first disabled">First</span>}
     else
-      %Q{<a href="#{@path}#{@additonal_params}" class="first">First</a>}
+      %Q{<a href="#{@path}#{params_for_page(1)}" class="first">First</a>}
     end
   end
 
@@ -65,7 +67,7 @@ private
     if on_last_page?
       %Q{<span class="last disabled">Last</span>}
     else
-      %Q{<a href="#{@path}#{param_for_page((@count / @limit.to_f).ceil)}#{@additonal_params}" class="last">Last</a>}
+      %Q{<a href="#{@path}#{params_for_page((@count / @limit.to_f).ceil)}" class="last">Last</a>}
     end
   end
 
@@ -73,7 +75,7 @@ private
     if on_first_page?
       %Q{<span class="prev disabled">Previous</span>}
     else
-      %Q{<a href="#{@path}#{param_for_page(@page - 1)}#{@additonal_params}" class="prev">Previous</a>}
+      %Q{<a href="#{@path}#{params_for_page(@page - 1)}" class="prev">Previous</a>}
     end
   end
 
@@ -81,7 +83,7 @@ private
     if on_last_page?
       %Q{<span class="next disabled">Next</span>}
     else
-      %Q{<a href="#{@path}#{param_for_page(@page + 1)}#{@additonal_params}" class="next">Next</a>}
+      %Q{<a href="#{@path}#{params_for_page(@page + 1)}" class="next">Next</a>}
     end
   end
 end # class Paginator
