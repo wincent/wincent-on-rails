@@ -8,22 +8,22 @@ module FixtureReplacement
 
   def comment_attributes
     {
-      :user                     => new_user,
+      :user                     => default_user,
       :body                     => 'hello world',
-      :commentable              => new_article
+      :commentable              => default_article
     }
   end
 
   def confirmation_attributes
     {
-      :email                    => new_email
+      :email                    => default_email
     }
   end
 
   def email_attributes
     {
       :address                  => "#{String.random}@example.com",
-      :user                     => new_user
+      :user                     => default_user
     }
   end
 
