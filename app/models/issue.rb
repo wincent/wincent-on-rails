@@ -16,7 +16,7 @@ class Issue < ActiveRecord::Base
 
   belongs_to        :user
   belongs_to        :last_commenter, :class_name => 'User'
-  #belongs_to        :product
+  belongs_to        :product
   has_many          :comments,
                     :as         => :commentable,
                     :extend     => Commentable,
@@ -32,8 +32,7 @@ class Issue < ActiveRecord::Base
     when Kind::SUPPORT_TICKET:  'support ticket'
     when Kind::FEEDBACK:        'feedback'
     else
-      # should never get here
-      'ticket'
+      'ticket'                  # fallback (should never get here)
     end
   end
 
