@@ -12,7 +12,7 @@
     -sortable_header_cell :summary, 'Summary'
     -sortable_header_cell :updated_at, 'When'
   -for issue in @issues
-    %tr
+    %tr{ :class => cycle('odd', 'even') }
       %td{:class => issue.kind_string.tableize}=issue.kind_string.capitalize
       %td=issue.id
       %td=issue.product.name if issue.product
