@@ -79,9 +79,9 @@ th.ascending a { font-weight: bold; background: url(../images/upwards-sort-trian
 
 th.descending a { font-weight: bold; background: url(../images/downwards-sort-triangle.png) no-repeat right center; padding-right: 16px; }
 
-tr.odd { background: #fff; }
+tr.odd { background: #f7f7f7; }
 
-tr.even { background: #f7f7f7; }
+tr.even { background: #eaeaea; }
 
 span.annotation { font-size: xx-small; font-weight: normal; color: #666; }
 

@@ -1,13 +1,20 @@
+table.topic
+  width: 100%
 .topic
   td
-    padding:
-      top: 1.5em
-      left: 1em
-      right: 1em
+    padding: 1em
     vertical-align: top
+    background: white
   td + td
     padding-top: 0em
     border: 1px solid #ccc
+    width: 85%
+.topic .odd
+  td + td
+    background: #f7f7f7
+.topic .even
+  td + td
+    background: #eaeaea
   .comment
     //background: #f00
 
