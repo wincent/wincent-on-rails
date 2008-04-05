@@ -96,12 +96,12 @@ describe Topic, 'comments association' do
     }.should change(@topic.comments, :length).by(10)
   end
 
-  it 'should order comments in descending order by update date' do
+  it 'should order comments in ascending order by creation date' do
     10.times do
       comment = add_comment
       Comment.update_all ['updated_at = ?', comment.id.days.from_now], ['id = ?', comment.id]
     end
-    @topic.comments.collect(&:id).should == Comment.find(:all, :order => 'updated_at DESC').collect(&:id)
+    @topic.comments.collect(&:id).should == Comment.find(:all, :order => 'created_at').collect(&:id)
   end
 
   it 'should destroy dependent comments when destroying' do
@@ -273,10 +273,6 @@ describe Topic, '"find_topics_for_forum" method' do
     Topic.find_topics_for_forum(@forum).should == []
   end
 end
-=begin
-conditions = { :public => true, :awaiting_moderation => false, :spam => false, :commentable_id => self.id, :commentable_type => 'Topic' }
-Comment.find :all, :conditions => conditions, :include => 'user', :order => 'comments.created_at'
-=end
 
 describe Topic, '"visible_comments" method' do
   before do
@@ -298,9 +294,9 @@ describe Topic, '"visible_comments" method' do
     @topic.visible_comments.collect(&:id).sort.should == [@comment1, @comment5].collect(&:id).sort
   end
 
-  it 'should order results by comment creation date in descending order' do
-    Comment.update_all ['created_at = ?', 3.days.ago], ['id = ?', @comment1.id]
-    Comment.update_all ['created_at = ?', 7.days.ago], ['id = ?', @comment5.id]
+  it 'should order results by comment creation date in ascending order' do
+    Comment.update_all ['created_at = ?', 7.days.ago], ['id = ?', @comment1.id]
+    Comment.update_all ['created_at = ?', 3.days.ago], ['id = ?', @comment5.id]
     @topic.visible_comments.collect(&:id).should == [@comment1.id, @comment5.id]
   end
 end
