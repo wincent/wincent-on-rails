@@ -1,10 +1,13 @@
 require File.dirname(__FILE__) + '/../spec_helper'
-
+require 'ostruct'
 describe ConfirmationMailer, 'confirmation' do
   before do
+    request         = OpenStruct.new
+    request.host    = 'example.com'
+    request.port    = 80
     @administrator  = 'win@wincent.com'
     @confirmation   = create_confirmation
-    @mail           = ConfirmationMailer.create_confirmation_message @confirmation
+    @mail           = ConfirmationMailer.create_confirmation_message @confirmation, request
   end
 
   it 'should set the subject line' do
@@ -28,7 +31,7 @@ describe ConfirmationMailer, 'confirmation' do
   end
 
   it 'should mention the confirmation address in the body' do
-    @mail.body.should match(@confirmation.email.address)
+    @mail.body.should match(/#{@confirmation.email.address}/)
   end
 
   it 'should include the confirmation link in the body' do
@@ -38,7 +41,7 @@ describe ConfirmationMailer, 'confirmation' do
   end
 
   it 'should mention the cutoff date in UTC time' do
-    @mail.body.should match(@confirmation.cutoff.utc.to_s)
+    @mail.body.should match(/#{@confirmation.cutoff.utc.to_s}/)
   end
 
 end

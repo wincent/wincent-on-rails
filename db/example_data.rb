@@ -14,7 +14,7 @@ module FixtureReplacement
     }
   end
 
-  def confirmation_attribute    s
+  def confirmation_attributes
     {
       :email                    => new_email
     }
