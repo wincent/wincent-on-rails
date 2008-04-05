@@ -4,7 +4,7 @@
 %h2 Issues
 %h3 Recently modified
 .pagination=@paginator.pagination_links if @paginator
-%table
+%table.main
   %tr
     -sortable_header_cell :kind, 'Kind'
     -sortable_header_cell :id, '#'

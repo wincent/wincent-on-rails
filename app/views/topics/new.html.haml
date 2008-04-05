@@ -5,7 +5,7 @@
 -elsif !current_user.verified?
   =render :partial => 'shared/unverified'
 -form_for :topic, :url => forum_topics_path(@forum), :method => :post do |f|
-  %table.main_form
+  %table.main
     %tr
       %th Title
       %td=f.text_field :title

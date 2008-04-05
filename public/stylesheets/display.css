@@ -67,9 +67,9 @@ div.two-columns { float: left; width: 50%; margin-bottom: 3em; }
 .pagination .last { padding-right: 18px; background: url(../images/last.png) no-repeat right center; }
 .pagination .last.disabled { background: url(../images/last-disabled.png) no-repeat right center; }
 
-table.main_form { width: 95%; }
-table.main_form input[type=text] { width: 100%; }
-table.main_form textarea { width: 100%; }
+table.main { width: 95%; }
+table.main input[type=text] { width: 100%; }
+table.main textarea { width: 100%; }
 
 td, th { padding: 0.5em; }
 
