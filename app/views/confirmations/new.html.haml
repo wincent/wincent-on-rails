@@ -1,0 +1,19 @@
+%h1 Confirm your email address
+-form_for @confirmation, :url => confirm_index_path do |f|
+  %p
+    Select the email addresses you wish to confirm
+    %br
+    %span.annotation an email will be sent to each selected address
+  -for email in current_user.emails
+    .email
+      -if email.verified?
+        =check_box_tag "emails[#{email.id}]", '1', false, :disabled => true
+      -else
+        =check_box_tag "emails[#{email.id}]", '1', true, :disabled => false
+      -if admin?
+        =link_to email.address, edit_user_email_path(current_user, email)
+      -else
+        =mail_to email.address
+      -if email.verified?
+        (already verified)
+  %p=f.submit 'Confirm email addresses'
