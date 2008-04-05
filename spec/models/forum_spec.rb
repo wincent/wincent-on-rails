@@ -139,6 +139,16 @@ describe Forum, 'find_with_param! method' do
   it 'should complain if not found' do
     lambda { Forum.find_with_param!('non-existent') }.should raise_error(ActiveRecord::RecordNotFound)
   end
+
+  it 'should accept and use optional conditions such as ":public => true" (public forum)' do
+    Forum.find_with_param!('foo-bar', :public => true).should == @forum
+  end
+
+  it 'should accept and use optional conditions such as ":public => true" (private forum)' do
+    private_forum = create_forum :name => 'baz', :public => false
+    Forum.find_with_param!('baz', :public => false).should == private_forum
+    lambda { Forum.find_with_param!('baz', :public => true) }.should raise_error(ActiveRecord::RecordNotFound)
+  end
 end
 
 describe Forum, 'find_all method' do
@@ -210,5 +220,12 @@ describe Forum, 'find_all method' do
     forum2 = create_forum :position => 5
     forum3 = create_forum :position => 10
     Forum.find_all.collect(&:id).should == [@forum, forum2, forum3, forum1].collect(&:id)
+  end
+
+  it 'should find only public forums' do
+    start = Forum.find_all.length
+    @forum.update_attribute(:public, false)
+    finish = Forum.find_all.length
+    (finish - start).should == -1
   end
 end
