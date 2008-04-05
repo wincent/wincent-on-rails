@@ -95,6 +95,10 @@ describe Article, 'validating the redirect' do
     new_article(:redirect => 'https://example.com').should_not fail_validation_for(:redirect)
   end
 
+  it 'should accept relative URLs' do
+    new_article(:redirect => '/forums').should_not fail_validation_for(:redirect)
+  end
+
   it 'should accept a [[wikitext]] title' do
     new_article(:redirect => '[[foo bar]]').should_not fail_validation_for(:redirect)
   end
@@ -102,12 +106,14 @@ describe Article, 'validating the redirect' do
   it 'should ignore leading whitespace' do
     new_article(:redirect => '   http://example.com').should_not fail_validation_for(:redirect)
     new_article(:redirect => '   https://example.com').should_not fail_validation_for(:redirect)
+    new_article(:redirect => '   /forums').should_not fail_validation_for(:redirect)
     new_article(:redirect => '   [[foo bar]]').should_not fail_validation_for(:redirect)
   end
 
   it 'should ignore trailing whitespace' do
     new_article(:redirect => 'http://example.com   ').should_not fail_validation_for(:redirect)
     new_article(:redirect => 'https://example.com   ').should_not fail_validation_for(:redirect)
+    new_article(:redirect => '/forums   ').should_not fail_validation_for(:redirect)
     new_article(:redirect => '[[foo bar]]   ').should_not fail_validation_for(:redirect)
   end
 

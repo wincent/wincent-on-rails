@@ -13,7 +13,7 @@ class Article < ActiveRecord::Base
                           :with => /\A[^_\/]+\z/,
                           :message => 'must not contain underscores or slashes'
   validates_format_of     :redirect,
-                          :with => /\A\s*((\[\[.+\]\])|(https?:\/\/.+))\s*\z/,
+                          :with => /\A\s*((\[\[.+\]\])|(https?:\/\/.+)|(\/.+))\s*\z/,
                           :if => Proc.new { |a| !a.redirect.blank? },
                           :message => 'must be a [[wikitext]] link or HTTP URL'
   attr_accessible         :title, :redirect, :body, :public, :accepts_comments, :pending_tags
