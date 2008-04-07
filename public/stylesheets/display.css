@@ -20,9 +20,14 @@ a.external:after { content: url(../images/external.png); }
 
 a.mailto:after { content: url(../images/mailto.png); }
 
-#header #logo { padding: 0px; position: absolute; top: 2px; right: 2px; }
-#header h1 { font-size: small; position: absolute; top: 5px; right: 50px; }
-#header h1 a { color: white; font-weight: bold; }
+#header a { color: white; }
+#header #logo { float: right; padding: 0px; margin: 0.2em; }
+#header h1 { font-size: small; float: right; margin-top: 1em; }
+#header h1 a { font-weight: bold; }
+
+#login { margin-right: 1em; float: right; }
+
+#logout { margin-right: 1em; float: right; }
 
 #navbar { font-size: small; background: url(../images/navbar.png) center center repeat-x; margin: 0em; padding-top: 1em; padding-bottom: 1em; }
 #navbar li { display: inline; }
