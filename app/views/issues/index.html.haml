@@ -7,6 +7,7 @@
     -sortable_header_cell :id, '#'
     -sortable_header_cell :product, 'Product'
     -sortable_header_cell :summary, 'Summary'
+    -sortable_header_cell :status, 'Status'
     -sortable_header_cell :updated_at, 'When'
   -for issue in @issues
     %tr{ :class => cycle('odd', 'even') }
@@ -14,5 +15,6 @@
       %td=link_to issue.id.to_s, issue_path(issue)
       %td=link_to(issue.product.name, issues_path(:product => issue.product.name)) if issue.product
       %td{:title => h(issue.summary)}=h(truncate(issue.summary, 60))
+      %td=link_to issue.status_string, issues_path(:status => issue.status_string)
       %td=timeinfo issue
 .pagination=@paginator.pagination_links if @paginator

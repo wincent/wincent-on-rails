@@ -25,6 +25,16 @@ class Issue < ActiveRecord::Base
   attr_accessible   :status, :description # and probably more to come
   acts_as_taggable
 
+  def status_string
+    case status
+    when Status::NEW:     'new'
+    when Status::OPEN:    'open'
+    when Status::CLOSED:  'closed'
+    else
+      '-'                 # fallback (should never get here)
+    end
+  end
+
   def kind_string
     case kind
     when Kind::BUG:             'bug'
