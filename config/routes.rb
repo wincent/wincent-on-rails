@@ -40,6 +40,7 @@ ActionController::Routing::Routes.draw do |map|
   # named routes
   map.login     'login',  :controller => 'sessions',  :action => 'new'
   map.logout    'logout', :controller => 'sessions',  :action => 'destroy'
+  map.support   'support', :controller => 'support'
 
   # although conditionally inlining admin functionality in the standard resources is elegant
   # it makes page caching difficult because the page looks different for admin users
