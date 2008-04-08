@@ -5,10 +5,12 @@ class Paginator
     # unpack params
     page              = params[:page].to_i
 
-    # preserve sort information in links
+    # preserve query-string information in links
     @additional_params = []
-    @additional_params << "sort=#{params[:sort]}" if params[:sort]
-    @additional_params << "order=#{params[:order]}" if params[:order]
+    params.each do |key, value|
+      next if ['page', 'action', 'controller'].include? key
+      @additional_params << "#{key.to_s}=#{value}"
+    end
 
     # process page, count and path
     @limit  = per_page
