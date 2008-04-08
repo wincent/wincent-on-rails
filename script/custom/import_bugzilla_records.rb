@@ -67,12 +67,12 @@ BugzillaBug.find(:all, :order => 'bug_id').each do |bug|
   @issue.user = @reporter
   @issue.public = (comment.isprivate == 0) # NOTE: thinking about making all issues private to begin, seeing as some are sensitive
   @issue.awaiting_moderation = false
-  @issue.kind = Issue::Kind::FEATURE_REQUEST if bug.short_desc =~ /request/i # otherwise just defaults to BUG
+  @issue.kind = Issue::KIND[:feature_request] if bug.short_desc =~ /request/i # otherwise just defaults to BUG
   case bug.bug_status
   when 'CLOSED', 'RESOLVED'
-    @issue.status = Issue::Status::CLOSED
+    @issue.status = Issue::STATUS[:closed]
   when 'ASSIGNED', 'REOPENED'
-    @issue.status = Issue::Status::OPEN
+    @issue.status = Issue::STATUS[:open]
   end
   @issue.save!
   puts "created issue \##{@issue.id}: #{@issue.summary}"

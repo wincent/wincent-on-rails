@@ -1,18 +1,8 @@
 class Issue < ActiveRecord::Base
-  module Status
-    # see also http://groups.google.com/group/rubyonrails-talk/browse_thread/thread/1e23eb3d380f2c98?hl=en
-    # for another idea
-    NEW     = 0 # default
-    OPEN    = 1 # in progress
-    CLOSED  = 2
-  end
-
-  module Kind
-    BUG             = 0
-    FEATURE_REQUEST = 1
-    SUPPORT_TICKET  = 2
-    FEEDBACK        = 3
-  end
+  STATUS      = Hash.new(0).merge!({ :new => 0, :open => 1, :closed => 2 }).freeze
+  STATUS_MAP  = STATUS.invert.freeze
+  KIND        = Hash.new(0).merge!({ :bug => 0, :feature_request => 1, :support_ticket => 2, :feedback => 3 }).freeze
+  KIND_MAP    = KIND.invert.freeze
 
   belongs_to        :user
   belongs_to        :last_commenter, :class_name => 'User'
@@ -27,24 +17,11 @@ class Issue < ActiveRecord::Base
   acts_as_taggable
 
   def status_string
-    case status
-    when Status::NEW:     'new'
-    when Status::OPEN:    'open'
-    when Status::CLOSED:  'closed'
-    else
-      '-'                 # fallback (should never get here)
-    end
+    STATUS_MAP[self.status].to_s
   end
 
   def kind_string
-    case kind
-    when Kind::BUG:             'bug'
-    when Kind::FEATURE_REQUEST: 'feature request'
-    when Kind::SUPPORT_TICKET:  'support ticket'
-    when Kind::FEEDBACK:        'feedback'
-    else
-      'ticket'                  # fallback (should never get here)
-    end
+    KIND_MAP[self.kind].to_s
   end
 
   def self.update_timestamps_for_comment_changes?
