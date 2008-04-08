@@ -17,11 +17,11 @@ class Issue < ActiveRecord::Base
   acts_as_taggable
 
   def status_string
-    STATUS_MAP[self.status].to_s
+    STATUS_MAP[self.status].to_s.humanize
   end
 
   def kind_string
-    KIND_MAP[self.kind].to_s
+    KIND_MAP[self.kind].to_s.humanize
   end
 
   def self.update_timestamps_for_comment_changes?

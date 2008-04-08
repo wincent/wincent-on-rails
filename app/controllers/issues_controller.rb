@@ -12,9 +12,9 @@ class IssuesController < ApplicationController
     end
 
     # possible params that can be used to limit the scope of the search
-    options[:kind]        = Issue::KIND[params[:kind].to_sym] if params[:kind] && Issue::KIND.key?(params[:kind].to_sym)
+    add_kind_scope_condition options
+    add_status_scope_condition options
     options[:product_id]  = @product if @product
-    options[:status]      = Issue::STATUS[params[:status].to_sym] if params[:status] && Issue::STATUS.key?(params[:status].to_sym)
 
     @paginator  = Paginator.new params, Issue.count(:conditions => options), issues_path
 
@@ -27,5 +27,19 @@ class IssuesController < ApplicationController
 private
   def find_product
     @product = Product.find_by_name(params[:product]) if params[:product]
+  end
+
+  def add_kind_scope_condition options
+    if params[:kind]
+      key = params[:kind].gsub(' ', '_').downcase.to_sym
+      options[:kind] = Issue::KIND[key] if Issue::KIND.key? key
+    end
+  end
+
+  def add_status_scope_condition options
+    if params[:status]
+      key = params[:status].gsub(' ', '_').downcase.to_sym
+      options[:status] = Issue::STATUS[key] if Issue::STATUS.key? key
+    end
   end
 end
