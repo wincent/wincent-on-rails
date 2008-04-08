@@ -19,6 +19,7 @@ class User < ActiveRecord::Base
   validates_length_of       :display_name,  :minimum => MINIMUM_LOGIN_NAME_LENGTH
   validates_format_of       :display_name,  :with => /\A[a-z]{2}( ?[a-z0-9]+)+\z/i, :allow_nil => true, :message =>
   'may only contain letters, numbers and non-consecutive, non-trailing spaces; must start with at least two letters'
+  # TODO: rather than reject leading and trailing spaces, should just trim them
 
   validates_presence_of     :passphrase,      :if => Proc.new { |u| u.new_record? || u.resetting_passphrase }
   validates_length_of       :passphrase,      :minimum => MINIMUM_PASSWORD_LENGTH,  :if => Proc.new { |u| !u.passphrase.blank? }
