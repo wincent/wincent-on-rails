@@ -39,8 +39,7 @@ private
   end
 
   def find_issue
-    # TODO: access control
-    @issue = Issue.find params[:id]
+    @issue = Issue.find params[:id], :conditions => default_access_options
   end
 
   def add_kind_scope_condition options
