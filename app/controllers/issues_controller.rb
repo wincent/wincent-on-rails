@@ -4,13 +4,7 @@ class IssuesController < ApplicationController
   acts_as_sortable  :by => [:kind, :id, :product_id, :summary, :status, :updated_at], :default => :updated_at, :descending => true
 
   def index
-    if admin?
-      options = { :awaiting_moderation => false, :spam => false }
-    elsif logged_in?
-      options = ['awaiting_moderation = FALSE AND spam = FALSE AND (public = TRUE OR user_id = ?)', current_user]
-    else
-      options = { :awaiting_moderation => false, :spam => false, :public => true }
-    end
+    options = default_access_options
 
     # possible params that can be used to limit the scope of the search
     add_kind_scope_condition options
@@ -30,6 +24,16 @@ class IssuesController < ApplicationController
   end
 
 private
+  def default_access_options
+    if admin?
+      { :awaiting_moderation => false, :spam => false }
+    elsif logged_in?
+      ['awaiting_moderation = FALSE AND spam = FALSE AND (public = TRUE OR user_id = ?)', current_user]
+    else
+      { :awaiting_moderation => false, :spam => false, :public => true }
+    end
+  end
+
   def find_product
     @product = Product.find_by_name(params[:product]) if params[:product]
   end
