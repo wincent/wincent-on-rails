@@ -29,6 +29,9 @@
             =link_to 'view &raquo;', forum_topic_path(@forum, topic) + "\#comment_#{topic.last_comment_id}"
           -else
             =link_to 'view &raquo;', forum_topic_path(@forum, topic)
+  -if @paginator
+    .pagination=@paginator.pagination_links
+.links
   =link_to 'new topic', new_forum_topic_path(@forum)
-=link_to 'all forums', forums_path
-=link_to 'new forum', new_forum_path if admin?
+  =link_to 'all forums', forums_path
+  =link_to 'new forum', new_forum_path if admin?

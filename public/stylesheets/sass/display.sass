@@ -313,10 +313,23 @@ span.annotation
   min-height:       22px
 
 .links
+  margin:
+    top:                    1.5em
+    bottom:                 1.5em
   a
+    border:                 1px solid gray
+    -webkit-border-radius:  0.33em
+    -webkit-box-shadow:     0.33em 0.33em 0.33em #aaa
+    -moz-border-radius:     0.33em
+    background:             #eaeaea
+    padding:                1em
     margin:
-      left:             0.25em
-      right:            0.25em
+      left:                 0.25em
+      right:                0.25em
+    &:hover
+      -webkit-box-shadow:   0.1em 0.1em 0.1em #aaa
+      background:           #aaa
+      color:                white
 
 // products
 // NOTE: could potentially split this off into a separate CSS file
