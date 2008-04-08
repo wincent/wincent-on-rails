@@ -6,7 +6,8 @@
 %table[@issue]
   %tr
     %th Summary
-    %td=h @issue.summary
+    %td
+      %strong=h @issue.summary
   %tr
     %th Product
     %td=link_to @issue.product.name, product_path(@issue.product)
