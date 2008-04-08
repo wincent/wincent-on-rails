@@ -2,11 +2,12 @@ class User < ActiveRecord::Base
   MINIMUM_LOGIN_NAME_LENGTH = 3
   MINIMUM_PASSWORD_LENGTH   = 8
 
+  has_many                  :comments
   has_many                  :emails, :dependent => :destroy
   has_many                  :issues
-  has_many                  :comments
-  has_many                  :topics
+  has_many                  :monitorships, :dependent => :destroy
   has_many                  :resets, :dependent => :destroy
+  has_many                  :topics
 
   attr_reader               :passphrase
   attr_accessor             :passphrase_confirmation, :old_passphrase, :email, :resetting_passphrase
