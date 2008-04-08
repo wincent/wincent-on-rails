@@ -22,7 +22,8 @@ class Issue < ActiveRecord::Base
                     :extend     => Commentable,
                     :order      => 'comments.created_at',
                     :dependent  => :destroy
-  attr_accessible   :status, :description # and probably more to come
+  has_many          :monitorships, :as => :monitorable, :dependent => :destroy
+  attr_accessible   :summary, :status, :description # and probably more to come
   acts_as_taggable
 
   def status_string
