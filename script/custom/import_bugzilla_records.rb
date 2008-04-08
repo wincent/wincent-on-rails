@@ -65,7 +65,8 @@ BugzillaBug.find(:all, :order => 'bug_id').each do |bug|
   @issue = Issue.new :summary => bug.short_desc, :description => cleanup_text(comment.thetext)
   @issue.product = @product
   @issue.user = @reporter
-  @issue.public = !comment.isprivate # NOTE: thinking about making all issues private to begin with, seeing as some are sensitive
+  @issue.public = (comment.isprivate == 0) # NOTE: thinking about making all issues private to begin, seeing as some are sensitive
+  @issue.awaiting_moderation = false
   @issue.kind = Issue::Kind::FEATURE_REQUEST if bug.short_desc =~ /request/i # otherwise just defaults to BUG
   case bug.bug_status
   when 'CLOSED', 'RESOLVED'
@@ -81,7 +82,7 @@ BugzillaBug.find(:all, :order => 'bug_id').each do |bug|
     @comment = @issue.comments.build(:body => cleanup_text(comment.thetext))
     @comment.user = @user
     @comment.awaiting_moderation = false
-    @comment.public = !comment.isprivate
+    @comment.public = (comment.isprivate == 0)
     @comment.save!
     puts "saved comment by: #{@user.display_name}"
 
