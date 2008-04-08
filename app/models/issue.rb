@@ -11,6 +11,7 @@ class Issue < ActiveRecord::Base
                     :as         => :commentable,
                     :extend     => Commentable,
                     :order      => 'comments.created_at',
+                    :include    => :user,
                     :dependent  => :destroy
   has_many          :monitorships, :as => :monitorable, :dependent => :destroy
   attr_accessible   :summary, :status, :description # and probably more to come

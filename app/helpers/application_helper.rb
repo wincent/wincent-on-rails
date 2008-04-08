@@ -168,4 +168,13 @@ module ApplicationHelper
     end
   end
 
+  def timeinfo_for_comment comment
+    created = comment.created_at
+    updated = comment.updated_at
+    if created == updated
+      "posted #{created.distance_in_words}"
+    else
+      "posted #{created.distance_in_words}, edited #{updated.distance_in_words}"
+    end
+  end
 end

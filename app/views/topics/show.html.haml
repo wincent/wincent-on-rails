@@ -28,7 +28,7 @@
         =pluralizing_count(comment.user.utterances_count, 'post') if comment.user
         %br
         %span.when
-          =timeinfo_for_topic_comment comment
+          =timeinfo_for_comment comment
       %td=preserve comment.body.w
 %h2 Reply
 -if @topic.accepts_comments

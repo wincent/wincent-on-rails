@@ -1,0 +1,45 @@
+-# TODO: atom link
+-content_for :css do
+  =stylesheet_link_tag 'issues'
+-@page_title = "#{@issue.kind_string} \##{@issue.id.to_s}: #{@issue.summary}"
+%h1.major="#{@issue.kind_string} \##{@issue.id.to_s}"
+%table[@issue]
+  %tr
+    %th Summary
+    %td=h @issue.summary
+  %tr
+    %th Product
+    %td=link_to @issue.product.name, product_path(@issue.product)
+  %tr
+    %th When
+    %td=timeinfo @issue
+  %tr
+    %th Status
+    %td=@issue.status_string
+  %tr
+    %th Reporter
+    %td=link_to @issue.user.display_name, user_path(@issue.user)
+  %tr
+    %th Description
+    %td=preserve @issue.description.w
+%h2.major Comments
+%table.issue
+  -for comment in @issue.comments
+    %tr{ :class => "comment #{cycle('even', 'odd')}", :id => "comment_#{comment.id}" }
+      %th
+        =link_to_user comment.user
+        %br
+        =pluralizing_count(comment.user.utterances_count, 'post') if comment.user
+        %br
+        %span.when=timeinfo_for_comment comment
+      %td=preserve comment.body.w
+-#%h2 Reply
+-#  -if @topic.accepts_comments
+-#    =render :partial => 'comments/comment'
+-#  -else
+-#    %p This topic is now closed.
+.links
+  =link_to 'all issues', issues_path
+  =link_to "all #{@issue.product.name} issues", issues_path(:product => @issue.product.name)
+  =link_to "all #{@issue.status_string.downcase} issues", issues_path(:status => @issue.status_string)
+  =link_to "all #{@issue.kind_string.pluralize.downcase}", issues_path(:kind => @issue.kind_string)
