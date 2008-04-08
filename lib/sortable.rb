@@ -65,26 +65,25 @@ module ActionView
   module Helpers
     module SortableHelper
 
-      # Note that this is designed to play nicely with the paginator, preserving the "page" parameter if it is set.
+      # Note that this is designed to play nicely with the paginator and controllers which might set params,
+      # preserving the custom params in the query string if set
       def sortable_header_cell attribute_name, display_name = nil
-        attribute_name    = attribute_name.to_s
-        display_name      ||= attribute_name
-        css_class_options = {}
-        url               = url_for(:action => params[:action], :controller => params[:controller], :sort => attribute_name,
-          :page => params[:page])
-        tooltip           = { :title => "Click to sort by #{display_name}" }
+        attribute_name          = attribute_name.to_s
+        display_name            ||= attribute_name
+        css_class_options       = {}
+        url_options             = params.merge({ :sort => attribute_name, :order => 'asc' })
+        tooltip                 = { :title => "Click to sort by #{display_name}" }
         if @sort_by == attribute_name # boldface this attribute
-          tooltip         = { :title => 'Click to toggle sort order'}
+          tooltip               = { :title => 'Click to toggle sort order'}
           if @sort_descending
-            css_class_options = { :class => 'descending' }
+            css_class_options   = { :class => 'descending' }
           else
-            css_class_options = { :class => 'ascending' }
-            url = url_for(:action => params[:action], :controller => params[:controller], :sort => attribute_name,
-              :order => 'desc', :page => params[:page])
+            css_class_options   = { :class => 'ascending' }
+            url_options[:order] = 'desc'
           end
         end
         haml_tag :th, css_class_options do
-          puts link_to(display_name, url, tooltip)
+          puts link_to(display_name, url_for(url_options), tooltip)
         end
       end
     end # module SortableHelper
