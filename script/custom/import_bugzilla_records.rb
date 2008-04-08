@@ -96,7 +96,9 @@ BugzillaBug.find(:all, :order => 'bug_id').each do |bug|
   ccs = BugzillaComment.connection.execute "SELECT who FROM cc WHERE bug_id = #{bug.bug_id}"
   ccs.each do |u|
     @user = user_for_bugzilla_user BugzillaUser.find(u.first.to_i)
-    @issue # << TODO: do something; need a "monitorships" model, that could potentially be used later for forums etc
+    @monitorship = @issue.monitorships.build
+    @monitorship.user = @user
+    @monitorship.save!
     puts "adding CC: #{@user.display_name}"
   end
 
