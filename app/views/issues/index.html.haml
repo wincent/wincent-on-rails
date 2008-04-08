@@ -1,5 +1,6 @@
 %h1 Issues
 %h2 Recently modified
+.annotation=scope_info
 .pagination=@paginator.pagination_links if @paginator
 %table.main
   %tr
@@ -21,3 +22,4 @@
 .links
   =link_to 'new issue', new_issue_path
   =link_to 'all issues', issues_path
+-# TODO: search field

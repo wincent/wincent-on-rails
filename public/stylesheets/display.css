@@ -89,7 +89,7 @@ tr.odd { background: #f7f7f7; }
 
 tr.even { background: #eaeaea; }
 
-span.annotation { font-size: xx-small; font-weight: normal; color: #666; }
+.annotation { font-size: xx-small; font-weight: normal; color: #666; }
 
 .fieldWithErrors input { border: 4px solid #f9b8be; }
 
