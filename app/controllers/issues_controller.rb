@@ -1,5 +1,6 @@
 class IssuesController < ApplicationController
   before_filter     :find_product, :only => [:index]
+  before_filter     :find_issue, :only => [:show]
   acts_as_sortable  :by => [:kind, :id, :product_id, :summary, :status, :updated_at], :default => :updated_at, :descending => true
 
   def index
@@ -24,9 +25,18 @@ class IssuesController < ApplicationController
     @issues     = Issue.find :all, sort_options.merge({ :offset => @paginator.offset, :limit => @paginator.limit, :conditions => options })
   end
 
+  def show
+    render
+  end
+
 private
   def find_product
     @product = Product.find_by_name(params[:product]) if params[:product]
+  end
+
+  def find_issue
+    # TODO: access control
+    @issue = Issue.find params[:id]
   end
 
   def add_kind_scope_condition options
@@ -41,5 +51,9 @@ private
       key = params[:status].gsub(' ', '_').downcase.to_sym
       options[:status] = Issue::STATUS[key] if Issue::STATUS.key? key
     end
+  end
+
+  def record_not_found
+    super issues_path
   end
 end
