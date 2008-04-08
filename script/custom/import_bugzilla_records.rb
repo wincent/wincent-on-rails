@@ -50,7 +50,7 @@ end
 
 def cleanup_text text
   text = strip_tags text
-  text.blank? ? 'empty' : text
+  text.blank? ? nil : text
 end
 
 BugzillaProduct.find(:all).each do |product|
@@ -62,7 +62,8 @@ BugzillaBug.find(:all, :order => 'bug_id').each do |bug|
   comment = bug.bugzilla_comments.find :first, :order => 'bug_when'
   @creation = comment.bug_when
   @reporter = user_for_bugzilla_user comment.bugzilla_user
-  @issue = Issue.new :summary => bug.short_desc, :description => cleanup_text(comment.thetext)
+  @description = cleanup_text(comment.thetext) || 'empty'
+  @issue = Issue.new :summary => bug.short_desc, :description => @description
   @issue.product = @product
   @issue.user = @reporter
   @issue.public = (comment.isprivate == 0) # NOTE: thinking about making all issues private to begin, seeing as some are sensitive
@@ -79,7 +80,9 @@ BugzillaBug.find(:all, :order => 'bug_id').each do |bug|
 
   bug.bugzilla_comments.find(:all, :order => 'bug_when', :offset => 1).each do |comment|
     @user = user_for_bugzilla_user comment.bugzilla_user
-    @comment = @issue.comments.build(:body => cleanup_text(comment.thetext))
+    @body = cleanup_text(comment.thetext)
+    next if @body.nil?
+    @comment = @issue.comments.build(:body => @body)
     @comment.user = @user
     @comment.awaiting_moderation = false
     @comment.public = (comment.isprivate == 0)
