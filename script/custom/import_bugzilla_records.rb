@@ -49,6 +49,7 @@ def product_for_bugzilla_product product
 end
 
 def cleanup_text text
+  text = strip_tags text
   text.blank? ? 'empty' : text
 end
 
