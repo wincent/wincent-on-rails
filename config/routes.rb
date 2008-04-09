@@ -38,6 +38,7 @@ ActionController::Routing::Routes.draw do |map|
   map.connect   'misc/:action', :controller => 'misc'
 
   # named routes
+  map.dashboard 'dashboard', :controller => 'dashboard', :action => 'show'
   map.login     'login',  :controller => 'sessions',  :action => 'new'
   map.logout    'logout', :controller => 'sessions',  :action => 'destroy'
   map.support   'support', :controller => 'support'
