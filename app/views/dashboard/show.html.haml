@@ -1,2 +1,48 @@
-<h1>Dashboard#show</h1>
-<p>Find me in app/views/dashboard/show.html.erb</p>
+=page_title "#{current_user.display_name}'s dashboard"
+%h2 Recent issues
+-if @issues.empty?
+  %p None.
+-else
+  %table.main
+    %tr
+      %th Issue
+      %th Summary
+      %th When
+    -for issue in @issues
+      %tr{:class => "#{cycle 'odd', 'even'} issue", :id => "issue_#{issue.id}"}
+        %td=link_to "#{issue.kind_string} \##{issue.id}", issue_path(issue)
+        %td=h issue.summary
+        %td=timeinfo issue
+%h2 Recent forum topics
+-if @topics.empty?
+  %p None.
+-else
+  %table.main
+    %tr
+      %th Forum
+      %th Topic
+      %th When
+    -for topic in @topics
+      %tr{:class => "#{cycle 'odd', 'even'} topic", :id => "topic_#{topic.id}"}
+        %td=link_to topic.forum.name, forum_path(topic.forum)
+        %td=link_to h(topic.title), forum_topic_path(topic.forum, topic)
+        %td=timeinfo topic
+%h2 Recent comments
+-if @comments.empty?
+  %p None.
+-else
+  %table.main
+    %tr
+      %th Comment
+      %th Kind
+      %th On
+      %th When
+    -for comment in @comments
+      %tr{:class => "#{cycle 'odd', 'even'} comment", :id => "comment_#{comment.id}"}
+        %td=truncate(comment.body).w
+        %td=comment.commentable_type
+        -# BUG: N + 1 select problem here, and can't do eager loading on a polymorphic association
+        %td=link_to_commentable comment.commentable
+        %td=timeinfo comment
+.links
+  =link_to 'Public profile', user_path(current_user)

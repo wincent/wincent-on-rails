@@ -158,7 +158,7 @@ module ApplicationHelper
     when Article
       link_to commentable.title, wiki_path(commentable)
     when Issue
-      raise "not implemented yet"
+      link_to commentable.summary, issue_path(commentable)
     when Post
       link_to commentable.title, blog_path(commentable)
     when Topic
