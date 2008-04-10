@@ -2,8 +2,9 @@ class IssuesController < ApplicationController
   # TODO: before deployment uncomment this next line
   # some issues are sensitive and I want an opportunity to mark them as private before going live
   #before_filter     :require_admin
+  before_filter     :require_admin, :except => [:index, :show]
   before_filter     :find_product, :only => [:index]
-  before_filter     :find_issue, :only => [:show]
+  before_filter     :find_issue, :except => [:index]
   acts_as_sortable  :by => [:kind, :id, :product_id, :summary, :status, :updated_at], :default => :updated_at, :descending => true
 
   def index
@@ -24,6 +25,13 @@ class IssuesController < ApplicationController
 
   def show
     render
+  end
+
+  # AJAX method, admin only.
+  def update_status
+    respond_to do |format|
+      format.js { render :text => '' }
+    end
   end
 
 private

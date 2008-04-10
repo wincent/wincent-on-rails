@@ -4,36 +4,43 @@
 -@page_title = "#{@issue.kind_string} \##{@issue.id.to_s}: #{@issue.summary}"
 %h1.major="#{@issue.kind_string} \##{@issue.id.to_s}"
 -# TODO: simplistic (blind) previous/next links
-%table[@issue]
-  %tr
-    %th Summary
-    %td
-      %strong=h @issue.summary
-  %tr
-    %th Product
-    %td=link_to @issue.product.name, product_path(@issue.product)
-  %tr
-    %th When
-    %td=timeinfo @issue
-  %tr
-    %th Status
-    %td
-      -if admin?
-        -# TODO: once this is working move it up outside the table so that other fields can use it
-        -form_for @issue do |f|
-          =f.select :status, Issue::STATUS
-      -else
-        =@issue.status_string
-  %tr
-    %th Reporter
-    %td=link_to @issue.user.display_name, user_path(@issue.user)
-  %tr
-    %th Description
-    %td=preserve @issue.description.w
-  -if admin?
+-form_for @issue do |f|
+  %table[@issue]
+    -if admin?
+      %tr
+        %th Kind
+        %td kind pop-up menu goes here
     %tr
-      %th Public?
-      %td checkbox
+      %th Summary
+      %td
+        %strong=h @issue.summary
+    %tr
+      %th Product
+      %td
+        -if admin?
+          product pop-up goes here
+        -else
+          =link_to @issue.product.name, product_path(@issue.product)
+    %tr
+      %th When
+      %td=timeinfo @issue
+    %tr
+      %th Status
+      %td
+        -if admin?
+          =f.select :status, Issue::STATUS, {}, :onchange => remote_function(:update => :status, :url => { :action => :update_status, :id => @issue.id }, :with => "'status=' + $('issue_status').value" )
+        -else
+          =@issue.status_string
+    %tr
+      %th Reporter
+      %td=link_to @issue.user.display_name, user_path(@issue.user)
+    %tr
+      %th Description
+      %td=preserve @issue.description.w
+    -if admin?
+      %tr
+        %th Public?
+        %td checkbox
 %h2.major Comments
 %table.issue
   -for comment in @issue.comments
