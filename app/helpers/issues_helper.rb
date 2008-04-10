@@ -10,6 +10,6 @@ module IssuesHelper
     if params[:status]
       scopes << "status: #{h(params[:status])}"
     end
-    "Currently showing only #{scopes.join(', ')}" unless scopes.empty?
+    "Currently showing only issues with #{scopes.join(', ')}" unless scopes.empty?
   end
 end

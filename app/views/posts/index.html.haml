@@ -1,10 +1,12 @@
+-content_for :css do
+  =stylesheet_link_tag 'posts'
 %h1 Latest posts
 -atom_link
 -if @paginator
   .pagination=@paginator.pagination_links
 -for @post in @posts
   .post
-    %h2=link_to h(@post.title), blog_path(@post)
+    %h2.major=link_to h(@post.title), blog_path(@post)
     .when=timeinfo @post
     %p=excerpt_html
     .info

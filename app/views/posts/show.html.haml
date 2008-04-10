@@ -1,6 +1,7 @@
 -# TODO: atom feeds for individual posts
 .post
-  -page_title @post.title
+  -@page_title = @post.title
+  %h1.major=h @post.title
   .when=timeinfo @post
   .excerpt=excerpt_html
   .body=body_html

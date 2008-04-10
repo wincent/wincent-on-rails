@@ -1,8 +1,8 @@
 =search_page_title
 -if @taggables
-  %h2=taggables_search_summary
+  %h2.major=taggables_search_summary
   =render :partial => 'taggings'
-%h2 Search
+%h2.major Search
 -form_tag search_tags_path, :method => 'get' do
   %span.annotation Find items which feature <em>all</em> of the specified tags
   %br

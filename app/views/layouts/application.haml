@@ -25,6 +25,8 @@
         %li=link_to 'Support', support_path
         %li=link_to 'Blog', blog_index_path
         %li=link_to 'Wiki', wiki_index_path
+        -# not sure whether we'll leave this forums link in the navbar forever
+        %li=link_to 'Forums', forums_path
         -#%li=link_to 'About'
         %li.last
           =link_to_function 'Search', "$('search').toggle(); $('search_box').focus();", :href => search_tags_path
@@ -38,4 +40,5 @@
       -# on many pages this won't even be used, but there are some places where it is appropriate
       =yield :sidebar
     #footer
-      ==Copyright &copy; 1997-#{Time.new.year} #{mail_to('win@wincent.com', 'Wincent Colaiuta')}.
+      ==Copyright &copy; 1997-#{Time.new.year}
+      =mail_to 'win@wincent.com', 'Wincent Colaiuta', :title => 'Email me at win@wincent.com'

@@ -1,4 +1,6 @@
--page_title @article.title
+-@page_title = @article.title
+%h1.major=h @article.title
+.when=timeinfo @article
 -if @redirected_from
   -if admin?
     %p==(Redirected from #{link_to h(@redirected_from.title), edit_wiki_path(@redirected_from)})
@@ -7,8 +9,6 @@
 .article
   =body_html
 =render :partial => 'shared/tags', :locals => { :tags => @article.tags }
-.when
-  =timeinfo @article
 %p.links
   -if admin?
     =link_to 'edit', edit_wiki_path(@article)

@@ -1,6 +1,6 @@
 -atom_link
 %h1 Wiki articles
-%h2 Recently updated
+%h2.major Recently updated
 -if @paginator
   .pagination=@paginator.pagination_links
 %table
@@ -11,11 +11,11 @@
     %tr
       %td=link_to h(article.title), wiki_path(article)
       %td=timeinfo article
-%h2 Top tags in the wiki
+%h2.major Top tags in the wiki
 .cloud
   -for tag in @tags
     =scaled_tag tag, 'article'
-%h2 Tag search
+%h2.major Tag search
 -form_tag search_tags_path, :method => 'get' do
   %span.annotation Find items which feature <em>all</em> of the specified tags
   %br

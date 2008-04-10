@@ -6,8 +6,9 @@
 -#recent mailing list posts,
 -#and above all a link to the lost serial system etc
 -#and a contact form
-%h2 Issues
+%h2.major Issues
 %h3 Recently modified
+-# perhaps this should be in a partial
 .pagination=@paginator.pagination_links if @paginator
 %table.main
   %tr
@@ -20,8 +21,9 @@
     %tr{ :class => cycle('odd', 'even') }
       %td{:class => issue.kind_string.tableize}=link_to issue.kind_string.capitalize, issues_path(:kind => issue.kind_string.tableize)
       %td=link_to issue.id.to_s, issue_path(issue)
-      -#may need to write a helper for this if we want to pass through the sorting and pagination parameters as well:
       %td=link_to(issue.product.name, issues_path(:product => issue.product.name)) if issue.product
       %td{:title => h(issue.summary)}=h(truncate(issue.summary, 60))
       %td=timeinfo issue
 .pagination=@paginator.pagination_links if @paginator
+.links
+  =link_to 'new issue', new_issue_path

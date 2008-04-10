@@ -1,4 +1,7 @@
 class IssuesController < ApplicationController
+  # TODO: before deployment uncomment this next line
+  # some issues are sensitive and I want an opportunity to mark them as private before going live
+  #before_filter     :require_admin
   before_filter     :find_product, :only => [:index]
   before_filter     :find_issue, :only => [:show]
   acts_as_sortable  :by => [:kind, :id, :product_id, :summary, :status, :updated_at], :default => :updated_at, :descending => true

@@ -2,6 +2,12 @@ body { background: #fff; margin: 0pt; padding: 0pt; font-family: "Lucida Grande"
 
 h1, h2, h3, h4, h5, h6 { color: #333333; }
 
+h1.major { border-bottom: 2px solid #ccc; }
+h1.major a:hover { text-decoration: none; color: #ccc; }
+
+h2.major { border-bottom: 2px solid #ccc; }
+h2.major a:hover { text-decoration: none; color: #ccc; }
+
 p, li { color: #343434; }
 
 pre { color: #999; background-color: #f9f9f9; border: 1px dashed #2f6fab; padding: 1em; font-size: 125%; line-height: 1.1em; overflow: auto; }
