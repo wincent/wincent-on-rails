@@ -4,17 +4,18 @@ class Issue < ActiveRecord::Base
   KIND        = Hash.new(0).merge!({ :bug => 0, :feature_request => 1, :support_ticket => 2, :feedback => 3 }).freeze
   KIND_MAP    = KIND.invert.freeze
 
-  belongs_to        :user
-  belongs_to        :last_commenter, :class_name => 'User'
-  belongs_to        :product
-  has_many          :comments,
-                    :as         => :commentable,
-                    :extend     => Commentable,
-                    :order      => 'comments.created_at',
-                    :include    => :user,
-                    :dependent  => :destroy
-  has_many          :monitorships, :as => :monitorable, :dependent => :destroy
-  attr_accessible   :summary, :status, :description # and probably more to come
+  belongs_to              :user
+  belongs_to              :last_commenter, :class_name => 'User'
+  belongs_to              :product
+  has_many                :comments,
+                          :as         => :commentable,
+                          :extend     => Commentable,
+                          :order      => 'comments.created_at',
+                          :include    => :user,
+                          :dependent  => :destroy
+  has_many                :monitorships, :as => :monitorable, :dependent => :destroy
+  validates_inclusion_of  :status, :in => STATUS_MAP.keys, :message => 'not a valid status code'
+  attr_accessible         :summary, :status, :description # and probably more to come
   acts_as_taggable
 
   def status_string
