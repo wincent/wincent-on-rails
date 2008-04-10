@@ -31,7 +31,8 @@ class IssuesController < ApplicationController
   def update_status
     respond_to do |format|
       format.js {
-        render :text => '', :status => (@issue.update_status(params[:status]) ? 200 : 422)
+        @issue.status = params[:status]
+        render :text => '', :status => (@issue.save ? 200 : 422)
       }
     end
   end
