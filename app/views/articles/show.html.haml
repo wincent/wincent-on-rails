@@ -9,7 +9,7 @@
 .article
   =body_html
 =render :partial => 'shared/tags', :locals => { :tags => @article.tags }
-%p.links
+.links
   -if admin?
     =link_to 'edit', edit_wiki_path(@article)
   =link_to 'index', wiki_index_path
