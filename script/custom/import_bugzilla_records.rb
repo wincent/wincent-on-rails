@@ -66,7 +66,7 @@ BugzillaBug.find(:all, :order => 'bug_id').each do |bug|
   @issue = Issue.new :summary => bug.short_desc, :description => @description
   @issue.product = @product
   @issue.user = @reporter
-  @issue.public = (comment.isprivate == 0) # NOTE: thinking about making all issues private to begin, seeing as some are sensitive
+  @issue.public = (comment.isprivate == 0)
   @issue.awaiting_moderation = false
   @issue.kind = Issue::KIND[:feature_request] if bug.short_desc =~ /request/i # otherwise just defaults to BUG
   case bug.bug_status
@@ -78,7 +78,8 @@ BugzillaBug.find(:all, :order => 'bug_id').each do |bug|
   @issue.save!
   puts "created issue \##{@issue.id}: #{@issue.summary}"
 
-  bug.bugzilla_comments.find(:all, :order => 'bug_when', :offset => 1).each do |comment|
+  # without the :limit clause, :offset is ignored
+  bug.bugzilla_comments.find(:all, :order => 'bug_when', :offset => 1, :limit => 1_000_000).each do |comment|
     @user = user_for_bugzilla_user comment.bugzilla_user
     @body = cleanup_text(comment.thetext)
     next if @body.nil?
