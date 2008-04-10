@@ -28,7 +28,8 @@
       %th Status
       %td
         -if admin?
-          =f.select :status, Issue::STATUS, {}, :onchange => remote_function(:update => :status, :url => { :action => :update_status, :id => @issue.id }, :with => "'status=' + $('issue_status').value" )
+          =f.select :status, Issue::STATUS, {}, :onchange => remote_function(:update => :status, :url => { :action => :update_status, :id => @issue.id }, :with => "'status=' + $('issue_status').value", :before => "Element.show('status_spinner')", :complete => "Element.hide('status_spinner')", :failure => "alert('HTTP Error ' + request.status)")
+          =image_tag 'spinner.gif', :id => 'status_spinner', :style => 'display:none;'
         -else
           =@issue.status_string
     %tr
