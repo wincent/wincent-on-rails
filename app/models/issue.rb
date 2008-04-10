@@ -26,6 +26,19 @@ class Issue < ActiveRecord::Base
     KIND_MAP[self.kind].to_s.humanize
   end
 
+  # When updating issue status from untrusted form parameters using the "update_attribute" method
+  # validations are not triggered. We could do sanity checks in the controller but it's slightly
+  # cleaner if we do it in the model instead. Here we explicitly perform validation before calling
+  # "update_attribute", returning true on success and false on failure; the controller is then
+  # free to return an appropriate status code (200 for success, 422 for failure).
+  def update_status string
+    new_status  = string.to_i
+    self.status = new_status
+    return false if !errors[:status].nil?
+    update_attribute :status, new_status
+    true
+  end
+
   def self.update_timestamps_for_comment_changes?
     true
   end
