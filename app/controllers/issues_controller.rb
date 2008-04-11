@@ -1,8 +1,5 @@
 class IssuesController < ApplicationController
-  # TODO: before deployment uncomment this next line
-  # some issues are sensitive and I want an opportunity to mark them as private before going live
-  before_filter     :require_admin
-  #before_filter     :require_admin, :except => [:create, :index, :new, :show]
+  before_filter     :require_admin, :except => [:create, :index, :new, :show]
   before_filter     :find_product, :only => [:index]
   before_filter     :find_issue, :except => [:create, :index, :new]
   before_filter     :find_prev_next, :only => [:show]
