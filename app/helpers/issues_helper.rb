@@ -41,4 +41,12 @@ module IssuesHelper
       :complete => "Element.hide('#{attribute.to_s}_spinner')",
       :failure  => "alert('HTTP Error ' + request.status)"
   end
+
+  def link_to_prev_issue
+    link_to '&laquo; previous', issue_path(@prev), :title => "#{@prev.kind_string} \##{@prev.id}: #{@prev.summary}"
+  end
+
+  def link_to_next_issue
+    link_to 'next &raquo;', issue_path(@next), :title => "#{@next.kind_string} \##{@next.id}: #{@next.summary}"
+  end
 end

@@ -3,7 +3,9 @@
   =stylesheet_link_tag 'issues'
 -@page_title = "#{@issue.kind_string} \##{@issue.id.to_s}: #{@issue.summary}"
 %h1.major="#{@issue.kind_string} \##{@issue.id.to_s}"
--# TODO: simplistic (blind) previous/next links
+.prev_next
+  =link_to_prev_issue if @prev
+  =link_to_next_issue if @next
 -form_for @issue do |form|
   %table[@issue]
     -if admin?
