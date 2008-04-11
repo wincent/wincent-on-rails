@@ -24,6 +24,11 @@ class IssuesController < ApplicationController
   end
 
   def show
+    if admin?
+      @comments = @issue.comments.find :all, :conditions => { :spam => false }
+    else
+      @comments = @issue.visible_comments # public, not awaiting moderation, not spam
+    end
     @comment = @issue.comments.build
   end
 

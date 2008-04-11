@@ -47,8 +47,7 @@
         %td=ajax_check_box form, :public
 %h2.major Comments
 %table.issue
-  -for comment in @issue.comments # BUG: visible comments only, here
-    -next if comment.new_record?
+  -for comment in @comments
     %tr{ :class => "comment #{cycle('even', 'odd')}", :id => "comment_#{comment.id}" }
       %th
         =link_to_user comment.user
