@@ -45,6 +45,12 @@ class IssuesController < ApplicationController
     handle_ajax_request
   end
 
+  # AJAX method, admin only.
+  def update_public
+    @issue.public = params[:public]
+    handle_ajax_request
+  end
+
 private
 
   # If this is an AJAX request tries to save the model and returns a 200 status code on success, 422 on failure.

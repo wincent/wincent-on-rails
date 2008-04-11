@@ -44,7 +44,7 @@
     -if admin?
       %tr
         %th Public?
-        %td checkbox
+        %td=ajax_check_box form, :public
 %h2.major Comments
 %table.issue
   -for comment in @issue.comments
