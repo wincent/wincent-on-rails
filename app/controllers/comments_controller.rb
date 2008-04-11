@@ -39,7 +39,7 @@ class CommentsController < ApplicationController
         parent_instance = Post.find_by_permalink(parent_id) || (raise ActiveRecord::RecordNotFound)
         parent_path = blog_path parent_instance
       when 'wiki'
-        parent_instance = Article.find_by_title(parent.id) || (raise ActiveRecord::RecordNotFound)
+        parent_instance = Article.find_by_title(parent_id) || (raise ActiveRecord::RecordNotFound)
         parent_path = wiki_path parent_instance
       else
         raise
