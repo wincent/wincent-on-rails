@@ -116,21 +116,21 @@ private
     @next   = Issue.find :first, :conditions => default_access_options + " AND id > #{@issue.id}", :order => 'id ASC'
   end
 
-  def add_kind_scope_condition
+  def add_kind_scope_condition options
     if params[:kind]
       key = params[:kind].gsub(' ', '_').downcase.to_sym
       options << " AND kind = #{Issue::KIND[key]}" if Issue::KIND.key? key
     end
   end
 
-  def add_status_scope_condition
+  def add_status_scope_condition options
     if params[:status]
       key = params[:status].gsub(' ', '_').downcase.to_sym
       options << " AND status = #{Issue::STATUS[key]}" if Issue::STATUS.key? key
     end
   end
 
-  def add_product_scope_condition
+  def add_product_scope_condition options
     options << " AND product_id = #{@product.id}" if @product
   end
 
