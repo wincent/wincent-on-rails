@@ -14,7 +14,8 @@ class Issue < ActiveRecord::Base
                           :include    => :user,
                           :dependent  => :destroy
   has_many                :monitorships, :as => :monitorable, :dependent => :destroy
-  validates_inclusion_of  :status, :in => STATUS_MAP.keys, :message => 'not a valid status code'
+  validates_inclusion_of  :kind,    :in => KIND_MAP.keys,   :message => 'not a valid kind code'
+  validates_inclusion_of  :status,  :in => STATUS_MAP.keys, :message => 'not a valid status code'
   attr_accessible         :summary, :description # and probably more to come
   acts_as_taggable
 
