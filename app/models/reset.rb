@@ -21,9 +21,10 @@ class Reset < ActiveRecord::Base
     Digest::SHA1.hexdigest(Time.now.to_s + rand.to_s + SECRET_SALT)
   end
 
-  def before_save
+  def before_create
     self.secret = Reset.secret if self.secret.blank?
     self.cutoff = 3.days.from_now if self.cutoff.nil?
+    true # don't accidentally abort the save
   end
 
   def to_param
