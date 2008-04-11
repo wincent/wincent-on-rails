@@ -16,8 +16,8 @@ module IssuesHelper
     Product.find(:all).collect { |product| [product.name, product.id] }
   end
 
-  def ajax_select form, attribute, options
-    popup   = form.select attribute, options, {}, :onchange => js_for_attribute(attribute, :value)
+  def ajax_select form, attribute, options, extra_options = {}
+    popup   = form.select attribute, options, extra_options, :onchange => js_for_attribute(attribute, :value)
     spinner = spinner_for_attribute attribute
     "#{popup}&nbsp;#{spinner}"
   end

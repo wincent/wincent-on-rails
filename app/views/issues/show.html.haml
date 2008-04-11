@@ -11,7 +11,7 @@
         %th Kind
         %td
           -if admin?
-            =ajax_select form, :kind, underscores_to_spaces(Issue::KIND)
+            =ajax_select form, :kind, underscores_to_spaces(Issue::KIND).sort
           -else
             @issue.kind_string
     %tr
@@ -60,6 +60,6 @@
 =render :partial => 'comments/comment'
 .links
   =link_to 'all issues', issues_path
-  =link_to "all #{@issue.product.name} issues", issues_path(:product => @issue.product.name)
+  =link_to "all #{@issue.product.name} issues", issues_path(:product => @issue.product.name) if @issue.product
   =link_to "all #{@issue.status_string.downcase} issues", issues_path(:status => @issue.status_string)
   =link_to "all #{@issue.kind_string.pluralize.downcase}", issues_path(:kind => @issue.kind_string)

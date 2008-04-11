@@ -2,10 +2,33 @@ class IssuesController < ApplicationController
   # TODO: before deployment uncomment this next line
   # some issues are sensitive and I want an opportunity to mark them as private before going live
   #before_filter     :require_admin
-  before_filter     :require_admin, :except => [:index, :show]
+  before_filter     :require_admin, :except => [:create, :index, :new, :show]
   before_filter     :find_product, :only => [:index]
-  before_filter     :find_issue, :except => [:index]
+  before_filter     :find_issue, :except => [:create, :index, :new]
   acts_as_sortable  :by => [:kind, :id, :product_id, :summary, :status, :updated_at], :default => :updated_at, :descending => true
+
+  def new
+    @issue = Issue.new
+  end
+
+  def create
+    @issue                      = Issue.new params[:issue]
+    @issue.user                 = current_user
+    @issue.awaiting_moderation  = !(admin? or logged_in_and_verified?)
+    if @issue.save
+      if logged_in_and_verified?
+        flash[:notice] = 'Successfully created new issue.'
+        redirect_to issue_path(@issue)
+      else
+        # TODO: admin interface for inspecting/moderating
+        flash[:notice] = 'Successfully submitted issue (awaiting moderation).'
+        redirect_to issues_path
+      end
+    else
+      flash[:error] = 'Failed to create new issue.'
+      render :action => 'new'
+    end
+  end
 
   def index
     options = default_access_options
