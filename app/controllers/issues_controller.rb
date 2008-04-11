@@ -57,7 +57,11 @@ class IssuesController < ApplicationController
 
   # AJAX method, admin only.
   def update_product_id
-    @issue.product = Product.find(params[:product_id])
+    if params[:product_id] == '' # special case: user selected the blank (no product) from the pop-up
+      @issue.product = nil
+    else
+      @issue.product = Product.find(params[:product_id])
+    end
     handle_ajax_request
   end
 
