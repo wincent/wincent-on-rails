@@ -5,6 +5,7 @@ class IssuesController < ApplicationController
   #before_filter     :require_admin, :except => [:create, :index, :new, :show]
   before_filter     :find_product, :only => [:index]
   before_filter     :find_issue, :except => [:create, :index, :new]
+  before_filter     :find_prev_next, :only => [:show]
   acts_as_sortable  :by => [:kind, :id, :product_id, :summary, :status, :updated_at], :default => :updated_at, :descending => true
 
   def new
@@ -106,8 +107,11 @@ private
   end
 
   def find_issue
-    # 3 queries here, although could try using UNION to combine them into one (with the latter two as subqueries)
     @issue  = Issue.find params[:id], :conditions => default_access_options
+  end
+
+  def find_prev_next
+    # 2 additonal queries here, although could try using UNION to combine them into one
     @prev   = Issue.find :first, :conditions => default_access_options + " AND id < #{@issue.id}", :order => 'id DESC'
     @next   = Issue.find :first, :conditions => default_access_options + " AND id > #{@issue.id}", :order => 'id ASC'
   end
