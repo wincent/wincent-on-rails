@@ -20,6 +20,8 @@ module IssuesHelper
       :before   => "Element.show('#{attribute.to_s}_spinner')",
       :complete => "Element.hide('#{attribute.to_s}_spinner')",
       :failure  => "alert('HTTP Error ' + request.status)"
-    form.select attribute, options, {}, :onchange => js
+    popup   = form.select attribute, options, {}, :onchange => js
+    spinner = image_tag 'spinner.gif', :id => "#{attribute.to_s}_spinner", :style => 'display:none;'
+    "#{popup}&nbsp;#{spinner}"
   end
 end
