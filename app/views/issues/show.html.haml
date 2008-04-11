@@ -4,12 +4,17 @@
 -@page_title = "#{@issue.kind_string} \##{@issue.id.to_s}: #{@issue.summary}"
 %h1.major="#{@issue.kind_string} \##{@issue.id.to_s}"
 -# TODO: simplistic (blind) previous/next links
--form_for @issue do |f|
+-form_for @issue do |form|
   %table[@issue]
     -if admin?
       %tr
         %th Kind
-        %td kind pop-up menu goes here
+        %td
+          -if admin?
+            =ajax_select form, :kind, underscores_to_spaces(Issue::KIND)
+            =image_tag 'spinner.gif', :id => 'kind_spinner', :style => 'display:none;'
+          -else
+            @issue.kind_string
     %tr
       %th Summary
       %td
@@ -28,7 +33,7 @@
       %th Status
       %td
         -if admin?
-          =ajax_select f, :status, Issue::STATUS
+          =ajax_select form, :status, Issue::STATUS
           =image_tag 'spinner.gif', :id => 'status_spinner', :style => 'display:none;'
         -else
           =@issue.status_string

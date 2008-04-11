@@ -7,6 +7,11 @@ module IssuesHelper
     "Currently showing only issues with #{scopes.join(', ')}" unless scopes.empty?
   end
 
+  # Convert key names from "feature_request" etc to "feature request"
+  def underscores_to_spaces options
+    options.collect { |k,v| [k.to_s.gsub('_', ' '), v] }
+  end
+
   def ajax_select form, attribute, options
     js = remote_function \
       :update   => attribute.to_sym,
