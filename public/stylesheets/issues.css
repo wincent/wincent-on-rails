@@ -6,3 +6,5 @@ table.issue { width: 100%; }
 .issue .odd th + td { border: 1px solid #ccc; background: #f7f7f7; }
 
 .issue .even th + td { border: 1px solid #ccc; background: #eaeaea; }
+
+th.private { background: #c3e3b5; }

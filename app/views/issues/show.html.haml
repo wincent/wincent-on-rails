@@ -49,7 +49,7 @@
 %table.issue
   -for comment in @comments
     %tr{ :class => "comment #{cycle('even', 'odd')}", :id => "comment_#{comment.id}" }
-      %th
+      %th{ :class => comment.public? ? nil : 'private' }
         =link_to_user comment.user
         %br
         =pluralizing_count(comment.user.utterances_count, 'post') if comment.user
