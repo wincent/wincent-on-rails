@@ -31,12 +31,11 @@ class IssuesController < ApplicationController
   end
 
   def index
+    # set up options and add possible params that can be used to limit the scope of the search
     options = default_access_options
-
-    # possible params that can be used to limit the scope of the search
     add_kind_scope_condition options
     add_status_scope_condition options
-    options[:product_id]  = @product if @product
+    add_product_scope_condition options
 
     @paginator  = Paginator.new params, Issue.count(:conditions => options), issues_path
 
@@ -94,11 +93,11 @@ private
 
   def default_access_options
     if admin?
-      { :awaiting_moderation => false, :spam => false }
+      'awaiting_moderation = FALSE AND spam = FALSE'
     elsif logged_in?
-      ['awaiting_moderation = FALSE AND spam = FALSE AND (public = TRUE OR user_id = ?)', current_user]
+      "awaiting_moderation = FALSE AND spam = FALSE AND (public = TRUE OR user_id = #{current_user.id})"
     else
-      { :awaiting_moderation => false, :spam => false, :public => true }
+      'awaiting_moderation = FALSE AND spam = FALSE AND public = TRUE'
     end
   end
 
@@ -107,23 +106,28 @@ private
   end
 
   def find_issue
-    # TODO: find 3 issues here instead of 1 (for @prev and @next links)
-    # easy to find id + 1 and id - 1, not so easy to incorporate the conditions as well (ie. skip over inaccessible issues)
-    @issue = Issue.find params[:id], :conditions => default_access_options
+    # 3 queries here, although could try using UNION to combine them into one (with the latter two as subqueries)
+    @issue  = Issue.find params[:id], :conditions => default_access_options
+    @prev   = Issue.find :first, :conditions => default_access_options + " AND id < #{@issue.id}", :order => 'id DESC'
+    @next   = Issue.find :first, :conditions => default_access_options + " AND id > #{@issue.id}", :order => 'id ASC'
   end
 
-  def add_kind_scope_condition options
+  def add_kind_scope_condition
     if params[:kind]
       key = params[:kind].gsub(' ', '_').downcase.to_sym
-      options[:kind] = Issue::KIND[key] if Issue::KIND.key? key
+      options << " AND kind = #{Issue::KIND[key]}" if Issue::KIND.key? key
     end
   end
 
-  def add_status_scope_condition options
+  def add_status_scope_condition
     if params[:status]
       key = params[:status].gsub(' ', '_').downcase.to_sym
-      options[:status] = Issue::STATUS[key] if Issue::STATUS.key? key
+      options << " AND status = #{Issue::STATUS[key]}" if Issue::STATUS.key? key
     end
+  end
+
+  def add_product_scope_condition
+    options << " AND product_id = #{@product.id}" if @product
   end
 
   def record_not_found
