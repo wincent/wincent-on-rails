@@ -47,7 +47,8 @@
         %td=ajax_check_box form, :public
 %h2.major Comments
 %table.issue
-  -for comment in @issue.comments
+  -for comment in @issue.comments # BUG: visible comments only, here
+    -next if comment.new_record?
     %tr{ :class => "comment #{cycle('even', 'odd')}", :id => "comment_#{comment.id}" }
       %th
         =link_to_user comment.user
@@ -56,11 +57,8 @@
         %br
         %span.when=timeinfo_for_comment comment
       %td=preserve comment.body.w
--#%h2 Reply
--#  -if @topic.accepts_comments
--#    =render :partial => 'comments/comment'
--#  -else
--#    %p This topic is now closed.
+%h2.major Add a comment
+=render :partial => 'comments/comment'
 .links
   =link_to 'all issues', issues_path
   =link_to "all #{@issue.product.name} issues", issues_path(:product => @issue.product.name)

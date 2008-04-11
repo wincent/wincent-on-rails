@@ -24,7 +24,7 @@ class IssuesController < ApplicationController
   end
 
   def show
-    render
+    @comment = @issue.comments.build
   end
 
   # AJAX method, admin only.

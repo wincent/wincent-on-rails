@@ -41,6 +41,9 @@ class CommentsController < ApplicationController
       when 'wiki'
         parent_instance = Article.find_by_title(parent_id) || (raise ActiveRecord::RecordNotFound)
         parent_path = wiki_path parent_instance
+      when 'issues'
+        parent_instance = Issue.find(parent_id)
+        parent_path = issue_path parent_instance
       else
         raise
       end

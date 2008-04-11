@@ -138,14 +138,20 @@ module ApplicationHelper
   # but given that the comment form is a partial, the only way it can find this method is if it is here.
   def polymorphic_comments_path comment
     # the case statement is a temporary hack until Rails 2.1 comes out
+    # we can't do this dynamically for now because of irregularities in the route names
+    # ie. articles have wiki paths instead of article paths
+    # in 2.1 should be able to make them have article paths
     class_str = comment.commentable.class.to_s
     case class_str
-    when 'Post'
-      post = comment.commentable
-      blog_comment_path post, comment
     when 'Article'
       article = comment.commentable
       wiki_comment_path article, comment
+    when 'Issue'
+      issue = comment.commentable
+      issue_comment_path issue, comment
+    when 'Post'
+      post = comment.commentable
+      blog_comment_path post, comment
     when 'Topic'
       topic = comment.commentable
       forum = topic.forum
