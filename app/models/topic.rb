@@ -28,7 +28,7 @@ class Topic < ActiveRecord::Base
   end
 
   def visible_comments
-    # can't use the Commentable association mixin methods here becuse we need to specify an :include clause
+    # can't use the Commentable association mixin methods here because we need to specify an :include clause
     conditions = { :public => true, :awaiting_moderation => false, :spam => false, :commentable_id => self.id,
       :commentable_type => 'Topic' }
     Comment.find :all, :conditions => conditions, :include => 'user', :order => 'comments.created_at'
