@@ -32,7 +32,7 @@ class IssuesController < ApplicationController
     respond_to do |format|
       format.js {
         @issue.kind = params[:kind]
-        render :text => '', :status => (@issue.save ? 200 : 422)
+        save_and_render_ajax_response
       }
     end
   end
@@ -42,12 +42,16 @@ class IssuesController < ApplicationController
     respond_to do |format|
       format.js {
         @issue.status = params[:status]
-        render :text => '', :status => (@issue.save ? 200 : 422)
+        save_and_render_ajax_response
       }
     end
   end
 
 private
+  def save_and_render_ajax_response
+    render :text => '', :status => (@issue.save ? 200 : 422)
+  end
+
   def default_access_options
     if admin?
       { :awaiting_moderation => false, :spam => false }
