@@ -28,6 +28,16 @@ class IssuesController < ApplicationController
   end
 
   # AJAX method, admin only.
+  def update_kind
+    respond_to do |format|
+      format.js {
+        @issue.kind = params[:kind]
+        render :text => '', :status => (@issue.save ? 200 : 422)
+      }
+    end
+  end
+
+  # AJAX method, admin only.
   def update_status
     respond_to do |format|
       format.js {
