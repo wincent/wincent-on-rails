@@ -28,28 +28,30 @@ class IssuesController < ApplicationController
   end
 
   # AJAX method, admin only.
+  def update_product_id
+    @issue.product = Product.find(params[:product_id])
+    handle_ajax_request
+  end
+
+  # AJAX method, admin only.
   def update_kind
-    respond_to do |format|
-      format.js {
-        @issue.kind = params[:kind]
-        save_and_render_ajax_response
-      }
-    end
+    @issue.kind = params[:kind]
+    handle_ajax_request
   end
 
   # AJAX method, admin only.
   def update_status
-    respond_to do |format|
-      format.js {
-        @issue.status = params[:status]
-        save_and_render_ajax_response
-      }
-    end
+    @issue.status = params[:status]
+    handle_ajax_request
   end
 
 private
-  def save_and_render_ajax_response
-    render :text => '', :status => (@issue.save ? 200 : 422)
+
+  # If this is an AJAX request tries to save the model and returns a 200 status code on success, 422 on failure.
+  def handle_ajax_request
+    respond_to do |format|
+      format.js { render :text => '', :status => (@issue.save ? 200 : 422) }
+    end
   end
 
   def default_access_options

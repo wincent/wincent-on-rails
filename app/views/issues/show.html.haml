@@ -22,7 +22,7 @@
       %th Product
       %td
         -if admin?
-          =ajax_select form, :product, product_options
+          =ajax_select form, :product_id, product_options
         -else
           =link_to @issue.product.name, product_path(@issue.product)
     %tr
