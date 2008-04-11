@@ -12,6 +12,10 @@ module IssuesHelper
     options.collect { |k,v| [k.to_s.gsub('_', ' '), v] }
   end
 
+  def product_options
+    Product.find(:all).collect { |product| [product.name, product.id] }
+  end
+
   def ajax_select form, attribute, options
     js = remote_function \
       :update   => attribute.to_sym,

@@ -22,7 +22,7 @@
       %th Product
       %td
         -if admin?
-          product pop-up goes here
+          =ajax_select form, :product, product_options
         -else
           =link_to @issue.product.name, product_path(@issue.product)
     %tr
