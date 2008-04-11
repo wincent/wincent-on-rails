@@ -2,6 +2,15 @@ require 'digest/sha1'
 
 include ActionView::Helpers::SanitizeHelper
 
+# as this is just a once-off import, it is easier to just hard-code the "private" bugs than create ActiveRecord wrappers
+# around Bugzilla's complicated and highly normalized access control system
+# bug numbers obtained using:
+#   SELECT * FROM bug_group_map WHERE group_id = (SELECT group_id FROM groups WHERE name = 'inhouse');
+PRIVATE_BUGS = [
+  144, 145, 146, 147, 148, 149, 151, 152, 153, 156, 157, 180, 197, 198, 202, 203, 218, 232, 246, 273, 377, 439, 446,
+  447, 448, 451, 462, 463, 472, 473, 474, 476, 477, 478, 481, 489, 494, 496, 503, 506, 523, 533, 536, 539, 553
+]
+
 def user_for_bugzilla_user user
   User.find :first, :include => :emails, :conditions => ['emails.address = ?', user.login_name]
 end
@@ -66,7 +75,6 @@ BugzillaBug.find(:all, :order => 'bug_id').each do |bug|
   @issue = Issue.new :summary => bug.short_desc, :description => @description
   @issue.product = @product
   @issue.user = @reporter
-  @issue.public = (comment.isprivate == 0)
   @issue.awaiting_moderation = false
   @issue.kind = Issue::KIND[:feature_request] if bug.short_desc =~ /request/i # otherwise just defaults to BUG
   case bug.bug_status
@@ -76,6 +84,10 @@ BugzillaBug.find(:all, :order => 'bug_id').each do |bug|
     @issue.status = Issue::STATUS[:open]
   end
   @issue.save!
+  if PRIVATE_BUGS.include? bug.bug_id
+    # we can't set this _before_ saving for the first time because our before_create filter will override us
+    @issue.update_attribute :public, false
+  end
   puts "created issue \##{@issue.id}: #{@issue.summary}"
 
   # without the :limit clause, :offset is ignored
