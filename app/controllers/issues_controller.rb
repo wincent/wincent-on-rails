@@ -107,6 +107,8 @@ private
   end
 
   def find_issue
+    # TODO: find 3 issues here instead of 1 (for @prev and @next links)
+    # easy to find id + 1 and id - 1, not so easy to incorporate the conditions as well (ie. skip over inaccessible issues)
     @issue = Issue.find params[:id], :conditions => default_access_options
   end
 
