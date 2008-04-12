@@ -19,10 +19,10 @@
     -sortable_header_cell :updated_at, 'When'
   -for issue in @issues
     %tr{ :class => cycle('odd', 'even') }
-      %td{:class => issue.kind_string.tableize}=link_to issue.kind_string.capitalize, issues_path(:kind => issue.kind_string.tableize)
-      %td=link_to issue.id.to_s, issue_path(issue)
-      %td=link_to(issue.product.name, issues_path(:product => issue.product.name)) if issue.product
-      %td{:title => h(issue.summary)}=h(truncate(issue.summary, 60))
+      %td=link_to issue.kind_string, issues_path(:kind => issue.kind_string.capitalize), :title => "show all #{issue.kind_string.pluralize}"
+      %td=issue.id.to_s
+      %td=link_to(issue.product.name, issues_path(:product => issue.product.name), :title => "show all issues for #{issue.product.name}") if issue.product
+      %td=link_to h(truncate(issue.summary, 60)), issue_path(issue), :title => h(issue.summary)
       %td=timeinfo issue
 .pagination=@paginator.pagination_links if @paginator
 .links
