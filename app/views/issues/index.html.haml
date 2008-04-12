@@ -12,7 +12,7 @@
     -sortable_header_cell :updated_at, 'When'
   -for issue in @issues
     %tr{ :class => cycle('odd', 'even') }
-      %td=link_to issue.kind_string, issues_path(:kind => issue.kind_string), :title => "show all #{issue.kind_string.pluralize}"
+      %td=link_to issue.kind_string, issues_path(:kind => issue.kind_string.capitalize), :title => "show all #{issue.kind_string.pluralize}"
       %td=issue.id.to_s
       %td=link_to(issue.product.name, issues_path(:product => issue.product.name), :title => "show all issus for #{issue.product.name}") if issue.product
       %td=link_to h(truncate(issue.summary, 60)), issue_path(issue), :title => h(issue.summary)
