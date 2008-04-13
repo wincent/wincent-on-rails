@@ -1,4 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
+
+  # resources
   map.resources :comments
   map.resources :confirm, :controller => 'confirmations'
   map.resources :issues, :has_many => [ :comments ]
@@ -36,6 +38,7 @@ ActionController::Routing::Routes.draw do |map|
 
   # regular routes
   map.connect   'misc/:action', :controller => 'misc'
+  map.connect   'search/:action', :controller => 'search'
 
   # named routes
   map.dashboard 'dashboard', :controller => 'dashboard', :action => 'show'
@@ -56,7 +59,8 @@ ActionController::Routing::Routes.draw do |map|
   map.root :controller => 'posts' # temporary only
 
   # the default routes, at lowest priority, needed for AJAX in-place editing
-  # the alternative is to specify explicit ":member" parameters above
+  # the alternative is to specify explicit ":member" or ":collection" parameters above,
+  # which won't work as soon as you start nesting resources
   map.connect ':controller/:action/:id'
   map.connect ':controller/:action/:id.:format'
 end
