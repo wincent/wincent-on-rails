@@ -50,6 +50,16 @@ protected
     session[:redirection_count] = 0
   end
 
+  def default_access_options
+    if admin?
+      'awaiting_moderation = FALSE AND spam = FALSE'
+    elsif logged_in?
+      "awaiting_moderation = FALSE AND spam = FALSE AND (public = TRUE OR user_id = #{current_user.id})"
+    else
+      'awaiting_moderation = FALSE AND spam = FALSE AND public = TRUE'
+    end
+  end
+
   # uncomment this method to test what remote users will see when there are errors in production mode
   # def local_request?
   #   false

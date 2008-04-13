@@ -34,7 +34,7 @@ class IssuesController < ApplicationController
 
   def index
     # set up options and add possible params that can be used to limit the scope of the search
-    options = default_access_options
+    options = default_access_options # defined in ApplicationController
     add_kind_scope_condition options
     add_status_scope_condition options
     add_product_scope_condition options
@@ -90,16 +90,6 @@ private
   def handle_ajax_request
     respond_to do |format|
       format.js { render :text => '', :status => (@issue.save ? 200 : 422) }
-    end
-  end
-
-  def default_access_options
-    if admin?
-      'awaiting_moderation = FALSE AND spam = FALSE'
-    elsif logged_in?
-      "awaiting_moderation = FALSE AND spam = FALSE AND (public = TRUE OR user_id = #{current_user.id})"
-    else
-      'awaiting_moderation = FALSE AND spam = FALSE AND public = TRUE'
     end
   end
 
