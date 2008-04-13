@@ -8,22 +8,6 @@
 -#and a contact form
 %h2.major Issues
 %h3 Recently modified
--# TODO: move this into a partial
-.pagination=@paginator.pagination_links if @paginator
-%table.main
-  %tr
-    -sortable_header_cell :kind, 'Kind'
-    -sortable_header_cell :id, '#'
-    -sortable_header_cell :product, 'Product'
-    -sortable_header_cell :summary, 'Summary'
-    -sortable_header_cell :updated_at, 'When'
-  -for issue in @issues
-    %tr{ :class => cycle('odd', 'even') }
-      %td=link_to issue.kind_string, issues_path(:kind => issue.kind_string.capitalize), :title => "show all #{issue.kind_string.pluralize}"
-      %td=issue.id.to_s
-      %td=link_to(issue.product.name, issues_path(:product => issue.product.name), :title => "show all issues for #{issue.product.name}") if issue.product
-      %td=link_to h(truncate(issue.summary, 60)), issue_path(issue), :title => h(issue.summary)
-      %td=timeinfo issue
-.pagination=@paginator.pagination_links if @paginator
+=render :partial => 'shared/issues'
 .links
-  =link_to 'new issue', new_issue_path
+  =link_to 'open a ticket', new_issue_path
