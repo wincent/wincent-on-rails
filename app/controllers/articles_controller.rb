@@ -2,7 +2,6 @@ class ArticlesController < ApplicationController
   before_filter     :require_admin, :except => [ :index, :show ]
   before_filter     :get_article, :only => [ :show, :edit, :update ]
   after_filter      :cache_index_feed, :only => [ :index ]
-  skip_after_filter :clear_redirection_info, :only => [ :show ]
   cache_sweeper     :article_sweeper, :only => [ :create, :update, :destroy ]
 
   def index
@@ -53,8 +52,10 @@ class ArticlesController < ApplicationController
         flash[:error] = 'Too many redirections'
         redirect_to wiki_index_path
       else
-        session[:redirection_count] = session[:redirection_count] ? session[:redirection_count] + 1 : 1
-        session[:redirected_from] = params[:id] if @article.wiki_redirect?
+        if @article.wiki_redirect?
+          session[:redirection_count] = session[:redirection_count] ? session[:redirection_count] + 1 : 1
+          session[:redirected_from] = params[:id]
+        end
         redirect_to url_or_path_for_redirect
       end
     else # not a redirect
@@ -106,5 +107,10 @@ private
     else
       nil
     end
+  end
+
+  def clear_redirection_info
+    session[:redirected_from]   = nil
+    session[:redirection_count] = 0
   end
 end
