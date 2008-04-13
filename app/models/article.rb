@@ -40,6 +40,17 @@ class Article < ActiveRecord::Base
     end
   end
 
+  # There are three kinds of redirects possible:
+  #   1. Absolute URLs: http://example.com/
+  #   2. Relative URLs: /issues/640
+  #   3. Internal wiki links: [[foo]]
+  # This method returns true if the receiver is an "internal wiki link" redirect.
+  # We're interested in this property because we want to know when to display "redirected from" annotations
+  # (which we only want for redirections _within_ the wiki)
+  def wiki_redirect?
+    !!(self.redirect? && self.redirect =~ /\A\s*\[\[.+\]\]\s*\z/)
+  end
+
   # this is a string-to-string transformation, unlike to_param/from_param
   def self.deparametrize string
     string.gsub '_', ' '
