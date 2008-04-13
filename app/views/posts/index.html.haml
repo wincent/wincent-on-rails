@@ -1,6 +1,7 @@
 -content_for :css do
   =stylesheet_link_tag 'posts'
-%h1 Latest posts
+-@page_title = 'blog index'
+%h1 Latest blog posts
 -atom_link
 -if @paginator
   .pagination=@paginator.pagination_links
