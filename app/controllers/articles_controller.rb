@@ -54,7 +54,7 @@ class ArticlesController < ApplicationController
         redirect_to wiki_index_path
       else
         session[:redirection_count] = session[:redirection_count] ? session[:redirection_count] + 1 : 1
-        session[:redirected_from] = params[:id]
+        session[:redirected_from] = params[:id] if @article.wiki_redirect?
         redirect_to url_or_path_for_redirect
       end
     else # not a redirect
