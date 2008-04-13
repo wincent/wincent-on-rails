@@ -6,7 +6,11 @@ class IssuesController < ApplicationController
   acts_as_sortable  :by => [:kind, :id, :product_id, :summary, :status, :updated_at], :default => :updated_at, :descending => true
 
   def new
-    @issue = Issue.new
+    # normally "kind" defaults to "bug report"
+    # but check for overrides; this allows incoming links straight to "support tickets" etc
+    attributes = {}
+    attributes[:kind] = Issue::KIND[params[:kind].downcase.gsub(/ +/, '_').to_sym] unless params[:kind].blank?
+    @issue = Issue.new attributes
   end
 
   def create
