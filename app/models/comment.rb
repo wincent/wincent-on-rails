@@ -65,7 +65,7 @@ protected
   end
 
   def update_caches_after_destroy
-    last_comment    = commentable.comments.find(:first, :order => 'created_at DESC')
+    last_comment    = commentable.comments.find(:first, :order => 'comments.created_at DESC')
     last_user       = last_comment ? last_comment.user : nil
     comment_id      = last_comment ? last_comment.id : nil
     last_commented  = last_comment ? last_comment.created_at : nil
