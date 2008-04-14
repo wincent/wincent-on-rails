@@ -125,7 +125,7 @@ tr.even { background: #eaeaea; }
 
 .update_link { background: url(../images/update.png) no-repeat left center; padding-left: 22px; padding-top: 2px; padding-bottom: 2px; min-height: 22px; }
 
-.links { margin-top: 1.5em; margin-bottom: 1.5em; }
+.links { margin-top: 2.5em; margin-bottom: 1.5em; }
 .links a { border: 1px solid gray; -webkit-border-radius: 0.33em; -webkit-box-shadow: 0.33em 0.33em 0.33em #aaa; -moz-border-radius: 0.33em; background: #eaeaea; padding: 1em; margin-left: 0.25em; margin-right: 0.25em; }
 .links a:hover { -webkit-box-shadow: 0.1em 0.1em 0.1em #aaa; background: #aaa; color: white; }
 
