@@ -113,7 +113,10 @@ class CommentsController < ApplicationController
     # TODO: mark comments as deleted_at rather than really destroying them
     @comment.destroy
     respond_to do |format|
-      format.html { redirect_to comments_path }
+      format.html {
+        # TODO: add flash here, but first check if there are actually any HTML links to this action and format
+        redirect_to comments_path
+      }
       format.js {
         render :update do |page|
           page.visual_effect :fade, "comment_#{@comment.id}"
