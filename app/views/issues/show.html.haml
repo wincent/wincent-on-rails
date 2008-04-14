@@ -39,7 +39,7 @@
           =@issue.status_string
     %tr
       %th Reporter
-      %td=link_to @issue.user.display_name, user_path(@issue.user)
+      %td=link_to_user @issue.user
     %tr
       %th Description
       %td=preserve @issue.description.w
