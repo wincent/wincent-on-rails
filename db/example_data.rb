@@ -43,6 +43,8 @@ module FixtureReplacement
 
   def issue_attributes
     {
+      :summary                  => String.random,
+      :description              => String.random
     }
   end
 
