@@ -78,6 +78,7 @@ class User < ActiveRecord::Base
   extend ActiveRecord::Authentication::ClassMethods
 
   def self.find_by_email email
+    return nil if email.blank?
     find :first, :include => :emails, :conditions => ['emails.address = ?', email]
   end
 
