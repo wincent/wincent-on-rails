@@ -50,7 +50,9 @@ ActionController::Routing::Routes.draw do |map|
   # it makes page caching difficult because the page looks different for admin users
   # so we provide a separate admin interface for some resources
   map.namespace :admin do |admin|
+    # TODO: make admin-only dashboard as well (overview of items awaiting moderation)
     admin.resources :forums
+    admin.resources :issues
     admin.resources :posts
     admin.resources :tags
   end

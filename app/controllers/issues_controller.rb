@@ -1,7 +1,7 @@
 class IssuesController < ApplicationController
   before_filter     :require_admin, :except => [:create, :index, :new, :show]
   before_filter     :find_product, :only => [:index]
-  before_filter     :find_issue, :except => [:create, :index, :new]
+  before_filter     :find_issue, :except => [:create, :destroy, :index, :new]
   before_filter     :find_prev_next, :only => [:show]
   acts_as_sortable  :by => [:kind, :id, :product_id, :summary, :status, :updated_at], :default => :updated_at, :descending => true
 
@@ -60,6 +60,7 @@ class IssuesController < ApplicationController
   # Admin only.
   def destroy
     # TODO: mark issues as deleted_at rather than really destroying them
+    @issue = Issue.find params[:id]
     @issue.destroy
     respond_to do |format|
       format.html {
