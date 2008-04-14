@@ -6,6 +6,9 @@ module ApplicationHelper
   # sets up the application layout
   def atom_link model = nil
     case model
+    when Issue
+      # for issues#show override default (/issues/show/123.atom) to provide shorter link (/issues/123.atom)
+      @atom_link = auto_discovery_link_tag(:atom, issue_url(model) + '.atom')
     when NilClass
       # works for posts#index, wiki#index
       @atom_link = auto_discovery_link_tag(:atom, :format => 'atom')

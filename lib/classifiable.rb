@@ -9,6 +9,7 @@ module Classifiable
 
 protected
 
+  # BUG: this kind of modification won't trigger any cache sweepers, which means that feeds might get out of date
   def moderate! is_spam
     # we don't want moderating a model to mark it as updated, so use update_all
     self.awaiting_moderation  = false

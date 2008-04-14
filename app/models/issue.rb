@@ -18,15 +18,10 @@ class Issue < ActiveRecord::Base
   validates_presence_of   :description
   validates_inclusion_of  :kind,    :in => KIND_MAP.keys,   :message => 'not a valid kind code'
   validates_inclusion_of  :status,  :in => STATUS_MAP.keys, :message => 'not a valid status code'
-  attr_accessible         :summary, :description, :product_id, :kind
+  attr_accessible         :summary, :description, :public, :product_id, :kind
   acts_as_taggable
 
   include Classifiable
-
-  def before_create
-    self.public = (self.kind != KIND[:support_ticket])
-    true # don't accidentally abort the save
-  end
 
   def status_string
     STATUS_MAP[self.status].to_s.humanize

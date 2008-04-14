@@ -49,4 +49,12 @@ module IssuesHelper
   def link_to_next_issue
     link_to 'next &raquo;', issue_path(@next), :title => "#{@next.kind_string} \##{@next.id}: #{@next.summary}"
   end
+
+  def link_to_product_issues product
+    if product
+      link_to(product.name, issues_path(:product => product.name))
+    else
+      'no product'
+    end
+  end
 end

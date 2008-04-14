@@ -16,7 +16,8 @@ class CommentSweeper < ActionController::Caching::Sweeper
     commentable = comment.commentable
     case commentable
     when Article: # probably never will have per-Article feeds
-    when Issue:   # TODO: don't have per-issue feeds yet
+    when Issue
+      path = issue_path(commentable) + '.atom'
     when Post:    # TODO: don't have per-post feeds yet
     when Topic
       forum = commentable.forum
@@ -24,4 +25,4 @@ class CommentSweeper < ActionController::Caching::Sweeper
     end
     expire_page(path) if path
   end
-end # class TopicSweeper
+end # class CommentSweeper

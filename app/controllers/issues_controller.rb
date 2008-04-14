@@ -1,8 +1,11 @@
 class IssuesController < ApplicationController
   before_filter     :require_admin, :except => [:create, :index, :new, :show]
   before_filter     :find_product, :only => [:index]
-  before_filter     :find_issue, :except => [:create, :destroy, :index, :new]
+  before_filter     :find_issue, :except => [:create, :destroy, :index, :new, :show]
+  before_filter     :find_issue_awaiting_moderation, :only => [:show]
   before_filter     :find_prev_next, :only => [:show]
+  after_filter      :cache_show_feed, :only => [ :show ]
+  cache_sweeper     :issue_sweeper, :only => [ :create, :update, :destroy ]
   acts_as_sortable  :by => [:kind, :id, :product_id, :summary, :status, :updated_at], :default => :updated_at, :descending => true
 
   def new
@@ -20,12 +23,10 @@ class IssuesController < ApplicationController
     if @issue.save
       if logged_in_and_verified?
         flash[:notice] = 'Successfully created new issue.'
-        redirect_to issue_path(@issue)
       else
-        # TODO: admin interface for inspecting/moderating
         flash[:notice] = 'Successfully submitted issue (awaiting moderation).'
-        redirect_to issues_path
       end
+      redirect_to issue_path(@issue)
     else
       flash[:error] = 'Failed to create new issue.'
       render :action => 'new'
@@ -49,12 +50,23 @@ class IssuesController < ApplicationController
   end
 
   def show
-    if admin?
-      @comments = @issue.comments.find :all, :conditions => { :spam => false }
-    else
-      @comments = @issue.visible_comments # public, not awaiting moderation, not spam
+    respond_to do |format|
+      format.html {
+        if @issue.awaiting_moderation?
+          render :action => 'awaiting_moderation'
+        else
+          if admin?
+            @comments = @issue.comments.find :all, :conditions => { :spam => false }
+          else
+            @comments = @issue.visible_comments # public, not awaiting moderation, not spam
+          end
+          @comment = @issue.comments.build
+        end
+      }
+      format.atom {
+        @comments = @issue.visible_comments # public, not awaiting moderation, not spam
+      }
     end
-    @comment = @issue.comments.build
   end
 
   # Admin only.
@@ -117,7 +129,11 @@ private
   end
 
   def find_issue
-    @issue  = Issue.find params[:id], :conditions => default_access_options
+    @issue = Issue.find params[:id], :conditions => default_access_options
+  end
+
+  def find_issue_awaiting_moderation
+    @issue = Issue.find params[:id], :conditions => default_access_options_including_awaiting_moderation
   end
 
   def find_prev_next
@@ -142,6 +158,10 @@ private
 
   def add_product_scope_condition options
     options << " AND product_id = #{@product.id}" if @product
+  end
+
+  def cache_show_feed
+    cache_page if params[:format] == 'atom'
   end
 
   def record_not_found

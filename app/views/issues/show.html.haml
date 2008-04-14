@@ -1,4 +1,4 @@
--# TODO: atom link
+-atom_link @issue
 -content_for :css do
   =stylesheet_link_tag 'issues'
 -@page_title = "#{@issue.kind_string} \##{@issue.id.to_s}: #{@issue.summary}"
@@ -26,7 +26,7 @@
         -if admin?
           =ajax_select form, :product_id, product_options, :include_blank => true
         -else
-          =link_to(@issue.product.name, issues_path(:product => @issue.product.name))
+          =link_to_product_issues @issue.product
     %tr
       %th When
       %td=timeinfo @issue
