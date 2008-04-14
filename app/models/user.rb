@@ -1,6 +1,6 @@
 class User < ActiveRecord::Base
-  MINIMUM_LOGIN_NAME_LENGTH = 3
-  MINIMUM_PASSWORD_LENGTH   = 8
+  MINIMUM_DISPLAY_NAME_LENGTH = 3
+  MINIMUM_PASSPHRASE_LENGTH   = 8
 
   has_many                  :comments
   has_many                  :emails, :dependent => :destroy
@@ -16,13 +16,13 @@ class User < ActiveRecord::Base
   # NOTE: validates_uniqueness_of causes an extra SELECT every time you save, one for each attribute whose uniqueness you validate
 
   validates_uniqueness_of   :display_name,  :case_sensitive => false
-  validates_length_of       :display_name,  :minimum => MINIMUM_LOGIN_NAME_LENGTH
+  validates_length_of       :display_name,  :minimum => MINIMUM_DISPLAY_NAME_LENGTH
   validates_format_of       :display_name,  :with => /\A[a-z]{2}( ?[a-z0-9]+)+\z/i, :allow_nil => true, :message =>
   'may only contain letters, numbers and non-consecutive, non-trailing spaces; must start with at least two letters'
   # TODO: rather than reject leading and trailing spaces, should just trim them
 
   validates_presence_of     :passphrase,      :if => Proc.new { |u| u.new_record? || u.resetting_passphrase }
-  validates_length_of       :passphrase,      :minimum => MINIMUM_PASSWORD_LENGTH,  :if => Proc.new { |u| !u.passphrase.blank? }
+  validates_length_of       :passphrase,      :minimum => MINIMUM_PASSPHRASE_LENGTH,  :if => Proc.new { |u| !u.passphrase.blank? }
   validates_confirmation_of :passphrase,      :if => Proc.new { |u| !u.passphrase.blank? }
 
   validates_each            :old_passphrase,

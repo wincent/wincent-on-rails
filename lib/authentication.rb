@@ -155,19 +155,19 @@ end # module ActionController
 module ActiveRecord
   module Authentication
     module ClassMethods
-      PASSWORD_CHARS            = 'abcdefghjkmnpqrstuvwxyz23456789'.split(//)
-      PASSWORD_CHARS_LENGTH     = PASSWORD_CHARS.length
+      PASSPHRASE_CHARS        = 'abcdefghjkmnpqrstuvwxyz23456789'.split(//)
+      PASSPHRASE_CHARS_LENGTH = PASSPHRASE_CHARS.length
 
       # Returns a psuedo-random string of length letters and digits, excluding potentially ambiguous characters (0, O, 1, l, I).
       def random_string(length)
-        Array.new(length) { PASSWORD_CHARS[rand(PASSWORD_CHARS_LENGTH)] }.join
+        Array.new(length) { PASSPHRASE_CHARS[rand(PASSPHRASE_CHARS_LENGTH)] }.join
       end
 
-      GENERATED_PASSWORD_LENGTH = 8
+      GENERATED_PASSPHRASE_LENGTH = 8
 
       # Generates a psuedo-random passphrase string.
       def passphrase
-        random_string(GENERATED_PASSWORD_LENGTH)
+        random_string(GENERATED_PASSPHRASE_LENGTH)
       end
 
       SALT_BYTES = 16
@@ -187,5 +187,5 @@ module ActiveRecord
 end # module ActiveRecord
 
 # controller methods are included automatically because we want them to be available to all controllers
-# the model methods must be extended manually in the User model as they are specific to that model only
+# the model methods must be extended manually in specific models that want them as they are specific to those models only
 ActionController::Base.class_eval { include ActionController::Authentication }
