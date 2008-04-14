@@ -6,7 +6,7 @@
     %th=@user.display_name
   %tr
     %th Posts
-    %td=@user.utterances_count
+    %td=number_with_delimiter @user.utterances_count
   %tr
     %th Signed up
     %td=@user.created_at.distance_in_words
