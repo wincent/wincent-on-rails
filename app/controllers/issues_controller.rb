@@ -57,6 +57,23 @@ class IssuesController < ApplicationController
     @comment = @issue.comments.build
   end
 
+  # Admin only.
+  def destroy
+    # TODO: mark issues as deleted_at rather than really destroying them
+    @issue.destroy
+    respond_to do |format|
+      format.html {
+        flash[:notice] = 'Issue destroyed'
+        redirect_to issues_path
+      }
+      format.js {
+        render :update do |page|
+          page.visual_effect :fade, "issue_#{@issue.id}"
+        end
+      }
+    end
+  end
+
   # AJAX method, admin only.
   def update_product_id
     if params[:product_id] == '' # special case: user selected the blank (no product) from the pop-up
