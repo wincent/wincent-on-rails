@@ -21,6 +21,8 @@ class Issue < ActiveRecord::Base
   attr_accessible         :summary, :description, :product_id, :kind
   acts_as_taggable
 
+  include Classifiable
+
   def before_create
     self.public = (self.kind != KIND[:support_ticket])
     true # don't accidentally abort the save
