@@ -4,7 +4,7 @@ custom_atom_feed do |feed|
   feed.updated(last_active_comment ? last_active_comment.updated_at : @topic.updated_at)
   feed.entry(@topic, :url => forum_topic_url(@forum, @topic)) do |entry|
     entry.title @topic.title
-    entry.author { |author| author.name @topic.user.display_name }
+    entry.author { |author| author.name(@topic.user ? @topic.user.display_name : 'anonymous') }
     entry.content @topic.body.w, :type => 'html'
   end
   for comment in @comments
