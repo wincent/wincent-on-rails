@@ -65,3 +65,5 @@
   =link_to "all #{@issue.product.name} issues", issues_path(:product => @issue.product.name) if @issue.product
   =link_to "all #{@issue.status_string.downcase} issues", issues_path(:status => @issue.status_string)
   =link_to "all #{@issue.kind_string.pluralize.downcase}", issues_path(:kind => @issue.kind_string)
+  -if admin?
+    =link_to 'destroy', issue_path(@issue), :method => :delete, :confirm => 'Really destroy this issue?'
