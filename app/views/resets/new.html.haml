@@ -1,4 +1,4 @@
-%h1 Reset your passphrase
+=page_title 'Reset your passphrase'
 -form_for @reset, :url => resets_path do |f|
   %table.main
     %tr
@@ -8,4 +8,5 @@
         %span.annotation an email will be sent to this address
       %td=f.text_field :email_address
   %p=f.submit 'Reset passphrase'
-%p=link_to 'login', login_path
+.links
+  =link_to 'login', login_path
