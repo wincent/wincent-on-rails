@@ -43,17 +43,17 @@ module ApplicationHelper
     updated = model.updated_at
     if precise  # always show exact date and time
       if created == updated
-        'Created %s' % created.to_s(:long)
+        created.to_s(:long)
       else
-        'Created %s, last updated %s' % [created.to_s(:long), updated.to_s(:long)]
+        'Created %s, updated %s' % [created.to_s(:long), updated.to_s(:long)]
       end
     else        # show human-friendly dates ("yesterday", "2 hours ago" etc)
       created = created.distance_in_words
       updated = updated.distance_in_words
       if created == updated
-        'Created %s' % created
+        created
       else
-        'Created %s, last updated %s' % [created, updated]
+        'Created %s, updated %s' % [created, updated]
       end
     end
   end
@@ -185,9 +185,9 @@ module ApplicationHelper
     created = comment.created_at
     updated = comment.updated_at
     if created == updated
-      "posted #{created.distance_in_words}"
+      created.distance_in_words
     else
-      "posted #{created.distance_in_words}, edited #{updated.distance_in_words}"
+      "#{created.distance_in_words}, edited #{updated.distance_in_words}"
     end
   end
 end

@@ -1,5 +1,4 @@
 module ForumsHelper
-
   # this helper expects a couple of custom fields to be present added by the Forums#show action:
   # last_active_user_id, and last_active_user_display_name
   def link_to_user_for_topic topic
@@ -18,5 +17,4 @@ module ForumsHelper
   def timeinfo_for_forum forum
     forum.last_active_at ? Time.parse(forum.last_active_at).distance_in_words : 'no activity'
   end
-
 end
