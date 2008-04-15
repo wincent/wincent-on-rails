@@ -45,7 +45,7 @@ module ApplicationHelper
       if created == updated
         created.to_s(:long)
       else
-        'Created %s, updated %s' % [created.to_s(:long), updated.to_s(:long)]
+        "Created #{created.to_s(:long)}, updated #{updated.to_s(:long)}"
       end
     else        # show human-friendly dates ("yesterday", "2 hours ago" etc)
       created = created.distance_in_words
@@ -53,7 +53,7 @@ module ApplicationHelper
       if created == updated
         created
       else
-        'Created %s, updated %s' % [created, updated]
+        "Created #{created}, updated #{updated}"
       end
     end
   end
