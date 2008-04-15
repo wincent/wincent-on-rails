@@ -159,6 +159,11 @@ it instead does an update/migrate_all/start.
 end
 
 # internal use only (no description)
+task :after_check, :roles => :app do
+  puts "*** Did you remember to 'git push'? ***"
+end
+
+# internal use only (no description)
 task :after_symlink, :roles => :app do
   run "ln -s #{shared_path}/database.yml #{release_path}/config/database.yml"
 end
