@@ -37,14 +37,15 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :wiki,    :requirements => { :id => /[^\/]+/ }, :controller => 'articles',  :has_many => [ :comments ]
 
   # regular routes
-  map.connect   'misc/:action', :controller => 'misc'
+  map.connect   'misc/:action',   :controller => 'misc'
   map.connect   'search/:action', :controller => 'search'
 
   # named routes
-  map.dashboard 'dashboard', :controller => 'dashboard', :action => 'show'
-  map.login     'login',  :controller => 'sessions',  :action => 'new'
-  map.logout    'logout', :controller => 'sessions',  :action => 'destroy'
-  map.support   'support', :controller => 'support'
+  map.admin_dashboard 'admin/dashboard',  :controller => 'admin/dashboard', :action => 'show'
+  map.dashboard       'dashboard',        :controller => 'dashboard',       :action => 'show'
+  map.login           'login',            :controller => 'sessions',        :action => 'new'
+  map.logout          'logout',           :controller => 'sessions',        :action => 'destroy'
+  map.support         'support',          :controller => 'support'
 
   # although conditionally inlining admin functionality in the standard resources is elegant
   # it makes page caching difficult because the page looks different for admin users
