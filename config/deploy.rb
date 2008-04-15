@@ -159,12 +159,6 @@ it instead does an update/migrate_all/start.
 end
 
 # internal use only (no description)
-task :before_symlink, :roles => :app do
-  run "cd #{release_path} && RAILS_ENV=test rake spec"
-end
-before 'deploy:symlink', :spec
-
-# internal use only (no description)
 task :after_symlink, :roles => :app do
   run "ln -s #{shared_path}/database.yml #{release_path}/config/database.yml"
 end
