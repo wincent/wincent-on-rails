@@ -19,10 +19,7 @@ end
 
 # used in controller specs
 def login_as_admin
-  controller.instance_eval do
-    @current_user = User.find_by_superuser(true)
-    raise if @current_user.nil?
-  end
+  controller.instance_eval { @current_user = create_user :superuser => true }
   controller.stub!(:login_before) # don't let the before filter clear the user again
 end
 
