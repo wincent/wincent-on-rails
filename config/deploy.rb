@@ -165,6 +165,6 @@ end
 # eventually will run this whenever deploying before going live
 desc 'Run all specs.'
 task :spec, :roles => :app do
-  run "spec #{release_path}/spec"
+  run "RAILS_ENV=test spec #{release_path}/spec"
 end
 #before 'deploy:symlink', :spec
