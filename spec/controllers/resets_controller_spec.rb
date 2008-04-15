@@ -1,5 +1,6 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
+=begin
 describe ResetsController do
   describe '"index" action' do
     it 'should not respond' do
@@ -170,3 +171,4 @@ describe ResetsController do
     end
   end
 end
+=end
