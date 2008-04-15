@@ -160,7 +160,12 @@ end
 
 # internal use only (no description)
 task :after_check, :roles => :app do
-  puts "*** Did you remember to 'git push'? ***"
+  remote_branch = fetch(:branch)
+  local_branch  = remote_branch.sub('origin/', '')
+  `git diff --exit-code --quiet #{local_branch} #{remote_branch}`
+  if $?.exitstatus != 0
+    puts "*** #{local_branch} differs from #{remote_branch}: did you remember to 'git push'? ***"
+  end
 end
 
 # internal use only (no description)
