@@ -48,3 +48,5 @@
         %td=timeinfo comment
 .links
   =link_to 'My public profile', user_path(current_user)
+  -if admin?
+    =link_to 'Admin dashboard', admin_dashboard_path
