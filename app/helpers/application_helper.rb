@@ -35,8 +35,8 @@ module ApplicationHelper
   # Pretty formatting for model creation/update information.
   #
   # Examples:
-  #   - Created yesterday
-  #   - Created 4 hours ago, last updated a few seconds ago
+  #   - yesterday
+  #   - Created 4 hours ago, updated a few seconds ago
   #
   def timeinfo(model, precise = false)
     created = model.created_at
