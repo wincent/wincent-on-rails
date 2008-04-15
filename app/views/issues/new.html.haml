@@ -37,7 +37,7 @@
     %tr
       %th
         Public?
-        -if logged_in?
+        -if !logged_in?
           %br
           %span.annotation
             this ticket must be public because you are posting anonymously
