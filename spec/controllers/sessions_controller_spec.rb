@@ -24,8 +24,8 @@ describe SessionsController, 'logging in with a valid username and passphrase' d
     current_user.should == @user
   end
 
-  it 'should redirect to the home path' do
-    response.should redirect_to(root_path)
+  it 'should redirect to the user dashboard' do
+    response.should redirect_to(dashboard_path)
   end
 end
 
@@ -74,5 +74,35 @@ describe SessionsController, 'logging out when not previously logged in' do
 
   it 'should redirect to the home path' do
     response.should redirect_to(root_path)
+  end
+end
+
+describe SessionsController, 'redirecting after login' do
+  before do
+    @user = create_user
+    User.should_receive(:authenticate).and_return(@user)
+  end
+
+  it 'should redirect to the user dashboard if no original uri supplied' do
+    post 'create'
+    response.should redirect_to(dashboard_path)
+  end
+
+  it 'should redirect to if original uri supplied via session' do
+    session[:original_uri] = '/comments'
+    post 'create'
+    response.should redirect_to('/comments')
+  end
+
+  it 'should redirect to if original uri supplied via params' do
+    post 'create', :original_uri => '/comments'
+    response.should redirect_to('/comments')
+  end
+
+  # was a bug were failing because even blank "original_uri" would could a redirect (to the root rather than the dashboard)
+  it 'should redirect to the user dashboard if original uri is blank' do
+    session[:original_uri] = ''
+    post 'create'
+    response.should redirect_to(dashboard_path)
   end
 end
