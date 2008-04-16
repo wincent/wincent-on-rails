@@ -1,6 +1,6 @@
 class LinksController < ApplicationController
   before_filter     :require_admin, :except => :show
-  before_filter     :find_link, :only => [:edit, :update, :destroy]
+  before_filter     :find_link, :only => [:edit, :show, :update, :destroy]
   in_place_edit_for :link, :uri
   in_place_edit_for :link, :permalink
   acts_as_sortable  :by => [:id, :uri, :permalink, :click_count]
@@ -29,6 +29,7 @@ class LinksController < ApplicationController
   end
 
   def show
+    # TODO: extract into Link#hit! method
     Link.increment_counter :click_count, @link.id
     redirect_to @link.uri, :status => 303 # "See other", GET request
   end
