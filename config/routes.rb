@@ -3,7 +3,7 @@ ActionController::Routing::Routes.draw do |map|
   # resources
   map.resources :comments
   map.resources :confirm, :controller => 'confirmations'
-  map.resources :issues, :has_many => [ :comments ]
+  map.resources :issues, :has_many => [ :comments ], :collection => { :search => :post }
   map.resources :links
 
   # later this will be map.resources :posts, :as => :blog

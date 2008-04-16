@@ -1,7 +1,8 @@
+
 class IssuesController < ApplicationController
   before_filter     :require_admin, :except => [:create, :index, :new, :show]
   before_filter     :find_product, :only => [:index]
-  before_filter     :find_issue, :except => [:create, :destroy, :index, :new, :show]
+  before_filter     :find_issue, :except => [:create, :destroy, :index, :new, :search, :show]
   before_filter     :find_issue_awaiting_moderation, :only => [:show]
   before_filter     :find_prev_next, :only => [:show]
   after_filter      :cache_show_feed, :only => [ :show ]
@@ -113,6 +114,10 @@ class IssuesController < ApplicationController
   def update_public
     @issue.public = params[:public]
     handle_ajax_request
+  end
+
+  def search
+    # process form POST and display results
   end
 
 private
