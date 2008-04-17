@@ -105,3 +105,36 @@ describe ApplicationHelper, 'timeinfo_for_comment method' do
     timeinfo_for_comment(@comment).should == "#{earlier_date.distance_in_words}, edited #{later_date.distance_in_words}"
   end
 end
+
+describe ApplicationHelper, 'product_options method' do
+  it 'should find all products' do
+    Product.should_receive(:find).with(:all).and_return([])
+    product_options
+  end
+
+  it 'should return an array of name/id pairs' do
+    # no need to sort as ActiveRecord/MySQL will return the rows in id order
+    Product.delete_all
+    product1 = create_product :name => 'foo'
+    product2 = create_product :name => 'bar'
+    product_options.should == [['foo', product1.id], ['bar', product2.id]]
+  end
+end
+
+describe ApplicationHelper, 'underscores_to_spaces method' do
+  # hashes are unordered collections, so must sort the converted arrays before comparing
+  it 'should return an array of name/id pairs' do
+    hash = { 'foo' => 1, 'bar' => 2 }
+    underscores_to_spaces(hash).sort.should == [['foo', 1], ['bar', 2]].sort
+  end
+
+  it 'should convert underscores to spaces' do
+    hash = { 'foo_bar' => 1, 'baz_bar' => 2 }
+    underscores_to_spaces(hash).sort.should == [['foo bar', 1], ['baz bar', 2]].sort
+  end
+
+  it 'should convert symbol-based keys to strings' do
+    hash = { :foo => 1, :bar => 2 }
+    underscores_to_spaces(hash).sort.should == [['foo', 1], ['bar', 2]].sort
+  end
+end
