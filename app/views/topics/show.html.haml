@@ -9,7 +9,8 @@
   =link_to @forum.name, forum_path(@forum)
   &raquo;
   =h @topic.title
-=page_title @topic.title
+-@page_title = @topic.title
+%h1.major=h @page_title
 %table[@topic]
   %tr{ :class => 'comment odd' }
     %td
@@ -30,7 +31,7 @@
         %span.when
           =timeinfo_for_comment comment
       %td=preserve comment.body.w
-%h2 Reply
+%h2.major Reply
 -if @topic.accepts_comments
   =render :partial => 'comments/comment'
 -else

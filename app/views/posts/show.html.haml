@@ -17,7 +17,7 @@
 -if @post.accepts_comments? || @post.comments_count != 0
   -# TODO: use divs to color-code comments (ie. private, awaiting moderation etc)
   =named_anchor 'comments'
-  %h2 Comments
+  %h2.major Comments
   .comment_info
     ==#{@post.comments.published_count} published, #{@post.comments.unmoderated_count} awaiting moderation, #{@post.comments.spam_count} marked as spam
   -for comment in (admin? ? @post.comments.ham : @post.comments.published)
