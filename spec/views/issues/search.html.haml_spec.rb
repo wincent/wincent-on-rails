@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../../spec_helper'
 
-describe '/issues/index' do
+describe '/issues/search' do
   include IssuesHelper
 
   before do
@@ -8,7 +8,7 @@ describe '/issues/index' do
   end
 
   def do_render
-    render '/issues/index'
+    render '/issues/search'
   end
 
   it 'should have an "all issues" link' do
@@ -18,10 +18,10 @@ describe '/issues/index' do
     end
   end
 
-  it 'should have a search link' do
+  it 'should have a "search again" link' do
     do_render
     response.should have_tag('div.links') do
-      with_tag 'a', 'search' # this is a complex JS link, so won't try too hard to test the actual onclick attribute
+      with_tag 'a', 'search again' # this is a complex JS link, so won't try too hard to test the actual onclick attribute
     end
   end
 
@@ -46,11 +46,6 @@ describe '/issues/index' do
 
   it 'should render the search form partial' do
     template.expect_render :partial => 'issues/search'
-    do_render
-  end
-
-  it 'should show the scope info' do
-    template.should_receive(:scope_info)
     do_render
   end
 
