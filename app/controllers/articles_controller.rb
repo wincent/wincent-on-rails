@@ -1,7 +1,7 @@
 class ArticlesController < ApplicationController
-  before_filter     :require_admin, :except => [ :index, :show ]
-  before_filter     :get_article, :only => [ :show, :edit, :update ]
-  after_filter      :cache_index_feed, :only => [ :index ]
+  before_filter     :require_admin,   :except => [ :index, :show ]
+  before_filter     :get_article,     :only => [ :show, :edit, :update ]
+  after_filter      :cache_feed,      :only => [ :index ]
   cache_sweeper     :article_sweeper, :only => [ :create, :update, :destroy ]
 
   def index
@@ -83,10 +83,6 @@ private
 
   def get_article
     @article = Article.find_with_param! params[:id]
-  end
-
-  def cache_index_feed
-    cache_page if params[:format] == 'atom'
   end
 
   def record_not_found

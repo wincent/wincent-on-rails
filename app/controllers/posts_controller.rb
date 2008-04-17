@@ -1,8 +1,8 @@
 class PostsController < ApplicationController
   before_filter :require_admin, :except => [ :index, :show ]
-  before_filter :get_post, :except => [ :index, :new, :create ]
-  after_filter  :cache_index_feed, :only => [ :index ]
-  cache_sweeper :post_sweeper, :only => [ :create, :update, :destroy ]
+  before_filter :get_post,      :except => [ :index, :new, :create ]
+  after_filter  :cache_feed,    :only => [ :index ]
+  cache_sweeper :post_sweeper,  :only => [ :create, :update, :destroy ]
 
   def index
     respond_to do |format|
@@ -85,10 +85,6 @@ private
     else
       @post = Post.find_by_permalink_and_public(params[:id], true) || (raise ActiveRecord::RecordNotFound)
     end
-  end
-
-  def cache_index_feed
-    cache_page if params[:format] == 'atom'
   end
 
   def record_not_found

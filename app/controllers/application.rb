@@ -38,6 +38,10 @@ protected
     params[:format] == 'atom'
   end
 
+  def cache_feed
+    cache_page if is_atom?
+  end
+
   def default_access_options
     if admin?
       'awaiting_moderation = FALSE AND spam = FALSE'

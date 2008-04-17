@@ -2,7 +2,7 @@ class TopicsController < ApplicationController
   before_filter :require_admin,   :except => [ :create, :new, :show ]
   before_filter :get_forum,       :except => [ :index ]
   before_filter :get_topic,       :only => [ :show ]
-  after_filter  :cache_show_feed, :only => :show
+  after_filter  :cache_feed,      :only => [ :show ]
   cache_sweeper :topic_sweeper,   :only => [ :create, :update, :destroy ]
 
   # Admin only.
@@ -116,10 +116,6 @@ private
     else
       @topic = @forum.topics.find params[:id], :conditions => { :awaiting_moderation => false }
     end
-  end
-
-  def cache_show_feed
-    cache_page if is_atom?
   end
 
   def record_not_found
