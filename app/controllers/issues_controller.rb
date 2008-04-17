@@ -121,8 +121,8 @@ class IssuesController < ApplicationController
     conditions << "status = #{options[:status].to_i}" unless options[:status].blank?
     conditions << "kind = #{options[:kind].to_i}" unless options[:kind].blank?
     conditions << "product_id = #{options[:product_id].to_i}" unless options[:product_id].blank?
-    conditions <<
-      Issue.send(:sanitize_sql_for_conditions, ["summary LIKE '%%%s%%'", options[:summary]]) unless options[:summary].blank?
+    conditions << Issue.send(:sanitize_sql_for_conditions, ["(summary LIKE '%%%s%%' OR description LIKE '%%%s%%')",
+      options[:summary], options[:summary]]) unless options[:summary].blank?
     conditions = conditions.join ' AND '
 
     @paginator = Paginator.new params, Issue.count(:conditions => conditions), search_issues_path
