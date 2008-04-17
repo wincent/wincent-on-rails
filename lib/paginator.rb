@@ -9,7 +9,7 @@ class Paginator
     @additional_params = []
     params.each do |key, value|
       next if ['page', 'action', 'controller'].include? key
-      @additional_params << "#{key.to_s}=#{value.gsub(' ', '+')}" # if we let through spaces they become %20, which is ugly
+      @additional_params << { key => value }.to_query
     end
 
     # process page, count and path
