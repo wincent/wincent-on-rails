@@ -89,6 +89,18 @@ module ApplicationHelper
       :title => "#{item_count(tag.taggings_count)} tagged with '#{tag.name}'"
   end
 
+  # For use in product pop-up menus in forms.
+  def product_options
+    Product.find(:all).collect { |product| [product.name, product.id] }
+  end
+
+  # Convert key names from "feature_request" etc to "feature request".
+  # Again, for use in pop-up menus in forms.
+  def underscores_to_spaces options
+    options.collect { |k,v| [k.to_s.gsub('_', ' '), v] }
+  end
+
+
   def tag_links object
     links = object.tags.collect do |tag|
       link_to tag.name, tag_path(tag), :title => "#{item_count(tag.taggings_count)} tagged with '#{tag.name}'"

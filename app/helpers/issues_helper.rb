@@ -7,15 +7,6 @@ module IssuesHelper
     "Currently showing only issues with #{scopes.join(', ')}" unless scopes.empty?
   end
 
-  # Convert key names from "feature_request" etc to "feature request"
-  def underscores_to_spaces options
-    options.collect { |k,v| [k.to_s.gsub('_', ' '), v] }
-  end
-
-  def product_options
-    Product.find(:all).collect { |product| [product.name, product.id] }
-  end
-
   def ajax_select form, attribute, options, extra_options = {}
     popup   = form.select attribute, options, extra_options, :onchange => js_for_attribute(attribute, :value)
     spinner = spinner_for_attribute attribute
