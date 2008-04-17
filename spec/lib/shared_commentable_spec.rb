@@ -1,5 +1,5 @@
 require File.join(File.dirname(__FILE__), '..', 'spec_helper')
-require 'commentable.rb'
+require 'commentable'
 
 describe Commentable, :shared => true do
 
