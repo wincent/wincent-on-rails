@@ -15,4 +15,4 @@ class ArticleSweeper < ActionController::Caching::Sweeper
   def expire_cache
     expire_page(wiki_index_path + '.atom')
   end
-end # class TopicSweeper
+end # class ArticleSweeper
