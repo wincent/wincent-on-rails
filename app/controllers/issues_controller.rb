@@ -1,6 +1,5 @@
-
 class IssuesController < ApplicationController
-  before_filter     :require_admin, :except => [:create, :index, :new, :show]
+  before_filter     :require_admin, :except => [:create, :index, :new, :search, :show]
   before_filter     :find_product, :only => [:index]
   before_filter     :find_issue, :except => [:create, :destroy, :index, :new, :search, :show]
   before_filter     :find_issue_awaiting_moderation, :only => [:show]
@@ -117,7 +116,19 @@ class IssuesController < ApplicationController
   end
 
   def search
-    # process form POST and display results
+    options     = params[:issue]
+    conditions  = [default_access_options]
+    conditions << "status = #{options[:status].to_i}" unless options[:status].blank?
+    conditions << "kind = #{options[:kind].to_i}" unless options[:kind].blank?
+    conditions << "product_id = #{options[:product_id].to_i}" unless options[:product_id].blank?
+    conditions <<
+      Issue.send(:sanitize_sql_for_conditions, ["summary LIKE '%%%s%%'", options[:summary]]) unless options[:summary].blank?
+    conditions = conditions.join ' AND '
+
+    @paginator = Paginator.new params, Issue.count(:conditions => conditions), search_issues_path
+    @issues = Issue.find :all,
+      sort_options.merge({ :conditions => conditions, :offset => @paginator.offset, :limit => @paginator.limit })
+    @search = Issue.new
   end
 
 private

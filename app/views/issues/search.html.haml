@@ -1,0 +1,7 @@
+-page_title 'Issue search'
+.links
+  =link_to 'show all issues', issues_path
+  -#=link_to_function 'search again', "$('issue_search').toggle(); $('issue_summary').focus();"#, :href => 'TODO: non-JS fallback path'
+  =link_to 'open a ticket', new_issue_path, :title => "Don't forget to search first before opening a ticket"
+%h2.major Results
+=render :partial => 'shared/issues'
