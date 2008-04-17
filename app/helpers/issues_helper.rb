@@ -48,4 +48,9 @@ module IssuesHelper
       'no product'
     end
   end
+
+  def link_to_issue_search link_text = 'search'
+    link_to_function link_text, "$('issue_search').toggle(); $('issue_summary').focus();",
+      :href => url_for(:controller => 'search', :action => 'issues')
+  end
 end
