@@ -1,6 +1,9 @@
 require File.dirname(__FILE__) + '/../spec_helper'
+require File.dirname(__FILE__) + '/application_spec'
 
 describe HeartbeatController do
+  it_should_behave_like 'ApplicationController'
+
   it 'should suppress logging' do
     controller.logger.should be_nil
   end
