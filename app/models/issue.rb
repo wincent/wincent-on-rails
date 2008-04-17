@@ -23,6 +23,19 @@ class Issue < ActiveRecord::Base
 
   include Classifiable
 
+  # Sanitizes an untrusted hash of search parameters and prepares a conditions string suitable for passing to find(:all).
+  # The calling controller should pass in the appropriate access options string to constrain the search depending on whether
+  # the user is an administrator, normal or anonymous user.
+  def self.prepare_search_conditions access_options, params = {}
+    conditions = access_options ? [access_options] : []
+    conditions << "status = #{params[:status].to_i}" unless params[:status].blank?
+    conditions << "kind = #{params[:kind].to_i}" unless params[:kind].blank?
+    conditions << "product_id = #{params[:product_id].to_i}" unless params[:product_id].blank?
+    conditions << sanitize_sql_for_conditions(["(summary LIKE '%%%s%%' OR description LIKE '%%%s%%')",
+      params[:summary], params[:summary]]) unless params[:summary].blank?
+    conditions.join ' AND '
+  end
+
   def status_string
     STATUS_MAP[self.status].to_s.humanize
   end
