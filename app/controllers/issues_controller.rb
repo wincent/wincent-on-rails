@@ -116,7 +116,7 @@ class IssuesController < ApplicationController
   end
 
   def search
-    options     = params[:issue]
+    options     = params[:issue] || {}
     conditions  = [default_access_options]
     conditions << "status = #{options[:status].to_i}" unless options[:status].blank?
     conditions << "kind = #{options[:kind].to_i}" unless options[:kind].blank?
