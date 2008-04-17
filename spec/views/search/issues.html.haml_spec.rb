@@ -5,6 +5,11 @@ describe '/search/issues' do
     render '/search/issues'
   end
 
+  it 'should call the page title helper' do
+    template.should_receive(:page_title).with('Issue search')
+    do_render
+  end
+
   it 'should have an "all issues" link' do
     do_render
     response.should have_tag('div.links') do
