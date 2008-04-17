@@ -1,6 +1,9 @@
 -content_for :css do
   =stylesheet_link_tag 'forums'
-%h1 Forums
+#breadcrumbs
+  =link_to 'Home', root_path
+  &raquo; Forums
+%h1.major Forums
 %table
   %tr
     %th Forum
