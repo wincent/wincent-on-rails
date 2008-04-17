@@ -37,9 +37,9 @@
       -flash.each do |key, message|
         =content_tag :div, message, :id => key
       =yield
-    #sidebar
-      -# on many pages this won't even be used, but there are some places where it is appropriate
-      =yield :sidebar
+      #sidebar
+        -# on many pages this won't even be used, but there are some places where it is appropriate
+        =yield :sidebar
     #footer
       ==Copyright &copy; 1997-#{Time.new.year}
       =mail_to 'win@wincent.com', 'Wincent Colaiuta', :title => 'Email me at win@wincent.com'
