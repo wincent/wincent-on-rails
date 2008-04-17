@@ -120,7 +120,6 @@ class IssuesController < ApplicationController
     @paginator  = Paginator.new params, Issue.count(:conditions => conditions), search_issues_path
     @issues     = Issue.find :all,
       sort_options.merge({ :conditions => conditions, :offset => @paginator.offset, :limit => @paginator.limit })
-    @search     = Issue.new
   end
 
 private
