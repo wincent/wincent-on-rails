@@ -6,6 +6,7 @@ class IssuesController < ApplicationController
   before_filter     :find_prev_next, :only => [:show]
   after_filter      :cache_show_feed, :only => [ :show ]
   cache_sweeper     :issue_sweeper, :only => [ :create, :update, :destroy ]
+  in_place_edit_for :issue, :summary
   acts_as_sortable  :by => [:kind, :id, :product_id, :summary, :status, :updated_at], :default => :updated_at, :descending => true
 
   def new

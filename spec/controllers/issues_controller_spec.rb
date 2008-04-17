@@ -28,3 +28,16 @@ describe IssuesController, 'GET /issues/search' do
     get :search
   end
 end
+
+describe IssuesController, 'admin-only methods' do
+  it 'should implement an "set_issue_summary" for AJAX in-place field editor' do
+    controller.respond_to?(:set_issue_summary).should == true
+  end
+
+  # TODO: write custom matchers or helper methods in spec helper for expressing this pattern (of redirects for non-admin users)
+  it 'should deny access to the "set_issue_summary" method for non-admin users' do
+    get :set_issue_summary
+    response.should redirect_to(login_path)
+    flash[:notice].should =~ /requires administrator privileges/
+  end
+end

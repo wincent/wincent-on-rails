@@ -23,9 +23,13 @@
           -else
             @issue.kind_string
     %tr
+      -# TODO: ability to edit summary (admin)
       %th Summary
       %td
-        %strong=h @issue.summary
+        -if admin?
+          =in_place_editor_field :issue, :summary
+        -else
+          %strong=h @issue.summary
     %tr
       %th Product
       %td
