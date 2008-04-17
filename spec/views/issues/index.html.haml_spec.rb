@@ -25,6 +25,11 @@ describe '/issues/index' do
     end
   end
 
+  it 'should hide the search div upon initial display' do
+    do_render
+    response.should have_tag('div#issue_search[style=?]', /display:none;/)
+  end
+
   it 'should have a "new issue" link' do
     do_render
     response.should have_tag('div.links') do

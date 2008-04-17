@@ -14,11 +14,6 @@ describe '/issues/_search' do
     render '/issues/_search'
   end
 
-  it 'should hide the search div upon initial display' do
-    do_render
-    response.should have_tag('div#issue_search[style=?]', /display:none;/)
-  end
-
   it 'should display the search form' do
     do_render
     response.should have_tag('form[action=?][method=post]', search_issues_path) do
