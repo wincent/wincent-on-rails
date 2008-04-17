@@ -3,6 +3,7 @@
   =link_to 'show all issues', issues_path
   =link_to_function 'search again', "$('issue_search').toggle(); $('issue_summary').focus();"#, :href => 'TODO: non-JS fallback path'
   =link_to 'open a ticket', new_issue_path, :title => "Don't forget to search first before opening a ticket"
-=render :partial => 'issues/search'
+#issue_search{:style => 'display:none;'}
+  =render :partial => 'issues/search'
 %h2.major Results
 =render :partial => 'issues/issues'
