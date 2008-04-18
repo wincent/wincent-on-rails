@@ -57,6 +57,11 @@ class TopicsController < ApplicationController
   end
 
   # Admin only for now.
+  def edit
+    @topic = @forum.topics.find params[:id] # no restrictions
+  end
+
+  # Admin only for now.
   def update
     topic = @forum.topics.find(params[:id])
     respond_to do |format|
