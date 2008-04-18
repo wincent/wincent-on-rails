@@ -1,0 +1,36 @@
+%h1 Edit topic
+%div[@topic]
+  =error_messages_for :topic
+  -form_for @topic, :url => forum_topic_path(@forum, @topic) do |f|
+    %table.main
+      %tr
+        %th Title
+        %td=f.text_field :title
+      %tr
+        %th
+          Body
+          %br
+          %span.annotation=wikitext_cheatsheet
+        %td=preserve(f.text_area(:body, :cols => 80, :rows => 10))
+      %tr
+        %th Public?
+        %td=f.check_box :public
+      %tr
+        %th Accepts comments?
+        %td=f.check_box :accepts_comments
+    %p=f.submit 'Save'
+  .links
+    =button_to_destroy_topic @topic
+    =button_to_moderate_topic_as_spam @topic if @topic.awaiting_moderation?
+    =button_to_moderate_topic_as_ham @topic if @topic.awaiting_moderation?
+.links
+  =link_to 'back to topics awaiting moderation', url_for(:controller => 'topics', :action => 'index')
+-#%h4
+-#  ==Preview (#{link_to_update_preview})
+-#  =observe_body
+-#  =image_tag 'spinner.gif', :id => 'spinner', :style => 'display:none;'
+-#  -# TODO: graceful non-JS fallback
+-##preview=body_html
+-#%p=link_to 'back', wiki_index_path
+
+
