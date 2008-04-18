@@ -141,6 +141,8 @@ private
     elsif logged_in?
       @comment = Comment.find params[:id], :conditions => { :user_id => current_user.id, :spam => false }
     else
+      # should never get here; and in fact, shouldn't even get to the previous case either
+      # but leave it in for now, as may eventually allow users to edit their own comments
       raise "anonymous users can't manipulate comments"
     end
   end
