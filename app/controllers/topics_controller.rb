@@ -65,7 +65,18 @@ class TopicsController < ApplicationController
   def update
     @topic = @forum.topics.find params[:id] # no restrictions
     respond_to do |format|
-      format.html { raise 'not yet implemented' }
+      format.html {
+        @topic.update_attributes params[:topic]
+        @topic.accepts_comments = params[:topic][:accepts_comments]
+        @topic.public           = params[:topic][:public]
+        if @topic.save
+          flash[:notice] = 'Successfully updated'
+          redirect_to forum_topic_path(@forum, @topic)
+        else
+          flash[:error] = 'Update failed'
+          render :action => 'edit'
+        end
+      }
       format.js {
         if params[:button] == 'spam'
           @topic.moderate_as_spam!
