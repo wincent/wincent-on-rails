@@ -13,8 +13,8 @@ protected
   # URL to the comment nested in the context of its parent (resources), including an anchor.
   # NOTE: this method is dog slow if called in an "N + 1 SELECT" situation
   # this is needed in both controllers (for redirect_to) and views, hence the helper_method call here
-  helper_method :url_for_comment
-  def url_for_comment comment
+  helper_method :polymorphic_comment_path
+  def polymorphic_comment_path comment
     commentable     = comment.commentable
     common_options  = { :action => 'show', :id => commentable.to_param, :anchor => "comment_#{comment.id}"}
     case commentable

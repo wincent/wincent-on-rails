@@ -20,7 +20,7 @@ class CommentsController < ApplicationController
     else # anonymous user
       @comment = Comment.find params[:id], :conditions => { :public => true, :spam => false, :awaiting_moderation => false }
     end
-    redirect_to url_for_comment(@comment)
+    redirect_to polymorphic_comment_path(@comment)
   end
 
   def create
