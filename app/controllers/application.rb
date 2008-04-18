@@ -67,16 +67,6 @@ protected
     cache_page if is_atom?
   end
 
-  def default_access_options
-    if admin?
-      'awaiting_moderation = FALSE AND spam = FALSE'
-    elsif logged_in?
-      "awaiting_moderation = FALSE AND spam = FALSE AND (public = TRUE OR user_id = #{current_user.id})"
-    else
-      'awaiting_moderation = FALSE AND spam = FALSE AND public = TRUE'
-    end
-  end
-
   # Just like the default_access_options method but this time we don't exclude items awaiting moderation.
   # This is useful in places like the issue tracker where we wish to show "this item is awaiting moderation"
   # rather than just do a "record not found".
@@ -88,6 +78,10 @@ protected
     else
       'spam = FALSE AND public = TRUE'
     end
+  end
+
+  def default_access_options
+    'awaiting_moderation = FALSE AND ' + default_access_options_including_awaiting_moderation
   end
 
   # uncomment this method to test what remote users will see when there are errors in production mode
