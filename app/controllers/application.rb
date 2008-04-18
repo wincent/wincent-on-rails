@@ -25,6 +25,31 @@ protected
     end
   end
 
+  # again, needed in controllers (redirect_to) and views
+  helper_method :polymorphic_comments_path
+  def polymorphic_comments_path comment
+    # the case statement is a temporary hack until Rails 2.1 comes out
+    # we can't do this dynamically for now because of irregularities in the route names
+    # ie. articles have wiki paths instead of article paths
+    # in 2.1 should be able to make them have article paths
+    class_str = comment.commentable.class.to_s
+    case class_str
+    when 'Article'
+      article = comment.commentable
+      wiki_comment_path article, comment
+    when 'Issue'
+      issue = comment.commentable
+      issue_comment_path issue, comment
+    when 'Post'
+      post = comment.commentable
+      blog_comment_path post, comment
+    when 'Topic'
+      topic = comment.commentable
+      forum = topic.forum
+      forum_topic_comment_path forum, topic, comment
+    end
+  end
+
   def record_not_found(uri = nil)
     if uri.class != String
       # beware that in the default case uri will be an instance of ActiveRecord::RecordNotFound
