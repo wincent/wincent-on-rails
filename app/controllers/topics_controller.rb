@@ -63,21 +63,21 @@ class TopicsController < ApplicationController
 
   # Admin only for now.
   def update
-    topic = @forum.topics.find(params[:id])
+    @topic = @forum.topics.find params[:id] # no restrictions
     respond_to do |format|
       format.html { raise 'not yet implemented' }
       format.js {
         if params[:button] == 'spam'
-          topic.moderate_as_spam!
+          @topic.moderate_as_spam!
           render :update do |page|
-            page.visual_effect :fade, "topic_#{topic.id}"
+            page.visual_effect :fade, "topic_#{@topic.id}"
           end
         elsif params[:button] == 'ham'
-          topic.moderate_as_ham!
+          @topic.moderate_as_ham!
           render :update do |page|
-            page.visual_effect :highlight, "topic_#{topic.id}", :duration => 1.5
-            page.visual_effect :fade, "topic_#{topic.id}_ham_form"
-            page.visual_effect :fade, "topic_#{topic.id}_spam_form"
+            page.visual_effect :highlight, "topic_#{@topic.id}", :duration => 1.5
+            page.visual_effect :fade, "topic_#{@topic.id}_ham_form"
+            page.visual_effect :fade, "topic_#{@topic.id}_spam_form"
           end
         else
           raise 'unrecognized AJAX action'
