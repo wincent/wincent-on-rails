@@ -19,7 +19,10 @@
       =pluralizing_count(@topic.user.utterances_count, 'post') if @topic.user
       %br
       %span.when
-        =timeinfo_for_topic @topic
+        =timeinfo @topic, :updated_string => 'edited'
+      -if admin?
+        %br
+        =link_to 'edit', edit_forum_topic_path(@forum, @topic)
     %td=preserve @topic.body.w
   -for comment in @comments
     %tr{ :class => "comment #{cycle('even', 'odd')}", :id => "comment_#{comment.id}" }
@@ -29,12 +32,17 @@
         =pluralizing_count(comment.user.utterances_count, 'post') if comment.user
         %br
         %span.when
-          =timeinfo_for_comment comment
+          =timeinfo comment, :updated_string => 'edited'
+        -if admin?
+          %br
+          =link_to 'edit', edit_comment_path(comment)
       %td=preserve comment.body.w
 %h2.major Reply
 -if @topic.accepts_comments
   =render :partial => 'comments/comment'
 -else
   %p This topic is now closed.
--#-if admin? or (!current_user.nil? and current_user == @topic.user_id)
--#  you can edit this
+.links
+  =link_to 'back to topic index', forum_path(@forum)
+  -if admin?
+    =link_to 'edit topic', edit_forum_topic_path(@forum, @topic)
