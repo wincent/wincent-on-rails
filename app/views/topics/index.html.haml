@@ -11,12 +11,9 @@
     .when=timeinfo @topic
     %div=@topic.body.w
     .links
-      =link_to 'edit', edit_forum_topic_path(@topic.forum, @topic), :class => 'edit_link'
-      %form{:id => "topic_#{@topic.id}_destroy_form", :style => 'display:inline;'}
-        =submit_to_remote 'button', 'destroy', :url => forum_topic_path(@topic.forum, @topic), :method => :delete, :failure => "alert('Failed to delete')", :confirm => 'Really delete?'
-      %form{:id => "topic_#{@topic.id}_spam_form", :style => 'display:inline;'}
-        =submit_to_remote 'button', 'spam', :url => forum_topic_path(@topic.forum, @topic), :method => :put, :failure => "alert('Failed to mark as spam')", :confirm => 'Really mark as spam?'
-      %form{:id => "topic_#{@topic.id}_ham_form", :style => 'display:inline;'}
-        =submit_to_remote 'button', 'ham', :url => forum_topic_path(@topic.forum, @topic), :method => :put, :failure => "alert('Failed to mark as ham')"
+      =link_to 'edit', edit_forum_topic_path(@topic.forum, @topic)
+      =button_to_destroy_topic @topic
+      =button_to_moderate_topic_as_spam @topic
+      =button_to_moderate_topic_as_ham @topic
 .links
   =link_to 'forums index', forums_path
