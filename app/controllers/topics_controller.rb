@@ -84,7 +84,7 @@ class TopicsController < ApplicationController
   # Admin only.
   def destroy
     # TODO: mark topics as deleted_at rather than really destroying them
-    topic = @forum.topics.find(params[:id])
+    topic = @forum.topics.find params[:id]
     topic.destroy
     respond_to do |format|
       format.html { redirect_to forum_path(@forum) }
