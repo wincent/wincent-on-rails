@@ -160,14 +160,4 @@ module ApplicationHelper
       raise 'not implemented'
     end
   end
-
-  def timeinfo_for_comment comment
-    created = comment.created_at.distance_in_words
-    updated = comment.updated_at.distance_in_words
-    if created == updated
-      created
-    else
-      "#{created}, edited #{updated}"
-    end
-  end
 end

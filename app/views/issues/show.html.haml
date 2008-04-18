@@ -66,7 +66,7 @@
         %br
         =pluralizing_count(comment.user.utterances_count, 'post') if comment.user
         %br
-        %span.when=timeinfo_for_comment comment
+        %span.when=timeinfo comment, :updated_string => 'edited'
       %td=preserve comment.body.w
 %h2.major Add a comment
 =render :partial => 'comments/comment'
