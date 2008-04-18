@@ -79,16 +79,24 @@ class CommentsController < ApplicationController
     end
   end
 
+  # Admin only for now.
   def edit
     render
   end
 
+  # Admin only for now.
   def update
     respond_to do |format|
       format.html {
-        raise 'not yet implemented'
+        @comment.update_attributes params[:comment]
+        if @comment.save
+          flash[:notice] = 'Successfully updated'
+          redirect_to polymorphic_comments_path(@comment)
+        else
+          flash[:error] = 'Update failed'
+          render :action => 'edit'
+        end
       }
-
       format.js {
         if params[:button] == 'spam'
           @comment.moderate_as_spam!
