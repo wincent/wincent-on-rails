@@ -23,6 +23,11 @@ def login_as_admin
   controller.stub!(:login_before) # don't let the before filter clear the user again
 end
 
+# used in controller specs
+def login_as_normal_user
+  login_as create_user
+end
+
 module Spec
   module Rails
     module Matchers
