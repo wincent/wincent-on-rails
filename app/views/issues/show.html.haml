@@ -67,6 +67,10 @@
         =pluralizing_count(comment.user.utterances_count, 'post') if comment.user
         %br
         %span.when=timeinfo comment, :updated_string => 'edited'
+        -if admin?
+          %br
+          =link_to 'edit', edit_comment_path(comment)
+          -# TODO: add a means of marking individual comments as private
       %td=preserve comment.body.w
 %h2.major Add a comment
 =render :partial => 'comments/comment'
