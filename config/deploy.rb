@@ -171,6 +171,7 @@ end
 # internal use only (no description)
 task :after_symlink, :roles => :app do
   run "ln -s #{shared_path}/database.yml #{release_path}/config/database.yml"
+  run "ln -s #{shared_path}/app_config.yml #{release_path}/config/app_config.yml"
 end
 
 desc 'Run all specs.'
