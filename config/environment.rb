@@ -57,3 +57,5 @@ require 'wikitext/string'
 require 'wikitext/rails'
 
 Sass::Plugin.options[:style] = :compact
+
+APP_CONFIG = YAML.load_file("#{RAILS_ROOT}/config/app_config.yml")
