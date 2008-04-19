@@ -90,7 +90,7 @@ class CommentsController < ApplicationController
       format.html {
         if @comment.update_attributes params[:comment]
           flash[:notice] = 'Successfully updated'
-          redirect_to polymorphic_comments_path(@comment)
+          redirect_to polymorphic_comment_path(@comment)
         else
           flash[:error] = 'Update failed'
           render :action => 'edit'

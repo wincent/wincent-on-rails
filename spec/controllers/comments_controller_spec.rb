@@ -11,23 +11,27 @@ describe CommentsController, 'GET /comments/:id/edit logged in as admin' do
     login_as_admin
   end
 
+  def do_get
+    get :edit, :id => @comment.id
+  end
+
   it 'should run the "require_admin" before filter' do
     controller.should_receive(:require_admin)
-    get :edit, :id => @comment.id
+    do_get
   end
 
   it 'should find the comment' do
     Comment.should_receive(:find).with(@comment.id.to_s) # form params come through as strings
-    get :edit, :id => @comment.id
+    do_get
   end
 
   it 'should be successful' do
-    get :edit, :id => @comment.id
+    do_get
     response.should be_success
   end
 
   it 'should render the edit template' do
-    get :edit, :id => @comment.id
+    do_get
     response.should render_template('edit')
   end
 end
@@ -58,5 +62,60 @@ describe CommentsController, 'GET /comments/:id/edit as an anonymous visitor' do
     get :edit, :id => @comment.id
     response.should redirect_to(login_path)
     flash[:notice].should =~ /requires administrator privileges/
+  end
+end
+
+describe CommentsController, 'PUT /comments/:id logged in as admin' do
+  before do
+    @comment = create_comment
+    login_as_admin
+  end
+
+  def do_put
+    put :update, :id => @comment.id
+  end
+
+  it 'should run the "require_admin" before filter' do
+    controller.should_receive(:require_admin)
+    do_put
+  end
+
+  it 'should find the comment' do
+    Comment.should_receive(:find).with(@comment.id.to_s).and_return(@comment) # form params come through as strings
+    do_put
+  end
+
+  it 'should update the comment' do
+    @comment.should_receive(:update_attributes)
+    Comment.stub!(:find).and_return(@comment)
+    do_put
+  end
+
+  it 'should show a notice on success' do
+    @comment.stub!(:save).and_return(true)
+    Comment.stub!(:find).and_return(@comment)
+    do_put
+    flash[:notice].should =~ /Successfully updated/
+  end
+
+  it 'should redirect to the comment path on success' do
+    @comment.stub!(:save).and_return(true)
+    Comment.stub!(:find).and_return(@comment)
+    do_put
+    response.should redirect_to(controller.send(:polymorphic_comment_path, @comment))
+  end
+
+  it 'should show an error on failure' do
+    @comment.stub!(:save).and_return(false)
+    Comment.stub!(:find).and_return(@comment)
+    do_put
+    flash[:error].should =~ /Update failed/
+  end
+
+  it 'should render the edit template again on failure' do
+    @comment.stub!(:save).and_return(false)
+    Comment.stub!(:find).and_return(@comment)
+    do_put
+    response.should render_template('edit')
   end
 end
