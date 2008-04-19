@@ -1,23 +1,26 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
-describe ConfirmationMailer, 'confirmation' do
+describe ResetMailer, 'reset' do
   include ActionController::UrlWriter
   default_url_options[:host] = APP_CONFIG['host']
   default_url_options[:port] = APP_CONFIG['port'] if APP_CONFIG['port'] != 80
 
   before do
     @administrator  = 'win@wincent.com'
-    @confirmation   = create_confirmation
-    @mail           = ConfirmationMailer.create_confirmation_message @confirmation
+    user            = create_user
+    @recipient      = user.emails.create(:address => "#{String.random}@example.com").address
+    @reset          = user.resets.create
+    @reset.user.emails.create :address => @recipient
+    @mail           = ResetMailer.create_reset_message @reset
   end
 
   it 'should set the subject line' do
-    @mail.subject.should =~ /confirm your email address/
+    @mail.subject.should =~ /forgotten passphrase/
   end
 
   it 'should be addressed to the recipient' do
     @mail.to.length.should == 1
-    @mail.to.first.should == @confirmation.email.address
+    @mail.to.first.should == @recipient
   end
 
   it "should be BCC'ed to the administrator" do
@@ -31,15 +34,15 @@ describe ConfirmationMailer, 'confirmation' do
     @mail.from.first.should == @administrator
   end
 
-  it 'should mention the confirmation address in the body' do
-    @mail.body.should match(/#{@confirmation.email.address}/)
+  it 'should mention the reset address in the body' do
+    @mail.body.should match(/#{@recipient}/)
   end
 
-  it 'should include the confirmation link in the body' do
-    @mail.body.should match(/#{confirm_url(@confirmation)}/)
+  it 'should include the reset link in the body' do
+    @mail.body.should match(/#{edit_reset_url(@reset)}/)
   end
 
   it 'should mention the cutoff date in UTC time' do
-    @mail.body.should match(/#{@confirmation.cutoff.utc.to_s}/)
+    @mail.body.should match(/#{@reset.cutoff.utc.to_s}/)
   end
 end
