@@ -88,8 +88,7 @@ class CommentsController < ApplicationController
   def update
     respond_to do |format|
       format.html {
-        @comment.update_attributes params[:comment]
-        if @comment.save
+        if @comment.update_attributes params[:comment]
           flash[:notice] = 'Successfully updated'
           redirect_to polymorphic_comments_path(@comment)
         else

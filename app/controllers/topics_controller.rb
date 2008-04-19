@@ -66,10 +66,9 @@ class TopicsController < ApplicationController
     @topic = @forum.topics.find params[:id] # no restrictions
     respond_to do |format|
       format.html {
-        @topic.update_attributes params[:topic]
         @topic.accepts_comments = params[:topic][:accepts_comments]
         @topic.public           = params[:topic][:public]
-        if @topic.save
+        if @topic.update_attributes params[:topic]
           flash[:notice] = 'Successfully updated'
           redirect_to forum_topic_path(@forum, @topic)
         else

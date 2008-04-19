@@ -47,8 +47,7 @@ class ResetsController < ApplicationController
 
   def update
     raise ActiveRecord::RecordNotFound if @reset.nil? # likely attack, so no need for a friendly flash
-    @reset.update_attributes(params[:reset])
-    if @reset.valid?
+    if @reset.update_attributes params[:reset]
       @user.passphrase              = params[:passphrase]
       @user.passphrase_confirmation = params[:passphrase_confirmation]
       @user.resetting_passphrase    = true
