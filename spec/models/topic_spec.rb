@@ -22,7 +22,7 @@ describe Topic, 'creation' do
   end
 
   it 'should default to awaiting moderation' do
-    create_topic.awaiting_moderation.should == true
+    Topic.create.awaiting_moderation.should == true
   end
 
   it 'should default to being considered as ham (non-spam)' do
