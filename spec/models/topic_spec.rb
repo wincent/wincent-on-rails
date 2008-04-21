@@ -239,7 +239,7 @@ describe Topic, '"find_topics_for_forum" method' do
       Topic.update_all ['updated_at = ?', topic.id.days.from_now], ['id = ?', topic.id]
     end
     topic_ids = Topic.find_topics_for_forum(forum).collect(&:id)
-    topic_ids.should == topic_ids.sort
+    topic_ids.should == topic_ids.sort.reverse
   end
 
   it 'should include topics even if they have no comments' do
