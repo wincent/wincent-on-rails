@@ -14,11 +14,11 @@ end
 
 describe Topic, 'creation' do
   it 'should default to being public' do
-    create_topic.public.should == true
+    Topic.create.public.should == true
   end
 
   it 'should default to accepting comments' do
-    create_topic.accepts_comments.should == true
+    Topic.create.accepts_comments.should == true
   end
 
   it 'should default to awaiting moderation' do
@@ -26,7 +26,7 @@ describe Topic, 'creation' do
   end
 
   it 'should default to being considered as ham (non-spam)' do
-    create_topic.spam.should == false
+    Topic.create.spam.should == false
   end
 end
 
