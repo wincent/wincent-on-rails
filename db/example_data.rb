@@ -34,14 +34,6 @@ module FixtureReplacement
     }
   end
 
-  def topic_attributes
-    {
-      :forum                    => default_forum,
-      :title                    => String.random,
-      :body                     => String.random
-    }
-  end
-
   def issue_attributes
     {
       :summary                  => String.random,
@@ -90,6 +82,15 @@ module FixtureReplacement
 
   def tagging_attributes
     {
+    }
+  end
+
+  def topic_attributes
+    {
+      :forum                    => default_forum,
+      :title                    => String.random,
+      :body                     => String.random,
+      :awaiting_moderation      => false
     }
   end
 

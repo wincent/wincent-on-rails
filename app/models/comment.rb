@@ -37,7 +37,7 @@ protected
 
   # NOTE: possible bug here: when a comment is queued for moderation the commentable will get updated
   # if the comment is later marked as spam then we will have updated the commentable for nothing
-  # therefore may need to consider adding yet another callback to hand this kind of case (an after save callback)
+  # therefore may need to consider adding yet another callback to handle this kind of case (an after save callback)
   def update_caches_after_create
     updates = <<-UPDATES
       comments_count    = comments_count + 1,
@@ -48,14 +48,14 @@ protected
     UPDATES
     timestamp = update_timestamps_for_changes? ? created_at : commentable.updated_at
     commentable.class.update_all [updates, user, id, created_at, timestamp], ['id = ?', commentable.id]
-    User.update_all ['comments_count = comments_count + 1'], ['id = ?', user]
+    User.update_all ['comments_count = comments_count + 1'], ['id = ?', user] if user
   end
 
   def update_caches_after_destroy
     last_comment    = commentable.comments.find(:first, :order => 'comments.created_at DESC')
-    last_user       = last_comment ? last_comment.user : nil
+    last_user       = last_comment ? last_comment.user : (commentable.user if commentable.respond_to?(:user))
     comment_id      = last_comment ? last_comment.id : nil
-    last_commented  = last_comment ? last_comment.created_at : nil
+    last_commented  = last_comment ? last_comment.created_at : commentable.created_at
     updates = <<-UPDATES
       comments_count    = comments_count - 1,
       last_commenter_id = ?,
@@ -65,6 +65,6 @@ protected
     UPDATES
     timestamp = (update_timestamps_for_changes? && !last_commented.nil?) ? last_commented : commentable.created_at
     commentable.class.update_all [updates, last_user, comment_id, last_commented, timestamp], ['id = ?', commentable.id]
-    User.update_all ['comments_count = comments_count - 1'], ['id = ?', user]
+    User.update_all ['comments_count = comments_count - 1'], ['id = ?', user] if user
   end
 end

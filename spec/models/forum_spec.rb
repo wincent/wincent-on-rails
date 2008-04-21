@@ -229,3 +229,83 @@ describe Forum, 'find_all method' do
     (finish - start).should == -1
   end
 end
+
+# "last post" info wrong for anonymous comments?
+describe Forum, 'http://rails.wincent.com/issues/671' do
+  before do
+    @forum    = create_forum
+    @user     = create_user
+    @replier  = create_user
+  end
+
+  # note with all these specs we test after deletion as well as after creation
+  it 'should show the correct "last post" for topics with no replies' do
+    @topic = create_topic :forum => @forum, :user => @user
+    result = Topic.find_topics_for_forum(@forum).first
+    result.last_active_user_id.should == @user.id.to_s
+    result.last_active_user_display_name.should == @user.display_name
+  end
+
+  it 'should show the correct "last post" for topics with a reply' do
+    @topic = create_topic :forum => @forum, :user => @user
+    comment = create_comment :commentable => @topic, :user => @replier
+    result = Topic.find_topics_for_forum(@forum).first
+    result.last_active_user_id.should == @replier.id.to_s
+    result.last_active_user_display_name.should == @replier.display_name
+
+    # now delete
+    comment.destroy
+    result = Topic.find_topics_for_forum(@forum).first
+    result.last_active_user_id.should == @user.id.to_s
+    result.last_active_user_display_name.should == @user.display_name
+  end
+
+  it 'should show the correct "last post" for topics with an anonymous reply' do
+    @topic = create_topic :forum => @forum, :user => @user
+    comment = create_comment :commentable => @topic, :user => nil
+    result = Topic.find_topics_for_forum(@forum).first
+    result.last_active_user_id.should == nil
+    result.last_active_user_display_name.should == nil
+
+    # now delete
+    comment.destroy
+    result = Topic.find_topics_for_forum(@forum).first
+    result.last_active_user_id.should == @user.id.to_s
+    result.last_active_user_display_name.should == @user.display_name
+  end
+
+  it 'should show the correct "last post" for anonymous topics with no replies' do
+    @topic = create_topic :forum => @forum, :user => nil
+    result = Topic.find_topics_for_forum(@forum).first
+    result.last_active_user_id.should == nil
+    result.last_active_user_display_name.should == nil
+  end
+
+  it 'should show the correct "last post" for anonymous topics with a reply' do
+    @topic = create_topic :forum => @forum, :user => nil
+    comment = create_comment :commentable => @topic, :user => @replier
+    result = Topic.find_topics_for_forum(@forum).first
+    result.last_active_user_id.should == @replier.id.to_s
+    result.last_active_user_display_name.should == @replier.display_name
+
+    # now delete
+    comment.destroy
+    result = Topic.find_topics_for_forum(@forum).first
+    result.last_active_user_id.should == nil
+    result.last_active_user_display_name.should == nil
+  end
+
+  it 'should show the correct "last post" for anonymous topics with an anonymous reply' do
+    @topic = create_topic :forum => @forum, :user => nil
+    comment = create_comment :commentable => @topic, :user => nil
+    result = Topic.find_topics_for_forum(@forum).first
+    result.last_active_user_id.should == nil
+    result.last_active_user_display_name.should == nil
+
+    # now delete
+    comment.destroy
+    result = Topic.find_topics_for_forum(@forum).first
+    result.last_active_user_id.should == nil
+    result.last_active_user_display_name.should == nil
+  end
+end
