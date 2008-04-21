@@ -11,5 +11,4 @@ module UsersHelper
     statuses << 'deleted' if email.deleted?
     "(#{statuses.join(', ')})"
   end
-
 end
