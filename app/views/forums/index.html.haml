@@ -7,7 +7,6 @@
 %table
   %tr
     %th Forum
-    %th Description
     %th Topics
     %th Last active
     -if admin?
@@ -16,8 +15,9 @@
     %tr{ :class => "forum #{cycle('odd', 'even')}" }
       %td
         =link_to forum.name, forum_path(forum)
-      %td
-        =h forum.description unless forum.description.blank?
+        -unless forum.description.blank?
+          %br
+          %span.annotation=h forum.description
       %td
         =topic_count forum.topics_count
       %td
