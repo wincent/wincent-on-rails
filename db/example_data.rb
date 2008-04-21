@@ -10,7 +10,8 @@ module FixtureReplacement
     {
       :user                     => default_user,
       :body                     => 'hello world',
-      :commentable              => default_article
+      :commentable              => default_article,
+      :awaiting_moderation      => false
     }
   end
 

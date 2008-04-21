@@ -8,7 +8,7 @@ end
 
 describe Comment, '"moderate_as_spam!" method' do
   before do
-    @comment = create_comment
+    @comment = create_comment :awaiting_moderation => true
   end
 
   it 'should turn off the "awaiting moderation" flag' do
@@ -42,7 +42,7 @@ end
 
 describe Comment, '"moderate_as_ham!" method' do
   before do
-    @comment = create_comment
+    @comment = create_comment :awaiting_moderation => true
   end
 
   it 'should turn off the "awaiting moderation" flag' do
