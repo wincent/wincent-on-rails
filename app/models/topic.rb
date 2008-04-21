@@ -28,7 +28,8 @@ class Topic < ActiveRecord::Base
   end
 
   def self.find_topics_for_forum forum, offset = 0, limit = 20
-    # TODO: consider moving this into the Forum model as Forum#find_topics or similar
+    # we don't move this into the Forum model because if we did so we'd lose the automatic mapping of int/string columns
+    # according the topics schema.
     sql = <<-SQL
       SELECT topics.id, topics.title, topics.comments_count, topics.view_count, topics.updated_at, topics.last_comment_id,
              users.id AS last_active_user_id,
