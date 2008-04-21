@@ -160,4 +160,36 @@ module ApplicationHelper
       raise 'not implemented'
     end
   end
+
+  def button_to_destroy_model model, url
+    haml_tag :form, { :id => "#{model.class.to_s.downcase}_#{model.id}_destroy_form", :style => 'display:inline;' } do
+      button = submit_to_remote 'button', 'destroy',
+        :url      => url,
+        :method   => :delete,
+        :failure  => "alert('Failed to delete')",
+        :confirm  => 'Really delete?'
+      concat button
+    end
+  end
+
+  def button_to_moderate_model_as_spam model, url
+    haml_tag :form, { :id => "#{model.class.to_s.downcase}_#{model.id}_spam_form", :style => 'display:inline;' } do
+      button = submit_to_remote 'button', 'spam',
+        :url => url,
+        :method => :put,
+        :failure => "alert('Failed to mark as spam')",
+        :confirm => 'Really mark as spam?'
+      concat button
+    end
+  end
+
+  def button_to_moderate_model_as_ham model, url
+    haml_tag :form, { :id => "#{model.class.to_s.downcase}_#{model.id}_ham_form", :style => 'display:inline;' } do
+      button = submit_to_remote 'button', 'ham',
+        :url => url,
+        :method => :put,
+        :failure => "alert('Failed to mark as ham')"
+      concat button
+    end
+  end
 end
