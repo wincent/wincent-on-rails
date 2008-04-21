@@ -34,6 +34,13 @@ pre
   line-height:      1.1em
   overflow:         auto
 
+// for the benefit of Safari (Firefox is fine):
+// for super-wide pre spans inside tables Safari will grow the table as large as need be to avoid adding scrollbars to the pre
+// block; this has the unwanted side-effect of adding scrollbars to the window and making the rest of the text horribly
+// inconvenient to read
+table pre
+  max-width:        640px
+
 tt
   color:            #966
   font-size:        125%
