@@ -8,6 +8,9 @@
         %br
         %span.annotation=wikitext_cheatsheet
       %td=preserve(f.text_area(:body, :cols => 80, :rows => 10))
+    %tr
+      %th Public?
+      %td=f.check_box :public
   %p=f.submit 'Save'
 %h4
 -#  ==Preview (#{link_to_update_preview})

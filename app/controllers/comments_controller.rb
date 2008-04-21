@@ -65,6 +65,7 @@ class CommentsController < ApplicationController
     # now create comment and try to add it
     @comment = parent_instance.comments.build params[:comment]
     @comment.user = current_user
+    @comment.public = params[:comment][:public] if admin? && params[:comment] && params[:comment].key?(:public)
     @comment.awaiting_moderation = !(admin? or logged_in_and_verified?)
     if @comment.save
       if @comment.awaiting_moderation
@@ -88,6 +89,7 @@ class CommentsController < ApplicationController
   def update
     respond_to do |format|
       format.html {
+        @comment.public = params[:comment][:public] if params[:comment] && params[:comment].key?(:public)
         if @comment.update_attributes params[:comment]
           flash[:notice] = 'Successfully updated'
           redirect_to polymorphic_comment_path(@comment)
