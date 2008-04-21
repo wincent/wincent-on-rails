@@ -7,7 +7,9 @@ class IssuesController < ApplicationController
   after_filter      :cache_show_feed, :only => [ :show ]
   cache_sweeper     :issue_sweeper, :only => [ :create, :update, :destroy ]
   in_place_edit_for :issue, :summary
-  acts_as_sortable  :by => [:kind, :id, :product_id, :summary, :status, :updated_at], :default => :updated_at, :descending => true
+  acts_as_sortable  :by => [:public, :kind, :id, :product_id, :summary, :status, :updated_at],
+                    :default => :updated_at,
+                    :descending => true
 
   def new
     # normally "kind" defaults to "bug report"

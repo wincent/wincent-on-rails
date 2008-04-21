@@ -1,6 +1,8 @@
 .pagination=@paginator.pagination_links if @paginator
 %table.main
   %tr
+    -if admin?
+      -sortable_header_cell :public, 'Public?'
     -sortable_header_cell :kind, 'Kind'
     -sortable_header_cell :id, '#'
     -sortable_header_cell :product_id, 'Product'
@@ -9,6 +11,8 @@
     -sortable_header_cell :updated_at, 'When'
   -for issue in @issues
     %tr{ :class => cycle('odd', 'even') }
+      -if admin?
+        %td=issue.public? ? image_tag('tick.png') : image_tag('lock.png')
       %td=link_to issue.kind_string, issues_path(:kind => issue.kind_string.capitalize), :title => "show all #{issue.kind_string.pluralize}"
       %td=issue.id.to_s
       %td=link_to(issue.product.name, issues_path(:product => issue.product.name), :title => "show all issues for #{issue.product.name}") if issue.product

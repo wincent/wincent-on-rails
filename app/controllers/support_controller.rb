@@ -1,5 +1,7 @@
 class SupportController < ApplicationController
-  acts_as_sortable  :by => [:kind, :id, :product_id, :summary, :status, :updated_at], :default => :updated_at, :descending => true
+  acts_as_sortable  :by => [:public, :kind, :id, :product_id, :summary, :status, :updated_at],
+                    :default => :updated_at,
+                    :descending => true
 
   def index
     options     = default_access_options # defined in ApplicationController
