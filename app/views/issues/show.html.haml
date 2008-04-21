@@ -8,60 +8,61 @@
   =link_to 'Issues', issues_path
   &raquo;
   ="#{@issue.kind_string} \##{@issue.id.to_s}"
-%h1.major="#{@issue.kind_string} \##{@issue.id.to_s}"
-.prev_next
-  =link_to_prev_issue if @prev
-  =link_to_next_issue if @next
--form_for @issue do |form|
-  %table[@issue]
-    -if admin?
+%div{ :class => 'issue' + (@issue.public ? '' : ' private'), :id => "issue_#{@issue.id}" }
+  %h1.major="#{@issue.kind_string} \##{@issue.id.to_s}"
+  .prev_next
+    =link_to_prev_issue if @prev
+    =link_to_next_issue if @next
+  -form_for @issue do |form|
+    %table.main
+      -if admin?
+        %tr
+          %th Kind
+          %td
+            -if admin?
+              =ajax_select form, :kind, underscores_to_spaces(Issue::KIND).sort
+            -else
+              @issue.kind_string
       %tr
-        %th Kind
+        -# TODO: ability to edit summary (admin)
+        %th Summary
         %td
           -if admin?
-            =ajax_select form, :kind, underscores_to_spaces(Issue::KIND).sort
+            =in_place_editor_field :issue, :summary
           -else
-            @issue.kind_string
-    %tr
-      -# TODO: ability to edit summary (admin)
-      %th Summary
-      %td
-        -if admin?
-          =in_place_editor_field :issue, :summary
-        -else
-          %strong=h @issue.summary
-    %tr
-      %th Product
-      %td
-        -if admin?
-          =ajax_select form, :product_id, product_options, :include_blank => true
-        -else
-          =link_to_product_issues @issue.product
-    %tr
-      %th When
-      %td=timeinfo @issue
-    %tr
-      %th Status
-      %td
-        -if admin?
-          =ajax_select form, :status, Issue::STATUS
-        -else
-          =@issue.status_string
-    %tr
-      %th Reporter
-      %td=link_to_user @issue.user
-    %tr
-      %th Description
-      %td=preserve @issue.description.w
-    -if admin?
+            %strong=h @issue.summary
       %tr
-        %th Public?
-        %td=ajax_check_box form, :public
+        %th Product
+        %td
+          -if admin?
+            =ajax_select form, :product_id, product_options, :include_blank => true
+          -else
+            =link_to_product_issues @issue.product
+      %tr
+        %th When
+        %td=timeinfo @issue
+      %tr
+        %th Status
+        %td
+          -if admin?
+            =ajax_select form, :status, Issue::STATUS
+          -else
+            =@issue.status_string
+      %tr
+        %th Reporter
+        %td=link_to_user @issue.user
+      %tr
+        %th Description
+        %td=preserve @issue.description.w
+      -if admin?
+        %tr
+          %th Public?
+          %td=ajax_check_box form, :public
 %h2.major Comments
 %table.issue
   -for comment in @comments
-    %tr{ :class => "comment #{cycle('even', 'odd')}", :id => "comment_#{comment.id}" }
-      %th{ :class => comment.public? ? nil : 'private' }
+    %tr{ :class => "comment #{cycle('even', 'odd')}" + (comment.public? ? '' : ' private'), :id => "comment_#{comment.id}" }
+      %th
         =link_to_user comment.user
         %br
         =pluralizing_count(comment.user.utterances_count, 'post') if comment.user

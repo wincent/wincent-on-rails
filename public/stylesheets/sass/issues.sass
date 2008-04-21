@@ -1,5 +1,3 @@
-table.issue
-  width: 100%
 .issue
   th
     padding: 1em
@@ -19,5 +17,9 @@ table.issue
     background: #eaeaea
 
 // we want private comments to stand out a bit so that the admin knows which ones are hidden from public view
-th.private
-  background: #c3e3b5
+tr.private>th
+  background: url(../images/lock.png) no-repeat right bottom
+
+.issue.private
+  h1
+    background: url(../images/lock.png) no-repeat right center
