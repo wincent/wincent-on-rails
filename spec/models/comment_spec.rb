@@ -78,11 +78,7 @@ end
 
 describe Comment, '"send_new_comment_alert" method' do
   before do
-    @admin_user   = create_user
-    @admin_user.update_attribute(:superuser, true)    # redundant (first-created user is always superuser), but err on the side...
-    @normal_user  = create_user
-    @normal_user.update_attribute(:superuser, false)  # redundant (defaults to false), but err on the side...
-    @comment = new_comment :user => @normal_user
+    @comment = new_comment :user => (create_user :superuser => false)
   end
 
   it 'should fire after saving new records' do
@@ -108,7 +104,7 @@ describe Comment, '"send_new_comment_alert" method' do
   end
 
   it 'should not send comment alerts for superuser comments' do
-    comment = new_comment :user => @admin_user
+    comment = new_comment :user => (create_user :superuser => true)
     CommentMailer.should_not_receive(:deliver_new_comment_alert)
     comment.save
   end

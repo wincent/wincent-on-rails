@@ -1,10 +1,8 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
 describe User, 'creation' do
-  it 'should not promote (only) the first-created user to superuser' do
-    # this was perhaps a useful behaviour when I initially deployed but has long since lost its purpose
-    # it really serves only to complicate the other specs (because we often create users which end up being superusers)
-    User.delete_all
+  it 'should not promote the first-created user to superuser' do
+    User.delete_all # strictly speaking not necessary, but just in case
     create_user.should_not be_superuser
   end
 end
@@ -95,7 +93,6 @@ describe User, 'protected attributes' do
   end
 
   it 'should deny mass-assignment to the superuser flag' do
-    create_user # first user is superuser by default, so skip over that one
     new_user.should_not allow_mass_assignment_of(:superuser => true)
   end
 
