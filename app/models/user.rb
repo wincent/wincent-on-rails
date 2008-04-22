@@ -39,9 +39,6 @@ class User < ActiveRecord::Base
     end
   end
 
-  # the first created user is the superuser
-  before_create             { |u| u.superuser = true if User.count == 0 }
-
   def after_save
     # What happens on User.create, or User.save on a new record?
     #   - Rails runs the :save validations

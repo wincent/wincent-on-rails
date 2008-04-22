@@ -1,9 +1,10 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
 describe User, 'creation' do
-  it 'should promote (only) the first-created user to superuser' do
+  it 'should not promote (only) the first-created user to superuser' do
+    # this was perhaps a useful behaviour when I initially deployed but has long since lost its purpose
+    # it really serves only to complicate the other specs (because we often create users which end up being superusers)
     User.delete_all
-    create_user.should be_superuser
     create_user.should_not be_superuser
   end
 end
