@@ -7,7 +7,7 @@ class Comment < ActiveRecord::Base
   acts_as_taggable
 
   # NOTE: by defining an after_create action we break the built-in counter-cache, so we must roll our own
-  after_create          :update_caches_after_create
+  after_create          :update_caches_after_create, :send_new_comment_alert
   after_destroy         :update_caches_after_destroy
 
   include Classifiable
@@ -66,5 +66,13 @@ protected
     timestamp = (update_timestamps_for_changes? && !last_commented.nil?) ? last_commented : commentable.created_at
     commentable.class.update_all [updates, last_user, comment_id, last_commented, timestamp], ['id = ?', commentable.id]
     User.update_all ['comments_count = comments_count - 1'], ['id = ?', user] if user
+  end
+
+  def send_new_comment_alert
+    begin
+      CommentMailer.deliver_new_comment_alert self
+    rescue Exception => e
+      logger.error "\nerror: Comment#send_new_comment_alert for comment #{self.id} failed due to exception #{e.class}: #{e}\n\n"
+    end
   end
 end

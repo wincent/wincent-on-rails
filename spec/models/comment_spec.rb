@@ -75,3 +75,36 @@ describe Comment, '"moderate_as_ham!" method' do
     Comment.find(@comment.id).updated_at.to_s.should == @comment.updated_at.to_s
   end
 end
+
+describe Comment, '"send_new_comment_alert" method' do
+  it 'should fire after saving new records' do
+    comment = new_comment
+    comment.should_receive(:send_new_comment_alert)
+    comment.save
+  end
+
+  it 'should not fire after saving an existing record' do
+    comment = create_comment
+    comment.should_not_receive(:send_new_comment_alert)
+    comment.save
+  end
+
+  it 'should deliver a new comment alert' do
+    comment = new_comment
+    CommentMailer.should_receive(:deliver_new_comment_alert).with(comment)
+    comment.save
+  end
+
+  it 'should rescue exceptions rather than dying' do
+    comment = new_comment
+    CommentMailer.should_receive(:deliver_new_comment_alert).and_raise('fatal error!')
+    lambda { comment.save }.should_not raise_error
+  end
+
+  it 'should log an error message on failure' do
+    comment = new_comment
+    CommentMailer.stub!(:deliver_new_comment_alert).and_raise('fatal error!')
+    comment.logger.should_receive(:error)
+    comment.save
+  end
+end

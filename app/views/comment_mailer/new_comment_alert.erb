@@ -1,0 +1,11 @@
+A new comment (<%= @comment.awaiting_moderation? ? '' : 'not '%>awaiting moderation) has been posted.
+
+Edit/moderate this comment:
+  <%= @comment_url %>
+
+Edit/moderate all comments:
+  <%= @moderation_url %>
+
+---- Start comment body ----
+<%= @comment.body %>
+---- End comment body ----
