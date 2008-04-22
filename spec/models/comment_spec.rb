@@ -77,34 +77,50 @@ describe Comment, '"moderate_as_ham!" method' do
 end
 
 describe Comment, '"send_new_comment_alert" method' do
+  before do
+    @admin_user   = create_user
+    @admin_user.update_attribute(:superuser, true)    # redundant (first-created user is always superuser), but err on the side...
+    @normal_user  = create_user
+    @normal_user.update_attribute(:superuser, false)  # redundant (defaults to false), but err on the side...
+    @comment = new_comment :user => @normal_user
+  end
+
   it 'should fire after saving new records' do
-    comment = new_comment
-    comment.should_receive(:send_new_comment_alert)
-    comment.save
+    @comment.should_receive(:send_new_comment_alert)
+    @comment.save
   end
 
   it 'should not fire after saving an existing record' do
-    comment = create_comment
-    comment.should_not_receive(:send_new_comment_alert)
-    comment.save
+    @comment.save
+    @comment.should_not_receive(:send_new_comment_alert)
+    @comment.save
   end
 
-  it 'should deliver a new comment alert' do
-    comment = new_comment
+  it 'should deliver a new comment alert for normal user comments' do
+    CommentMailer.should_receive(:deliver_new_comment_alert).with(@comment)
+    @comment.save
+  end
+
+  it 'should deliver a new comment alert for anonymous comments' do
+    comment = new_comment :user => nil
     CommentMailer.should_receive(:deliver_new_comment_alert).with(comment)
     comment.save
   end
 
+  it 'should not send comment alerts for superuser comments' do
+    comment = new_comment :user => @admin_user
+    CommentMailer.should_not_receive(:deliver_new_comment_alert)
+    comment.save
+  end
+
   it 'should rescue exceptions rather than dying' do
-    comment = new_comment
     CommentMailer.should_receive(:deliver_new_comment_alert).and_raise('fatal error!')
-    lambda { comment.save }.should_not raise_error
+    lambda { @comment.save }.should_not raise_error
   end
 
   it 'should log an error message on failure' do
-    comment = new_comment
     CommentMailer.stub!(:deliver_new_comment_alert).and_raise('fatal error!')
-    comment.logger.should_receive(:error)
-    comment.save
+    @comment.logger.should_receive(:error)
+    @comment.save
   end
 end
