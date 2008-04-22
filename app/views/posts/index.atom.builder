@@ -3,7 +3,7 @@ custom_atom_feed do |feed|
   feed.updated @posts.first.created_at
   feed.author do |author|
     author.name   'Wincent Colaiuta'
-    author.email  'win@wincent.com'
+    author.email  APP_CONFIG['admin_email']
   end
   for post in @posts
     feed.entry(post, :url => blog_url(post)) do |entry|

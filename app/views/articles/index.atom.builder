@@ -3,7 +3,7 @@ custom_atom_feed do |feed|
   feed.updated @articles.first.updated_at
   feed.author do |author|
     author.name   'Wincent Colaiuta'
-    author.email  'win@wincent.com'
+    author.email  APP_CONFIG['admin_email']
   end
   for article in @articles
     next if article.redirect?

@@ -11,8 +11,8 @@ class ResetMailer < ActionMailer::Base
       :cutoff           => reset.cutoff.utc
       })
     recipients  email.address
-    bcc         'win@wincent.com'
-    from        'win@wincent.com'
+    bcc         APP_CONFIG['admin_email']
+    from        APP_CONFIG['admin_email']
     sent_on     Time.now
     headers     {}
   end

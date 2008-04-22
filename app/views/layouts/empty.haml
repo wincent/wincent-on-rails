@@ -9,4 +9,5 @@
     #content
       =yield
     #footer
-      ==Copyright &copy; 1997-#{Time.new.year} #{mail_to('win@wincent.com', 'Wincent Colaiuta')}.
+      ==Copyright &copy; 1997-#{Time.new.year}
+      =mail_to APP_CONFIG['admin_email'], 'Wincent Colaiuta', :title => "Email me at #{APP_CONFIG['admin_email']}"
