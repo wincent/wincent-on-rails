@@ -1,11 +1,11 @@
-class CommentMailer < ActionMailer::Base
-  def new_comment_alert comment
+class IssueMailer < ActionMailer::Base
+  def new_issue_alert issue
     url_options = { :host => APP_CONFIG['host'] }
     url_options[:port] = APP_CONFIG['port'] if APP_CONFIG['port'] != 80
-    subject     "new comment alert from #{APP_CONFIG['host']}"
+    subject     "new issue alert from #{APP_CONFIG['host']}"
     body({
-      :comment        => comment,
-      :comment_url    => edit_comment_url(comment, url_options),
+      :issue          => issue,
+      :issue_url      => edit_issue_url(issue, url_options), # Issues#edit doesn't work yet but it will
       :moderation_url => admin_dashboard_url(url_options)
       })
     recipients  APP_CONFIG['admin_email']

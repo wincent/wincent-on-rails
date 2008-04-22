@@ -7,6 +7,8 @@ class Comment < ActiveRecord::Base
   acts_as_taggable
 
   # NOTE: by defining an after_create action we break the built-in counter-cache, so we must roll our own
+  # this isn't such a bad thing as we want to do something more complex than just increment the counter anyway
+  # if we wanted to avoid clobbering the Rails-generated counter cache callback we could use alias_method_chain
   after_create          :update_caches_after_create, :send_new_comment_alert
   after_destroy         :update_caches_after_destroy
 

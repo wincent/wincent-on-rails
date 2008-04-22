@@ -14,6 +14,20 @@ class Topic < ActiveRecord::Base
 
   include Classifiable
 
+  # we use alias_method_chain here because if we just declare an after_create callback
+  # we'll clobber the method that Rails set up for us when we specified :counter_cache above
+  def after_create_with_send_new_topic_alert
+    after_create_without_send_new_topic_alert # let Rails update the counter cache
+    begin
+      return if self.user && self.user.superuser? # don't inform admin of his own comments
+      TopicMailer.deliver_new_topic_alert self
+    rescue Exception => e
+      logger.error \
+        "\nerror: Topic#after_create_with_send_new_topic_alert for topic #{self.id} failed due to exception #{e.class}: #{e}\n\n"
+    end
+  end
+  alias_method_chain :after_create, :send_new_topic_alert
+
   def before_create
     # part of fix for: http://rails.wincent.com/issues/671
     # this allows us to drop the MySQL-specific conditional IFNULL logic from the find_topics_for_forum method

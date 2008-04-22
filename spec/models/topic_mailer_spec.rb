@@ -1,17 +1,17 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
-describe CommentMailer, 'comment' do
+describe TopicMailer, 'topic' do
   include ActionController::UrlWriter
   default_url_options[:host] = APP_CONFIG['host']
   default_url_options[:port] = APP_CONFIG['port'] if APP_CONFIG['port'] != 80
 
   before do
-    @comment  = create_comment
-    @mail     = CommentMailer.create_new_comment_alert @comment
+    @topic  = create_topic
+    @mail   = TopicMailer.create_new_topic_alert @topic
   end
 
   it 'should set the subject line' do
-    @mail.subject.should =~ /new comment alert/
+    @mail.subject.should =~ /new topic alert/
   end
 
   it 'should be addressed to the site administrator' do
@@ -25,27 +25,31 @@ describe CommentMailer, 'comment' do
   end
 
   it 'should show "awaiting moderation" where applicable' do
-    comment = create_comment :awaiting_moderation => true
-    mail    = CommentMailer.create_new_comment_alert comment
+    topic = create_topic :awaiting_moderation => true
+    mail    = TopicMailer.create_new_topic_alert topic
     mail.body.should match(/awaiting moderation/)
     mail.body.should_not match(/not awaiting moderation/)
   end
 
   it 'should show "not awaiting moderation" where applicable' do
-    comment = create_comment :awaiting_moderation => false
-    mail    = CommentMailer.create_new_comment_alert comment
+    topic = create_topic :awaiting_moderation => false
+    mail    = TopicMailer.create_new_topic_alert topic
     mail.body.should match(/not awaiting moderation/)
   end
 
-  it 'should show the comment body in the body' do
-    @mail.body.should match(/#{@comment.body}/)
+  it 'should show the topic title in the body' do
+    @mail.body.should match(/#{@topic.title}/)
+  end
+
+  it 'should show the topic body in the body' do
+    @mail.body.should match(/#{@topic.body}/)
   end
 
   it 'should include a link to the administator dashboard' do
     @mail.body.should match(/#{admin_dashboard_url}/)
   end
 
-  it 'should include a link to the comment edit form' do
-    @mail.body.should match(/#{edit_comment_url(@comment)}/)
+  it 'should include a link to the topic edit form' do
+    @mail.body.should match(/#{edit_forum_topic_url(@topic.forum, @topic)}/)
   end
 end

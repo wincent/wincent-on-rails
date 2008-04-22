@@ -1,0 +1,13 @@
+A new topic (<%= @topic.awaiting_moderation? ? '' : 'not '%>awaiting moderation) has been posted.
+
+Edit/moderate this topic:
+  <%= @topic_url %>
+
+Edit/moderate all topics:
+  <%= @moderation_url %>
+
+Title: <%= @topic.title %>
+
+---- Start topic body ----
+<%= @topic.body %>
+---- End topic body ----

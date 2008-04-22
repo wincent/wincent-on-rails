@@ -28,3 +28,48 @@ describe Issue, 'acting as taggable' do
 
   it_should_behave_like 'ActiveRecord::Acts::Taggable'
 end
+
+describe Issue, '"send_new_issue_alert" method' do
+  before do
+    @issue = new_issue :user => (create_user :superuser => false)
+  end
+
+  it 'should fire after saving new records' do
+    @issue.should_receive(:send_new_issue_alert)
+    @issue.save
+  end
+
+  it 'should not fire after saving an existing record' do
+    @issue.save
+    @issue.should_not_receive(:send_new_issue_alert)
+    @issue.save
+  end
+
+  it 'should deliver a new issue alert for normal user issues' do
+    IssueMailer.should_receive(:deliver_new_issue_alert).with(@issue)
+    @issue.save
+  end
+
+  it 'should deliver a new issue alert for anonymous issues' do
+    issue = new_issue :user => nil
+    IssueMailer.should_receive(:deliver_new_issue_alert).with(issue)
+    issue.save
+  end
+
+  it 'should not send issue alerts for superuser issues' do
+    issue = new_issue :user => (create_user :superuser => true)
+    IssueMailer.should_not_receive(:deliver_new_issue_alert)
+    issue.save
+  end
+
+  it 'should rescue exceptions rather than dying' do
+    IssueMailer.should_receive(:deliver_new_issue_alert).and_raise('fatal error!')
+    lambda { @issue.save }.should_not raise_error
+  end
+
+  it 'should log an error message on failure' do
+    IssueMailer.stub!(:deliver_new_issue_alert).and_raise('fatal error!')
+    @issue.logger.should_receive(:error)
+    @issue.save
+  end
+end

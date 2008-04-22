@@ -20,6 +20,7 @@ class Issue < ActiveRecord::Base
   validates_inclusion_of  :status,  :in => STATUS_MAP.keys, :message => 'not a valid status code'
   attr_accessible         :summary, :description, :public, :product_id, :kind
   acts_as_taggable
+  after_create            :send_new_issue_alert
 
   include Classifiable
 
@@ -50,6 +51,15 @@ class Issue < ActiveRecord::Base
     conditions = { :public => true, :awaiting_moderation => false, :spam => false, :commentable_id => self.id,
       :commentable_type => 'Issue' }
     Comment.find :all, :conditions => conditions, :include => 'user', :order => 'comments.created_at'
+  end
+
+  def send_new_issue_alert
+    begin
+      return if self.user && self.user.superuser? # don't inform admin of his own issues
+      IssueMailer.deliver_new_issue_alert self
+    rescue Exception => e
+      logger.error "\nerror: Issue#send_new_issue_alert for issue #{self.id} failed due to exception #{e.class}: #{e}\n\n"
+    end
   end
 
   def self.update_timestamps_for_comment_changes?

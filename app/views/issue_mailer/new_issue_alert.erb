@@ -1,0 +1,13 @@
+A new issue (<%= @issue.awaiting_moderation? ? '' : 'not '%>awaiting moderation) has been posted.
+
+Edit/moderate this issue:
+  <%= @issue_url %>
+
+Edit/moderate all issues:
+  <%= @moderation_url %>
+
+Summary: <%= @issue.summary %>
+
+---- Start issue description ----
+<%= @issue.description %>
+---- End issue description ----
