@@ -98,11 +98,19 @@ describe CommentsController, 'PUT /comments/:id logged in as admin' do
     flash[:notice].should =~ /Successfully updated/
   end
 
-  it 'should redirect to the comment path on success' do
+  it 'should redirect to the comment path on success for comments not awaiting moderation' do
     @comment.stub!(:save).and_return(true)
     Comment.stub!(:find).and_return(@comment)
     do_put
     response.should redirect_to(controller.send(:polymorphic_comment_path, @comment))
+  end
+
+  it 'should redirect to the list of comments awaiting moderation on success for comments that are awaiting moderation' do
+    @comment.awaiting_moderation = true
+    @comment.stub!(:save).and_return(true)
+    Comment.stub!(:find).and_return(@comment)
+    do_put
+    response.should redirect_to(comments_path)
   end
 
   it 'should show an error on failure' do
