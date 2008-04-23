@@ -52,7 +52,11 @@
         %th Reporter
         %td=link_to_user @issue.user
       %tr
-        %th Description
+        %th
+          Description
+          -if admin?
+            %br
+            =link_to 'edit', edit_issue_path(@issue)
         %td=preserve @issue.description.w
       -if admin?
         %tr
@@ -81,4 +85,5 @@
   =link_to "all #{@issue.status_string.downcase} issues", issues_path(:status => @issue.status_string)
   =link_to "all #{@issue.kind_string.pluralize.downcase}", issues_path(:kind => @issue.kind_string)
   -if admin?
+    =link_to 'edit', edit_issue_path(@issue)
     =link_to 'destroy', issue_path(@issue), :method => :delete, :confirm => 'Really destroy this issue?'
