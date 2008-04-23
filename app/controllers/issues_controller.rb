@@ -1,8 +1,8 @@
 class IssuesController < ApplicationController
   before_filter     :require_admin, :except => [:create, :index, :new, :search, :show]
   before_filter     :find_product, :only => [:index]
-  before_filter     :find_issue, :except => [:create, :destroy, :index, :new, :search, :show]
-  before_filter     :find_issue_awaiting_moderation, :only => [:show]
+  before_filter     :find_issue, :except => [:create, :destroy, :edit, :index, :new, :search, :show, :update]
+  before_filter     :find_issue_awaiting_moderation, :only => [:edit, :show, :update]
   before_filter     :find_prev_next, :only => [:show]
   after_filter      :cache_show_feed, :only => [ :show ]
   cache_sweeper     :issue_sweeper, :only => [ :create, :update, :destroy ]
@@ -69,6 +69,22 @@ class IssuesController < ApplicationController
       format.atom {
         @comments = @issue.visible_comments # public, not awaiting moderation, not spam
       }
+    end
+  end
+
+  # Admin only.
+  def edit
+    render
+  end
+
+  # Admin only.
+  def update
+    if @issue.update_attributes params[:issue]
+      flash[:notice] = 'Successfully updated'
+      redirect_to (@issue.awaiting_moderation ? admin_issues_path : issue_path(@issue))
+    else
+      flash[:error] = 'Update failed'
+      render :action => 'edit'
     end
   end
 

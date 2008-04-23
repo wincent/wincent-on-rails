@@ -37,7 +37,8 @@ module FixtureReplacement
   def issue_attributes
     {
       :summary                  => String.random,
-      :description              => String.random
+      :description              => String.random,
+      :awaiting_moderation      => false
     }
   end
 
