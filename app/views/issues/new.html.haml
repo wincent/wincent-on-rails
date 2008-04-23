@@ -6,45 +6,7 @@
   =render :partial => 'shared/unverified'
 -# TODO: big fat search link to try and avoid duplicate reports
 -form_for :issue, :url => issues_path, :method => :post do |f|
-  %table.main
-    %tr
-      %th
-        Kind
-        %br
-        %span.annotation bug report, feature request, feedback, or support ticket
-      %td=f.select :kind, underscores_to_spaces(Issue::KIND).sort
-    %tr
-      %th
-        Summary
-        %br
-        %span.annotation a one-line summary of your issue
-      %td=f.text_field :summary
-    %tr
-      %th
-        Product
-        %br
-        %span.annotation optional (leave blank for general issues)
-      %td=f.select :product_id, product_options, :include_blank => true
-    %tr
-      %th
-        Description
-        %br
-        %span.annotation
-          please be as detailed as possible
-          %br
-          ==(#{wikitext_cheatsheet})
-      %td=f.text_area :description
-    %tr
-      %th
-        Public?
-        -if !logged_in?
-          %br
-          %span.annotation
-            this ticket must be public because you are posting anonymously
-            ==(#{link_to 'log in', login_path(:original_uri => request.request_uri)})
-      %td
-        =f.check_box :public, { :disabled => !logged_in? }
-        allow other visitors to see this ticket? (it may be helpful to them)
+  =render :partial => 'issues/form', :locals => { :f => f }
   %p=f.submit 'Create'
 .links
   =link_to 'back to issues index', issues_path
