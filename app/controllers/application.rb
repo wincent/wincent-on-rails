@@ -63,6 +63,8 @@ protected
     params[:format] == 'atom'
   end
 
+  # NOTE: as of Rails 2.1 this method will not longer be necessary
+  # see: http://github.com/rails/rails/commit/14a40804a29a57ad05ca6bffbe1e5334089593a9
   def cache_feed
     cache_page if is_atom?
   end
