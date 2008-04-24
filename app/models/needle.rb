@@ -18,8 +18,8 @@ class Needle < ActiveRecord::Base
   #   <tt>:type</tt>:: either <tt>:or</tt> to find models which feature any of the words in the query string, or <tt>:and</tt>
   #                    (the default) to find models which feature all of the words in the query string.
   def self.find_using_query_string query, options = {}
-    needle_query = NeedleQuery.new(query, options)
-    Needle.find_by_sql needle_query.sql
+    sql = NeedleQuery.new(query, options).sql
+    sql ? Needle.find_by_sql(sql) : []
   end
 
   class NeedleQuery
@@ -30,14 +30,8 @@ class Needle < ActiveRecord::Base
 
       # preprocessing
       @ignored  = []  # TODO: report back ignored words (in errors?); these will get shown in the flash
-      @words    = @query.split.select do |word|
-        if word.length < 4
-          @ignored << word
-          false
-        else
-          true
-        end
-      end
+      @words    = Needle.tokenize @query
+      # BUG: this will break out "title:foo" because that will get tokenize as "title", "foo"
     end
 
     def sql
@@ -79,8 +73,8 @@ class Needle < ActiveRecord::Base
     #           USING (model_class, model_id)
     #       JOIN (SELECT model_class, model_id FROM needles WHERE content = 'are') AS sub2
     #           USING (model_class, model_id)
-    #   WHERE needles.attribute_name = 'title' AND needles.content = 'hello'
-    #   AND (needles.user_id = 1 OR needles.user_id IS NULL)
+    #   WHERE attribute_name = 'title' AND content = 'hello'
+    #   AND (user_id = 1 OR user_id IS NULL)
     #   GROUP BY model_class, model_id
     #   ORDER BY count DESC;
     #
@@ -114,7 +108,7 @@ class Needle < ActiveRecord::Base
     #       (SELECT model_class, model_id, user_id FROM needles WHERE content = 'here')
     #           UNION ALL
     #       (SELECT model_class, model_id, user_id FROM needles WHERE content = 'there')
-    #   ) as temp
+    #   ) AS temp
     #   WHERE (user_id = 1 OR user_id IS NULL)
     #   GROUP BY model_class, model_id
     #   ORDER BY count DESC;
@@ -144,6 +138,7 @@ class Needle < ActiveRecord::Base
         end
         sql << " (#{self.base_query} WHERE #{self.clause_for_word(word)})"
       end
+      sql << ') AS temp'
       sql << " WHERE #{self.user_constraint}" unless self.user_constraint.blank?
       sql << " #{self.group_by}"
       sql << " #{self.order_by};"
@@ -164,11 +159,11 @@ class Needle < ActiveRecord::Base
     def user_constraint
       if @user_constraint.nil?
         if @options[:user].nil?           # no user: public records only
-          @user_constraint = '(needles.user_id IS NULL)'
+          @user_constraint = '(user_id IS NULL)'
         elsif @options[:user].superuser?  # admin user: no constraint
           @user_constraint = ''
         else                              # normal user: user's own records plus public records
-          @user_constraint = "(needles.user_id = #{@options[:user].id} OR needles.user_id IS NULL)"
+          @user_constraint = "(user_id = #{@options[:user].id} OR user_id IS NULL)"
         end
       end
       @user_constraint
@@ -186,10 +181,9 @@ class Needle < ActiveRecord::Base
         attribute_name  = nil
         content         = word
       end
-      conditions = { 'needles.content' => content }
-      conditions['needles.attribute_name'] = attribute_name unless attribute_name.blank?
+      conditions = { 'content' => content }
+      conditions['attribute_name'] = attribute_name unless attribute_name.blank?
       Needle.send(:sanitize_sql_hash_for_conditions, conditions)
     end
   end # class NeedleQuery
-
 end
