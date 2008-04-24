@@ -11,10 +11,10 @@ module ActiveRecord
             has_many      :taggings, :as => :taggable, :dependent => :destroy
             has_many      :tags,     :through => :taggings
             attr_writer   :pending_tags
-            validate      :check_pending_tag_format
-            after_save    :save_pending_tags
             include ActiveRecord::Acts::Taggable::InstanceMethods
             extend ActiveRecord::Acts::Taggable::ClassMethods
+            alias_method_chain :validate, :check_pending_tag_format
+            alias_method_chain :after_save, :save_pending_tags
           end
         end
       end # module ClassMethods
@@ -65,7 +65,8 @@ module ActiveRecord
       protected
 
         # taggings are a "has many through" association so can only be set up after saving for the first time
-        def save_pending_tags
+        def after_save_with_save_pending_tags
+          after_save_without_save_pending_tags
           return if pending_tags == @pending_tags
           taggings.destroy_all # not very efficient, but hopefully won't be doing this too often
           if @pending_tags
@@ -75,7 +76,8 @@ module ActiveRecord
           true
         end
 
-        def check_pending_tag_format
+        def validate_with_check_pending_tag_format
+          validate_without_check_pending_tag_format
           # can't use a normal validates_format_of here because that uses an accessor
           # (which will always return only valid values)
           # must check the instance variable directly
