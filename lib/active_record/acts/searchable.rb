@@ -12,14 +12,12 @@ module ActiveRecord
         # <tt>:attributes</tt>:: a hash of attribute names to be indexed
         def acts_as_searchable options = {}
           class_eval do
-            # TODO: instead of just calling after_create here must use alias_method_chain otherwise
-            # we risk clobbering (or being clobbered by) other after_create declarations in the models
-            after_create                :create_needles
-            after_update                :update_needles
-            after_destroy               :destroy_needles
             self.searchable_attributes  = options[:attributes] || [] # the "self" is _not_ optional
             include ActiveRecord::Acts::Searchable::InstanceMethods
             extend ActiveRecord::Acts::Searchable::ClassMethods
+            alias_method_chain :after_create, :needles
+            alias_method_chain :after_update, :needles
+            alias_method_chain :after_destroy, :needles
           end
         end
       end # module ClassMethods
@@ -59,7 +57,7 @@ module ActiveRecord
           return nil            # no ownership nor public/private distinction applies, so this is effectively public too
         end
 
-        def create_needles
+        def after_create_with_needles
           # ActiveRecord is just _too_ slow to do it this way
           # with a relatively big post (40+KB) this takes about 30 seconds to save the article in development mode
           #   Needle.create :model_class    => model_class,
@@ -98,12 +96,12 @@ module ActiveRecord
           end
         end
 
-        def update_needles
-          destroy_needles
-          create_needles
+        def after_update_with_needles
+          after_destroy_with_needles
+          after_create_with_needles
         end
 
-        def destroy_needles
+        def after_destroy_with_needles
           Needle.delete_all :model_class => self.class.to_s, :model_id => self.id
         end
       end # module InstanceMethods
