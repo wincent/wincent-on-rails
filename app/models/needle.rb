@@ -78,8 +78,7 @@ class Needle < ActiveRecord::Base
       end
       sql << " WHERE #{pending}"
       sql << " AND #{self.user_constraint}" unless self.user_constraint.blank?
-      sql << " #{self.group_by}"
-      sql << " #{self.order_by};"
+      sql << " #{self.group_by} #{self.order_by}"
     end
 
     # Given a query string like: "title:hello here there", and user with id 1, we want to produce a query like:
