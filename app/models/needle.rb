@@ -24,7 +24,7 @@ class Needle < ActiveRecord::Base
 
   class NeedleQuery
     def initialize query, options = {}
-      defaults  = { :type => :or }
+      defaults  = { :type => :or, :user => nil }
       @query    = query
       @options  = defaults.merge(options)
       @columns  = 'model_class, model_id, COUNT(*) AS count'
@@ -56,7 +56,7 @@ class Needle < ActiveRecord::Base
     #       JOIN (SELECT model_class, model_id FROM needles WHERE content = 'are') AS sub2
     #           USING (model_class, model_id)
     #   WHERE attribute_name = 'title' AND content = 'hello'
-    #   AND (user_id = 1 OR user_id IS NULL)
+    #   AND (user_id = 1 OR public = TRUE OR public IS NULL)
     #   GROUP BY model_class, model_id
     #   ORDER BY count DESC;
     #
@@ -88,7 +88,7 @@ class Needle < ActiveRecord::Base
     #   WHERE ((attribute_name = 'title' AND content = 'hello') -- first criterion
     #          OR (content = 'here')                            -- second criterion
     #          OR (content = 'there'))                          -- third criterion
-    #   AND (user_id = 1 OR user_id IS NULL)                    -- user constraint
+    #   AND (user_id = 1 OR public = TRUE OR public IS NULL)    -- user constraint
     #   GROUP BY model_class, model_id
     #   ORDER BY count DESC;
     #
@@ -122,16 +122,13 @@ class Needle < ActiveRecord::Base
     end
 
     def user_constraint
-      if @user_constraint.nil?
-        if @options[:user].nil?           # no user: public records only
-          @user_constraint = '(user_id IS NULL)'
-        elsif @options[:user].superuser?  # admin user: no constraint
-          @user_constraint = ''
-        else                              # normal user: user's own records plus public records
-          @user_constraint = "(user_id = #{@options[:user].id} OR user_id IS NULL)"
-        end
+      if @options[:user].nil? # no user: public records only
+        '(public = TRUE OR public IS NULL)'
+      elsif @options[:user].superuser? # admin user: no constraint
+        ''
+      else # normal user: user's own records plus public records
+        "(user_id = #{@options[:user].id} OR public = TRUE OR public IS NULL)"
       end
-      @user_constraint
     end
 
     def clause_for_word word
