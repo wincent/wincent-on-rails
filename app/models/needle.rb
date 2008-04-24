@@ -23,6 +23,8 @@ class Needle < ActiveRecord::Base
   end
 
   class NeedleQuery
+    attr_reader :clauses
+
     def initialize query, options = {}
       defaults  = { :type => :or, :user => nil }
       @query    = query
@@ -153,7 +155,6 @@ class Needle < ActiveRecord::Base
         end
         @clauses.push *tokenize_and_sanitize_clause(nil, clause) # fallback case: no valid attribute supplied
       end
-      @clauses
     end
   end # class NeedleQuery
 end
