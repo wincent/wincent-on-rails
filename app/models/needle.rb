@@ -24,8 +24,9 @@ class Needle < ActiveRecord::Base
 
   class NeedleQuery
     def initialize query, options = {}
+      defaults  = { :type => :or }
       @query    = query
-      @options  = options
+      @options  = defaults.merge(options)
       @columns  = 'model_class, model_id, COUNT(*) AS count'
 
       # preprocessing
@@ -35,35 +36,16 @@ class Needle < ActiveRecord::Base
     end
 
     def sql
-      case @words.length
-      when 0
+      word_count = @words.length
+      if word_count == 0
         nil
-      when 1
-        sql_for_simple_query_string @words[0]
+      elsif word_count == 1 or @options[:type] == :or
+        sql_for_OR_query_string @words
+      elsif @options[:type] == :and
+        sql_for_AND_query_string @words
       else
-        if @options[:type] == :and
-          sql_for_AND_query_string @words
-        else
-          sql_for_OR_query_string @words
-        end
+        raise 'unrecognized type'
       end
-    end
-
-    # Given a query string that only contains a single word like: "title:hello"
-    #
-    #   SELECT model_class, model_id, COUNT(*) AS count FROM needles WHERE attribute_name = 'title' AND content = 'hello'
-    #   AND (user_id = 1 OR user_id IS NULL)
-    #   GROUP BY model_class, model_id
-    #   ORDER BY count DESC;
-    #
-    # Note that we eliminate all subqueries in this case, and merge the user constraint into the only WHERE clause.
-    #
-    def sql_for_simple_query_string word
-      sql = self.base_query
-      sql << " WHERE #{self.clause_for_word(word)}"
-      sql << " AND #{self.user_constraint}" unless self.user_constraint.blank?
-      sql << " #{self.group_by}"
-      sql << " #{self.order_by};"
     end
 
     # Given a query string like: "title:hello here there", and user with id 1, we want to produce a query like:
