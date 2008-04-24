@@ -27,37 +27,6 @@ module ActiveRecord
 
       module InstanceMethods
       private
-        # Models may have any of the following:
-        #   - user_id (eg comments): ownership applies, not sure about public/private yet
-        #     (what if a comment is attached to a private model? I think the comment should inherit its user_id from its
-        #      commentable object; eg. obj.commentable.public)
-        #     can probably sidestep this issue: only admin can view comments in isolation; all others have to see them in context
-        #     of their commentable controller... could also let users view their own comments and nothing more
-        #     so basically, comments are always private, except for the admin, for whom "private" doesn't exist
-        #     comments are a thorny issue so probably won't index them at first
-        #   - user_id, public boolean (eg issues): public/private distinction and ownership applies
-        #   - public boolean (eg articles, posts): there is no explicit user id here because only the admin can create them
-        #   - neither (eg tags, taggings): again, only the admin can create them
-        #
-        # Odd cases:
-        #
-        #   - emails: these have a user_id but they are not intended to be public nor searchable
-        #
-        def needle_user_id
-          names = self.attribute_names
-          if names.include?('public')
-            if self.public
-              return nil          # anyone can view this model
-            else
-              # TODO: decide what to do here
-            end
-          end
-          if names.include? 'user_id'
-            return self.user_id # non-public
-          end
-          return nil            # no ownership nor public/private distinction applies, so this is effectively public too
-        end
-
         def after_create_with_needles
           after_create_without_needles
           create_needles
@@ -74,15 +43,16 @@ module ActiveRecord
         #                     :model_id       => model_id,
         #                     :attribute_name => attribute_name,
         #                     :content        => token,
-        #                     :user_id        => user
+        #                     :user_id        => user,
+        #                     :public         => public
         #
         # (2) Use Needle.connection.insert, one needle at a time
         #
         #     This is 10 times faster (3 seconds), but still too slow:
         #
         #       Needle.connection.insert <<-SQL
-        #         INSERT INTO needles (model_class, model_id, attribute_name, content, user_id, created_at, updated_at)
-        #         VALUES ('#{model_class}', #{model_id}, '#{attribute_name}', '#{token}', #{user}, NOW(), NOW())
+        #         INSERT INTO needles (model_class, model_id, attribute_name, content, user_id, public, created_at, updated_at)
+        #         VALUES ('#{model_class}', #{model_id}, '#{attribute_name}', '#{token}', #{user}, #{public}, NOW(), NOW())
         #       SQL
         #
         # (3) Doing a multi-row INSERT using Needle.connection.execute
@@ -91,7 +61,8 @@ module ActiveRecord
         def create_needles
           model_class     = self.class.to_s
           model_id        = self.id
-          user            = needle_user_id || 'NULL'
+          model_public    = self.public ? 'TRUE' : 'FALSE'
+          model_user      = (respond_to?(:user_id) ? self.user_id : nil) || 'NULL'
           values          = []
           searchable_attributes.each do |attribute|
             attribute_name  = attribute.to_s
@@ -100,13 +71,17 @@ module ActiveRecord
             Needle.tokenize(value).each do |token|
               # must quote because tokens can be URLs and URLs can contain single quotes etc
               token = Needle.connection.quote_string(token)
-              values << "('#{model_class}', #{model_id}, '#{attribute_name}', '#{token}', #{user}, NOW(), NOW())"
+              values << <<-SQL
+                ('#{model_class}', #{model_id}, '#{attribute_name}', '#{token}', #{model_user}, #{model_public}, NOW(), NOW())
+              SQL
             end
           end
 
           if values.length > 0
-            sql = 'INSERT INTO needles (model_class, model_id, attribute_name, content, user_id, created_at, updated_at) VALUES '
-            sql << values.join(', ')
+            sql = <<-SQL
+              INSERT INTO needles (model_class, model_id, attribute_name, content, user_id, public, created_at, updated_at) VALUES
+            SQL
+            sql << ' ' << values.join(', ')
             Needle.connection.execute sql
           end
         end
