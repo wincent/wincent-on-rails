@@ -10,6 +10,7 @@ class Topic < ActiveRecord::Base
   validates_presence_of :title
   validates_presence_of :body
   attr_accessible       :title, :body
+  acts_as_searchable    :attributes => [:title, :body]
   acts_as_taggable
 
   include Classifiable

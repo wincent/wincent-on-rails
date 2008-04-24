@@ -17,6 +17,7 @@ class Article < ActiveRecord::Base
                           :if => Proc.new { |a| !a.redirect.blank? },
                           :message => 'must be a [[wikitext]] link or HTTP URL'
   attr_accessible         :title, :redirect, :body, :public, :accepts_comments, :pending_tags
+  acts_as_searchable      :attributes => [:title, :body]
   acts_as_taggable
 
   def self.find_with_param! param

@@ -20,6 +20,7 @@ class Issue < ActiveRecord::Base
   validates_inclusion_of  :status,  :in => STATUS_MAP.keys, :message => 'not a valid status code'
   attr_accessible         :summary, :description, :public, :product_id, :kind
   acts_as_taggable
+  acts_as_searchable      :attributes => [:summary, :description]
   after_create            :send_new_issue_alert
 
   include Classifiable
