@@ -34,8 +34,9 @@ module ActiveRecord
         #     can probably sidestep this issue: only admin can view comments in isolation; all others have to see them in context
         #     of their commentable controller... could also let users view their own comments and nothing more
         #     so basically, comments are always private, except for the admin, for whom "private" doesn't exist
+        #     comments are a thorny issue so probably won't index them at first
         #   - user_id, public boolean (eg issues): public/private distinction and ownership applies
-        #   - public boolean (eg articles, revisions): there is no explicit user id here because only the admin can create them
+        #   - public boolean (eg articles, posts): there is no explicit user id here because only the admin can create them
         #   - neither (eg tags, taggings): again, only the admin can create them
         #
         # Odd cases:
@@ -58,22 +59,36 @@ module ActiveRecord
         end
 
         def after_create_with_needles
-          # ActiveRecord is just _too_ slow to do it this way
-          # with a relatively big post (40+KB) this takes about 30 seconds to save the article in development mode
-          #   Needle.create :model_class    => model_class,
-          #                 :model_id       => model_id,
-          #                 :attribute_name => attribute_name,
-          #                 :content        => token,
-          #                 :user_id        => user
-          #
-          # Inidividually inserting like this, one needle at a time, is 10 times faster (3 seconds), but still too slow:
-          #   Needle.connection.insert <<-SQL
-          #     INSERT INTO needles (model_class, model_id, attribute_name, content, user_id, created_at, updated_at)
-          #     VALUES ('#{model_class}', #{model_id}, '#{attribute_name}', '#{token}', #{user}, NOW(), NOW())
-          #   SQL
-          #
-          # So the approach we take is to build up one big query and do it all at once; I tested this with a 10,000 word
-          # article and it took less than a second in development mode.
+          after_create_without_needles
+          create_needles
+        end
+
+        # Three ways to insert needles:
+        #
+        # (1) Use Needle.create
+        #
+        #     ActiveRecord is just _too_ slow to do it this way:
+        #     with a relatively big post (40+KB) this takes about 30 seconds to save the article in development mode
+        #
+        #       Needle.create :model_class    => model_class,
+        #                     :model_id       => model_id,
+        #                     :attribute_name => attribute_name,
+        #                     :content        => token,
+        #                     :user_id        => user
+        #
+        # (2) Use Needle.connection.insert, one needle at a time
+        #
+        #     This is 10 times faster (3 seconds), but still too slow:
+        #
+        #       Needle.connection.insert <<-SQL
+        #         INSERT INTO needles (model_class, model_id, attribute_name, content, user_id, created_at, updated_at)
+        #         VALUES ('#{model_class}', #{model_id}, '#{attribute_name}', '#{token}', #{user}, NOW(), NOW())
+        #       SQL
+        #
+        # (3) Doing a multi-row INSERT using Needle.connection.execute
+        #
+        #     I tested this with a 10,000 word article and it took less than a second in development mode.
+        def create_needles
           model_class     = self.class.to_s
           model_id        = self.id
           user            = needle_user_id || 'NULL'
@@ -97,11 +112,21 @@ module ActiveRecord
         end
 
         def after_update_with_needles
-          after_destroy_with_needles
-          after_create_with_needles
+          after_update_without_needles
+          update_needles
+        end
+
+        def update_needles
+          destroy_needles
+          create_needles
         end
 
         def after_destroy_with_needles
+          after_destroy_without_needles
+          destroy_needles
+        end
+
+        def destroy_needles
           Needle.delete_all :model_class => self.class.to_s, :model_id => self.id
         end
       end # module InstanceMethods
