@@ -15,8 +15,8 @@ class Needle < ActiveRecord::Base
   # Options:
   #   <tt>:user</tt>:: a user model object (if admin finds all records, if nil finds only public records, otherwise finds
   #                    records visible to that user)
-  #   <tt>:type</tt>:: either <tt>:or</tt> to find models which feature any of the words in the query string, or <tt>:and</tt>
-  #                    (the default) to find models which feature all of the words in the query string.
+  #   <tt>:type</tt>:: either <tt>:or</tt> (the default) to find models which feature any of the words in the query string, or
+  #                    <tt>:and</tt> to find models which feature all of the words in the query string.
   def self.find_using_query_string query, options = {}
     sql = NeedleQuery.new(query, options).sql
     sql ? Needle.find_by_sql(sql) : []
@@ -41,10 +41,10 @@ class Needle < ActiveRecord::Base
       when 1
         sql_for_simple_query_string @words[0]
       else
-        if @options[:type] == :or
-          sql_for_OR_query_string @words
-        else
+        if @options[:type] == :and
           sql_for_AND_query_string @words
+        else
+          sql_for_OR_query_string @words
         end
       end
     end
