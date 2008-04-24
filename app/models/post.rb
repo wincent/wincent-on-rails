@@ -14,9 +14,7 @@ class Post < ActiveRecord::Base
   validates_presence_of   :excerpt
   attr_accessible         :title, :permalink, :excerpt, :body, :public, :accepts_comments, :pending_tags
   acts_as_taggable
-
-  # for now run without this: can always turn it on later (no sense in using it until the Ragel-based tokenizer is done)
-  #acts_as_searchable      :attributes => [:title, :excerpt, :body]
+  acts_as_searchable      :attributes => [:title, :excerpt, :body]
 
   def self.find_recent options = {}
     # we use "posts.created_at" rather than just "created_at" to disambiguate in the case where we

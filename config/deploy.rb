@@ -6,7 +6,7 @@ set :group_writable, :false
 # sudo won't run without this ("sorry, you must have a tty to run sudo")
 default_run_options[:pty] = true
 
-depend :remote, :gem, :wikitext, '>= 1.0.3'
+depend :remote, :gem, :wikitext, '>= 1.1'
 depend :remote, :gem, :haml, '>= 1.8.2'
 depend :remote, :gem, :hpricot, '>= 0.6'
 depend :remote, :gem, :rails, '>= 2.0.2'

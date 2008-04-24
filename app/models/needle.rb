@@ -2,14 +2,8 @@
 class Needle < ActiveRecord::Base
 
   def self.tokenize string
-    # crude approximation for now: only return "words", punctuation not included
-    # if speed later becomes an issue can look at doing a Ragel tokenizer
-    # would probably build such a tokenizer into the wikitext module so that it could helpfully tokenize things like:
-    #   <nowiki>foo</nowiki> bar
-    # as:
-    #   foo, bar
-    # most likely could just be built on top of the existing Ragel scanner with minimal effort
-    string.blank? ? [] : string.split(/\W+/)
+    @@wikitext_parser ||= Wikitext::Parser.new
+    @@wikitext_parser.fulltext_tokenize string
   end
 
   # Will return an array of Needle objects. Example:

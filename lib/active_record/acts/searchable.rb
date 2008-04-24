@@ -12,6 +12,8 @@ module ActiveRecord
         # <tt>:attributes</tt>:: a hash of attribute names to be indexed
         def acts_as_searchable options = {}
           class_eval do
+            # TODO: instead of just calling after_create here must use alias_method_chain otherwise
+            # we risk clobbering (or being clobbered by) other after_create declarations in the models
             after_create                :create_needles
             after_update                :update_needles
             after_destroy               :destroy_needles
@@ -81,11 +83,9 @@ module ActiveRecord
           searchable_attributes.each do |attribute|
             attribute_name  = attribute.to_s
             value           = self.send(attribute)
-
-            # TODO: skip tokens shorter than 3 (ie. index "php" but not "in")
+            next if value.nil?
             Needle.tokenize(value).each do |token|
-              # for now quoting isn't needed because we only ever return "words" (in the \w sense)
-              # but we perform quoting anyway just to keep us future-proof
+              # must quote because tokens can be URLs and URLs can contain single quotes etc
               token = Needle.connection.quote_string(token)
               values << "('#{model_class}', #{model_id}, '#{attribute_name}', '#{token}', #{user}, NOW(), NOW())"
             end
