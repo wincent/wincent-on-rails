@@ -31,18 +31,17 @@ class Needle < ActiveRecord::Base
 
       # preprocessing
       @ignored  = []  # TODO: report back ignored words (in errors?); these will get shown in the flash
-      @words    = Needle.tokenize @query
-      # BUG: this will break out "title:foo" because that will get tokenize as "title", "foo"
+      prepare_clauses
     end
 
     def sql
-      word_count = @words.length
-      if word_count == 0
+      clause_count = @clauses.length
+      if clause_count == 0
         nil
-      elsif word_count == 1 or @options[:type] == :or
-        sql_for_OR_query_string @words
+      elsif clause_count == 1 or @options[:type] == :or
+        sql_for_OR_query
       elsif @options[:type] == :and
-        sql_for_AND_query_string @words
+        sql_for_AND_query
       else
         raise 'unrecognized type'
       end
@@ -60,19 +59,18 @@ class Needle < ActiveRecord::Base
     #   GROUP BY model_class, model_id
     #   ORDER BY count DESC;
     #
-    def sql_for_AND_query_string words
+    def sql_for_AND_query
       sql = self.base_query
       @columns = 'model_class, model_id'
       count = 1
       first = true
       pending = nil
-      words.each do |word|
+      @clauses.each do |clause|
         if first
-          pending = self.clause_for_word word
+          pending = clause
           first = false
           next
         end
-        clause = self.clause_for_word word
         sql << " JOIN (#{self.base_query} WHERE #{clause}) AS sub#{count} USING (model_class, model_id)"
         count += 1
       end
@@ -101,9 +99,9 @@ class Needle < ActiveRecord::Base
     #   | article     |        3 |     2 |
     #   +-------------+----------+-------+
     #
-    def sql_for_OR_query_string words
+    def sql_for_OR_query
       sql = "#{base_query} WHERE ("
-      sql << words.map { |word| clause_for_word(word) }.join(" OR ")
+      sql << @clauses.join(" OR ")
       sql << ")"
       sql << " AND #{self.user_constraint}" unless self.user_constraint.blank?
       sql << " #{self.group_by} #{self.order_by}"
@@ -131,21 +129,31 @@ class Needle < ActiveRecord::Base
       end
     end
 
-    def clause_for_word word
-      attribute_name, content = '', ''
-      if index = word.index(':')
-        if index > 1
-          attribute_name  = word[0..index - 1]
-          content         = word[index + 1..-1]
+    def tokenize_and_sanitize_clause attribute_name, content
+      Needle.tokenize(content).collect do |token|
+        conditions = { 'content' => token }
+        conditions['attribute_name'] = attribute_name unless attribute_name.blank?
+        Needle.send(:sanitize_sql_hash_for_conditions, conditions)
+      end
+    end
+
+    def prepare_clauses
+      @clauses = []
+      @query.split(/\s+/).each do |clause|
+        attribute_name, content = '', ''
+        if index = clause.index(':')
+          if index > 0
+            attribute_name  = clause[0..index - 1]
+            word = clause[index + 1..-1]
+            unless word.blank? or attribute_name =~ /\A(https?|ftp|svn|mailto)\z/i
+              @clauses.push *tokenize_and_sanitize_clause(attribute_name, word)
+              next
+            end
+          end
         end
+        @clauses.push *tokenize_and_sanitize_clause(nil, clause) # fallback case: no valid attribute supplied
       end
-      if content.blank?
-        attribute_name  = nil
-        content         = word
-      end
-      conditions = { 'content' => content }
-      conditions['attribute_name'] = attribute_name unless attribute_name.blank?
-      Needle.send(:sanitize_sql_hash_for_conditions, conditions)
+      @clauses
     end
   end # class NeedleQuery
 end
