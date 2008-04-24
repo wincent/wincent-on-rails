@@ -102,14 +102,12 @@ class Needle < ActiveRecord::Base
 
     # Given a query string like: "title:hello here there", and user with id 1, we want to produce a query like:
     #
-    #   SELECT model_class, model_id, COUNT(*) AS count FROM (
-    #       (SELECT model_class, model_id, user_id FROM needles WHERE attribute_name = 'title' AND content = 'hello')
-    #           UNION ALL
-    #       (SELECT model_class, model_id, user_id FROM needles WHERE content = 'here')
-    #           UNION ALL
-    #       (SELECT model_class, model_id, user_id FROM needles WHERE content = 'there')
-    #   ) AS temp
-    #   WHERE (user_id = 1 OR user_id IS NULL)
+    #   SELECT model_class, model_id, COUNT(*) AS count
+    #   FROM needles
+    #   WHERE ((attribute_name = 'title' AND content = 'hello') -- first criterion
+    #          OR (content = 'here')                            -- second criterion
+    #          OR (content = 'there'))                          -- third criterion
+    #   AND (user_id = 1 OR user_id IS NULL)                    -- user constraint
     #   GROUP BY model_class, model_id
     #   ORDER BY count DESC;
     #
@@ -123,25 +121,11 @@ class Needle < ActiveRecord::Base
     #   +-------------+----------+-------+
     #
     def sql_for_OR_query_string words
-      sql = "SELECT #{@columns} FROM ("
-      if self.user_constraint.blank?
-        @columns = 'model_class, model_id'
-      else
-        @columns = 'model_class, model_id, user_id'
-      end
-      first = true
-      words.each do |word|
-        if first
-          first = false
-        else
-          sql << ' UNION ALL'
-        end
-        sql << " (#{self.base_query} WHERE #{self.clause_for_word(word)})"
-      end
-      sql << ') AS temp'
-      sql << " WHERE #{self.user_constraint}" unless self.user_constraint.blank?
-      sql << " #{self.group_by}"
-      sql << " #{self.order_by};"
+      sql = "#{base_query} WHERE ("
+      sql << words.map { |word| clause_for_word(word) }.join(" OR ")
+      sql << ")"
+      sql << " AND #{self.user_constraint}" unless self.user_constraint.blank?
+      sql << " #{self.group_by} #{self.order_by}"
     end
 
     def base_query
