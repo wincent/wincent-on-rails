@@ -23,6 +23,8 @@ class Needle < ActiveRecord::Base
   end
 
   class NeedleQuery
+    AND_QUERY_LIMIT = 5   # AND queries are slow and heavy because they require multiple joins
+    OR_QUERY_LIMIT  = 10  # OR queries are much faster, so allow up to ten components
     attr_reader :clauses
 
     def initialize query, options = {}
@@ -67,7 +69,7 @@ class Needle < ActiveRecord::Base
       count = 1
       first = true
       pending = nil
-      @clauses.each do |clause|
+      @clauses[0..AND_QUERY_LIMIT].each do |clause|
         if first
           pending = clause
           first = false
@@ -103,7 +105,7 @@ class Needle < ActiveRecord::Base
     #
     def sql_for_OR_query
       sql = "#{base_query} WHERE ("
-      sql << @clauses.join(" OR ")
+      sql << @clauses[0..OR_QUERY_LIMIT].join(" OR ")
       sql << ")"
       sql << " AND #{self.user_constraint}" unless self.user_constraint.blank?
       sql << " #{self.group_by} #{self.order_by}"
