@@ -118,10 +118,15 @@ private
   end
 
   def get_forum
-    if public_only?
-      @forum = Forum.find_with_param! params[:forum_id], :public => true
-    else
-      @forum = Forum.find_with_param! params[:forum_id]
+    if params[:forum_id]
+      if public_only?
+        @forum = Forum.find_with_param! params[:forum_id], :public => true
+      else
+        @forum = Forum.find_with_param! params[:forum_id]
+      end
+    else # special case for topic links without forum in params (helps us avoid some "N + 1 SELECT" problems)
+      topic = Topic.find params[:id], :include => :forum
+      redirect_to forum_topic_path(topic.forum, topic)
     end
   end
 
