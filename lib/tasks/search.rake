@@ -3,7 +3,7 @@ namespace :search do
   task :index => :environment do
     puts "Starting indexing"
     start = Time.now
-    [Article, Issue, Post, Topic].each { |model| index_model model }
+    indexable_models.each { |model| index_model model unless model.nil? }
     puts "Total time: #{Time.now - start} seconds"
   end
 
@@ -14,6 +14,13 @@ namespace :search do
 
   desc 'drops the full-text index and then recreates it'
   task :reindex => ['search:drop', 'search:index']
+end
+
+def indexable_models
+  Dir["#{RAILS_ROOT}/app/models/*.rb"].collect do |model|
+    klass = File.basename(model).sub(/\.rb\z/, '').classify.constantize
+    klass.private_instance_methods.include?('create_needles') ? klass : nil
+  end
 end
 
 def index_model klass
