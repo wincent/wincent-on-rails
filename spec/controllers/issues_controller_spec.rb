@@ -72,19 +72,7 @@ describe IssuesController, 'GET /issues/:id/edit' do
   end
 end
 
-=begin
-def update
-  if @issue.update_attributes params[:issue]
-    flash[:notice] = 'Successfully updated'
-    redirect_to issue_path(@issue)
-  else
-    flash[:error] = 'Update failed'
-    render :action => 'edit'
-  end
-end
-=end
-
-describe IssuesController, 'PUT /issues/:id' do
+describe IssuesController, 'PUT /issues/:id (html format)' do
   before do
     @issue = create_issue :awaiting_moderation => false # this is the default example data anyway, but be explicit
     login_as_admin
@@ -145,6 +133,46 @@ describe IssuesController, 'PUT /issues/:id' do
     do_put
     response.should render_template('edit')
   end
+end
+
+describe IssuesController, 'PUT /issues/:id (js format)' do
+  before do
+    @issue = create_issue :awaiting_moderation => false # this is the default example data anyway, but be explicit
+    login_as_admin
+  end
+
+  def do_put button = 'ham'
+    put :update, :id => @issue.id, :format => 'js', :button => button
+  end
+
+  it 'should require administrator privileges' do
+    controller.should_receive(:require_admin) # before filter
+    do_put
+  end
+
+  it 'should find the issue' do
+    controller.should_receive(:find_issue_awaiting_moderation) # before filter
+    do_put rescue nil # by mocking we prevent assignment to the @issue instance variable, so must rescue here
+  end
+
+  it 'should moderate as ham when requested' do
+    @issue.should_receive(:moderate_as_ham!)
+    Issue.stub!(:find).and_return(@issue)
+    do_put
+  end
+
+  it 'should moderate as spam when requested' do
+    @issue.should_receive(:moderate_as_spam!)
+    Issue.stub!(:find).and_return(@issue)
+    do_put 'spam'
+  end
+
+  it 'should complain about unknown parameters' do
+    Issue.stub!(:find).and_return(@issue)
+    lambda { do_put 'unknown' }.should raise_error
+  end
+
+  # TODO: stick js into an rjs template so that I can test the rest using a simple "should render_template"
 end
 
 describe IssuesController, 'admin-only methods' do

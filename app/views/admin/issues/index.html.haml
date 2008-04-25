@@ -8,12 +8,11 @@
     .when=timeinfo issue
     %div=issue.description.w
     .links
-      %form{:id => "issue_#{issue.id}_destroy_form", :style => 'display:inline;'}
-        =submit_to_remote 'button', 'destroy', :url => issue_path(issue), :method => :delete, :failure => "alert('Failed to delete')", :confirm => 'Really delete?'
-      %form{:id => "issue_#{issue.id}_spam_form", :style => 'display:inline;'}
-        =submit_to_remote 'button', 'spam', :url => admin_issue_path(issue), :method => :put, :failure => "alert('Failed to mark as spam')", :confirm => 'Really mark as spam?'
-      %form{:id => "issue_#{issue.id}_ham_form", :style => 'display:inline;'}
-        =submit_to_remote 'button', 'ham', :url => admin_issue_path(issue), :method => :put, :failure => "alert('Failed to mark as ham')"
+      =link_to 'edit', edit_issue_path(issue)
+      =button_to_destroy_issue issue
+      =button_to_moderate_issue_as_spam issue
+      =button_to_moderate_issue_as_ham issue
 .pagination=@paginator.pagination_links if @paginator
 .links
   =link_to 'public issues index', issues_path
+  =link_to 'refresh', admin_issues_path

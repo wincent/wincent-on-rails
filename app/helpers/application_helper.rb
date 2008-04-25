@@ -192,4 +192,17 @@ module ApplicationHelper
       concat button
     end
   end
+
+  # the issue helpers must go here in the application helper because they are used in both Admin::Issues and Issues namespaces
+  def button_to_destroy_issue issue
+    button_to_destroy_model issue, issue_path(issue)
+  end
+
+  def button_to_moderate_issue_as_spam issue
+    button_to_moderate_model_as_spam issue, issue_path(issue)
+  end
+
+  def button_to_moderate_issue_as_ham issue
+    button_to_moderate_model_as_ham issue, issue_path(issue)
+  end
 end

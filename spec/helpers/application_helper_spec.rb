@@ -90,3 +90,39 @@ describe ApplicationHelper, 'underscores_to_spaces method' do
     underscores_to_spaces(hash).sort.should == [['foo', 1], ['bar', 2]].sort
   end
 end
+
+describe ApplicationHelper, '"button_to_destroy_issue" method' do
+  before do
+    @issue = create_issue
+  end
+
+  # NOTE: rather than testing an internal implementation detail like this, a better way to keep DRY might be to
+  # test the button_to_destroy_model method as a "shared" behaviour, and then test the button_to_destroy_issue method
+  # using "it_should_behave_like"
+  it 'should call the "button_to_destroy_model" method' do
+    should_receive(:button_to_destroy_model).with(@issue, issue_path(@issue))
+    button_to_destroy_issue @issue
+  end
+end
+
+describe ApplicationHelper, '"button_to_moderate_issue_as_spam" method' do
+  before do
+    @issue = create_issue
+  end
+
+  it 'should call the "button_to_moderate_model_as_spam" method' do
+    should_receive(:button_to_moderate_model_as_spam).with(@issue, issue_path(@issue))
+    button_to_moderate_issue_as_spam @issue
+  end
+end
+
+describe ApplicationHelper, '"button_to_moderate_issue_as_ham" method' do
+  before do
+    @issue = create_issue
+  end
+
+  it 'should call the "button_to_moderate_model_as_ham" method' do
+    should_receive(:button_to_moderate_model_as_ham).with(@issue, issue_path(@issue))
+    button_to_moderate_issue_as_ham @issue
+  end
+end

@@ -1,8 +1,14 @@
 =page_title "Edit issue"
-=error_messages_for :issue
--form_for @issue, :url => issue_path(@issue) do |f|
-  =render :partial => 'issues/form', :locals => { :f => f }
-  %p=f.submit 'Save changes'
+%div[@issue]
+  =error_messages_for :issue
+  -form_for @issue, :url => issue_path(@issue) do |f|
+    =render :partial => 'issues/form', :locals => { :f => f }
+    %p=f.submit 'Save changes'
+  .links
+    =link_to 'show issue', issue_path(@issue)
+    =button_to_destroy_issue @issue
+    =button_to_moderate_issue_as_spam @issue
+    =button_to_moderate_issue_as_ham @issue
 .links
-  =link_to 'show issue', issue_path(@issue)
-  =link_to 'back to issues index', issues_path
+  =link_to 'public issues index', issues_path
+  =link_to 'issues awaiting moderation', admin_issues_path
