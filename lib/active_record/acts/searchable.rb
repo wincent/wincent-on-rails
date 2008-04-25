@@ -51,8 +51,8 @@ module ActiveRecord
         #     This is 10 times faster (3 seconds), but still too slow:
         #
         #       Needle.connection.insert <<-SQL
-        #         INSERT INTO needles (model_class, model_id, attribute_name, content, user_id, public, created_at, updated_at)
-        #         VALUES ('#{model_class}', #{model_id}, '#{attribute_name}', '#{token}', #{user}, #{public}, NOW(), NOW())
+        #         INSERT INTO needles (model_class, model_id, attribute_name, content, user_id, public)
+        #         VALUES ('#{model_class}', #{model_id}, '#{attribute_name}', '#{token}', #{user}, #{public})
         #       SQL
         #
         # (3) Doing a multi-row INSERT using Needle.connection.execute
@@ -71,17 +71,13 @@ module ActiveRecord
             Needle.tokenize(value).each do |token|
               # must quote because tokens can be URLs and URLs can contain single quotes etc
               token = Needle.connection.quote_string(token)
-              values << <<-SQL
-                ('#{model_class}', #{model_id}, '#{attribute_name}', '#{token}', #{model_user}, #{model_public}, NOW(), NOW())
-              SQL
+              values << "('#{model_class}', #{model_id}, '#{attribute_name}', '#{token}', #{model_user}, #{model_public})"
             end
           end
 
           if values.length > 0
-            sql = <<-SQL
-              INSERT INTO needles (model_class, model_id, attribute_name, content, user_id, public, created_at, updated_at) VALUES
-            SQL
-            sql << ' ' << values.join(', ')
+            sql = 'INSERT INTO needles (model_class, model_id, attribute_name, content, user_id, public) VALUES '
+            sql << values.join(', ')
             Needle.connection.execute sql
           end
         end
