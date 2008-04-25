@@ -27,6 +27,9 @@ ActionController::Routing::Routes.draw do |map|
   end
   map.resources :resets
 
+  # not a real resource, but declaring it as such gives us some convenient routing helpers
+  map.resources :search, :collection => { :issues => :get }
+
   # the wiki is built on the Article model, but we want routes like /wiki/Article_title, not /article/1
   # for now doing it using an explicit :controller
   # with next Rails release will be able to use:
@@ -38,7 +41,6 @@ ActionController::Routing::Routes.draw do |map|
 
   # regular routes
   map.connect   'misc/:action',   :controller => 'misc'
-  map.connect   'search/:action', :controller => 'search'
 
   # named routes
   map.admin_dashboard 'admin/dashboard',  :controller => 'admin/dashboard', :action => 'show'
