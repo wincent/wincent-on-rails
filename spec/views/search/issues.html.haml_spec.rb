@@ -24,6 +24,13 @@ describe '/search/issues' do
     end
   end
 
+  it 'should have a "site search" link' do
+    do_render
+    response.should have_tag('div.links') do
+      with_tag 'a[href=?]', search_index_path
+    end
+  end
+
   it 'should render the search form partial' do
     template.expect_render :partial => 'issues/search'
     do_render
