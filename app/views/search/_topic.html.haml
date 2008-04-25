@@ -1,0 +1,7 @@
+%h2
+  =result_number
+  \:
+  =link_to model.title, url_for(:controller => 'topics', :action => 'show', :id => model.id)
+.when=timeinfo model
+%span.annotation Forum topic
+.excerpt=preserve(truncate(model.body, 240).w)

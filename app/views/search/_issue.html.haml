@@ -1,0 +1,7 @@
+%h2
+  =result_number
+  \:
+  =link_to model.summary, issue_path(model)
+.when=timeinfo model
+%span.annotation Issue tracker ticket
+.excerpt=preserve(truncate(model.description, 240).w)
