@@ -25,10 +25,11 @@ class Needle < ActiveRecord::Base
   class NeedleQuery
     AND_QUERY_LIMIT = 5   # AND queries are slow and heavy because they require multiple joins
     OR_QUERY_LIMIT  = 10  # OR queries are much faster, so allow up to ten components
+    ROW_LIMIT       = 20  # will try to fetch twenty rows at a time
     attr_reader :clauses
 
     def initialize query, options = {}
-      defaults  = { :type => :or, :user => nil }
+      defaults  = { :type => :or, :user => nil, :offset => 0 }
       @query    = query
       @options  = defaults.merge(options)
       @columns  = 'model_class, model_id, COUNT(*) AS count'
@@ -80,7 +81,7 @@ class Needle < ActiveRecord::Base
       end
       sql << " WHERE #{pending}"
       sql << " AND #{self.user_constraint}" unless self.user_constraint.blank?
-      sql << " #{self.group_by} #{self.order_by}"
+      sql << " #{self.group_by} #{self.order_by} #{self.limit}"
     end
 
     # Given a query string like: "title:hello here there", and user with id 1, we want to produce a query like:
@@ -108,7 +109,7 @@ class Needle < ActiveRecord::Base
       sql << @clauses[0..OR_QUERY_LIMIT].join(" OR ")
       sql << ")"
       sql << " AND #{self.user_constraint}" unless self.user_constraint.blank?
-      sql << " #{self.group_by} #{self.order_by}"
+      sql << " #{self.group_by} #{self.order_by} #{self.limit}"
     end
 
     def base_query
@@ -121,6 +122,12 @@ class Needle < ActiveRecord::Base
 
     def order_by
       'ORDER BY count DESC'
+    end
+
+    def limit
+      # we try to retrieve one more row than we actually intend to use
+      # this is how we detect when to display a "more" link in the search results
+      "LIMIT #{@options[:offset].to_i}, #{ROW_LIMIT + 1}"
     end
 
     def user_constraint
