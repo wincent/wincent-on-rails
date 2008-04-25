@@ -1,0 +1,4 @@
+form { text-align: center; }
+form input[type=submit] { vertical-align: middle; }
+
+.tips { margin-left: auto; margin-right: auto; margin-top: -2em; margin-bottom: 3em; width: 66%; }

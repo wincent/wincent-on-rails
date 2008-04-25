@@ -1,0 +1,29 @@
+-content_for :css do
+  =stylesheet_link_tag 'search'
+%h1.major Search
+-form_tag search_index_path, :method => :post do
+  =text_field_tag :query, 'enter your search terms here', :size => 75
+  =submit_tag 'Search'
+.tips
+  %h4 Search tips
+  %ul
+    %li
+      Example:
+      %tt foo bar baz
+      (search for "foo" <em>or</em> "bar" <em>or</em> "baz")
+    %li
+      Example:
+      %tt title:foo
+      (search for "foo" in the title)
+    %li
+      Example:
+      %tt body:bar baz
+      (search for "bar" in the body <em>or</em> "baz" anywhere)
+    %li The <tt>title</tt> attribute is available on weblog posts, wiki articles and forum topics
+    %li The <tt>body</tt> attribute is available on weblog posts, wiki articles and forum topics
+    %li The <tt>summary</tt> and <tt>description</tt> attributes are available on issue tracker tickets
+    %li The <tt>excerpt</tt> attribute is available on weblog posts
+%h2.major Other kinds of search
+.links
+  =link_to 'issue tracker search', issues_search_path
+  =link_to 'tag search', search_tags_path
