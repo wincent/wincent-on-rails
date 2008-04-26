@@ -29,6 +29,20 @@ describe Classifiable, '"moderate_as_spam!" method', :shared => true do
     @object.moderate_as_spam!
     @object.class.find(@object.id).updated_at.to_s.should == @object.updated_at.to_s
   end
+
+  it 'should update the full-text search index if appropriate' do
+    # would have preferred to use mocks here, but it seems I can't use "should_receive" with a private method like "update_needles"
+    needle_count.should == 0
+    create_needle :model_class => @object.class.to_s, :model_id => @object.id
+    count = needle_count
+    count.should > 0
+    @object.moderate_as_spam!
+    needle_count.should == 0
+  end
+
+  def needle_count
+    Needle.count :conditions => { :model_class => @object.class.to_s, :model_id => @object.id }
+  end
 end
 
 describe Classifiable, '"moderate_as_ham!" method', :shared => true do
@@ -60,5 +74,21 @@ describe Classifiable, '"moderate_as_ham!" method', :shared => true do
     # as seems to be usual with ActiveRecord round-tripping, we lose precision and so must do a "to_s"
     @object.moderate_as_ham!
     @object.class.find(@object.id).updated_at.to_s.should == @object.updated_at.to_s
+  end
+
+  it 'should update the full-text search index if appropriate' do
+    # would have preferred to use mocks here, but it seems I can't use "should_receive" with a private method like "update_needles"
+    count = needle_count
+    count.should == 0
+    @object.moderate_as_ham!
+    if @object.private_methods.include?('update_needles')
+      needle_count.should > count
+    else
+      needle_count.should == 0
+    end
+  end
+
+  def needle_count
+    Needle.count :conditions => { :model_class => @object.class.to_s, :model_id => @object.id }
   end
 end
