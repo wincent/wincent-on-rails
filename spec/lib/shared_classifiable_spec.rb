@@ -32,10 +32,13 @@ describe Classifiable, '"moderate_as_spam!" method', :shared => true do
 
   it 'should update the full-text search index if appropriate' do
     # would have preferred to use mocks here, but it seems I can't use "should_receive" with a private method like "update_needles"
+    # the mock removes the private method and creates a public one with the same name
+    # which fails because our calling code explicitly checks for a private method (can't use respond_to? on private methods)
     needle_count.should == 0
     create_needle :model_class => @object.class.to_s, :model_id => @object.id
     count = needle_count
     count.should > 0
+    #@object.should_receive(:update_needles) # doesn't work
     @object.moderate_as_spam!
     needle_count.should == 0
   end
@@ -80,6 +83,7 @@ describe Classifiable, '"moderate_as_ham!" method', :shared => true do
     # would have preferred to use mocks here, but it seems I can't use "should_receive" with a private method like "update_needles"
     count = needle_count
     count.should == 0
+    #@object.should_receive(:update_needles) # doesn't work
     @object.moderate_as_ham!
     if @object.private_methods.include?('update_needles')
       needle_count.should > count
