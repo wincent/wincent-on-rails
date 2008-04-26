@@ -19,6 +19,6 @@ protected
 
     # I don't really like intertwining the classifiable and searchable functionality,
     # but seems to be a necessary evil for now
-    update_needles if private_methods.include?('update_needles')
+    update_needles if self.class.private_method_defined? :update_needles
   end
 end # module Classifiable

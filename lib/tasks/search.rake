@@ -19,7 +19,7 @@ end
 def indexable_models
   Dir["#{RAILS_ROOT}/app/models/*.rb"].collect do |model|
     klass = File.basename(model).sub(/\.rb\z/, '').classify.constantize
-    klass.private_instance_methods.include?('create_needles') ? klass : nil
+    klass.private_method_defined?(:create_needles) ? klass : nil
   end
 end
 
