@@ -1,6 +1,7 @@
 require File.join(File.dirname(__FILE__), '..', 'spec_helper')
 require File.join(File.dirname(__FILE__), '..', 'lib', 'active_record', 'acts', 'shared_taggable_spec')
 require File.join(File.dirname(__FILE__), '..', 'lib', 'shared_commentable_spec')
+require File.join(File.dirname(__FILE__), '..', 'lib', 'shared_classifiable_spec')
 
 describe Topic do
   it 'should be valid' do
@@ -108,6 +109,22 @@ describe Topic, 'comments association' do
     10.times { add_comment }
     lambda { @topic.destroy }.should change(Comment, :count).by(-10)
   end
+end
+
+describe Topic, 'acting as classifiable ("moderate_as_spam!" method)' do
+  before do
+    @object = create_topic :awaiting_moderation => true
+  end
+
+  it_should_behave_like 'Classifiable "moderate_as_spam!" method'
+end
+
+describe Topic, 'acting as classifiable ("moderate_as_ham!" method)' do
+  before do
+    @object = create_topic :awaiting_moderation => true
+  end
+
+  it_should_behave_like 'Classifiable "moderate_as_ham!" method'
 end
 
 describe Topic, 'acting as commentable' do
