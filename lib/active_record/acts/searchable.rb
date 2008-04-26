@@ -59,6 +59,8 @@ module ActiveRecord
         #
         #     I tested this with a 10,000 word article and it took less than a second in development mode.
         def create_needles
+          return if self.respond_to?(:awaiting_moderation?) && self.awaiting_moderation?
+          return if self.respond_to?(:spam?) && self.spam?
           model_class     = self.class.to_s
           model_id        = self.id
           model_public    = self.public ? 'TRUE' : 'FALSE'
