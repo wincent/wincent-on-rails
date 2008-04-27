@@ -113,6 +113,13 @@ end
 on :start, :check_target_environment, :except => [ :production, :staging, :help, :usage ]
 
 namespace :deploy do
+  namespace :web do
+    desc 'Display a maintenance page to visitors, effectively disabling the website'
+    task :disable, :roles => :web, :except => { :no_release => true } do
+      run "cp #{current_path}/public/maintenance.html #{shared_path}/system/maintenance.html"
+    end
+  end
+
   desc 'Restart the mongrel cluster via monit.'
   task :restart, :roles => :app do
     sudo "/usr/local/bin/monit -g #{cluster} restart all"
