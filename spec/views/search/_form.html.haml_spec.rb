@@ -26,7 +26,7 @@ describe '/search/_form' do
 
   it 'should show the search form' do
     do_render
-    response.should have_tag('form[action=?]', '/search') do
+    response.should have_tag('form[action=?]', search_index_path) do
       with_tag 'input[name=?]', 'query'
       with_tag 'input[type=?]', 'text'
       with_tag 'input[value=?]', 'Search'
