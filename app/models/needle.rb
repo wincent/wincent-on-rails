@@ -92,7 +92,7 @@ private
       count = 1
       first = true
       pending = nil
-      @clauses[0..AND_QUERY_LIMIT].each do |clause|
+      @clauses[0...AND_QUERY_LIMIT].each do |clause|
         if first
           pending = clause
           first = false
@@ -128,7 +128,7 @@ private
     #
     def sql_for_OR_query
       sql = "#{base_query} WHERE ("
-      sql << @clauses[0..OR_QUERY_LIMIT].join(" OR ")
+      sql << @clauses[0...OR_QUERY_LIMIT].join(" OR ")
       sql << ")"
       sql << " AND #{self.user_constraint}" unless self.user_constraint.blank?
       sql << " #{self.group_by} #{self.order_by} #{self.limit}"

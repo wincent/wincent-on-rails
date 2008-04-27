@@ -131,6 +131,16 @@ describe Needle, 'searching' do
     Needle.find_using_query_string('foo bar baz', :type => :and).should == [needle]
   end
 
+  it 'should ignore "OR" clauses in excess of the 10-clause limit' do
+    create_article :body => 'eleven'
+    Needle.find_using_query_string('one two three four five six seven eight nine ten eleven').should == []
+  end
+
+  it 'should ignore "AND" clauses in excess of the 5-clause limit' do
+    needle = create_post :body => 'one two three four five six'
+    Needle.find_using_query_string('one two three four five ignored', :type => :and).should == [needle]
+  end
+
   it 'should order search results by relevance' do
     needle1 = create_issue :summary => 'foo'
     needle2 = create_topic :title => 'foo was foo or foo', :body => 'all about foo and foo'
