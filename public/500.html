@@ -5,11 +5,6 @@
     <meta content='text/html;charset=UTF-8' http-equiv='Content-Type' />
     <title>wincent.com: 500 error</title>
     <link href="/stylesheets/display.css" media="screen" rel="stylesheet" type="text/css" />
-    <script src="/javascripts/prototype.js?1199964929" type="text/javascript"></script>
-    <script src="/javascripts/effects.js?1195228024" type="text/javascript"></script>
-    <script src="/javascripts/dragdrop.js?1195228025" type="text/javascript"></script>
-    <script src="/javascripts/controls.js?1201288755" type="text/javascript"></script>
-    <script src="/javascripts/application.js?1191582088" type="text/javascript"></script>
   </head>
   <body>
     <a id="top" name="top"></a>
@@ -21,12 +16,15 @@
       </div>
       <h1><a href="/">Wincent</a></h1>
       <ul id='navbar'>
+        <li><a href="http://wincent.com/a/products/">Products</a></li>
         <li><a href="/blog">Blog</a></li>
         <li><a href="/wiki">Wiki</a></li>
+        <li><a href="/forums">Forums</a></li>
+        <li><a href="/support">Support</a></li>
         <li class='last'>
-          <a href="/tags/search">Search</a>
-          <form action="/tags/search" id="search" method="get">
-            <input id="search_box" name="q" size="12" type="text" />
+          <a href="/search">Search</a>
+          <form action="/search" id="search" method="post">
+            <input id="search_box" name="query" size="20" type="text" />
           </form>
         </li>
       </ul>
