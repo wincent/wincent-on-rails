@@ -4,6 +4,6 @@ class SearchController < ApplicationController
   # and the "create" action is used to display the results.
   def create
     @offset = params[:offset].to_i
-    @models = Needle.find_using_query_string((params[:query] || ''), :offset => @offset)
+    @models = Needle.find_using_query_string((params[:query] || ''), :offset => @offset, :user => current_user)
   end
 end
