@@ -32,6 +32,18 @@ describe '/search/_issue' do
     do_render
   end
 
+  it 'should show the issue kind' do
+    @issue.should_receive(:kind_string).and_return('le bug')
+    do_render
+    response.should have_text(/le bug/)
+  end
+
+  it 'should show the issue status' do
+    @issue.should_receive(:status_string).and_return('cerrado')
+    do_render
+    response.should have_text(/cerrado/)
+  end
+
   it 'should get the issue description' do
     @issue.should_receive(:description).and_return('foo')
     do_render

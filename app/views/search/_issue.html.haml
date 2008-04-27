@@ -3,5 +3,5 @@
   \:
   =link_to model.summary, issue_path(model)
 .when=timeinfo model
-%span.annotation Issue tracker ticket
+%span.annotation==Issue tracker ticket (#{model.status_string.downcase}, #{model.kind_string.downcase})
 .excerpt=preserve(truncate(model.description, 240).w)
