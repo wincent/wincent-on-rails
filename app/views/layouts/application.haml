@@ -31,8 +31,8 @@
         -#%li=link_to 'About'
         %li.last
           =link_to_function 'Search', "$('search').toggle(); $('search_box').focus();", :href => search_tags_path
-          -form_tag search_tags_path, :method => 'get', :id => 'search', :style => 'display:none;' do
-            =text_field_tag :q, params[:q], :size => 12, :id => :search_box
+          -form_tag search_index_path, :method => :post, :id => 'search', :style => 'display:none;' do
+            =text_field_tag :query, params[:query], :size => 20, :id => :search_box
     #content
       -flash.each do |key, message|
         =content_tag :div, message, :id => key
