@@ -2,5 +2,5 @@
 .cloud
   -for tag in @tags
     =scaled_tag(tag)
--admin_only do
-  %p=link_to 'new', new_tag_path
+.links
+  =link_to 'tag search', search_tags_path
