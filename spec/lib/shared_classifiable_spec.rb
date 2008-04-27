@@ -40,9 +40,13 @@ describe Classifiable, '"moderate_as_spam!" method', :shared => true do
     create_needle :model_class => @object.class.to_s, :model_id => @object.id
     count = needle_count
     count.should > 0
-    #@object.should_receive(:update_needles) # doesn't work
     @object.moderate_as_spam!
-    needle_count.should == 0
+    if @object.class.private_method_defined? :update_needles
+      #@object.should_receive(:update_needles) # doesn't work
+      needle_count.should == 0
+    else
+      needle_count.should == count
+    end
   end
 
   def needle_count
