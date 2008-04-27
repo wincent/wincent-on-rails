@@ -33,8 +33,12 @@ private
     model_cache = Hash.new { |hash, key| hash[key] = {} }
     models.each { |model| model_cache[model.model_class][model.model_id] = nil }
     model_cache.each do |model_class, ids|
-      model_class.constantize.find(:all, :conditions => ['id IN (?)', ids.keys]).each do |result|
+      results = model_class.constantize.find(:all, :conditions => ['id IN (?)', ids.keys]).each do |result|
         model_cache[model_class][result.id] = result
+      end
+      if ids.length > results.length
+        self.logger.warn \
+          "warning: expected #{ids.length} #{model_class} instance(s) but found only #{results.length} (search index out of date)"
       end
     end
     models.collect { |model| model_cache[model.model_class][model.model_id] }

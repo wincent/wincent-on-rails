@@ -195,8 +195,21 @@ describe Needle, 'searching' do
 
   it 'should not find issues which have been deleted' do
     issue = create_issue :summary => 'foo'
-    Issue.delete issue.id
+    Issue.delete issue.id # no callbacks fire here, so the search index gets out of date
     Needle.find_using_query_string('foo').should == [nil]
+  end
+
+  it 'should log a warning for missing records' do
+    issue = create_issue :summary => 'foo'
+    Issue.delete issue.id # no callbacks fire here, so the search index gets out of date
+    logger = Needle.logger
+    begin
+      Needle.logger = mock_logger = mock('Logger', :null_object => true)
+      mock_logger.should_receive(:warn).with(/search index out of date/i)
+      Needle.find_using_query_string('foo')
+    ensure
+      Needle.logger = logger
+    end
   end
 end
 
