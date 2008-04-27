@@ -44,6 +44,31 @@ describe '/search/create with one page of search results' do
   end
 end
 
+describe '/search/create with some "nil" search results' do
+  # these can occur when somebody does a Model.delete
+  # in that case, the model gets destroyed and no callbacks are fired
+  # so the needles index doesn't get updated
+  # when we try to prefetch those missing models we get nil placeholders
+  before do
+    assigns[:models] = [@issue = create_issue, nil, nil]
+    assigns[:offset] = 0
+  end
+
+  def do_render
+    render 'search/create'
+  end
+
+  it 'should should render the partial for existing results' do
+    template.expect_render :partial => 'search/issue', :locals => { :model => @issue, :result_number => 1 }
+    do_render
+  end
+
+  it 'should not choke on the nil placeholders' do
+    lambda { do_render }.should_not raise_error
+  end
+end
+
+
 describe '/search/create with no search results' do
   before do
     assigns[:models] = []

@@ -33,7 +33,7 @@ private
     model_cache = Hash.new { |hash, key| hash[key] = {} }
     models.each { |model| model_cache[model.model_class][model.model_id] = nil }
     model_cache.each do |model_class, ids|
-      [model_class.constantize.find(*ids.keys)].flatten.each do |result|
+      model_class.constantize.find(:all, :conditions => ['id IN (?)', ids.keys]).each do |result|
         model_cache[model_class][result.id] = result
       end
     end

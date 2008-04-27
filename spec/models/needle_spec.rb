@@ -186,6 +186,18 @@ describe Needle, 'searching' do
     create_issue :description => 'the content', :spam => true
     Needle.find_using_query_string('looking').should == []
   end
+
+  it 'should not find issues which have been destroyed' do
+    issue = create_issue :summary => 'foo'
+    issue.destroy
+    Needle.find_using_query_string('foo').should == []
+  end
+
+  it 'should not find issues which have been deleted' do
+    issue = create_issue :summary => 'foo'
+    Issue.delete issue.id
+    Needle.find_using_query_string('foo').should == [nil]
+  end
 end
 
 describe Needle, 'searching as a superuser' do
