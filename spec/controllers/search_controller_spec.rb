@@ -12,23 +12,23 @@ describe SearchController, 'create action' do
   end
 
   it 'should find using the query string' do
-    Needle.should_receive(:find_using_query_string).with('foo', :offset => 0)
+    Needle.should_receive(:find_using_query_string).with('foo', :user => nil, :offset => 0)
     post :create, :query => 'foo'
   end
 
   it 'should should pass a nil query parameter as an empty string' do
     # this is low cost and prevents an exception being thrown in the face of bad input (possible attack)
-    Needle.should_receive(:find_using_query_string).with('', :offset => 0)
+    Needle.should_receive(:find_using_query_string).with('', :user => nil, :offset => 0)
     post :create
   end
 
   it 'should use the offset parameter when performing the query' do
-    Needle.should_receive(:find_using_query_string).with('foo', :offset => 5)
+    Needle.should_receive(:find_using_query_string).with('foo', :user => nil, :offset => 5)
     post :create, :query => 'foo', :offset => '5'
   end
 
   it 'should treat a missing offset value as 0' do
-    Needle.should_receive(:find_using_query_string).with('foo', :offset => 0)
+    Needle.should_receive(:find_using_query_string).with('foo', :user => nil, :offset => 0)
     post :create, :query => 'foo', :offset => nil
   end
 
