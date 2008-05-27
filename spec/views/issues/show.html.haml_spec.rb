@@ -7,14 +7,38 @@ describe '/issues/show' do
     assigns[:issue]     = @issue = create_issue
     assigns[:comments]  = []
     assigns[:comment]   = Comment.new
+  end
+
+  def do_render
     render '/issues/show'
   end
 
   it 'should show breadcrumbs' do
+    do_render
     response.should have_tag('div#breadcrumbs', /#{@issue.kind_string} \##{@issue.id}/) do
       with_tag 'a[href=?]', root_path
       with_tag 'a[href=?]', issues_path
     end
+  end
+
+  it 'should advertise an atom feed' do
+    template.should_receive(:atom_link).with(@issue)
+    do_render
+  end
+end
+
+describe '/issues/show for a private issue' do
+  include IssuesHelper
+
+  before do
+    assigns[:issue]     = @issue = create_issue(:public => false)
+    assigns[:comments]  = []
+    assigns[:comment]   = Comment.new
+  end
+
+  it 'should not advertise an atom feed' do
+    template.should_not_receive(:atom_link).with(@issue)
+    render '/issues/show'
   end
 end
 

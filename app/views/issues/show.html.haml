@@ -1,4 +1,5 @@
--atom_link @issue
+-if @issue.public?
+  -atom_link @issue
 -content_for :css do
   =stylesheet_link_tag 'issues'
 -@page_title = "#{@issue.kind_string} \##{@issue.id.to_s}: #{@issue.summary}"

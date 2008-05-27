@@ -211,10 +211,6 @@ private
     options << " AND product_id = #{@product.id}" if @product
   end
 
-  # BUG: even offering an atom feed on private issues is probably a bug
-  # we currently advertise that one is available, but when user tries to hit the URL we fail
-  # (actually we do a redirect, which will show up in Safari's RSS viewer as a communication error):
-  #   <html><body>You are being <a href="http://rails.wincent.com/issues">redirected</a>.</body></html>
   def cache_show_feed
     cache_page if params[:format] == 'atom'
   end
