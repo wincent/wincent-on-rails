@@ -137,3 +137,11 @@ ended up moving it back to vendor/plugins, which funnily enough works:
   (cd vendor/plugins/rspec-rails && git co 1.1.4)
   rm -rf vendor/plugins/rspec-rails/.git
   git add vendor/plugins/rspec vendor/plugins/rspec-rails
+
+  # Haml 2.0 upgrade: again, coincides with a move to GitHub
+  sudo gem install haml --no-ri
+  git rm -r vendor/plugins/haml
+  git clone git://github.com/nex3/haml.git vendor/plugins/haml
+  (cd vendor/plugins/haml && git co 2.0.0)
+  rm -rf vendor/plugins/haml/.git
+  git add vendor/plugins/haml
