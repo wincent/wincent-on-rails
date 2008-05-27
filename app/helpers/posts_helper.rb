@@ -1,15 +1,15 @@
 module PostsHelper
   def excerpt_html
-    preserve @post.excerpt.w
+    @post.excerpt.w
   end
 
   def body_html
-    preserve(@post.body ? @post.body.w : '')
+    @post.body ? @post.body.w : ''
   end
 
   def excerpt_and_body_html
     text = [(@post.excerpt || ''), (@post.body || '')].join("\n\n")
-    preserve(text.w)
+    text.w
   end
 
   def link_to_update_preview

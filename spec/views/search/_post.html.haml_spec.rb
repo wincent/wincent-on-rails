@@ -48,12 +48,4 @@ describe '/search/_post' do
     template.stub!(:truncate).and_return(excerpt)
     do_render
   end
-
-  it 'should use the preserve helper to make Haml mangle the excerpt a little bit less' do
-    excerpt = 'foo'
-    excerpt.stub!(:w).and_return('foo')
-    template.stub!(:truncate).and_return(excerpt)
-    template.should_receive(:preserve).with(excerpt)
-    do_render
-  end
 end

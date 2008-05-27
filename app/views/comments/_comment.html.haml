@@ -11,7 +11,7 @@
         Body
         %br
         %span.annotation=wikitext_cheatsheet
-      %td=preserve(f.text_area(:body, :cols => 80, :rows => 10))
+      %td=f.text_area(:body, :cols => 80, :rows => 10)
     -if admin?
       %tr
         %th Public?

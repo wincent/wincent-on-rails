@@ -15,15 +15,13 @@ describe ArticlesHelper, 'body_html method' do
     body_html.should == ''
   end
 
-  it 'should get the article body, convert to wikitext, and preserve whitespace' do
-    # the number of chained calls here makes it hard to split these expectations out into multiple examples
+  it 'should get the article body and convert it to wikitext' do
     @article  = mock_model(Article)
     @body     = String.random
     @wikitext = @body.w
     @article.should_receive(:body).and_return(@body)
     @body.should_receive(:w).and_return(@wikitext)
-    should_receive(:preserve).and_return('foobar')
-    body_html.should == 'foobar'
+    body_html.should == @wikitext
   end
 end
 

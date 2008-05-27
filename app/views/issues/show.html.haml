@@ -58,7 +58,7 @@
           -if admin?
             %br
             =link_to 'edit', edit_issue_path(@issue)
-        %td=preserve @issue.description.w
+        %td=@issue.description.w
       -if admin?
         %tr
           %th Public?
@@ -77,7 +77,7 @@
           %br
           =link_to 'edit', edit_comment_path(comment)
           -# TODO: add a means of marking individual comments as private
-      %td=preserve comment.body.w
+      %td=comment.body.w
 %h2.major Add a comment
 =render :partial => 'comments/comment'
 .links

@@ -23,7 +23,7 @@
       -if admin?
         %br
         =link_to 'edit', edit_forum_topic_path(@forum, @topic)
-    %td=preserve @topic.body.w
+    %td=@topic.body.w
   -for comment in @comments
     %tr{ :class => "comment #{cycle('even', 'odd')}", :id => "comment_#{comment.id}" }
       %td
@@ -36,7 +36,7 @@
         -if admin?
           %br
           =link_to 'edit', edit_comment_path(comment)
-      %td=preserve comment.body.w
+      %td=comment.body.w
 %h2.major Reply
 -if @topic.accepts_comments
   =render :partial => 'comments/comment'

@@ -1,6 +1,6 @@
 module ArticlesHelper
   def body_html
-    @article ? preserve(@article.body.w) : ''
+    @article ? @article.body.w : ''
   end
 
   def link_to_update_preview

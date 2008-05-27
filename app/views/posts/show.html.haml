@@ -23,7 +23,7 @@
   -for comment in (admin? ? @post.comments.ham : @post.comments.published)
     -next if comment.new_record?
     %div[comment]
-      .body=preserve comment.body.w
+      .body=comment.body.w
       .info==Posted by #{link_to_user comment.user} #{comment.created_at.distance_in_words}
       -admin_only do
         .links

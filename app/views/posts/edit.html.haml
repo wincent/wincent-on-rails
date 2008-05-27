@@ -16,14 +16,14 @@
         Excerpt
         %br
         %span.annotation==(#{wikitext_cheatsheet})
-      %td=preserve(f.text_area(:excerpt, :cols => 80))
+      %td=f.text_area(:excerpt, :cols => 80)
     %tr
       %th
         Body
         %br
         %span.annotation link to wikitext markup help
       -# TODO: make text area grow with window
-      %td=preserve(f.text_area(:body, :cols => 80, :rows => 30))
+      %td=f.text_area(:body, :cols => 80, :rows => 30)
     %tr
       %th Tags
       %td=f.text_field :pending_tags
