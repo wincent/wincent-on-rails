@@ -65,6 +65,7 @@ protected
 
   # NOTE: as of Rails 2.1 this method will not longer be necessary
   # see: http://github.com/rails/rails/commit/14a40804a29a57ad05ca6bffbe1e5334089593a9
+  # see: http://github.com/rails/rails/commit/7708650f73ddb4db300ea2059c60c1d907a4384e
   def cache_feed
     cache_page if is_atom?
   end

@@ -4,6 +4,10 @@ class IssuesController < ApplicationController
   before_filter     :find_issue, :except => [:create, :destroy, :edit, :index, :new, :search, :show, :update]
   before_filter     :find_issue_awaiting_moderation, :only => [:edit, :show, :update]
   before_filter     :find_prev_next, :only => [:show]
+
+  # NOTE: as of Rails 2.1 this filter will change
+  # see: http://github.com/rails/rails/commit/14a40804a29a57ad05ca6bffbe1e5334089593a9
+  # see: http://github.com/rails/rails/commit/7708650f73ddb4db300ea2059c60c1d907a4384e
   after_filter      :cache_show_feed, :only => [ :show ]
   cache_sweeper     :issue_sweeper, :only => [ :create, :update, :destroy ]
   in_place_edit_for :issue, :summary

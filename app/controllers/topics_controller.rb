@@ -2,6 +2,10 @@ class TopicsController < ApplicationController
   before_filter :require_admin,   :except => [ :create, :new, :show ]
   before_filter :get_forum,       :except => [ :index ]
   before_filter :get_topic,       :only => [ :show ]
+
+  # NOTE: as of Rails 2.1 this filter will change
+  # see: http://github.com/rails/rails/commit/14a40804a29a57ad05ca6bffbe1e5334089593a9
+  # see: http://github.com/rails/rails/commit/7708650f73ddb4db300ea2059c60c1d907a4384e
   after_filter  :cache_feed,      :only => [ :show ]
   cache_sweeper :topic_sweeper,   :only => [ :create, :update, :destroy ]
 
