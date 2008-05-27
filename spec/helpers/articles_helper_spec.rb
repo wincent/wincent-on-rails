@@ -5,13 +5,11 @@ require File.dirname(__FILE__) + '/../spec_helper'
 # to the internal implementation details of the methods
 
 describe ArticlesHelper do
-  it 'should include the ArticleHelper' do
-    included_modules = self.metaclass.send :included_modules
-    included_modules.should include(ArticlesHelper)
-  end
 end
 
 describe ArticlesHelper, 'body_html method' do
+  include ArticlesHelper
+
   it 'should return the empty string if @article is nil' do
     @article = nil
     body_html.should == ''
@@ -30,6 +28,8 @@ describe ArticlesHelper, 'body_html method' do
 end
 
 describe ArticlesHelper, 'link_to_update_preview method' do
+  include ArticlesHelper
+
   it 'should call link_to_remote' do
     should_receive(:link_to_remote)
     link_to_update_preview
@@ -52,6 +52,8 @@ describe ArticlesHelper, 'link_to_update_preview method' do
 end
 
 describe ArticlesHelper, 'observe_body' do
+  include ArticlesHelper
+
   it 'should call observe_field' do
     should_receive(:observe_field)
     observe_body
@@ -72,6 +74,8 @@ describe ArticlesHelper, 'observe_body' do
 end
 
 describe ArticlesHelper, 'common options' do
+  include ArticlesHelper
+
   it 'should use the wiki index path as the URL' do
     common_options[:url].should == wiki_index_path
   end

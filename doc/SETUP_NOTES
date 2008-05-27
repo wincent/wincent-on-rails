@@ -127,3 +127,13 @@ ended up moving it back to vendor/plugins, which funnily enough works:
   # installing webrat (for testing)
   script/plugin install http://svn.eastmedia.net/public/plugins/webrat/
   git add vendor/plugins/webrat
+
+  # RSpec 1.1.4 upgrade: note that this coincides with RSpecs move to GitHub
+  git rm -r vendor/plugins/rspec vendor/plugins/rspec_on_rails
+  git clone git://github.com/dchelimsky/rspec.git vendor/plugins/rspec
+  (cd vendor/plugins/rspec && git co 1.1.4)
+  rm -rf vendor/plugins/rspec/.git
+  git clone git://github.com/dchelimsky/rspec-rails.git vendor/plugins/rspec-rails
+  (cd vendor/plugins/rspec-rails && git co 1.1.4)
+  rm -rf vendor/plugins/rspec-rails/.git
+  git add vendor/plugins/rspec vendor/plugins/rspec-rails
