@@ -33,8 +33,10 @@ Given that most of the time that we bisect we'll be doing it on the development 
 
 Don't worry about storing the built extensions in the native format of the deployment machine in the repo, and instead use Capistrano to build the extensions on demand as an integral part of the deploy process.
 
+In a sense this makes deployment more fragile because the build could go wrong, but on the other hand it might also make things more robust because it guards us against incompatibilities if the version of Ruby or some dynamically-linked system libraries ever changes on the server (because we'll always be building against whatever version is current at the time of deployment).
+
 5. Try cross-compiling everything on the development machine
 
 I've never gotten this to work with Ruby extensions and I don't think it's worth investing the time and effort trying to get it to work. It would be lovely of course to be able to type "rake gems:build" and have everything just magically work, but I think it's really just a pipe dream.
 
-Of all these options, "1" is what I did the first time I tried this, I think "2" is actually probably the optimal solution, and as of right now I have "4" implemented although I am going to comment it out from my deploy.rb because I have my doubts about it.
+Of all these options, "1" is what I did the first time I tried this, I think "2" could be the optimal solution, and as of right now I have "4" implemented and will consider continuing with it.
