@@ -45,6 +45,8 @@ Rails::Initializer.run do |config|
 
   # Make Active Record use UTC-base instead of local time
   # config.active_record.default_timezone = :utc
+
+  config.gem 'wikitext', :version => '>= 1.1.1'
 end
 
 require 'active_record/acts/taggable'
@@ -52,7 +54,8 @@ require 'active_record/acts/searchable'
 require 'custom_atom_feed_helper'
 require 'authentication'
 require 'sortable'
-require 'wikitext'
+
+# NOTE: can move these into a rails/init.rb file in the gem itself
 require 'wikitext/string'
 require 'wikitext/rails'
 
