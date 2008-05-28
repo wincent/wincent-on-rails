@@ -4,12 +4,10 @@ describe '/search/_issue' do
   before do
     @issue          = create_issue
     @result_number  = 47
-    template.stub!(:model).and_return(@issue)
-    template.stub!(:result_number).and_return(@result_number)
   end
 
   def do_render
-    render '/search/_issue'
+    render :partial => '/search/issue', :locals => { :model => @issue, :result_number => @result_number }
   end
 
   it 'should show the result number' do

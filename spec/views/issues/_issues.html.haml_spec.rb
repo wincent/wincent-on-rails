@@ -8,7 +8,7 @@ describe '/issues/_issues' do
   end
 
   def do_render
-    render '/issues/_issues'
+    render :partial => '/issues/issues'
   end
 
   it 'should show pagination at top and bottom of the page' do

@@ -4,12 +4,10 @@ describe '/search/_topic' do
   before do
     @topic          = create_topic
     @result_number  = 47
-    template.stub!(:model).and_return(@topic)
-    template.stub!(:result_number).and_return(@result_number)
   end
 
   def do_render
-    render '/search/_topic'
+    render :partial => '/search/topic', :locals => { :model => @topic, :result_number => @result_number }
   end
 
   it 'should show the result number' do

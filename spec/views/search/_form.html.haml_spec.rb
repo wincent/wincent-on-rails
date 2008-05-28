@@ -2,7 +2,7 @@ require File.dirname(__FILE__) + '/../../spec_helper'
 
 describe '/search/_form' do
   def do_render
-    render '/search/_form'
+    render :partial => '/search/form'
   end
 
   it 'should use the "search" style sheet' do

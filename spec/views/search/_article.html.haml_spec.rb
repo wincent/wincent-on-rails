@@ -4,12 +4,10 @@ describe '/search/_article' do
   before do
     @article        = create_article
     @result_number  = 47
-    template.stub!(:model).and_return(@article)
-    template.stub!(:result_number).and_return(@result_number)
   end
 
   def do_render
-    render '/search/_article'
+    render :partial => '/search/article', :locals => { :model => @article, :result_number => @result_number }
   end
 
   it 'should show the result number' do

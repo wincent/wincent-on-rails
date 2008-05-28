@@ -11,7 +11,7 @@ describe '/issues/_search' do
   end
 
   def do_render
-    render '/issues/_search'
+    render :partial => '/issues/search'
   end
 
   it 'should display the search form' do
