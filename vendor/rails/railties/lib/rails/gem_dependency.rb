@@ -32,6 +32,8 @@ module Rails
         gem *args
       else
         $LOAD_PATH << File.join(unpacked_paths.first, 'lib')
+        ext = File.join(unpacked_paths.first, 'ext')
+        $LOAD_PATH << ext if File.exist?(ext)
         @frozen = true
       end
       @load_paths_added = true
