@@ -12,20 +12,21 @@ end
 
 describe Needle::NeedleQuery do
   # unfortunately this spec is tied fairly intimately to Rails' specific way of preparing queries
-  # (use of backticks, for example) but it is the easiest way to test the class
+  # (use of backticks, for example; and witness the breakage in Rails 2.1.0_RC1: the change in the output order)
+  # even so it is still the easiest way to test the class
   it 'should handle a complex example' do
     input = "title:foo bar http://example.com/ body:http://example.org bad: don't body:body-building :badder"
     query = Needle::NeedleQuery.new(input)
     query.prepare_clauses
     query.clauses.should == [
-      "`needles`.`attribute_name` = 'title' AND `needles`.`content` = 'foo'",
+      "`needles`.`content` = 'foo' AND `needles`.`attribute_name` = 'title'",
       "`needles`.`content` = 'bar'",
       "`needles`.`content` = 'http://example.com/'",
-      "`needles`.`attribute_name` = 'body' AND `needles`.`content` = 'http://example.org'",
+      "`needles`.`content` = 'http://example.org' AND `needles`.`attribute_name` = 'body'",
       "`needles`.`content` = 'bad'",
       "`needles`.`content` = 'don'",
-      "`needles`.`attribute_name` = 'body' AND `needles`.`content` = 'body'",
-      "`needles`.`attribute_name` = 'body' AND `needles`.`content` = 'building'",
+      "`needles`.`content` = 'body' AND `needles`.`attribute_name` = 'body'",
+      "`needles`.`content` = 'building' AND `needles`.`attribute_name` = 'body'",
       "`needles`.`content` = 'badder'"
       ]
   end

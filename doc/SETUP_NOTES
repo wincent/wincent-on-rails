@@ -145,3 +145,13 @@ ended up moving it back to vendor/plugins, which funnily enough works:
   (cd vendor/plugins/haml && git co 2.0.0)
   rm -rf vendor/plugins/haml/.git
   git add vendor/plugins/haml
+
+  # Rails 2.1.0_RC1 upgrade: again, coincides with a move to GitHub
+  git rm -r vendor/rails
+  git clone git://github.com/rails/rails.git vendor/rails
+  (cd vendor/rails && git co v2.1.0_RC1)
+  rm -rf vendor/rails/.git
+  add vendor/rails
+  rake rails:update
+  git add script/dbconsole
+  git add -u

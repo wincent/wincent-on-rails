@@ -302,7 +302,7 @@ describe Topic, '"visible_comments" method' do
   end
 
   def add_comment_with_override attribute, val
-    comment = @topic.comments.create
+    comment = @topic.comments.create :body => String.random
     comment.update_attribute attribute, val
     comment
   end
