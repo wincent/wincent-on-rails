@@ -172,6 +172,12 @@ task :after_check, :roles => :app do
 end
 
 # internal use only (no description)
+task :after_update, :roles => :app do
+  run "rake gems:clean"
+  run "rake gems:build"
+end
+
+# internal use only (no description)
 task :after_symlink, :roles => :app do
   run "ln -s #{shared_path}/database.yml #{release_path}/config/database.yml"
   run "ln -s #{shared_path}/app_config.yml #{release_path}/config/app_config.yml"
