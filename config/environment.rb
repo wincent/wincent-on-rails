@@ -4,6 +4,9 @@ RAILS_GEM_VERSION = '2.0.2' unless defined? RAILS_GEM_VERSION
 # Bootstrap the Rails environment, frameworks, and default configuration
 require File.join(File.dirname(__FILE__), 'boot')
 
+require 'yaml'
+APP_CONFIG = YAML.load_file("#{RAILS_ROOT}/config/app_config.yml")
+
 Rails::Initializer.run do |config|
   # Settings in config/environments/* take precedence over those specified here.
   # Application configuration should go into files in config/initializers
@@ -21,13 +24,9 @@ Rails::Initializer.run do |config|
   # (by default production uses :info, the others :debug)
   # config.log_level = :debug
 
-  # Your secret key for verifying cookie session data integrity.
-  # If you change this key, all old sessions will become invalid!
-  # Make sure the secret is at least 30 characters and all random,
-  # no regular words or you'll be exposed to dictionary attacks.
   config.action_controller.session = {
-    :session_key => '_wincent_on_rails_session',
-    :secret      => '26c5cd7d236db2b6add7dfd99b667227739fce2e0be44b00e89ee774368c9862fccb3e1ad00c57b872263f9aa714625ee8e273b929ac9fbfa151d11964f68a11'
+    :session_key => APP_CONFIG['session_key'],
+    :secret      => APP_CONFIG['session_secret']
   }
 
   # Use the database for sessions instead of the cookie-based default,
@@ -61,5 +60,3 @@ require 'wikitext/rails'
 
 Haml::Template::options[:ugly] = true
 Sass::Plugin.options[:style] = :compact
-
-APP_CONFIG = YAML.load_file("#{RAILS_ROOT}/config/app_config.yml")
