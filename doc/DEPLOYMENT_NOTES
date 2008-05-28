@@ -1,0 +1,40 @@
+GEMS
+
+With the advent of Rails 2.1 comes built-in support for "freezing" gems, including gems with native extensions, into the "vendor" directory. This brings with it some technical challenges because the deployment platform (Linux) is different from the development platform (Mac OS X).
+
+We have five possible causes of action:
+
+1. Manually update both architectures each time we install a new version of a gem
+
+- build on the development machine
+- commit the built extension
+- push to the remote repo
+- pull from the remote repo to the deployment machine
+- build on the deployment machine
+- commit the built extension
+- push to the remote repo
+
+The problem with this approach is that the history is not truly bisectable because we have a commit where the built extension has only been updated for one architecture but not the other.
+
+2. A variation of the above which aims to eliminate the "bisect" gap
+
+- build on the development machine
+- build the gem on the deployment machine, independently of the Rails application
+- transfer the built extension from the deployment macine to the development machine
+- commit both extensions at once
+
+This is a hassle but probably won't be updating gems all that frequently so it may be tolerable.
+
+3. Don't worry about bisectability and instead build on demand when needed
+
+Given that most of the time that we bisect we'll be doing it on the development machine it doesn't really matter what happens on the deployment machine. On those rare occasions where we want to bisect on the deployment machine we could actually just do a "rake gems:build" before testing each revision.
+
+4. Similar to the above, but build in automatic extension building on every deploy
+
+Don't worry about storing the built extensions in the native format of the deployment machine in the repo, and instead use Capistrano to build the extensions on demand as an integral part of the deploy process.
+
+5. Try cross-compiling everything on the development machine
+
+I've never gotten this to work with Ruby extensions and I don't think it's worth investing the time and effort trying to get it to work. It would be lovely of course to be able to type "rake gems:build" and have everything just magically work, but I think it's really just a pipe dream.
+
+Of all these options, "1" is what I did the first time I tried this, I think "2" is actually probably the optimal solution, and as of right now I have "4" implemented although I am going to comment it out from my deploy.rb because I have my doubts about it.

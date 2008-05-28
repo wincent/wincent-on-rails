@@ -173,8 +173,9 @@ end
 
 # internal use only (no description)
 task :after_update, :roles => :app do
-  run "rake gems:clean"
-  run "rake gems:build"
+  # see doc/DEPLOYMENT_NOTES for comments on why this is currently disabled
+  #run "rake gems:clean"
+  #run "rake gems:build"
 end
 
 # internal use only (no description)
