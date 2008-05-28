@@ -2,7 +2,7 @@ class ApplicationController < ActionController::Base
   #helper                    :all # include all helpers, all the time
   filter_parameter_logging  'passphrase'
   before_filter             :login_before
-  protect_from_forgery      :secret => '1b8b0816466a6f55b2a2a860c59d3ba0'
+  protect_from_forgery      :secret => APP_CONFIG['forgery_secret']
   rescue_from               ActiveRecord::RecordNotFound, :with => :record_not_found
 
   # all feeds are public, so turn off session management for them

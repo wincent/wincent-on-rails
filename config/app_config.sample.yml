@@ -3,3 +3,5 @@ port: 80
 admin_email: win@wincent.com
 session_key: _wincent_on_rails_session
 session_secret: 26c5cd7d236db2b6add7dfd99b667227739fce2e0be44b00e89ee774368c9862fccb3e1ad00c57b872263f9aa714625ee8e273b929ac
+forgery_secret: 1b8b0816466a6f55b2a2a860c59d3ba0
+
