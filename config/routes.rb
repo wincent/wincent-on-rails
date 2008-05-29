@@ -30,14 +30,10 @@ ActionController::Routing::Routes.draw do |map|
   # not a real resource, but declaring it as such gives us some convenient routing helpers
   map.resources :search, :collection => { :issues => :get }
 
-  # the wiki is built on the Article model, but we want routes like /wiki/Article_title, not /article/1
-  # for now doing it using an explicit :controller
-  # with next Rails release will be able to use:
-  #   map.resources :articles, :as => :wiki
-  # which will be nice because I'll have helper methods like "new_article_path" instead of "new_wiki_path"
+  # with Rails 2.1 have helper methods like "new_article_path" instead of "new_article_path"
   # will also fix the AtomFeedHelper breakage (polymorphic_url won't work with these kinds of routes)
   # again, must explicitly allow period in the id part of the route otherwise it will be classified as a route separator
-  map.resources :wiki,    :requirements => { :id => /[^\/]+/ }, :controller => 'articles',  :has_many => [ :comments ]
+  map.resources :articles, :as => :wiki, :requirements => { :id => /[^\/]+/ }, :has_many => [ :comments ]
 
   # regular routes
   map.connect   'misc/:action',   :controller => 'misc'

@@ -1,6 +1,6 @@
 %h1 Edit article
 =error_messages_for :article
--form_for @article, :url => wiki_path, :method => 'put' do |f|
+-form_for @article, :url => article_path, :method => 'put' do |f|
   %table.main
     %tr
       %th Title
@@ -34,5 +34,5 @@
   -# TODO: graceful non-JS fallback
 #preview=body_html
 .links
-  =link_to 'index', wiki_index_path, :class => 'back_link'
-  =link_to 'show', wiki_path(@article), :class => 'show_link'
+  =link_to 'index', articles_path, :class => 'back_link'
+  =link_to 'show', article_path(@article), :class => 'show_link'

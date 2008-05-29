@@ -3,7 +3,7 @@
 .when=timeinfo @article
 -if @redirected_from
   -if admin?
-    %p==(Redirected from #{link_to h(@redirected_from.title), edit_wiki_path(@redirected_from)})
+    %p==(Redirected from #{link_to h(@redirected_from.title), edit_article_path(@redirected_from)})
   -else
     %p==(Redirected from #{h @redirected_from.title})
 .article
@@ -11,5 +11,5 @@
 =render :partial => 'shared/tags', :locals => { :tags => @article.tags }
 .links
   -if admin?
-    =link_to 'edit', edit_wiki_path(@article)
-  =link_to 'wiki index', wiki_index_path
+    =link_to 'edit', edit_article_path(@article)
+  =link_to 'wiki index', articles_path

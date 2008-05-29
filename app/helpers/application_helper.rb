@@ -145,7 +145,7 @@ module ApplicationHelper
   def link_to_commentable commentable
     case commentable
     when Article
-      link_to commentable.title, wiki_path(commentable)
+      link_to commentable.title, article_path(commentable)
     when Issue
       link_to commentable.summary, issue_path(commentable)
     when Post

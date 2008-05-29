@@ -75,7 +75,7 @@ describe ArticlesHelper, 'common options' do
   include ArticlesHelper
 
   it 'should use the wiki index path as the URL' do
-    common_options[:url].should == wiki_index_path
+    common_options[:url].should == articles_path
   end
 
   it 'should update via POST (to allow large updates)' do

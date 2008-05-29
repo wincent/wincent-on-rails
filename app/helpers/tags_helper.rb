@@ -2,7 +2,7 @@ module TagsHelper
   def taggable_link model
     case model
     when Article
-      link_to h(model.title), wiki_path(model)
+      link_to h(model.title), article_path(model)
     when Post
       link_to h(model.title), blog_path(model)
     when Topic

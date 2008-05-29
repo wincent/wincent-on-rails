@@ -13,7 +13,7 @@ module ArticlesHelper
 
   def common_options
     {
-      :url => wiki_index_path,
+      :url => articles_path,
       :method => 'post',
       :update => 'preview',
       :with => "'body=' + encodeURIComponent($('article_body').value)",

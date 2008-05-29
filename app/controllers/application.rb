@@ -36,7 +36,7 @@ protected
     case class_str
     when 'Article'
       article = comment.commentable
-      wiki_comment_path article, comment
+      article_comment_path article, comment
     when 'Issue'
       issue = comment.commentable
       issue_comment_path issue, comment

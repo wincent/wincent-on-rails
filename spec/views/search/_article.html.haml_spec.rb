@@ -22,7 +22,7 @@ describe '/search/_article' do
 
   it 'should link to the article' do
     do_render
-    response.should have_tag('a[href=?]', wiki_path(@article))
+    response.should have_tag('a[href=?]', article_path(@article))
   end
 
   it 'should show the timeinfo for the article' do

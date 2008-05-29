@@ -7,7 +7,7 @@ custom_atom_feed do |feed|
   end
   for article in @articles
     next if article.redirect?
-    feed.entry(article, :url => wiki_url(article)) do |entry|
+    feed.entry(article, :url => article_url(article)) do |entry|
       entry.title article.title
       entry.content article.body.w, :type => 'html'
     end

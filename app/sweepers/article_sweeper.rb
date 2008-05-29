@@ -1,7 +1,7 @@
 class ArticleSweeper < ActionController::Caching::Sweeper
   observe Article
 
-  # routing helpers (wiki_index_path etc) _might_ not work without this include (behaviour seems erratic)
+  # routing helpers (articles_path etc) _might_ not work without this include (behaviour seems erratic)
   include ActionController::UrlWriter
 
   def after_destroy article
@@ -13,6 +13,6 @@ class ArticleSweeper < ActionController::Caching::Sweeper
   end
 
   def expire_cache
-    expire_page(wiki_index_path + '.atom')
+    expire_page(articles_path + '.atom')
   end
 end # class ArticleSweeper

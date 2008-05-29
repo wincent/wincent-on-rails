@@ -1,7 +1,7 @@
 class PostSweeper < ActionController::Caching::Sweeper
   observe Post
 
-  # routing helpers (wiki_index_path etc) _might_ not work without this include (behaviour seems erratic)
+  # routing helpers (articles_path etc) _might_ not work without this include (behaviour seems erratic)
   include ActionController::UrlWriter
 
   def after_destroy post
