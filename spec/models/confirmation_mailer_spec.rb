@@ -36,7 +36,7 @@ describe ConfirmationMailer, 'confirmation' do
   end
 
   it 'should include the confirmation link in the body' do
-    @mail.body.should match(/#{confirm_url(@confirmation)}/)
+    @mail.body.should match(/#{confirmation_url(@confirmation)}/)
   end
 
   it 'should mention the cutoff date in UTC time' do

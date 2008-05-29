@@ -2,7 +2,7 @@ ActionController::Routing::Routes.draw do |map|
 
   # resources
   map.resources :comments
-  map.resources :confirm, :controller => 'confirmations'
+  map.resources :confirmations, :as => :confirm
   map.resources :issues, :has_many => [ :comments ], :collection => { :search => :get }
   map.resources :links
 

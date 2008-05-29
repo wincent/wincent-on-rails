@@ -54,7 +54,7 @@ module ActionController
         redirect_to_login
       elsif !self.logged_in_and_verified?
         flash[:notice]          = 'You must verify your account before accessing the requested resource'
-        redirect_to new_confirm_path
+        redirect_to new_confirmation_path
       end
     end
 
