@@ -54,7 +54,10 @@ protected
   end
 
   def update_caches_after_destroy
-    last_comment    = commentable.comments.find(:first, :order => 'comments.created_at DESC')
+    # Rails BUG: first with conditions doesn't work across associations
+    # see: http://rails.lighthouseapp.com/projects/8994/tickets/275
+    #last_comment    = commentable.comments.last :order => 'comments.created_at'
+    last_comment    = commentable.comments.find :first, :order => 'comments.created_at DESC'
     last_user       = last_comment ? last_comment.user : (commentable.user if commentable.respond_to?(:user))
     comment_id      = last_comment ? last_comment.id : nil
     last_commented  = last_comment ? last_comment.created_at : commentable.created_at

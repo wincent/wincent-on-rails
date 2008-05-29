@@ -76,7 +76,7 @@ class User < ActiveRecord::Base
 
   def self.find_by_email email
     return nil if email.blank?
-    find :first, :include => :emails, :conditions => ['emails.address = ?', email]
+    first :include => :emails, :conditions => ['emails.address = ?', email]
   end
 
   # User accounts may have multiple email addresses associated with them,

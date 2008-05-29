@@ -3,6 +3,9 @@ class ResetMailer < ActionMailer::Base
     # TODO: allow user to set default email address
     url_options         = { :host => APP_CONFIG['host'] }
     url_options[:port]  = APP_CONFIG['port'] if APP_CONFIG['port'] != 80
+    # Rails BUG: first with conditions doesn't work across associations
+    # see: http://rails.lighthouseapp.com/projects/8994/tickets/275
+    #email = reset.user.emails.first(:conditions => 'deleted_at IS NULL') || (raise ActiveRecord::RecordNotFound)
     email = reset.user.emails.find(:first, :conditions => 'deleted_at IS NULL') || (raise ActiveRecord::RecordNotFound)
     subject     'wincent.com forgotten passphrase helper'
     body({

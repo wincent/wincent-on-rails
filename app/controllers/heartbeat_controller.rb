@@ -9,6 +9,6 @@ class HeartbeatController < ApplicationController
   # lightweight request that tests the full stack
   # (routing, controller, database/model, views, Haml)
   def ping
-    @tag = Tag.find(:first) || Tag.new
+    @tag = Tag.first || Tag.new
   end
 end

@@ -44,7 +44,7 @@ class Post < ActiveRecord::Base
     # - I am the only user creating articles
     # - if the proposed permalink is not unique validation will fail and the user can correct the problem
     # worst case scenario is that validation passes and then the database-level constraint kicks in
-    last =  Post.find :first, :conditions => ['permalink REGEXP ?', "^#{base}(-[0-9]+)?$"], :order => 'permalink DESC'
+    last =  Post.last :conditions => ['permalink REGEXP ?', "^#{base}(-[0-9]+)?$"], :order => 'permalink'
     if last.nil?
       base
     else
