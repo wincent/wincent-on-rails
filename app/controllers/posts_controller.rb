@@ -12,7 +12,7 @@ class PostsController < ApplicationController
     respond_to do |format|
       format.html {
         # NOTE: don't be tempted to page cache this action/format (it shows relative timestamps)
-        @paginator  = Paginator.new params, Post.count(:conditions => { :public => true }), blog_index_path
+        @paginator  = Paginator.new params, Post.count(:conditions => { :public => true }), posts_path
 
         # BUG: with the comment counts; each post causes a query like this one:
         #   SELECT count(*) AS count_all
@@ -36,7 +36,7 @@ class PostsController < ApplicationController
         @post = Post.new params[:post]
         if @post.save
           flash[:notice] = 'Successfully created new post.'
-          redirect_to blog_path(@post)
+          redirect_to post_path(@post)
         else
           flash[:error] = 'Failed to create new post.'
           render :action => 'new'
@@ -56,7 +56,7 @@ class PostsController < ApplicationController
   def destroy
     @post.destroy
     flash[:notice] = "Destroyed post: #{@post.title}"
-    redirect_to blog_index_path
+    redirect_to posts_path
   end
 
   def show
@@ -74,7 +74,7 @@ class PostsController < ApplicationController
   def update
     if @post.update_attributes params[:post]
       flash[:notice] = 'Successfully updated'
-      redirect_to blog_path(@post)
+      redirect_to post_path(@post)
     else
       flash[:error] = 'Update failed'
       render :action => 'edit'
@@ -95,9 +95,9 @@ private
     if admin?
       flash[:notice] = 'Requested post not found: create it?'
       session[:new_post_params] = { :title => params[:id], :permalink => params[:id] }
-      redirect_to new_blog_path
+      redirect_to new_post_path
     else
-      super blog_index_path
+      super posts_path
     end
   end
 end

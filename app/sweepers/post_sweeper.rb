@@ -15,6 +15,6 @@ class PostSweeper < ActionController::Caching::Sweeper
   def expire_cache
     # TODO: add per-post feeds as well (for monitoring comments)
     # for now we're only sweeping the main atom feed
-    expire_page(blog_index_path + '.atom')
+    expire_page(posts_path + '.atom')
   end
 end # class PostSweeper

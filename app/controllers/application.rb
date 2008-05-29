@@ -42,7 +42,7 @@ protected
       issue_comment_path issue, comment
     when 'Post'
       post = comment.commentable
-      blog_comment_path post, comment
+      post_comment_path post, comment
     when 'Topic'
       topic = comment.commentable
       forum = topic.forum

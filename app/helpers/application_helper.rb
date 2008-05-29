@@ -149,7 +149,7 @@ module ApplicationHelper
     when Issue
       link_to commentable.summary, issue_path(commentable)
     when Post
-      link_to commentable.title, blog_path(commentable)
+      link_to commentable.title, post_path(commentable)
     when Topic
       link_to commentable.title, forum_topic_path(commentable.forum, commentable)
     when NilClass

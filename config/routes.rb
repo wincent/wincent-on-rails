@@ -6,10 +6,8 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :issues, :has_many => [ :comments ], :collection => { :search => :get }
   map.resources :links
 
-  # later this will be map.resources :posts, :as => :blog
-  # (see comment for wiki/articles controller)
   # must explicitly allow period in the id part of the route otherwise it will be classified as a route separator
-  map.resources :blog, :requirements => { :id => /[a-z0-9\-\.]+/ }, :controller => 'posts', :has_many => [ :comments ]
+  map.resources :posts, :as => :blog, :requirements => { :id => /[a-z0-9\-\.]+/ }, :has_many => [ :comments ]
 
   map.resources :forums do |forum|
     forum.resources :topics, :has_many => [ :comments ]
@@ -49,7 +47,6 @@ ActionController::Routing::Routes.draw do |map|
   # it makes page caching difficult because the page looks different for admin users
   # so we provide a separate admin interface for some resources
   map.namespace :admin do |admin|
-    # TODO: make admin-only dashboard as well (overview of items awaiting moderation)
     admin.resources :forums
     admin.resources :issues
     admin.resources :posts

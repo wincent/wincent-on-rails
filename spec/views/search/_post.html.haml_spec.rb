@@ -22,7 +22,7 @@ describe '/search/_post' do
 
   it 'should link to the post' do
     do_render
-    response.should have_tag('a[href=?]', blog_path(@post))
+    response.should have_tag('a[href=?]', post_path(@post))
   end
 
   it 'should show the timeinfo for the post' do
