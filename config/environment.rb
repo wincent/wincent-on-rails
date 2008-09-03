@@ -55,7 +55,9 @@ require 'custom_atom_feed_helper'
 require 'authentication'
 require 'sortable'
 
-# NOTE: can move these into a rails/init.rb file in the gem itself
+# Rails BUG: can't yet move these into a rails/init.rb file in the gem itself
+# see: http://rails.lighthouseapp.com/projects/8994/tickets/324
+# (commit faad1e32a8ab81890018ba89d191607778830cf0 is not yet in a released version of Rails, and it is only a partial fix anyway)
 require 'wikitext/string'
 require 'wikitext/rails'
 
