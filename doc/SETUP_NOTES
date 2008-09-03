@@ -155,3 +155,9 @@ ended up moving it back to vendor/plugins, which funnily enough works:
   rake rails:update
   git add script/dbconsole
   git add -u
+
+  # Rails 2.1 upgrade
+  sudo gem install rails
+  rake rails:freeze:gems
+  (cd .. && rails src)
+  rake spec

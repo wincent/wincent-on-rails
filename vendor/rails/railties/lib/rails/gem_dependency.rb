@@ -38,7 +38,6 @@ module Rails
       end
       @load_paths_added = true
     rescue Gem::LoadError
-      puts $!.to_s
     end
     
     def dependencies
@@ -75,7 +74,9 @@ module Rails
     end
 
     def install
-      Gem::GemRunner.new.run(install_command)
+      cmd = "#{gem_command} #{install_command.join(' ')}"
+      puts cmd
+      puts %x(#{cmd})
     end
     
     def unpack_to(directory)
@@ -102,10 +103,14 @@ private ###################################################################
     def specification
       @spec ||= Gem.source_index.search(Gem::Dependency.new(@name, @requirement)).sort_by { |s| s.version }.last
     end
+    
+    def gem_command
+      RUBY_PLATFORM =~ /win32/ ? 'gem.bat' : 'gem'
+    end
 
     def install_command
       cmd = %w(install) << @name
-      cmd << "--version" << "#{@requirement.to_s}" if @requirement
+      cmd << "--version" << %("#{@requirement.to_s}") if @requirement
       cmd << "--source"  << @source  if @source
       cmd
     end
