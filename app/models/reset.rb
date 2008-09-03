@@ -8,10 +8,7 @@ class Reset < ActiveRecord::Base
   validates_presence_of :email_address, :on => :update
   validates_each        :email_address, :on => :update do |reset, att, value|
     # guard against brute force attacks by requiring the user to supply an associated email address
-    # Rails BUG: first with conditions doesn't work across associations
-    # see: http://rails.lighthouseapp.com/projects/8994/tickets/275
-    #unless reset.user.emails.first :conditions => { :address => value }
-    unless reset.user.emails.find :first, :conditions => { :address => value }
+    unless reset.user.emails.first :conditions => { :address => value }
       reset.errors.add(att, 'must match existing email on record')
     end
   end
