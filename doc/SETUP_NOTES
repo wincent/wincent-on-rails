@@ -161,3 +161,10 @@ ended up moving it back to vendor/plugins, which funnily enough works:
   rake rails:freeze:gems
   (cd .. && rails src)
   rake spec
+
+  # Haml 2.0.2 upgrade
+  sudo gem install haml --no-ri
+  git rm -r vendor/plugins/haml
+  rake gems:unpack
+  rake spec
+  git add vendor/gems/haml
