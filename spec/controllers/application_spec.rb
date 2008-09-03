@@ -48,19 +48,19 @@ describe ApplicationController, 'parameter filtering', :shared => true do
   end
 
   it 'should filter out the "passphrase" parameter' do
-    controller.filter_parameters(@parameters)['passphrase'].should match(/FILTERED/i)
+    controller.send(:filter_parameters, @parameters)['passphrase'].should match(/FILTERED/i)
   end
 
   it 'should filter out the "passphrase_confirmation" parameter' do
-    controller.filter_parameters(@parameters)['passphrase_confirmation'].should match(/FILTERED/i)
+    controller.send(:filter_parameters, @parameters)['passphrase_confirmation'].should match(/FILTERED/i)
   end
 
   it 'should filter out the "old_passphrase" parameter' do
-    controller.filter_parameters(@parameters)['old_passphrase'].should match(/FILTERED/i)
+    controller.send(:filter_parameters, @parameters)['old_passphrase'].should match(/FILTERED/i)
   end
 
   it 'should pass everything else through unfiltered' do
-    controller.filter_parameters(@parameters)['safe'].should == 'public'
+    controller.send(:filter_parameters, @parameters)['safe'].should == 'public'
   end
 end
 
