@@ -1,5 +1,6 @@
+# This is a vanilla module rather than being ActiveRecord::Acts::Commentable
+# as it is intended to be used via the :extend option when defining associations.
 module Commentable
-
   # All public comments which have passed moderation and are not flagged as spam.
   def published
     find :all, :conditions => { :awaiting_moderation => false, :spam => false, :public => true }
@@ -43,7 +44,7 @@ module Commentable
   def spam_count
     count :conditions => 'spam = TRUE'
   end
-end
+end # module Commentable
 
 =begin
 
