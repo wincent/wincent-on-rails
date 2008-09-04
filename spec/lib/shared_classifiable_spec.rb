@@ -1,7 +1,7 @@
 require File.join(File.dirname(__FILE__), '..', 'spec_helper')
-require 'classifiable.rb'
+require 'active_record/acts/classifiable'
 
-describe Classifiable, '"moderate_as_spam!" method', :shared => true do
+describe ActiveRecord::Acts::Classifiable, '"moderate_as_spam!" method', :shared => true do
   it 'should turn off the "awaiting moderation" flag' do
     lambda { @object.moderate_as_spam! }.should change(@object, :awaiting_moderation).from(true).to(false)
   end
@@ -54,7 +54,7 @@ describe Classifiable, '"moderate_as_spam!" method', :shared => true do
   end
 end
 
-describe Classifiable, '"moderate_as_ham!" method', :shared => true do
+describe ActiveRecord::Acts::Classifiable, '"moderate_as_ham!" method', :shared => true do
   it 'should turn off the "awaiting moderation" flag' do
     lambda { @object.moderate_as_ham! }.should change(@object, :awaiting_moderation).from(true).to(false)
   end

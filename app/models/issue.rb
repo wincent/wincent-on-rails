@@ -19,11 +19,10 @@ class Issue < ActiveRecord::Base
   validates_inclusion_of  :kind,    :in => KIND_MAP.keys,   :message => 'not a valid kind code'
   validates_inclusion_of  :status,  :in => STATUS_MAP.keys, :message => 'not a valid status code'
   attr_accessible         :summary, :description, :public, :product_id, :kind
+  acts_as_classifiable
   acts_as_taggable
   acts_as_searchable      :attributes => [:summary, :description]
   after_create            :send_new_issue_alert
-
-  include Classifiable
 
   # Sanitizes an untrusted hash of search parameters and prepares a conditions string suitable for passing to find(:all).
   # The calling controller should pass in the appropriate access options string to constrain the search depending on whether

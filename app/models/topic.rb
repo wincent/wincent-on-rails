@@ -10,10 +10,9 @@ class Topic < ActiveRecord::Base
   validates_presence_of :title
   validates_presence_of :body
   attr_accessible       :title, :body
+  acts_as_classifiable
   acts_as_searchable    :attributes => [:title, :body]
   acts_as_taggable
-
-  include Classifiable
 
   # we use alias_method_chain here because if we just declare an after_create callback
   # we'll clobber the method that Rails set up for us when we specified :counter_cache above

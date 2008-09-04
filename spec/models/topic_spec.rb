@@ -117,7 +117,7 @@ describe Topic, 'acting as classifiable ("moderate_as_spam!" method)' do
     @object = create_topic :awaiting_moderation => true
   end
 
-  it_should_behave_like 'Classifiable "moderate_as_spam!" method'
+  it_should_behave_like 'ActiveRecord::Acts::Classifiable "moderate_as_spam!" method'
 end
 
 describe Topic, 'acting as classifiable ("moderate_as_ham!" method)' do
@@ -125,7 +125,7 @@ describe Topic, 'acting as classifiable ("moderate_as_ham!" method)' do
     @object = create_topic :awaiting_moderation => true
   end
 
-  it_should_behave_like 'Classifiable "moderate_as_ham!" method'
+  it_should_behave_like 'ActiveRecord::Acts::Classifiable "moderate_as_ham!" method'
 end
 
 describe Topic, 'acting as commentable' do

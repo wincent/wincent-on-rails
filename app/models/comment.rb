@@ -4,6 +4,7 @@ class Comment < ActiveRecord::Base
   validates_presence_of :body
   validates_presence_of :commentable
   attr_accessible       :body
+  acts_as_classifiable
   acts_as_taggable
 
   # NOTE: by defining an after_create action we break the built-in counter-cache, so we must roll our own
@@ -11,8 +12,6 @@ class Comment < ActiveRecord::Base
   # if we wanted to avoid clobbering the Rails-generated counter cache callback we could use alias_method_chain
   after_create          :update_caches_after_create, :send_new_comment_alert
   after_destroy         :update_caches_after_destroy
-
-  include Classifiable
 
   def self.find_recent options = {}
     base_options = { :conditions => { :public => true }, :order => 'created_at DESC', :limit => 10 }

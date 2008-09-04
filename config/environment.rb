@@ -49,6 +49,7 @@ Rails::Initializer.run do |config|
   config.gem 'wikitext', :version => '>= 1.1.1'
 end
 
+require 'active_record/acts/classifiable'
 require 'active_record/acts/taggable'
 require 'active_record/acts/searchable'
 require 'custom_atom_feed_helper'
