@@ -5,7 +5,6 @@ module Classifiable
 
   def moderate_as_ham!
     moderate! false
-    update_caches_after_moderation_as_ham if respond_to?(:update_caches_after_moderation_as_ham)
   end
 
 protected
@@ -22,5 +21,6 @@ protected
     # but seems to be a necessary evil for now
     # could possibly provide an optional callback here to make things slightly cleaner
     update_needles if self.class.private_method_defined? :update_needles
+    did_moderate if respond_to?(:did_moderate)
   end
 end # module Classifiable

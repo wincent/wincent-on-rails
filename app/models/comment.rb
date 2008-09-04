@@ -37,6 +37,26 @@ protected
     end
   end
 
+  def update_caches
+    conditions = {
+      :awaiting_moderation => false, :spam => false, :commentable_id => commentable_id, :commentable_type => commentable_type
+      }
+    comment_count   = Comment.count :conditions => conditions
+    last_comment    = Comment.last :conditions => conditions, :order => 'created_at'
+    last_user       = last_comment ? last_comment.user : (commentable.user if commentable.respond_to?(:user))
+    comment_id      = last_comment ? last_comment.id : nil
+    last_commented  = last_comment ? last_comment.created_at : commentable.created_at
+    updates         = 'comments_count = ?, last_commenter_id = ?, last_comment_id = ?, last_commented_at = ?, updated_at = ?'
+    timestamp       = (update_timestamps_for_changes? && !last_commented.nil?) ? last_commented : commentable.created_at
+    commentable.class.update_all [updates, comment_count, last_user, comment_id, last_commented, timestamp],
+      ['id = ?', commentable.id]
+
+    if user
+      user_comment_count = Comment.count :conditions => { :awaiting_moderation => false, :spam => false, :user_id => user.id }
+      User.update_all ['comments_count = ?', user_comment_count], ['id = ?', user]
+    end
+  end
+
   def update_caches_after_create
     return if awaiting_moderation? || spam? # we defer update until moderation as ham has taken place
     updates = <<-UPDATES
@@ -51,8 +71,8 @@ protected
     User.update_all ['comments_count = comments_count + 1'], ['id = ?', user] if user
   end
 
-  def update_caches_after_moderation_as_ham
-    update_caches_after_create
+  def did_moderate
+    update_caches
   end
 
   def update_caches_after_destroy
