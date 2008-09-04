@@ -1,5 +1,5 @@
 require File.join(File.dirname(__FILE__), '..', '..', '..', 'spec_helper')
-require 'active_record/acts/taggable.rb'
+require 'active_record/acts/taggable'
 
 describe ActiveRecord::Acts::Taggable, :shared => true do
   it 'should respond to the tag message' do
