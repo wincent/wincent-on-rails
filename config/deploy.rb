@@ -146,7 +146,7 @@ Deploys and starts a "cold" (not running) application.
 
 This is an override of the default "deploy:cold" recipe that comes with
 Capistrano. Rather than performing an update/migrate/start sequence
-(which would fail because the default migrate precipe doesn't run with
+(which would fail because the default migrate recipe doesn't run with
 enough privileges to complete a migration of the production database)
 it instead does an update/migrate_all/start.
   END
