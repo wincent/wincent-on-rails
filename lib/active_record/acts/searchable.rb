@@ -14,16 +14,12 @@ module ActiveRecord
           class_eval do
             self.searchable_attributes  = options[:attributes] || [] # the "self" is _not_ optional
             include ActiveRecord::Acts::Searchable::InstanceMethods
-            extend ActiveRecord::Acts::Searchable::ClassMethods
             alias_method_chain :after_create, :needles
             alias_method_chain :after_update, :needles
             alias_method_chain :after_destroy, :needles
           end
         end
       end # module ClassMethods
-
-      # no class methods yet: may potentially add some later
-      module ClassMethods; end
 
       module InstanceMethods
       private
