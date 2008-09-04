@@ -1,6 +1,8 @@
 require 'spec/interop/test'
 
-ActionView::Base.cache_template_extensions = false
+# as of Rails 2.1 the following line produces a deprecationwarning:
+# "config.action_view.cache_template_extensions option has been deprecated and has no affect"
+#ActionView::Base.cache_template_extensions = false
 
 module Spec
   module Rails
