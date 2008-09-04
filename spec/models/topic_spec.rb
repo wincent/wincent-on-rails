@@ -73,6 +73,7 @@ describe Topic, '"last commenter" association' do
     @comment = @topic.comments.build :body => String.random # can't set user here (protected)
     @comment.user = @user
     @comment.save
+    @comment.moderate_as_ham! # only here does the last commenter actually get set
     @topic.reload.last_commenter.should == @user
   end
 

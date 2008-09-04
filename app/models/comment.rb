@@ -37,10 +37,8 @@ protected
     end
   end
 
-  # NOTE: possible bug here: when a comment is queued for moderation the commentable will get updated
-  # if the comment is later marked as spam then we will have updated the commentable for nothing
-  # therefore may need to consider adding yet another callback to handle this kind of case (an after save callback)
   def update_caches_after_create
+    return if awaiting_moderation? || spam? # we defer update until moderation as ham has taken place
     updates = <<-UPDATES
       comments_count    = comments_count + 1,
       last_commenter_id = ?,
@@ -51,6 +49,10 @@ protected
     timestamp = update_timestamps_for_changes? ? created_at : commentable.updated_at
     commentable.class.update_all [updates, user, id, created_at, timestamp], ['id = ?', commentable.id]
     User.update_all ['comments_count = comments_count + 1'], ['id = ?', user] if user
+  end
+
+  def update_caches_after_moderation_as_ham
+    update_caches_after_create
   end
 
   def update_caches_after_destroy
