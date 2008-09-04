@@ -12,7 +12,7 @@ module ActiveRecord
             has_many      :tags,     :through => :taggings
             attr_writer   :pending_tags
             include ActiveRecord::Acts::Taggable::InstanceMethods
-            extend ActiveRecord::Acts::Taggable::ClassMethods
+            extend ActiveRecord::Acts::Taggable::MoreClassMethods
             alias_method_chain :validate, :check_pending_tag_format
             alias_method_chain :after_save, :save_pending_tags
           end
@@ -20,7 +20,7 @@ module ActiveRecord
       end # module ClassMethods
 
       # only 1 class method so far: may potentially add some others later, like "find_with_tag" etc
-      module ClassMethods
+      module MoreClassMethods
         def find_top_tags
           # note how we override the global taggings_count value with one scoped just to the taggable model
           Tag.find_by_sql <<-SQL
@@ -33,7 +33,7 @@ module ActiveRecord
             ORDER BY  taggings_count DESC LIMIT 10
           SQL
         end
-      end # module ClassMethods
+      end # module MoreClassMethods
 
       module InstanceMethods
 
