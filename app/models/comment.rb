@@ -76,20 +76,7 @@ protected
   end
 
   def update_caches_after_destroy
-    last_comment    = commentable.comments.last :order => 'comments.created_at'
-    last_user       = last_comment ? last_comment.user : (commentable.user if commentable.respond_to?(:user))
-    comment_id      = last_comment ? last_comment.id : nil
-    last_commented  = last_comment ? last_comment.created_at : commentable.created_at
-    updates = <<-UPDATES
-      comments_count    = comments_count - 1,
-      last_commenter_id = ?,
-      last_comment_id   = ?,
-      last_commented_at = ?,
-      updated_at        = ?
-    UPDATES
-    timestamp = (update_timestamps_for_changes? && !last_commented.nil?) ? last_commented : commentable.created_at
-    commentable.class.update_all [updates, last_user, comment_id, last_commented, timestamp], ['id = ?', commentable.id]
-    User.update_all ['comments_count = comments_count - 1'], ['id = ?', user] if user
+    update_caches
   end
 
   def send_new_comment_alert
