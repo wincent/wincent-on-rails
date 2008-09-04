@@ -59,6 +59,10 @@ protected
 
   def update_caches_after_create
     return if awaiting_moderation? || spam? # we defer update until moderation as ham has taken place
+
+    # comment creation is a potentially common event so we want it to be fast, this is why we don't just call
+    # the heavyweight update_caches method here (three SELECTs, one or two UPDATEs) and instead do the following
+    # (one SELECT, one or two UPDATEs)
     updates = <<-UPDATES
       comments_count    = comments_count + 1,
       last_commenter_id = ?,
