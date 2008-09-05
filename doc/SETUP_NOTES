@@ -168,3 +168,12 @@ ended up moving it back to vendor/plugins, which funnily enough works:
   rake gems:unpack
   rake spec
   git add vendor/gems/haml
+
+  # Rails 2.1.1 upgrade
+  sudo gem install rails
+  rake rails:freeze:gems
+  (cd .. && rails src)
+  rake spec
+  # NOTE: to get the specs to pass had to apply a patch
+  # see: http://rails.lighthouseapp.com/projects/8994-ruby-on-rails/tickets/324
+  # and: http://rails.lighthouseapp.com/attachments/43265/gem_dep_version_number_bug.diff
