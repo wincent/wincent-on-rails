@@ -1,5 +1,5 @@
 require File.dirname(__FILE__) + '/../spec_helper'
-require File.join(File.dirname(__FILE__), '..', 'lib', 'shared_classifiable_spec')
+require File.join(File.dirname(__FILE__), '..', 'lib', 'active_record', 'acts', 'shared_classifiable_spec')
 
 describe Comment do
   it 'should be valid' do

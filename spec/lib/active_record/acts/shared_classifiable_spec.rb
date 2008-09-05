@@ -1,4 +1,4 @@
-require File.join(File.dirname(__FILE__), '..', 'spec_helper')
+require File.join(File.dirname(__FILE__), '..', '..', '..', 'spec_helper')
 require 'active_record/acts/classifiable'
 
 describe ActiveRecord::Acts::Classifiable, '"moderate_as_spam!" method', :shared => true do

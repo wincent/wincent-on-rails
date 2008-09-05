@@ -1,7 +1,7 @@
 require File.join(File.dirname(__FILE__), '..', 'spec_helper')
 require File.join(File.dirname(__FILE__), '..', 'lib', 'active_record', 'acts', 'shared_taggable_spec')
 require File.join(File.dirname(__FILE__), '..', 'lib', 'shared_commentable_spec')
-require File.join(File.dirname(__FILE__), '..', 'lib', 'shared_classifiable_spec')
+require File.join(File.dirname(__FILE__), '..', 'lib', 'active_record', 'acts', 'shared_classifiable_spec')
 
 describe Topic do
   it 'should be valid' do
