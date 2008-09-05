@@ -31,22 +31,12 @@ describe ActiveRecord::Acts::Classifiable, '"moderate_as_spam!" method', :shared
   end
 
   it 'should update the full-text search index if appropriate' do
-    # would have preferred to use mocks here, but it seems I can't use "should_receive" with a private method like "update_needles"
-    # the mock removes the private method and creates a public one with the same name
-    # which fails because our calling code explicitly checks for a private method (can't use respond_to? on private methods)
-    # have submitted a patch to the RSpec team to address this problem; see:
-    # http://rspec.lighthouseapp.com/projects/5645/tickets/393
     needle_count.should == 0
     create_needle :model_class => @object.class.to_s, :model_id => @object.id
     count = needle_count
     count.should > 0
+    @object.should_receive(:update_needles) if @object.class.private_method_defined? :update_needles
     @object.moderate_as_spam!
-    if @object.class.private_method_defined? :update_needles
-      #@object.should_receive(:update_needles) # doesn't work
-      needle_count.should == 0
-    else
-      needle_count.should == count
-    end
   end
 
   def needle_count
@@ -86,16 +76,10 @@ describe ActiveRecord::Acts::Classifiable, '"moderate_as_ham!" method', :shared 
   end
 
   it 'should update the full-text search index if appropriate' do
-    # would have preferred to use mocks here, but it seems I can't use "should_receive" with a private method like "update_needles"
     count = needle_count
     count.should == 0
-    #@object.should_receive(:update_needles) # doesn't work
+    @object.should_receive(:update_needles) if @object.class.private_method_defined?(:update_needles)
     @object.moderate_as_ham!
-    if @object.class.private_method_defined?(:update_needles)
-      needle_count.should > count
-    else
-      needle_count.should == 0
-    end
   end
 
   def needle_count
