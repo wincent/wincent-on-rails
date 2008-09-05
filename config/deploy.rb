@@ -7,6 +7,7 @@ set :group_writable, :false
 default_run_options[:pty] = true
 
 depend :remote, :gem, :hpricot, '>= 0.6'
+depend :remote, :gem, 'rubygems-update', '>= 1.1.1' # Rails 2.1.1 itself bumps the minimum RubyGems requirement up to 1.1.1
 depend :remote, :command, 'git'
 depend :remote, :command, 'monit'
 
