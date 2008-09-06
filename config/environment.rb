@@ -45,7 +45,6 @@ Rails::Initializer.run do |config|
   # Make Active Record use UTC-base instead of local time
   # config.active_record.default_timezone = :utc
 
-  config.gem 'haml', :version => '>= 2.0.2'
   config.gem 'wikitext', :version => '>= 1.1.1'
 end
 

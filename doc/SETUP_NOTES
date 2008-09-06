@@ -167,7 +167,10 @@ ended up moving it back to vendor/plugins, which funnily enough works:
   git rm -r vendor/plugins/haml
   rake gems:unpack
   rake spec
-  git add vendor/gems/haml
+  git add vendor/gems/haml-2.0.2
+  # NOTE: later had to move Haml back into plug-ins seeing as it breaks the app unless the gem is also installed on the system
+  # (seems to be a Haml issue as the same thing doesn't happen with other gems)
+  git mv vendor/gems/haml-2.0.2 vendor/plugins/haml
 
   # Rails 2.1.1 upgrade
   sudo gem install rails
