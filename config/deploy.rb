@@ -174,8 +174,8 @@ end
 
 # internal use only (no description)
 task :after_update, :roles => :app do
-  run "rake gems:clean"
-  run "rake gems:build"
+  run "cd #{current_path} && rake gems:clean"
+  run "cd #{current_path} && rake gems:build"
 end
 
 # internal use only (no description)
