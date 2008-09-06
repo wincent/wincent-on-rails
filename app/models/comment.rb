@@ -46,7 +46,7 @@ protected
     comment_id      = last_comment ? last_comment.id : nil
     last_commented  = last_comment ? last_comment.created_at : commentable.created_at
     updates         = 'comments_count = ?, last_commenter_id = ?, last_comment_id = ?, last_commented_at = ?, updated_at = ?'
-    timestamp       = (update_timestamps_for_changes? && !last_commented.nil?) ? last_commented : commentable.created_at
+    timestamp       = (update_timestamps_for_changes? && !last_commented.nil?) ? last_commented : commentable.updated_at
     commentable.class.update_all [updates, comment_count, last_user, comment_id, last_commented, timestamp],
       ['id = ?', commentable.id]
 
