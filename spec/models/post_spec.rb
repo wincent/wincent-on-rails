@@ -34,6 +34,7 @@ describe Post, 'acting as commentable' do
   end
 
   it_should_behave_like 'Commentable'
+  it_should_behave_like 'Commentable not updating timestamps for comment changes'
 end
 
 describe Post, 'acting as taggable' do
