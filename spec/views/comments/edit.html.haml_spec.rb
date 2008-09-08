@@ -16,6 +16,13 @@ describe '/comments/edit' do
     response.should have_tag("\#comment_#{@comment.id}")
   end
 
+  it 'should have a show button' do
+    do_render
+    response.should have_tag('.links') do
+      with_tag 'a[href=?]', comment_path(@comment)
+    end
+  end
+
   it 'should have a destroy button' do
     template.should_receive(:button_to_destroy_comment).with(@comment)
     do_render

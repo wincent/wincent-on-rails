@@ -14,6 +14,7 @@
         %td=f.check_box :public
     %p=f.submit 'Save'
   .links
+    =link_to 'show', comment_path(@comment)
     =button_to_destroy_comment @comment
     =button_to_moderate_comment_as_spam @comment
     =button_to_moderate_comment_as_ham @comment
