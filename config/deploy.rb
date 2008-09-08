@@ -44,13 +44,17 @@ task :help do
     cap staging deploy:update       # deploy latest, no restart, no migrations
     cap staging deploy:migrate_all  # run the migrations
     cap staging spec                # run the spec suite
+    cap staging deploy:web:disable  # (optional) display a maintenance page
     cap staging deploy:restart      # restart server (changes go live)
+    cap staging deploy:web:enable   # (optional) remove maintenance page
 
     cap deploy:check
     cap deploy:update
     cap deploy:migrate_all
     cap spec
+    cap deploy:web:disable          # (optional)
     cap deploy:restart
+    cap deploy:web:disable          # (optional)
 
   HELP
 end
