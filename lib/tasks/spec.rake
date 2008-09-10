@@ -9,6 +9,6 @@ namespace :spec do
   desc 'run all stories in the stories directory'
   task :stories do
     # BUG: rake gobbles up the stdout here so user won't get any feedback along the way, only on error
-    `ruby stories/all.rb`
+    ruby 'stories/all.rb'
   end
 end
