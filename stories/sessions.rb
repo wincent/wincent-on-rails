@@ -5,8 +5,8 @@ steps = Spec::Story::StepGroup.new do |define|
   define.given 'a logged-in user' do
     passphrase = String.random
     email = "#{String.random}@#{String.random}.com"
-    user = create_user(:passphrase => passphrase, :passphrase_confirmation => passphrase)
-    create_email(:address => email, :user => user)
+    user = create_user :passphrase => passphrase, :passphrase_confirmation => passphrase
+    create_email :address => email, :user => user
     get '/login'
     fills_in 'email', :with => email
     fills_in 'passphrase', :with => passphrase
@@ -18,8 +18,8 @@ steps = Spec::Story::StepGroup.new do |define|
   end
 
   define.given 'a user with email "$email" and passphrase "$passphrase"' do |email, passphrase|
-    user = create_user(:passphrase => passphrase, :passphrase_confirmation => passphrase)
-    create_email(:address => email, :user => user)
+    user = create_user :passphrase => passphrase, :passphrase_confirmation => passphrase
+    create_email :address => email, :user => user
   end
 
   define.when 'I go to the login form' do
