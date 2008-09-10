@@ -10,8 +10,9 @@ end
 describe ArticlesHelper, 'body_html method' do
   include ArticlesHelper
 
-  it 'should return the empty string if @article is nil' do
-    @article = nil
+  it 'should return the empty string if article body is nil' do
+    @article = Article.new
+    @article.body.should be_nil
     body_html.should == ''
   end
 

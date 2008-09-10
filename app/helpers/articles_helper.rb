@@ -1,6 +1,8 @@
 module ArticlesHelper
   def body_html
-    @article ? @article.body.w : ''
+    # NOTE: adding a "w" method to the Nil class would make this helper a little bit redundant (@article.body.w would work)
+    body = @article.body
+    body.nil? ? '': body.w
   end
 
   def link_to_update_preview
