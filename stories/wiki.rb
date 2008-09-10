@@ -7,7 +7,7 @@ steps = Spec::Story::StepGroup.new do |define|
   end
 
   define.when 'an article titled "$title" is addded to the wiki' do |title|
-    create_article(:title => title)
+    create_article :title => title
   end
 
   define.when 'I access the wiki index' do
