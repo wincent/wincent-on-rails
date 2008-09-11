@@ -47,7 +47,7 @@ Story 'logging in', %{
   As an account holder
   I want to log in
   So that I can take ownership of my submissions to the site
-}, :type => RailsStory, :steps => steps do
+}, :type => RailsStory, :steps_for => steps do
 
   Scenario 'logging in successfully' do
     Given 'a user with email "user@example.com" and passphrase "passphrase1000"'
@@ -81,7 +81,7 @@ Story 'logging out', %{
   As an account holder
   I want to log out
   So that nobody using my machine can impersonate me
-}, :type => RailsStory, :steps => steps do
+}, :type => RailsStory, :steps_for => steps do
 
   Scenario 'logging out when logged-in' do
     Given 'a logged-in user'

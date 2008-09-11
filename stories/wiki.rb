@@ -23,7 +23,7 @@ Story 'accessing the wiki index', %{
   As a user
   I want to view the wiki index
   So that I can get an overview of what's available
-}, :type => RailsStory, :steps => steps do
+}, :type => RailsStory, :steps_for => steps do
 
   Scenario 'the wiki has no articles' do
     Given 'no articles in the wiki'
