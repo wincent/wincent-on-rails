@@ -112,15 +112,12 @@ END
     Line = Struct.new(:text, :unstripped, :index, :spaces, :tabs)
 
     def precompile
+      @haml_comment = @dont_indent_next_line = @dont_tab_up_next_text = false
+      @indentation = nil
       old_line = Line.new
       @template.split(/\r\n|\r|\n/).each_with_index do |text, index|
         @next_line = line = Line.new(text.strip, text.lstrip.chomp, index)
         line.spaces, line.tabs = count_soft_tabs(text)
-
-        if line.text.empty? && !flat?
-          newline
-          next
-        end
 
         suppress_render = handle_multiline(old_line) unless flat?
 
@@ -132,6 +129,11 @@ END
         end
 
         process_indent(old_line) unless old_line.text.empty?
+
+        if line.text.empty? && !flat?
+          newline
+          next
+        end
 
         if flat?
           push_flat(old_line)
@@ -699,13 +701,7 @@ END
     # Starts a filtered block.
     def start_filtered(name)
       raise Error.new("Invalid filter name \":#{name}\".") unless name =~ /^\w+$/
-
-      unless filter = Filters.defined[name]
-        if filter == 'redcloth' || filter == 'markdown' || filter == 'textile'
-          raise Error.new("You must have the RedCloth gem installed to use \"#{name}\" filter")
-        end
-        raise Error.new("Filter \"#{name}\" is not defined.")
-      end
+      raise Error.new("Filter \"#{name}\" is not defined.") unless filter = Filters.defined[name]
 
       push_and_tabulate([:filtered, filter])
       @flat_spaces = @template_tabs * 2

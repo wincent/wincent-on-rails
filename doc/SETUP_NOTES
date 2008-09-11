@@ -170,7 +170,7 @@ ended up moving it back to vendor/plugins, which funnily enough works:
   git add vendor/gems/haml-2.0.2
   # NOTE: later had to move Haml back into plug-ins seeing as it breaks the app unless the gem is also installed on the system
   # (seems to be a Haml issue as the same thing doesn't happen with other gems)
-  git mv vendor/gems/haml-2.0.2 vendor/plugins/haml
+  mv vendor/gems/haml-2.0.2 vendor/plugins/haml
 
   # Rails 2.1.1 upgrade
   sudo gem install rails
@@ -188,3 +188,14 @@ ended up moving it back to vendor/plugins, which funnily enough works:
   git add vendor/gems/wikitext-1.2
   cd vendor/gems/wikitext-1.2/ext
   git reset HEAD ./Makefile ./*.o *.log
+
+  # Haml 2.0.3 upgrade
+  sudo gem install haml --no-ri
+  git rm -r vendor/plugins/haml
+  rake gems:unpack
+  rake spec
+  git add vendor/gems/haml-2.0.3
+  # NOTE: had to move this back into vendor/plugins due to Rails bug #324:
+  # http://rails.lighthouseapp.com/projects/8994/tickets/324
+  mv vendor/gems/haml-2.0.3 vendor/plugins/haml
+  git add vendor/plugins/haml
