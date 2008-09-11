@@ -1,7 +1,7 @@
 --- !ruby/object:Gem::Specification 
 name: wikitext
 version: !ruby/object:Gem::Version 
-  version: "1.2"
+  version: 1.2.1
 platform: ruby
 authors: 
 - Wincent Colaiuta
@@ -9,7 +9,7 @@ autorequire:
 bindir: bin
 cert_chain: []
 
-date: 2008-09-10 00:00:00 +02:00
+date: 2008-09-11 00:00:00 +02:00
 default_executable: 
 dependencies: []
 
@@ -72,6 +72,7 @@ files:
 - lib/wikitext/rails.rb
 - lib/wikitext/string.rb
 - lib/wikitext/version.rb
+- rails/init.rb
 has_rdoc: true
 homepage: http://wikitext.rubyforge.org/
 post_install_message: 
