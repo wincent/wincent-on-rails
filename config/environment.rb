@@ -56,10 +56,5 @@ require 'custom_atom_feed_helper'
 require 'authentication'
 require 'sortable'
 
-# Rails BUG: can't yet move these into a rails/init.rb file in the gem itself
-# see: http://rails.lighthouseapp.com/projects/8994/tickets/324
-require 'wikitext/string'
-require 'wikitext/rails'
-
 Haml::Template::options[:ugly] = true
 Sass::Plugin.options[:style] = :compact
