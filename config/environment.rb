@@ -45,7 +45,7 @@ Rails::Initializer.run do |config|
   # Make Active Record use UTC-base instead of local time
   # config.active_record.default_timezone = :utc
 
-  config.gem 'wikitext', :version => '>= 1.1.1'
+  config.gem 'wikitext', :version => '>= 1.2'
 end
 
 require 'active_record/acts/classifiable'

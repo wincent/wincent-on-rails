@@ -180,3 +180,11 @@ ended up moving it back to vendor/plugins, which funnily enough works:
   # NOTE: to get the specs to pass had to apply a patch
   # see: http://rails.lighthouseapp.com/projects/8994-ruby-on-rails/tickets/324
   # and: http://rails.lighthouseapp.com/attachments/43265/gem_dep_version_number_bug.diff
+
+  # Wikitext 1.2 update
+  git rm -r vendor/gems/wikitext-1.1.2
+  rake gems:unpack # requires bugfix to Rails 2.1.1 bug #1003
+  rake gems:build
+  git add vendor/gems/wikitext-1.2
+  cd vendor/gems/wikitext-1.2/ext
+  git reset HEAD ./Makefile ./*.o *.log

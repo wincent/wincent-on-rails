@@ -1,7 +1,7 @@
 --- !ruby/object:Gem::Specification 
 name: wikitext
 version: !ruby/object:Gem::Version 
-  version: 1.1.1
+  version: "1.2"
 platform: ruby
 authors: 
 - Wincent Colaiuta
@@ -9,7 +9,7 @@ autorequire:
 bindir: bin
 cert_chain: []
 
-date: 2008-05-28 00:00:00 +02:00
+date: 2008-09-10 00:00:00 +02:00
 default_executable: 
 dependencies: []
 
@@ -68,6 +68,7 @@ files:
 - ext/wikitext.h
 - ext/wikitext_ragel.h
 - ext/depend
+- lib/wikitext/nil_class.rb
 - lib/wikitext/rails.rb
 - lib/wikitext/string.rb
 - lib/wikitext/version.rb
@@ -95,7 +96,7 @@ required_rubygems_version: !ruby/object:Gem::Requirement
 requirements: []
 
 rubyforge_project: wikitext
-rubygems_version: 1.1.1
+rubygems_version: 1.2.0
 signing_key: 
 specification_version: 2
 summary: Wikitext-to-HTML translator
