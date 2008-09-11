@@ -1,8 +1,8 @@
 #!/usr/bin/env ruby
 require File.join(File.dirname(__FILE__), 'helper')
 
-steps = Spec::Story::StepGroup.new do |define|
-  define.given 'a logged-in user' do
+steps_for :login do
+  Given 'a logged-in user' do
     passphrase = String.random
     email = "#{String.random}@#{String.random}.com"
     user = create_user :passphrase => passphrase, :passphrase_confirmation => passphrase
@@ -13,32 +13,32 @@ steps = Spec::Story::StepGroup.new do |define|
     clicks_button 'Log in'
   end
 
-  define.given 'an anonymous user' do
+  Given 'an anonymous user' do
     get_via_redirect '/logout'
   end
 
-  define.given 'a user with email "$email" and passphrase "$passphrase"' do |email, passphrase|
+  Given 'a user with email "$email" and passphrase "$passphrase"' do |email, passphrase|
     user = create_user :passphrase => passphrase, :passphrase_confirmation => passphrase
     create_email :address => email, :user => user
   end
 
-  define.when 'I go to the login form' do
+  When 'I go to the login form' do
     get '/login'
   end
 
-  define.when 'I logout' do
+  When 'I logout' do
     get_via_redirect '/logout'
   end
 
-  define.when 'I fill in the "$field" field with "$text"' do |field, text|
+  When 'I fill in the "$field" field with "$text"' do |field, text|
     fills_in field, :with => text
   end
 
-  define.when 'I click the "$button" button' do |button|
+  When 'I click the "$button" button' do |button|
     clicks_button button
   end
 
-  define.then 'the page should show "$text"' do |text|
+  Then 'the page should show "$text"' do |text|
     response.should have_text(/#{text}/)
   end
 end
@@ -47,7 +47,7 @@ Story 'logging in', %{
   As an account holder
   I want to log in
   So that I can take ownership of my submissions to the site
-}, :type => RailsStory, :steps_for => steps do
+}, :type => RailsStory, :steps_for => :login do
 
   Scenario 'logging in successfully' do
     Given 'a user with email "user@example.com" and passphrase "passphrase1000"'
@@ -81,7 +81,7 @@ Story 'logging out', %{
   As an account holder
   I want to log out
   So that nobody using my machine can impersonate me
-}, :type => RailsStory, :steps_for => steps do
+}, :type => RailsStory, :steps_for => :login do
 
   Scenario 'logging out when logged-in' do
     Given 'a logged-in user'

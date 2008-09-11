@@ -1,20 +1,20 @@
 #!/usr/bin/env ruby
 require File.join(File.dirname(__FILE__), 'helper')
 
-steps = Spec::Story::StepGroup.new do |define|
-  define.given 'no articles in the wiki' do
+steps_for :wiki do
+  Given 'no articles in the wiki' do
     Article.destroy_all
   end
 
-  define.when 'an article titled "$title" is addded to the wiki' do |title|
+  When 'an article titled "$title" is addded to the wiki' do |title|
     create_article :title => title
   end
 
-  define.when 'I access the wiki index' do
+  When 'I access the wiki index' do
     get '/wiki'
   end
 
-  define.then 'the page should show "$text"' do |text|
+  Then 'the page should show "$text"' do |text|
     response.should have_text(/#{text}/)
   end
 end
@@ -23,7 +23,7 @@ Story 'accessing the wiki index', %{
   As a user
   I want to view the wiki index
   So that I can get an overview of what's available
-}, :type => RailsStory, :steps_for => steps do
+}, :type => RailsStory, :steps_for => :wiki do
 
   Scenario 'the wiki has no articles' do
     Given 'no articles in the wiki'
