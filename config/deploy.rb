@@ -54,7 +54,7 @@ task :help do
     cap spec
     cap deploy:web:disable          # (optional)
     cap deploy:restart
-    cap deploy:web:disable          # (optional)
+    cap deploy:web:enable           # (optional)
 
   HELP
 end
