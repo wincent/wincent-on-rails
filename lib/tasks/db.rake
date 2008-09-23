@@ -1,6 +1,18 @@
 namespace :db do
-  namespace :migrate do
+  namespace :sessions do
+    desc 'Thin the sessions table (clears only old records)'
+    task :thin => :environment do
+      query = "DELETE FROM #{session_table_name} WHERE updated_at < DATE_SUB(CURDATE(), INTERVAL 30 DAY)"
+      ActiveRecord::Base.connection.execute query
+    end
 
+    desc 'Clear the sessions table quickly (using TRUNCATE)'
+    task :truncate => :environment do
+      ActiveRecord::Base.connection.execute "TRUNCATE #{session_table_name}"
+    end
+  end
+
+  namespace :migrate do
     desc "performs the db:migrate task in the development environment"
     task :development do
       migrate_in_environment 'development'
