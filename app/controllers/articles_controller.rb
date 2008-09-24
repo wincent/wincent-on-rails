@@ -19,14 +19,14 @@ class ArticlesController < ApplicationController
   end
 
   def new
-    @article = Article.new(session[:new_article_params])
+    @article = Article.new session[:new_article_params]
     session[:new_article_params] = nil
   end
 
   def create
     respond_to do |format|
       format.html {
-        @article = Article.new(params[:article])
+        @article = Article.new params[:article]
         if @article.save
           flash[:notice] = 'Successfully created new article.'
           redirect_to article_path(@article)
@@ -70,7 +70,7 @@ class ArticlesController < ApplicationController
   end
 
   def update
-    if @article.update_attributes(params[:article])
+    if @article.update_attributes params[:article]
       flash[:notice] = 'Successfully updated'
       redirect_to article_path(@article)
     else
