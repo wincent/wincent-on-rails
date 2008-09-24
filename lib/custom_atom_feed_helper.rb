@@ -2,7 +2,8 @@
 #
 # - get rid of a lot of overridable, dynamic stuff and replace it with hard-coded values
 # - require "updated" to be specifically specified rather than defaulting to "now"
-# - work around failure of polymorphic_url method when resource has :controller override in routes.rb
+# - provide mechanism for overriding URLs rather than just calling polymorphic_url
+#   (useful for example when we want to craft links which include anchors, like "/issues/1300#comment_4235")
 #
 # For information on the Atom format see:
 # - http://www.atomenabled.org/developers/syndication/                      (nice summary)
@@ -44,10 +45,6 @@ module CustomAtomFeedHelper
         @xml.id "tag:#{@view.request.host},2008:#{model.class.to_s.tableize}/#{model.id}"
         @xml.published model.created_at.xmlschema
         @xml.updated model.updated_at.xmlschema
-
-        # polymorphic_url fails: tries to call post_url on view (needs to be blog_url)
-        # see: http://dev.rubyonrails.org/ticket/11141
-        # unlikely to be fixed as an easy workaround exists in Edge Rails post 2.0.2
         @xml.link :rel => 'alternate', :type => 'text/html', :href => options[:url] || @view.polymorphic_url(model)
         yield @xml
       end
