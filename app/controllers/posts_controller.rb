@@ -1,11 +1,7 @@
 class PostsController < ApplicationController
   before_filter :require_admin, :except => [ :index, :show ]
   before_filter :get_post,      :except => [ :index, :new, :create ]
-
-  # NOTE: as of Rails 2.1 this filter will change
-  # see: http://github.com/rails/rails/commit/14a40804a29a57ad05ca6bffbe1e5334089593a9
-  # see: http://github.com/rails/rails/commit/7708650f73ddb4db300ea2059c60c1d907a4384e
-  after_filter  :cache_feed,    :only => [ :index ]
+  caches_page   :index,         :if => Proc.new { |c| c.send(:is_atom?) }
   cache_sweeper :post_sweeper,  :only => [ :create, :update, :destroy ]
 
   def index
