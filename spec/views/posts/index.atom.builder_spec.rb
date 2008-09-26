@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../../spec_helper'
 
-describe "/posts/index.atom.builder" do
+describe '/posts/index.atom.builder' do
   include PostsHelper
 
   def do_render
