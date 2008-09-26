@@ -1,6 +1,6 @@
 custom_atom_feed do |feed|
   feed.title 'wincent.com: wiki'
-  feed.updated @articles.first.updated_at
+  feed.updated (@articles.empty? ? RAILS_EPOCH : @articles.first.updated_at)
   feed.author do |author|
     author.name   'Wincent Colaiuta'
     author.email  APP_CONFIG['admin_email']
