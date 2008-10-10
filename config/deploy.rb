@@ -174,6 +174,11 @@ task :after_check, :roles => :app do
   if $?.exitstatus != 0
     puts "*** #{local_branch} differs from #{remote_branch}: did you remember to 'git push'? ***"
   end
+
+  current_branch = `git symbolic-ref HEAD 2>/dev/null`.chomp.sub('refs/heads/', '')
+  if current_branch != local_branch
+    puts "*** currently on branch #{current_branch} (expected #{local_branch}): sure you're working on the right branch? ***"
+  end
 end
 
 # internal use only (no description)
