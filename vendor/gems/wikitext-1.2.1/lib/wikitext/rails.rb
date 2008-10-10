@@ -18,7 +18,18 @@ module Wikitext
   class TemplateHandler
     def initialize view; end
 
-    def render text, locals = {}
+    # fix Rails 2.1 breakage
+    # TODO: add specs to catch this kind of breakage in the future
+    def compilable?
+      false
+    end
+
+    def render template
+      template.source.w
+    end
+
+    # in a subsequent wikitext release will work out how to dynamically check for this at runtime
+    def pre_rails_2_1_render text, locals = {}
       text.w
     end
   end
