@@ -35,13 +35,6 @@ module Rails
         args << @requirement.to_s if @requirement
         gem *args
       else
-        # my fix for Rails bug #324:
-        # see: http://rails.lighthouseapp.com/projects/8994-ruby-on-rails/tickets/324
-        @spec ||= Gem::Specification.new do |s|
-          s.name    = @name
-          s.version = @version
-        end
-
         $LOAD_PATH.unshift File.join(unpacked_paths.first, 'lib')
         ext = File.join(unpacked_paths.first, 'ext')
         $LOAD_PATH.unshift(ext) if File.exist?(ext)
@@ -127,8 +120,8 @@ module Rails
 
       def unpack_command
         cmd = %w(unpack) << @name
-
-        # fix for Rails BUG: http://rails.lighthouseapp.com/projects/8994/tickets/1003
+        # We don't quote this requirement as it's run through GemRunner instead
+        # of shelling out to gem
         cmd << "--version" << @requirement.to_s if @requirement
         cmd
       end

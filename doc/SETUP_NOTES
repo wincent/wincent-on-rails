@@ -211,3 +211,10 @@ ended up moving it back to vendor/plugins, which funnily enough works:
   git add vendor/plugins/rspec vendor/plugins/rspec-rails
   script/generate rspec
   git add script/spec script/spec_server spec/spec.opts script/autospec
+
+  # Rails 2.1.2 upgrade
+  sudo gem install rails
+  rake rails:freeze:gems
+  (cd .. && rails src)
+  rake spec
+  # NOTE: to get the specs to pass had to apply patches, as before
