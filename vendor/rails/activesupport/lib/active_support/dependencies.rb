@@ -154,6 +154,9 @@ module ActiveSupport #:nodoc:
         nesting = nesting[1..-1] if nesting && nesting[0] == ?/
         next if nesting.blank?
 
+        # private fix for Rails bug #324:
+        # see: http://rails.lighthouseapp.com/projects/8994/tickets/324
+        nesting.gsub!(/\-\d(\.?\d?)*/,'')
         [
           nesting.camelize,
           # Special case: application.rb might define ApplicationControlller.
