@@ -199,3 +199,15 @@ ended up moving it back to vendor/plugins, which funnily enough works:
   # http://rails.lighthouseapp.com/projects/8994/tickets/324
   mv vendor/gems/haml-2.0.3 vendor/plugins/haml
   git add vendor/plugins/haml
+
+  # RSpec 1.1.10 update
+  git rm -r vendor/plugins/rspec vendor/plugins/rspec_on_rails
+  git clone git://github.com/dchelimsky/rspec.git vendor/plugins/rspec
+  (cd vendor/plugins/rspec && git co 1.1.10)
+  rm -rf vendor/plugins/rspec/.git
+  git clone git://github.com/dchelimsky/rspec-rails.git vendor/plugins/rspec-rails
+  (cd vendor/plugins/rspec-rails && git co 1.1.10)
+  rm -rf vendor/plugins/rspec-rails/.git
+  git add vendor/plugins/rspec vendor/plugins/rspec-rails
+  script/generate rspec
+  git add script/spec script/spec_server spec/spec.opts script/autospec
