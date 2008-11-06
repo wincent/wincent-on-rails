@@ -10,11 +10,9 @@ config.action_view.debug_rjs                         = true
 
 # enable caching (when testing caching)
 config.action_controller.perform_caching             = true
-config.action_view.cache_template_extensions         = true
 
 # disable caching (when not testing caching)
 #config.action_controller.perform_caching             = false
-#config.action_view.cache_template_extensions         = false
 Sass::Plugin.options[:always_update] = true
 Sass::Plugin.options[:always_check] = true
 
