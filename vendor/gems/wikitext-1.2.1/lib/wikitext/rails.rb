@@ -18,6 +18,10 @@ module Wikitext
   class TemplateHandler
     def initialize view; end
 
+    # fix Rails 2.2.0 breakage
+    # TODO: add specs
+    def self.call template; end
+
     # fix Rails 2.1 breakage
     # TODO: add specs to catch this kind of breakage in the future
     def compilable?
