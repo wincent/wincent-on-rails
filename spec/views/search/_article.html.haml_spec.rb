@@ -36,7 +36,7 @@ describe '/search/_article' do
   end
 
   it 'should truncate the article body to 240 characters' do
-    template.should_receive(:truncate).with(@article.body, 240).and_return('foo')
+    template.should_receive(:truncate).with(@article.body, :length => 240).and_return('foo')
     do_render
   end
 

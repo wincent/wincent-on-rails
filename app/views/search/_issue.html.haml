@@ -4,4 +4,4 @@
   =link_to model.summary, issue_path(model)
 .when=timeinfo model
 %span.annotation==Issue tracker ticket (#{model.status_string.downcase}, #{model.kind_string.downcase})
-.excerpt=truncate(model.description, 240).w
+.excerpt=truncate(model.description, :length => 240).w

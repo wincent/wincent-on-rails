@@ -36,7 +36,7 @@ describe '/search/_topic' do
   end
 
   it 'should truncate the topic body to 240 characters' do
-    template.should_receive(:truncate).with(@topic.body, 240).and_return('foo')
+    template.should_receive(:truncate).with(@topic.body, :length => 240).and_return('foo')
     do_render
   end
 

@@ -4,4 +4,4 @@
   =link_to model.title, post_path(model)
 .when=timeinfo model
 %span.annotation Weblog post
-.excerpt=truncate(model.excerpt, 240).w
+.excerpt=truncate(model.excerpt, :length => 240).w
