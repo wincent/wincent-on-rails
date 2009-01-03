@@ -2,7 +2,7 @@ module ActiveRecord
   module Acts
     module Classifiable
       def self.included base
-        base.extend(ClassMethods)
+        base.extend ClassMethods
       end
 
       module ClassMethods

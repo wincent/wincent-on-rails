@@ -2,7 +2,7 @@ module ActiveRecord
   module Acts
     module Searchable
       def self.included base
-        base.extend(ClassMethods)
+        base.extend ClassMethods
         base.class_inheritable_accessor  :searchable_attributes
       end
 
