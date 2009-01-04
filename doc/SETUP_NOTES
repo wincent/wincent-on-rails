@@ -245,3 +245,12 @@ ended up moving it back to vendor/plugins, which funnily enough works:
   rake spec
   git add vendor/gems/haml-2.0.6
 
+  # Wikitext 1.3.0 update
+  sudo gem install wikitext
+  git rm -r vendor/gems/wikitext-1.2.1
+  rake gems:unpack
+  rake gems:build
+  cd vendor/gems/wikitext-1.3.0/ext
+  rm Makefile *.o *.log
+  cd -
+  git add vendor/gems/wikitext-1.3.0

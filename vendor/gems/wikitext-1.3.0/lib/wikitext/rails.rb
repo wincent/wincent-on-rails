@@ -1,4 +1,4 @@
-# Copyright 2007-2008 Wincent Colaiuta
+# Copyright 2008-2009 Wincent Colaiuta
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
@@ -12,6 +12,14 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+require 'wikitext/string'
+
 module Wikitext
-  VERSION = '1.2.1'
-end # module Wikitext
+  class TemplateHandler
+
+    # tested with Rails 2.2.2: the API has now changed so many times that I'm no longer going to support older versions of Rails
+    def self.call template
+      'template.source.w'
+    end
+  end
+end
