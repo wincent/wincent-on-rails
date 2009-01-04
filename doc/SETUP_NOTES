@@ -237,6 +237,7 @@ ended up moving it back to vendor/plugins, which funnily enough works:
   rake rails:freeze:gems
   (cd .. && rails src)
   rake spec
+  # NOTE: had to manually rename application.rb to application_controller.rb ("rake rails:update" also would have worked)
 
   # Haml 2.0.6 update
   sudo gem install haml --no-ri
