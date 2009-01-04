@@ -83,7 +83,7 @@ module ActionView
           end
         end
         haml_tag :th, css_class_options do
-          puts link_to(display_name, url_for(url_options), tooltip)
+          haml_concat link_to(display_name, url_for(url_options), tooltip)
         end
       end
     end # module SortableHelper
