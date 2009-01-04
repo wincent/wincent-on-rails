@@ -102,7 +102,7 @@ describe CommentsController, 'PUT /comments/:id logged in as admin' do
     @comment.stub!(:save).and_return(true)
     Comment.stub!(:find).and_return(@comment)
     do_put
-    response.should redirect_to(controller.send(:polymorphic_comment_path, @comment))
+    response.should redirect_to(controller.send(:nested_comment_path, @comment))
   end
 
   it 'should redirect to the list of comments awaiting moderation on success for comments that are awaiting moderation' do

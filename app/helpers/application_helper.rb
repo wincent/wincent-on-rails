@@ -162,21 +162,12 @@ module ApplicationHelper
   end
 
   def polymorphic_comments_path comment
-    class_str = comment.commentable.class.to_s
-    case class_str
-    when 'Article', 'Issue', 'Post'
-      if comment.new_record? # creation
-        send "#{class_str.downcase}_comments_path", comment.commentable
-      else # editing
-        send "#{class_str.downcase}_comment_path", comment.commentable, comment
-      end
-    when 'Topic'
-      topic = comment.commentable
-      if comment.new_record? # creation
-        forum_topic_comments_path topic.forum, topic
-      else
-        forum_topic_comment_path topic.forum, topic, comment
-      end
+    commentable = comment.commentable
+    case commentable
+    when Article, Issue, Post
+      send "#{commentable.class.to_s.downcase}_comments_path", commentable
+    when Topic
+      forum_topic_comments_path commentable.forum, commentable
     end
   end
 

@@ -12,16 +12,14 @@ protected
 
   # URL to the comment nested in the context of its parent (resources), including an anchor.
   # NOTE: this method is dog slow if called in an "N + 1 SELECT" situation
-  # this is needed in both controllers (for redirect_to) and views, hence the helper_method call here
-  helper_method :polymorphic_comment_path
-  def polymorphic_comment_path comment
-    commentable     = comment.commentable
-    common_options  = { :action => 'show', :id => commentable.to_param, :anchor => "comment_#{comment.id}"}
+  def nested_comment_path comment
+    commentable = comment.commentable
+    anchor      = "comment_#{comment.id}"
     case commentable
     when Article, Issue, Post
-      url_for common_options.merge({:controller => commentable.class.to_s.tableize})
+      send "#{commentable.class.to_s.downcase}_path", commentable, :anchor => anchor
     when Topic
-      forum_topic_path(commentable.forum, commentable) + "\#comment_#{comment.id}"
+      forum_topic_path commentable.forum, commentable, :anchor => anchor
     end
   end
 

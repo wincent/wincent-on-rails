@@ -1,7 +1,7 @@
 %h1 Edit comment
 %div[@comment]
   =error_messages_for :comment
-  -form_for @comment, :url => polymorphic_comments_path(@comment) do |f|
+  -form_for @comment, :url => comment_path(@comment) do |f|
     %table.main
       %tr
         %th
