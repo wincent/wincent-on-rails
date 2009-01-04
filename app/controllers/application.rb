@@ -25,19 +25,6 @@ protected
     end
   end
 
-  # again, needed in controllers (redirect_to) and views
-  helper_method :polymorphic_comments_path
-  def polymorphic_comments_path comment
-    class_str = comment.commentable.class.to_s
-    case class_str
-    when 'Article', 'Issue', 'Post'
-      send "#{class_str.downcase}_comments_path", comment.commentable
-    when 'Topic'
-      topic = comment.commentable
-      forum_topic_comments_path topic.forum, topic
-    end
-  end
-
   def record_not_found(uri = nil)
     if uri.class != String
       # beware that in the default case uri will be an instance of ActiveRecord::RecordNotFound

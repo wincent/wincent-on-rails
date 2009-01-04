@@ -161,6 +161,17 @@ module ApplicationHelper
     end
   end
 
+  def polymorphic_comments_path comment
+    class_str = comment.commentable.class.to_s
+    case class_str
+    when 'Article', 'Issue', 'Post'
+      send "#{class_str.downcase}_comments_path", comment.commentable
+    when 'Topic'
+      topic = comment.commentable
+      forum_topic_comments_path topic.forum, topic
+    end
+  end
+
   def button_to_destroy_model model, url
     haml_tag :form, { :id => "#{model.class.to_s.downcase}_#{model.id}_destroy_form", :style => 'display:inline;' } do
       button = submit_to_remote 'button', 'destroy',
