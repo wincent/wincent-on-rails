@@ -46,7 +46,7 @@ Rails::Initializer.run do |config|
   # config.active_record.default_timezone = :utc
 
   config.gem 'wikitext', :version => '>= 1.2.1'
-  config.gem 'haml', :version => '2.0.3'
+  config.gem 'haml', :version => '2.0.6'
 end
 
 Haml::Template::options[:ugly] = true
