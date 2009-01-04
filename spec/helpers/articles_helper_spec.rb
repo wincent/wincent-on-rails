@@ -10,9 +10,8 @@ end
 describe ArticlesHelper, 'body_html method' do
   include ArticlesHelper
 
-  it 'should return the empty string if article body is nil' do
-    @article = Article.new
-    @article.body.should be_nil
+  it 'should return the empty string if article body is empty' do
+    @article = Article.new # as of Rails 2.2.0, Article.new.body is now "" rather than nil
     body_html.should == ''
   end
 
