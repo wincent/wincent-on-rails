@@ -31,11 +31,10 @@ protected
     class_str = comment.commentable.class.to_s
     case class_str
     when 'Article', 'Issue', 'Post'
-      send "#{class_str.downcase}_comment_path", comment.commentable, comment
+      send "#{class_str.downcase}_comments_path", comment.commentable
     when 'Topic'
       topic = comment.commentable
-      forum = topic.forum
-      forum_topic_comment_path forum, topic, comment
+      forum_topic_comments_path topic.forum, topic
     end
   end
 
