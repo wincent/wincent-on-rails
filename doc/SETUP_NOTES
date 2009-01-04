@@ -232,3 +232,8 @@ ended up moving it back to vendor/plugins, which funnily enough works:
   (cd .. && rails src)
   rake spec
 
+  # Rails 2.2.2 update (final release)
+  sudo gem install rails
+  rake rails:freeze:gems
+  (cd .. && rails src)
+  rake spec
