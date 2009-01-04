@@ -1,8 +1,7 @@
 # Settings specified here will take precedence over those in config/environment.rb
 
 # Code is not reloaded between requests
-#config.cache_classes = true
-config.cache_classes = false # BUG: temporary kludge for Rails 2.2.0 breakage
+config.cache_classes = true
 
 # Use a different logger for distributed setups
 # config.logger = SyslogLogger.new

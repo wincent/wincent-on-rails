@@ -49,13 +49,6 @@ Rails::Initializer.run do |config|
   config.gem 'haml', :version => '2.0.3'
 end
 
-require 'active_record/acts/classifiable'
-require 'active_record/acts/taggable'
-require 'active_record/acts/searchable'
-require 'custom_atom_feed_helper'
-require 'authentication'
-require 'sortable'
-
 Haml::Template::options[:ugly] = true
 Sass::Plugin.options[:style] = :compact
 

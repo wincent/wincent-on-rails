@@ -1,5 +1,4 @@
-#config.cache_classes = true
-config.cache_classes = false # BUG: temporary kludge for Rails 2.2.0 breakage
+config.cache_classes = true
 
 # Log error messages when you accidentally call methods on nil.
 config.whiny_nils = true
