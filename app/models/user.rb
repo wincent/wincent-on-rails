@@ -33,9 +33,9 @@ class User < ActiveRecord::Base
     # TODO: same for email updates
     record_in_database = User.find(model.id)
     if value.blank? # mimic validates_presence_of
-      model.errors.add(att, ActiveRecord::Errors.default_error_messages[:empty])
+      model.errors.add att, I18n.translate('activerecord.errors.messages')[:empty]
     elsif User.digest(value, record_in_database.passphrase_salt) != record_in_database.passphrase_hash
-      model.errors.add(att, 'must match existing passphrase on record')
+      model.errors.add att, 'must match existing passphrase on record'
     end
   end
 
