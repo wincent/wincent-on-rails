@@ -23,7 +23,7 @@ HOW THIS APPLICATION WAS CREATED
   # bootstrap FixtureReplacement
   script/generate fixture_replacement
 
-  # upgrade to Rails 2.0 preview (1.2.4.7499)
+  # update to Rails 2.0 preview (1.2.4.7499)
   cd ..
   rails wincent_on_rails
   cd wincent_on_rails
@@ -35,11 +35,11 @@ HOW THIS APPLICATION WAS CREATED
   script/plugin install svn://rubyforge.org/var/svn/rspec/trunk/rspec_on_rails
   script/generate rspec
 
-  # upgrade to Rails 2.0 RC 1
+  # update to Rails 2.0 RC 1
   rake rails
   rake rails:freeze:edge TAG=rel_2-0-0_RC1
 
-  # upgrade gem as well (for rails tool); should have done it this way all along
+  # update gem as well (for rails tool); should have done it this way all along
   sudo gem install rails --source http://gems.rubyonrails.org --version 1.99.0
   rm vendor/rails/TAG_rel_2-0-0_RC1
   rake rails:freeze:gems
@@ -56,7 +56,7 @@ HOW THIS APPLICATION WAS CREATED
   rm -r vendor/plugins/fixture_replacement
   script/plugin install http://thmadb.com/public_svn/plugins/fixture_replacement
 
-  # upgrade to Rails 2.0 RC 2 (gem version 1.99.1)
+  # update to Rails 2.0 RC 2 (gem version 1.99.1)
   sudo gem install rails --source http://gems.rubyonrails.org --version 1.99.1
   rake rails:freeze:gems
   cd ..
@@ -84,17 +84,17 @@ HOW THIS APPLICATION WAS CREATED
   mysql -u root -e "CREATE DATABASE wincent_on_rails_test CHARACTER SET 'UTF8';"
   rake db:migrate
 
-  # Haml 1.8.0 upgrade
+  # Haml 1.8.0 update
   git rm -r vendor/plugins/haml
   svn export svn://hamptoncatlin.com/haml/tags/rel_1-8-0 vendor/plugins/haml
   git add vendor/plugins/haml
 
-  # upgrade to Rails 2.0.2 (vastly simplifying)
+  # update to Rails 2.0.2 (vastly simplifying)
   sudo gem install rails
   rake rails:freeze:gems
   rails .
 
-  # upgrade to latest RSpec (1.1.1, same for 1.1.2, 1.1.3)
+  # update to latest RSpec (1.1.1, same for 1.1.2, 1.1.3)
   git rm -r vendor/plugins/rspec
   git rm -r vendor/plugins/rspec_on_rails
   script/plugin install svn://rubyforge.org/var/svn/rspec/tags/CURRENT/rspec
@@ -103,12 +103,12 @@ HOW THIS APPLICATION WAS CREATED
   git add vendor/plugins/rspec_on_rails
   script/generate rspec
 
-  # Haml 1.8.1 upgrade
+  # Haml 1.8.1 update
   git rm -r vendor/plugins/haml
   svn export svn://hamptoncatlin.com/haml/tags/rel_1-8-1 vendor/plugins/haml
   git add vendor/plugins/haml
 
-  # Haml 1.8.2 upgrade: now we just unpack the gem into vendor
+  # Haml 1.8.2 update: now we just unpack the gem into vendor
   sudo gem install haml
   git rm -rf vendor/plugins/haml
   mkdir -p vendor/gems
@@ -128,7 +128,7 @@ ended up moving it back to vendor/plugins, which funnily enough works:
   script/plugin install http://svn.eastmedia.net/public/plugins/webrat/
   git add vendor/plugins/webrat
 
-  # RSpec 1.1.4 upgrade: note that this coincides with RSpecs move to GitHub
+  # RSpec 1.1.4 update: note that this coincides with RSpecs move to GitHub
   git rm -r vendor/plugins/rspec vendor/plugins/rspec_on_rails
   git clone git://github.com/dchelimsky/rspec.git vendor/plugins/rspec
   (cd vendor/plugins/rspec && git co 1.1.4)
@@ -138,7 +138,7 @@ ended up moving it back to vendor/plugins, which funnily enough works:
   rm -rf vendor/plugins/rspec-rails/.git
   git add vendor/plugins/rspec vendor/plugins/rspec-rails
 
-  # Haml 2.0 upgrade: again, coincides with a move to GitHub
+  # Haml 2.0 update: again, coincides with a move to GitHub
   sudo gem install haml --no-ri
   git rm -r vendor/plugins/haml
   git clone git://github.com/nex3/haml.git vendor/plugins/haml
@@ -146,7 +146,7 @@ ended up moving it back to vendor/plugins, which funnily enough works:
   rm -rf vendor/plugins/haml/.git
   git add vendor/plugins/haml
 
-  # Rails 2.1.0_RC1 upgrade: again, coincides with a move to GitHub
+  # Rails 2.1.0_RC1 update: again, coincides with a move to GitHub
   git rm -r vendor/rails
   git clone git://github.com/rails/rails.git vendor/rails
   (cd vendor/rails && git co v2.1.0_RC1)
@@ -156,13 +156,13 @@ ended up moving it back to vendor/plugins, which funnily enough works:
   git add script/dbconsole
   git add -u
 
-  # Rails 2.1 upgrade
+  # Rails 2.1 update
   sudo gem install rails
   rake rails:freeze:gems
   (cd .. && rails src)
   rake spec
 
-  # Haml 2.0.2 upgrade
+  # Haml 2.0.2 update
   sudo gem install haml --no-ri
   git rm -r vendor/plugins/haml
   rake gems:unpack
@@ -172,7 +172,7 @@ ended up moving it back to vendor/plugins, which funnily enough works:
   # (seems to be a Haml issue as the same thing doesn't happen with other gems)
   mv vendor/gems/haml-2.0.2 vendor/plugins/haml
 
-  # Rails 2.1.1 upgrade
+  # Rails 2.1.1 update
   sudo gem install rails
   rake rails:freeze:gems
   (cd .. && rails src)
@@ -189,7 +189,7 @@ ended up moving it back to vendor/plugins, which funnily enough works:
   cd vendor/gems/wikitext-1.2/ext
   git reset HEAD ./Makefile ./*.o *.log
 
-  # Haml 2.0.3 upgrade
+  # Haml 2.0.3 update
   sudo gem install haml --no-ri
   git rm -r vendor/plugins/haml
   rake gems:unpack
@@ -212,9 +212,23 @@ ended up moving it back to vendor/plugins, which funnily enough works:
   script/generate rspec
   git add script/spec script/spec_server spec/spec.opts script/autospec
 
-  # Rails 2.1.2 upgrade
+  # Rails 2.1.2 update
   sudo gem install rails
   rake rails:freeze:gems
   (cd .. && rails src)
   rake spec
   # NOTE: to get the specs to pass had to apply patches, as before
+
+  # Rails 2.2.0 update (first release candidate)
+  sudo gem install rails -s http://gems.rubyonrails.org -v 2.2.0
+  rake rails:freeze:gems
+  (cd .. && rails src)
+  rake spec
+  # NOTE: lots of patching required to get specs to pass
+
+  # Rails 2.2.1 update (second release candidate, could have skipped but wanted to iron out all bugs along the way)
+  sudo gem install rails -s http://gems.rubyonrails.org -v 2.2.1
+  rake rails:freeze:gems
+  (cd .. && rails src)
+  rake spec
+
