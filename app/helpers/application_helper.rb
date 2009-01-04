@@ -165,10 +165,18 @@ module ApplicationHelper
     class_str = comment.commentable.class.to_s
     case class_str
     when 'Article', 'Issue', 'Post'
-      send "#{class_str.downcase}_comments_path", comment.commentable
+      if comment.new_record? # creation
+        send "#{class_str.downcase}_comments_path", comment.commentable
+      else # editing
+        send "#{class_str.downcase}_comment_path", comment.commentable, comment
+      end
     when 'Topic'
       topic = comment.commentable
-      forum_topic_comments_path topic.forum, topic
+      if comment.new_record? # creation
+        forum_topic_comments_path topic.forum, topic
+      else
+        forum_topic_comment_path topic.forum, topic, comment
+      end
     end
   end
 
