@@ -19,7 +19,7 @@ describe '/issues/edit' do
   it 'should render the form partial' do
     form = mock('form', :null_object => true)
     template.stub!(:form_for).and_yield(form)
-    template.expect_render :partial => 'issues/form', :locals => { :f => form }
+    template.should_receive :render, :partial => 'issues/form', :locals => { :f => form }
     do_render
   end
 

@@ -47,7 +47,7 @@ describe '/support/index' do
   end
 
   it 'should render the issues list partial' do
-    template.expect_render :partial => 'issues/issues'
+    template.should_receive :render, :partial => 'issues/issues'
     do_render
   end
 end

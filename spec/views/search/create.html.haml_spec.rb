@@ -17,22 +17,22 @@ describe '/search/create with one page of search results' do
   end
 
   it 'should should render the article partial for article results' do
-    template.expect_render :partial => 'search/article', :locals => { :model => @article, :result_number => @offset + 1 }
+    template.should_receive :render, :partial => 'search/article', :locals => { :model => @article, :result_number => @offset + 1 }
     do_render
   end
 
   it 'should should render the issue partial for issue results' do
-    template.expect_render :partial => 'search/issue', :locals => { :model => @issue, :result_number => @offset + 2 }
+    template.should_receive :render, :partial => 'search/issue', :locals => { :model => @issue, :result_number => @offset + 2 }
     do_render
   end
 
   it 'should should render the post partial for post results' do
-    template.expect_render :partial => 'search/post', :locals => { :model => @post, :result_number => @offset + 3 }
+    template.should_receive :render, :partial => 'search/post', :locals => { :model => @post, :result_number => @offset + 3 }
     do_render
   end
 
   it 'should should render the topic partial for topic results' do
-    template.expect_render :partial => 'search/topic', :locals => { :model => @topic, :result_number => @offset + 4 }
+    template.should_receive :render, :partial => 'search/topic', :locals => { :model => @topic, :result_number => @offset + 4 }
     do_render
   end
 
@@ -59,7 +59,7 @@ describe '/search/create with some "nil" search results' do
   end
 
   it 'should should render the partial for existing results' do
-    template.expect_render :partial => 'search/issue', :locals => { :model => @issue, :result_number => 1 }
+    template.should_receive :render, :partial => 'search/issue', :locals => { :model => @issue, :result_number => 1 }
     do_render
   end
 

@@ -32,7 +32,7 @@ describe '/search/issues' do
   end
 
   it 'should render the search form partial' do
-    template.expect_render :partial => 'issues/search'
+    template.should_receive :render, :partial => 'issues/search'
     do_render
   end
 end
