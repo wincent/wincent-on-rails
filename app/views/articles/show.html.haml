@@ -7,7 +7,7 @@
   -else
     %p==(Redirected from #{h @redirected_from.title})
 .article
-  =body_html
+  =@article.body.w
 =render :partial => 'shared/tags', :locals => { :tags => @article.tags }
 .links
   -if admin?

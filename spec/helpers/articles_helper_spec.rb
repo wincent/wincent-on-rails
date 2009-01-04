@@ -7,21 +7,13 @@ require File.dirname(__FILE__) + '/../spec_helper'
 describe ArticlesHelper do
 end
 
-describe ArticlesHelper, 'body_html method' do
+describe ArticlesHelper, 'body_html method (removed with Rails 2.2.0)' do
   include ArticlesHelper
 
-  it 'should return the empty string if article body is empty' do
-    @article = Article.new # as of Rails 2.2.0, Article.new.body is now "" rather than nil
-    body_html.should == ''
-  end
-
-  it 'should get the article body and convert it to wikitext' do
-    @article  = mock_model(Article)
-    @body     = String.random
-    @wikitext = @body.w
-    @article.should_receive(:body).and_return(@body)
-    @body.should_receive(:w).and_return(@wikitext)
-    body_html.should == @wikitext
+  # the body_html method is no longer needed as of Rail 2.2.0 due to a behaviour change
+  # but we retain a specs here to catch any further behaviour changes in the future
+  it 'should use the empty string as an article body on new records' do
+    Article.new.body.should == ''
   end
 end
 
