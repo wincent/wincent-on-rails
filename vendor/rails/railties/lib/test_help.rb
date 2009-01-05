@@ -1,4 +1,8 @@
-require_dependency 'application'
+begin
+  require_dependency 'application_controller'
+rescue MissingSourceFile
+  require_dependency 'application'
+end
 
 # Make double-sure the RAILS_ENV is set to test,
 # so fixtures are loaded to the right database
