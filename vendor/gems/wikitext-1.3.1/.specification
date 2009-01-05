@@ -1,7 +1,7 @@
 --- !ruby/object:Gem::Specification 
 name: wikitext
 version: !ruby/object:Gem::Version 
-  version: 1.3.0
+  version: 1.3.1
 platform: ruby
 authors: 
 - Wincent Colaiuta
@@ -9,7 +9,7 @@ autorequire:
 bindir: bin
 cert_chain: []
 
-date: 2009-01-04 00:00:00 +01:00
+date: 2009-01-05 00:00:00 +01:00
 default_executable: 
 dependencies: []
 
@@ -22,6 +22,7 @@ extensions:
 extra_rdoc_files: []
 
 files: 
+- spec/#spec_helper.rb#
 - spec/autolinking_spec.rb
 - spec/blockquote_spec.rb
 - spec/em_spec.rb
@@ -45,11 +46,13 @@ files:
 - spec/nowiki_spec.rb
 - spec/p_spec.rb
 - spec/pre_spec.rb
+- spec/rails_spec.rb
 - spec/regressions_spec.rb
 - spec/spec_helper.rb
 - spec/strong_em_spec.rb
 - spec/strong_spec.rb
 - spec/tokenizing_spec.rb
+- spec/trash
 - spec/tt_spec.rb
 - spec/ul_spec.rb
 - spec/wikitext_spec.rb
