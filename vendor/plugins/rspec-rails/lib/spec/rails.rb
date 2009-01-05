@@ -1,6 +1,11 @@
 silence_warnings { RAILS_ENV = "test" }
 
-require_dependency 'application'
+begin
+  require_dependency 'application_controller' # 2.2.2 and newer
+rescue MissingSourceFile
+  require_dependency 'application'            # pre-2.2.2
+end
+
 require 'action_controller/test_process'
 require 'action_controller/integration'
 require 'active_record/fixtures' if defined?(ActiveRecord::Base)
