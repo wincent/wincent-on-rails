@@ -51,6 +51,7 @@ end
 
 Haml::Template::options[:ugly] = true
 Sass::Plugin.options[:style] = :compact
+Wikitext::Parser.shared_parser.img_prefix = '/system/images/'
 
 # Sometimes we need a reasonable, stable default date (for example, to provide
 # an "updated at" date for an empty Atom feed; we don't want to use "Time.now"
