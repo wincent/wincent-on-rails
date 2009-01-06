@@ -1,6 +1,7 @@
 ActionController::Routing::Routes.draw do |map|
 
   # resources
+  # TODO: may be able to clean some of these routes up using :shallow and :only from Rails 2.2
   map.resources :comments
   map.resources :confirmations, :as => :confirm
   map.resources :issues, :has_many => [ :comments ], :collection => { :search => :get }
