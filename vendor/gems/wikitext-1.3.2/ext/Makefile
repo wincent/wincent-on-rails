@@ -88,8 +88,8 @@ EXTSTATIC =
 STATIC_LIB = 
 
 RUBYCOMMONDIR = $(sitedir)$(target_prefix)
-RUBYLIBDIR = /Users/wincent/trabajo/unversioned/wincent.com/src/vendor/gems/wikitext-1.3.1/ext$(target_prefix)
-RUBYARCHDIR = /Users/wincent/trabajo/unversioned/wincent.com/src/vendor/gems/wikitext-1.3.1/ext$(target_prefix)
+RUBYLIBDIR = /Users/wincent/trabajo/unversioned/wincent.com/src/vendor/gems/wikitext-1.3.2/ext$(target_prefix)
+RUBYARCHDIR = /Users/wincent/trabajo/unversioned/wincent.com/src/vendor/gems/wikitext-1.3.2/ext$(target_prefix)
 
 TARGET_SO     = $(DLLIB)
 CLEANLIBS     = $(TARGET).bundle $(TARGET).il? $(TARGET).tds $(TARGET).map

@@ -1,4 +1,5 @@
-# Copyright 2008 Wincent Colaiuta
+#!/usr/bin/env ruby
+# Copyright 2009 Wincent Colaiuta
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
@@ -12,20 +13,15 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-require 'wikitext'
+require File.join(File.dirname(__FILE__), 'spec_helper.rb')
+require 'wikitext/nil_class'
 
-class String
-  def to_wikitext
-    @@shared_wikitext_parser ||= Wikitext::Parser.new(:space_to_underscore => true)
-    @@shared_wikitext_parser.parse wikitext_preprocess
+describe NilClass, 'wikitext extensions' do
+  it 'should provide a to_wikitext method on the nil singleton' do
+    nil.to_wikitext.should == ''
   end
-  alias :w :to_wikitext
 
-private
-
-  # for now do this in pure Ruby
-  # if speed later becomes a concern can whip up a Ragel C extension to do it
-  def wikitext_preprocess
-    gsub /\b(bug|issue|request|ticket) #(\d+)/i, '[[issues/\2|\1 #\2]]'
+  it 'should provide a w method on the nil singleton' do
+    nil.w.should == ''
   end
 end
