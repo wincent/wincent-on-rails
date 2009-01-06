@@ -7,7 +7,8 @@ set :group_writable, :false
 default_run_options[:pty] = true
 
 depend :remote, :gem, :hpricot, '>= 0.6'
-depend :remote, :gem, 'rubygems-update', '>= 1.3.1' # Rails 2.2 itself bumps the minimum RubyGems requirement up to 1.3.1
+depend :remote, :gem, 'rubygems-update', '>= 1.3.1' # Rails 2.2 bumps the minimum RubyGems requirement up
+depend :remote, :gem, 'rack', '>= 0.4.0'            # Edge Rails (> 2.2.2) rake tasks won't run without it
 depend :remote, :command, 'git'
 depend :remote, :command, 'monit'
 
