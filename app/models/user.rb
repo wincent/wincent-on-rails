@@ -121,9 +121,7 @@ class User < ActiveRecord::Base
   end
 
   def self.find_with_param! param
-    # TODO: submit Rails patch which would allow find_by_display_name! as a shorthand for this
-    # would need to patch activerecord/lib/active_record/base.rb method_missing for this
-    find_by_display_name(deparametrize(param)) || (raise ActiveRecord::RecordNotFound)
+    find_by_display_name!(deparametrize(param))
   end
 
   def self.deparametrize string

@@ -5,7 +5,7 @@ class TagsController < ApplicationController
   end
 
   def show
-    @tag        = Tag.find_by_name(params[:id]) || (raise ActiveRecord::RecordNotFound)
+    @tag        = Tag.find_by_name!(params[:id])
     @taggables  = Tagging.grouped_taggables_for_tag @tag, current_user, params[:type]
   end
 

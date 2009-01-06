@@ -81,9 +81,9 @@ private
 
   def get_post
     if admin?
-      @post = Post.find_by_permalink(params[:id]) || (raise ActiveRecord::RecordNotFound)
+      @post = Post.find_by_permalink!(params[:id])
     else
-      @post = Post.find_by_permalink_and_public(params[:id], true) || (raise ActiveRecord::RecordNotFound)
+      @post = Post.find_by_permalink_and_public!(params[:id], true)
     end
   end
 

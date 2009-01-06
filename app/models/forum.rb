@@ -7,7 +7,7 @@ class Forum < ActiveRecord::Base
 
   def self.find_with_param! param, conditions = {}
     # forum name will be downcased in the URL, but MySQL will do a case-insensitive search for us anyway
-    find_by_name(deparametrize(param), :conditions => conditions) || (raise ActiveRecord::RecordNotFound)
+    find_by_name!(deparametrize(param), :conditions => conditions)
   end
 
   def self.find_all

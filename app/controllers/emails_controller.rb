@@ -20,6 +20,6 @@ private
 
   def get_user_and_email
     @user   = User.find_with_param! params[:user_id]
-    @email  = @user.emails.find_by_address(params[:id]) || (raise ActiveRecord::RecordNotFound)
+    @email  = @user.emails.find_by_address!(params[:id])
   end
 end

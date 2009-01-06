@@ -21,7 +21,7 @@ class Article < ActiveRecord::Base
   acts_as_taggable
 
   def self.find_with_param! param
-    find_by_title(deparametrize(param)) || (raise ActiveRecord::RecordNotFound)
+    find_by_title!(deparametrize(param))
   end
 
   def self.find_recent paginator = nil
