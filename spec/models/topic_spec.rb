@@ -213,7 +213,7 @@ describe Topic, '"find_topics_for_forum" method' do
     comment = add_comment
     Topic.find_topics_for_forum(@forum).first.last_comment_id.should == comment.id
   end
-  
+
   it 'should select nil for the last comment id (when not available)' do
     Topic.find_topics_for_forum(@forum).first.last_comment_id.should be_nil
   end
@@ -238,7 +238,7 @@ describe Topic, '"find_topics_for_forum" method' do
     topic = create_topic :user => nil, :awaiting_moderation => false
     Topic.find_topics_for_forum(topic.forum).first.last_active_user_id.should == nil
   end
-  
+
   it 'should select the last active user displayname (when a comment has been posted)' do
     comment = add_comment :user => @user
     Topic.find_topics_for_forum(@forum).first.last_active_user_display_name.should == @user.display_name
@@ -258,7 +258,7 @@ describe Topic, '"find_topics_for_forum" method' do
     topic = create_topic :user => nil, :awaiting_moderation => false
     Topic.find_topics_for_forum(topic.forum).first.last_active_user_display_name.should == nil
   end
-  
+
   it 'should find only topics which have already passed moderation' do
     @topic.update_attribute(:awaiting_moderation, true)
     Topic.find_topics_for_forum(@forum).should == []
