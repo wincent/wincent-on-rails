@@ -2,6 +2,19 @@ require File.join(File.dirname(__FILE__), '..', 'spec_helper')
 require File.join(File.dirname(__FILE__), '..', 'lib', 'active_record', 'acts', 'shared_taggable_spec')
 require File.join(File.dirname(__FILE__), '..', 'lib', 'shared_commentable_spec')
 
+describe Article do
+  # we test a value larger than the default MySQL TEXT size (65535)
+  it 'should support body content of over 128K' do
+    # make sure the long body survives the round-trip from the db
+    length = 128 * 1024
+    long_body = 'x' * length
+    article = create_article :body => long_body
+    article.body.length.should == length
+    article.reload
+    article.body.length.should == length
+  end
+end
+
 describe Article, 'creation' do
   before do
     @article = Article.create(:title => String.random, :body => String.random)

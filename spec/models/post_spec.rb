@@ -20,6 +20,17 @@ describe Post, 'creation' do
   it 'should default to not accepting comments' do
     @post.accepts_comments.should == false
   end
+
+  # we test a value larger than the default MySQL TEXT size (65535)
+  it 'should support body content of over 128K' do
+    # make sure the long body survives the round-trip from the db
+    length = 128 * 1024
+    long_body = 'x' * length
+    post = create_post :body => long_body
+    post.body.length.should == length
+    post.reload
+    post.body.length.should == length
+  end
 end
 
 describe Post, 'comments association' do

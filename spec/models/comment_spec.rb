@@ -5,6 +5,17 @@ describe Comment do
   it 'should be valid' do
     create_comment.should be_valid
   end
+
+  # we test a value larger than the default MySQL TEXT size (65535)
+  it 'should support body content of over 128K' do
+    # make sure the long body survives the round-trip from the db
+    length = 128 * 1024
+    long_body = 'x' * length
+    comment = create_comment :body => long_body
+    comment.body.length.should == length
+    comment.reload
+    comment.body.length.should == length
+  end
 end
 
 describe Comment, 'acting as classifiable ("moderate_as_spam!" method)' do

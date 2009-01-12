@@ -11,6 +11,18 @@ describe Topic do
   it 'should update timestamps for comment changes' do
     Topic.update_timestamps_for_comment_changes?.should == true
   end
+
+  # we test a value larger than the default MySQL TEXT size (65535)
+  it 'should support body content of over 128K' do
+    # make sure the long body survives the round-trip from the db
+    length = 128 * 1024
+    long_body = 'x' * length
+    topic = create_topic :body => long_body
+    topic.body.length.should == length
+    topic.reload
+    topic.body.length.should == length
+  end
+
 end
 
 describe Topic, 'creation' do
