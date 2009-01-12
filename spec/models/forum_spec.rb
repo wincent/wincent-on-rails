@@ -124,7 +124,7 @@ describe Forum, 'find_with_param! method' do
   end
 
   it 'should find by name' do
-    Forum.should_receive(:find_by_name).and_return(@forum)
+    Forum.should_receive(:find_by_name!).and_return(@forum)
     Forum.find_with_param!(@name)
   end
 
