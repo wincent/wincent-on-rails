@@ -9,6 +9,7 @@ class Topic < ActiveRecord::Base
                         :dependent  => :destroy
   validates_presence_of :title
   validates_presence_of :body
+  validates_length_of   :body, :maximum => 128 * 1024
   attr_accessible       :title, :body
   acts_as_classifiable
   acts_as_searchable    :attributes => [:title, :body]

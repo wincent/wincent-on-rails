@@ -41,6 +41,18 @@ describe Issue, 'acting as taggable' do
   it_should_behave_like 'ActiveRecord::Acts::Taggable'
 end
 
+describe Issue, 'validating the description' do
+  it 'should require it to be present' do
+    new_issue(:description => nil).should fail_validation_for(:description)
+  end
+
+  it 'should complain if longer than 128k' do
+    long_description = 'x' * (128 * 1024 + 100)
+    issue = new_issue(:description => long_description)
+    issue.should fail_validation_for(:description)
+  end
+end
+
 describe Issue, '"send_new_issue_alert" method' do
   before do
     @issue = new_issue :user => (create_user :superuser => false)

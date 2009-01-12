@@ -12,6 +12,7 @@ class Post < ActiveRecord::Base
   validates_presence_of   :permalink
   validates_uniqueness_of :permalink
   validates_presence_of   :excerpt
+  validates_length_of     :body, :maximum => 128 * 1024, :allow_blank => true
   attr_accessible         :title, :permalink, :excerpt, :body, :public, :accepts_comments, :pending_tags
   acts_as_taggable
   acts_as_searchable      :attributes => [:title, :excerpt, :body]

@@ -2,6 +2,7 @@ class Comment < ActiveRecord::Base
   belongs_to            :user                               # no counter cache: see notes below
   belongs_to            :commentable, :polymorphic => true  # no counter cache: see notes below
   validates_presence_of :body
+  validates_length_of   :body, :maximum => 128 * 1024
   validates_presence_of :commentable
   attr_accessible       :body
   acts_as_classifiable

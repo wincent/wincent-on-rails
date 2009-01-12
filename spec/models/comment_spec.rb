@@ -34,6 +34,17 @@ describe Comment, 'acting as classifiable ("moderate_as_ham!" method)' do
   it_should_behave_like 'ActiveRecord::Acts::Classifiable "moderate_as_ham!" method'
 end
 
+describe Comment, 'validating the body' do
+  it 'should require it to be present' do
+    new_comment(:body => nil).should fail_validation_for(:body)
+  end
+
+  it 'should complain if longer than 128k' do
+    long_body = 'x' * (128 * 1024 + 100)
+    new_comment(:body => long_body).should fail_validation_for(:body)
+  end
+end
+
 describe Comment, '"send_new_comment_alert" method' do
   before do
     @comment = new_comment :user => (create_user :superuser => false)

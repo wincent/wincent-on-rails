@@ -126,6 +126,17 @@ describe Post, 'validating the excerpt' do
   end
 end
 
+describe Post, 'validating the body' do
+  it 'should consider it optional' do
+    new_post(:body => nil).should_not fail_validation_for(:body)
+  end
+
+  it 'should complain if longer than 128k' do
+    long_body = 'x' * (128 * 1024 + 100)
+    new_post(:body => long_body).should fail_validation_for(:body)
+  end
+end
+
 describe Post, 'autogeneration of permalink' do
   it 'should generate it based on title if not present' do
     title = String.random

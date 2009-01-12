@@ -148,6 +148,11 @@ describe Article, 'validating the body' do
   it 'should require it to be present if the redirect is absent' do
     new_article(:redirect => nil, :body => nil).should fail_validation_for(:base)
   end
+
+  it 'should complain if longer than 128k' do
+    long_body = 'x' * (128 * 1024 + 100)
+    new_article(:body => long_body).should fail_validation_for(:body)
+  end
 end
 
 describe Article, 'parametrization' do

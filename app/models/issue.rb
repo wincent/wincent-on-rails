@@ -16,6 +16,7 @@ class Issue < ActiveRecord::Base
   has_many                :monitorships, :as => :monitorable, :dependent => :destroy
   validates_presence_of   :summary
   validates_presence_of   :description
+  validates_length_of     :description, :maximum => 128 * 1024
   validates_inclusion_of  :kind,    :in => KIND_MAP.keys,   :message => 'not a valid kind code'
   validates_inclusion_of  :status,  :in => STATUS_MAP.keys, :message => 'not a valid status code'
   attr_accessible         :summary, :description, :public, :product_id, :kind
