@@ -43,16 +43,18 @@ task :help do
 
     cap staging deploy:check        # check dependencies
     cap staging deploy:update       # deploy latest, no restart, no migrations
-    cap staging deploy:migrate_all  # run the migrations
+    cap staging deploy:migrate:test # run the migrations on the test database
     cap staging spec                # run the spec suite
+    cap staging deploy:migrate:all  # run all other migrations
     cap staging deploy:web:disable  # (optional) display a maintenance page
     cap staging deploy:restart      # restart server (changes go live)
     cap staging deploy:web:enable   # (optional) remove maintenance page
 
     cap deploy:check
     cap deploy:update
-    cap deploy:migrate_all
+    cap deploy:migrate:test
     cap spec
+    cap deploy:migrate:all
     cap deploy:web:disable          # (optional)
     cap deploy:restart
     cap deploy:web:enable           # (optional)
@@ -145,6 +147,35 @@ namespace :deploy do
     migrate
     set :rails_env, 'migrations' # this is production, but with additional privileges necessary for migrations
     migrate
+  end
+
+  namespace :migrate do
+    desc 'Migrate the test database'
+    task :test do
+      set :rails_env, 'test'
+      migrate
+    end
+
+    desc 'Migrate the development database'
+    task :development do
+      set :rails_env, 'development'
+      migrate
+    end
+
+    desc 'Migrate the production database'
+    task :production do
+      # the "migrations" environment is same as "production",
+      # but with additional privileges necessary for migrations
+      set :rails_env, 'migrations'
+      migrate
+    end
+
+    desc 'Migrate test, production and development databases'
+    task :all do
+      test
+      development
+      production
+    end
   end
 
   desc <<-END
