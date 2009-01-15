@@ -30,8 +30,10 @@
       </ul>
     </div>
     <div id='content'>
-      <h1>Invalid request</h1>
-      <p>Your request is well-formed (syntactically correct) but is not semantically valid. Perhaps you tried to changed something for which you don't have access privileges.</p>
+      <!-- This is HTTP status code 422 in the "Rails" sense, not in the RFC 4918 (WebDAV) sense. -->
+      <h1>The change you wanted was rejected</h1>
+      <p>The most likely cause is that your session expired due to inactivity.</p>
+      <p>Try going back, <em>then refreshing the page</em> (this will create a new session), and then resubmitting.</p>
       <p>Please <a href="mailto:win@wincent.com">contact me</a> if you need assistance.</p>
     </div>
     <div id='sidebar'>
