@@ -82,6 +82,7 @@ class IssuesController < ApplicationController
   def update
     respond_to do |format|
       format.html {
+        @issue.pending_tags = params[:issue][:pending_tags]
         if @issue.update_attributes params[:issue]
           flash[:notice] = 'Successfully updated'
           redirect_to (@issue.awaiting_moderation ? admin_issues_path : issue_path(@issue))
