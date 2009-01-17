@@ -1,5 +1,6 @@
 set :application, 'wincent_on_rails'
 set :repository, '/pub/git/private/wincent.com.git'
+#set :local_repository, 'git.wincent.com:/pub/git/private/wincent.com.git' # for Cap > 2.2.0
 set :scm, :git
 set :group_writable, :false
 
