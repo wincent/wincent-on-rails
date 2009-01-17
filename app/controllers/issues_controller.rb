@@ -23,6 +23,7 @@ class IssuesController < ApplicationController
     @issue                      = Issue.new params[:issue]
     @issue.user                 = current_user
     @issue.awaiting_moderation  = !(admin? or logged_in_and_verified?)
+    @issue.pending_tags         = params[:issue][:pending_tags] if admin?
     if @issue.save
       if logged_in_and_verified?
         flash[:notice] = 'Successfully created new issue.'

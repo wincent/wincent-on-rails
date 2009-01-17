@@ -37,3 +37,7 @@
     %td
       =f.check_box :public, { :disabled => !logged_in? }
       allow other visitors to see this ticket? (it may be helpful to them)
+  -if admin?
+    %tr
+      %th Tags
+      %td=f.text_field :pending_tags

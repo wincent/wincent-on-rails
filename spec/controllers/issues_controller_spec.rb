@@ -72,6 +72,31 @@ describe IssuesController, 'GET /issues/:id/edit' do
   end
 end
 
+describe IssuesController, 'POST /issues (html format)' do
+  before do
+    # use a real model instead of a mock or stub here
+    # otherwise I have to mock/stub _all_ of the method calls inside the method
+    # which seems a bit crazy
+    @issue = new_issue
+    Issue.stub!(:new).and_return(@issue)
+  end
+
+  def do_post
+    post :create, :issue => { :pending_tags => 'foo bar baz' }
+  end
+
+  it 'should set pending tags (if posting as admin)' do
+    @issue.should_receive(:pending_tags=).with('foo bar baz')
+    login_as_admin
+    do_post
+  end
+
+  it 'should not set pending tags (if posting as normal or anonymous user)' do
+    @issue.should_not_receive(:pending_tags=)
+    do_post
+  end
+end
+
 describe IssuesController, 'PUT /issues/:id (html format)' do
   before do
     @issue = create_issue :awaiting_moderation => false # this is the default example data anyway, but be explicit
