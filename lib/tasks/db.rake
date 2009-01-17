@@ -1,5 +1,9 @@
 namespace :db do
   namespace :sessions do
+    # run this task from cron with something like:
+    #   MAILTO=app_admin@example.com
+    #   RAILS_ENV=production
+    #   @hourly "rake -f /path/to/app/deploy/current/Rakefile db:sessions:thin"
     desc 'Thin the sessions table (clears only old records)'
     task :thin => :environment do
       query = "DELETE FROM #{session_table_name} WHERE updated_at < DATE_SUB(NOW(), INTERVAL 24 HOUR)"
