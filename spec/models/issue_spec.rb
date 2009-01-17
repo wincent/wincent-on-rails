@@ -41,7 +41,7 @@ describe Issue, 'acting as taggable' do
   it_should_behave_like 'ActiveRecord::Acts::Taggable'
 end
 
-# :summary, :description, :public, :product_id, :kind, :pending_tags
+# :summary, :description, :public, :product_id, :kind
 describe Issue, 'accessible attributes' do
   it 'should allow mass-assignment to the summary' do
     new_issue.should allow_mass_assignment_of(:summary => String.random)
@@ -62,9 +62,11 @@ describe Issue, 'accessible attributes' do
   it 'should allow mass-assignment to the kind' do
     new_issue.should allow_mass_assignment_of(:kind => Issue::KIND[:feedback])
   end
+end
 
-  it 'should allow mass-assignment to the "pending tags" attribute' do
-    new_issue.should allow_mass_assignment_of(:pending_tags => 'foo bar baz')
+describe Issue, 'protected attributes' do
+  it 'should not allow mass-assignment to the "pending tags" attribute' do
+    new_issue.should_not allow_mass_assignment_of(:pending_tags => 'foo bar baz')
   end
 end
 
