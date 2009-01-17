@@ -2,7 +2,7 @@ namespace :db do
   namespace :sessions do
     desc 'Thin the sessions table (clears only old records)'
     task :thin => :environment do
-      query = "DELETE FROM #{session_table_name} WHERE updated_at < DATE_SUB(CURDATE(), INTERVAL 30 DAY)"
+      query = "DELETE FROM #{session_table_name} WHERE updated_at < DATE_SUB(NOW(), INTERVAL 24 HOUR)"
       ActiveRecord::Base.connection.execute query
     end
 
