@@ -104,7 +104,7 @@ describe IssuesController, 'PUT /issues/:id (html format)' do
   end
 
   def do_put
-    put :update, :id => @issue.id
+    put :update, :issue => { :id => @issue.id, :pending_tags => 'foo bar baz' }
   end
 
   it 'should require administrator privileges' do
@@ -115,6 +115,12 @@ describe IssuesController, 'PUT /issues/:id (html format)' do
   it 'should find the issue' do
     controller.should_receive(:find_issue_awaiting_moderation) # before filter
     do_put rescue nil # by mocking we prevent assignment to the @issue instance variable, so must rescue here
+  end
+
+  it 'should update the tags' do
+    @issue.should_receive(:pending_tags=)
+    Issue.stub!(:find).and_return(@issue)
+    do_put
   end
 
   it 'should update the issue' do
