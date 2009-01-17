@@ -62,6 +62,9 @@
         %tr
           %th Public?
           %td=ajax_check_box form, :public
+      %tr
+        %th Tags
+        %td=tag_links(@issue)
 %h2.major Comments
 %table.issue
   -for comment in @comments
