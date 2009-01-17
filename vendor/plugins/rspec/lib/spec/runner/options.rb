@@ -40,7 +40,6 @@ module Spec
         :diff_format,
         :dry_run,
         :profile,
-        :examples,
         :heckle_runner,
         :line_number,
         :loadby,
@@ -51,12 +50,10 @@ module Spec
         :user_input_for_runner,
         :error_stream,
         :output_stream,
-        :before_suite_parts,
-        :after_suite_parts,
         # TODO: BT - Figure out a better name
         :argv
       )
-      attr_reader :colour, :differ_class, :files, :example_groups
+      attr_reader :colour, :differ_class, :files, :examples, :example_groups
       
       def initialize(error_stream, output_stream)
         @error_stream = error_stream
@@ -76,7 +73,6 @@ module Spec
         @examples_run = false
         @examples_should_be_run = nil
         @user_input_for_runner = nil
-        @before_suite_parts = []
         @after_suite_parts = []
       end
 
@@ -123,6 +119,14 @@ module Spec
           end
         end
       end
+      
+      def before_suite_parts
+        Spec::Example::BeforeAndAfterHooks.before_suite_parts
+      end
+      
+      def after_suite_parts
+        Spec::Example::BeforeAndAfterHooks.after_suite_parts
+      end
 
       def examples_run?
         @examples_run
@@ -130,7 +134,17 @@ module Spec
 
       def examples_should_not_be_run
         @examples_should_be_run = false
-      end      
+      end
+      
+      def predicate_matchers
+        # TODO - don't like this dependency - perhaps store these in here instead?
+        Spec::Runner.configuration.predicate_matchers
+      end
+      
+      def mock_framework
+        # TODO - don't like this dependency - perhaps store this in here instead?
+        Spec::Runner.configuration.mock_framework
+      end
 
       def colour=(colour)
         @colour = colour
@@ -163,7 +177,7 @@ module Spec
 
       def parse_example(example)
         if(File.file?(example))
-          @examples = File.open(example).read.split("\n")
+          @examples = [File.open(example).read.split("\n")].flatten
         else
           @examples = [example]
         end
@@ -209,11 +223,8 @@ module Spec
       end
 
       def number_of_examples
-        total = 0
-        @example_groups.each do |example_group|
-          total += example_group.number_of_examples
-        end
-        total
+        return examples.size unless examples.empty?
+        @example_groups.inject(0) {|sum, group| sum + group.number_of_examples}
       end
 
       def files_to_load
@@ -230,6 +241,10 @@ module Spec
           end
         end
         result
+      end
+      
+      def dry_run?
+        @dry_run == true
       end
       
       protected
@@ -265,7 +280,7 @@ module Spec
       def custom_runner
         return nil unless custom_runner?
         klass_name, arg = ClassAndArgumentsParser.parse(user_input_for_runner)
-        runner_type = load_class(klass_name, 'behaviour runner', '--runner')
+        runner_type = load_class(klass_name, 'example group runner', '--runner')
         return runner_type.new(self, arg)
       end
 
@@ -299,7 +314,7 @@ module Spec
               error_stream.puts "You must specify one file, not a directory when using the --line option"
               exit(1) if stderr?
             else
-              example = SpecParser.new.spec_name_for(files[0], line_number)
+              example = SpecParser.new(self).spec_name_for(files[0], line_number)
               @examples = [example]
             end
           else

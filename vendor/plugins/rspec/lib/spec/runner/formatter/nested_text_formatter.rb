@@ -16,7 +16,7 @@ module Spec
           current_nested_example_groups = described_example_group_chain
           current_nested_example_groups.each_with_index do |nested_example_group, i|
             unless nested_example_group == previous_nested_example_groups[i]
-              output.puts "#{'  ' * i}#{nested_example_group.description_args}"
+              output.puts "#{'  ' * i}#{nested_example_group.description_args.join}"
             end
           end
 
@@ -52,7 +52,7 @@ module Spec
 
         def described_example_group_chain
           example_group_chain = []
-          example_group.__send__(:each_ancestor_example_group_class) do |example_group_class|
+          example_group.__send__(:example_group_hierarchy).each do |example_group_class|
             unless example_group_class.description_args.empty?
               example_group_chain << example_group_class
             end

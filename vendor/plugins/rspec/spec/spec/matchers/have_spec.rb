@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../../spec_helper.rb'
 
-module HaveSpecHelper
+share_as :HaveSpecHelper do
   def create_collection_owner_with(n)
     owner = Spec::Expectations::Helper::CollectionOwner.new
     (1..n).each do |n|
@@ -9,7 +9,20 @@ module HaveSpecHelper
     end
     owner
   end
+  before(:each) do
+    unless defined?(::ActiveSupport::Inflector)
+      @active_support_was_not_defined
+      module ::ActiveSupport
+        class Inflector
+          def self.pluralize(string)
+            string.to_s + 's'
+          end
+        end
+      end
+    end
+  end
 end
+
 
 describe "should have(n).items" do
   include HaveSpecHelper
@@ -50,19 +63,6 @@ end
 describe 'should have(1).item when ActiveSupport::Inflector is defined' do
   include HaveSpecHelper
   
-  before(:each) do
-    unless defined?(ActiveSupport::Inflector)
-      @active_support_was_not_defined
-      module ActiveSupport
-        class Inflector
-          def self.pluralize(string)
-            string.to_s + 's'
-          end
-        end
-      end
-    end
-  end
-  
   it 'should pluralize the collection name' do
     owner = create_collection_owner_with(1)
     owner.should have(1).item
@@ -70,7 +70,7 @@ describe 'should have(1).item when ActiveSupport::Inflector is defined' do
   
   after(:each) do
     if @active_support_was_not_defined
-      Object.send :remove_const, :ActiveSupport
+      Object.__send__ :remove_const, :ActiveSupport
     end
   end
 end
@@ -96,7 +96,7 @@ describe 'should have(1).item when Inflector is defined' do
 
   after(:each) do
     if @inflector_was_not_defined
-      Object.send :remove_const, :Inflector
+      Object.__send__ :remove_const, :Inflector
     end
   end
 end
@@ -327,7 +327,7 @@ end
 
 describe Spec::Matchers::Have, "for a collection owner that implements #send" do
   include HaveSpecHelper
-
+  
   before(:each) do
     @collection = Object.new
     def @collection.floozles; [1,2] end
@@ -357,7 +357,12 @@ module Spec
   module Matchers
     describe Have do
       it "should have method_missing as private" do
-        Have.private_instance_methods.should include("method_missing")
+        with_ruby '1.8' do
+          Have.private_instance_methods.should include("method_missing")
+        end
+        with_ruby '1.9' do
+          Have.private_instance_methods.should include(:method_missing)
+        end
       end
       
       describe "respond_to?" do

@@ -49,21 +49,21 @@ Finished in 3 seconds
         it "should push red F for failure spec" do
           @io.should_receive(:tty?).and_return(true)
           @options.should_receive(:colour).and_return(true)
-          @formatter.example_failed("spec", 98, Reporter::Failure.new("c s", Spec::Expectations::ExpectationNotMetError.new))
+          @formatter.example_failed("spec", 98, Spec::Runner::Reporter::Failure.new("c s", Spec::Expectations::ExpectationNotMetError.new))
           @io.string.should eql("\e[31mF\e[0m")
         end
 
         it "should push magenta F for error spec" do
           @io.should_receive(:tty?).and_return(true)
           @options.should_receive(:colour).and_return(true)
-          @formatter.example_failed("spec", 98, Reporter::Failure.new("c s", RuntimeError.new))
+          @formatter.example_failed("spec", 98, Spec::Runner::Reporter::Failure.new("c s", RuntimeError.new))
           @io.string.should eql("\e[35mF\e[0m")
         end
 
         it "should push blue F for fixed pending spec" do
           @io.should_receive(:tty?).and_return(true)
           @options.should_receive(:colour).and_return(true)
-          @formatter.example_failed("spec", 98, Reporter::Failure.new("c s", Spec::Example::PendingExampleFixedError.new))
+          @formatter.example_failed("spec", 98, Spec::Runner::Reporter::Failure.new("c s", Spec::Example::PendingExampleFixedError.new))
           @io.string.should eql("\e[34mF\e[0m")
         end
 
@@ -88,17 +88,6 @@ EOE
 EOE
         end
         
-        it "should dump pending" do
-          example_group = ExampleGroup.describe("example_group") do
-            specify "example" do
-            end
-          end
-          example = example_group.examples.first
-          @formatter.example_pending(example, "message", "#{__FILE__}:#{__LINE__}")
-          @formatter.dump_pending
-          @io.string.should =~ /Pending\:\nexample_group example \(message\)\n/
-        end
-        
         it "should dump pending with file and line number" do
           example_group = ExampleGroup.describe("example_group") do
             specify "example" do
@@ -112,8 +101,9 @@ EOE
           @io.string.should ==(<<-HERE)
 *
 Pending:
+
 example_group example (message)
-  Called from #{file}:#{line}
+#{file}:#{line}
 HERE
         end
       end
@@ -124,11 +114,11 @@ HERE
           @options = mock('options')
           @out.stub!(:puts)
           @formatter = ProgressBarFormatter.new(@options, @out)
-          @formatter.class.send :public, :output_to_tty?
+          @formatter.class.__send__ :public, :output_to_tty?
         end
 
         after(:each) do
-          @formatter.class.send :protected, :output_to_tty?
+          @formatter.class.__send__ :protected, :output_to_tty?
         end
 
         it "should not throw NoMethodError on output_to_tty?" do

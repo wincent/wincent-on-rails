@@ -10,6 +10,7 @@ module Spec
         @_options = options
         @_defined_description = defined_description
         @_implementation = implementation || pending_implementation
+        @_backtrace = caller
       end
       
     private

@@ -1,9 +1,9 @@
 silence_warnings { RAILS_ENV = "test" }
 
 begin
-  require_dependency 'application_controller' # 2.2.2 and newer
+  require_dependency 'application_controller'
 rescue MissingSourceFile
-  require_dependency 'application'            # pre-2.2.2
+  require_dependency 'application'
 end
 
 require 'action_controller/test_process'
@@ -18,3 +18,10 @@ require 'spec/rails/mocks'
 require 'spec/rails/example'
 require 'spec/rails/extensions'
 require 'spec/rails/interop/testcase'
+
+if Rails::VERSION::STRING >= "2.0"
+  # This is a temporary hack to get rspec's auto-runner functionality to not consider
+  # ActionMailer::TestCase to be a spec waiting to run.
+  require 'action_mailer/test_case'
+  Spec::Example::ExampleGroupFactory.register(:ignore_for_now, ActionMailer::TestCase)
+end

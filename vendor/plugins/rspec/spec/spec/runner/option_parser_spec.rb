@@ -1,20 +1,5 @@
 require File.dirname(__FILE__) + '/../../spec_helper.rb'
-require 'fileutils'
-
-module Custom
-  class ExampleGroupRunner
-    attr_reader :options, :arg
-    def initialize(options, arg)
-      @options, @arg = options, arg
-    end
-
-    def load_files(files)
-    end
-
-    def run
-    end
-  end  
-end
+require File.dirname(__FILE__) + '/resources/custom_example_group_runner'
 
 describe "OptionParser" do
   before(:each) do
@@ -73,14 +58,14 @@ describe "OptionParser" do
   end
   
   it "should print help to stdout if no args and spec_comand?" do
-    Spec.stub!(:spec_command?).and_return(true)
+    Spec::Runner::OptionParser.stub!(:spec_command?).and_return(true)
     options = parse([])
     @out.rewind
     @out.read.should match(/Usage: spec \(FILE\|DIRECTORY\|GLOB\)\+ \[options\]/m)
   end
     
   it "should not print help to stdout if no args and NOT spec_command?" do
-    Spec.stub!(:spec_command?).and_return(false)
+    Spec::Runner::OptionParser.stub!(:spec_command?).and_return(false)
     options = parse([])
     @out.rewind
     @out.read.should == ""

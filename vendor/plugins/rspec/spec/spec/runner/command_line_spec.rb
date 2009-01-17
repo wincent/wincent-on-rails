@@ -11,19 +11,19 @@ module Spec
         end
       
         it "should run directory" do
-          file = File.dirname(__FILE__) + '/../../../examples/pure'
-          run_with(OptionParser.parse([file,"-p","**/*.rb"], @err, @out))
+          file = File.dirname(__FILE__) + '/../../../examples/passing'
+          run_with(OptionParser.parse([file,"-p","**/*_spec.rb,**/*_example.rb"], @err, @out))
 
           @out.rewind
           @out.read.should =~ /\d+ examples, 0 failures, 3 pending/n
         end
 
         it "should run file" do
-          file = File.dirname(__FILE__) + '/../../../failing_examples/predicate_example.rb'
+          file = File.dirname(__FILE__) + '/../../../examples/failing/predicate_example.rb'
           run_with(OptionParser.parse([file], @err, @out))
 
           @out.rewind
-          @out.read.should =~ /2 examples, 1 failure/n
+          @out.read.should =~ /3 examples, 2 failures/n
         end
 
         it "should raise when file does not exist" do

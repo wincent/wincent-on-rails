@@ -38,29 +38,9 @@ module Spec
       #
       # == Expecting Errors
       #
-      # Rspec on Rails will raise errors that occur in controller actions.
-      # In contrast, Rails will swallow errors that are raised in controller
-      # actions and return an error code in the header. If you wish to override
-      # Rspec and have Rail's default behaviour,tell the controller to use
-      # rails error handling ...
+      # Rspec on Rails will raise errors that occur in controller actions and
+      # are not rescued or handeled with rescue_from.
       #
-      #   before(:each) do
-      #     controller.use_rails_error_handling!
-      #   end
-      #
-      # When using Rail's error handling, you can expect error codes in headers ...
-      #
-      #   it "should return an error in the header" do
-      #     response.should be_error
-      #   end
-      #
-      #   it "should return a 501" do
-      #     response.response_code.should == 501
-      #   end
-      #
-      #   it "should return a 501" do
-      #     response.code.should == "501"
-      #   end
       class ControllerExampleGroup < FunctionalExampleGroup
         class << self
                     
@@ -202,6 +182,16 @@ module Spec
                     @_first_render ||= args[0] unless args[0] =~ /^layouts/
                     PickedTemplate.new
                   end
+                  
+                  define_method :render do |*args|
+                    if @_rendered
+                      opts = args[0]
+                      (@_rendered[:template] ||= opts[:file]) if opts[:file]
+                      (@_rendered[:partials][opts[:partial]] += 1) if opts[:partial]
+                    else
+                      super
+                    end
+                  end
                 end
               end
             end
@@ -247,8 +237,11 @@ module Spec
         Spec::Example::ExampleGroupFactory.register(:controller, self)
       end
       
-      class PickedTemplate
+      # Returned by _pick_template when running controller examples in isolation mode.
+      class PickedTemplate 
+        # Do nothing when running controller examples in isolation mode.
         def render_template(*ignore_args); end
+        # Do nothing when running controller examples in isolation mode.
         def render_partial(*ignore_args);  end
       end
     end

@@ -10,6 +10,10 @@ module Spec
           parser.parse(args)
           parser.options
         end
+
+        def spec_command?
+          $0.split('/').last == 'spec'
+        end
       end
 
       attr_reader :options
@@ -34,8 +38,8 @@ module Spec
                                                           "an example name directly, causing RSpec to run just the example",
                                                           "matching that name"],
         :specification => ["-s", "--specification [NAME]", "DEPRECATED - use -e instead", "(This will be removed when autotest works with -e)"],
-        :line => ["-l", "--line LINE_NUMBER", Integer, "Execute behaviour or specification at given line.",
-                                                       "(does not work for dynamically generated specs)"],
+        :line => ["-l", "--line LINE_NUMBER", Integer, "Execute example group or example at given line.",
+                                                       "(does not work for dynamically generated examples)"],
         :format => ["-f", "--format FORMAT[:WHERE]","Specifies what format to use for output. Specify WHERE to tell",
                                                     "the formatter where to write the output. All built-in formats",
                                                     "expect WHERE to be a file name, and will write to $stdout if it's",
@@ -115,10 +119,10 @@ module Spec
         on(*OPTIONS[:version])          {parse_version}
         on_tail(*OPTIONS[:help])        {parse_help}
       end
-
+      
       def order!(argv, &blk)
         @argv = argv.dup
-        @argv = (@argv.empty? && Spec.spec_command?) ? ['--help'] : @argv 
+        @argv = (@argv.empty? && self.class.spec_command?) ? ['--help'] : @argv 
         @options.argv = @argv.dup
         return if parse_generate_options
         return if parse_drb

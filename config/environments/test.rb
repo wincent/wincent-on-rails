@@ -14,3 +14,8 @@ config.action_controller.allow_forgery_protection    = false
 # The :test delivery method accumulates sent emails in the
 # ActionMailer::Base.deliveries array.
 config.action_mailer.delivery_method = :test
+
+# One day will install RSpec as a gem as it will make upgrades easier;
+# but for now (Rails 2.2.2, RSpec 1.1.12) it doesn't work.
+#config.gem 'rspec',       :version => '1.1.12'
+#config.gem 'rspec-rails', :version => '1.1.12'

@@ -1,15 +1,17 @@
 module Spec
   module Example
     class ExampleGroupFactory
-      class << self
+      module ClassMethods
         def reset
           @example_group_types = nil
           default(ExampleGroup)
         end
 
-        def all_registered?(example_group_classes)
+        def registered_or_ancestor_of_registered?(example_group_classes) # :nodoc:
           example_group_classes.each do |example_group_class|
-            return false unless registered_or_ancestor_of_registered? example_group_class
+            return false unless registered_types.any? do |registered_type|
+              registered_type.ancestors.include? example_group_class
+            end
           end
           return true
         end
@@ -48,9 +50,27 @@ module Spec
         end
         
         def create_example_group(*args, &block)
-          opts = Hash === args.last ? args.last : {}
-          superclass = determine_superclass(opts)
+          raise ArgumentError if args.empty?
+          raise ArgumentError unless block
+          Spec::Example::add_spec_path_to(args)
+          superclass = determine_superclass(args.last)
           superclass.describe(*args, &block)
+        end
+        
+        def create_shared_example_group(*args, &block)
+          Spec::Example::add_spec_path_to(args)
+          SharedExampleGroup.register(*args, &block)
+        end
+        
+        def include_constants_in(context, &block)
+          if (Spec::Ruby.version.to_f >= 1.9 && Module === context && !(Class === context))
+            return lambda {include context;instance_eval(&block)}
+          end
+          block
+        end
+        
+        def assign_scope(scope, args)
+          args.last[:scope] = scope
         end
 
       protected
@@ -66,15 +86,12 @@ module Spec
         
       private
         
-        def registered_or_ancestor_of_registered? example_group_class
-          registered_types.any? {|registered_type| registered_type.ancestors.include? example_group_class}
-        end
-        
         def registered_types
           @example_group_types.values
         end
 
       end
+      extend ClassMethods
       self.reset
     end
   end

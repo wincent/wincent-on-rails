@@ -52,7 +52,7 @@ module Spec
                     formatter.example_failed(
                       example_group.it("spec"),
                       98,
-                      Reporter::Failure.new("c s", RuntimeError.new)
+                      Spec::Runner::Reporter::Failure.new("c s", RuntimeError.new)
                     )
                     io.string.should have_example_group_output("- spec (ERROR - 98)\n")
                   end
@@ -63,7 +63,7 @@ module Spec
                     formatter.example_failed(
                       example_group.it("spec"),
                       98,
-                      Reporter::Failure.new("c s", Spec::Expectations::ExpectationNotMetError.new)
+                      Spec::Runner::Reporter::Failure.new("c s", Spec::Expectations::ExpectationNotMetError.new)
                     )
                     io.string.should have_example_group_output("- spec (FAILED - 98)\n")
                   end
@@ -84,7 +84,7 @@ module Spec
                     formatter.example_failed(
                     example_group.it("spec"),
                     98,
-                    Reporter::Failure.new("c s", RuntimeError.new)
+                    Spec::Runner::Reporter::Failure.new("c s", RuntimeError.new)
                     )
                     io.string.should have_nested_example_group_output("- spec (ERROR - 98)\n")
                   end
@@ -95,7 +95,7 @@ module Spec
                     formatter.example_failed(
                       example_group.it("spec"),
                       98,
-                      Reporter::Failure.new("c s", Spec::Expectations::ExpectationNotMetError.new)
+                      Spec::Runner::Reporter::Failure.new("c s", Spec::Expectations::ExpectationNotMetError.new)
                     )
                     io.string.should have_nested_example_group_output("- spec (FAILED - 98)\n")
                   end
@@ -141,7 +141,7 @@ module Spec
                 formatter.example_pending(example_group.examples.first, 'reason', "#{__FILE__}:#{__LINE__}")
                 io.rewind
                 formatter.dump_pending
-                io.string.should =~ /Pending\:\nExampleGroup example \(reason\)\n/
+                io.string.should =~ /Pending\:\n\nExampleGroup example \(reason\)\n/
               end
             end
 
