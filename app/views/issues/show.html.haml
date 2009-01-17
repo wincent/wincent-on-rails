@@ -63,7 +63,11 @@
           %th Public?
           %td=ajax_check_box form, :public
       %tr
-        %th Tags
+        %th
+          Tags
+          -if admin?
+            %br
+            =link_to 'edit', edit_issue_path(@issue)
         %td=tag_links(@issue)
 %h2.major Comments
 %table.issue
