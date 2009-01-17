@@ -41,6 +41,33 @@ describe Issue, 'acting as taggable' do
   it_should_behave_like 'ActiveRecord::Acts::Taggable'
 end
 
+# :summary, :description, :public, :product_id, :kind, :pending_tags
+describe Issue, 'accessible attributes' do
+  it 'should allow mass-assignment to the summary' do
+    new_issue.should allow_mass_assignment_of(:summary => String.random)
+  end
+
+  it 'should allow mass-assignment to the description' do
+    new_issue.should allow_mass_assignment_of(:description => String.random)
+  end
+
+  it 'should allow mass-assignment to the public attribute' do
+    new_issue(:public => false).should allow_mass_assignment_of(:public => true)
+  end
+
+  it 'should allow mass-assignment to the product_id' do
+    new_issue.should allow_mass_assignment_of(:product_id => create_product.id)
+  end
+
+  it 'should allow mass-assignment to the kind' do
+    new_issue.should allow_mass_assignment_of(:kind => Issue::KIND[:feedback])
+  end
+
+  it 'should allow mass-assignment to the "pending tags" attribute' do
+    new_issue.should allow_mass_assignment_of(:pending_tags => 'foo bar baz')
+  end
+end
+
 describe Issue, 'validating the description' do
   it 'should require it to be present' do
     new_issue(:description => nil).should fail_validation_for(:description)
