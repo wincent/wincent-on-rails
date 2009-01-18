@@ -276,5 +276,12 @@ ended up moving it back to vendor/plugins, which funnily enough works:
   git add script/spec script/spec_server spec/spec.opts script/autospec
 
   # migrate to Cucumber 0.1.15/Webrat 0.3.4 (RSpec StoryRunner is broken anyway)
+  git rm -r vendor/plugins/webrat # remove old version
   sudo gem install cucumber webrat
   script/generate cucumber
+
+  # Webrat 0.3.4 doesn't work; have to use Aslak's fork
+  sudo gem uninstall webrat
+  sudo gem install --source http://gems.github.com aslakhellesoy-webrat
+  rake features # make sure it works
+
