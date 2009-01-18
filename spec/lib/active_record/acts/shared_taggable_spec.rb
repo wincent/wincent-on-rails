@@ -20,11 +20,15 @@ describe ActiveRecord::Acts::Taggable, :shared => true do
   it 'should have a pending_tags virtual attribute' do
     # writing stores to the instance variable
     @object.pending_tags = 'hello world'
-    @object.instance_eval { @pending_tags }.should == 'hello world'
+    @object.instance_variable_get('@pending_tags').should == 'hello world'
 
-    # reading reads from the database
+    # reading reads from the instance variable
+    @object.pending_tags.should == 'hello world'
+
+    # but after saving, reading reads from the database
+    @object.save
     @object.tag 'foo bar baz'
-    @object.pending_tags.should == 'foo bar baz'
+    @object.pending_tags.should == 'hello world foo bar baz'
   end
 
   it 'should allow tagging at creation time' do
