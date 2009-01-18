@@ -87,9 +87,10 @@ private
         accessible taggable, user
       end
       if type && group.name == type.to_s.downcase
-        taggables.unshift group # make sure prioritized type appears first
+        # make sure prioritized type appears first
+        taggables.unshift group unless group.taggables.empty?
       else
-        taggables << group
+        taggables << group unless group.taggables.empty?
       end
     end
     taggables

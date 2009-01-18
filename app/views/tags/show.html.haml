@@ -1,6 +1,6 @@
 %h1==Tag: #{@tag.name}
 %h2.major
-  =item_count @tag.taggings_count
+  =item_count @taggables.sum { |group| group.taggables.length }
   tagged with
   =@tag.name
 =render :partial => 'taggings'
