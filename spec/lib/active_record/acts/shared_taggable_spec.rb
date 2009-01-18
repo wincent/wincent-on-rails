@@ -33,4 +33,11 @@ describe ActiveRecord::Acts::Taggable, :shared => true do
     @new_object.save!
     @new_object.tag_names.should == ['foo', 'bar', 'baz']
   end
+
+  it 'should persist tags across saves' do
+    # was a bug; see: http://rails.wincent.com/issues/1197
+    @object.tag 'foo'
+    @object.save
+    @object.tag_names.should == ['foo']
+  end
 end

@@ -66,14 +66,13 @@ module ActiveRecord
 
         # taggings are a "has many through" association so can only be set up after saving for the first time
         def after_save_with_save_pending_tags
-          after_save_without_save_pending_tags
-          return if pending_tags == @pending_tags
+          result = after_save_without_save_pending_tags
+          return result if pending_tags == @pending_tags # nothing to do
+          return result if @pending_tags.nil? # nil means "no change", "" would mean "destroy all"
           taggings.destroy_all # not very efficient, but hopefully won't be doing this too often
-          if @pending_tags
-            tag @pending_tags
-            @pending_tags = nil
-          end
-          true
+          tag @pending_tags
+          @pending_tags = nil
+          return result
         end
 
         def validate_with_check_pending_tag_format
