@@ -59,7 +59,11 @@ module ActiveRecord
         # For use in forms.
         # See the save_pending_tags method for more information.
         def pending_tags
-          tag_names.join ' '
+          if @pending_tags
+            @pending_tags
+          else
+            tag_names.join ' '
+          end
         end
 
       protected
@@ -67,8 +71,8 @@ module ActiveRecord
         # taggings are a "has many through" association so can only be set up after saving for the first time
         def after_save_with_save_pending_tags
           result = after_save_without_save_pending_tags
-          return result if pending_tags == @pending_tags # nothing to do
           return result if @pending_tags.nil? # nil means "no change", "" would mean "destroy all"
+          return result if @pending_tags == tag_names.join(' ') # nothing to do
           taggings.destroy_all # not very efficient, but hopefully won't be doing this too often
           tag @pending_tags
           @pending_tags = nil
