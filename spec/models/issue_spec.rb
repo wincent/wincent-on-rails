@@ -65,6 +65,7 @@ describe Issue, 'accessible attributes' do
 end
 
 describe Issue, 'protected attributes' do
+  # don't want non-admin users being able to create or assign tags
   it 'should not allow mass-assignment to the "pending tags" attribute' do
     new_issue.should_not allow_mass_assignment_of(:pending_tags => 'foo bar baz')
   end
