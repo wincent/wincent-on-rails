@@ -11,9 +11,12 @@ module ActiveRecord
             has_many      :taggings, :as => :taggable, :dependent => :destroy
             has_many      :tags,     :through => :taggings
             attr_writer   :pending_tags
+
+            # only problem here is that error messages refer to "pending tags" instead of "tags"
+            validates_format_of :pending_tags, :with => /\A([a-z]+(.[a-z]+)*)*\z/, :allow_nil => true,
+                                :message => 'may only contain letters or periods'
             include ActiveRecord::Acts::Taggable::InstanceMethods
             extend ActiveRecord::Acts::Taggable::MoreClassMethods
-            alias_method_chain :validate, :check_pending_tag_format
             alias_method_chain :after_save, :save_pending_tags
           end
         end
@@ -82,16 +85,6 @@ module ActiveRecord
           tag @pending_tags
           @pending_tags = nil
           return result
-        end
-
-        def validate_with_check_pending_tag_format
-          validate_without_check_pending_tag_format
-          # can't use a normal validates_format_of here because that uses an accessor
-          # (which will always return only valid values)
-          # must check the instance variable directly
-          if @pending_tags and not (@pending_tags =~ /\A([a-z]+(.[a-z]+)*)*\z/)
-            errors.add :tags, 'may only contain letters or periods'
-          end
         end
 
       private
