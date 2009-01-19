@@ -5,6 +5,7 @@ class IssuesController < ApplicationController
   before_filter     :find_issue_awaiting_moderation, :only => [:edit, :show, :update]
   before_filter     :store_current_user
   before_filter     :find_prev_next, :only => [:show]
+  after_filter      :clear_current_user
   caches_page       :show, :if => Proc.new { |c| c.send(:is_atom?) }
   cache_sweeper     :issue_sweeper, :only => [ :create, :update, :destroy ]
   in_place_edit_for :issue, :summary
@@ -189,6 +190,10 @@ private
     # sites where models are created (for example, the in-place editor field plug-in)
     # http://www.zorched.net/2007/05/29/making-session-data-available-to-models-in-ruby-on-rails/
     Thread.current[:current_user] = current_user
+  end
+
+  def clear_current_user
+    Thread.current[:current_user] = nil
   end
 
   def find_issue_awaiting_moderation
