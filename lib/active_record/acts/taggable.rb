@@ -66,6 +66,11 @@ module ActiveRecord
           end
         end
 
+        # Returns true if the model has pending tag changes not yet written to the database.
+        def pending_tags?
+          !@pending_tags.nil?
+        end
+
       protected
 
         # taggings are a "has many through" association so can only be set up after saving for the first time
