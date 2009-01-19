@@ -285,3 +285,6 @@ ended up moving it back to vendor/plugins, which funnily enough works:
   sudo gem install --source http://gems.github.com aslakhellesoy-webrat
   rake features # make sure it works
 
+  # update to Cucumber 0.1.16/Webrat 0.4.0 (no longer necessary to use the fork)
+  sudo gem install webrat cucumber
+  script/generate cucumber
