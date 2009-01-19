@@ -24,6 +24,8 @@ class Issue < ActiveRecord::Base
   acts_as_taggable
   acts_as_searchable      :attributes => [:summary, :description]
   after_create            :send_new_issue_alert
+  before_save             :prepare_annotation
+  after_save              :annotate
 
   # Sanitizes an untrusted hash of search parameters and prepares a conditions string suitable for passing to find(:all).
   # The calling controller should pass in the appropriate access options string to constrain the search depending on whether
@@ -71,6 +73,48 @@ class Issue < ActiveRecord::Base
     rescue Exception => e
       logger.error "\nerror: Issue#send_new_issue_alert for issue #{self.id} failed due to exception #{e.class}: #{e}\n\n"
     end
+  end
+
+  def prepare_annotation
+    @annotations = []
+    return if new_record?
+    changes.each do |change|
+      field, from, to = change[0], change[1][0], change[1][1]
+      case field
+      when 'summary'
+        @annotations << format_annotation('Summary', from, to)
+      when 'kind'
+        @annotations << format_annotation('Kind', Issue::string_for_kind(from), kind_string)
+      when 'public'
+        @annotations << format_annotation('Public', from, to)
+      when 'status'
+        @annotations << format_annotation('Status', Issue::string_for_status(from), status_string)
+      when 'product_id'
+        # have to do a couple of db look-ups here
+      end
+    end
+    if pending_tags?
+      @annotations << format_annotation('Tags', tag_names.join(' '), pending_tags)
+    end
+  end
+
+  def annotate
+    return if @annotations.empty?
+    comment = comments.build(:body => @annotations.join("\n"))
+    user = Thread.current[:current_user]
+    comment.user_id = user.id if user
+    comment.awaiting_moderation = !(user && user.superuser?)
+    comment.save
+  end
+
+  # Formats an annotation for a single field using appropriate wikitext markup.
+  def format_annotation field, from, to
+    <<ANNOTATION
+'''#{field}''' changed:
+
+* '''From:''' #{from}
+* '''To:''' #{to}
+ANNOTATION
   end
 
   def self.update_timestamps_for_comment_changes?
