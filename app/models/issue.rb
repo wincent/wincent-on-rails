@@ -105,7 +105,9 @@ class Issue < ActiveRecord::Base
       end
     end
     if pending_tags?
-      @annotations << format_annotation('Tags', tag_names.join(' '), pending_tags)
+      from = tag_names.join(' ')
+      to = pending_tags
+      @annotations << format_annotation('Tags', from, to) if from != to
     end
   end
 
