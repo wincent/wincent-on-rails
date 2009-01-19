@@ -169,8 +169,56 @@ private
   # If this is an AJAX request tries to save the model and returns a 200 status code on success, 422 on failure.
   def handle_ajax_request
     respond_to do |format|
-      format.js { render :text => '', :status => (@issue.save ? 200 : 422) }
+      format.js {
+        # may be cleaner to wrap all this in an around filter
+        pending_annotation = annotation
+        saved = @issue.save
+        render :text => '', :status => (saved ? 200 : 422)
+        pending_annotation.save if pending_annotation and saved
+      }
     end
+  end
+
+  def annotation
+    annotations = []
+    @issue.changes.each do |change|
+      field, from, to = change[0], change[1][0], change[1][1]
+      case field
+      when 'summary'
+        # this one doesn't work for some reason
+        # looks like we don't go through the handle_ajax_request method in the summary case
+        # we're hitting the issues#set_issue_summary action, which doesn't call handle_ajax_request
+        # the others hit actions like issues#update_public, update_kind, update_status etc
+        annotations << format_annotation('Summary', from, to)
+      when 'kind'
+        annotations << format_annotation('Kind', Issue::string_for_kind(from), Issue::string_for_kind(to))
+      when 'public'
+        annotations << format_annotation('Public', from, to)
+      when 'status'
+        annotations << format_annotation('Status', Issue::string_for_status(from), Issue::string_for_status(to))
+      when 'product_id'
+        # have to do a couple of db look-ups here
+      end
+    end
+    if @issue.pending_tags?
+      annotations << format_annotation('Tags', @issue.tag_names.join(' '), @issue.pending_tags)
+    end
+    return nil if annotations.empty?
+    # i wonder if this is code smell here: this duplicates code in the comments#create action
+    comment = @issue.comments.build(:body => annotations.join("\n"))
+    comment.user_id = current_user.id
+    comment.awaiting_moderation = !(admin? or logged_in_and_verified?)
+    comment
+  end
+
+  # Formats an annotation for a single field using appropriate wikitext markup.
+  def format_annotation field, from, to
+    <<ANNOTATION
+'''#{field}''' changed:
+
+* '''From:''' #{from}
+* '''To:''' #{to}
+ANNOTATION
   end
 
   def find_product
