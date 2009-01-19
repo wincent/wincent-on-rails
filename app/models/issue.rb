@@ -90,7 +90,18 @@ class Issue < ActiveRecord::Base
       when 'status'
         @annotations << format_annotation('Status', Issue::string_for_status(from), status_string)
       when 'product_id'
-        # have to do a couple of db look-ups here
+        if from and to
+          products  = Product.find(from, to)
+          from      = products.find {|p| p.id == from }.name
+          to        = products.find {|p| p.id == to }.name
+        elsif from
+          from, to  = Product.find(from).name, 'none'
+        elsif to
+          from, to  = 'none', Product.find(to).name
+        else # should never get here
+          from, to  = 'none', 'none'
+        end
+        @annotations << format_annotation('Product', from, to)
       end
     end
     if pending_tags?
