@@ -83,6 +83,103 @@ describe Issue, 'validating the description' do
   end
 end
 
+describe Issue, "annotations" do
+  before do
+    @issue = create_issue
+  end
+
+  it 'should not add an annotation to new records' do
+    @issue.comments.length.should == 0
+  end
+
+  it 'should add an annotation for summary changes' do
+    old = @issue.summary
+    new = String.random
+    @issue.summary = new
+    @issue.save
+    body = @issue.comments.first.body
+    body.should =~ /Summary.*changed:/
+    body.should =~ /From:.*#{old}/
+    body.should =~ /To:.*#{new}/
+  end
+
+  it 'should add an annotation for kind changes' do
+    @issue = create_issue :kind => Issue::KIND[:bug]
+    @issue.kind = Issue::KIND[:feature_request]
+    @issue.save
+    body = @issue.comments.first.body
+    body.should =~ /Kind.*changed:/
+    body.should =~ /From:.*Bug/
+    body.should =~ /To:.*Feature request/
+  end
+
+  it 'should add an annotation for status changes' do
+    @issue = create_issue :status => Issue::STATUS[:open]
+    @issue.status = Issue::STATUS[:closed]
+    @issue.save
+    body = @issue.comments.first.body
+    body.should =~ /Status.*changed:/
+    body.should =~ /From:.*Open/
+    body.should =~ /To:.*Closed/
+  end
+
+  it 'should add an annotation for public changes' do
+    @issue = create_issue :public => true
+    @issue.public = false
+    @issue.save
+    body = @issue.comments.first.body
+    body.should =~ /Public.*changed:/
+    body.should =~ /From:.*true/
+    body.should =~ /To:.*false/
+  end
+
+  it 'should add an annotation for product changes' do
+    old, new = create_product, create_product
+    @issue = create_issue :product_id => old.id
+    @issue.product_id = new.id
+    @issue.save
+    body = @issue.comments.first.body
+    body.should =~ /Product.*changed:/
+    body.should =~ /From:.*#{old.name}/
+    body.should =~ /To:.*#{new.name}/
+  end
+
+  it 'should add an annotation for tag changes' do
+    @issue.tag 'foo'
+    @issue.pending_tags = 'bar'
+    @issue.save
+    body = @issue.comments.first.body
+    body.should =~ /Tags.*changed:/
+    body.should =~ /From:.*foo/
+    body.should =~ /To:.*bar/
+  end
+
+  it 'should collapse multiple annotations into a single comment' do
+    # tags: foo -> bar
+    @issue.tag 'foo'
+    @issue.pending_tags = 'bar'
+
+    # summary: old -> new
+    old_summary = @issue.summary
+    @issue.summary = new_summary = String.random
+    @issue.save
+    body = @issue.comments.first.body
+    body.should =~ /Summary.*changed:/
+    body.should =~ /From:.*#{old_summary}/
+    body.should =~ /To:.*#{new_summary}/
+    body.should =~ /Tags.*changed:/
+    body.should =~ /From:.*foo/
+    body.should =~ /To:.*bar/
+  end
+
+  it 'should create anonymous annotations for changes made outside of controller actions' do
+    # although in practice we never want to make changes outside of the controller
+    @issue.summary = String.random
+    @issue.save
+    @issue.comments.first.user_id.should be_nil
+  end
+end
+
 describe Issue, '"send_new_issue_alert" method' do
   before do
     @issue = new_issue :user => (create_user :superuser => false)
