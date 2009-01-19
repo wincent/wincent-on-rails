@@ -39,12 +39,22 @@ class Issue < ActiveRecord::Base
     conditions.join ' AND '
   end
 
+  # We expose this for use in the controller layer.
+  def self.string_for_status status
+    STATUS_MAP[status].to_s.humanize
+  end
+
+  # We expose this for use in the controller layer.
+  def self.string_for_kind kind
+    KIND_MAP[kind].to_s.humanize
+  end
+
   def status_string
-    STATUS_MAP[self.status].to_s.humanize
+    Issue.string_for_status status
   end
 
   def kind_string
-    KIND_MAP[self.kind].to_s.humanize
+    Issue.string_for_kind kind
   end
 
   def visible_comments
