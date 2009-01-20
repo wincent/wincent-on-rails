@@ -43,7 +43,7 @@ class Article < ActiveRecord::Base
   end
 
   # There are three kinds of redirects possible:
-  #   1. Absolute URLs: http://example.com/
+  #   1. Absolute URLs: http://example.com/ or https://example.com/
   #   2. Relative URLs: /issues/640
   #   3. Internal wiki links: [[foo]]
   # This method returns true if the receiver is an "internal wiki link" redirect.

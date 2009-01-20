@@ -69,7 +69,7 @@ module ActionController
       redirect_to login_path
     end
 
-    # only secure over SSL
+    # only secure over SSL (due to cookie capture attacks)
     def login_with_cookie
       if cookies[:user_id] and cookies[:session_key]
         # we're not vulnerable to session fixation attacks because
