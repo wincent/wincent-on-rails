@@ -1,11 +1,11 @@
 worker_processes 4;
-pid /Users/wincent/trabajo/unversioned/wincent.com/src/tmp/nginx.pid;
+pid <%= ENV['RAILS_ROOT'] %>/tmp/nginx.pid;
 
 events {
   worker_connections  1024;
 }
 
-error_log /Users/wincent/trabajo/unversioned/wincent.com/src/log/error_log notice;
+error_log <%= ENV['RAILS_ROOT'] %>/log/error_log notice;
 
 http {
   include       mime.types;
@@ -32,11 +32,11 @@ http {
   server {
     listen 127.0.0.1:3001;
     server_name rails.wincent.local;
-    root /Users/wincent/trabajo/unversioned/wincent.com/src/public;
-    client_body_temp_path /Users/wincent/trabajo/unversioned/wincent.com/src/tmp/client_body_temp;
-    fastcgi_temp_path /Users/wincent/trabajo/unversioned/wincent.com/src/tmp/fast_cgi_temp;
-    proxy_temp_path /Users/wincent/trabajo/unversioned/wincent.com/src/tmp/proxy_temp;
-    access_log /Users/wincent/trabajo/unversioned/wincent.com/src/log/access_log;
+    root <%= ENV['RAILS_ROOT'] %>/public;
+    client_body_temp_path <%= ENV['RAILS_ROOT'] %>/tmp/client_body_temp;
+    fastcgi_temp_path <%= ENV['RAILS_ROOT'] %>/tmp/fast_cgi_temp;
+    proxy_temp_path <%= ENV['RAILS_ROOT'] %>/tmp/proxy_temp;
+    access_log <%= ENV['RAILS_ROOT'] %>/log/access_log;
     error_page 500 502 503 504 /500.html;
 
     # show maintenance page (added by Capistrano) if present
