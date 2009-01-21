@@ -99,7 +99,7 @@ describe SessionsController, 'redirecting after login' do
     response.should redirect_to('/comments')
   end
 
-  # was a bug were failing because even blank "original_uri" would could a redirect (to the root rather than the dashboard)
+  # was a bug were failing because even blank "original_uri" would redirect (to the root rather than the dashboard)
   it 'should redirect to the user dashboard if original uri is blank' do
     session[:original_uri] = ''
     post 'create'
