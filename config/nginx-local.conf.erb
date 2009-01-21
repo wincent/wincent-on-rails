@@ -31,6 +31,16 @@ http {
 
   server {
     listen 127.0.0.1:3001;
+    server_name rails.wincent.local;
+    rewrite ^/(.*) https://localhost:3002/$1 permanent;
+    client_body_temp_path <%= ENV['RAILS_ROOT'] %>/tmp/client_body_temp;
+    fastcgi_temp_path <%= ENV['RAILS_ROOT'] %>/tmp/fast_cgi_temp;
+    proxy_temp_path <%= ENV['RAILS_ROOT'] %>/tmp/proxy_temp;
+    access_log <%= ENV['RAILS_ROOT'] %>/log/access_log;
+  } # end: server
+
+  server {
+    listen 127.0.0.1:3002;
     ssl on;
     ssl_certificate <%= ENV['RAILS_ROOT'] %>/config/local/ssl.crt;
     ssl_certificate_key <%= ENV['RAILS_ROOT'] %>/config/local/ssl.key;
