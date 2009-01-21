@@ -1,0 +1,7 @@
+#!/usr/bin/env ruby
+require 'pathname'
+root = Pathname.new(__FILE__).dirname + '..'
+template  = root + 'config' + 'nginx-local.conf.erb'
+conf      = root + 'tmp' + 'nginx-local.conf'
+`RAILS_ROOT=#{root.realpath} erb #{template} > #{conf}`
+system '/usr/local/nginx/sbin/nginx', '-c', conf
