@@ -15,7 +15,7 @@ describe HeartbeatController do
     end
 
     def do_get
-      get :ping
+      get :ping, :protocol => 'https'
     end
 
     it 'should succeed' do

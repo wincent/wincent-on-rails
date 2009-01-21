@@ -6,26 +6,30 @@ describe IssuesController do
 end
 
 describe IssuesController, 'GET /issues/search' do
+  def do_get
+    get :search, :protocol => 'https'
+  end
+
   # these tests are fairly weak at the moment because I don't want to start mocking the internal implementation details
   # too much (I may already have gone too far); I will add fuller specs later which test only the external behaviour
   it 'should check the default_access_options' do
     controller.should_receive(:default_access_options)
-    get :search
+    do_get
   end
 
   it 'should sanitize the search parameters' do
     Issue.should_receive(:prepare_search_conditions)
-    get :search
+    do_get
   end
 
   it "should propagate the user's sort options" do
     controller.should_receive(:sort_options).and_return({})
-    get :search
+    do_get
   end
 
   it 'should find all applicable issues' do
     Issue.should_receive(:find)
-    get :search
+    do_get
   end
 end
 
@@ -36,7 +40,7 @@ describe IssuesController, 'GET /issues/:id/edit' do
   end
 
   def do_get
-    get :edit, :id => @issue.id
+    get :edit, :id => @issue.id, :protocol => 'https'
   end
 
   it 'should require administrator privileges' do
@@ -82,7 +86,7 @@ describe IssuesController, 'POST /issues (html format)' do
   end
 
   def do_post
-    post :create, :issue => { :pending_tags => 'foo bar baz' }
+    post :create, :issue => { :pending_tags => 'foo bar baz' }, :protocol => 'https'
   end
 
   it 'should set pending tags (if posting as admin)' do
@@ -104,7 +108,7 @@ describe IssuesController, 'PUT /issues/:id (html format)' do
   end
 
   def do_put
-    put :update, :issue => { :id => @issue.id, :pending_tags => 'foo bar baz' }
+    put :update, :issue => { :id => @issue.id, :pending_tags => 'foo bar baz' }, :protocol => 'https'
   end
 
   it 'should require administrator privileges' do
@@ -173,7 +177,7 @@ describe IssuesController, 'PUT /issues/:id (js format)' do
   end
 
   def do_put button = 'ham'
-    put :update, :id => @issue.id, :format => 'js', :button => button
+    put :update, :id => @issue.id, :format => 'js', :button => button, :protocol => 'https'
   end
 
   it 'should require administrator privileges' do
@@ -213,7 +217,7 @@ describe IssuesController, 'admin-only methods' do
 
   # TODO: write custom matchers or helper methods in spec helper for expressing this pattern (of redirects for non-admin users)
   it 'should deny access to the "set_issue_summary" method for non-admin users' do
-    get :set_issue_summary
+    get :set_issue_summary, :protocol => 'https'
     response.should redirect_to(login_path)
     flash[:notice].should =~ /requires administrator privileges/
   end

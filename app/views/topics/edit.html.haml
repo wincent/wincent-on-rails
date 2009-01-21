@@ -24,7 +24,7 @@
     =button_to_moderate_topic_as_spam @topic if @topic.awaiting_moderation?
     =button_to_moderate_topic_as_ham @topic if @topic.awaiting_moderation?
 .links
-  =link_to 'back to topics awaiting moderation', url_for(:controller => 'topics', :action => 'index')
+  =link_to 'back to topics awaiting moderation', topics_url
 -#%h4
 -#  ==Preview (#{link_to_update_preview})
 -#  =observe_body

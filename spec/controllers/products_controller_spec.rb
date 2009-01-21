@@ -10,24 +10,28 @@ describe ProductsController, 'index action' do
     @products = [mock_model(Product)]
   end
 
+  def do_get
+    get :index, :protocol => 'https'
+  end
+
   it 'should be successful' do
-    get :index
+    do_get
     response.should be_success
   end
 
   it 'should find all products' do
     Product.should_receive(:find).with(:all).and_return(@products)
-    get :index
+    do_get
   end
 
   it 'should assign found products for the view' do
     Product.stub!(:find).and_return(@products)
-    get :index
+    do_get
     assigns[:products].should == @products
   end
 
   it 'should render the index template' do
-    get :index
+    do_get
     response.should render_template('index')
   end
 end

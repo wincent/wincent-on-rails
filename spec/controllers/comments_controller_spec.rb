@@ -12,7 +12,7 @@ describe CommentsController, 'GET /comments/:id/edit logged in as admin' do
   end
 
   def do_get
-    get :edit, :id => @comment.id
+    get :edit, :id => @comment.id, :protocol => 'https'
   end
 
   it 'should run the "require_admin" before filter' do
@@ -45,7 +45,7 @@ describe CommentsController, 'GET /comments/:id/edit logged in as normal user' d
   # but the effort is minimal, so it doesn't hurt to err on the safe side
   it 'should deny access to the "edit" action' do
     login_as_normal_user
-    get :edit, :id => @comment.id
+    get :edit, :id => @comment.id, :protocol => 'https'
     response.should redirect_to(login_path)
     flash[:notice].should =~ /requires administrator privileges/
   end
@@ -59,7 +59,7 @@ describe CommentsController, 'GET /comments/:id/edit as an anonymous visitor' do
   # strictly speaking this is re-testing the require_admin method
   # but the effort is minimal, so it doesn't hurt to err on the safe side
   it 'should deny access to the "edit" action' do
-    get :edit, :id => @comment.id
+    get :edit, :id => @comment.id, :protocol => 'https'
     response.should redirect_to(login_path)
     flash[:notice].should =~ /requires administrator privileges/
   end
@@ -72,7 +72,7 @@ describe CommentsController, 'PUT /comments/:id logged in as admin' do
   end
 
   def do_put
-    put :update, :id => @comment.id
+    put :update, :id => @comment.id, :protocol => 'https'
   end
 
   it 'should run the "require_admin" before filter' do

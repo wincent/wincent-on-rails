@@ -35,7 +35,9 @@ describe '/support/index' do
   it 'should have a search link' do
     do_render
     response.should have_tag('div.links') do
-      with_tag 'a[href=?]', template.url_for(:controller => 'search', :action => 'issues')
+      # as noted elsewhere, url_for gives crazy results in view specs
+      # must use protected issues_search_url method
+      with_tag 'a[href=?]', template.send(:issues_search_url)
     end
   end
 

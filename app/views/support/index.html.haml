@@ -10,7 +10,7 @@
 %h2.major Issues
 .links
   =link_to 'show all issues', issues_path
-  =link_to 'search', url_for(:controller => 'search', :action => 'issues')
+  =link_to 'search', issues_search_url # BUG: issues_search_url and search_issues_url are confusingly similar
   =link_to 'open a ticket', new_issue_path, :title => "Don't forget to search first before opening a ticket"
 %h3 Recently modified
 =render :partial => 'issues/issues'

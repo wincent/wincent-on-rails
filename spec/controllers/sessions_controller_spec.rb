@@ -13,7 +13,7 @@ describe SessionsController, 'logging in with a valid username and passphrase' d
   before do
     @user = create_user
     User.should_receive(:authenticate).and_return(@user)
-    post 'create'
+    post 'create', :protocol => 'https'
   end
 
   it 'should flash a success notice' do
@@ -32,7 +32,7 @@ end
 describe SessionsController, 'logging in with an invalid username or passphrase' do
   before do
     User.should_receive(:authenticate).and_return(nil)
-    post 'create'
+    post 'create', :protocol => 'https'
   end
 
   it 'should flash an error' do
@@ -47,7 +47,7 @@ end
 describe SessionsController, 'logging out when previously logged in' do
   before do
     login_as create_user
-    post 'destroy'
+    post 'destroy', :protocol => 'https'
   end
 
   it 'should flash a success notice' do
@@ -65,7 +65,7 @@ end
 
 describe SessionsController, 'logging out when not previously logged in' do
   before do
-    post 'destroy'
+    post 'destroy', :protocol => 'https'
   end
 
   it 'should flash an error' do
@@ -84,25 +84,25 @@ describe SessionsController, 'redirecting after login' do
   end
 
   it 'should redirect to the user dashboard if no original uri supplied' do
-    post 'create'
+    post 'create', :protocol => 'https'
     response.should redirect_to(dashboard_path)
   end
 
   it 'should redirect to if original uri supplied via session' do
     session[:original_uri] = '/comments'
-    post 'create'
+    post 'create', :protocol => 'https'
     response.should redirect_to('/comments')
   end
 
   it 'should redirect to if original uri supplied via params' do
-    post 'create', :original_uri => '/comments'
+    post 'create', :original_uri => '/comments', :protocol => 'https'
     response.should redirect_to('/comments')
   end
 
   # was a bug were failing because even blank "original_uri" would redirect (to the root rather than the dashboard)
   it 'should redirect to the user dashboard if original uri is blank' do
     session[:original_uri] = ''
-    post 'create'
+    post 'create', :protocol => 'https'
     response.should redirect_to(dashboard_path)
   end
 end

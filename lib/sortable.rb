@@ -71,7 +71,10 @@ module ActionView
         attribute_name          = attribute_name.to_s
         display_name            ||= attribute_name
         css_class_options       = {}
-        url_options             = params.merge({ :sort => attribute_name, :order => 'asc' })
+        url_options             = { :sort => attribute_name,
+                                    :order => 'asc',
+                                    :protocol => request.ssl? ? 'https' : 'http' }
+        url_options             = params.merge(url_options)
         tooltip                 = { :title => "Click to sort by #{display_name}" }
         if @sort_by == attribute_name # boldface this attribute
           tooltip               = { :title => 'Click to toggle sort order'}
