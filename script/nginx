@@ -3,5 +3,14 @@ require 'pathname'
 root = Pathname.new(__FILE__).dirname + '..'
 template  = root + 'config' + 'nginx-local.conf.erb'
 conf      = root + 'tmp' + 'nginx-local.conf'
-`RAILS_ROOT=#{root.realpath} erb #{template} > #{conf}`
-system '/usr/local/nginx/sbin/nginx', '-c', conf
+pidfile   = root + 'tmp' + 'nginx.pid'
+
+if not pidfile.exist?
+  puts "nginx not running: starting"
+  `RAILS_ROOT=#{root.realpath} erb #{template} > #{conf}`
+  system '/usr/local/nginx/sbin/nginx', '-c', conf
+else
+  puts "nginx running: stopping"
+  pid = pidfile.read.chomp
+  system 'kill', pid
+end
