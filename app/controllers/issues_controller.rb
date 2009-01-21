@@ -3,9 +3,8 @@ class IssuesController < ApplicationController
   before_filter     :find_product, :only => [:index]
   before_filter     :find_issue, :except => [:create, :destroy, :edit, :index, :new, :search, :show, :update]
   before_filter     :find_issue_awaiting_moderation, :only => [:edit, :show, :update]
-  before_filter     :store_current_user
   before_filter     :find_prev_next, :only => [:show]
-  after_filter      :clear_current_user
+  around_filter     :current_user_wrapper
   caches_page       :show, :if => Proc.new { |c| c.send(:is_atom?) }
   cache_sweeper     :issue_sweeper, :only => [ :create, :update, :destroy ]
   in_place_edit_for :issue, :summary
@@ -184,15 +183,15 @@ private
     @issue = Issue.find params[:id], :conditions => default_access_options
   end
 
-  def store_current_user
-    # model will need to know current user for annotations
-    # I would prefer to pass this info down into the model explicitly, but I don't control all the
-    # sites where models are created (for example, the in-place editor field plug-in)
-    # http://www.zorched.net/2007/05/29/making-session-data-available-to-models-in-ruby-on-rails/
+  # model will need to know current user for annotations
+  # I would prefer to pass this info down into the model explicitly, but I don't control all the
+  # sites where models are created (for example, the in-place editor field plug-in)
+  # http://www.zorched.net/2007/05/29/making-session-data-available-to-models-in-ruby-on-rails/
+  def current_user_wrapper
     Thread.current[:current_user] = current_user
-  end
-
-  def clear_current_user
+    yield
+    Thread.current[:current_user] = nil
+  rescue => exception
     Thread.current[:current_user] = nil
   end
 

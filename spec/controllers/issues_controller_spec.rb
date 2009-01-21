@@ -218,3 +218,12 @@ describe IssuesController, 'admin-only methods' do
     flash[:notice].should =~ /requires administrator privileges/
   end
 end
+
+describe IssuesController, 'regressions' do
+  it 'should unset the "current_user" thread-local variable even if an exception is thrown' do
+    login_as_admin
+    record_not_found = create_issue.id + 1_000
+    get :edit, :id => record_not_found, :protocol => 'https' # raises RecordNotFound
+    Thread.current[:current_user].should be_nil
+  end
+end
