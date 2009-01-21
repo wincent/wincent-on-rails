@@ -31,6 +31,9 @@ http {
 
   server {
     listen 127.0.0.1:3001;
+    ssl on;
+    ssl_certificate <%= ENV['RAILS_ROOT'] %>/config/local/ssl.crt;
+    ssl_certificate_key <%= ENV['RAILS_ROOT'] %>/config/local/ssl.key;
     server_name rails.wincent.local;
     root <%= ENV['RAILS_ROOT'] %>/public;
     client_body_temp_path <%= ENV['RAILS_ROOT'] %>/tmp/client_body_temp;
@@ -53,6 +56,7 @@ http {
       proxy_set_header X-Real-IP $remote_addr;
       proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
       proxy_set_header Host $http_host;
+      proxy_set_header X_FORWARDED_PROTO https;
       proxy_max_temp_file_size 0;
 
       # serve static content without hitting Rails
@@ -76,23 +80,5 @@ http {
 
     } # end: location
   } # end: server
-
-  # HTTPS server
-  #server {
-  #    listen       443;
-  #    server_name  localhost;
-  #    ssl                  on;
-  #    ssl_certificate      cert.pem;
-  #    ssl_certificate_key  cert.key;
-  #    ssl_session_timeout  5m;
-  #    ssl_protocols  SSLv2 SSLv3 TLSv1;
-  #    ssl_ciphers  ALL:!ADH:!EXPORT56:RC4+RSA:+HIGH:+MEDIUM:+LOW:+SSLv2:+EXP;
-  #    ssl_prefer_server_ciphers   on;
-  #    location / {
-  #        root   html;
-  #        index  index.html index.htm;
-  #    }
-  #}
-
 } # end: http
 
