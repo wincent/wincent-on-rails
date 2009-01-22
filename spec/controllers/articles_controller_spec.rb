@@ -1,5 +1,26 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
+describe ArticlesController, 'regressions' do
+  it 'should handle HTTPS URLs in the url_or_path_for_redirect method' do
+    # previously only handled HTTP URLs
+    title = String.random
+    target = 'https://example.com/'
+    create_article :title => title, :redirect => target, :body => ''
+    # BUG: this "get" doesn't do what we want it to do
+    # have tried 'show', :id => title, :protocol => 'https'
+    #            :contoller => 'wiki', :id => title, :protocol => 'https'
+    #            :controller => 'articles', :id => title, :protocol => 'https
+    #            "/wiki/#{title}"
+    # get_via_redirect "/wiki/#{title}" # no such method:
+    pending "don't know what RSpec is doing with my get request"
+    get 'show', :id => 'i hate you', :protocol => 'https'
+    # i have no idea what controller/action are being called
+    # (adding "raises" in articles_controller has no effect)
+    # expected redirect to "https://example.com/", got redirect to "https://test.host:3002/wiki/i%20hate%20you
+    response.should redirect_to(target)
+  end
+end
+
 =begin
 describe ArticlesController do
   describe 'GET /wiki/new' do
