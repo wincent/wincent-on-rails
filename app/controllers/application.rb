@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::Base
   #helper                    :all # include all helpers, all the time
   filter_parameter_logging  'passphrase'
-  before_filter             :login_before
+  before_filter             :ensure_correct_protocol, :login_before
   protect_from_forgery      :secret => APP_CONFIG['forgery_secret']
   rescue_from               ActiveRecord::RecordNotFound, :with => :record_not_found
 
@@ -51,6 +51,22 @@ protected
 
   def default_access_options
     'awaiting_moderation = FALSE AND ' + default_access_options_including_awaiting_moderation
+  end
+
+  # nginx will rewrite HTTP URLs to HTTPs automatically
+  # but still need to catch improper direct access to the mongrels
+  # (if somebody guesses their port numbers, they can connect via HTTP)
+  def ensure_correct_protocol
+    if not request.ssl?
+      url = 'https://' + request.host
+      url << ":#{APP_CONFIG['port']}" if APP_CONFIG['port'] != 443
+      url << request.request_uri
+      redirect_to url
+      flash.keep
+      false
+    else
+      true
+    end
   end
 
   # uncomment this method to test what remote users will see when there are errors in production mode
