@@ -20,7 +20,7 @@ class CommentsController < ApplicationController
     else # anonymous user
       @comment = Comment.find params[:id], :conditions => { :public => true, :spam => false, :awaiting_moderation => false }
     end
-    redirect_to nested_comment_path(@comment)
+    redirect_to nested_comment_url(@comment)
   end
 
   def create
@@ -92,7 +92,7 @@ class CommentsController < ApplicationController
         @comment.public = params[:comment][:public] if params[:comment] && params[:comment].key?(:public)
         if @comment.update_attributes params[:comment]
           flash[:notice] = 'Successfully updated'
-          redirect_to (@comment.awaiting_moderation ? comments_path : nested_comment_path(@comment))
+          redirect_to (@comment.awaiting_moderation ? comments_path : nested_comment_url(@comment))
         else
           flash[:error] = 'Update failed'
           render :action => 'edit'

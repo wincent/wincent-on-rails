@@ -144,7 +144,7 @@ describe IssuesController, 'PUT /issues/:id (html format)' do
     @issue.stub!(:save).and_return(true)
     Issue.stub!(:find).and_return(@issue)
     do_put
-    response.should redirect_to(issue_path(@issue))
+    response.should redirect_to(issue_url(@issue))
   end
 
   it 'should redirect to the list of issues awaiting moderation on success for comments that are awaiting moderation' do
@@ -152,7 +152,7 @@ describe IssuesController, 'PUT /issues/:id (html format)' do
     @issue.stub!(:save).and_return(true)
     Issue.stub!(:find).and_return(@issue)
     do_put
-    response.should redirect_to(admin_issues_path)
+    response.should redirect_to(admin_issues_url)
   end
 
   it 'should show an error on failure' do
@@ -218,7 +218,7 @@ describe IssuesController, 'admin-only methods' do
   # TODO: write custom matchers or helper methods in spec helper for expressing this pattern (of redirects for non-admin users)
   it 'should deny access to the "set_issue_summary" method for non-admin users' do
     get :set_issue_summary, :protocol => 'https'
-    response.should redirect_to(login_path)
+    response.should redirect_to(login_url)
     flash[:notice].should =~ /requires administrator privileges/
   end
 end
