@@ -4,9 +4,9 @@
   =stylesheet_link_tag 'issues'
 -@page_title = "#{@issue.kind_string} \##{@issue.id.to_s}: #{@issue.summary}"
 #breadcrumbs
-  =link_to 'Home', root_path
+  =link_to 'Home', root_url
   &raquo;
-  =link_to 'Issues', issues_path
+  =link_to 'Issues', issues_url
   &raquo;
   ="#{@issue.kind_string} \##{@issue.id.to_s}"
 %div{ :class => 'issue' + (@issue.public ? '' : ' private'), :id => "issue_#{@issue.id}" }
@@ -56,7 +56,7 @@
           Description
           -if admin?
             %br
-            =link_to 'edit', edit_issue_path(@issue)
+            =link_to 'edit', edit_issue_url(@issue)
         %td=@issue.description.w
       -if admin?
         %tr
@@ -67,7 +67,7 @@
           Tags
           -if admin?
             %br
-            =link_to 'edit', edit_issue_path(@issue)
+            =link_to 'edit', edit_issue_url(@issue)
         %td=tag_links(@issue)
 %h2.major Comments
 %table.issue
@@ -81,16 +81,16 @@
         %span.when=timeinfo comment, :updated_string => 'edited'
         -if admin?
           %br
-          =link_to 'edit', edit_comment_path(comment)
+          =link_to 'edit', edit_comment_url(comment)
           -# TODO: add a means of marking individual comments as private
       %td=comment.body.w
 %h2.major Add a comment
 =render :partial => 'comments/comment'
 .links
-  =link_to 'all issues', issues_path
-  =link_to "all #{@issue.product.name} issues", issues_path(:product => @issue.product.name) if @issue.product
-  =link_to "all #{@issue.status_string.downcase} issues", issues_path(:status => @issue.status_string)
-  =link_to "all #{@issue.kind_string.pluralize.downcase}", issues_path(:kind => @issue.kind_string)
+  =link_to 'all issues', issues_url
+  =link_to "all #{@issue.product.name} issues", issues_url(:product => @issue.product.name) if @issue.product
+  =link_to "all #{@issue.status_string.downcase} issues", issues_url(:status => @issue.status_string)
+  =link_to "all #{@issue.kind_string.pluralize.downcase}", issues_url(:kind => @issue.kind_string)
   -if admin?
-    =link_to 'edit', edit_issue_path(@issue)
-    =link_to 'destroy', issue_path(@issue), :method => :delete, :confirm => 'Really destroy this issue?'
+    =link_to 'edit', edit_issue_url(@issue)
+    =link_to 'destroy', issue_url(@issue), :method => :delete, :confirm => 'Really destroy this issue?'

@@ -14,7 +14,7 @@ describe '/resets/new' do
 
   it 'should render new form' do
     # not really sure what level of detail represents the best compromise between brittle "busy-work" and robust specs
-    response.should have_tag('form[action=?][method=post]', resets_path) do
+    response.should have_tag('form[action=?][method=post]', resets_url) do
       # email address text field
       with_tag('input#reset_email_address[name=?]', 'reset[email_address]')
       with_tag('input#reset_email_address[type=?]', 'text')
@@ -31,7 +31,7 @@ describe '/resets/new' do
   end
 
   it 'should show a link back to the login form' do
-    response.should have_tag('a[href=?]', login_path)
+    response.should have_tag('a[href=?]', login_url)
   end
 
   describe 'with an invalid record' do

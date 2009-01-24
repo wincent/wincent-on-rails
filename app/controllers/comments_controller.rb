@@ -6,7 +6,7 @@ class CommentsController < ApplicationController
   # Admin only.
   # The admin is allowed to see all unmoderated comments at once, for the purposes of moderation.
   def index
-    @paginator  = Paginator.new params, Comment.count(:conditions => { :awaiting_moderation => true }), comments_path
+    @paginator  = Paginator.new params, Comment.count(:conditions => { :awaiting_moderation => true }), comments_url
     @comments   = Comment.find_recent :offset => @paginator.offset, :conditions => { :awaiting_moderation => true }
   end
 
@@ -37,13 +37,13 @@ class CommentsController < ApplicationController
       case parent
       when 'blog'
         parent_instance = Post.find_by_permalink!(parent_id)
-        parent_path = post_path parent_instance
+        parent_url = post_url parent_instance
       when 'wiki'
         parent_instance = Article.find_by_title!(parent_id)
-        parent_path = article_path parent_instance
+        parent_url = article_url parent_instance
       when 'issues'
         parent_instance = Issue.find(parent_id)
-        parent_path = issue_path parent_instance
+        parent_url = issue_url parent_instance
       else
         raise
       end
@@ -55,7 +55,7 @@ class CommentsController < ApplicationController
       grandparent_instance = Forum.find_with_param! grandparent_id
       parent_instance = Topic.first :conditions => { :forum_id => grandparent_instance.id, :id => parent_id }
       raise unless parent_instance
-      parent_path = forum_topic_path grandparent_instance, parent_instance
+      parent_url = forum_topic_url grandparent_instance, parent_instance
     else
       raise
     end
@@ -73,7 +73,7 @@ class CommentsController < ApplicationController
       else
         flash[:notice] = 'Successfully added new comment.'
       end
-      redirect_to parent_path
+      redirect_to parent_url
     else
       flash[:error] = 'Failed to add new comment.'
       render :action => 'new'
@@ -92,7 +92,7 @@ class CommentsController < ApplicationController
         @comment.public = params[:comment][:public] if params[:comment] && params[:comment].key?(:public)
         if @comment.update_attributes params[:comment]
           flash[:notice] = 'Successfully updated'
-          redirect_to (@comment.awaiting_moderation ? comments_path : nested_comment_url(@comment))
+          redirect_to (@comment.awaiting_moderation ? comments_url : nested_comment_url(@comment))
         else
           flash[:error] = 'Update failed'
           render :action => 'edit'
@@ -124,7 +124,7 @@ class CommentsController < ApplicationController
     respond_to do |format|
       format.html {
         # TODO: add flash here, but first check if there are actually any HTML links to this action and format
-        redirect_to comments_path
+        redirect_to comments_url
       }
       format.js {
         render :update do |page|

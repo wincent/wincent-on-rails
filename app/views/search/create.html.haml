@@ -10,9 +10,9 @@
     %div{ :class => "result #{cycle('odd', 'even')}" }
       =render :partial => "search/#{model.class.to_s.downcase}", :locals => { :model => model, :result_number => @offset + i + 1 }
 -if @models.length >= 20
-  -form_tag search_index_path, :method => :post do
+  -form_tag search_index_url, :method => :post do
     =hidden_field_tag :query, params[:query]
     =hidden_field_tag :offset, @offset + 20
     =submit_tag 'more results...'
 .links
-  =link_to 'search again', search_index_path
+  =link_to 'search again', search_index_url

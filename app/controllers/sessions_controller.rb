@@ -11,7 +11,7 @@ class SessionsController < ApplicationController
       original_uri = session[:original_uri]
       original_uri = params[:original_uri] if original_uri.blank?
       if original_uri.blank?
-        redirect_to dashboard_path
+        redirect_to dashboard_url
       else
         session[:original_uri] = nil
         redirect_to original_uri
@@ -30,6 +30,6 @@ class SessionsController < ApplicationController
     else
       flash[:error] = "Can't log out (weren't logged in)."
     end
-    redirect_to root_path
+    redirect_to root_url
   end
 end

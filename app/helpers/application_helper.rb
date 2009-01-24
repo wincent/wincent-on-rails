@@ -77,7 +77,7 @@ module ApplicationHelper
 
   def scaled_tag tag, type = nil
     # NOTE: that we report the full taggings count here: may want to exclude taggables to which the user doesn't have access
-    path = type ? tag_path(tag, :type => type) : tag_path(tag)
+    path = type ? tag_url(tag, :type => type) : tag_url(tag)
     link_to tag.name, path,
       :style => "font-size: #{1 + tag.normalized_taggings_count * 1}em;",
       :title => "#{item_count(tag.taggings_count)} tagged with '#{tag.name}'"
@@ -97,7 +97,7 @@ module ApplicationHelper
 
   def tag_links object
     links = object.tags.collect do |tag|
-      link_to tag.name, tag_path(tag), :title => "#{item_count(tag.taggings_count)} tagged with '#{tag.name}'"
+      link_to tag.name, tag_url(tag), :title => "#{item_count(tag.taggings_count)} tagged with '#{tag.name}'"
     end
     links.length == 0 ? 'none' : links.join(' ')
   end
@@ -108,7 +108,7 @@ module ApplicationHelper
     if user.nil?
       'anonymous'
     else
-      link_to user.display_name, user_path(user)
+      link_to user.display_name, user_url(user)
     end
   end
 
@@ -146,13 +146,13 @@ module ApplicationHelper
   def link_to_commentable commentable
     case commentable
     when Article
-      link_to commentable.title, article_path(commentable)
+      link_to commentable.title, article_url(commentable)
     when Issue
-      link_to commentable.summary, issue_path(commentable)
+      link_to commentable.summary, issue_url(commentable)
     when Post
-      link_to commentable.title, post_path(commentable)
+      link_to commentable.title, post_url(commentable)
     when Topic
-      link_to commentable.title, forum_topic_path(commentable.forum, commentable)
+      link_to commentable.title, forum_topic_url(commentable.forum, commentable)
     when NilClass
       # could get here if there is an orphaned comment in the database
       # should never happen: but in case it does, emitting this string is probably better than crashing
@@ -162,13 +162,13 @@ module ApplicationHelper
     end
   end
 
-  def polymorphic_comments_path comment
+  def polymorphic_comments_url comment
     commentable = comment.commentable
     case commentable
     when Article, Issue, Post
-      send "#{commentable.class.to_s.downcase}_comments_path", commentable
+      send "#{commentable.class.to_s.downcase}_comments_url", commentable
     when Topic
-      forum_topic_comments_path commentable.forum, commentable
+      forum_topic_comments_url commentable.forum, commentable
     end
   end
 
@@ -206,14 +206,14 @@ module ApplicationHelper
 
   # the issue helpers must go here in the application helper because they are used in both Admin::Issues and Issues namespaces
   def button_to_destroy_issue issue
-    button_to_destroy_model issue, issue_path(issue)
+    button_to_destroy_model issue, issue_url(issue)
   end
 
   def button_to_moderate_issue_as_spam issue
-    button_to_moderate_model_as_spam issue, issue_path(issue)
+    button_to_moderate_model_as_spam issue, issue_url(issue)
   end
 
   def button_to_moderate_issue_as_ham issue
-    button_to_moderate_model_as_ham issue, issue_path(issue)
+    button_to_moderate_model_as_ham issue, issue_url(issue)
   end
 end

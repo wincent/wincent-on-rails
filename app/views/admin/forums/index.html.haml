@@ -13,8 +13,8 @@
         %td=in_place_editor_field :forum, :name
         %td=in_place_editor_field :forum, :description
         %td.links
-          =link_to 'edit', edit_forum_path(@forum)
-          =link_to 'view', forum_path(@forum)
+          =link_to 'edit', edit_forum_url(@forum)
+          =link_to 'view', forum_url(@forum)
 %p.links
-  =link_to 'new', new_forum_path
-  =link_to 'public index', forums_path
+  =link_to 'new', new_forum_url
+  =link_to 'public index', forums_url

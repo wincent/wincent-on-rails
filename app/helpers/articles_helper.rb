@@ -9,7 +9,7 @@ module ArticlesHelper
 
   def common_options
     {
-      :url => articles_path,
+      :url => articles_url,
       :method => 'post',
       :update => 'preview',
       :with => "'body=' + encodeURIComponent($('article_body').value)",

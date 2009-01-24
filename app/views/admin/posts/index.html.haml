@@ -11,8 +11,8 @@
       %td=in_place_editor_field :post, :permalink
       %td=timeinfo @post
       %td.links
-        =link_to 'edit', edit_post_path(@post)
-        =link_to 'destroy', post_path(@post), :confirm => 'Are you sure?', :method => :delete
+        =link_to 'edit', edit_post_url(@post)
+        =link_to 'destroy', post_url(@post), :confirm => 'Are you sure?', :method => :delete
 %p.links
-  =link_to 'new', new_post_path
-  =link_to 'public index', posts_path
+  =link_to 'new', new_post_url
+  =link_to 'public index', posts_url

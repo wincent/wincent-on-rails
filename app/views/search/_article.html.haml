@@ -1,7 +1,7 @@
 %h2
   =result_number
   \:
-  =link_to model.title, article_path(model)
+  =link_to model.title, article_url(model)
 .when=timeinfo model
 %span.annotation Wiki article
 .excerpt=truncate(model.body, :length => 240).w

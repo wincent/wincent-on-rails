@@ -9,12 +9,12 @@
   -for @user in @users
     %tr
       %td=@user.id
-      %td=link_to @user.display_name, user_path(@user)
+      %td=link_to @user.display_name, user_url(@user)
       %td
         -for email in @user.emails do
           %div{:class => email.deleted? ? 'deleted' : nil}
-            =link_to email.address, edit_user_email_path(@user, email)
+            =link_to email.address, edit_user_email_url(@user, email)
             =email_status email
       %td=@user.created_at.distance_in_words
       %td
-        =link_to 'edit', edit_user_path(@user)
+        =link_to 'edit', edit_user_url(@user)

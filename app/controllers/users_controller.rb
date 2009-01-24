@@ -43,7 +43,7 @@ class UsersController < ApplicationController
         confirm_email_and_redirect(base_msg)
       else
         flash[:notice] = base_msg
-        redirect_to user_path(@user)
+        redirect_to user_url(@user)
       end
     else
       # if user deletes emails but also has validation errors,
@@ -71,7 +71,7 @@ private
       flash[:notice] = "#{base_msg}: a confirmation email has been sent to #{@email.address}."
     end
     self.current_user = @user if !admin? or !logged_in? # auto-log in
-    redirect_to user_path(@user)
+    redirect_to user_url(@user)
   end
 
   def can_edit?
@@ -81,7 +81,7 @@ private
   def require_edit_privileges
     unless can_edit?
       flash[:notice] = 'You are not allowed to edit this user'
-      redirect_to user_path(@user)
+      redirect_to user_url(@user)
     end
   end
 

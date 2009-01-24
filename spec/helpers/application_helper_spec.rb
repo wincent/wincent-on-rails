@@ -97,7 +97,7 @@ describe ApplicationHelper, '"button_to_destroy_issue" method' do
   # test the button_to_destroy_model method as a "shared" behaviour, and then test the button_to_destroy_issue method
   # using "it_should_behave_like"
   it 'should call the "button_to_destroy_model" method' do
-    should_receive(:button_to_destroy_model).with(@issue, issue_path(@issue))
+    should_receive(:button_to_destroy_model).with(@issue, issue_url(@issue))
     button_to_destroy_issue @issue
   end
 end
@@ -109,7 +109,7 @@ describe ApplicationHelper, '"button_to_moderate_issue_as_spam" method' do
   end
 
   it 'should call the "button_to_moderate_model_as_spam" method' do
-    should_receive(:button_to_moderate_model_as_spam).with(@issue, issue_path(@issue))
+    should_receive(:button_to_moderate_model_as_spam).with(@issue, issue_url(@issue))
     button_to_moderate_issue_as_spam @issue
   end
 end
@@ -121,7 +121,7 @@ describe ApplicationHelper, '"button_to_moderate_issue_as_ham" method' do
   end
 
   it 'should call the "button_to_moderate_model_as_ham" method' do
-    should_receive(:button_to_moderate_model_as_ham).with(@issue, issue_path(@issue))
+    should_receive(:button_to_moderate_model_as_ham).with(@issue, issue_url(@issue))
     button_to_moderate_issue_as_ham @issue
   end
 end

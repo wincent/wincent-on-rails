@@ -1,7 +1,7 @@
 %h1 Edit comment
 %div[@comment]
   =error_messages_for :comment
-  -form_for @comment, :url => comment_path(@comment) do |f|
+  -form_for @comment, :url => comment_url(@comment) do |f|
     %table.main
       %tr
         %th
@@ -14,19 +14,19 @@
         %td=f.check_box :public
     %p=f.submit 'Save'
   .links
-    =link_to 'show', comment_path(@comment)
+    =link_to 'show', comment_url(@comment)
     =button_to_destroy_comment @comment
     =button_to_moderate_comment_as_spam @comment
     =button_to_moderate_comment_as_ham @comment
 .links
-  =link_to 'all comments awaiting moderation', comments_path
-  =link_to 'administator dashboard', admin_dashboard_path
+  =link_to 'all comments awaiting moderation', comments_url
+  =link_to 'administator dashboard', admin_dashboard_url
 %h4
 -#  ==Preview (#{link_to_update_preview})
 -#  =observe_body
 -#  =image_tag 'spinner.gif', :id => 'spinner', :style => 'display:none;'
 -#  -# TODO: graceful non-JS fallback
 -##preview=body_html
--#%p=link_to 'back', articles_path
+-#%p=link_to 'back', articles_url
 
 

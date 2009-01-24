@@ -13,21 +13,21 @@ describe '/search/issues' do
   it 'should have an "all issues" link' do
     do_render
     response.should have_tag('div.links') do
-      with_tag 'a[href=?]', issues_path
+      with_tag 'a[href=?]', issues_url
     end
   end
 
   it 'should have a "support overview" link' do
     do_render
     response.should have_tag('div.links') do
-      with_tag 'a[href=?]', support_path
+      with_tag 'a[href=?]', support_url
     end
   end
 
   it 'should have a "site search" link' do
     do_render
     response.should have_tag('div.links') do
-      with_tag 'a[href=?]', search_index_path
+      with_tag 'a[href=?]', search_index_url
     end
   end
 

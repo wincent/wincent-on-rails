@@ -1,7 +1,7 @@
 =page_title 'Products'
 -for product in @products
   %div[product]
-    %h2=link_to product.name, product_path(product)
+    %h2=link_to product.name, product_url(product)
     -if product.icon_path
       .icon=image_tag(product.icon_path)
     =product.description.w if product.description

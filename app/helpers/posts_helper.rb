@@ -26,7 +26,7 @@ module PostsHelper
 
   def common_options
     {
-      :url => posts_path,
+      :url => posts_url,
       :method => 'post',
       :update => 'preview',
       :with => "'title=' + encodeURIComponent($('post_title').value) + '&excerpt=' + encodeURIComponent($('post_excerpt').value) + '&body=' + encodeURIComponent($('post_body').value)",

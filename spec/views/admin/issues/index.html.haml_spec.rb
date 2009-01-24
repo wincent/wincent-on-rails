@@ -13,14 +13,14 @@ describe '/admin/issues/index' do
   it 'should have an "all issues" link' do
     do_render
     response.should have_tag('div.links') do
-      with_tag 'a[href=?]', issues_path
+      with_tag 'a[href=?]', issues_url
     end
   end
 
   it 'should have a "refresh" link' do
     do_render
     response.should have_tag('div.links') do
-      with_tag 'a[href=?]', admin_issues_path
+      with_tag 'a[href=?]', admin_issues_url
     end
   end
 

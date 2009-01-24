@@ -9,8 +9,8 @@
       %td=in_place_editor_field :tag, :name
       %td=@tag.taggings_count
       %td.links
-        =link_to 'edit', edit_tag_path(@tag)
+        =link_to 'edit', edit_tag_url(@tag)
         =link_to 'destroy', @tag, :confirm => 'Are you sure?', :method => :delete
 %p.links
-  =link_to 'new', new_tag_path
-  =link_to 'cloud', tags_path
+  =link_to 'new', new_tag_url
+  =link_to 'cloud', tags_url

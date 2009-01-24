@@ -1,9 +1,9 @@
 -content_for :css do
   =stylesheet_link_tag 'forums'
 #breadcrumbs
-  =link_to 'Home', root_path
+  =link_to 'Home', root_url
   &raquo;
-  =link_to 'Forums', forums_path
+  =link_to 'Forums', forums_url
   &raquo;
   =h @forum.name
 #forum
@@ -20,19 +20,19 @@
       %th Last post
     -for topic in @topics
       %tr{ :class => cycle('even', 'odd') }
-        %td=link_to h(topic.title), forum_topic_path(@forum, topic)
+        %td=link_to h(topic.title), forum_topic_url(@forum, topic)
         %td=number_with_delimiter topic.comments_count
         %td=number_with_delimiter topic.view_count
         %td
           =link_to_user_for_topic topic
           =topic.updated_at.distance_in_words
           -if topic.last_comment_id
-            =link_to 'view &raquo;', forum_topic_path(@forum, topic) + "\#comment_#{topic.last_comment_id}"
+            =link_to 'view &raquo;', forum_topic_url(@forum, topic) + "\#comment_#{topic.last_comment_id}"
           -else
-            =link_to 'view &raquo;', forum_topic_path(@forum, topic)
+            =link_to 'view &raquo;', forum_topic_url(@forum, topic)
   -if @paginator
     .pagination=@paginator.pagination_links
 .links
-  =link_to 'new topic', new_forum_topic_path(@forum)
-  =link_to 'all forums', forums_path
-  =link_to 'new forum', new_forum_path if admin?
+  =link_to 'new topic', new_forum_topic_url(@forum)
+  =link_to 'all forums', forums_url
+  =link_to 'new forum', new_forum_url if admin?

@@ -12,7 +12,7 @@
     .when=timeinfo @comment
     %div=@comment.body.w
     .links
-      =link_to 'edit', edit_comment_path(@comment)
+      =link_to 'edit', edit_comment_url(@comment)
       =button_to_destroy_comment @comment
       =button_to_moderate_comment_as_spam @comment
       =button_to_moderate_comment_as_ham @comment

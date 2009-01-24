@@ -1,5 +1,5 @@
 =page_title 'Reset your passphrase'
--form_for @reset, :url => resets_path do |f|
+-form_for @reset, :url => resets_url do |f|
   %table.main
     %tr
       %th
@@ -9,4 +9,4 @@
       %td=f.text_field :email_address
   %p=f.submit 'Reset passphrase'
 .links
-  =link_to 'login', login_path
+  =link_to 'login', login_url

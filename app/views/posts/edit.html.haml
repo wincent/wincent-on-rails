@@ -1,6 +1,6 @@
 %h1 Edit post
 =error_messages_for :post
--form_for @post, :url => post_path, :method => 'put' do |f|
+-form_for @post, :url => post_url, :method => 'put' do |f|
   %table.main
     %tr
       %th Title
@@ -42,5 +42,5 @@
   -# TODO: graceful non-JS fallback
 #preview=excerpt_and_body_html
 .links
-  =link_to 'back', posts_path, :class => 'back_link'
-  =link_to 'show', post_path(@post), :class => 'show_link'
+  =link_to 'back', posts_url, :class => 'back_link'
+  =link_to 'show', post_url(@post), :class => 'show_link'

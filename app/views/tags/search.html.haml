@@ -3,10 +3,10 @@
   %h2.major=taggables_search_summary
   =render :partial => 'taggings'
 %h2.major Search
--form_tag search_tags_path, :method => 'get' do
+-form_tag search_tags_url, :method => 'get' do
   %span.annotation Find items which feature <em>all</em> of the specified tags
   %br
   =text_field_tag :q, params[:q], :size => 40
   =submit_tag 'Search'
 .links
-  =link_to 'all tags', tags_path
+  =link_to 'all tags', tags_url

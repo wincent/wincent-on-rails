@@ -26,7 +26,7 @@ protected
   def record_not_found(uri = nil)
     if uri.class != String
       # beware that in the default case uri will be an instance of ActiveRecord::RecordNotFound
-      uri = root_path
+      uri = root_url
     end
     flash[:error] = 'Requested %s not found' % controller_name.singularize
     redirect_to uri

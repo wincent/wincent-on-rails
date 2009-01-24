@@ -12,8 +12,8 @@
     =scaled_tag tag
 %p.links
   -if admin?
-    =link_to 'edit', edit_post_path(@post), :class => 'edit_link'
-  =link_to 'all posts', posts_path, :class => 'back_link'
+    =link_to 'edit', edit_post_url(@post), :class => 'edit_link'
+  =link_to 'all posts', posts_url, :class => 'back_link'
 -if @post.accepts_comments? || @post.comments_count != 0
   -# TODO: use divs to color-code comments (ie. private, awaiting moderation etc)
   =named_anchor 'comments'
@@ -27,16 +27,16 @@
       .info==Posted by #{link_to_user comment.user} #{comment.created_at.distance_in_words}
       -admin_only do
         .links
-          =link_to 'edit', edit_post_comment_path(@post, comment), :class => 'edit_link'
+          =link_to 'edit', edit_post_comment_url(@post, comment), :class => 'edit_link'
           %form{:id => "comment_#{comment.id}_destroy_form", :style => 'display:inline;'}
-            =submit_to_remote 'button', 'destroy', :url => comment_path(comment), :method => :delete, :failure => "alert('Failed to delete')", :confirm => 'Really delete?'
+            =submit_to_remote 'button', 'destroy', :url => comment_url(comment), :method => :delete, :failure => "alert('Failed to delete')", :confirm => 'Really delete?'
           -if comment.awaiting_moderation?
             %form{:id => "comment_#{comment.id}_spam_form", :style => 'display:inline;'}
-              =submit_to_remote 'button', 'spam', :url => post_comment_path(@post, comment), :method => 'put', :failure => "alert('Failed to mark as spam')", :confirm => 'Really mark as spam?'
+              =submit_to_remote 'button', 'spam', :url => post_comment_url(@post, comment), :method => 'put', :failure => "alert('Failed to mark as spam')", :confirm => 'Really mark as spam?'
             %form{:id => "comment_#{comment.id}_ham_form", :style => 'display:inline;'}
-              =submit_to_remote 'button', 'ham', :url => post_comment_path(@post, comment), :method => 'put', :failure => "alert('Failed to mark as ham')"
+              =submit_to_remote 'button', 'ham', :url => post_comment_url(@post, comment), :method => 'put', :failure => "alert('Failed to mark as ham')"
   -if @comment
     =render :partial => 'comments/comment'
   -else
     -# comments are currently closed but they were open in the past because we have at least one existing comment
-    %p==Comments are closed for this post. You can discuss this further in the #{link_to 'forums', forums_path}.
+    %p==Comments are closed for this post. You can discuss this further in the #{link_to 'forums', forums_url}.

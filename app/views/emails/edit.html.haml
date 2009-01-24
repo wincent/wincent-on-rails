@@ -1,13 +1,13 @@
 =page_title "Edit email: #{@email.address}"
 =error_messages_for :email
--form_for @email, :url => user_email_path(@user, @email) do |f|
+-form_for @email, :url => user_email_url(@user, @email) do |f|
   %table.main
     %tr
       %th User
       %td
-        =link_to @user.display_name, user_path(@user)
+        =link_to @user.display_name, user_url(@user)
         |
-        =link_to 'edit', edit_user_path(@user)
+        =link_to 'edit', edit_user_url(@user)
     %tr
       %th Address
       %td=f.text_field :address

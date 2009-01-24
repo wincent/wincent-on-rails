@@ -22,7 +22,7 @@ class ResetsController < ApplicationController
       else
         flash[:notice] = "Please check your mail: an email has been sent to #{address}."
       end
-      redirect_to login_path
+      redirect_to login_url
     else
       @reset = Reset.new
       flash[:error] = 'Invalid email address.'
@@ -33,13 +33,13 @@ class ResetsController < ApplicationController
   def edit
     if @reset.nil?
       flash[:error] = 'Reset token not found.'
-      redirect_to root_path
+      redirect_to root_url
     elsif !@reset.completed_at.nil?
       flash[:notice] = 'Reset token already used.'
-      redirect_to login_path
+      redirect_to login_url
     elsif @reset.cutoff < Time.now
       flash[:error] = 'Reset token expiry date has already passed.'
-      redirect_to root_path
+      redirect_to root_url
     else # success!
       render
     end
@@ -55,7 +55,7 @@ class ResetsController < ApplicationController
         @reset.update_attribute(:completed_at, Time.now)
         flash[:notice] = 'Successfully updated passphrase.'
         self.current_user = @user # auto-log in
-        redirect_to user_path(@user)
+        redirect_to user_url(@user)
         return
       end
     end

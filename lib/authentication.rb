@@ -44,7 +44,7 @@ module ActionController
       unless self.admin?
         flash[:notice]          = 'The requested resource requires administrator privileges'
         session[:original_uri]  = request.request_uri
-        redirect_to login_path
+        redirect_to login_url
       end
     end
 
@@ -54,7 +54,7 @@ module ActionController
         redirect_to_login
       elsif !self.logged_in_and_verified?
         flash[:notice]          = 'You must verify your account before accessing the requested resource'
-        redirect_to new_confirmation_path
+        redirect_to new_confirmation_url
       end
     end
 
@@ -66,7 +66,7 @@ module ActionController
     def redirect_to_login
       flash[:notice]          = 'You must be logged in to access the requested resource'
       session[:original_uri]  = request.request_uri
-      redirect_to login_path
+      redirect_to login_url
     end
 
     # only secure over SSL (due to cookie capture attacks)

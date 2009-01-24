@@ -7,14 +7,14 @@
   .pagination=@paginator.pagination_links
 -for @post in @posts
   .post
-    %h2.major=link_to h(@post.title), post_path(@post)
+    %h2.major=link_to h(@post.title), post_url(@post)
     .when=timeinfo @post
     %p=excerpt_html
     .info
       =comments_link(@post)
-      =link_to 'more...', (post_path(@post)) if !@post.body.blank?
+      =link_to 'more...', (post_url(@post)) if !@post.body.blank?
       .tag_info
-        =link_to 'Tags', tags_path
+        =link_to 'Tags', tags_url
         \:
         =tag_links(@post)
 -# TODO: add search box here

@@ -14,9 +14,9 @@ describe '/topics/show' do
 
   it 'should show breadcrumbs' do
     response.should have_tag('div#breadcrumbs', /#{@title}/) do
-      with_tag 'a[href=?]', root_path
-      with_tag 'a[href=?]', forums_path
-      with_tag 'a[href=?]', forum_path(@forum)
+      with_tag 'a[href=?]', root_url
+      with_tag 'a[href=?]', forums_url
+      with_tag 'a[href=?]', forum_url(@forum)
     end
   end
 

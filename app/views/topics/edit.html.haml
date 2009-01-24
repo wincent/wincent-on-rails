@@ -1,7 +1,7 @@
 %h1 Edit topic
 %div[@topic]
   =error_messages_for :topic
-  -form_for @topic, :url => forum_topic_path(@forum, @topic) do |f|
+  -form_for @topic, :url => forum_topic_url(@forum, @topic) do |f|
     %table.main
       %tr
         %th Title
@@ -31,6 +31,6 @@
 -#  =image_tag 'spinner.gif', :id => 'spinner', :style => 'display:none;'
 -#  -# TODO: graceful non-JS fallback
 -##preview=body_html
--#%p=link_to 'back', articles_path
+-#%p=link_to 'back', articles_url
 
 

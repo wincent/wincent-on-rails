@@ -7,11 +7,11 @@
   %tr
     %td Comments
     %td=@comment_count.to_i
-    %td=link_to 'moderate', comments_path
+    %td=link_to 'moderate', comments_url
   %tr
     %td Issues
     %td=@issue_count.to_i
-    %td=link_to 'moderate', admin_issues_path
+    %td=link_to 'moderate', admin_issues_url
   %tr
     %td Topics
     %td=@topic_count.to_i

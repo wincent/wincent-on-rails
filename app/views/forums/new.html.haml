@@ -1,6 +1,6 @@
 %h1 Create new forum
 =error_messages_for :forum
--form_for @forum, :url => forums_path, :method => 'post' do |f|
+-form_for @forum, :url => forums_url, :method => 'post' do |f|
   %table.main
     %tr
       %th Name
@@ -12,4 +12,4 @@
         %span.annotation (optional)
       %td=f.text_field :description
   %p=f.submit 'Create'
-%p=link_to 'back', forums_path
+%p=link_to 'back', forums_url

@@ -14,7 +14,7 @@ describe '/dashboard/show viewed as admin user' do
 
   it 'should provide a link to the admin dashboard' do
     response.should have_tag('.links') do
-      with_tag 'a[href=?]', admin_dashboard_path
+      with_tag 'a[href=?]', admin_dashboard_url
     end
   end
 end
