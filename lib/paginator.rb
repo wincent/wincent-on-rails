@@ -8,7 +8,9 @@ class Paginator
     # preserve query-string information in links
     @additional_params = []
     params.each do |key, value|
-      next if ['page', 'action', 'controller'].include? key
+      # we exclude protocol here to keep the URLs pretty
+      # if you want your protocol preserved, pass in a URL rather than a path
+      next if ['page', 'action', 'controller', 'protocol'].include? key
       @additional_params << { key => value }.to_query
     end
 
