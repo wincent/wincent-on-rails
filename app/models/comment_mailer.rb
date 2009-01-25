@@ -1,7 +1,9 @@
 class CommentMailer < ActionMailer::Base
   def new_comment_alert comment
     url_options = { :host => APP_CONFIG['host'] }
-    url_options[:port] = APP_CONFIG['port'] if APP_CONFIG['port'] != 80
+    if APP_CONFIG['port'] != 80 and APP_CONFIG['port'] != 443
+      url_options[:port] = APP_CONFIG['port']
+    end
     subject     "new comment alert from #{APP_CONFIG['host']}"
     body({
       :comment          => comment,

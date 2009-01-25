@@ -2,7 +2,9 @@ class ResetMailer < ActionMailer::Base
   def reset_message reset
     # TODO: allow user to set default email address
     url_options         = { :host => APP_CONFIG['host'] }
-    url_options[:port]  = APP_CONFIG['port'] if APP_CONFIG['port'] != 80
+    if APP_CONFIG['port'] != 80 and APP_CONFIG['port'] != 443
+      url_options[:port]  = APP_CONFIG['port']
+    end
     email = reset.user.emails.first(:conditions => 'deleted_at IS NULL') || (raise ActiveRecord::RecordNotFound)
     subject     'wincent.com forgotten passphrase helper'
     body({
