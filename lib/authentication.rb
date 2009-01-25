@@ -113,10 +113,11 @@ module ActionController
     def set_current_user=(user)
       self.current_user = user
       if user
-        cookies[:user_id]     = user.id.to_s
-        user.session_key      = cookies[:session_key] = self.class.random_session_key
+        user.session_key      = self.class.random_session_key
         user.session_expiry   = DEFAULT_SESSION_EXPIRY.days.from_now
         user.save
+        cookies[:user_id]     = { :value => user.id.to_s, :secure => true }
+        cookies[:session_key] = { :value => user.session_key, :secure => true }
       end
     end
 
@@ -129,7 +130,9 @@ module ActionController
         if user = self.current_user
           user.update_attribute(:session_key, nil)
         end
-        @current_user = cookies[:user_id] = cookies[:session_key] = nil
+        @current_user = nil
+        cookies.delete :user_id
+        cookies.delete :session_key
       end
     end
 
