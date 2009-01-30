@@ -1,0 +1,11 @@
+=unless @reachable_tags.empty?
+  .filterbox
+    %h3 Narrow your search
+    %p
+      Show items tagged with
+      %strong
+        =tags.collect(&:name).join(', ')
+      %em and
+    .cloud
+      -for tag in @reachable_tags
+        =scaled_filter_tag tag, tags
