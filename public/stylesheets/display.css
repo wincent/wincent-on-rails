@@ -106,6 +106,10 @@ tr.even { background: #eaeaea; }
 
 .tag_info { text-align: right; }
 
+.filterbox { float: right; max-width: 15em; margin: 1em; border: 1px solid gray; -webkit-border-radius: 0.33em; -webkit-box-shadow: 0.33em 0.33em 0.33em #aaa; -moz-border-radius: 0.33em; padding: 1em; }
+.filterbox h3 { margin-top: 0em; }
+.filterbox p { font-size: xx-small; }
+
 .when { font-size: x-small; color: #bbb; }
 
 .deleted { color: #bbb; }

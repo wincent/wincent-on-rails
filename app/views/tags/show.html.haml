@@ -3,6 +3,17 @@
   =item_count @taggables.sum { |group| group.taggables.length }
   tagged with
   =@tag.name
+=unless @reachable_tags.empty?
+  .filterbox
+    %h3 Narrow your search
+    %p
+      Show items tagged with
+      %strong
+        =@tag.name
+      %em and
+    .cloud
+      -for tag in @reachable_tags
+        =scaled_filter_tag tag, @tag
 =render :partial => 'taggings'
 .links
   =link_to 'all tags', tags_url

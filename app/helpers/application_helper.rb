@@ -83,6 +83,16 @@ module ApplicationHelper
       :title => "#{item_count(tag.taggings_count)} tagged with '#{tag.name}'"
   end
 
+  # given that the taggings count is wildly inaccurate here, not sure if I should use scaling here at all
+  def scaled_filter_tag tag, tags
+    tags  = [tags] unless tags.respond_to?(:collect)
+    base  = tags.collect(&:name).join(' ')
+    query = "#{base} #{tag.name}"
+    link_to tag.name, search_tags_url(:q => "#{query}"),
+      :style => "font-size: #{1 + tag.normalized_taggings_count * 1}em;",
+      :title => "show items tagged with: #{query}"
+  end
+
   # For use in product pop-up menus in forms.
   def product_options
     # TODO: sort this by product position (Product model doesn't actually have this yet, but it will; see the Forum model)
