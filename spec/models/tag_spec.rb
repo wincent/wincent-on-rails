@@ -213,6 +213,11 @@ describe Tag, 'tags_reachable_from_tags method' do
     Tag.tags_reachable_from_tags(@nginx, @security).should == [@updates]
   end
 
+  it 'should accept an array rather than a list of parameters' do
+    # this makes things easier for callers
+    Tag.tags_reachable_from_tags([@nginx, @security]).should == [@updates]
+  end
+
   it 'should exclude starting tags from returned results' do
     # tested implicitly above, but test explicitly here anyway
     Tag.tags_reachable_from_tags(@nginx).should_not include(@nginx)

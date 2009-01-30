@@ -69,6 +69,7 @@ class Tag < ActiveRecord::Base
     #   AND tags.id = t3.tag_id
     #   AND t3.tag_id NOT IN (38, 40)
     #   GROUP BY t3.tag_id;
+    tags = tags.flatten
     count = tags.length
     return [] if count < 1 or count > 5 # sanity limit: no more than 5 joins
     tag_ids = tags.collect(&:id)        # will raise if any tag is nil
