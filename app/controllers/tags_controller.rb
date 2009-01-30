@@ -5,7 +5,7 @@ class TagsController < ApplicationController
   end
 
   def show
-    @tag            = Tag.find_by_name!(params[:id])
+    @tag            = Tag.find_by_name! params[:id]
     @taggables      = Tagging.grouped_taggables_for_tag @tag, current_user, params[:type]
     @reachable_tags = Tag.tags_reachable_from_tags @tag
   end
