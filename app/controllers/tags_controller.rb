@@ -20,6 +20,7 @@ class TagsController < ApplicationController
         flash[:warning] = 'Excess tags stripped from search (maximum of 10 allowed)'
       end
       @tags, @taggables = Tagging.grouped_taggables_for_tag_names tags, current_user, params[:type]
+      @reachable_tags = Tag.tags_reachable_from_tags @tags[:found]
       if @tags[:not_found].length > 0
         flash[:notice] = "Non-existent tags excluded from search results: #{@tags[:not_found].join ', '}"
       end
