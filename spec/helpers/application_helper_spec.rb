@@ -22,7 +22,7 @@ describe ApplicationHelper, 'timeinfo method' do
     date = 2.days.ago
     @model.should_receive(:created_at).and_return(date)
     @model.should_receive(:updated_at).and_return(date)
-    helper.timeinfo(@model).should == date.distance_in_words
+    helper.timeinfo(@model).should =~ /#{Regexp.escape date.to_s}/
   end
 
   it 'should return just the creation date if update and creation date are the same (fuzzy match)' do
@@ -31,7 +31,7 @@ describe ApplicationHelper, 'timeinfo method' do
     @model.should_receive(:created_at).and_return(earlier_date)
     @model.should_receive(:updated_at).and_return(later_date)
     earlier_date.distance_in_words.should == later_date.distance_in_words # check our assumption about fuzzy equality
-    helper.timeinfo(@model).should == later_date.distance_in_words
+    helper.timeinfo(@model).should =~ /#{Regexp.escape earlier_date.to_s}/
   end
 
   it 'should return both creation and edit date if different' do
@@ -40,7 +40,9 @@ describe ApplicationHelper, 'timeinfo method' do
     @model.should_receive(:created_at).and_return(earlier_date)
     @model.should_receive(:updated_at).and_return(later_date)
     earlier_date.distance_in_words.should_not == later_date.distance_in_words # check our assumption about inequality
-    helper.timeinfo(@model).should == "Created #{earlier_date.distance_in_words}, updated #{later_date.distance_in_words}"
+    info = helper.timeinfo(@model)
+    info.should =~ /Created.+#{Regexp.escape earlier_date.to_s}/
+    info.should =~ /updated.+#{Regexp.escape later_date.to_s}/
   end
 
   it 'should allow you to override the "updated" string' do
@@ -49,8 +51,9 @@ describe ApplicationHelper, 'timeinfo method' do
     later_date    = 1.hour.ago
     @model.should_receive(:created_at).and_return(earlier_date)
     @model.should_receive(:updated_at).and_return(later_date)
-    expected = "Created #{earlier_date.distance_in_words}, edited #{later_date.distance_in_words}"
-    helper.timeinfo(@model, :updated_string => 'edited').should == expected
+    info = helper.timeinfo(@model, :updated_string => 'edited')
+    info.should =~ /Created.+#{Regexp.escape earlier_date.to_s}/
+    info.should =~ /edited.+#{Regexp.escape later_date.to_s}/
   end
 end
 
