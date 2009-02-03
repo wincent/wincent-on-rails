@@ -1,7 +1,7 @@
 --- !ruby/object:Gem::Specification 
 name: wikitext
 version: !ruby/object:Gem::Version 
-  version: 1.4.0
+  version: 1.4.1
 platform: ruby
 authors: 
 - Wincent Colaiuta
@@ -9,7 +9,7 @@ autorequire:
 bindir: bin
 cert_chain: []
 
-date: 2009-02-02 00:00:00 +01:00
+date: 2009-02-04 00:00:00 +01:00
 default_executable: 
 dependencies: []
 
@@ -60,6 +60,7 @@ files:
 - spec/version_spec.rb
 - spec/vim_formatter.rb
 - spec/wikitext_spec.rb
+- ext/wikitext_ragel.c
 - ext/extconf.rb
 - ext/ary.c
 - ext/parser.c
