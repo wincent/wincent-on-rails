@@ -10,7 +10,7 @@
     =yield :css
     =javascript_include_tag :defaults
     =@atom_link unless @atom_link.blank?
-  %body{ :onload => 'setUpLoginLogoutLinks();' }
+  %body
     =named_anchor 'top'
     #header
       #logo

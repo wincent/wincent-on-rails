@@ -70,5 +70,6 @@ function relativizeDate(element)
 }
 
 document.observe("dom:loaded", function() {
-      $$('.relative-date').each(function(elem, idx) { relativizeDate(elem) });
-    });
+  setUpLoginLogoutLinks();
+  $$('.relative-date').each(function(elem, idx) { relativizeDate(elem) });
+});
