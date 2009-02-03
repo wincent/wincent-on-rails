@@ -39,17 +39,27 @@ module ApplicationHelper
   #   - yesterday
   #   - Created 4 hours ago, updated a few seconds ago
   #
+  # Note that this method itself doesn't actually output relative dates;
+  # rather, it wraps absolute dates in a "relative-date" CSS span and we
+  # later relativize the spans on the fly using JavaScript (in this way
+  # we can turn on page caching even for pages with relative dates on them).
+  #
   # Accepts an options hash which may contain the following values:
   #   - :updated_string: joining string shown if a record has been updated/edited (default: 'updated')
   def timeinfo model, options = {}
-    created = model.created_at.distance_in_words
-    updated = model.updated_at.distance_in_words
-    if created == updated
-      created
+    created = model.created_at
+    updated = model.updated_at
+    if created.distance_in_words == updated.distance_in_words
+      relative_date created
     else
       updated_string = options[:updated_string] || 'updated'
-      "Created #{created}, #{updated_string} #{updated}"
+      "Created #{relative_date created}, #{updated_string} #{relative_date updated}"
     end
+  end
+
+  # return string wrapped in relative-date CSS span
+  def relative_date string
+    %Q{<span class="relative-date">#{string}</span>}
   end
 
   def pluralizing_count number, thing
