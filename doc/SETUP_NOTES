@@ -288,3 +288,20 @@ ended up moving it back to vendor/plugins, which funnily enough works:
   # update to Cucumber 0.1.16/Webrat 0.4.0 (no longer necessary to use the fork)
   sudo gem install webrat cucumber
   script/generate cucumber
+
+  # Wikitext 1.4.1
+  git rm -r vendor/gems/wikitext-1.4.0
+  sudo gem install wikitext
+  rake gems:unpack
+  git add vendor/gems/wikitext-1.4.1
+  rake gems:build
+  git add vendor/gems/wikitext-1.4.1/ext/wikitext.bundle
+  rm vendor/gems/wikitext-1.4.1/ext/Makefile
+  rm vendor/gems/wikitext-1.4.1/ext/*.log
+  rm vendor/gems/wikitext-1.4.1/ext/*.o
+
+  # Rails 2.3.0 RC1 update
+  sudo gem install rails --source http://gems.rubyonrails.org
+  rake rails:freeze:gems
+  rake rails:update
+  (cd .. && rails src)
