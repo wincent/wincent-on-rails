@@ -2,11 +2,8 @@ class ApplicationController < ActionController::Base
   #helper                    :all # include all helpers, all the time
   filter_parameter_logging  'passphrase'
   before_filter             :ensure_correct_protocol, :login_before
-  protect_from_forgery      :secret => APP_CONFIG['forgery_secret']
+  protect_from_forgery
   rescue_from               ActiveRecord::RecordNotFound, :with => :record_not_found
-
-  # all feeds are public, so turn off session management for them
-  session :off,             :if => Proc.new { |req| req.format.atom? }
 
 protected
 
