@@ -1,3 +1,11 @@
+# Rails 2.3.0 BUG: uninitialized constant ActionController::Caching::Sweeper
+# only occurs in development environment (where cache_classes is false)
+begin
+  ActionController::Caching::Sweeper
+rescue NameError
+  require 'rails/actionpack/lib/action_controller/caching/sweeping'
+end
+
 class PostSweeper < ActionController::Caching::Sweeper
   observe Post
 
