@@ -72,17 +72,6 @@ module ActionController
     # only secure over SSL (due to cookie capture attacks)
     def login_with_cookie
       if cookies[:user_id] and cookies[:session_key]
-        # we're not vulnerable to session fixation attacks because
-        # 1. we use a server-generated session key
-        # 2. it only works if paired with the correct user_id
-        # 3. upon successful login the session key is immediately updated anyway (in self.set_current_user)
-        # 4. we destroy old sessions on logout (including invalidating the old session key in the database)
-        # 5. we expire old sessions
-        # Additional measures would be possible (see below), but what's implemented here is probably more than
-        # enough for a "defense in depth" strategy.
-        # - store user agent in new sessions and bail if it changes during the session
-        # - check referrer and possibly bail if it's external
-        # See: http://en.wikipedia.org/wiki/Session_fixation
         user = User.find_by_id_and_session_key(cookies[:user_id], cookies[:session_key])
         if user
           expiry = user.session_expiry
