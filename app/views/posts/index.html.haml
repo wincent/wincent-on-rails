@@ -9,7 +9,7 @@
   .post
     %h2.major=link_to h(@post.title), post_url(@post)
     .when=timeinfo @post
-    %p=excerpt_html
+    =excerpt_html
     .info
       =comments_link(@post)
       =link_to 'more...', (post_url(@post)) if !@post.body.blank?
