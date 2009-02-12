@@ -3,6 +3,7 @@ set :repository, '/pub/git/private/wincent.com.git'
 #set :local_repository, 'git.wincent.com:/pub/git/private/wincent.com.git' # for Cap > 2.2.0
 set :scm, :git
 set :group_writable, :false
+set :lockdown_user, 'ghurrell'
 
 # sudo won't run without this ("sorry, you must have a tty to run sudo")
 default_run_options[:pty] = true
@@ -42,6 +43,7 @@ task :help do
 
   Putting it all together (staging environment, then production):
 
+    cap staging deploy:unlock       # relax permissions (necessary to deploy)
     cap staging deploy:check        # check dependencies
     cap staging deploy:update       # deploy latest, no restart, no migrations
     cap staging deploy:migrate_test # run the migrations on the test database
@@ -50,7 +52,9 @@ task :help do
     cap staging deploy:web:disable  # (optional) display a maintenance page
     cap staging deploy:restart      # restart server (changes go live)
     cap staging deploy:web:enable   # (optional) remove maintenance page
+    cap staging deploy:lockdown     # tighten permissions again
 
+    cap deploy:unlock
     cap deploy:check
     cap deploy:update
     cap deploy:migrate_test
@@ -59,6 +63,7 @@ task :help do
     cap deploy:web:disable          # (optional)
     cap deploy:restart
     cap deploy:web:enable           # (optional)
+    cap deploy:lockdown
 
   HELP
 end
@@ -117,7 +122,26 @@ task :check_target_environment do
 end
 on :start, :check_target_environment, :except => [ :production, :staging, :help, :usage ]
 
+def change_shell shell
+  app_user = user
+  set :user, lockdown_user
+
+  # Capistrano bug: "-p" commandline switch doesn't actually set password
+  set :password, Capistrano::CLI.password_prompt if password.nil?
+  sudo "chsh -s #{shell} #{app_user}"
+end
+
 namespace :deploy do
+  desc 'Relax permissions (necessary for deployment)'
+  task :unlock, :roles => :app do
+    change_shell '/bin/sh'
+  end
+
+  desc 'Tighten permissions (locks down the application after deployment)'
+  task :lockdown, :roles => :app do
+    change_shell '/sbin/nologin'
+  end
+
   namespace :web do
     desc 'Display a maintenance page to visitors, effectively disabling the website'
     task :disable, :roles => :web, :except => { :no_release => true } do
