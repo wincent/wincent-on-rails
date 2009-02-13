@@ -31,9 +31,7 @@ end
 # custom matchers
 require File.join(File.dirname(__FILE__), 'matchers', 'validation')
 
-# nasty hack to get specs passing
-# the fake requests created by Rails always return false for "ssl?"
-# so our before filter always redirects
+# without this we have a couple of failing sessions controller specs
 module ActionController
   class TestRequest
     def ssl?
@@ -41,3 +39,4 @@ module ActionController
     end
   end
 end
+
