@@ -46,8 +46,70 @@ def setup_logging
   STDERR.sync = true
 end
 
+def log msg
+  time  = Time.now
+  pid   = Process.pid
+  msg.split("\n", -1).each do |line|
+    puts "#{time} script/daemon[#{pid}]: #{line}"
+  end
+end
+
+def log_and_abort msg
+  log "#{msg} (aborting)"
+  exit 1
+end
+
+def check_pid_file
+  # yes, there is a race here; we double-check later
+  if File.exist? PID_FILE
+    log_and_abort "pid file already exists at #{PID_FILE}"
+  end
+end
+
+def create_pid_file
+  log "will create pid file #{PID_FILE}"
+
+  # here we catch the possible race
+  File.open(PID_FILE, File::CREAT | File::EXCL | File::WRONLY) do |f|
+    f.puts Process.pid
+  end
+  log "did create pid file #{PID_FILE}"
+  at_exit do
+    log "will remove pid file #{PID_FILE}"
+    File.delete PID_FILE
+    log "did remove pid file #{PID_FILE}"
+  end
+rescue Errno::EEXIST
+  log_and_abort "pid file already exists at #{PID_FILE}"
+end
+
+check_pid_file
 daemonize
 setup_logging
+create_pid_file
 
-puts "logging #{Time.now}"
+def baz
+  raise "something went wrong"
+end
+
+def bar
+  baz
+end
+
+def foo
+  bar
+end
+
+begin
+  log "well, here I am, doing the daemon thing"
+  foo
+  sleep 10
+  log "getting bored of it, to tell the truth"
+rescue Exception => e
+  log "uncaught exception: #{e.class}: #{e.message}; backtrace follows\n"
+  e.backtrace.each do |frame|
+    log "    #{frame}"
+  end
+  log_and_abort "\n"
+end
 
