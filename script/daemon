@@ -9,8 +9,10 @@ ENV['RAILS_ENV'] ||= 'production'
 require 'pathname'
 require Pathname.new(__FILE__).dirname + '..' + 'config' + 'environment'
 
-PID_FILE = Rails.root + 'tmp' + 'daemon.pid'
-LOG_FILE = Rails.root + 'log' + 'daemon.log'
+# configuration
+SLEEP_INTERVAL  = 15 # seconds
+PID_FILE        = Rails.root + 'tmp' + 'daemon.pid'
+LOG_FILE        = Rails.root + 'log' + 'daemon.log'
 
 def daemonize
   # no need to detach if launched by init/launchd process
@@ -86,28 +88,27 @@ rescue Errno::EEXIST
   log_and_abort "pid file already exists at #{PID_FILE}"
 end
 
+def wake_up_and_work
+  log 'working'
+end
+
 check_pid_file
 daemonize
 setup_logging
 create_pid_file
 
-def baz
-  raise "something went wrong"
-end
-
-def bar
-  baz
-end
-
-def foo
-  bar
-end
-
 begin
-  log "well, here I am, doing the daemon thing"
-  foo
-  sleep 10
-  log "getting bored of it, to tell the truth"
+  $running = true
+  trap 'TERM' do
+    log "received SIGTERM, will schedule shutdown for within #{SLEEP_INTERVAL} seconds"
+    $running = false
+  end
+  log 'entering processing loop'
+  while $running do
+    wake_up_and_work
+    sleep SLEEP_INTERVAL
+  end
+  log 'shutting down'
 rescue Exception => e
   log "uncaught exception: #{e.class}: #{e.message}; backtrace follows\n"
   e.backtrace.each do |frame|
