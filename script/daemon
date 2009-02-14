@@ -8,11 +8,13 @@ ENV['RAILS_ENV'] ||= 'production'
 
 require 'pathname'
 require Pathname.new(__FILE__).dirname + '..' + 'config' + 'environment'
+require 'net/pop'
 
 # configuration
 SLEEP_INTERVAL  = 15 # seconds
 PID_FILE        = Rails.root + 'tmp' + 'daemon.pid'
 LOG_FILE        = Rails.root + 'log' + 'daemon.log'
+CONF_FILE       = Rails.root + 'config' + 'daemon.yml'
 
 def daemonize
   # no need to detach if launched by init/launchd process
@@ -64,6 +66,16 @@ def log_and_abort msg
   exit 1
 end
 
+def read_config
+  $config = YAML.load_file CONF_FILE
+rescue
+  log_and_abort "failed to read configuration file #{CONF_FILE}"
+end
+
+def config key
+  $config[ENV['RAILS_ENV']][key]
+end
+
 def check_pid_file
   # yes, there is a race here; we double-check later
   if File.exist? PID_FILE
@@ -88,10 +100,21 @@ rescue Errno::EEXIST
   log_and_abort "pid file already exists at #{PID_FILE}"
 end
 
-def wake_up_and_work
-  log 'working'
+def check_support_email
+  Net::POP3.start config('pop_server'), nil, config('pop_user'), config('pop_passphrase') do |pop|
+    pop.mails.each do |mail|
+      log "popping incoming message with unique id: #{mail.unique_id}"
+      mail.pop
+      #mail.delete # if successful
+    end
+  end
 end
 
+def wake_up_and_work
+  check_support_email
+end
+
+read_config
 check_pid_file
 daemonize
 setup_logging
