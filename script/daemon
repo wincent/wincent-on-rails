@@ -14,7 +14,7 @@ LOG_FILE = Rails.root + 'log' + 'daemon.log'
 
 def daemonize
   # no need to detach if launched by init/launchd process
-  unless Process.ppid == 1
+  unless Process.ppid == 1  # unfortunately, this is a race
 
     # ignore terminal stop signals
     trap 'TTOU', 'IGNORE'
