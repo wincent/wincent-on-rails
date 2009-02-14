@@ -1,0 +1,53 @@
+#!/usr/bin/env ruby
+# See "How To Write a UNIX Daemon" by Dave Lennert
+# http://cjh.polyplex.org/software/daemon.pdf
+
+ENV['RAILS_ENV'] ||= 'production'
+require 'pathname'
+require Pathname.new(__FILE__).dirname + '..' + 'config' + 'environment'
+
+PID_FILE = Rails.root + 'tmp' + 'daemon.pid'
+LOG_FILE = Rails.root + 'log' + 'daemon.log'
+
+def daemonize
+# no need to detach if launched by init/launchd process
+  unless Process.ppid == 1
+
+    # ignore terminal stop signals
+    trap 'TTOU', 'IGNORE'
+    trap 'TTIN', 'IGNORE'
+    trap 'TSTP', 'IGNORE'
+
+    # allow parent shell to continue
+    fork and exit         # ensure process is not a process group leader
+
+    # disassociate from controlling terminal and process group
+    Process.setsid        # lose controlling terminal, change process group
+    trap 'HUP', 'IGNORE'  # become immune from process group leader death
+    fork and exit         # become non-process group leader
+  end
+
+# close all file descriptors
+  ObjectSpace.each_object(IO) do |io|
+    io.close unless io.closed?
+  end
+  Dir.chdir '/' # move current directory off mounted filesystem
+  File.umask 0  # clear any inherited file mode creation mask
+end
+
+def setup_logging
+  STDOUT.reopen LOG_FILE, 'a'
+  STDOUT.sync = true
+  begin
+    STDERR.reopen STDOUT # seems to always raise #<IOError: closed stream>
+  rescue
+    STDERR.reopen LOG_FILE, 'a'
+  end
+  STDERR.sync = true
+end
+
+daemonize
+setup_logging
+
+puts "logging #{Time.now}"
+
