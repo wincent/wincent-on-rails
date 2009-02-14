@@ -1,0 +1,17 @@
+development:
+  pop_server: mail.example.com
+  pop_user: support_example_com
+  pop_passphrase: super_secret
+
+
+test:
+  pop_server: mail.example.com
+  pop_user: support_example_com
+  pop_passphrase: super_secret
+
+
+production:
+  pop_server: mail.example.com
+  pop_user: support_example_com
+  pop_passphrase: super_secret
+
