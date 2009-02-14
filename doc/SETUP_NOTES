@@ -305,3 +305,13 @@ ended up moving it back to vendor/plugins, which funnily enough works:
   rake rails:freeze:gems
   rake rails:update
   (cd .. && rails src)
+
+  # Haml 2.0.8 update
+  git rm -r vendor/gems/haml-2.0.6 # doesn't actually delete directory
+  rm -r vendor/gems/haml-2.0.6     # so must delete that manually
+  vi config/environment.rb         # update config.gem line
+  rake gems:unpack
+  rake spec
+  git add vendor/gems/haml-2.0.8
+  git add config/environment.rb
+

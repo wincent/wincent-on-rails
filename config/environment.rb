@@ -46,7 +46,7 @@ Rails::Initializer.run do |config|
   # config.active_record.default_timezone = :utc
 
   config.gem 'wikitext', :version => '>= 1.4.1'
-  config.gem 'haml', :version => '2.0.6'
+  config.gem 'haml', :version => '2.0.8'
 end
 
 # Sometimes we need a reasonable, stable default date (for example, to provide
