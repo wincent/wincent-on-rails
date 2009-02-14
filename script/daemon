@@ -104,8 +104,8 @@ def check_support_email
   Net::POP3.start config('pop_server'), nil, config('pop_user'), config('pop_passphrase') do |pop|
     pop.mails.each do |mail|
       log "popping incoming message with unique id: #{mail.unique_id}"
-      mail.pop
-      #mail.delete # if successful
+      IssueMailer.receive mail.pop
+      mail.delete # if successful
     end
   end
 end

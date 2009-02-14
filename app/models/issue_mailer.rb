@@ -15,4 +15,9 @@ class IssueMailer < ActionMailer::Base
     sent_on     Time.now
     headers     {}
   end
+
+  def receive msg
+    # process incoming mail!
+    raise 'not yet implemented'
+  end
 end
