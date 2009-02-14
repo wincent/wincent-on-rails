@@ -10,7 +10,7 @@ PID_FILE = Rails.root + 'tmp' + 'daemon.pid'
 LOG_FILE = Rails.root + 'log' + 'daemon.log'
 
 def daemonize
-# no need to detach if launched by init/launchd process
+  # no need to detach if launched by init/launchd process
   unless Process.ppid == 1
 
     # ignore terminal stop signals
@@ -27,7 +27,7 @@ def daemonize
     fork and exit         # become non-process group leader
   end
 
-# close all file descriptors
+  # close all file descriptors
   ObjectSpace.each_object(IO) do |io|
     io.close unless io.closed?
   end
