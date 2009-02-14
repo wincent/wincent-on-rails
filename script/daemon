@@ -2,7 +2,10 @@
 # See "How To Write a UNIX Daemon" by Dave Lennert
 # http://cjh.polyplex.org/software/daemon.pdf
 
+# can override environment from command line:
+#   RAILS_ENV=development script/daemon
 ENV['RAILS_ENV'] ||= 'production'
+
 require 'pathname'
 require Pathname.new(__FILE__).dirname + '..' + 'config' + 'environment'
 
