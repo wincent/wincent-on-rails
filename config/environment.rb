@@ -24,11 +24,6 @@ Rails::Initializer.run do |config|
   # (by default production uses :info, the others :debug)
   # config.log_level = :debug
 
-  config.action_controller.session = {
-    :session_key => APP_CONFIG['session_key'],
-    :secret      => APP_CONFIG['session_secret']
-  }
-
   # Use the database for sessions instead of the cookie-based default,
   # which shouldn't be used to store highly confidential information
   # (create the session table with 'rake db:sessions:create')
