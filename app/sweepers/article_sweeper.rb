@@ -24,4 +24,9 @@ class ArticleSweeper < ActionController::Caching::Sweeper
   def expire_cache
     expire_page(articles_path + '.atom')
   end
+
+  # on-demand cache expiration from rake, RSpec etc
+  def self.expire_all
+    new.expire_cache
+  end
 end # class ArticleSweeper

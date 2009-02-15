@@ -25,4 +25,9 @@ class PostSweeper < ActionController::Caching::Sweeper
     # for now we're only sweeping the main atom feed
     expire_page(posts_path + '.atom')
   end
+
+  # on-demand cache expiration from rake, RSpec etc
+  def self.expire_all
+    new.expire_cache
+  end
 end # class PostSweeper

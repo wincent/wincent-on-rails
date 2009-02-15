@@ -35,4 +35,10 @@ class CommentSweeper < ActionController::Caching::Sweeper
     end
     expire_page(path) if path
   end
+
+  # on-demand cache expiration from rake, RSpec etc
+  def self.expire_all
+    sweeper = new
+    Comment.all.each { |comment| sweeper.expire_cache comment }
+  end
 end # class CommentSweeper

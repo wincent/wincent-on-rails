@@ -24,4 +24,10 @@ class TopicSweeper < ActionController::Caching::Sweeper
   def expire_cache topic
     expire_page(forum_topic_path(topic.forum, topic) + '.atom')
   end
+
+  # on-demand cache expiration from rake, RSpec etc
+  def self.expire_all
+    sweeper = new
+    Topic.all.each { |topic| sweeper.expire_cache topic }
+  end
 end # class TopicSweeper
