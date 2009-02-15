@@ -868,5 +868,8 @@ module Sass
 
 end
 
+# backport fix for bug present in Haml 2.0.7, 2.0.8
+# see: http://github.com/nex3/haml/commit/a57f48228966aff4d83bb2e7e6fe037f6676fd14
+require 'haml/util'
 require 'sass/engine'
 require 'sass/plugin' if defined?(Merb::Plugins)
