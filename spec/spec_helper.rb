@@ -31,7 +31,14 @@ end
 # custom matchers
 require File.join(File.dirname(__FILE__), 'matchers', 'validation')
 
-# without this we have a couple of failing sessions controller specs
+# Without this we have a couple of failing sessions controller specs.
+#
+# Note that setting ENV['HTTPS'] to 'on' here is not enough.
+# Rails will create an ActionController::TestRequest instance using:
+#   Rack::MockRequest.env_for("/")
+# If you look in the rack source code you'll see that it sets up a
+# sparse environment with default values (like "example.org" for the
+# host), and doesn't consult the real environment at all in any way.
 module ActionController
   class TestRequest
     def ssl?

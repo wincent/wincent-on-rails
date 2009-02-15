@@ -54,9 +54,7 @@ protected
   # but still need to catch improper direct access to the mongrels
   # (if somebody guesses their port numbers, they can connect via HTTP)
   def ensure_correct_protocol
-    # horrible kludge (runtime test for test environment)
-    # see: http://rubyforge.org/pipermail/rspec-users/2009-February/012347.html
-    if not request.ssl? and ENV['RAILS_ENV'] != 'test'
+    if not request.ssl?
       url = 'https://' + request.host
       url << ":#{APP_CONFIG['port']}" if APP_CONFIG['port'] != 443
       url << request.request_uri
