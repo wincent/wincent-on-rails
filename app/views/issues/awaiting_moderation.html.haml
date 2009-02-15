@@ -9,7 +9,7 @@
 %h2 This issue is currently awaiting moderation
 %div
   Subscribe to the
-  =link_to 'Atom feed', formatted_issue_url(@issue, :atom)
+  =link_to 'Atom feed', issue_url(@issue, :format => :atom)
   to be informed when the issue is updated.
 .links
   =link_to 'all issues', issues_url
