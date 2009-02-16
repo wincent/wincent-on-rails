@@ -30,6 +30,7 @@ end
 
 # custom matchers
 require File.join(File.dirname(__FILE__), 'matchers', 'validation')
+require File.join(File.dirname(__FILE__), 'matchers', 'mass_assignment')
 
 # Without this we have a couple of failing sessions controller specs.
 #
