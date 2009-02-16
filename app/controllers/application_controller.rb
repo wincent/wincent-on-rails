@@ -5,6 +5,10 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
   rescue_from               ActiveRecord::RecordNotFound, :with => :record_not_found
 
+  # fix feed breakage caused by Rails 2.3.0 RC1
+  # see: https://wincent.com/issues/1227
+  layout Proc.new { |controller| controller.send(:is_atom?) ? false : 'application' }
+
 protected
 
   # URL to the comment nested in the context of its parent (resources), including an anchor.
