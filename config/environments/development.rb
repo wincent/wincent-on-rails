@@ -13,7 +13,4 @@ config.action_controller.perform_caching             = true
 
 # disable caching (when not testing caching)
 #config.action_controller.perform_caching             = false
-Sass::Plugin.options[:always_update] = true
-Sass::Plugin.options[:always_check] = true
-
 config.action_mailer.raise_delivery_errors = true
