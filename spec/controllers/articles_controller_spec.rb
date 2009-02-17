@@ -21,6 +21,30 @@ describe ArticlesController, 'regressions' do
   end
 end
 
+describe ArticlesController, 'GET /wiki.atom' do
+  integrate_views # so that we can test layouts as well
+
+  def do_get
+    get :index, :format => 'atom', :protocol => 'https'
+  end
+
+  # make sure we don't get bitten by bugs like:
+  # https://wincent.com/issues/1227
+  it 'should produce valid atom when there are no articles' do
+    pending unless can_validate_feeds?
+    Article.destroy_all
+    do_get
+    response.body.should be_valid_atom
+  end
+
+  it 'should produce valid atom when there are multiple articles' do
+    pending unless can_validate_feeds?
+    10.times { create_article }
+    do_get
+    response.body.should be_valid_atom
+  end
+end
+
 =begin
 describe ArticlesController do
   describe 'GET /wiki/new' do

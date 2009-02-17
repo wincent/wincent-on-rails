@@ -33,6 +33,30 @@ describe IssuesController, 'GET /issues/search' do
   end
 end
 
+describe IssuesController, 'GET /issues/:id.atom' do
+  integrate_views # so that we can test layouts as well
+
+  def do_get issue
+    get :show, :id => issue.id, :format => 'atom', :protocol => 'https'
+  end
+
+  # make sure we don't get bitten by bugs like:
+  # https://wincent.com/issues/1227
+  it 'should produce valid atom' do
+    pending unless can_validate_feeds?
+    do_get create_issue
+    response.body.should be_valid_atom
+  end
+
+  it 'should redirect to main issues feed for non-existent issues' do
+    pending 'broken because redirects to issues.atom, which is not yet implemented'
+  end
+
+  it 'should redirect to main issues feed for private issues' do
+    pending 'broken because redirects to issues.atom, which is not yet implemented'
+  end
+end
+
 describe IssuesController, 'GET /issues/:id/edit' do
   before do
     @issue = create_issue :awaiting_moderation => false # this is the default example data anyway, but be explicit
