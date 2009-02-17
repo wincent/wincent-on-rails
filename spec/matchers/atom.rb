@@ -55,8 +55,8 @@ module Spec
           java    = Spec::Rails::Matchers::Atom.java_path
           jing    = Spec::Rails::Matchers::Atom.jing_path
           schema  = Spec::Rails::Matchers::Atom.schema_path
-          path    = Spec::Rails::Matchers::Atom.write_to_temp_file string
-          `#{java} -jar #{jing} #{schema} #{path}`
+          @path   = Spec::Rails::Matchers::Atom.write_to_temp_file string
+          `#{java} -jar #{jing} #{schema} #{@path}`
           $?.exitstatus == 0
         end
 
