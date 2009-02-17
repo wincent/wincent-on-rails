@@ -18,11 +18,18 @@ class IssueSweeper < ActionController::Caching::Sweeper
 
   # on-demand cache expiration from rake, RSpec etc
   def self.expire_all
-    # BUG: Would be nice if this worked but unfortunately it doesn't:
-    # the "expire_page" message is sent, but never received
-    # (logging in both "expire_page" methods defined by Rails prints nothing)
-    # so there is some "magic" somewhere preventing this from working
-    sweeper = new
-    Issue.all.each { |issue| sweeper.expire_cache issue }
+    Issue.all.each do |issue|
+      # Unfortunately can't just do an instance.expire_cache from here:
+      # ActionController::Caching::Sweeper defines a "method_missing" method
+      # that catches the "expire_cache" message and drops it on the floor
+      # (it only works when the sweeper is set up from within a controller,
+      # and the @controller instance variable is set; the "expire_cache"
+      # message is actually forwarded to the controller)
+      # regrettably, we have to resort to nasty use of "send" to send
+      # messages to private methods to dynamically construct the path.
+      relative_path = instance.send(:issue_path, issue) + '.atom'
+      absolute_path = ActionController::Base.send(:page_cache_path, relative_path)
+      File.delete absolute_path if File.exist?(absolute_path)
+    end
   end
 end # class IssueSweeper
