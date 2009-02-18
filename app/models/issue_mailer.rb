@@ -7,7 +7,7 @@ class IssueMailer < ActionMailer::Base
     subject     "new issue alert from #{APP_CONFIG['host']}"
     body({
       :issue          => issue,
-      :issue_url      => edit_issue_url(issue, url_options), # Issues#edit doesn't work yet but it will
+      :issue_url      => edit_issue_url(issue, url_options),
       :moderation_url => admin_dashboard_url(url_options)
       })
     recipients  APP_CONFIG['admin_email']
