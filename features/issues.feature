@@ -5,7 +5,8 @@ Feature: annotated changes to issue metadata
 
   Scenario: I change an issue summary
     Given an issue with summary "foo"
-    When I start editing the issue
+    When I am logged in as an admin user
+    And I edit the issue with summary "foo"
     And I change the summary to "bar"
     And I submit my changes to the issue
     Then I should see "Summary changed"
