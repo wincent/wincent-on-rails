@@ -19,11 +19,11 @@ describe ArticlesController do
     end
 
     it "should map { :controller => 'articles', :action => 'update', :id => 'foo', :protocol => 'https' } to /wiki/foo" do
-      route_for(:controller => "articles", :action => "update", :id => 'foo', :protocol => 'https').should == "/wiki/foo"
+      route_for(:controller => "articles", :action => "update", :id => 'foo', :protocol => 'https').should == { :path => '/wiki/foo', :method => 'put' }
     end
 
     it "should map { :controller => 'articles', :action => 'destroy', :id => 'foo', :protocol => 'https' } to /wiki/foo" do
-      route_for(:controller => "articles", :action => "destroy", :id => 'foo', :protocol => 'https').should == "/wiki/foo"
+      route_for(:controller => "articles", :action => "destroy", :id => 'foo', :protocol => 'https').should == { :path => '/wiki/foo', :method => 'delete' }
     end
   end
 

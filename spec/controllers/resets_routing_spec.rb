@@ -19,11 +19,11 @@ describe ResetsController do
     end
 
     it "should map { :controller => 'resets', :action => 'update', :id => 'foo', :protocol => 'https'} to /resets/foo" do
-      route_for(:controller => 'resets', :action => 'update', :id => 'foo', :protocol => 'https').should == '/resets/foo'
+      route_for(:controller => 'resets', :action => 'update', :id => 'foo', :protocol => 'https').should == { :path => '/resets/foo', :method => 'put' }
     end
 
     it "should map { :controller => 'resets', :action => 'destroy', :id => 'foo', :protocol => 'https'} to /resets/foo" do
-      route_for(:controller => 'resets', :action => 'destroy', :id => 'foo', :protocol => 'https').should == '/resets/foo'
+      route_for(:controller => 'resets', :action => 'destroy', :id => 'foo', :protocol => 'https').should == { :path => '/resets/foo', :method => 'delete' }
     end
   end
 

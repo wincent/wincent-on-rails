@@ -9,20 +9,20 @@ describe PostsController, 'route generation' do
     route_for(:controller => 'posts', :action => 'new', :protocol => 'https').should == '/blog/new'
   end
 
-  it "should map { :controller => 'posts', :action => 'show', :id => 1, :protocol => 'https' } to /blog/1" do
-    route_for(:controller => 'posts', :action => 'show', :id => 1, :protocol => 'https').should == '/blog/1'
+  it "should map { :controller => 'posts', :action => 'show', :id => '1', :protocol => 'https' } to /blog/1" do
+    route_for(:controller => 'posts', :action => 'show', :id => '1', :protocol => 'https').should == '/blog/1'
   end
 
-  it "should map { :controller => 'posts', :action => 'edit', :id => 1, :protocol => 'https' } to /blog/1/edit" do
-    route_for(:controller => 'posts', :action => 'edit', :id => 1, :protocol => 'https').should == '/blog/1/edit'
+  it "should map { :controller => 'posts', :action => 'edit', :id => '1', :protocol => 'https' } to /blog/1/edit" do
+    route_for(:controller => 'posts', :action => 'edit', :id => '1', :protocol => 'https').should == '/blog/1/edit'
   end
 
-  it "should map { :controller => 'posts', :action => 'update', :id => 1, :protocol => 'https'} to /blog/1" do
-    route_for(:controller => 'posts', :action => 'update', :id => 1, :protocol => 'https').should == '/blog/1'
+  it "should map { :controller => 'posts', :action => 'update', :id => '1', :protocol => 'https'} to /blog/1" do
+    route_for(:controller => 'posts', :action => 'update', :id => '1', :protocol => 'https').should == { :path => '/blog/1', :method => 'put' }
   end
 
   it "should map { :controller => 'posts', :action => 'destroy', :id => 1, :protocol => 'https'} to /blog/1" do
-    route_for(:controller => 'posts', :action => 'destroy', :id => 1, :protocol => 'https').should == '/blog/1'
+    route_for(:controller => 'posts', :action => 'destroy', :id => '1', :protocol => 'https').should == { :path => '/blog/1', :method => 'delete' }
   end
 end
 

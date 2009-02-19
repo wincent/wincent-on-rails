@@ -19,11 +19,11 @@ describe IssuesController do
     end
 
     it "should map { :controller => 'issues', :action => 'update', :id => '123', :protocol => 'https' } to /issues/123" do
-      route_for(:controller => 'issues', :action => 'update', :id => '123', :protocol => 'https').should == '/issues/123'
+      route_for(:controller => 'issues', :action => 'update', :id => '123', :protocol => 'https').should == { :path => '/issues/123', :method => 'put' }
     end
 
     it "should map { :controller => 'issues', :action => 'destroy', :id => '123', :protocol => 'https' } to /issues/123" do
-      route_for(:controller => 'issues', :action => 'destroy', :id => '123', :protocol => 'https').should == '/issues/123'
+      route_for(:controller => 'issues', :action => 'destroy', :id => '123', :protocol => 'https').should == { :path => '/issues/123', :method => 'delete' }
     end
   end
 

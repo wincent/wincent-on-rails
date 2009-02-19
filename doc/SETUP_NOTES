@@ -315,3 +315,20 @@ ended up moving it back to vendor/plugins, which funnily enough works:
   git add vendor/gems/haml-2.0.8
   git add config/environment.rb
 
+  # trying out the RSpec 1.2 release candidate
+  sudo gem install --source http://gems.github.com dchelimsky-rspec
+  sudo gem install --source http://gems.github.com dchelimsky-rspec-rails
+  git rm -r vendor/plugins/rspec vendor/plugins/rspec-rails
+  rm -r vendor/plugins/rspec vendor/plugins/rspec-rails # Git doesn't remove empty directories
+  # customize config/environments/test.rb with:
+  #   config.gem 'dchelimsky-rspec', :lib => 'spec', :version => '1.1.99.7'
+  #   config.gem 'dchelimsky-rspec-rails', :lib => 'spec/rails', :version => '1.1.99.7'
+  # note that "RAILS_ENV=test rake gems:unpack" doesn't work yet
+  # so can't do "git add vendor/gems/rspec" etc
+  script/generate rspec
+  # add one line to spec/spec_helper.rb:
+  #   require 'spec/autorun'
+  git add config/environments/test.rb spec/spec_helper.rb
+  git add lib/tasks/rspec.rake script/spec script/spec_server
+  # fix spec breakages
+  git add spec

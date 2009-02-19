@@ -10,20 +10,20 @@ describe LinksController do
       route_for(:controller => "links", :action => "new", :protocol => 'https').should == "/links/new"
     end
 
-    it "should map { :controller => 'links', :action => 'show', :id => 1, :protocol => 'https' } to /links/1" do
-      route_for(:controller => "links", :action => "show", :id => 1, :protocol => 'https').should == "/links/1"
+    it "should map { :controller => 'links', :action => 'show', :id => '1', :protocol => 'https' } to /links/1" do
+      route_for(:controller => "links", :action => "show", :id => '1', :protocol => 'https').should == "/links/1"
     end
 
-    it "should map { :controller => 'links', :action => 'edit', :id => 1, :protocol => 'https' } to /links/1/edit" do
-      route_for(:controller => "links", :action => "edit", :id => 1, :protocol => 'https').should == "/links/1/edit"
+    it "should map { :controller => 'links', :action => 'edit', :id => '1', :protocol => 'https' } to /links/1/edit" do
+      route_for(:controller => "links", :action => "edit", :id => '1', :protocol => 'https').should == "/links/1/edit"
     end
 
-    it "should map { :controller => 'links', :action => 'update', :id => 1, :protocol => 'https'} to /links/1" do
-      route_for(:controller => "links", :action => "update", :id => 1, :protocol => 'https').should == "/links/1"
+    it "should map { :controller => 'links', :action => 'update', :id => '1', :protocol => 'https'} to /links/1" do
+      route_for(:controller => "links", :action => "update", :id => '1', :protocol => 'https').should == { :path => '/links/1', :method => 'put' }
     end
 
-    it "should map { :controller => 'links', :action => 'destroy', :id => 1, :protocol => 'https'} to /links/1" do
-      route_for(:controller => "links", :action => "destroy", :id => 1, :protocol => 'https').should == "/links/1"
+    it "should map { :controller => 'links', :action => 'destroy', :id => '1', :protocol => 'https'} to /links/1" do
+      route_for(:controller => "links", :action => "destroy", :id => '1', :protocol => 'https').should == { :path => '/links/1', :method => 'delete' }
     end
   end
 
