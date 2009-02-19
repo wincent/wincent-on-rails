@@ -16,9 +16,5 @@ config.action_controller.allow_forgery_protection    = false
 # ActionMailer::Base.deliveries array.
 config.action_mailer.delivery_method = :test
 
-# can run "rake spec" but can't do "RAILS_ENV=test rake gems:unpack" yet
-# http://rspec.lighthouseapp.com/projects/5645/tickets/699
-config.gem 'dchelimsky-rspec', :lib => 'spec', :version => '1.1.99.7'
-config.gem 'dchelimsky-rspec-rails', :lib => 'spec/rails', :version => '1.1.99.7'
-#config.gem 'rspec', :lib => 'spec', :version => '1.1.99.7'
-#config.gem 'rspec-rails', :lib => 'spec/rails', :version => '1.1.99.7'
+config.gem 'dchelimsky-rspec', :lib => false, :version => '1.1.99.7'
+config.gem 'dchelimsky-rspec-rails', :lib => false, :version => '1.1.99.7'
