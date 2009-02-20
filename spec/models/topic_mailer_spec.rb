@@ -52,4 +52,13 @@ describe TopicMailer, 'topic' do
   it 'should include a link to the topic edit form' do
     @mail.body.should match(/#{edit_forum_topic_url(@topic.forum, @topic)}/)
   end
+
+  it 'should include "@wincent.com" in the Message-ID header' do
+    @mail.header['message-id'].to_s.should =~ %r{@wincent.com}
+  end
+
+  it 'should create a corresponding Message object' do
+    message = Message.find_by_message_id_header(@mail.header['message-id'].to_s)
+    message.related.should == @topic
+  end
 end
