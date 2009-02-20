@@ -52,4 +52,15 @@ describe IssueMailer, 'issue' do
   it 'should include a link to the issue edit form' do
     @mail.body.should match(/#{edit_issue_url(@issue)}/)
   end
+
+  it 'should include "@wincent.com" in the Message-ID header' do
+    # TODO: test for <random_string@wincent.com>
+    # will require a mod to TMail seeing as it uses "wincent.com.tmail" as domain
+    @mail.header['message-id'].to_s.should =~ %r{@wincent.com}
+  end
+
+  it 'should create a corresponding Message object' do
+    message = Message.find_by_message_id_header(@mail.header['message-id'].to_s)
+    message.related.should == @issue
+  end
 end
