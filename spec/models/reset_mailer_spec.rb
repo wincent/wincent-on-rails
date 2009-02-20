@@ -45,4 +45,14 @@ describe ResetMailer, 'reset' do
   it 'should mention the cutoff date in UTC time' do
     @mail.body.should match(/#{@reset.cutoff.utc.to_s}/)
   end
+
+  it 'should include "@wincent.com" in the Message-ID header' do
+    @mail.header['message-id'].to_s.should =~ %r{@wincent.com}
+  end
+
+  it 'should create a corresponding Message object' do
+    message = Message.find_by_message_id_header(@mail.header['message-id'].to_s)
+    message.related.should == @reset
+  end
+
 end
