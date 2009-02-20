@@ -40,6 +40,12 @@ Rails::Initializer.run do |config|
   # Make Active Record use UTC-base instead of local time
   # config.active_record.default_timezone = :utc
 
+  url_options = { :host => APP_CONFIG['host'] }
+  if APP_CONFIG['port'] != 80 and APP_CONFIG['port'] != 443
+    url_options[:port] = APP_CONFIG['port']
+  end
+  config.action_mailer.default_url_options = url_options
+
   config.gem 'wikitext', :version => '>= 1.4.1'
   config.gem 'haml', :version => '2.0.8'
 end
