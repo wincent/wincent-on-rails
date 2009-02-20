@@ -66,6 +66,7 @@ function relativizeDate(element)
       }
     }
   }
+  element.title = element.innerHTML;
   element.innerHTML = result;
 }
 
