@@ -12,7 +12,50 @@ class SupportMailer < ActionMailer::Base
       Thread.current.object_id, @@counter, rand(65536)
   end
 
-  def receive msg
-    raise 'not yet implemented'
+  @@sanitizer = nil
+  def self.sanitize text
+    @@sanitizer ||= HTML::FullSanitizer.new
+    text = @@sanitizer.sanitize text  # strip HTML tags
+    text.gsub! /<!DOCTYPE[^>]*>/, ''  # strip DOCTYPE
+    text.gsub! /^[ \t]+$/, ''         # compress lines containing only whitespace
+    text.gsub! /^[ \t]+/, ''          # strip leading whitespace
+    text
+  end
+
+  # returns an array of plain-text parts as strings
+  def self.plain_text_parts_from_email email
+    if !email.multipart? and email.content_type == 'text/plain'
+      return [email.body.to_s]
+    end
+    parts = email.parts.collect do |part|
+      if part.multipart?
+        plain_text_parts_from_email part
+      elsif part.content_type == 'text/plain'
+        part.body.to_s
+      else
+        nil
+      end
+    end
+    parts.flatten.compact
+  end
+
+  def self.plain_text_from_email email
+    parts = plain_text_parts_from_email email
+    if parts.empty?
+      sanitize email.body.to_s
+    else
+      parts.join
+    end
+  end
+
+  def receive email
+    message = Message.create  :message_id_header => email.message_id,
+                              :to_header => email.to.first,
+                              :from_header => email.from.first,
+                              :subject_header => email.subject,
+                              :in_reply_to_header => email.in_reply_to,
+                              :body => SupportMailer.plain_text_from_email(email)
+    # may also consult email.references looking for Message-ID
+    # and email.subject eg "Ticket #12" etc
   end
 end
