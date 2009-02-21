@@ -341,3 +341,4 @@ ended up moving it back to vendor/plugins, which funnily enough works:
   # delete unwanted stuff unpacked in previous step
   # (although may want to consider bundling rack in the future)
   rm -rf vendor/gems/rake-* vendor/gems/hoe-* vendor/gems/rack-* vendor/gems/rubyforge-* vendor/gems/cucumber-*
+  script/generate rspec # to create new lib/tasks/rspec.rake file
