@@ -9,7 +9,7 @@ class TopicMailer < ActionMailer::Base
     recipients(to_header = APP_CONFIG['admin_email'])
     from(from_header = APP_CONFIG['admin_email'])
     sent_on Time.now
-    headers 'Message-ID' => (message_id_header = TMail.new_message_id 'wincent.com')
+    headers 'Message-ID' => (message_id_header = SupportMailer.new_message_id)
     Message.create  :related => topic,
                     :message_id_header => message_id_header,
                     :to_header => to_header,

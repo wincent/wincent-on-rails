@@ -53,8 +53,8 @@ describe TopicMailer, 'topic' do
     @mail.body.should match(/#{edit_forum_topic_url(@topic.forum, @topic)}/)
   end
 
-  it 'should include "@wincent.com" in the Message-ID header' do
-    @mail.header['message-id'].to_s.should =~ %r{@wincent.com}
+  it 'should include "support@wincent.com" in the Message-ID header' do
+    @mail.header['message-id'].to_s.should =~ %r{\A<.+support@wincent.com>\z}
   end
 
   it 'should create a corresponding Message object' do

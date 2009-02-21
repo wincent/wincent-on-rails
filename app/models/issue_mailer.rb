@@ -11,7 +11,7 @@ class IssueMailer < ActionMailer::Base
     sent_on Time.now
 
     # unfortunately domain will be 'wincent.com.tmail'
-    headers 'Message-ID' => (message_id_header = TMail.new_message_id 'wincent.com')
+    headers 'Message-ID' => (message_id_header = SupportMailer.new_message_id)
     Message.create  :related => issue,
                     :message_id_header => message_id_header,
                     :to_header => to_header,
