@@ -119,10 +119,16 @@ def wake_up_and_work
   check_support_email
 end
 
+def foreground?
+  ARGV.include?('--foreground')
+end
+
 read_config
 check_pid_file
-daemonize
-setup_logging
+unless foreground?
+  daemonize
+  setup_logging
+end
 create_pid_file
 
 begin
@@ -130,6 +136,12 @@ begin
   trap 'TERM' do
     log "received SIGTERM, will schedule shutdown for within #{SLEEP_INTERVAL} seconds"
     $running = false
+  end
+  if foreground?
+    trap 'INT' do
+      log "received SIGINT, will schedule shutdown for within #{SLEEP_INTERVAL} seconds"
+      $running = false
+    end
   end
   log 'entering processing loop'
   while $running do
