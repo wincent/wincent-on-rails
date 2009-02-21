@@ -100,16 +100,24 @@ rescue Errno::EEXIST
   log_and_abort "pid file already exists at #{PID_FILE}"
 end
 
+def log_backtrace exception
+  log "uncaught exception: #{exception.class}: #{exception.message}; backtrace follows\n"
+  exception.backtrace.each do |frame|
+    log "    #{frame}"
+  end
+  log " "
+end
+
 def check_support_email
   Net::POP3.start config('pop_server'), nil, config('pop_user'), config('pop_passphrase') do |pop|
     pop.mails.each do |mail|
       begin
         log "popping incoming message with unique id: #{mail.unique_id}"
         SupportMailer.receive mail.pop
-        mail.delete # if successful
+        #mail.delete # if successful
         log "successfully processed message #{mail.unique_id}"
       rescue Exception => e
-        log "exception caught while processing message #{mail.unique_id}"
+        log_backtrace e
       end
     end
   end
@@ -150,10 +158,7 @@ begin
   end
   log 'shutting down'
 rescue Exception => e
-  log "uncaught exception: #{e.class}: #{e.message}; backtrace follows\n"
-  e.backtrace.each do |frame|
-    log "    #{frame}"
-  end
-  log_and_abort "\n"
+  log_backtrace e
+  log_and_abort ''
 end
 
