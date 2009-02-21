@@ -11,10 +11,18 @@ end
 
 describe SupportMailer, 'regressions' do
   it 'should handle incoming mails without valid "To" headers' do
-    # this one wasn't missing the "To" header, it was just horribly mangled:
-    #   "@@TO_NAME" <@@TO_EMAIL>
-    lambda { SupportMailer.receive sample_email('dodgy-to-header') }.should_not raise_error
+    lambda { SupportMailer.receive sample_email('real/dodgy-to-header') }.should_not raise_error
   end
 
-  it 'should handle incoming mails without "From" headers'
+  it 'should handle incoming mails without "To" headers' do
+    lambda { SupportMailer.receive sample_email('fake/no-to-header') }.should_not raise_error
+  end
+
+  it 'should handle incoming mails without valid "From" headers' do
+    lambda { SupportMailer.receive sample_email('fake/dodgy-from-header') }.should_not raise_error
+  end
+
+  it 'should handle incoming mails without "From" headers' do
+    lambda { SupportMailer.receive sample_email('fake/no-from-header') }.should_not raise_error
+  end
 end
