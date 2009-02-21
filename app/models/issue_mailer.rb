@@ -19,9 +19,4 @@ class IssueMailer < ActionMailer::Base
                     :subject_header => subject_header,
                     :incoming => false
   end
-
-  def receive msg
-    # process incoming mail!
-    raise 'not yet implemented'
-  end
 end
