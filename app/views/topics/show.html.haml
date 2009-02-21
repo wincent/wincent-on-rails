@@ -19,7 +19,7 @@
       =pluralizing_count(@topic.user.utterances_count, 'post') if @topic.user
       %br
       %span.when
-        =timeinfo @topic, :updated_string => 'edited'
+        =timeinfo @topic, :updated_string => false
       -if admin?
         %br
         =link_to 'edit', edit_forum_topic_url(@forum, @topic)

@@ -55,6 +55,16 @@ describe ApplicationHelper, 'timeinfo method' do
     info.should =~ /Created.+#{Regexp.escape earlier_date.to_s}/
     info.should =~ /edited.+#{Regexp.escape later_date.to_s}/
   end
+
+  it 'should not show the "updated" date at all if "updated_string" is set to false' do
+    earlier_date  = 3.hours.ago
+    later_date    = 1.hour.ago
+    @model.should_receive(:created_at).and_return(earlier_date)
+    @model.should_receive(:updated_at).and_return(later_date)
+    info = helper.timeinfo @model, :updated_string => false
+    info.should =~ /#{Regexp.escape earlier_date.to_s}/
+    info.should_not =~ /#{Regexp.escape later_date.to_s}/
+  end
 end
 
 describe ApplicationHelper, 'product_options method' do
