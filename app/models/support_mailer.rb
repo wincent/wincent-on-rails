@@ -49,12 +49,13 @@ class SupportMailer < ActionMailer::Base
   end
 
   def receive email
-    message = Message.create  :message_id_header => email.message_id,
-                              :to_header => email.to.first,
-                              :from_header => email.from.first,
-                              :subject_header => email.subject,
-                              :in_reply_to_header => email.in_reply_to,
-                              :body => SupportMailer.plain_text_from_email(email)
+    message = Message.new :message_id_header => email.message_id,
+                          :subject_header => email.subject,
+                          :in_reply_to_header => email.in_reply_to,
+                          :body => SupportMailer.plain_text_from_email(email)
+    message.to_header   = email.to.first if email.to
+    message.from_header = email.from.first if email.from
+    message.save
     # may also consult email.references looking for Message-ID
     # and email.subject eg "Ticket #12" etc
   end
