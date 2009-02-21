@@ -55,8 +55,28 @@ class SupportMailer < ActionMailer::Base
                           :body => SupportMailer.plain_text_from_email(email)
     message.to_header   = email.to.first if email.to
     message.from_header = email.from.first if email.from
-    message.save
+
+    # basic case: open a new ticket
+    new_issue_from_message message
+
     # may also consult email.references looking for Message-ID
     # and email.subject eg "Ticket #12" etc
+  rescue Exception => e
+    message.save
+    raise e
+  ensure
+    message.save
+  end
+
+  def new_issue_from_message message
+    issue = Issue.new :summary => message.subject_header
+    issue.description = message.body ? message.body : message.subject_header
+    user = message.from_header ? User.find_by_email(message.from_header) : nil
+
+    # TODO: UI for reassigned tickets to other users (if spammers use fake addresses)
+    # TODO: auto-create accounts for users who don't have accounts yet
+    issue.user = user
+    issue.save
+    message.related = issue # saved by caller
   end
 end
