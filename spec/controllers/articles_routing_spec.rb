@@ -28,37 +28,37 @@ describe ArticlesController do
   end
 
   describe "route recognition" do
-    it "should generate params { :controller => 'articles', action => 'index', :protocol => 'https' } from GET /wiki" do
+    it "should generate params { :controller => 'articles', :action => 'index', :protocol => 'https' } from GET /wiki" do
       params_from(:get, "/wiki").should == {:controller => "articles", :action => "index", :protocol => 'https'}
     end
 
     # Rails 2.3.0 RC1 BUG: trailing slash on resources declared using ":as" raises routing error
     # See: http://rails.lighthouseapp.com:80/projects/8994/tickets/2039
-    it "should generate params { :controller => 'articles', action => 'index', :protocol => 'https' } from GET /wiki/" do
+    it "should generate params { :controller => 'articles', :action => 'index', :protocol => 'https' } from GET /wiki/" do
       params_from(:get, '/wiki/').should == {:controller => "articles", :action => "index", :protocol => 'https'}
     end
 
-    it "should generate params { :controller => 'articles', action => 'new', :protocol => 'https' } from GET /wiki/new" do
+    it "should generate params { :controller => 'articles', :action => 'new', :protocol => 'https' } from GET /wiki/new" do
       params_from(:get, "/wiki/new").should == {:controller => "articles", :action => "new", :protocol => 'https'}
     end
 
-    it "should generate params { :controller => 'articles', action => 'create', :protocol => 'https' } from POST /wiki" do
+    it "should generate params { :controller => 'articles', :action => 'create', :protocol => 'https' } from POST /wiki" do
       params_from(:post, "/wiki").should == {:controller => "articles", :action => "create", :protocol => 'https'}
     end
 
-    it "should generate params { :controller => 'articles', action => 'show', id => 'foo', :protocol => 'https' } from GET /wiki/foo" do
+    it "should generate params { :controller => 'articles', :action => 'show', :id => 'foo', :protocol => 'https' } from GET /wiki/foo" do
       params_from(:get, "/wiki/foo").should == {:controller => "articles", :action => "show", :id => "foo", :protocol => 'https'}
     end
 
-    it "should generate params { :controller => 'articles', action => 'edit', id => 'foo', :protocol => 'https' } from GET /wiki/foo;edit" do
+    it "should generate params { :controller => 'articles', :action => 'edit', :id => 'foo', :protocol => 'https' } from GET /wiki/foo/edit" do
       params_from(:get, "/wiki/foo/edit").should == {:controller => "articles", :action => "edit", :id => "foo", :protocol => 'https'}
     end
 
-    it "should generate params { :controller => 'articles', action => 'update', id => 'foo', :protocol => 'https' } from PUT /wiki/foo" do
+    it "should generate params { :controller => 'articles', :action => 'update', :id => 'foo', :protocol => 'https' } from PUT /wiki/foo" do
       params_from(:put, "/wiki/foo").should == {:controller => "articles", :action => "update", :id => "foo", :protocol => 'https'}
     end
 
-    it "should generate params { :controller => 'articles', action => 'destroy', id => 'foo', :protocol => 'https' } from DELETE /wiki/foo" do
+    it "should generate params { :controller => 'articles', :action => 'destroy', :id => 'foo', :protocol => 'https' } from DELETE /wiki/foo" do
       params_from(:delete, "/wiki/foo").should == {:controller => "articles", :action => "destroy", :id => "foo", :protocol => 'https'}
     end
   end
