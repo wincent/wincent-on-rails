@@ -21,8 +21,7 @@ class Paginator
     @count        = count
     @path_or_url  = path_or_url
     if @offset > @count
-      @offset = 0
-      @page   = 1
+      raise ActiveRecord::RecordNotFound
     end
   end
 
