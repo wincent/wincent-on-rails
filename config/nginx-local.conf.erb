@@ -78,7 +78,13 @@ http {
       }
 
       # cached pages
-      if (-f $request_filename.html) {
+      set $cache_extension '';
+      if ($request_method = GET) {
+        set $cache_extension '.html';
+      }
+
+      # the above is a hack because nginx doesn't allow nested or ANDed ifs
+      if (-f $request_filename$cache_extension) {
         rewrite (.*) $1.html break;
       }
 
