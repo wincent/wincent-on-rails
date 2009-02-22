@@ -31,6 +31,12 @@ describe PostsController, 'route recognition' do
     params_from(:get, '/blog').should == {:controller => 'posts', :action => 'index', :protocol => 'https'}
   end
 
+  # Rails 2.3.0 RC1 BUG: trailing slash on resources declared using ":as" raises routing error
+  # See: http://rails.lighthouseapp.com:80/projects/8994/tickets/2039
+  it "should generate params { :controller => 'posts', action => 'index', :protocol => 'https' } from GET /blog/" do
+    params_from(:get, '/blog/').should == {:controller => 'posts', :action => 'index', :protocol => 'https'}
+  end
+
   it "should generate params { :controller => 'posts', action => 'new', :protocol => 'https' } from GET /blog/new" do
     params_from(:get, '/blog/new').should == {:controller => 'posts', :action => 'new', :protocol => 'https'}
   end

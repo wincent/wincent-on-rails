@@ -32,6 +32,12 @@ describe ArticlesController do
       params_from(:get, "/wiki").should == {:controller => "articles", :action => "index", :protocol => 'https'}
     end
 
+    # Rails 2.3.0 RC1 BUG: trailing slash on resources declared using ":as" raises routing error
+    # See: http://rails.lighthouseapp.com:80/projects/8994/tickets/2039
+    it "should generate params { :controller => 'articles', action => 'index', :protocol => 'https' } from GET /wiki/" do
+      params_from(:get, '/wiki/').should == {:controller => "articles", :action => "index", :protocol => 'https'}
+    end
+
     it "should generate params { :controller => 'articles', action => 'new', :protocol => 'https' } from GET /wiki/new" do
       params_from(:get, "/wiki/new").should == {:controller => "articles", :action => "new", :protocol => 'https'}
     end
