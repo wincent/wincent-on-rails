@@ -44,9 +44,6 @@ ActionController::Routing::Routes.draw do |map|
     user.resources :emails, :requirements => { :id => /[^\/]+/, :protocol => 'https' }
   end
 
-
-  # with Rails 2.1 have helper methods like "new_article_path" instead of "new_article_path"
-  # will also fix the AtomFeedHelper breakage (polymorphic_url won't work with these kinds of routes)
   # again, must explicitly allow period in the id part of the route otherwise it will be classified as a route separator
   map.resources :articles,
                 :as => :wiki,
