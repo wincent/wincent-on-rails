@@ -1,7 +1,7 @@
 --- !ruby/object:Gem::Specification 
 name: haml
 version: !ruby/object:Gem::Version 
-  version: 2.0.8
+  version: 2.0.9
 platform: ruby
 authors: 
 - Nathan Weizenbaum
@@ -10,7 +10,7 @@ autorequire:
 bindir: bin
 cert_chain: []
 
-date: 2009-02-13 00:00:00 +01:00
+date: 2009-02-21 00:00:00 +01:00
 default_executable: 
 dependencies: []
 
@@ -81,6 +81,7 @@ files:
 - test/linked_rails.rb
 - test/benchmark.rb
 - test/sass
+- test/sass/css2sass_test.rb
 - test/sass/results
 - test/sass/results/constants.css
 - test/sass/results/parent_ref.css
@@ -144,6 +145,7 @@ files:
 - test/haml/results/eval_suppressed.xhtml
 - test/haml/results/nuke_inner_whitespace.xhtml
 - test/haml/results/whitespace_handling.xhtml
+- test/haml/results/render_layout.xhtml
 - test/haml/results/silent_script.xhtml
 - test/haml/results/standard.xhtml
 - test/haml/results/just_stuff.xhtml
@@ -161,10 +163,12 @@ files:
 - test/haml/templates/_layout_for_partial.haml
 - test/haml/templates/original_engine.haml
 - test/haml/templates/helpers.haml
+- test/haml/templates/_layout.erb
 - test/haml/templates/action_view_ugly.haml
 - test/haml/templates/content_for_layout.haml
 - test/haml/templates/silent_script.haml
 - test/haml/templates/very_basic.haml
+- test/haml/templates/render_layout.haml
 - test/haml/templates/filters.haml
 - test/haml/templates/_av_partial_1.haml
 - test/haml/templates/standard_ugly.haml
@@ -228,6 +232,7 @@ signing_key:
 specification_version: 2
 summary: An elegant, structured XHTML/XML templating engine. Comes with Sass, a similar CSS templating engine.
 test_files: 
+- test/sass/css2sass_test.rb
 - test/sass/engine_test.rb
 - test/sass/plugin_test.rb
 - test/haml/html2haml_test.rb

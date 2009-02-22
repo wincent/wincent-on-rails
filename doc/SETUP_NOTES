@@ -342,3 +342,14 @@ ended up moving it back to vendor/plugins, which funnily enough works:
   # (although may want to consider bundling rack in the future)
   rm -rf vendor/gems/rake-* vendor/gems/hoe-* vendor/gems/rack-* vendor/gems/rubyforge-* vendor/gems/cucumber-*
   script/generate rspec # to create new lib/tasks/rspec.rake file
+
+  # Haml 2.0.9 update
+  sudo gem install --no-ri haml
+  git rm -r vendor/gems/haml-2.0.8 # doesn't actually delete directory
+  rm -r vendor/gems/haml-2.0.8     # so must delete that manually
+  vi config/environment.rb         # update config.gem line
+  rake gems
+  rake gems:unpack
+  rake spec
+  git add vendor/gems/haml-2.0.9
+  git add config/environment.rb
