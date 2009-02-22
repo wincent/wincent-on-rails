@@ -61,5 +61,15 @@ describe ArticlesController do
     it "should generate params { :controller => 'articles', :action => 'destroy', :id => 'foo', :protocol => 'https' } from DELETE /wiki/foo" do
       params_from(:delete, "/wiki/foo").should == {:controller => "articles", :action => "destroy", :id => "foo", :protocol => 'https'}
     end
+
+    # test index pagination
+    it "should generate params { :controller => 'articles', :action => 'index', :page => '2', :protocol => 'https' } from GET /wiki/page/2" do
+      params_from(:get, '/wiki/page/2').should == {:controller => 'articles', :action => 'index', :page => '2', :protocol => 'https'}
+    end
+
+    # note how we can still have an article named "page" if we want
+    it "should generate params { :controller => 'articles', :action => 'show', :if => 'page', :protocol => 'https' } from GET /wiki/page" do
+      params_from(:get, '/wiki/page').should == {:controller => 'articles', :action => 'show', :id => 'page', :protocol => 'https'}
+    end
   end
 end

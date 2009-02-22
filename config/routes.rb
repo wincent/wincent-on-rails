@@ -50,6 +50,11 @@ ActionController::Routing::Routes.draw do |map|
                 :requirements => { :id => /[^\/]+/, :protocol => 'https' },
                 :has_many => [ :comments ]
 
+  # this gives us pagination URLs like: /wiki/page/3
+  # instead of: /wiki?page=3
+  # note that an article called "page" can still be accessed at: /wiki/page
+  map.paginated_articles '/wiki/page/:page', :controller => 'articles', :action => 'index', :protocol => 'https'
+
   # regular routes
   # note that we cannot specify :protocol here without breaking the url_for method
   # must pass an explicit :protocol whenever using url_for
