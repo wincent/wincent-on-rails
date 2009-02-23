@@ -237,4 +237,8 @@ module ApplicationHelper
   def button_to_moderate_issue_as_ham issue
     button_to_moderate_model_as_ham issue, issue_url(issue)
   end
+
+  def spinner_tag
+    image_tag 'spinner.gif', :id => 'spinner', :style => 'display:none;'
+  end
 end
