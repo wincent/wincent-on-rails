@@ -89,10 +89,8 @@ http {
       }
 
       # everything else goes to the mongrel cluster
-      if (!-f $request_filename) {
-        proxy_pass http://mongrels;
-        break;
-      }
+      proxy_pass http://mongrels;
+      break;
 
     } # end: location
   } # end: server
