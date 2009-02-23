@@ -353,3 +353,15 @@ ended up moving it back to vendor/plugins, which funnily enough works:
   rake spec
   git add vendor/gems/haml-2.0.9
   git add config/environment.rb
+
+  # Wikitext 1.5.0 update
+  sudo gem install wikitext
+  rake gems:unpack
+  git add vendor/gems/wikitext-1.5.0
+  rake gems:build
+  git rm -r vendor/gems/wikitext-1.4.1
+  rm -r vendor/gems/wikitext-1.4.1
+  git add vendor/gems/wikitext-1.5.0/ext/wikitext.bundle
+  rm vendor/gems/wikitext-1.5.0/ext/*.o
+  rm vendor/gems/wikitext-1.5.0/ext/Makefile
+  rm vendor/gems/wikitext-1.5.0/ext/mkmf.log

@@ -1,7 +1,7 @@
 --- !ruby/object:Gem::Specification 
 name: wikitext
 version: !ruby/object:Gem::Version 
-  version: 1.4.1
+  version: 1.5.0
 platform: ruby
 authors: 
 - Wincent Colaiuta
@@ -9,7 +9,7 @@ autorequire:
 bindir: bin
 cert_chain: []
 
-date: 2009-02-04 00:00:00 +01:00
+date: 2009-02-23 00:00:00 +01:00
 default_executable: 
 dependencies: []
 
@@ -23,6 +23,7 @@ extra_rdoc_files: []
 
 files: 
 - spec/autolinking_spec.rb
+- spec/base_heading_level_spec.rb
 - spec/blockquote_spec.rb
 - spec/em_spec.rb
 - spec/encoding_spec.rb
