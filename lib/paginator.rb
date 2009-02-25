@@ -1,9 +1,13 @@
 class Paginator
+  # attributes of interest to models (for constructing "find" methods)
   attr_reader :offset, :limit
+
+  # attributes of interest to specs (for confirming paginator configuration)
+  attr_reader :count, :path_or_url
 
   def initialize params, count, path_or_url, per_page = 10
     # unpack params
-    page              = params[:page].to_i
+    page          = params[:page].to_i
 
     # preserve query-string information in links
     @additional_params = []
