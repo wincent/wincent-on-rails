@@ -1,5 +1,7 @@
+blog.*
 forums
+issues
+twitter.*
+twitter/*
 wiki.*
 wiki/*
-issues
-blog.*
