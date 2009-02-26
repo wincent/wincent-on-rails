@@ -4,12 +4,18 @@ config.cache_classes = true
 # Log error messages when you accidentally call methods on nil.
 config.whiny_nils = true
 
-# Show full error reports and disable caching
+# Show full error reports
 config.action_controller.consider_all_requests_local = true
-config.action_controller.perform_caching             = false
+
+# Can't test page caching without this
+# (Rails turns "caches_page" into a total no-op if false;
+# no after filter is ever set up, so we can't mock the "cache_page"
+# call. Calling controller.perform_caching from inside a
+# "before(:all)" block is too late)
+config.action_controller.perform_caching = true
 
 # Disable request forgery protection in test environment
-config.action_controller.allow_forgery_protection    = false
+config.action_controller.allow_forgery_protection = false
 
 # Tell Action Mailer not to deliver emails to the real world.
 # The :test delivery method accumulates sent emails in the
