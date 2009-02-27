@@ -53,16 +53,6 @@ module ActionController
       end
     end
 
-    # Intended for use as a before_filter to protect actions that are only for logged-in, verified users.
-    def require_verified
-      if !self.logged_in?
-        redirect_to_login
-      elsif !self.logged_in_and_verified?
-        flash[:notice]          = 'You must verify your account before accessing the requested resource'
-        redirect_to new_confirmation_url
-      end
-    end
-
     # before_filter: requires a logged-in user, but doesn't need the user to be verified yet.
     def require_user
       redirect_to_login unless self.logged_in?
