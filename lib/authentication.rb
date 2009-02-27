@@ -42,9 +42,14 @@ module ActionController
     # Intended for use as a before_filter to protect adminstrator-only actions.
     def require_admin
       unless self.admin?
-        flash[:notice]          = 'The requested resource requires administrator privileges'
-        session[:original_uri]  = request.request_uri
-        redirect_to login_url
+        # in practice for HTML requests, format is always blank, but program defensively
+        if params[:format].blank? or params[:format] == 'html'
+          flash[:notice]          = 'The requested resource requires administrator privileges'
+          session[:original_uri]  = request.request_uri
+          redirect_to login_url
+        else # XML, Atom etc
+          render :text => '', :status => 403 # forbidden
+        end
       end
     end
 

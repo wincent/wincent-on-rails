@@ -302,7 +302,9 @@ describe TweetsController, 'POST /twitter.js (AJAX preview)' do
 
   it 'should return an error for non-admins' do
     do_post({}, :not_as_admin)
-    pending "require_admin filter is redirecting but should be erroring out here"
+    response.should_not be_success
+    response.status.should == '403 Forbidden'
+    response.body.should be_blank
   end
 
   it 'should assign to the @tweet instance variable' do
