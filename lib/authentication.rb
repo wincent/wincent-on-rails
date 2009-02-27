@@ -43,12 +43,12 @@ module ActionController
     def require_admin
       unless self.admin?
         # in practice for HTML requests, format is always blank, but program defensively
-        if params[:format].blank? or params[:format] == 'html'
+        if params[:format].blank? or params[:format] =~ /html/i
           flash[:notice]          = 'The requested resource requires administrator privileges'
           session[:original_uri]  = request.request_uri
           redirect_to login_url
-        else # XML, Atom etc
-          render :text => '', :status => 403 # forbidden
+        else # XML, Atom, JavaScript etc
+          render :text => '', :status => 403 # Forbidden
         end
       end
     end
