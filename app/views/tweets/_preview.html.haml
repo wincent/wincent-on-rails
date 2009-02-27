@@ -1,0 +1,7 @@
+%h3
+  Tweet preview
+  - if @tweet.overlength?
+    %span.overlength==(#{character_count @tweet})
+  -else
+    ==(#{character_count @tweet})
+=@tweet.body.w :base_heading_level => 3

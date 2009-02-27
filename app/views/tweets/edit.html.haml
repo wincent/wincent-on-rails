@@ -1,0 +1,23 @@
+-content_for :css do
+  =stylesheet_link_tag 'tweets'
+%h1 Edit tweet
+=error_messages_for :tweet
+-form_for @tweet, :url => tweet_url(@tweet), :method => 'put' do |f|
+  %table.main
+    %tr
+      %th
+        Body
+        %br
+        %span.annotation==(#{wikitext_cheatsheet})
+      %td=f.text_area(:body, :cols => 80, :rows => 5)
+  %p=f.submit 'Update'
+%h2
+  ==Preview (#{link_to_update_preview})
+  =observe_body
+  =spinner_tag
+#preview
+  =render 'preview.html.haml'
+.links
+  =link_to 'show', @tweet
+  =link_to 'destroy', @tweet, :confirm => 'Are you sure?', :method => :delete
+  =link_to 'all tweets', tweets_url

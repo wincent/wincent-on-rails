@@ -1,0 +1,21 @@
+-content_for :css do
+  =stylesheet_link_tag 'tweets'
+%h1 Create new tweet
+=error_messages_for :tweet
+-form_for @tweet, :url => tweets_url do |f|
+  %table.main
+    %tr
+      %th
+        Body
+        %br
+        %span.annotation==(#{wikitext_cheatsheet})
+      %td=f.text_area(:body, :cols => 80, :rows => 5)
+  %p=f.submit 'Create'
+%h2
+  ==Preview (#{link_to_update_preview})
+  =observe_body
+  =spinner_tag
+#preview
+  =render 'preview.html.haml'
+.links
+  =link_to 'index', tweets_url

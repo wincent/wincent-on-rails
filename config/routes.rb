@@ -13,10 +13,13 @@ ActionController::Routing::Routes.draw do |map|
     https.resources :sessions
     https.resources :taggings
     https.resources :resets
+    https.resources :tweets, :as => 'twitter'
 
     # not a real resource, but declaring it as such gives us some convenient routing helpers
     https.resources :search, :collection => { :issues => :get }
   end
+
+  map.paginated_tweets '/twitter/page/:page', :controller => 'tweets', :action => 'index', :protocol => 'https'
 
   # must explicitly allow period in the id part of the route otherwise it will be classified as a route separator
   map.resources :posts,

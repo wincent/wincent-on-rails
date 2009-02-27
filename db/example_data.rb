@@ -95,6 +95,12 @@ module FixtureReplacement
     }
   end
 
+  def tweet_attributes
+    {
+      :body                     => String.random
+    }
+  end
+
   def user_attributes
     passphrase = String.random
     {
