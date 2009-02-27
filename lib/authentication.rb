@@ -42,30 +42,28 @@ module ActionController
     # Intended for use as a before_filter to protect adminstrator-only actions.
     def require_admin
       unless self.admin?
-        # in practice for HTML requests, format is always blank, but program defensively
-        if params[:format].blank? or params[:format] =~ /html/i
-          redirect_to_login 'The requested resource requires administrator privileges'
-        else # XML, Atom, JavaScript etc
-          render :text => '', :status => 403 # Forbidden
-        end
+        redirect_to_login 'The requested resource requires administrator privileges'
       end
     end
 
     # before_filter: requires a logged-in user, but doesn't need the user to be verified yet.
     def require_user
       unless self.logged_in?
-        if params[:format].blank? or params[:format] =~ /html/i
-          redirect_to_login 'You must be logged in to access the requested resource'
-        else # XML, Atom, JavaScript etc
-          render :text => '', :status => 403 # Forbidden
-        end
+        redirect_to_login 'You must be logged in to access the requested resource'
       end
     end
 
+    # Redirect to the login page showing the supplied msg in the flash
+    # For non-HTML formats (XML, Atom, JavaScript), return a 403 error instead of redirecting
     def redirect_to_login msg
-      flash[:notice]          = msg
-      session[:original_uri]  = request.request_uri
-      redirect_to login_url
+      # in practice for HTML requests, format is always blank, but program defensively
+      if params[:format].blank? or params[:format] =~ /html/i
+        flash[:notice] = msg
+        session[:original_uri] = request.request_uri
+        redirect_to login_url
+      else # XML, Atom, JavaScript etc
+        render :text => '', :status => 403 # Forbidden
+      end
     end
 
     # only secure over SSL (due to cookie capture attacks)
