@@ -24,7 +24,6 @@ describe '/tweets/new.html.haml' do
 
   it 'should have a form for the tweet' do
     do_render
-    puts response.body
     response.should have_tag("form[action=?][method=post]", tweets_url) do
       with_tag('textarea[name=?]', 'tweet[body]')
     end
