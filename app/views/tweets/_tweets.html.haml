@@ -1,0 +1,8 @@
+-for tweet in @tweets
+  %div[tweet]
+    %div=tweet.body.w :base_heading_level => 1
+    .when
+      =timeinfo tweet
+      |
+      -# not sure if I like the CSS here: the link is too dark (and am I abusing timeinfo by nesting here?)
+      =link_to 'permalink', tweet_url(tweet)
