@@ -56,6 +56,13 @@ module ActionController
     # before_filter: requires a logged-in user, but doesn't need the user to be verified yet.
     def require_user
       redirect_to_login unless self.logged_in?
+      unless self.logged_in?
+        if params[:format].blank? or params[:format] =~ /html/i
+          redirect_to_login
+        else # XML, Atom, JavaScript etc
+          render :text => '', :status => 403 # Forbidden
+        end
+      end
     end
 
     def redirect_to_login
