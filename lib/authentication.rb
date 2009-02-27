@@ -44,9 +44,7 @@ module ActionController
       unless self.admin?
         # in practice for HTML requests, format is always blank, but program defensively
         if params[:format].blank? or params[:format] =~ /html/i
-          flash[:notice]          = 'The requested resource requires administrator privileges'
-          session[:original_uri]  = request.request_uri
-          redirect_to login_url
+          redirect_to_login 'The requested resource requires administrator privileges'
         else # XML, Atom, JavaScript etc
           render :text => '', :status => 403 # Forbidden
         end
@@ -58,15 +56,15 @@ module ActionController
       redirect_to_login unless self.logged_in?
       unless self.logged_in?
         if params[:format].blank? or params[:format] =~ /html/i
-          redirect_to_login
+          redirect_to_login 'You must be logged in to access the requested resource'
         else # XML, Atom, JavaScript etc
           render :text => '', :status => 403 # Forbidden
         end
       end
     end
 
-    def redirect_to_login
-      flash[:notice]          = 'You must be logged in to access the requested resource'
+    def redirect_to_login msg
+      flash[:notice]          = msg
       session[:original_uri]  = request.request_uri
       redirect_to login_url
     end
