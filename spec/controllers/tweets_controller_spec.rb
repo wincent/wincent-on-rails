@@ -267,9 +267,10 @@ describe TweetsController, 'POST /twitter' do
     do_post
   end
 
-  it 'should flash a notice on success' do
+  it 'should not flash a notice on success' do
+    # flashes would pollute the page cache
     do_successful_post
-    flash[:notice].should =~ /Success/
+    flash[:notice].should be_nil
   end
 
   it 'should redirect to the tweet "show" page on success' do
@@ -347,11 +348,13 @@ describe TweetsController, 'GET /twitter/:id' do
     response.should render_template('tweets/show.html.haml')
   end
 
-  it 'should redirect to the tweets index if not found' do
+  it 'should redirect to the root URL if not found' do
+    # can't redirect to tweets index
+    # (the flash would pollute page cache)
     tweet = new_tweet
     tweet.id = 1_342_103
     do_get tweet
-    response.should redirect_to(tweets_url)
+    response.should redirect_to(root_url)
   end
 
   it 'should page-cache the output' do
@@ -390,11 +393,13 @@ describe TweetsController, 'GET /twitter/:id/edit' do
     response.should render_template('tweets/edit.html.haml')
   end
 
-  it 'should redirect to the tweets index if not found' do
+  it 'should redirect to the root URL if not found' do
+    # can't redirect to tweets index
+    # (the flash would pollute page cache)
     tweet = new_tweet
     tweet.id = 1_342_103
     do_get tweet
-    response.should redirect_to(tweets_url)
+    response.should redirect_to(root_url)
   end
 end
 
@@ -442,9 +447,10 @@ describe TweetsController, 'PUT /twitter/:id' do
     do_put @tweet, true, params
   end
 
-  it 'should flash a notice on success' do
+  it 'should not flash a notice on success' do
+    # flashes would pollute the page cache
     do_successful_update
-    flash[:notice].should =~ /Success/
+    flash[:notice].should be_nil
   end
 
   it 'should render the "tweets/show.html.haml" template on success' do
@@ -493,11 +499,13 @@ describe TweetsController, 'DELETE /twitter/:id' do
     response.should redirect_to(tweets_url)
   end
 
-  it 'should redirect to the tweets index if not found' do
+  it 'should redirect to the root URL if not found' do
+    # can't redirect to tweets index
+    # (the flash would pollute page cache)
     tweet = new_tweet
     tweet.id = 1_342_103
     do_delete tweet
-    response.should redirect_to(tweets_url)
+    response.should redirect_to(root_url)
   end
 
   it 'should trigger the cache sweeper' do
