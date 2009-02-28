@@ -16,6 +16,7 @@ class PostsController < ApplicationController
         #   WHERE (comments.commentable_id = 44 AND comments.commentable_type = 'Post' AND (spam = FALSE))
         # the incorporation of the spam condition makes the counter cache useless (and unused)
         @posts      = Post.find_recent :include => :tags, :offset => @paginator.offset
+        @tweets     = Tweet.find_recent if !fragment_exist?(:tweets_sidebar)
       }
       format.atom { @posts = Post.find_recent }
     end

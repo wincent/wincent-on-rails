@@ -1,22 +1,29 @@
 -content_for :css do
   =stylesheet_link_tag 'posts'
 -@page_title = 'blog index'
-%h1 Latest blog posts
 -atom_link
--if @paginator
-  .pagination=@paginator.pagination_links
--for @post in @posts
-  .post
-    %h2.major=link_to h(@post.title), post_url(@post)
-    .when=timeinfo @post
-    =excerpt_html
-    .info
-      =comments_link(@post)
-      =link_to 'more...', (post_url(@post)) if !@post.body.blank?
-      .tag_info
-        =link_to 'Tags', tags_url
-        \:
-        =tag_links(@post)
--# TODO: add search box here
--if @paginator
-  .pagination=@paginator.pagination_links
+#posts
+  %h1 Blog posts
+  -if @paginator
+    .pagination=@paginator.pagination_links
+  -for @post in @posts
+    .post
+      %h2.major=link_to h(@post.title), post_url(@post)
+      .when=timeinfo @post
+      =excerpt_html
+      .info
+        =comments_link(@post)
+        =link_to 'more...', (post_url(@post)) if !@post.body.blank?
+        .tag_info
+          =link_to 'Tags', tags_url
+          \:
+          =tag_links(@post)
+  -# TODO: add search box here
+  -if @paginator
+    .pagination=@paginator.pagination_links
+#sidebar
+  -cache :tweets_sidebar do
+    %h1 Tweets
+    =render 'tweets/tweets.html.haml'
+    %p=link_to 'more tweets', tweets_url
+.clearboth

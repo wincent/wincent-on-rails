@@ -21,6 +21,7 @@ class TweetSweeper < ActionController::Caching::Sweeper
     expire_page(tweet_path(tweet) + '.html')  # twitter/321.html
     expire_page(tweets_path + '.atom')        # twitter.atom
     expire_page(tweets_path + '.html')        # twitter.html
+    expire_fragment :tweets_sidebar
 
     # now twitter/page/1.html, twitter/page/2.html etc
     page_dir = ActionController::Base.send(:page_cache_directory) + tweets_path + '/page'

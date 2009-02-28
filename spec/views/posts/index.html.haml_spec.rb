@@ -3,7 +3,8 @@ require File.dirname(__FILE__) + '/../../spec_helper'
 describe "/posts/index.html.haml" do
   include PostsHelper
 
-  before(:each) do
+  before do
+    assigns[:tweets] = [create_tweet]
     assigns[:posts] = [create_post]
   end
 
