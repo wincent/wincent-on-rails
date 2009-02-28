@@ -1,9 +1,6 @@
 %table.main
   %tr
-    %th
-      Kind
-      %br
-      %span.annotation bug report, feature request, feedback, or support ticket
+    %th Kind
     %td=f.select :kind, underscores_to_spaces(Issue::KIND).sort
   %tr
     %th
