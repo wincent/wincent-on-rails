@@ -50,6 +50,12 @@ a.mailto:after { content: url(../images/mailto.png); }
 
 #content { clear: both; padding-top: 0.5em; padding-bottom: 1em; padding-left: 2em; padding-right: 3em; margin-top: 1em; margin-left: 2em; margin-right: 2em; -webkit-border-radius: 1em; -moz-border-radius: 1em; background: #fff; }
 
+#posts { float: left; width: 70%; margin: 0; }
+
+#sidebar { margin-left: 73%; margin-top: 1em; margin-right: -1em; padding-left: 2em; padding-top: 0.5em; padding-bottom: 1em; padding-right: 1em; -webkit-border-radius: 1em; -moz-border-radius: 1em; background: #eee; border: 2px solid silver; }
+
+.clearboth { clear: both; }
+
 #footer { clear: both; text-align: center; font-size: x-small; margin: 1em; }
 
 div.two-columns { float: left; width: 50%; margin-bottom: 3em; }
