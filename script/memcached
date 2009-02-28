@@ -12,4 +12,9 @@ else
   puts "memcached running: stopping"
   pid = pidfile.read.chomp
   system 'kill', pid
+
+  # it appears that memcached doesn't clean up its pid file
+  # unless you send it a QUIT signal (TERM, KILL, HUP don't)
+  # unfortuantely, QUIT on Mac OS X causes memcached to crash
+  pidfile.delete
 end
