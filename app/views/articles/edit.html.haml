@@ -32,7 +32,7 @@
   =observe_body
   =image_tag 'spinner.gif', :id => 'spinner', :style => 'display:none;'
   -# TODO: graceful non-JS fallback
-#preview=@article.body.w
+#preview=@article.body.w :base_heading_level => 2
 .links
   =link_to 'index', articles_url, :class => 'back_link'
   =link_to 'show', article_url(@article), :class => 'show_link'

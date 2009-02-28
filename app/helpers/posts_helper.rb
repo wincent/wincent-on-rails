@@ -1,15 +1,16 @@
 module PostsHelper
-  def excerpt_html
-    @post.excerpt.w
+  def excerpt_html options = {}
+    level = options[:base_heading_level] || 1
+    @post.excerpt.w :base_heading_level => level
   end
 
   def body_html
-    @post.body ? @post.body.w : ''
+    @post.body ? (@post.body.w :base_heading_level => 1) : ''
   end
 
   def excerpt_and_body_html
     text = [(@post.excerpt || ''), (@post.body || '')].join("\n\n")
-    text.w
+    text.w :base_heading_level => 2
   end
 
   def link_to_update_preview

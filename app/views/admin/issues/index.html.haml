@@ -6,7 +6,7 @@
       by
       =link_to_user issue.user
     .when=timeinfo issue
-    %div=issue.description.w
+    %div=issue.description.w :base_heading_level => 2
     .links
       =link_to 'edit', edit_issue_url(issue)
       =button_to_destroy_issue issue
