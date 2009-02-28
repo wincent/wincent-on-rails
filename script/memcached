@@ -1,0 +1,15 @@
+#!/usr/bin/env ruby
+require 'pathname'
+
+# memcached requires an absolute path for the -P switch
+root = (Pathname.new(__FILE__).dirname + '..').realpath
+pidfile = root + 'tmp' + 'memcached.pid'
+
+if not pidfile.exist?
+  puts "memcached not running: starting"
+  system 'memcached', '-d', '-P', pidfile, '-l', '127.0.0.1'
+else
+  puts "memcached running: stopping"
+  pid = pidfile.read.chomp
+  system 'kill', pid
+end
