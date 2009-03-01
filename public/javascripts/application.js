@@ -31,6 +31,22 @@ function getCookie(name) {
   return null;
 }
 
+// name (String), value (String or null), expiry (seconds or null)
+function setCookie(name, value, expiry) {
+  var cookieString = escape(name) + '=' + escape(value || '') + ';'
+  if (expiry) {
+    var now = new Date();
+    expiry = now.setTime(now.getTime() + 1000 * parseInt(expiry));
+    cookieString = cookieString + ' expires=' + expiry.toGMTString() + ';'
+  }
+  cookieString = cookieString + ' path=/;'
+  return document.cookie = cookieString;
+}
+
+function deleteCookie(name) {
+  return setCookie(name, null, null);
+}
+
 function setUpLoginLogoutLinks()
 {
   var user = getCookie('user_id');
