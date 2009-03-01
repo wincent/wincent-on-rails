@@ -23,8 +23,10 @@ class SessionsController < ApplicationController
 
   def destroy
     if self.logged_in?
-      reset_session
-      self.current_user = nil # delete some info from the cookies, invalidate the session key in the database, reset the session
+      # Rails 2.3.0 RC1 BUG: reset_session dies if session blank
+      # http://rails.lighthouseapp.com/projects/8994/tickets/2108
+      reset_session unless session.blank?
+      self.current_user = nil # delete some info from the cookies, invalidate the session key in the database
       flash[:notice] = 'You have logged out successfully.'
     else
       flash[:error] = "Can't log out (weren't logged in)."
