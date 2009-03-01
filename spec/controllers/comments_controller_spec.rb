@@ -95,7 +95,7 @@ describe CommentsController, 'PUT /comments/:id logged in as admin' do
     @comment.stub!(:save).and_return(true)
     Comment.stub!(:find).and_return(@comment)
     do_put
-    flash[:notice].should =~ /Successfully updated/
+    cookie_flash['notice'].should =~ /Successfully updated/
   end
 
   it 'should redirect to the comment path on success for comments not awaiting moderation' do
@@ -117,7 +117,7 @@ describe CommentsController, 'PUT /comments/:id logged in as admin' do
     @comment.stub!(:save).and_return(false)
     Comment.stub!(:find).and_return(@comment)
     do_put
-    flash[:error].should =~ /Update failed/
+    cookie_flash['error'].should =~ /Update failed/
   end
 
   it 'should render the edit template again on failure' do

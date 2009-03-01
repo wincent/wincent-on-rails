@@ -29,6 +29,13 @@ def login_as_normal_user
   login_as create_user
 end
 
+# used in controller specs
+# should probably go in a module
+def cookie_flash
+  return {} unless cookies['flash']
+  ActiveSupport::JSON.decode(CGI::unescape(cookies['flash']))
+end
+
 # custom matchers
 require File.join(File.dirname(__FILE__), 'matchers', 'validation')
 require File.join(File.dirname(__FILE__), 'matchers', 'mass_assignment')

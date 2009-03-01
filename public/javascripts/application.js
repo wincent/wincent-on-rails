@@ -35,16 +35,17 @@ function getCookie(name) {
 function setCookie(name, value, expiry) {
   var cookieString = escape(name) + '=' + escape(value || '') + ';'
   if (expiry) {
-    var now = new Date();
-    expiry = now.setTime(now.getTime() + 1000 * parseInt(expiry));
-    cookieString = cookieString + ' expires=' + expiry.toGMTString() + ';'
+    var d = new Date();
+    d.setTime(d.getTime() + (1000 * parseInt(expiry)));
+    cookieString = cookieString + ' expires=' + d.toGMTString() + ';'
   }
   cookieString = cookieString + ' path=/;'
   return document.cookie = cookieString;
 }
 
 function deleteCookie(name) {
-  return setCookie(name, null, null);
+  // set value to empty and expiry to yesterday
+  return setCookie(name, null, -86400);
 }
 
 function setUpLoginLogoutLinks()
@@ -54,6 +55,26 @@ function setUpLoginLogoutLinks()
     $('logout').hide();
   else
     $('login').hide();
+}
+
+function insertFlash(css, msg) {
+  if (msg) {
+    var div = $('cacheable-flash');
+    div.insert('<div id="' + css + '">' + msg + '</div>');
+  }
+  return null;
+}
+
+function displayCacheableFlash() {
+  var flash = getCookie('flash');
+  if (flash) {
+    flash = unescape(flash).gsub(/\+/, ' ').evalJSON(true);
+    insertFlash('error', flash.error);
+    insertFlash('warning', flash.warning);
+    insertFlash('notice', flash.notice);
+    deleteCookie('flash');
+  }
+  return null;
 }
 
 function relativizeDate(element)
@@ -109,5 +130,6 @@ function relativizeDate(element)
 
 document.observe("dom:loaded", function() {
   setUpLoginLogoutLinks();
+  displayCacheableFlash();
   $$('.relative-date').each(function(elem, idx) { relativizeDate(elem) });
 });

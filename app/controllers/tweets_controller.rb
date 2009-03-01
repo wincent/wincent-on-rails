@@ -27,11 +27,10 @@ class TweetsController < ApplicationController
       format.html {
         @tweet = Tweet.new params[:tweet]
         if @tweet.save
-          # can't show flash; it would appear in the page cache
-          # TODO: implement JavaScript-powered flashes for this kind of page
+          flash[:notice] = 'Successfully created new tweet'
           redirect_to tweet_url(@tweet)
         else
-          flash[:error] = 'Failed to create new tweet.'
+          flash[:error] = 'Failed to create new tweet'
           render :action => 'new'
         end
       }
@@ -58,7 +57,7 @@ class TweetsController < ApplicationController
   # Admin only.
   def update
     if @tweet.update_attributes params[:tweet]
-      # can't show flash; it would appear in the page cache
+      flash[:notice] = 'Successfully updated'
       render :action => :show
     else
       flash[:error] = 'Update failed'
@@ -80,7 +79,6 @@ private
   end
 
   def record_not_found
-    # do not pass the tweets_url here (flash would end up in page cache)
-    super
+    super tweets_url
   end
 end

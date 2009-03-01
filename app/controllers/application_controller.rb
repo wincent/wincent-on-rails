@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::Base
-  #helper                    :all # include all helpers, all the time
   filter_parameter_logging  'passphrase'
   before_filter             :ensure_correct_protocol, :login_before
+  after_filter              :cache_flash
   protect_from_forgery
   rescue_from               ActiveRecord::RecordNotFound, :with => :record_not_found
 
@@ -71,6 +71,19 @@ protected
     else
       true
     end
+  end
+
+  def cache_flash
+    flash_hash = {}
+    flash.each do |key, value|
+      flash_hash[key.to_sym] = value
+    end
+
+    # without this we'll get double-flashes for "render" followed by another page view
+    flash.clear
+
+    # always leave cookie flash deletion up to the browser
+    cookies[:flash] = flash_hash.to_json unless flash_hash.blank?
   end
 
   # uncomment this method to test what remote users will see when there are errors in production mode

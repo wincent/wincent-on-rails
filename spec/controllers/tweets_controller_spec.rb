@@ -280,7 +280,7 @@ describe TweetsController, 'POST /twitter' do
 
   it 'should flash an error on failure' do
     do_failed_post
-    flash[:error].should =~ /Failed/
+    cookie_flash['error'].should =~ /Failed/
   end
 
   it 'should render the "tweets/new.html.haml" template on failure' do
@@ -348,13 +348,11 @@ describe TweetsController, 'GET /twitter/:id' do
     response.should render_template('tweets/show.html.haml')
   end
 
-  it 'should redirect to the root URL if not found' do
-    # can't redirect to tweets index
-    # (the flash would pollute page cache)
+  it 'should redirect to the tweets index if not found' do
     tweet = new_tweet
     tweet.id = 1_342_103
     do_get tweet
-    response.should redirect_to(root_url)
+    response.should redirect_to(tweets_url)
   end
 
   it 'should page-cache the output' do
@@ -393,13 +391,11 @@ describe TweetsController, 'GET /twitter/:id/edit' do
     response.should render_template('tweets/edit.html.haml')
   end
 
-  it 'should redirect to the root URL if not found' do
-    # can't redirect to tweets index
-    # (the flash would pollute page cache)
+  it 'should redirect to the tweets index if not found' do
     tweet = new_tweet
     tweet.id = 1_342_103
     do_get tweet
-    response.should redirect_to(root_url)
+    response.should redirect_to(tweets_url)
   end
 end
 
@@ -460,7 +456,7 @@ describe TweetsController, 'PUT /twitter/:id' do
 
   it 'should flash an error on failure' do
     do_failed_update
-    flash[:error].should =~ /failed/
+    cookie_flash['error'].should =~ /failed/
   end
 
   it 'should render the "tweets/edit.html.haml" template on failure' do
@@ -499,13 +495,11 @@ describe TweetsController, 'DELETE /twitter/:id' do
     response.should redirect_to(tweets_url)
   end
 
-  it 'should redirect to the root URL if not found' do
-    # can't redirect to tweets index
-    # (the flash would pollute page cache)
+  it 'should redirect to the tweets index if not found' do
     tweet = new_tweet
     tweet.id = 1_342_103
     do_delete tweet
-    response.should redirect_to(root_url)
+    response.should redirect_to(tweets_url)
   end
 
   it 'should trigger the cache sweeper' do

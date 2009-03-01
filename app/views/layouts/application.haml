@@ -34,8 +34,7 @@
           -form_tag search_index_url, :method => :post, :id => 'search', :style => 'display:none;' do
             =text_field_tag :query, params[:query], :size => 20, :id => :search_box
     #content
-      -flash.each do |key, message|
-        =content_tag :div, message, :id => key
+      #cacheable-flash
       =yield
     #footer
       ==Copyright &copy; 1997-#{Time.new.year}
