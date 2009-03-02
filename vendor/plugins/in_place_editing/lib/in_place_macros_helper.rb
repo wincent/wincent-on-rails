@@ -39,6 +39,12 @@ module InPlaceMacrosHelper
     function << "'#{url_for(options[:url])}'"
 
     js_options = {}
+
+    if protect_against_forgery?
+      options[:with] ||= "Form.serialize(form)"
+      options[:with] += " + '&authenticity_token=' + encodeURIComponent('#{form_authenticity_token}')"
+    end
+
     js_options['cancelText'] = %('#{options[:cancel_text]}') if options[:cancel_text]
     js_options['okText'] = %('#{options[:save_text]}') if options[:save_text]
     js_options['loadingText'] = %('#{options[:loading_text]}') if options[:loading_text]
@@ -47,22 +53,14 @@ module InPlaceMacrosHelper
     js_options['cols'] = options[:cols] if options[:cols]
     js_options['size'] = options[:size] if options[:size]
     js_options['externalControl'] = "'#{options[:external_control]}'" if options[:external_control]
-    js_options['loadTextURL'] = "'#{url_for(options[:load_text_url])}'" if options[:load_text_url]        
+    js_options['loadTextURL'] = "'#{url_for(options[:load_text_url])}'" if options[:load_text_url]
     js_options['ajaxOptions'] = options[:options] if options[:options]
-    unless options[:script] == false
-      # with evalScripts the form is no longer editable
-      # looks like I am not the only one to run into this bug:
-      # http://www.pluitsolutions.com/2007/03/20/custom-in_place_edit-with-validation/
-      #js_options['evalScripts'] = options[:script]
-      js_options['htmlResponse'] = false
-    end
-    if protect_against_forgery?
-      additional_params = "&#{request_forgery_protection_token}=#{form_authenticity_token}"
-      js_options['callback'] = "function(form, value) { return Form.serialize(form) + '#{additional_params}' }"
-    end
+    js_options['htmlResponse'] = !options[:script] if options[:script]
+    js_options['callback']   = "function(form) { return #{options[:with]} }" if options[:with]
     js_options['clickToEditText'] = %('#{options[:click_to_edit_text]}') if options[:click_to_edit_text]
+    js_options['textBetweenControls'] = %('#{options[:text_between_controls]}') if options[:text_between_controls]
     function << (', ' + options_for_javascript(js_options)) unless js_options.empty?
-    
+
     function << ')'
 
     javascript_tag(function)
