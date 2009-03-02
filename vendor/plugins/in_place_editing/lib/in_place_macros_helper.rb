@@ -74,20 +74,19 @@ module InPlaceMacrosHelper
   # Possible +in_place_editor_options+:
   # <tt>:nested</tt>::  The name of the resource the field is nested inside.
   def in_place_editor_field(object, method, tag_options = {}, in_place_editor_options = {})
-    tag = ::ActionView::Helpers::InstanceTag.new(object, method, self)
-    tag_options = {
-      :tag => "span",
-      :id => in_place_editor_field_id(object, method, tag.object.id),
-      :class => "in_place_editor_field"
-    }.merge!(tag_options)
+    instance_tag = ::ActionView::Helpers::InstanceTag.new(object, method, self)
+    tag_options = {:tag => "span",
+                   :id => in_place_editor_field_id(object, method, instance_tag.object.id),
+                   :class => "in_place_editor_field"}.merge!(tag_options)
     unless in_place_editor_options[:url]
-      url_options = { :action => "set_#{object}_#{method}", :id => tag.object.id }
+      url_options = { :action => "set_#{object}_#{method}", :id => instance_tag.object.id }
       if in_place_editor_options[:nested]
         nested = in_place_editor_options[:nested].to_s
-        url_options[(nested + '_id').to_sym] = tag.object.send(nested).id
+        url_options[(nested + '_id').to_sym] = instance_tag.object.send(nested).id
       end
       in_place_editor_options[:url] = url_for url_options
     end
-    tag.to_content_tag(tag_options.delete(:tag), tag_options) + in_place_editor(tag_options[:id], in_place_editor_options)
+    tag = content_tag(tag_options.delete(:tag), h(instance_tag.value(instance_tag.object)), tag_options)
+    return tag + in_place_editor(tag_options[:id], in_place_editor_options)
   end
 end

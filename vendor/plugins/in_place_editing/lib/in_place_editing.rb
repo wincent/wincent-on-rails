@@ -18,6 +18,9 @@ module InPlaceEditing
   module ClassMethods
     def in_place_edit_for(object, attribute, options = {})
       define_method("set_#{object}_#{attribute}") do
+        unless [:post, :put].include?(request.method) then
+          return render(:text => 'Method not allowed', :status => 405)
+        end
         @item = object.to_s.camelize.constantize.find(params[:id])
         old_value = @item.send(attribute)
         @item.send(attribute.to_s + '=', params[:value])
@@ -30,7 +33,7 @@ module InPlaceEditing
             page.alert(@item.errors.full_messages.join("\n"))
           end
           field_id = in_place_editor_field_id(object, attribute, params[:id])
-          page.replace_html(in_place_editor_field_id(object, attribute, params[:id]), @item.send(attribute))
+          page.replace_html(in_place_editor_field_id(object, attribute, params[:id]), CGI::escapeHTML(@item.send(attribute).to_s))
 
           # we return early from the enterEditMode function because self._saving and self._editing return true
           #page.call "#{field_id}_var.leaveEditMode"
