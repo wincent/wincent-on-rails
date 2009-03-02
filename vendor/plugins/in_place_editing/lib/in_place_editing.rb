@@ -13,7 +13,7 @@ module InPlaceEditing
   #   # View
   #   # note that :post here names an instance variable, @post
   #   # (normal local variables won't work)
-  #   <%= in_place_editor_field :post, :title %>
+  #   <%= in_place_editor_field :post, 'title' %>
   #
   module ClassMethods
     def in_place_edit_for(object, attribute, options = {})
