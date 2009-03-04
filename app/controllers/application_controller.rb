@@ -25,8 +25,6 @@ protected
   end
 
   # TODO: make a special 404 action that provides hints for where people could look
-  # (eventually the root_url is going to be page-cached, so won't be able to show flashes,
-  # although I am thinking of adding a JavaScript-powered flash method)
   def record_not_found(uri = nil)
     if uri.class != String
       # beware that in the default case uri will be an instance of ActiveRecord::RecordNotFound
