@@ -241,4 +241,17 @@ module ApplicationHelper
   def spinner_tag
     image_tag 'spinner.gif', :id => 'spinner', :style => 'display:none;'
   end
+
+  def dynamic_javascript_include_tag
+    klass = controller.class
+    if klass.respond_to? :included_dynamic_javascript_actions
+      return unless klass.included_dynamic_javascript_actions.include? params[:action].to_sym
+    elsif klass.respond_to? :excluded_dynamic_javascript_actions
+      return if klass.excluded_dynamic_javascript_actions.include? params[:action].to_sym
+    else
+      return
+    end
+    delegating_controller = klass.to_s.gsub(/Controller$/, '').tableize
+    %Q{<script src="/js/#{delegating_controller}/#{params[:action].to_s}" type="text/javascript"></script>}
+  end
 end

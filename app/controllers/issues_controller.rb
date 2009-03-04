@@ -11,6 +11,7 @@ class IssuesController < ApplicationController
   acts_as_sortable  :by => [:public, :kind, :id, :product_id, :summary, :status, :updated_at],
                     :default => :updated_at,
                     :descending => true
+  uses_dynamic_javascript :only => :show
 
   def new
     # normally "kind" defaults to "bug report"

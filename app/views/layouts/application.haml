@@ -10,6 +10,7 @@
     =yield :css
     =javascript_include_tag 'jquery-1.3.2.min'
     =javascript_include_tag :defaults
+    =dynamic_javascript_include_tag
     =@atom_link unless @atom_link.blank?
   %body
     =named_anchor 'top'
