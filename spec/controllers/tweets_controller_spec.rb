@@ -154,6 +154,11 @@ describe TweetsController, 'GET /twitter.atom' do
     response.should render_template('tweets/index.atom.builder')
   end
 
+  it 'should not use a layout' do
+    do_get
+    controller.active_layout.should be_nil
+  end
+
   it 'should find recent tweets' do
     Tweet.should_receive(:find_recent).and_return([])
     do_get
