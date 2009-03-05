@@ -365,3 +365,10 @@ ended up moving it back to vendor/plugins, which funnily enough works:
   rm vendor/gems/wikitext-1.5.0/ext/*.o
   rm vendor/gems/wikitext-1.5.0/ext/Makefile
   rm vendor/gems/wikitext-1.5.0/ext/mkmf.log
+
+  # Rails 2.3.1 RC2 update
+  sudo gem install rails --source http://gems.rubyonrails.org
+  rake rails:freeze:gems
+  rake rails:update
+  (cd .. && rails src)
+  rake spec
