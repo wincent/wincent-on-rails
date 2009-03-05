@@ -45,10 +45,7 @@ module CustomAtomFeedHelper
         @xml.id "tag:#{@view.request.host},2008:#{model.class.to_s.tableize}/#{model.id}"
         @xml.published model.created_at.xmlschema
         @xml.updated model.updated_at.xmlschema
-
-        # Rails 2.3.0 RC1 BUG: polymorphic_url now returns atom links instead of HTML ones here
-        # See: http://rails.lighthouseapp.com/projects/8994/tickets/2043
-        @xml.link :rel => 'alternate', :type => 'text/html', :href => options[:url] || @view.polymorphic_url(model, :format => nil)
+        @xml.link :rel => 'alternate', :type => 'text/html', :href => options[:url] || @view.polymorphic_url(model)
         yield @xml
       end
     end
