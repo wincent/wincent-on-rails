@@ -12,10 +12,10 @@
     %td=@user.created_at.distance_in_words
 
 -if logged_in_and_verified?
-  -#
+  /
 -elsif logged_in?
-  -#
+  /
 -if admin?
-  -#
+  /
 -if @user == current_user
-  -# user looking at own profile sees this (email addresses etc)
+  / user looking at own profile sees this (email addresses etc)

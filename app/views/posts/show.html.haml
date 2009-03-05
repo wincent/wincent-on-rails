@@ -1,13 +1,14 @@
--# TODO: atom feeds for individual posts
+/ TODO: atom feeds for individual posts
 .post
   -@page_title = @post.title
   %h1.major=h @post.title
   .when=timeinfo @post
   .excerpt=excerpt_html
+  / TODO: "#more" anchor here... and skip to it when user clicks on "more" on post#index page
   .body=body_html
 .cloud
   %h1 Tags
-  -# consider moving this into a partial
+  / consider moving this into a partial
   -for tag in @post.tags
     =scaled_tag tag
 %p.links
@@ -15,7 +16,7 @@
     =link_to 'edit', edit_post_url(@post), :class => 'edit_link'
   =link_to 'all posts', posts_url, :class => 'back_link'
 -if @post.accepts_comments? || @post.comments_count != 0
-  -# TODO: use divs to color-code comments (ie. private, awaiting moderation etc)
+  / TODO: use divs to color-code comments (ie. private, awaiting moderation etc)
   =named_anchor 'comments'
   %h2.major Comments
   .comment_info
@@ -38,5 +39,5 @@
   -if @comment
     =render :partial => 'comments/comment'
   -else
-    -# comments are currently closed but they were open in the past because we have at least one existing comment
+    / comments are currently closed but they were open in the past because we have at least one existing comment
     %p==Comments are closed for this post. You can discuss this further in the #{link_to 'forums', forums_url}.
