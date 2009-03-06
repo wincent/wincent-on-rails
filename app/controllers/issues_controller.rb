@@ -74,7 +74,8 @@ class IssuesController < ApplicationController
       }
       format.js {
         # BUG: doesn't require admin... too much information leaked
-        render :json => @issue
+        # doesn't take awaiting_moderation into account
+        render :json => @issue.to_json(:only => [:summary])
       }
     end
   end
