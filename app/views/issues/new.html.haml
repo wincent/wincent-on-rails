@@ -4,7 +4,7 @@
   =render :partial => 'shared/anonymous'
 -elsif !current_user.verified?
   =render :partial => 'shared/unverified'
-/ TODO: big fat search link to try and avoid duplicate reports
+-# TODO: big fat search link to try and avoid duplicate reports
 -form_for :issue, :url => issues_url, :method => :post do |f|
   =render :partial => 'issues/form', :locals => { :f => f }
   %p=f.submit 'Create'

@@ -22,7 +22,7 @@
         Body
         %br
         %span.annotation link to wikitext markup help
-      / TODO: make text area grow with window
+      -# TODO: make text area grow with window
       %td=f.text_area(:body, :cols => 80, :rows => 30)
     %tr
       %th Tags
@@ -39,7 +39,7 @@
   =observe_excerpt
   =observe_body
   =image_tag 'spinner.gif', :id => 'spinner', :style => 'display:none;'
-  / TODO: graceful non-JS fallback
+  -# TODO: graceful non-JS fallback
 #preview=excerpt_and_body_html
 .links
   =link_to 'back', posts_url, :class => 'back_link'

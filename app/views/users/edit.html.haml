@@ -12,7 +12,7 @@
     %tr
       %th=@emails.length != 1 ? 'Emails' : 'Email'
       %td
-        / TODO: radio buttons or similar UI here to select default?
+        -# TODO: radio buttons or similar UI here to select default?
         -for email in @emails
           -if admin?
             =link_to email.address, edit_user_email_url(@user, email)
@@ -21,7 +21,7 @@
           =check_box_tag "delete_email[#{email.id}]"
           delete
           %br
-          / would be nice to offer the user an undo for this deletion on landing on the next page
+          -# would be nice to offer the user an undo for this deletion on landing on the next page
     %tr
       %th
         Add a new email
@@ -44,9 +44,9 @@
         %span.annotation confirm your new passphrase
       %td=f.password_field :passphrase_confirmation
     -if admin?
-      / admins can manipulate some additional attributes at creation time
+      -# admins can manipulate some additional attributes at creation time
   %p=f.submit 'Save changes'
-  / TODO: consider adding an "undelete emails" button here
+  -# TODO: consider adding an "undelete emails" button here
 .links
   =link_to 'user profile', user_url(@user)
   -if admin?

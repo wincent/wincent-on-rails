@@ -82,7 +82,7 @@
         -if admin?
           %br
           =link_to 'edit', edit_comment_url(comment)
-          / TODO: add a means of marking individual comments as private
+          -# TODO: add a means of marking individual comments as private
       %td=comment.body.w :base_heading_level => 2
 %h2.major Add a comment
 =render :partial => 'comments/comment'

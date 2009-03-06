@@ -25,6 +25,6 @@
         %span.annotation confirm your passphrase
       %td=f.password_field :passphrase_confirmation
     -if admin?
-      / admins can manipulate some additional attributes at creation time
+      -# admins can manipulate some additional attributes at creation time
   %p=f.submit 'Create'
 %p=link_to 'back', users_url
