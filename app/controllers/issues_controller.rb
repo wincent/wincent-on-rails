@@ -73,9 +73,10 @@ class IssuesController < ApplicationController
         @comments = @issue.visible_comments # public, not awaiting moderation, not spam
       }
       format.js {
-        # BUG: doesn't require admin... too much information leaked
-        # doesn't take awaiting_moderation into account
-        render :json => @issue.to_json(:only => [:summary])
+        if admin?
+          render :json => @issue.to_json(:only => [:summary])
+        else
+          require_admin
       }
     end
   end
