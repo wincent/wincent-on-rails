@@ -14,6 +14,7 @@
   .prev_next
     =link_to_prev_issue if @prev
     =link_to_next_issue if @next
+  -# TODO: this form_for required by ajax_select helper: may be able to get rid of it
   -form_for @issue do |form|
     %table.main
       -if admin?
@@ -26,11 +27,7 @@
               @issue.kind_string
       %tr
         %th Summary
-        %td
-          -if admin?
-            =in_place_editor_field :issue, :summary
-          -else
-            %strong=h @issue.summary
+        %td{'id' => "issue_#{@issue.id}_summary"}=h @issue.summary
       %tr
         %th Product
         %td

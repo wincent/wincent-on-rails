@@ -123,6 +123,8 @@ tr.even { background: #eaeaea; }
 .deleted { color: #bbb; }
 .deleted a { color: #bbb; }
 
+.highlight { background: #eee; }
+
 .post { margin-top: 3em; }
 .post .when { margin-top: -1em; }
 .post .info { padding: 1em; border-top: 1px dotted #eee; border-bottom: 1px solid #eee; }

@@ -1,1 +1,74 @@
-/* Hello world */
+<% if admin? %>
+  /*
+     Copyright 2008-2009 Wincent Colaiuta.
+
+     This program is free software: you can redistribute it and/or modify
+     it under the terms of the GNU Affero General Public License as
+     published by the Free Software Foundation, either version 3 of the
+     License, or (at your option) any later version.
+
+     This program is distributed in the hope that it will be useful,
+     but WITHOUT ANY WARRANTY; without even the implied warranty of
+     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+     GNU Affero General Public License for more details.
+
+     You should have received a copy of the GNU Affero General Public
+     License along with this program.  If not, see
+     <http://www.gnu.org/licenses/>.
+
+     A copy of the GNU Affero General Public License is also available
+     at <https://wincent.com/javascripts/agpl-3.0.txt>
+   */
+  var authenticity_token = '<%= form_authenticity_token %>';
+  function configure_summary_edit_in_place() {
+    var issue_id = jQuery('div.issue').attr('id'); /* issue_22 */
+    var summary_id = jQuery('#' + issue_id + '_summary'); /* issue_22_summary */
+    function highlight() { summary_id.addClass('highlight'); }
+    function unhighlight() { summary_id.removeClass('highlight'); }
+    function clickFunction() {
+      var summary_text = summary_id.html();
+      summary_id.unbind('mouseenter mouseleave');
+      unhighlight();
+      summary_id.attr('title', 'Click outside to abort editing');
+      summary_id.html('<form action="javascript:void(0)" style="display:inline;"><input type="text" value="' + summary_text + '"></form>');
+      summary_id.find('input')[0].select();
+      summary_id.unbind('dblclick');
+      summary_id.find('input').blur(function() {
+        summary_id.html(summary_text);
+        summary_id.dblclick(clickFunction);
+        summary_id.hover(highlight, unhighlight);
+      });
+      summary_id.find('form').submit(function() {
+        var value = summary_id.find('input').val();
+        summary_id.html('saving...');
+        jQuery.ajax({
+          'url': 'https://localhost:3002/issues/22',
+          'type': 'post',
+          'dataType': 'json',
+          'data': '_method=put&issue[summary]=' + encodeURIComponent(value) +
+            '&authenticity_token=' + encodeURIComponent(authenticity_token),
+          'success': function(json) {
+            summary_id.html(json['issue']['summary']);
+            summary_id.hover(highlight, unhighlight);
+            summary_id.dblclick(clickFunction);
+          },
+          'error': function() {
+            summary_id.html(value);
+            summary_id.hover(highlight, unhighlight);
+            summary_id.dblclick(clickFunction);
+            /* possibly add CSS error coloring here */
+            alert('something went wrong');
+          }
+        });
+      });
+    }
+    summary_id.attr('title', 'Double-click to edit');
+    summary_id.dblclick(clickFunction);
+    summary_id.hover(highlight, unhighlight);
+  }
+
+  jQuery(document).ready(function() {
+    configure_summary_edit_in_place();
+    /* repeat for other AJAX fields */
+  });
+<% end %>

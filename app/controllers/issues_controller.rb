@@ -72,6 +72,10 @@ class IssuesController < ApplicationController
       format.atom {
         @comments = @issue.visible_comments # public, not awaiting moderation, not spam
       }
+      format.js {
+        # BUG: doesn't require admin... too much information leaked
+        render :json => @issue
+      }
     end
   end
 
@@ -93,6 +97,8 @@ class IssuesController < ApplicationController
           render :action => 'edit'
         end
       }
+
+      # TODO: eventually retire the spam/ham logic, rolling it into the standard AJAX handling (the "else" clause)
       format.js {
         if params[:button] == 'spam'
           @issue.moderate_as_spam!
@@ -107,7 +113,12 @@ class IssuesController < ApplicationController
             page.visual_effect :fade, "issue_#{@issue.id}_spam_form"
           end
         else
-          raise 'unrecognized AJAX action'
+          @issue.pending_tags = params[:issue][:pending_tags]
+          if @issue.update_attributes params[:issue]
+            redirect_to issue_url(@issue, :format => :js)
+          else
+            render :text => '', :status => 422
+          end
         end
       }
     end
