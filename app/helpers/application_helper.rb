@@ -133,16 +133,6 @@ module ApplicationHelper
     end
   end
 
-  # prevent Haml from whitespace-damaging <pre> blocks which might be in wikitext markup (very hacky)
-  def preserving &block
-    real_tabs = buffer.instance_variable_get :@real_tabs
-    buffer.instance_variable_set :@real_tabs, 0
-    buffer.buffer << "<!-- Haml: start pre -->\n"
-    yield
-    buffer.buffer << "<!-- Haml: end pre -->\n"
-    buffer.instance_variable_set :@real_tabs, real_tabs
-  end
-
   # TODO: potentially move these methods into authentication.rb as well
   def logged_in_only &block
     if logged_in?
