@@ -73,10 +73,9 @@ class IssuesController < ApplicationController
         @comments = @issue.visible_comments # public, not awaiting moderation, not spam
       }
       format.js {
-        if admin?
+        require_admin do
           render :json => @issue.to_json(:only => [:summary])
-        else
-          require_admin
+        end
       }
     end
   end

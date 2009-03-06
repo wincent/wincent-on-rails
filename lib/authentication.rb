@@ -39,9 +39,14 @@ module ActionController
       self.current_user = self.login_with_cookie or self.login_with_http_basic
     end
 
-    # Intended for use as a before_filter to protect adminstrator-only actions.
-    def require_admin
-      unless self.admin?
+    # Intended for use as a before_filter to protect adminstrator-only
+    # actions. Optionally takes a block, making it convenient for
+    # explicit use within controller actions (the block is only
+    # executed if the user is admin).
+    def require_admin &block
+      if self.admin?
+        yield if block_given?
+      else
         redirect_to_login 'The requested resource requires administrator privileges'
       end
     end
