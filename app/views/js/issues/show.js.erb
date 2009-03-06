@@ -49,15 +49,15 @@
             '&authenticity_token=' + encodeURIComponent(authenticity_token),
           'success': function(json) {
             summary_id.html(json['issue']['summary']);
-            summary_id.hover(highlight, unhighlight);
-            summary_id.dblclick(clickFunction);
           },
           'error': function() {
             summary_id.html(value);
-            summary_id.hover(highlight, unhighlight);
-            summary_id.dblclick(clickFunction);
             /* possibly add CSS error coloring here */
             alert('something went wrong');
+          },
+          'complete': function() {
+            summary_id.hover(highlight, unhighlight);
+            summary_id.dblclick(clickFunction);
           }
         });
       });
