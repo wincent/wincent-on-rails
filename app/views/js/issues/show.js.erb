@@ -25,29 +25,29 @@
   }
 
   function edit_in_place(selector, class_name, attribute_name, url) {
-    var issue_id = jQuery(selector).attr('id'); /* issue_22 */
-    var record_id = issue_id.match(/_(\d+)$/)[1]; /* 22 */
-    var summary_id = jQuery('#' + issue_id + '_' + attribute_name); /* issue_22_summary */
-    function highlight() { summary_id.addClass('highlight'); }
-    function unhighlight() { summary_id.removeClass('highlight'); }
+    var model_id = jQuery(selector).attr('id'); /* issue_22 */
+    var record_id = model_id.match(/_(\d+)$/)[1]; /* 22 */
+    var field_id = jQuery('#' + model_id + '_' + attribute_name); /* issue_22_summary */
+    function highlight() { field_id.addClass('highlight'); }
+    function unhighlight() { field_id.removeClass('highlight'); }
     function clickFunction() {
-      var summary_text = summary_id.text();
-      summary_id.unbind('mouseenter mouseleave');
+      var field_text = field_id.text();
+      field_id.unbind('mouseenter mouseleave');
       unhighlight();
-      summary_id.attr('title', 'Click outside to abort editing');
-      summary_id.html('<form action="javascript:void(0)" style="display:inline;"><input type="text" value="' +
-        escapeHTML(summary_text) +
+      field_id.attr('title', 'Click outside to abort editing');
+      field_id.html('<form action="javascript:void(0)" style="display:inline;"><input type="text" value="' +
+        escapeHTML(field_text) +
         '"></form>');
-      summary_id.find('input')[0].select();
-      summary_id.unbind('dblclick');
-      summary_id.find('input').blur(function() {
-        summary_id.text(summary_text);
-        summary_id.dblclick(clickFunction);
-        summary_id.hover(highlight, unhighlight);
+      field_id.find('input')[0].select();
+      field_id.unbind('dblclick');
+      field_id.find('input').blur(function() {
+        field_id.text(field_text);
+        field_id.dblclick(clickFunction);
+        field_id.hover(highlight, unhighlight);
       });
-      summary_id.find('form').submit(function() {
-        var value = summary_id.find('input').val();
-        summary_id.text('saving...');
+      field_id.find('form').submit(function() {
+        var value = field_id.find('input').val();
+        field_id.text('saving...');
         jQuery.ajax({
           'url': url + record_id,
           'type': 'post',
@@ -55,23 +55,23 @@
           'data': '_method=put&' + class_name + '[' + attribute_name + ']=' + encodeURIComponent(value) +
             '&authenticity_token=' + encodeURIComponent(authenticity_token),
           'success': function(json) {
-            summary_id.text(json[class_name][attribute_name]);
+            field_id.text(json[class_name][attribute_name]);
           },
           'error': function() {
-            summary_id.text(value);
+            field_id.text(value);
             /* possibly add CSS error coloring here */
             alert('something went wrong');
           },
           'complete': function() {
-            summary_id.hover(highlight, unhighlight);
-            summary_id.dblclick(clickFunction);
+            field_id.hover(highlight, unhighlight);
+            field_id.dblclick(clickFunction);
           }
         });
       });
     }
-    summary_id.attr('title', 'Double-click to edit');
-    summary_id.dblclick(clickFunction);
-    summary_id.hover(highlight, unhighlight);
+    field_id.attr('title', 'Double-click to edit');
+    field_id.dblclick(clickFunction);
+    field_id.hover(highlight, unhighlight);
   }
 
   jQuery(document).ready(function() {
