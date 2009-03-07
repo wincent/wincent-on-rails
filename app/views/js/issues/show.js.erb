@@ -26,6 +26,7 @@
 
   function configure_summary_edit_in_place() {
     var issue_id = jQuery('div.issue').attr('id'); /* issue_22 */
+    var record_id = issue_id.match(/_(\d+)$/)[1]; /* 22 */
     var summary_id = jQuery('#' + issue_id + '_summary'); /* issue_22_summary */
     function highlight() { summary_id.addClass('highlight'); }
     function unhighlight() { summary_id.removeClass('highlight'); }
@@ -48,7 +49,7 @@
         var value = summary_id.find('input').val();
         summary_id.text('saving...');
         jQuery.ajax({
-          'url': 'https://localhost:3002/issues/22',
+          'url': '/issues/' + record_id,
           'type': 'post',
           'dataType': 'json',
           'data': '_method=put&issue[summary]=' + encodeURIComponent(value) +
