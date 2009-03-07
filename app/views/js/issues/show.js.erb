@@ -24,10 +24,10 @@
     return html.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
   }
 
-  function configure_summary_edit_in_place() {
-    var issue_id = jQuery('div.issue').attr('id'); /* issue_22 */
+  function edit_in_place(selector, class_name, attribute_name, url) {
+    var issue_id = jQuery(selector).attr('id'); /* issue_22 */
     var record_id = issue_id.match(/_(\d+)$/)[1]; /* 22 */
-    var summary_id = jQuery('#' + issue_id + '_summary'); /* issue_22_summary */
+    var summary_id = jQuery('#' + issue_id + '_' + attribute_name); /* issue_22_summary */
     function highlight() { summary_id.addClass('highlight'); }
     function unhighlight() { summary_id.removeClass('highlight'); }
     function clickFunction() {
@@ -49,13 +49,13 @@
         var value = summary_id.find('input').val();
         summary_id.text('saving...');
         jQuery.ajax({
-          'url': '/issues/' + record_id,
+          'url': url + record_id,
           'type': 'post',
           'dataType': 'json',
-          'data': '_method=put&issue[summary]=' + encodeURIComponent(value) +
+          'data': '_method=put&' + class_name + '[' + attribute_name + ']=' + encodeURIComponent(value) +
             '&authenticity_token=' + encodeURIComponent(authenticity_token),
           'success': function(json) {
-            summary_id.text(json['issue']['summary']);
+            summary_id.text(json[class_name][attribute_name]);
           },
           'error': function() {
             summary_id.text(value);
@@ -75,7 +75,7 @@
   }
 
   jQuery(document).ready(function() {
-    configure_summary_edit_in_place();
+    edit_in_place('div.issue', 'issue', 'summary', '/issues/');
     /* repeat for other AJAX fields */
   });
 <% end %>
