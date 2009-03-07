@@ -20,27 +20,33 @@
      at <https://wincent.com/javascripts/agpl-3.0.txt>
    */
   var authenticity_token = '<%= form_authenticity_token %>';
+  function escapeHTML(html) {
+    return html.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+
   function configure_summary_edit_in_place() {
     var issue_id = jQuery('div.issue').attr('id'); /* issue_22 */
     var summary_id = jQuery('#' + issue_id + '_summary'); /* issue_22_summary */
     function highlight() { summary_id.addClass('highlight'); }
     function unhighlight() { summary_id.removeClass('highlight'); }
     function clickFunction() {
-      var summary_text = summary_id.html();
+      var summary_text = summary_id.text();
       summary_id.unbind('mouseenter mouseleave');
       unhighlight();
       summary_id.attr('title', 'Click outside to abort editing');
-      summary_id.html('<form action="javascript:void(0)" style="display:inline;"><input type="text" value="' + summary_text + '"></form>');
+      summary_id.html('<form action="javascript:void(0)" style="display:inline;"><input type="text" value="' +
+        escapeHTML(summary_text) +
+        '"></form>');
       summary_id.find('input')[0].select();
       summary_id.unbind('dblclick');
       summary_id.find('input').blur(function() {
-        summary_id.html(summary_text);
+        summary_id.text(summary_text);
         summary_id.dblclick(clickFunction);
         summary_id.hover(highlight, unhighlight);
       });
       summary_id.find('form').submit(function() {
         var value = summary_id.find('input').val();
-        summary_id.html('saving...');
+        summary_id.text('saving...');
         jQuery.ajax({
           'url': 'https://localhost:3002/issues/22',
           'type': 'post',
@@ -48,10 +54,10 @@
           'data': '_method=put&issue[summary]=' + encodeURIComponent(value) +
             '&authenticity_token=' + encodeURIComponent(authenticity_token),
           'success': function(json) {
-            summary_id.html(json['issue']['summary']);
+            summary_id.text(json['issue']['summary']);
           },
           'error': function() {
-            summary_id.html(value);
+            summary_id.text(value);
             /* possibly add CSS error coloring here */
             alert('something went wrong');
           },
