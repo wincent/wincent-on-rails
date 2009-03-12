@@ -74,8 +74,45 @@
     field_id.hover(highlight, unhighlight);
   }
 
+  /*
+
+  Basic select element:
+
+    <select id="issue_status" name="issue[status]"><option value="0" selected="selected">new</option>
+    <option value="1">open</option>
+    <option value="2">closed</option></select>
+
+  AJAX select element:
+
+    <select id="issue_kind" name="issue[kind]" onchange="Element.show('kind_spinner'); new Ajax.Updater('kind', '/issues/update_kind/25', {asynchronous:true, evalScripts:true, onComplete:function(request){Element.hide('kind_spinner')}, onFailure:function(request){alert('HTTP Error ' + request.status)}, parameters:'kind=' + $('issue_kind').value + '&amp;authenticity_token=' + encodeURIComponent('FEmjZ5+BA1B8PfT7AD165KfO9DbB48Mq3D29Io9pbZE=')})"><option value="0" selected="selected">bug</option>
+    <option value="1">feature request</option>
+    <option value="3">feedback</option>
+    <option value="2">support ticket</option></select>&nbsp;<img alt="Spinner" id="kind_spinner" src="/images/spinner.gif?1202896192" style="display:none;" />
+
+  */
+  function configure_ajax_status_select(selector, class_name, attribute_name, options) {
+    var model_id = jQuery(selector).attr('id'); /* issue_22 */
+    var record_id = model_id.match(/_(\d+)$/)[1]; /* 22 */
+    var field_id = jQuery('#' + model_id + '_' + attribute_name); /* issue_22_status */
+    var status_text = field_id.text(); /* eg. New, Open, Closed (first letter capitalized by humanize method) */
+    var status_code = null;
+    var new_contents = '<select id="' + class_name + '_' + attribute_name + '" name="' + class_name + '[' + attribute_name + ']">';
+    for (var i = 0; i < options.length; i++) {
+      if (status_text.toLowerCase() == options[i][0]) {
+        status_code = options[i][1];
+        new_contents = new_contents + '<option value="' + options[i][1] + '" selected="selected">' + options[i][0] + '</option>';
+      } else {
+        new_contents = new_contents + '<option value="' + options[i][1] + '">' + options[i][0] + '</option>';
+      }
+    }
+    new_contents = new_contents + '</select>';
+    field_id.html(new_contents);
+  }
+
   jQuery(document).ready(function() {
     edit_in_place('div.issue', 'issue', 'summary', '/issues/');
+    var options = <%= underscores_to_spaces(Issue::STATUS).sort.to_json %>; /* {"new": 0, "open": 1, "closed": 2} */
+    configure_ajax_status_select('div.issue', 'issue', 'status', options);
     /* repeat for other AJAX fields */
   });
 <% end %>

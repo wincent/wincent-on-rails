@@ -40,11 +40,7 @@
         %td=timeinfo @issue
       %tr
         %th Status
-        %td
-          -if admin?
-            =ajax_select form, :status, Issue::STATUS
-          -else
-            =@issue.status_string
+        %td{'id' => "issue_#{@issue.id}_status"}=@issue.status_string
       %tr
         %th Reporter
         %td=link_to_user @issue.user

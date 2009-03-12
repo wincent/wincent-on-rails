@@ -74,7 +74,7 @@ class IssuesController < ApplicationController
       }
       format.js {
         require_admin do
-          render :json => @issue.to_json(:only => [:summary])
+          render :json => @issue.to_json(:only => [:status, :summary])
         end
       }
     end
@@ -156,12 +156,6 @@ class IssuesController < ApplicationController
   # AJAX method, admin only.
   def update_kind
     @issue.kind = params[:kind]
-    handle_ajax_request
-  end
-
-  # AJAX method, admin only.
-  def update_status
-    @issue.status = params[:status]
     handle_ajax_request
   end
 
