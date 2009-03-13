@@ -152,7 +152,7 @@ class IssuesController < ApplicationController
     if params[:product_id] == '' # special case: user selected the blank (no product) from the pop-up
       @issue.product = nil
     else
-      @issue.product = Product.find(params[:product_id])
+      @issue.product_id = params[:product_id]
     end
     handle_ajax_request
   end
