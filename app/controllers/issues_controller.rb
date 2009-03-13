@@ -115,6 +115,10 @@ class IssuesController < ApplicationController
           end
         else
           @issue.pending_tags = params[:issue][:pending_tags]
+          if params[:issue][:status] # protected attribute, can't mass assign
+            @issue.status = params[:issue][:status]
+            params[:issue][:status] = nil
+          end
           if @issue.update_attributes params[:issue]
             redirect_to issue_url(@issue, :format => :js)
           else
