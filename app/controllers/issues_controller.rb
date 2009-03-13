@@ -115,10 +115,10 @@ class IssuesController < ApplicationController
           end
         else
           @issue.pending_tags = params[:issue][:pending_tags]
-          if params[:issue][:status] # protected attribute, can't mass assign
-            @issue.status = params[:issue][:status]
-            params[:issue][:status] = nil
-          end
+
+          # although note, I am not really sure why I choose to make "status" protected,
+          # while attributes like "public" are accessible
+          set_protected_attribute :status, @issue, params[:issue]
           if @issue.update_attributes params[:issue]
             redirect_to issue_url(@issue, :format => :js)
           else

@@ -11,6 +11,14 @@ class ApplicationController < ActionController::Base
 
 protected
 
+  # For use in admin actions.
+  def set_protected_attribute attribute, model_instance, params_hash
+    if params_hash and params_hash[attribute]
+      model_instance.send("#{attribute}=", params_hash[attribute])
+      params_hash[attribute] = nil
+    end
+  end
+
   # URL to the comment nested in the context of its parent (resources), including an anchor.
   # NOTE: this method is dog slow if called in an "N + 1 SELECT" situation
   def nested_comment_url comment
