@@ -157,13 +157,13 @@ module ApplicationHelper
   def link_to_commentable commentable
     case commentable
     when Article
-      link_to commentable.title, article_url(commentable)
+      link_to h(commentable.title), article_url(commentable)
     when Issue
-      link_to commentable.summary, issue_url(commentable)
+      link_to h(commentable.summary), issue_url(commentable)
     when Post
-      link_to commentable.title, post_url(commentable)
+      link_to h(commentable.title), post_url(commentable)
     when Topic
-      link_to commentable.title, forum_topic_url(commentable.forum, commentable)
+      link_to h(commentable.title), forum_topic_url(commentable.forum, commentable)
     when NilClass
       # could get here if there is an orphaned comment in the database
       # should never happen: but in case it does, emitting this string is probably better than crashing

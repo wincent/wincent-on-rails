@@ -138,3 +138,12 @@ describe ApplicationHelper, '"button_to_moderate_issue_as_ham" method' do
     button_to_moderate_issue_as_ham @issue
   end
 end
+
+describe ApplicationHelper, '"link_to_commentable" method' do
+
+  # was a bug
+  it 'should adequately escape HTML special characters (Issue summaries)' do
+    issue = create_issue :summary => '<em>foo</em>'
+    helper.link_to_commentable(issue).should_not =~ /<em>/
+  end
+end
