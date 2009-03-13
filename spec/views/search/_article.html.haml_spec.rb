@@ -20,6 +20,14 @@ describe '/search/_article' do
     response.should have_tag('a', @article.title)
   end
 
+  # was a bug
+  it 'should escape HTML special characters in the article title' do
+    # we don't put </em> in the title because slashes are not allowed
+    @article = create_article :title => '<em>foo'
+    do_render
+    response.should_not have_text(%r{<em>foo})
+  end
+
   it 'should link to the article' do
     do_render
     response.should have_tag('a[href=?]', article_url(@article))

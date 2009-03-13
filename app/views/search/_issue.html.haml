@@ -1,7 +1,7 @@
 %h2
   =result_number
   \:
-  =link_to model.summary, issue_url(model)
+  =link_to h(model.summary), issue_url(model)
 .when=timeinfo model
 %span.annotation==Issue tracker ticket (#{model.status_string.downcase}, #{model.kind_string.downcase})
 .excerpt=truncate(model.description, :length => 240).w :base_heading_level => 2

@@ -20,6 +20,13 @@ describe '/search/_topic' do
     response.should have_tag('a', @topic.title)
   end
 
+  # was a bug
+  it 'should escape HTML special characters in the topic summary' do
+    @topic = create_topic :title => '<em>foo</em>'
+    do_render
+    response.should_not have_text(%r{<em>foo</em>})
+  end
+
   it 'should link to the topic' do
     do_render
     # must use protected topic_url method here because in the context of these specs url_for gives crazy results

@@ -20,6 +20,13 @@ describe '/search/_issue' do
     response.should have_tag('a', @issue.summary)
   end
 
+  # was a bug
+  it 'should escape HTML special characters in the issue summary' do
+    @issue = create_issue :summary => '<em>foo</em>'
+    do_render
+    response.should_not have_text(%r{<em>foo</em>})
+  end
+
   it 'should link to the issue' do
     do_render
     response.should have_tag('a[href=?]', issue_url(@issue))

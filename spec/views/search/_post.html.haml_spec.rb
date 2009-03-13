@@ -20,6 +20,13 @@ describe '/search/_post' do
     response.should have_tag('a', @post.title)
   end
 
+  # was a bug
+  it 'should escape HTML special characters in the post title' do
+    @post = create_post :title => '<em>foo</em>'
+    do_render
+    response.should_not have_text(%r{<em>foo</em>})
+  end
+
   it 'should link to the post' do
     do_render
     response.should have_tag('a[href=?]', post_url(@post))
