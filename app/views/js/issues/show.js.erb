@@ -89,12 +89,12 @@
         new_contents = new_contents + '<option value="' + options[i][1] + '">' + options[i][0] + '</option>';
       }
     }
-    new_contents = new_contents + '</select><img alt="Spinner" id="' + attribute_name + '_spinner" src="/images/spinner.gif" style="display:none;" />';
+    new_contents = new_contents + '</select><img alt="Spinner" id="' + class_name + '_' + attribute_name + '_spinner" src="/images/spinner.gif" style="display:none;" />';
     field_id.html(new_contents);
     var select_id = field_id.find('select');
     var old_val = field_id.find('select option:selected').text();
     select_id.change(function() {
-      var spinner = field_id.find('#' + attribute_name + '_spinner');
+      var spinner = field_id.find('#' + class_name + '_' + attribute_name + '_spinner');
       spinner.show();
       jQuery.ajax({
         'url': url + record_id,
