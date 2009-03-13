@@ -17,14 +17,9 @@
   -# TODO: this form_for required by ajax_select helper: may be able to get rid of it
   -form_for @issue do |form|
     %table.main
-      -if admin?
-        %tr
-          %th Kind
-          %td
-            -if admin?
-              =ajax_select form, :kind, underscores_to_spaces(Issue::KIND).sort
-            -else
-              @issue.kind_string
+      %tr
+        %th Kind
+        %td{'id' => "issue_#{@issue.id}_kind"}=@issue.kind_string
       %tr
         %th Summary
         %td{'id' => "issue_#{@issue.id}_summary"}=h @issue.summary

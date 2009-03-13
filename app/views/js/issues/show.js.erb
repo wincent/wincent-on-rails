@@ -120,6 +120,8 @@
     edit_in_place('div.issue', 'issue', 'summary', '/issues/');
     var options = <%= underscores_to_spaces(Issue::STATUS).sort.to_json %>;
     configure_ajax_select('div.issue', 'issue', 'status', options, '/issues/');
+    options = <%= underscores_to_spaces(Issue::KIND).sort.to_json %>;
+    configure_ajax_select('div.issue', 'issue', 'kind', options, '/issues/');
     /* repeat for other AJAX fields */
   });
 <% end %>

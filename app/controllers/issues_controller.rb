@@ -158,12 +158,6 @@ class IssuesController < ApplicationController
   end
 
   # AJAX method, admin only.
-  def update_kind
-    @issue.kind = params[:kind]
-    handle_ajax_request
-  end
-
-  # AJAX method, admin only.
   def update_public
     @issue.public = params[:public]
     handle_ajax_request
