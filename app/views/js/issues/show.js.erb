@@ -74,7 +74,7 @@
     field_id.hover(highlight, unhighlight);
   }
 
-  function configure_ajax_select(selector, class_name, attribute_name, options, url) {
+  function ajax_select(selector, class_name, attribute_name, options, url) {
     var model_id = jQuery(selector).attr('id'); /* issue_22 */
     var record_id = model_id.match(/_(\d+)$/)[1]; /* 22 */
     var field_id = jQuery('#' + model_id + '_' + attribute_name); /* issue_22_status */
@@ -117,9 +117,8 @@
   jQuery(document).ready(function() {
     edit_in_place('div.issue', 'issue', 'summary', '/issues/');
     var options = <%= underscores_to_spaces(Issue::STATUS).sort.to_json %>;
-    configure_ajax_select('div.issue', 'issue', 'status', options, '/issues/');
+    ajax_select('div.issue', 'issue', 'status', options, '/issues/');
     options = <%= underscores_to_spaces(Issue::KIND).sort.to_json %>;
-    configure_ajax_select('div.issue', 'issue', 'kind', options, '/issues/');
-    /* repeat for other AJAX fields */
+    ajax_select('div.issue', 'issue', 'kind', options, '/issues/');
   });
 <% end %>
