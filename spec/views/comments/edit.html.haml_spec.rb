@@ -11,6 +11,11 @@ describe '/comments/edit' do
     render '/comments/edit'
   end
 
+  it 'should have a link back to the commentable model' do
+    template.should_receive(:link_to_commentable).with(@comment.commentable)
+    do_render
+  end
+
   it 'should have a div for the comment' do
     do_render
     response.should have_tag("\#comment_#{@comment.id}")
