@@ -372,3 +372,10 @@ ended up moving it back to vendor/plugins, which funnily enough works:
   rake rails:update
   (cd .. && rails src)
   rake spec
+
+  # Rails 2.3.2 (final) update
+  sudo gem install rails
+  rake rails:freeze:gems
+  rake rails:update
+  (cd .. && rails src)
+  rake spec
