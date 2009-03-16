@@ -336,8 +336,8 @@ ended up moving it back to vendor/plugins, which funnily enough works:
   # later was able to fix the RSpec issues
   git rm lib/tasks/rspec.rake
   # change ":lib" settings to ":lib => false"
-  RAILS_ENV=test rake:gems:unpack # unpacks rspec-rails
-  RAILS_ENV=test rake:gems:unpack:dependencies # unpacks rspec
+  RAILS_ENV=test rake gems:unpack # unpacks rspec-rails
+  RAILS_ENV=test rake gems:unpack:dependencies # unpacks rspec
   # delete unwanted stuff unpacked in previous step
   # (although may want to consider bundling rack in the future)
   rm -rf vendor/gems/rake-* vendor/gems/hoe-* vendor/gems/rack-* vendor/gems/rubyforge-* vendor/gems/cucumber-*
