@@ -379,3 +379,12 @@ ended up moving it back to vendor/plugins, which funnily enough works:
   rake rails:update
   (cd .. && rails src)
   rake spec
+
+  # RSpec 1.2.0 update
+  sudo gem install rspec-rails # also installs rspec (dependency)
+  git rm -r vendor/gems/dchelimsky-rspec-1.1.99.7 vendor/gems/dchelimsky-rspec-rails-1.1.99.7
+  rm -r vendor/gems/dchelimsky-rspec-1.1.99.7 vendor/gems/dchelimsky-rspec-rails-1.1.99.7 # Git doesn't remove empty dirs
+  RAILS_ENV=test rake:gems:unpack # no longer need to unpack dependencies as well
+  git add vendor/gems/rspec-1.2.0 vendor/gems/rspec-rails-1.2.0
+  script/generate rspec
+  rake spec

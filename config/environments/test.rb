@@ -22,6 +22,6 @@ config.action_controller.allow_forgery_protection = false
 # ActionMailer::Base.deliveries array.
 config.action_mailer.delivery_method = :test
 
-# note that we don't configure Cucumber because we _only_ run that locally
-config.gem 'dchelimsky-rspec', :lib => false, :version => '1.1.99.7'
-config.gem 'dchelimsky-rspec-rails', :lib => false, :version => '1.1.99.7'
+# note that we don't configure (or freeze) Cucumber because we _only_ run that locally
+config.gem 'rspec', :lib => false, :version => '1.2.0'
+config.gem 'rspec-rails', :lib => false, :version => '1.2.0'
