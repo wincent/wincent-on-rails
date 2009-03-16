@@ -7,7 +7,7 @@ class IssueMailer < ActionMailer::Base
       :moderation_url => admin_dashboard_url
       })
     recipients(to_header = APP_CONFIG['admin_email'])
-    from(from_header = APP_CONFIG['admin_email'])
+    from(from_header = APP_CONFIG['support_email'])
     sent_on Time.now
 
     # unfortunately domain will be 'wincent.com.tmail'
