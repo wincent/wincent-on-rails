@@ -20,28 +20,12 @@ task :help do
 
   COMMON USAGE PATTERNS
 
-  Initial setup (once only):
-
-    cap staging deploy:prepare      # production: cap deploy:prepare
-
-  Run preliminary checks before deploying:
-
-    cap staging deploy:check        # production: cap deploy:check
-
-  Starting a cold (stopped) application (runs migrations as well):
-
-    cap staging deploy:cold         # production: cap deploy:cold
-
-  Deploy latest version of application and restart (no migrations):
-
-    cap staging deploy              # production: cap deploy
-
   Uploading a single file:
 
     FILES=config/routes.rb cap staging deploy:upload
     FILES=config/routes.rb cap deploy:upload
 
-  Putting it all together (staging environment, then production):
+  Performing a complete deployment cycle (staging environment then production):
 
     cap staging deploy:unlock       # relax permissions (necessary to deploy)
     cap staging deploy:check        # check dependencies
