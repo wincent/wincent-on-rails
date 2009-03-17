@@ -1,4 +1,5 @@
-# Copyright 2007-2009 Wincent Colaiuta
+#!/usr/bin/env ruby
+# Copyright 2009 Wincent Colaiuta
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
@@ -12,6 +13,20 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-module Wikitext
-  VERSION = '1.5.0'
-end # module Wikitext
+require File.join(File.dirname(__FILE__), 'spec_helper.rb')
+require 'wikitext/string'
+
+describe String, 'wikitext extensions' do
+  it 'should provide a to_wikitext method on all strings' do
+    "'''strong'''".to_wikitext.should == "<p><strong>strong</strong></p>\n"
+  end
+
+  it 'should provide a w method on all strings' do
+    "'''strong'''".w.should == "<p><strong>strong</strong></p>\n"
+  end
+
+  # the options get passed along to the parser
+  it 'should accept an optional options hash' do
+    "= foo =".w(:base_heading_level => 2).should == "<h3>foo</h3>\n"
+  end
+end

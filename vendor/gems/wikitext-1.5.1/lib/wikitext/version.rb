@@ -1,5 +1,4 @@
-#!/usr/bin/env ruby
-# Copyright 2009 Wincent Colaiuta
+# Copyright 2007-2009 Wincent Colaiuta
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
@@ -13,15 +12,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-require File.join(File.dirname(__FILE__), 'spec_helper.rb')
-require 'wikitext/string'
-
-describe String, 'wikitext extensions' do
-  it 'should provide a to_wikitext method on all strings' do
-    "'''strong'''".to_wikitext.should == "<p><strong>strong</strong></p>\n"
-  end
-
-  it 'should provide a w method on all strings' do
-    "'''strong'''".w.should == "<p><strong>strong</strong></p>\n"
-  end
-end
+module Wikitext
+  VERSION = '1.5.1'
+end # module Wikitext

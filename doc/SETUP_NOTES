@@ -388,3 +388,25 @@ ended up moving it back to vendor/plugins, which funnily enough works:
   git add vendor/gems/rspec-1.2.0 vendor/gems/rspec-rails-1.2.0
   script/generate rspec
   rake spec
+
+  # Wikitext 1.5.1 update
+  sudo gem install wikitext
+  rake gems:unpack
+  git add vendor/gems/wikitext-1.5.1
+
+  # NOTE: due to Rails bug #2266, the standard procedure doesn't work:
+  # http://rails.lighthouseapp.com/projects/8994/tickets/2266
+  #rake gems:build
+  # must instead do:
+  cp /Library/Ruby/Gems/1.8/gems/wikitext-1.5.1/ext/wikitext.bundle vendor/gems/wikitext-1.5.1/ext/
+  # evidently, this makes automated deployment via Capistrano impossible for now
+
+  # now we proceed with the rest of the process:
+  git rm -r vendor/gems/wikitext-1.5.0
+  rm -r vendor/gems/wikitext-1.5.0
+  git add vendor/gems/wikitext-1.5.1/ext/wikitext.bundle
+
+  # this step which we usually need obviously isn't necessary:
+  #rm vendor/gems/wikitext-1.5.1/ext/*.o \
+  #   vendor/gems/wikitext-1.5.1/ext/Makefile \
+  #   vendor/gems/wikitext-1.5.1/ext/mkmf.log
