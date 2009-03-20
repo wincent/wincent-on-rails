@@ -59,7 +59,7 @@ module ActiveRecord
           return if self.respond_to?(:spam?) && self.spam?
           model_class     = self.class.to_s
           model_id        = self.id
-          model_public    = self.public ? 'TRUE' : 'FALSE'
+          model_public    = respond_to?(:public) ? self.public.to_s.upcase : 'TRUE'
           model_user      = (respond_to?(:user_id) ? self.user_id : nil) || 'NULL'
           values          = []
           searchable_attributes.each do |attribute|
