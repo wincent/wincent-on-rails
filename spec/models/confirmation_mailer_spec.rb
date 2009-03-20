@@ -3,7 +3,7 @@ require File.dirname(__FILE__) + '/../spec_helper'
 describe ConfirmationMailer, 'confirmation' do
   include ActionController::UrlWriter
   default_url_options[:host] = APP_CONFIG['host']
-  default_url_options[:port] = APP_CONFIG['port'] if APP_CONFIG['port'] != 80
+  default_url_options[:port] = APP_CONFIG['port'] if APP_CONFIG['port'] != 80 and APP_CONFIG['port'] != 443
 
   before do
     @administrator  = 'win@wincent.com'
