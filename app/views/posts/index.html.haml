@@ -25,5 +25,7 @@
   -cache :tweets_sidebar do
     %h1 Tweets
     =render 'tweets/tweets.html.haml'
+    %hr
     %p=link_to 'more tweets', tweets_url
+    %p=link_to "feed #{image_tag 'feed-icon-14x14.png'}", tweets_url(:format => :atom), :class => 'feed'
 .clearboth
