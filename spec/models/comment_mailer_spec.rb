@@ -19,9 +19,9 @@ describe CommentMailer, 'comment' do
     @mail.to.first.should == APP_CONFIG['admin_email']
   end
 
-  it 'should be from the administrator' do
+  it 'should be from the support address' do
     @mail.from.length.should == 1
-    @mail.from.first.should == APP_CONFIG['admin_email']
+    @mail.from.first.should == APP_CONFIG['support_email']
   end
 
   it 'should show "awaiting moderation" where applicable' do
