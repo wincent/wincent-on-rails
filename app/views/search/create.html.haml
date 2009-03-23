@@ -2,6 +2,9 @@
   =stylesheet_link_tag 'search'
 -@page_title = 'Search results'
 %h1.major Search results
+-form_tag search_index_url, :method => :post do
+  =text_field_tag :query, params[:query], :size => 75
+  =submit_tag 'Search'
 -if @models.length == 0
   %p No results.
 -else
@@ -15,4 +18,4 @@
     =hidden_field_tag :offset, @offset + 20
     =submit_tag 'more results...'
 .links
-  =link_to 'search again', search_index_url
+  =link_to 'new search', search_index_url
