@@ -7,12 +7,10 @@ config.whiny_nils = true
 # Show full error reports
 config.action_controller.consider_all_requests_local = true
 
-# Can't test page caching without this
-# (Rails turns "caches_page" into a total no-op if false;
-# no after filter is ever set up, so we can't mock the "cache_page"
-# call. Calling controller.perform_caching from inside a
-# "before(:all)" block is too late)
-config.action_controller.perform_caching = true
+# can't test page caching if this is true
+# but can't set it to true or we'll fill up public with cached garbage
+# whenever we do "cap spec"
+config.action_controller.perform_caching = false
 
 # Disable request forgery protection in test environment
 config.action_controller.allow_forgery_protection = false
