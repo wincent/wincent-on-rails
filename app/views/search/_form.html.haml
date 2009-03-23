@@ -19,10 +19,10 @@
       Example:
       %tt body:bar baz
       (search for "bar" in the body <em>or</em> "baz" anywhere)
-    %li The <tt>title</tt> attribute is available on weblog posts, wiki articles and forum topics
-    %li The <tt>body</tt> attribute is available on weblog posts, wiki articles and forum topics
-    %li The <tt>summary</tt> and <tt>description</tt> attributes are available on issue tracker tickets
-    %li The <tt>excerpt</tt> attribute is available on weblog posts
+    %li==The <tt>title</tt> attribute is available on #{link_to 'blog posts', posts_url}, #{link_to 'wiki articles', articles_url} and #{link_to 'forum topics', forums_url}
+    %li==The <tt>body</tt> attribute is available on #{link_to 'blog posts', posts_url}, #{link_to 'wiki articles', articles_url}, #{link_to 'forum topics', forums_url} and #{link_to 'tweets', tweets_url}
+    %li==The <tt>summary</tt> and <tt>description</tt> attributes are available on #{link_to 'issue tracker tickets', issues_url}
+    %li==The <tt>excerpt</tt> attribute is available on #{link_to 'blog posts', posts_url}
 %h2.major Other kinds of search
 .links
   =link_to 'issue tracker search', issues_search_url
