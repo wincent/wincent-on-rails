@@ -10,6 +10,7 @@
 class Tweet < ActiveRecord::Base
   RECOMMENDED_MAX_LENGTH = 140
   validates_presence_of :body
+  acts_as_searchable :attributes => [ :body ]
 
   def self.find_recent paginator = nil
     options = { :order => 'created_at DESC', :limit => 20 }
