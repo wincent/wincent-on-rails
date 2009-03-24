@@ -410,3 +410,12 @@ ended up moving it back to vendor/plugins, which funnily enough works:
   #rm vendor/gems/wikitext-1.5.1/ext/*.o \
   #   vendor/gems/wikitext-1.5.1/ext/Makefile \
   #   vendor/gems/wikitext-1.5.1/ext/mkmf.log
+
+  # RSpec 1.2.2 update
+  sudo gem install rspec-rails
+  git rm -r vendor/gems/rspec*
+  rm -r vendor/gems/rspec*
+  RAILS_ENV=test rake gems:unpack
+  git add vendor/gems/rspec*
+  script/generate rspec
+  rake spec
