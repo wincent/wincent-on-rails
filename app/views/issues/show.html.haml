@@ -58,7 +58,7 @@
             =link_to 'edit', edit_issue_url(@issue)
         %td=tag_links(@issue)
 %h2.major Comments
-%table.issue
+%table.comments
   -for comment in @comments
     %tr{ :class => "comment #{cycle('even', 'odd')}" + (comment.public? ? '' : ' private'), :id => "comment_#{comment.id}" }
       %th

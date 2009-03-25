@@ -155,3 +155,11 @@ input[type=button]:hover { -webkit-box-shadow: 0.1em 0.1em 0.1em #aaa; backgroun
 .product .icon img { float: left; margin: 1em; }
 
 .prev_next { margin-top: -1em; text-align: right; }
+
+.comments th { padding: 1em; vertical-align: top; background: white; }
+.comments th + td { padding-top: -0.5em; border-bottom: 1px solid #ccc; width: 85%; }
+.comments tr.private>th { background: url(../images/lock.png) no-repeat right bottom; }
+
+.comments .odd th + td { border: 1px solid #ccc; background: #f7f7f7; }
+
+.comments .even th + td { border: 1px solid #ccc; background: #eaeaea; }

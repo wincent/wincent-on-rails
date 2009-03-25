@@ -1,10 +1,1 @@
-.issue th { padding: 1em; vertical-align: top; background: white; }
-.issue th + td { padding-top: -0.5em; border-bottom: 1px solid #ccc; width: 85%; }
-
-.issue .odd th + td { border: 1px solid #ccc; background: #f7f7f7; }
-
-.issue .even th + td { border: 1px solid #ccc; background: #eaeaea; }
-
-tr.private>th { background: url(../images/lock.png) no-repeat right bottom; }
-
 .issue.private h1 { background: url(../images/lock.png) no-repeat right center; }

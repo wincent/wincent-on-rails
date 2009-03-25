@@ -462,3 +462,26 @@ input[type=button]
 .prev_next
   margin-top: -1em
   text-align: right
+
+// comments
+.comments
+  th
+    padding: 1em
+    vertical-align: top
+    background: white
+  th + td
+    padding-top: -0.5em
+    border-bottom: 1px solid #ccc
+    width: 85%
+  // we want private comments to stand out a bit so that the admin knows which ones are hidden from public view
+  tr.private>th
+    background: url(../images/lock.png) no-repeat right bottom
+.comments .odd
+  th + td
+    border: 1px solid #ccc
+    background: #f7f7f7
+.comments .even
+  th + td
+    border: 1px solid #ccc
+    background: #eaeaea
+
