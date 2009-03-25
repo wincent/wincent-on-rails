@@ -112,8 +112,6 @@ tr.even { background: #eaeaea; }
 .cloud { text-align: center; }
 .cloud a { padding: 0.5em; }
 
-.tag_info { text-align: right; }
-
 .filterbox { float: right; max-width: 15em; margin: 1em; border: 1px solid gray; -webkit-border-radius: 0.33em; -webkit-box-shadow: 0.33em 0.33em 0.33em #aaa; -moz-border-radius: 0.33em; padding: 1em; }
 .filterbox h3 { margin-top: 0em; }
 .filterbox p { font-size: xx-small; }
@@ -127,9 +125,9 @@ tr.even { background: #eaeaea; }
 
 .post { margin-top: 3em; }
 .post .when { margin-top: -1em; }
-.post .info { padding: 1em; border-top: 1px dotted #eee; border-bottom: 1px solid #eee; }
+.post .info { text-align: right; padding: 1em; border-top: 1px dotted #eee; border-bottom: 1px solid #eee; }
 
-.comments_link { background: url(../images/comment-bubble.png) no-repeat left center; padding-left: 22px; padding-top: 2px; padding-bottom: 2px; min-height: 22px; }
+.comments_link { float: left; background: url(../images/comment-bubble.png) no-repeat left center; padding-left: 22px; padding-top: 2px; padding-bottom: 2px; min-height: 22px; }
 
 .edit_link { background: url(../images/edit.png) no-repeat left center; padding-left: 22px; padding-top: 2px; padding-bottom: 2px; min-height: 22px; }
 
