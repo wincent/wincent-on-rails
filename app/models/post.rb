@@ -3,6 +3,7 @@ class Post < ActiveRecord::Base
                           :as         => :commentable,
                           :extend     => Commentable,
                           :order      => 'comments.created_at',
+                          :include    => :user,
                           :dependent  => :destroy
   belongs_to              :last_commenter, :class_name => 'User'
   validates_presence_of   :title
