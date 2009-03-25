@@ -18,24 +18,23 @@
   -# TODO: use divs to color-code comments (ie. private, awaiting moderation etc)
   =named_anchor 'comments'
   %h2.major Comments
-  .comment_info
-    ==#{@post.comments.published_count} published, #{@post.comments.unmoderated_count} awaiting moderation, #{@post.comments.spam_count} marked as spam
-  -for comment in (admin? ? @post.comments.ham : @post.comments.published)
-    -next if comment.new_record?
-    %div[comment]
-      .body=comment.body.w
-      .info==Posted by #{link_to_user comment.user} #{comment.created_at.distance_in_words}
-      -admin_only do
-        .links
-          =link_to 'edit', edit_post_comment_url(@post, comment), :class => 'edit_link'
-          %form{:id => "comment_#{comment.id}_destroy_form", :style => 'display:inline;'}
-            =submit_to_remote 'button', 'destroy', :url => comment_url(comment), :method => :delete, :failure => "alert('Failed to delete')", :confirm => 'Really delete?'
-          -if comment.awaiting_moderation?
-            %form{:id => "comment_#{comment.id}_spam_form", :style => 'display:inline;'}
-              =submit_to_remote 'button', 'spam', :url => post_comment_url(@post, comment), :method => 'put', :failure => "alert('Failed to mark as spam')", :confirm => 'Really mark as spam?'
-            %form{:id => "comment_#{comment.id}_ham_form", :style => 'display:inline;'}
-              =submit_to_remote 'button', 'ham', :url => post_comment_url(@post, comment), :method => 'put', :failure => "alert('Failed to mark as ham')"
+  %table.comments
+    -for comment in @post.comments.published
+      -next if comment.new_record? # BUG: when is this ever true?
+      %tr{ :class => "comment #{cycle('even', 'odd')}" + (comment.public? ? '' : ' private'), :id => "comment_#{comment.id}" }
+        %th
+          =link_to_user comment.user
+          %br
+          =pluralizing_count(comment.user.utterances_count, 'post') if comment.user
+          %br
+          %span.when=timeinfo comment, :updated_string => 'edited'
+          -if admin?
+            %br
+            =link_to 'edit', edit_comment_url(comment)
+            -# TODO: add a means of marking individual comments as private
+        %td=comment.body.w :base_heading_level => 2
   -if @comment
+    %h2.major Add a comment
     =render :partial => 'comments/comment'
   -else
     -# comments are currently closed but they were open in the past because we have at least one existing comment
