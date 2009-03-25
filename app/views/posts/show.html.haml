@@ -33,8 +33,8 @@
             =link_to 'edit', edit_comment_url(comment)
             -# TODO: add a means of marking individual comments as private
         %td=comment.body.w :base_heading_level => 2
+  %h2.major Add a comment
   -if @comment
-    %h2.major Add a comment
     =render :partial => 'comments/comment'
   -else
     -# comments are currently closed but they were open in the past because we have at least one existing comment
