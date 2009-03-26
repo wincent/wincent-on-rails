@@ -17,7 +17,9 @@
 -if @post.accepts_comments? || @post.comments_count != 0
   -# TODO: use divs to color-code comments (ie. private, awaiting moderation etc)
   =named_anchor 'comments'
-  %h2.major Comments
+  %h2.major
+    Comments
+    =link_to image_tag('feed-icon-14x14.png'), post_url(@post, :format => :atom)
   %table.comments
     -for comment in @post.comments.published
       -next if comment.new_record? # BUG: when is this ever true?
