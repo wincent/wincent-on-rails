@@ -14,8 +14,7 @@ module ApplicationHelper
     when Post
       @atom_link = auto_discovery_link_tag :atom, post_url(model, :format => :atom)
     when Topic
-      # this is a nested resource, so needs special handling
-      @atom_link = auto_discovery_link_tag(:atom, forum_topic_url(model.forum, model) + '.atom')
+      @atom_link = auto_discovery_link_tag :atom, forum_topic_url(model.forum, model, :format => :atom)
     end
   end
 
