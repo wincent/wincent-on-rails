@@ -23,9 +23,10 @@
     .pagination=@paginator.pagination_links
 #sidebar
   -cache :tweets_sidebar do
-    %h1 Tweets
+    %h1
+      Tweets
+      =feed_icon tweets_url(:format => :atom)
     =render 'tweets/tweets.html.haml'
     %hr
     %p=link_to 'more tweets', tweets_url
-    %p=link_to "feed #{image_tag 'feed-icon-14x14.png'}", tweets_url(:format => :atom), :class => 'feed'
 .clearboth

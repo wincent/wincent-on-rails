@@ -10,7 +10,9 @@
   &raquo;
   =h @topic.title
 -@page_title = @topic.title
-%h1.major=h @page_title
+%h1.major
+  =h @page_title
+  =feed_icon forum_topic_url(@topic.forum, @topic, :format => :atom)
 %table[@topic]
   %tr{ :class => 'comment odd' }
     %td

@@ -18,6 +18,10 @@ module ApplicationHelper
     end
   end
 
+  def feed_icon url
+    link_to image_tag('feed-icon-14x14.png'), url
+  end
+
   def page_title string
     @page_title = string # picked up in application layout
     haml_tag :h1, h(string)

@@ -59,7 +59,7 @@
         %td=tag_links(@issue)
 %h2.major
   Comments
-  =link_to image_tag('feed-icon-14x14.png'), issue_url(@issue, :format => :atom)
+  =feed_icon issue_url(@issue, :format => :atom)
 %table.comments
   -for comment in @comments
     %tr{ :class => "comment #{cycle('even', 'odd')}" + (comment.public? ? '' : ' private'), :id => "comment_#{comment.id}" }

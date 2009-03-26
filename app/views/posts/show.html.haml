@@ -20,7 +20,7 @@
   =named_anchor 'comments'
   %h2.major
     Comments
-    =link_to image_tag('feed-icon-14x14.png'), post_url(@post, :format => :atom)
+    =feed_icon post_url(@post, :format => :atom)
   %table.comments
     -for comment in @post.comments.published
       -next if comment.new_record? # BUG: when is this ever true?
