@@ -6,7 +6,9 @@
 .prev_next
   =link_to_prev_issue if @prev
   =link_to_next_issue if @next
-%h2 This issue is currently awaiting moderation
+%h2
+  This issue is currently awaiting moderation
+  =feed_icon issue_url(@issue, :format => :atom)
 %div
   Subscribe to the
   =link_to 'Atom feed', issue_url(@issue, :format => :atom)

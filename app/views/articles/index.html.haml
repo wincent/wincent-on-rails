@@ -1,7 +1,9 @@
 -atom_link
 -@page_title = 'wiki index'
 %h1 Wiki articles
-%h2.major Recently updated
+%h2.major
+  Recently updated
+  =feed_icon articles_url(:format => :atom)
 -if @paginator
   .pagination=@paginator.pagination_links
 %table

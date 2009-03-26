@@ -3,7 +3,9 @@
 -@page_title = 'blog index'
 -atom_link
 #posts
-  %h1 Blog posts
+  %h1
+    Blog posts
+    =feed_icon posts_url(:format => :atom)
   -if @paginator
     .pagination=@paginator.pagination_links
   -for @post in @posts
