@@ -22,8 +22,7 @@
     Comments
     =feed_icon post_url(@post, :format => :atom)
   %table.comments
-    -for comment in @post.comments.published
-      -next if comment.new_record? # BUG: when is this ever true?
+    -for comment in @comments
       %tr{ :class => "comment #{cycle('even', 'odd')}" + (comment.public? ? '' : ' private'), :id => "comment_#{comment.id}" }
         %th
           =link_to_user comment.user

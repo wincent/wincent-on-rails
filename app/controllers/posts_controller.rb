@@ -51,9 +51,8 @@ class PostsController < ApplicationController
 
   def show
     # TODO: would be nice to have prev/next links here as well
-    # simplest way without doing more db queries might be to just add new actions: next and prev, which then redirect
-    # the drawback there is that there is no pre-check to see when you're on the first or last page
-    # and the links would be "dumb", ie "next" and "prev" rather than links featuring titles
+    # see issues#show (find_prev_next before filter) for implementation ideas
+    @comments = @post.comments.published
     respond_to do |format|
       format.html { @comment = @post.comments.build if @post.accepts_comments? }
       format.atom
