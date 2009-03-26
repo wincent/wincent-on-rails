@@ -46,7 +46,7 @@ class TopicsController < ApplicationController
   end
 
   def show
-    @comments = @topic.visible_comments # public, not awaiting moderation, not spam
+    @comments = @topic.comments.published # public, not awaiting moderation, not spam
     respond_to do |format|
       format.html {
         @topic.hit!

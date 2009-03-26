@@ -6,6 +6,7 @@ class Topic < ActiveRecord::Base
                         :as         => :commentable,
                         :extend     => Commentable,
                         :order      => 'comments.created_at',
+                        :include    => :user,
                         :dependent  => :destroy
   validates_presence_of :title
   validates_presence_of :body
@@ -56,13 +57,6 @@ class Topic < ActiveRecord::Base
       LIMIT ?, ?
     SQL
     find_by_sql [sql, forum.id, offset, limit]
-  end
-
-  def visible_comments
-    # can't use the Commentable association mixin methods here because we need to specify an :include clause
-    conditions = { :public => true, :awaiting_moderation => false, :spam => false, :commentable_id => self.id,
-      :commentable_type => 'Topic' }
-    Comment.find :all, :conditions => conditions, :include => 'user', :order => 'comments.created_at'
   end
 
   def hit!

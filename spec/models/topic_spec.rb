@@ -316,7 +316,10 @@ describe Topic, '"find_topics_for_forum" method' do
   end
 end
 
-describe Topic, '"visible_comments" method' do
+# was formerly a test of the "visible_comments" method
+# that method was deleted and replaced with "comments.published"
+# keep the specs in place to confirm that the behaviour is the same
+describe Topic, '"comments.published"' do
   before do
     @topic    = create_topic    :awaiting_moderation => false
     @comment1 = add_comment_with_override :awaiting_moderation, false
@@ -333,13 +336,13 @@ describe Topic, '"visible_comments" method' do
   end
 
   it 'should find all published comments' do
-    @topic.visible_comments.collect(&:id).sort.should == [@comment1, @comment5].collect(&:id).sort
+    @topic.comments.published.collect(&:id).sort.should == [@comment1, @comment5].collect(&:id).sort
   end
 
   it 'should order results by comment creation date in ascending order' do
     Comment.update_all ['created_at = ?', 7.days.ago], ['id = ?', @comment1.id]
     Comment.update_all ['created_at = ?', 3.days.ago], ['id = ?', @comment5.id]
-    @topic.visible_comments.collect(&:id).should == [@comment1.id, @comment5.id]
+    @topic.comments.published.collect(&:id).should == [@comment1.id, @comment5.id]
   end
 end
 
