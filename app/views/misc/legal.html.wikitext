@@ -1,0 +1,35 @@
+= Copyright and legal information =
+
+== Software ==
+
+The web application powering this site is Copyright &copy; 2007-2009 Wincent Colaiuta. At present the source code for the site is not publicly available but the intention is to release it under an free software license, most likely the [/javascripts/agpl-3.0.txt GNU Affero General Public License], at some point in the future.
+
+== Site content ==
+
+Unless otherwise noted, all content published on the site by the site administator is Copyright &copy; 1997-2009 Wincent Colaiuta. This content includes [/blog blog posts], [/wiki wiki articles], [/twitter "tweets"], product pages, and most other material on the site unless otherwise labelled.
+
+No claim of copyright is made with respect to content contributed by other users, such as:
+
+* tickets submitted by users to the [/issues issue tracker]
+* user comments on [/blog blog posts], [/wiki wiki articles] or [/issues tickets]
+* [/forums forum topics] and replies posted by users
+
+== Third-parties ==
+
+=== Software ===
+
+The web application depends on or makes use of a number of open source projects:
+
+* Runtime dependencies:
+** [http://rubyonrails.org/ Ruby on Rails]
+** [http://jquery.com/ jQuery]
+** [http://haml.hamptoncatlin.com/ Haml]
+** [http://wikitext.rubyforge.org/ Wikitext]
+* Development dependencies:
+** [http://rspec.info/ RSpec]
+** [http://replacefixtures.rubyforge.org/ FixtureReplacement]
+** [http://www.thaiopensource.com/relaxng/jing.html Jing]
+
+=== Graphics ===
+
+Some icons on this site are copies of, or derived works based on, icons by [http://www.pinvoke.com/ Yusuke Kamiyamane], and are used under the [http://creativecommons.org/licenses/by/3.0/ Creative Commons Attribution 3.0 license].
