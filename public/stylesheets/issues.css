@@ -1,1 +1,4 @@
+.issue th { padding: 1em; vertical-align: top; background: white; }
+.issue th + td { padding-top: -0.5em; border-bottom: 1px solid #ccc; width: 85%; }
+
 .issue.private h1 { background: url(../images/lock.png) no-repeat right center; }
