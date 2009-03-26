@@ -34,11 +34,27 @@ describe IssuesController, 'GET /issues/search' do
   end
 end
 
+describe IssuesController, 'GET /issues/:id' do
+  def do_get issue
+    get :show, :id => issue.id, :protocol => 'https'
+  end
+
+  it 'should run the "find_prev_next" before filter' do
+    controller.should_receive(:find_prev_next)
+    do_get create_issue
+  end
+end
+
 describe IssuesController, 'GET /issues/:id.atom' do
   integrate_views # so that we can test layouts as well
 
   def do_get issue
     get :show, :id => issue.id, :format => 'atom', :protocol => 'https'
+  end
+
+  it 'should not run the "find_prev_next" before filter' do
+    controller.should_not_receive(:find_prev_next)
+    do_get create_issue
   end
 
   # make sure we don't get bitten by bugs like:
