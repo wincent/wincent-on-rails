@@ -389,19 +389,23 @@ tr.even
     top:                    2.5em
     bottom:                 2.5em
   a
-    border:                 1px solid gray
-    -webkit-border-radius:  0.33em
-    -webkit-box-shadow:     0.33em 0.33em 0.33em #aaa
-    -moz-border-radius:     0.33em
+    border:                 2px solid #ccc
+    // if we go too far here webkit won't draw rounded corners at all
+    -webkit-border-radius:  1em
+    -moz-border-radius:     1.2em
     background:             #eaeaea
-    padding:                1em
+    padding:
+      left:                 1.5em
+      right:                1.5em
+      top:                  0.5em
+      bottom:               0.5em
     margin:
       left:                 0.25em
       right:                0.25em
     &:hover
-      -webkit-box-shadow:   0.1em 0.1em 0.1em #aaa
       background:           #aaa
       color:                white
+      text-decoration:      none
 
 // mark submit buttons look like the "buttons" used in ".link" divs
 input[type=submit]
@@ -410,44 +414,47 @@ input[type=submit]
     bottom:                 2.5em
     left:                   0.25em
     right:                  0.25em
-  border:                   1px solid gray
-  -webkit-border-radius:    0.33em
-  -webkit-box-shadow:       0.33em 0.33em 0.33em #aaa
-  -moz-border-radius:       0.33em
+  border:                   2px solid #ccc
+  -webkit-border-radius:    1em
+  -moz-border-radius:       1.2em
   background:               #eaeaea
-  padding:                  1em
+  padding:
+    left:                   1.5em
+    right:                  1.5em
+    top:                    0.5em
+    bottom:                 0.5em
   color:                    #2971a7
   font-weight:              bold
   font-size:                1.03em
   text-decoration:          none
   &:hover
-    -webkit-box-shadow:     0.1em 0.1em 0.1em #aaa
     background:             #aaa
     color:                  white
-    text-decoration:        underline
 
 // this is repetitive, but Rails hard-codes a type of "button" in submit_to_remote and there is no way to override it
+// TODO: once jQuery rewrite is completed and we can replace submit_to_remote this will go away
 input[type=button]
   margin:
     top:                    2.5em
     bottom:                 2.5em
     left:                   0.25em
     right:                  0.25em
-  border:                   1px solid gray
-  -webkit-border-radius:    0.33em
-  -webkit-box-shadow:       0.33em 0.33em 0.33em #aaa
-  -moz-border-radius:       0.33em
+  border:                   2px solid #ccc
+  -webkit-border-radius:    1em
+  -moz-border-radius:       1.2em
   background:               #eaeaea
-  padding:                  1em
+  padding:
+    left:                   1.5em
+    right:                  1.5em
+    top:                    0.5em
+    bottom:                 0.5em
   color:                    #2971a7
   font-weight:              bold
   font-size:                1.03em
   text-decoration:          none
   &:hover
-    -webkit-box-shadow:     0.1em 0.1em 0.1em #aaa
     background:             #aaa
     color:                  white
-    text-decoration:        underline
 
 // products
 // NOTE: could potentially split this off into a separate CSS file
