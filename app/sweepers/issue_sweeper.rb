@@ -30,6 +30,10 @@ class IssueSweeper < ActionController::Caching::Sweeper
       relative_path = instance.send(:issue_path, issue) + '.atom'
       absolute_path = ActionController::Base.send(:page_cache_path, relative_path)
       File.delete absolute_path if File.exist?(absolute_path)
+      # BUG: this won't catch stale files left behind on disk by rogue
+      # processes (for example, when "rake spec" used to contaminate the
+      # "public" directory); eventually will want to replace this with
+      # something based on "rm_r" which won't even look at the database
     end
   end
 end # class IssueSweeper
