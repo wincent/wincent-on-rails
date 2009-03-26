@@ -59,13 +59,6 @@ class Issue < ActiveRecord::Base
     Issue.string_for_kind kind
   end
 
-  def visible_comments
-    # can't use the Commentable association mixin methods here because we need to specify an :include clause
-    conditions = { :public => true, :awaiting_moderation => false, :spam => false, :commentable_id => self.id,
-      :commentable_type => 'Issue' }
-    Comment.find :all, :conditions => conditions, :include => 'user', :order => 'comments.created_at'
-  end
-
   def send_new_issue_alert
     begin
       return if self.user && self.user.superuser? # don't inform admin of his own issues

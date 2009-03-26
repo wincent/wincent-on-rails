@@ -64,13 +64,13 @@ class IssuesController < ApplicationController
           if admin?
             @comments = @issue.comments.find :all, :conditions => { :awaiting_moderation => false, :spam => false }
           else
-            @comments = @issue.visible_comments # public, not awaiting moderation, not spam
+            @comments = @issue.comments.published # public, not awaiting moderation, not spam
           end
           @comment = @issue.comments.build
         end
       }
       format.atom {
-        @comments = @issue.visible_comments # public, not awaiting moderation, not spam
+        @comments = @issue.comments.published # public, not awaiting moderation, not spam
       }
       format.js {
         require_admin do
