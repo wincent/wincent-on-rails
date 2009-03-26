@@ -37,3 +37,29 @@ describe PostsController, 'GET /blog.atom' do
   end
 end
 
+describe PostsController, 'GET /blog/:permalink.atom' do
+  integrate_views # so that we can test layouts as well
+
+  before do
+    @post = create_post :permalink => 'hello'
+  end
+
+  def do_get
+    get :show, :id => 'hello', :format => 'atom', :protocol => 'https'
+  end
+
+  # make sure we don't get bitten by bugs like:
+  # https://wincent.com/issues/1227
+  it 'should produce valid atom when there are no comments' do
+    pending unless can_validate_feeds?
+    do_get
+    response.body.should be_valid_atom
+  end
+
+  it 'should produce valid atom when there are multiple posts' do
+    pending unless can_validate_feeds?
+    10.times { create_comment :commentable => @post }
+    do_get
+    response.body.should be_valid_atom
+  end
+end

@@ -1,7 +1,7 @@
 class PostsController < ApplicationController
   before_filter :require_admin, :except => [ :index, :show ]
   before_filter :get_post,      :except => [ :index, :new, :create ]
-  caches_page   :index,         :if => Proc.new { |c| c.send(:is_atom?) }
+  caches_page   :index, :show,  :if => Proc.new { |c| c.send(:is_atom?) }
   cache_sweeper :post_sweeper,  :only => [ :create, :update, :destroy ]
 
   def index
@@ -54,7 +54,10 @@ class PostsController < ApplicationController
     # simplest way without doing more db queries might be to just add new actions: next and prev, which then redirect
     # the drawback there is that there is no pre-check to see when you're on the first or last page
     # and the links would be "dumb", ie "next" and "prev" rather than links featuring titles
-    @comment = @post.comments.build if @post.accepts_comments?
+    respond_to do |format|
+      format.html { @comment = @post.comments.build if @post.accepts_comments? }
+      format.atom
+    end
   end
 
   def edit
@@ -79,6 +82,13 @@ private
     else
       @post = Post.find_by_permalink_and_public!(params[:id], true)
     end
+  rescue ActiveRecord::RecordNotFound => e
+    # given permalink "foo" a request for "foo.atom" will most likely wind up here
+    if params[:id] =~ /(.+)\.atom\Z/
+      params[:format] = 'atom'
+      @post = Post.find_by_permalink_and_public($~[1], true)
+    end
+    raise e unless @post
   end
 
   def record_not_found

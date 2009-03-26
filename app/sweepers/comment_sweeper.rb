@@ -24,7 +24,8 @@ class CommentSweeper < ActionController::Caching::Sweeper
     when Article: # probably never will have per-Article feeds
     when Issue
       path = issue_path(commentable) + '.atom'
-    when Post:    # TODO: don't have per-post feeds yet
+    when Post
+      path = post_path(commentable) + '.atom'
     when Topic
       forum = commentable.forum
       path = (forum_topic_path(forum, commentable) + '.atom') if forum
