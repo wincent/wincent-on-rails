@@ -39,5 +39,6 @@
       #cacheable-flash
       =yield
     #footer
-      ==Copyright &copy; 1997-#{Time.new.year}
-      =mail_to APP_CONFIG['admin_email'], 'Wincent Colaiuta', :title => "Email me at #{APP_CONFIG['admin_email']}"
+      =mail_to APP_CONFIG['admin_email'], 'Contact', :title => "Email me at #{APP_CONFIG['admin_email']}"
+      |
+      =link_to 'Copyright and legal information', url_for(:controller => 'misc', :action => 'legal', :protocol => 'https')
