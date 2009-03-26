@@ -1,4 +1,5 @@
--# TODO: atom feeds for individual posts
+-if @post.public?
+  -atom_link @post
 .post
   -@page_title = @post.title
   %h1.major=h @post.title
