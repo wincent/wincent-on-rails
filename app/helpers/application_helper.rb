@@ -10,7 +10,7 @@ module ApplicationHelper
       @atom_link = auto_discovery_link_tag :atom, issue_url(model, :format => :atom)
     when NilClass
       # works for posts#index, wiki#index
-      @atom_link = auto_discovery_link_tag(:atom, :format => 'atom')
+      @atom_link = auto_discovery_link_tag :atom, :format => :atom
     when Post
       @atom_link = auto_discovery_link_tag :atom, post_url(model, :format => :atom)
     when Topic
