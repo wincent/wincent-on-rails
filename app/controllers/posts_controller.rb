@@ -7,14 +7,7 @@ class PostsController < ApplicationController
   def index
     respond_to do |format|
       format.html {
-        # NOTE: don't be tempted to page cache this action/format (it shows relative timestamps)
         @paginator  = Paginator.new params, Post.count(:conditions => { :public => true }), posts_url
-
-        # BUG: with the comment counts; each post causes a query like this one:
-        #   SELECT count(*) AS count_all
-        #   FROM `comments`
-        #   WHERE (comments.commentable_id = 44 AND comments.commentable_type = 'Post' AND (spam = FALSE))
-        # the incorporation of the spam condition makes the counter cache useless (and unused)
         @posts      = Post.find_recent :include => :tags, :offset => @paginator.offset
         @tweets     = Tweet.find_recent if !fragment_exist?(:tweets_sidebar)
       }
