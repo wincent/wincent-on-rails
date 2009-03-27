@@ -25,8 +25,9 @@
 * '''Internal wiki links''':
 ** `<nowiki>[[target article]]</nowiki>` or
 ** `<nowiki>[[target article | link text]]</nowiki>`
-* '''External links''':
+* '''Other links''':
 ** `<nowiki>[http://example.com/ link text]</nowiki>` or
+** `<nowiki>[/relative/example/page link text]</nowiki>`
 ** `<nowiki>[mailto:user@example.com link text]</nowiki>`
 * '''Automatic hyperlinking''':
 ** `<nowiki>http://example.com/</nowiki>` or
