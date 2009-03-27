@@ -45,7 +45,7 @@ module Rails
     def load(initializer)
       return if loaded?
       report_nonexistant_or_empty_plugin! unless valid?
-      evaluate_init_rb(initializer) unless $gems_build_rake_task
+      evaluate_init_rb(initializer)
       @loaded = true
     end
     
