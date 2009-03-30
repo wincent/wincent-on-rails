@@ -13,17 +13,18 @@ class TagsController < ApplicationController
   # NOTE/BUG: can never have a tag named "search"
   def search
     unless params[:q].blank?
-      # first get the tags
+      notices = []
       tags = params[:q].downcase.split(' ').uniq
       if tags.length > 10
         tags = tags[0..9]
-        flash[:warning] = 'Excess tags stripped from search (maximum of 10 allowed)'
+        notices << 'Excess tags stripped from search (maximum of 10 allowed)'
       end
       @tags, @taggables = Tagging.grouped_taggables_for_tag_names tags, current_user, params[:type]
       @reachable_tags = Tag.tags_reachable_from_tags @tags[:found]
       if @tags[:not_found].length > 0
-        flash[:notice] = "Non-existent tags excluded from search results: #{@tags[:not_found].join ', '}"
+        notices << "Non-existent tags excluded from search results: #{@tags[:not_found].join ', '}"
       end
+      flash[:notice] = notices.join('. ') unless notices.empty?
     end
   end
 

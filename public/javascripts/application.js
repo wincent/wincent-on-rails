@@ -68,7 +68,6 @@ function displayCacheableFlash() {
   if (flash) {
     flash = unescape(flash).gsub(/\+/, ' ').evalJSON(true);
     insertFlash('error', flash.error);
-    insertFlash('warning', flash.warning);
     insertFlash('notice', flash.notice);
     deleteCookie('flash');
   }

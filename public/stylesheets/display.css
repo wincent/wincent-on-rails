@@ -62,21 +62,17 @@ a.mailto:after { content: url(../images/mailto.png); }
 
 div.two-columns { float: left; width: 50%; margin-bottom: 3em; }
 
-#error, #notice, #warning { -webkit-border-radius: 1em; -moz-border-radius: 1em; font-weight: bold; margin: 1em; padding: 1em; }
+#error, #notice { -webkit-border-radius: 1em; -moz-border-radius: 1em; font-weight: bold; margin: 1em; padding: 1em; }
 
 #error { border: 2px solid #b77d74; background: #f9b8be; }
 
 #notice { border: 2px solid #72a384; background: #c3e3b5; }
 
-#warning { border: 2px solid #4967b0; background: #959af9; }
-
-.error, .notice, .warning { -webkit-border-radius: 1em; -moz-border-radius: 1em; font-weight: bold; margin: 1em; padding: 1em; }
+.error, .notice { -webkit-border-radius: 1em; -moz-border-radius: 1em; font-weight: bold; margin: 1em; padding: 1em; }
 
 .error { border: 1px solid gray; background: #f9b8be; }
 
 .notice { border: 1px solid gray; background: #c3e3b5; }
-
-.warning { border: 1px solid gray; background: #959af9; }
 
 .pagination { margin: 1em; font-size: xx-small; text-align: right; }
 .pagination .disabled { color: gray; }
