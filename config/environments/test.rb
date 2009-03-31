@@ -20,6 +20,20 @@ config.action_controller.allow_forgery_protection = false
 # ActionMailer::Base.deliveries array.
 config.action_mailer.delivery_method = :test
 
-# note that we don't configure (or freeze) Cucumber because we _only_ run that locally
 config.gem 'rspec', :lib => false, :version => '1.2.2'
 config.gem 'rspec-rails', :lib => false, :version => '1.2.2'
+
+# not vendoring cucumber/webrat right now because of the list of dependencies
+#
+# - [I] cucumber = 0.2.3
+#    - [I] term-ansicolor >= 1.0.3
+#    - [I] treetop >= 1.2.5
+#       - [I] polyglot
+#    - [I] polyglot >= 0.2.5
+#    - [I] diff-lcs >= 1.1.2
+#    - [I] builder >= 2.1.2
+# - [I] webrat = 0.4.3
+#    - [I] nokogiri >= 1.2.0
+#
+#config.gem 'cucumber', :lib => false, :version => '0.2.3'
+#config.gem 'webrat', :lib => false, :version => '0.4.3'
