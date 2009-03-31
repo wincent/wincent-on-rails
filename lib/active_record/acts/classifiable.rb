@@ -14,23 +14,12 @@ module ActiveRecord
       end # module ClassMethods
 
       module InstanceMethods
-        def moderate_as_spam!
-          moderate! true
-        end
-
-        def moderate_as_ham!
-          moderate! false
-        end
-
-      protected
-
         # BUG: this kind of modification won't trigger any cache sweepers, which means that feeds might get out of date
         # may need to manually trigger sweepers
-        def moderate! is_spam
+        def moderate_as_ham!
           # we don't want moderating a model to mark it as updated, so use update_all
           self.awaiting_moderation  = false
-          self.spam                 = is_spam
-          self.class.update_all ['awaiting_moderation = FALSE, spam = ?', is_spam], ['id = ?', self.id]
+          self.class.update_all 'awaiting_moderation = FALSE', ['id = ?', self.id]
 
           # I don't really like intertwining the classifiable and searchable functionality,
           # but seems to be a necessary evil for now

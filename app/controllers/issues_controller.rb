@@ -62,15 +62,15 @@ class IssuesController < ApplicationController
           render :action => 'awaiting_moderation'
         else
           if admin?
-            @comments = @issue.comments.find :all, :conditions => { :awaiting_moderation => false, :spam => false }
+            @comments = @issue.comments.find :all, :conditions => { :awaiting_moderation => false }
           else
-            @comments = @issue.comments.published # public, not awaiting moderation, not spam
+            @comments = @issue.comments.published # public, not awaiting moderation
           end
           @comment = @issue.comments.build
         end
       }
       format.atom {
-        @comments = @issue.comments.published # public, not awaiting moderation, not spam
+        @comments = @issue.comments.published # public, not awaiting moderation
       }
       format.js {
         require_admin do
@@ -99,19 +99,13 @@ class IssuesController < ApplicationController
         end
       }
 
-      # TODO: eventually retire the spam/ham logic, rolling it into the standard AJAX handling (the "else" clause)
+      # TODO: eventually retire the ham logic, rolling it into the standard AJAX handling (the "else" clause)
       format.js {
-        if params[:button] == 'spam'
-          @issue.moderate_as_spam!
-          render :update do |page|
-            page.visual_effect :fade, "issue_#{@issue.id}"
-          end
-        elsif params[:button] == 'ham'
+        if params[:button] == 'ham'
           @issue.moderate_as_ham!
           render :update do |page|
             page.visual_effect :highlight, "issue_#{@issue.id}", :duration => 1.5
             page.visual_effect :fade, "issue_#{@issue.id}_ham_form"
-            page.visual_effect :fade, "issue_#{@issue.id}_spam_form"
           end
         else
           @issue.pending_tags = params[:issue][:pending_tags]
@@ -201,7 +195,11 @@ private
   end
 
   def find_issue_awaiting_moderation
-    @issue = Issue.find params[:id], :conditions => default_access_options_including_awaiting_moderation
+    if conditions = default_access_options_including_awaiting_moderation
+      @issue = Issue.find params[:id], :conditions => conditions
+    else
+      @issue = Issue.find params[:id]
+    end
   end
 
   def find_prev_next

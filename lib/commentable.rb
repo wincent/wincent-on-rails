@@ -1,29 +1,24 @@
 # This is a vanilla module rather than being ActiveRecord::Acts::Commentable
 # as it is intended to be used via the :extend option when defining associations.
 module Commentable
-  # All public comments which have passed moderation and are not flagged as spam.
+  # All public comments which have passed moderation.
   def published
-    find :all, :conditions => { :awaiting_moderation => false, :spam => false, :public => true }
+    find :all, :conditions => { :awaiting_moderation => false, :public => true }
   end
 
-  # Returns all comments for this record which haven't yet been moderated and are not marked as spam.
+  # Returns all comments for this record which haven't yet been moderated.
   def unmoderated
-    find :all, :conditions => { :awaiting_moderation => true, :spam => false }
+    find :all, :conditions => { :awaiting_moderation => true }
   end
 
   # All comments which have not been flagged as spam (both moderated and unmoderated).
   def ham
-    find_all_by_spam false
+    find :all
   end
 
-  # All comments which have been flagged as spam.
-  def spam
-    find_all_by_spam true
-  end
-
-  # The count of all published (not awaiting moderation, not flagged as spam) comments.
+  # The count of all published (not awaiting moderation) comments.
   def published_count
-    count :conditions => 'awaiting_moderation = FALSE AND spam = FALSE AND public = TRUE'
+    count :conditions => 'awaiting_moderation = FALSE AND public = TRUE'
   end
 
   # The count of comments awaiting moderation.
@@ -34,15 +29,10 @@ module Commentable
   def ham_count
     # TODO: find a way to make a counter_cache-style column in the model database for this value
     # this would be useful in the Posts controller index action, for example
-    # at the moment we have no choice but to show the full count (ham + spam) from the comments counter_cache
+    # at the moment we have no choice but to show the full count (moderated + unmoderated) from the comments counter_cache
     # but it would be nice to instead display the ham count
     # see notes on this below
-    count :conditions => 'spam = FALSE'
-  end
-
-  # The count of comments that have been flagged as spam.
-  def spam_count
-    count :conditions => 'spam = TRUE'
+    count
   end
 end # module Commentable
 

@@ -35,11 +35,6 @@ describe '/issues/edit' do
     do_render
   end
 
-  it 'should have a spam button' do
-    template.should_receive(:button_to_moderate_issue_as_spam).with(@issue)
-    do_render
-  end
-
   it 'should have a ham button' do
     template.should_receive(:button_to_moderate_issue_as_ham).with(@issue)
     do_render

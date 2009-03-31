@@ -198,17 +198,6 @@ module ApplicationHelper
     end
   end
 
-  def button_to_moderate_model_as_spam model, url
-    haml_tag :form, { :id => "#{model.class.to_s.downcase}_#{model.id}_spam_form", :style => 'display:inline;' } do
-      button = submit_to_remote 'button', 'spam',
-        :url => url,
-        :method => :put,
-        :failure => "alert('Failed to mark as spam')",
-        :confirm => 'Really mark as spam?'
-      concat button
-    end
-  end
-
   def button_to_moderate_model_as_ham model, url
     haml_tag :form, { :id => "#{model.class.to_s.downcase}_#{model.id}_ham_form", :style => 'display:inline;' } do
       button = submit_to_remote 'button', 'ham',
@@ -222,10 +211,6 @@ module ApplicationHelper
   # the issue helpers must go here in the application helper because they are used in both Admin::Issues and Issues namespaces
   def button_to_destroy_issue issue
     button_to_destroy_model issue, issue_url(issue)
-  end
-
-  def button_to_moderate_issue_as_spam issue
-    button_to_moderate_model_as_spam issue, issue_url(issue)
   end
 
   def button_to_moderate_issue_as_ham issue

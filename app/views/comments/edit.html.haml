@@ -18,7 +18,6 @@
   .links
     =link_to 'show', comment_url(@comment)
     =button_to_destroy_comment @comment
-    =button_to_moderate_comment_as_spam @comment
     =button_to_moderate_comment_as_ham @comment
 .links
   =link_to 'all comments awaiting moderation', comments_url

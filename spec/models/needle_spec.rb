@@ -177,11 +177,6 @@ describe Needle, 'searching' do
     Needle.find_using_query_string('hidden').should == [needle]
   end
 
-  it 'should not find spam topics' do
-    create_topic :body => 'the content', :spam => true
-    Needle.find_using_query_string('looking').should == []
-  end
-
   it 'should not find issues which are awaiting moderation' do
     create_issue :summary => 'what you are looking for', :awaiting_moderation => true
     Needle.find_using_query_string('looking').should == []
@@ -191,11 +186,6 @@ describe Needle, 'searching' do
     needle = create_issue :description => 'was hidden', :awaiting_moderation => true
     needle.moderate_as_ham!
     Needle.find_using_query_string('hidden').should == [needle]
-  end
-
-  it 'should not find spam issues' do
-    create_issue :description => 'the content', :spam => true
-    Needle.find_using_query_string('looking').should == []
   end
 
   it 'should not find issues which have been destroyed' do

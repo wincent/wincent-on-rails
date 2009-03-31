@@ -10,7 +10,6 @@
     .links
       =link_to 'edit', edit_issue_url(issue)
       =button_to_destroy_issue issue
-      =button_to_moderate_issue_as_spam issue
       =button_to_moderate_issue_as_ham issue
 .pagination=@paginator.pagination_links if @paginator
 .links

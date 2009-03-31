@@ -257,12 +257,6 @@ describe IssuesController, 'PUT /issues/:id (js format)' do
     do_put
   end
 
-  it 'should moderate as spam when requested' do
-    @issue.should_receive(:moderate_as_spam!)
-    Issue.stub!(:find).and_return(@issue)
-    do_put 'spam'
-  end
-
   it 'should complain about unknown parameters' do
     Issue.stub!(:find).and_return(@issue)
     lambda { do_put 'unknown' }.should raise_error

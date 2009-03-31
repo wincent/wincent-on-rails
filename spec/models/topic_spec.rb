@@ -48,10 +48,6 @@ describe Topic, 'creation' do
   it 'should default to awaiting moderation' do
     Topic.create.awaiting_moderation.should == true
   end
-
-  it 'should default to being considered as ham (non-spam)' do
-    Topic.create.spam.should == false
-  end
 end
 
 describe Topic, 'forum association' do
@@ -133,14 +129,6 @@ describe Topic, 'comments association' do
     10.times { add_comment }
     lambda { @topic.destroy }.should change(Comment, :count).by(-10)
   end
-end
-
-describe Topic, 'acting as classifiable ("moderate_as_spam!" method)' do
-  before do
-    @object = create_topic :awaiting_moderation => true
-  end
-
-  it_should_behave_like 'ActiveRecord::Acts::Classifiable "moderate_as_spam!" method'
 end
 
 describe Topic, 'acting as classifiable ("moderate_as_ham!" method)' do
@@ -269,11 +257,6 @@ describe Topic, '"find_topics_for_forum" method' do
     Topic.find_topics_for_forum(@forum).should == []
   end
 
-  it 'should find only topics which are not marked as spam' do
-    @topic.update_attribute(:spam, true)
-    Topic.find_topics_for_forum(@forum).should == []
-  end
-
   it 'should order the results by update date in descending order' do
     forum = create_forum
     10.times do
@@ -324,7 +307,7 @@ describe Topic, '"comments.published"' do
     @topic    = create_topic    :awaiting_moderation => false
     @comment1 = add_comment_with_override :awaiting_moderation, false
     @comment2 = add_comment_with_override :awaiting_moderation, true
-    @comment3 = add_comment_with_override :spam, true
+    # @comment3 (was a comment with the "spam" attribute set, but that attribute no longer exists)
     @comment4 = add_comment_with_override :public, false
     @comment5 = add_comment_with_override :awaiting_moderation, false
   end

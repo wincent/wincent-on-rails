@@ -115,18 +115,6 @@ describe ApplicationHelper, '"button_to_destroy_issue" method' do
   end
 end
 
-describe ApplicationHelper, '"button_to_moderate_issue_as_spam" method' do
-  include ApplicationHelper
-  before do
-    @issue = create_issue
-  end
-
-  it 'should call the "button_to_moderate_model_as_spam" method' do
-    should_receive(:button_to_moderate_model_as_spam).with(@issue, issue_url(@issue))
-    button_to_moderate_issue_as_spam @issue
-  end
-end
-
 describe ApplicationHelper, '"button_to_moderate_issue_as_ham" method' do
   include ApplicationHelper
   before do

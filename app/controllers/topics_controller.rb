@@ -46,7 +46,7 @@ class TopicsController < ApplicationController
   end
 
   def show
-    @comments = @topic.comments.published # public, not awaiting moderation, not spam
+    @comments = @topic.comments.published # public, not awaiting moderation
     respond_to do |format|
       format.html {
         @topic.hit!
@@ -77,17 +77,11 @@ class TopicsController < ApplicationController
         end
       }
       format.js {
-        if params[:button] == 'spam'
-          @topic.moderate_as_spam!
-          render :update do |page|
-            page.visual_effect :fade, "topic_#{@topic.id}"
-          end
-        elsif params[:button] == 'ham'
+        if params[:button] == 'ham'
           @topic.moderate_as_ham!
           render :update do |page|
             page.visual_effect :highlight, "topic_#{@topic.id}", :duration => 1.5
             page.visual_effect :fade, "topic_#{@topic.id}_ham_form"
-            page.visual_effect :fade, "topic_#{@topic.id}_spam_form"
           end
         else
           raise 'unrecognized AJAX action'

@@ -39,7 +39,7 @@ protected
 
   def update_caches
     conditions = {
-      :awaiting_moderation => false, :spam => false, :commentable_id => commentable_id, :commentable_type => commentable_type
+      :awaiting_moderation => false, :commentable_id => commentable_id, :commentable_type => commentable_type
       }
     comment_count   = Comment.count :conditions => conditions
     last_comment    = Comment.last :conditions => conditions, :order => 'created_at'
@@ -52,13 +52,13 @@ protected
       ['id = ?', commentable.id]
 
     if user
-      user_comment_count = Comment.count :conditions => { :awaiting_moderation => false, :spam => false, :user_id => user.id }
+      user_comment_count = Comment.count :conditions => { :awaiting_moderation => false, :user_id => user.id }
       User.update_all ['comments_count = ?', user_comment_count], ['id = ?', user]
     end
   end
 
   def update_caches_after_create
-    return if awaiting_moderation? || spam? # we defer update until moderation as ham has taken place
+    return if awaiting_moderation? # we defer update until moderation as ham has taken place
 
     # comment creation is a potentially common event so we want it to be fast, this is why we don't just call
     # the heavyweight update_caches method here (three SELECTs, one or two UPDATEs) and instead do the following

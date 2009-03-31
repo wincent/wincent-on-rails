@@ -13,12 +13,12 @@ class CommentsController < ApplicationController
   # Rather than showing a comment in isolation, always show it nested in the context of its parent resource
   def show
     if admin?
-      @comment = Comment.find params[:id], :conditions => { :spam => false }
+      @comment = Comment.find params[:id]
     elsif logged_in?
       @comment = Comment.find params[:id],
-        :conditions => ['spam = FALSE AND awaiting_moderation = FALSE AND (public = TRUE OR user_id = ?)', current_user.id]
+        :conditions => ['awaiting_moderation = FALSE AND (public = TRUE OR user_id = ?)', current_user.id]
     else # anonymous user
-      @comment = Comment.find params[:id], :conditions => { :public => true, :spam => false, :awaiting_moderation => false }
+      @comment = Comment.find params[:id], :conditions => { :public => true, :awaiting_moderation => false }
     end
     redirect_to nested_comment_url(@comment)
   end
@@ -99,17 +99,11 @@ class CommentsController < ApplicationController
         end
       }
       format.js {
-        if params[:button] == 'spam'
-          @comment.moderate_as_spam!
-          render :update do |page|
-            page.visual_effect :fade, "comment_#{@comment.id}"
-          end
-        elsif params[:button] == 'ham'
+        if params[:button] == 'ham'
           @comment.moderate_as_ham!
           render :update do |page|
             page.visual_effect :highlight, "comment_#{@comment.id}", :duration => 1.5
             page.visual_effect :fade, "comment_#{@comment.id}_ham_form"
-            page.visual_effect :fade, "comment_#{@comment.id}_spam_form"
           end
         else
           raise 'unrecognized AJAX action'
@@ -140,7 +134,7 @@ private
     if admin?
       @comment = Comment.find params[:id]
     elsif logged_in?
-      @comment = Comment.find params[:id], :conditions => { :user_id => current_user.id, :spam => false }
+      @comment = Comment.find params[:id], :conditions => { :user_id => current_user.id }
     else
       # should never get here; and in fact, shouldn't even get to the previous case either
       # but leave it in for now, as may eventually allow users to edit their own comments

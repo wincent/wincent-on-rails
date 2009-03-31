@@ -51,16 +51,20 @@ protected
   # rather than just do a "record not found".
   def default_access_options_including_awaiting_moderation
     if admin?
-      'spam = FALSE'
+      nil # find everything
     elsif logged_in?
-      "spam = FALSE AND (public = TRUE OR user_id = #{current_user.id})"
+      "public = TRUE OR user_id = #{current_user.id}"
     else
-      'spam = FALSE AND public = TRUE'
+      'public = TRUE'
     end
   end
 
   def default_access_options
-    'awaiting_moderation = FALSE AND ' + default_access_options_including_awaiting_moderation
+    if conditions = default_access_options_including_awaiting_moderation
+      'awaiting_moderation = FALSE AND ' + conditions
+    else
+      'awaiting_moderation = FALSE'
+    end
   end
 
   # nginx will rewrite HTTP URLs to HTTPs automatically

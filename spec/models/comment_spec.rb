@@ -18,14 +18,6 @@ describe Comment do
   end
 end
 
-describe Comment, 'acting as classifiable ("moderate_as_spam!" method)' do
-  before do
-    @object = create_comment :awaiting_moderation => true
-  end
-
-  it_should_behave_like 'ActiveRecord::Acts::Classifiable "moderate_as_spam!" method'
-end
-
 describe Comment, 'acting as classifiable ("moderate_as_ham!" method)' do
   before do
     @object = create_comment :awaiting_moderation => true

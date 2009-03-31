@@ -52,7 +52,7 @@ class Topic < ActiveRecord::Base
              users.display_name AS last_active_user_display_name
       FROM topics
       LEFT OUTER JOIN users ON (users.id = topics.last_commenter_id)
-      WHERE topics.forum_id = ? AND public = TRUE AND awaiting_moderation = FALSE AND spam = FALSE
+      WHERE topics.forum_id = ? AND public = TRUE AND awaiting_moderation = FALSE
       ORDER BY topics.updated_at DESC
       LIMIT ?, ?
     SQL

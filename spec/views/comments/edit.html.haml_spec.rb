@@ -33,11 +33,6 @@ describe '/comments/edit' do
     do_render
   end
 
-  it 'should have a spam button' do
-    template.should_receive(:button_to_moderate_comment_as_spam).with(@comment)
-    do_render
-  end
-
   it 'should have a ham button' do
     template.should_receive(:button_to_moderate_comment_as_ham).with(@comment)
     do_render
