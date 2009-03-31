@@ -15,7 +15,7 @@ module TweetsHelper
   end
 
   def observe_body
-    observe_field 'tweet_body', common_options.merge({ :frequency => 30.0 })
+    observe_field 'tweet_body', common_options.merge({ :frequency => 5.0 })
   end
 
   def common_options
