@@ -319,7 +319,7 @@ describe Topic, '"comments.published"' do
   end
 
   it 'should find all published comments' do
-    @topic.comments.published.collect(&:id).sort.should == [@comment1, @comment5].collect(&:id).sort
+    @topic.comments.published.should =~ [@comment1, @comment5]
   end
 
   it 'should order results by comment creation date in ascending order' do

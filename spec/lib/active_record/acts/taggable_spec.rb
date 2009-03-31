@@ -163,7 +163,7 @@ describe ActiveRecord::Acts::Taggable, 'getting a list of tag name(s)' do
 
   it 'should return an array of tag names when there are tags' do
     @model.tag 'foo bar baz'
-    @model.tag_names.sort.should == ['bar', 'baz', 'foo']
+    @model.tag_names.should =~ ['bar', 'baz', 'foo']
   end
 
   after(:all) do

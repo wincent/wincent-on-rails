@@ -26,24 +26,24 @@ describe Commentable, :shared => true do
     @commentable.comments.each do |comment|
       Comment.update_all ['created_at = ?', comment.id.days.ago], ['id = ?', comment.id]
     end
-    @commentable.reload.comments.collect(&:id).should == @commentable.comments.collect(&:id).sort.reverse
+    @commentable.reload.comments.should =~ @commentable.comments
   end
 
   it 'should find all published comments' do
     set_up_comments
-    @commentable.comments.published.collect(&:id).sort.should == [@comment2.id, @comment3.id]
+    @commentable.comments.published.should =~ [@comment2, @comment3]
   end
 
   it 'should find all unmoderated comments' do
     # "unmoderated" means :awaiting_moderation => true
     set_up_comments
-    @commentable.comments.unmoderated.collect(&:id).sort.should == [@comment5, @comment6].collect(&:id).sort
+    @commentable.comments.unmoderated.should =~ [@comment5, @comment6]
   end
 
   it 'should find all ham comments' do
     # all comments (both moderated and unmoderated)
     set_up_comments
-    @commentable.comments.ham.collect(&:id).sort.should == [@comment1, @comment2, @comment3, @comment4, @comment5, @comment6].collect(&:id).sort
+    @commentable.comments.ham.should =~ [@comment1, @comment2, @comment3, @comment4, @comment5, @comment6]
   end
 
   it 'should report the count of published comments' do

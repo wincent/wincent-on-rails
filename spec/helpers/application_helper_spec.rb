@@ -74,7 +74,6 @@ describe ApplicationHelper, 'product_options method' do
   end
 
   it 'should return an array of name/id pairs' do
-    # no need to sort as ActiveRecord/MySQL will return the rows in id order
     Product.delete_all
     product1 = create_product :name => 'foo'
     product2 = create_product :name => 'bar'
@@ -83,20 +82,19 @@ describe ApplicationHelper, 'product_options method' do
 end
 
 describe ApplicationHelper, 'underscores_to_spaces method' do
-  # hashes are unordered collections, so must sort the converted arrays before comparing
   it 'should return an array of name/id pairs' do
     hash = { 'foo' => 1, 'bar' => 2 }
-    helper.underscores_to_spaces(hash).sort.should == [['foo', 1], ['bar', 2]].sort
+    helper.underscores_to_spaces(hash).should =~ [['foo', 1], ['bar', 2]]
   end
 
   it 'should convert underscores to spaces' do
     hash = { 'foo_bar' => 1, 'baz_bar' => 2 }
-    helper.underscores_to_spaces(hash).sort.should == [['foo bar', 1], ['baz bar', 2]].sort
+    helper.underscores_to_spaces(hash).should =~ [['foo bar', 1], ['baz bar', 2]]
   end
 
   it 'should convert symbol-based keys to strings' do
     hash = { :foo => 1, :bar => 2 }
-    helper.underscores_to_spaces(hash).sort.should == [['foo', 1], ['bar', 2]].sort
+    helper.underscores_to_spaces(hash).should =~ [['foo', 1], ['bar', 2]]
   end
 end
 
