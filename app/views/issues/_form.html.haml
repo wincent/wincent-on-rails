@@ -1,22 +1,22 @@
 %table.main
   %tr
-    %th Kind
+    %th=f.label :kind, 'Kind'
     %td=f.select :kind, underscores_to_spaces(Issue::KIND).sort
   %tr
     %th
-      Summary
+      =f.label :summary, 'Summary'
       %br
       %span.annotation a one-line summary of your issue
     %td=f.text_field :summary
   %tr
     %th
-      Product
+      =f.label :product, 'Product'
       %br
       %span.annotation optional (leave blank for general issues)
     %td=f.select :product_id, product_options, :include_blank => true
   %tr
     %th
-      Description
+      =f.label :description, 'Description'
       %br
       %span.annotation
         please be as detailed as possible
@@ -25,7 +25,7 @@
     %td=f.text_area(:description)
   %tr
     %th
-      Public?
+      =f.label :public, 'Public?'
       -if !logged_in?
         %br
         %span.annotation
@@ -36,5 +36,5 @@
       allow other visitors to see this ticket? (it may be helpful to them)
   -if admin?
     %tr
-      %th Tags
+      %th=f.label :tags, 'Tags'
       %td=f.text_field :pending_tags
