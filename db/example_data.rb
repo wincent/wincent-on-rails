@@ -24,7 +24,8 @@ module FixtureReplacement
   def email_attributes
     {
       :address                  => "#{String.random}@example.com",
-      :user                     => default_user
+      :user                     => default_user,
+      :verified                 => true
     }
   end
 
@@ -101,12 +102,13 @@ module FixtureReplacement
     }
   end
 
+  PASSPHRASE = 'supersecret'
   def user_attributes
-    passphrase = String.random
     {
       :display_name             => String.random,
-      :passphrase               => passphrase,
-      :passphrase_confirmation  => passphrase
+      :passphrase               => PASSPHRASE,
+      :passphrase_confirmation  => PASSPHRASE,
+      :verified                 => true
     }
   end
 

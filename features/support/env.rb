@@ -26,3 +26,17 @@ module ActionController
     end
   end
 end
+
+require 'json'
+
+World do |world|
+  def cacheable_flash
+    json = response.request.cookies['flash']
+    if json
+      JSON.parser.new(json).parse
+    else
+      {}
+    end
+  end
+  world # must return this or route helpers won't be available in world
+end

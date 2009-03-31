@@ -3,10 +3,10 @@
   -form_tag sessions_url do
     =hidden_field_tag :original_uri, params[:original_uri]
     %p
-      .label Email address
+      .label=label_tag :email, 'Email address'
       =text_field_tag :email, params[:email]
     %p
-      .label Passphrase
+      .label=label_tag :passphrase, 'Passphrase'
       =password_field_tag :passphrase, params[:passphrase]
     %p
       =submit_tag 'Log in'

@@ -97,7 +97,7 @@ describe User, 'protected attributes' do
   end
 
   it 'should deny mass-assignment to the verified flag' do
-    new_user.should_not allow_mass_assignment_of(:verified => true)
+    new_user(:verified => false).should_not allow_mass_assignment_of(:verified => true)
   end
 
   it 'should deny mass-assignment to the suspended flag' do

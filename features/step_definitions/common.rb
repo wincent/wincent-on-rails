@@ -1,14 +1,11 @@
 When /^I am logged in as an admin user$/ do
-  address     = "#{String.random}@example.com"
-  passphrase  = String.random
-  email       = create_email :address => address, :verified => true
-  create_user :email => email,
-              :passphrase => passphrase,
-              :passphrase_confirmation => passphrase,
-              :superuser => true,
-              :verified => true
+  email = create_email
+  user = email.user
+  user.superuser = true
+  user.save!
   visit login_path
-  fill_in 'email', address
-  fill_in 'passphrase', passphrase
+  fill_in 'Email address', :with => email.address
+  fill_in 'Passphrase', :with => FixtureReplacement::PASSPHRASE
   click_button 'Log in'
+  cacheable_flash['notice'].should =~ /Successfully logged in/
 end
