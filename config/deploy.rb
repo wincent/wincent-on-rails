@@ -32,8 +32,8 @@ task :help do
     cap staging deploy:update       # deploy latest, no restart, no migrations
     cap staging deploy:migrate_test # run the migrations on the test database
     cap staging spec                # run the spec suite
-    cap staging deploy:migrate_all  # run all other migrations
     cap staging deploy:web:disable  # (optional) display a maintenance page
+    cap staging deploy:migrate_all  # run all other migrations
     cap staging deploy:restart      # restart server (changes go live)
     cap staging deploy:web:enable   # (optional) remove maintenance page
     cap staging deploy:lockdown     # tighten permissions again
@@ -43,8 +43,8 @@ task :help do
     cap deploy:update
     cap deploy:migrate_test
     cap spec
-    cap deploy:migrate_all
     cap deploy:web:disable          # (optional)
+    cap deploy:migrate_all
     cap deploy:restart
     cap deploy:web:enable           # (optional)
     cap deploy:lockdown
