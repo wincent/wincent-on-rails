@@ -63,6 +63,15 @@ class Article < ActiveRecord::Base
     string.gsub ' ', '_'
   end
 
+  # capitalize first word only IFF it is all lowercase
+  def self.smart_capitalize string
+    words = string.split
+    if first = words.first
+      words[0] = first.capitalize if first =~ /\A[a-z]+\z/
+    end
+    words.join(' ')
+  end
+
   def to_param
     Article.parametrize title
   end

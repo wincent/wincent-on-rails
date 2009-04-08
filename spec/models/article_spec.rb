@@ -166,3 +166,17 @@ describe Article, 'parametrization' do
     new_article(:title => title).to_param.should == title.gsub(' ', '_')
   end
 end
+
+describe Article, 'smart capitalization' do
+  it 'should capitalize the first word only' do
+    Article.smart_capitalize('foo bar').should == 'Foo bar'
+  end
+
+  it 'should leave other words untouched' do
+    Article.smart_capitalize('foo IBM').should == 'Foo IBM'
+  end
+
+  it 'should not capitalize if the first word already contains capitals' do
+    Article.smart_capitalize('WOPublic bar').should == 'WOPublic bar'
+  end
+end

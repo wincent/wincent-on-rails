@@ -89,7 +89,8 @@ private
   def record_not_found
     if admin?
       flash[:notice] = 'Requested article not found: create it?'
-      session[:new_article_params] = { :title => Article.deparametrize(params[:id]) }
+      title = Article.deparametrize(params[:id])
+      session[:new_article_params] = { :title => Article.smart_capitalize(title) }
       redirect_to new_article_url
     else
       super articles_url
