@@ -419,3 +419,21 @@ ended up moving it back to vendor/plugins, which funnily enough works:
   git add vendor/gems/rspec*
   script/generate rspec
   rake spec
+
+  # RSpec 1.2.3/1.2.4 update
+  sudo gem install rspec-rails # this is 1.2.3
+  git rm -r vendor/gems/rspec*
+  rm -r vendor/gems/rspec*
+  vim config/environments/test.rb # update config.gem lines
+  RAILS_ENV=test rake gems:unpack
+  git add vendor/gems/rspec*
+  script/generate rspec
+  rake spec # fails because 1.2.3 is broken
+  sudo gem install rspec-rails # this is 1.2.4
+  git rm -r vendor/gems/rspec*
+  rm -r vendor/gems/rspec*
+  vim config/environments/test.rb # update config.gem lines
+  RAILS_ENV=test rake gems:unpack
+  git add vendor/gems/rspec*
+  script/generate rspec
+  rake spec
