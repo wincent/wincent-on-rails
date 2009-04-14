@@ -14,3 +14,10 @@ config.action_controller.perform_caching             = true
 # disable caching (when not testing caching)
 #config.action_controller.perform_caching             = false
 config.action_mailer.raise_delivery_errors = true
+
+config.after_initialize do
+  # as of Rails 2.3 won't start up unless we defer this til after initialization
+  # http://rails.lighthouseapp.com/projects/8994/tickets/1977
+  Sass::Plugin.options[:always_update] = true
+  Sass::Plugin.options[:always_check] = true
+end
