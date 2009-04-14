@@ -4,6 +4,8 @@ require File.dirname(__FILE__) + '/controller_helpers'
 require 'spec/autorun'
 require 'spec/rails'
 
+# can't use the config.include trick with FixtureReplacement
+# (breaks zillions of specs)
 include FixtureReplacement
 
 Spec::Runner.configure do |config|
