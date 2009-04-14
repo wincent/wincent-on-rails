@@ -2,7 +2,7 @@
 
 == Software ==
 
-The web application powering this site is Copyright &copy; 2007-2009 Wincent Colaiuta. At present the source code for the site is not publicly available but the intention is to release it under an free software license, most likely the [/javascripts/agpl-3.0.txt GNU Affero General Public License], at some point in the future.
+The web application powering this site is Copyright &copy; 2007-2009 Wincent Colaiuta. At present the source code for the site is not publicly available but the intention is to release it under [/LICENSE.txt the 2-clause version of the BSD license] (as used by FreeBSD) in the future.
 
 == Site content ==
 
