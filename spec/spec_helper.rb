@@ -1,5 +1,6 @@
 ENV["RAILS_ENV"] ||= "test"
 require File.dirname(__FILE__) + "/../config/environment" unless defined?(RAILS_ROOT)
+require File.dirname(__FILE__) + '/controller_helpers'
 require 'spec/autorun'
 require 'spec/rails'
 
@@ -9,30 +10,7 @@ Spec::Runner.configure do |config|
   config.use_transactional_fixtures = true
   config.use_instantiated_fixtures  = false
   config.fixture_path = RAILS_ROOT + '/spec/fixtures/'
-end
-
-# used in controller specs
-def login_as user
-  controller.instance_eval { @current_user = user }
-  controller.stub!(:login_before) # don't let the before filter clear the user again
-end
-
-# used in controller specs
-def login_as_admin
-  controller.instance_eval { @current_user = create_user :superuser => true }
-  controller.stub!(:login_before) # don't let the before filter clear the user again
-end
-
-# used in controller specs
-def login_as_normal_user
-  login_as create_user
-end
-
-# used in controller specs
-# should probably go in a module
-def cookie_flash
-  return {} unless cookies['flash']
-  ActiveSupport::JSON.decode(CGI::unescape(cookies['flash']))
+  config.include(ControllerHelpers, :type => :controller)
 end
 
 # custom matchers
