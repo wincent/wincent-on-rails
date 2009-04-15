@@ -14,49 +14,43 @@
   .prev_next
     =link_to_prev_issue if @prev
     =link_to_next_issue if @next
-  -# TODO: this form_for required by ajax_select helper: may be able to get rid of it
-  -form_for @issue do |form|
-    %table.main
+  %table.main
+    %tr
+      %th Kind
+      %td{'id' => "issue_#{@issue.id}_kind"}=@issue.kind_string
+    %tr
+      %th Summary
+      %td{'id' => "issue_#{@issue.id}_summary"}=h @issue.summary
+    %tr
+      %th Product
+      %td{'id' => "issue_#{@issue.id}_product_id"}=link_to_product_issues @issue.product
+    %tr
+      %th When
+      %td=timeinfo @issue
+    %tr
+      %th Status
+      %td{'id' => "issue_#{@issue.id}_status"}=@issue.status_string
+    %tr
+      %th Reporter
+      %td=link_to_user @issue.user
+    %tr
+      %th
+        Description
+        -if admin?
+          %br
+          =link_to 'edit', edit_issue_url(@issue)
+      %td=@issue.description.w :base_heading_level => 1
+    -if admin?
       %tr
-        %th Kind
-        %td{'id' => "issue_#{@issue.id}_kind"}=@issue.kind_string
-      %tr
-        %th Summary
-        %td{'id' => "issue_#{@issue.id}_summary"}=h @issue.summary
-      %tr
-        %th Product
-        %td
-          -if admin?
-            =ajax_select form, :product_id, product_options, :include_blank => true
-          -else
-            =link_to_product_issues @issue.product
-      %tr
-        %th When
-        %td=timeinfo @issue
-      %tr
-        %th Status
-        %td{'id' => "issue_#{@issue.id}_status"}=@issue.status_string
-      %tr
-        %th Reporter
-        %td=link_to_user @issue.user
-      %tr
-        %th
-          Description
-          -if admin?
-            %br
-            =link_to 'edit', edit_issue_url(@issue)
-        %td=@issue.description.w :base_heading_level => 1
-      -if admin?
-        %tr
-          %th Public?
-          %td=ajax_check_box form, :public
-      %tr
-        %th
-          Tags
-          -if admin?
-            %br
-            =link_to 'edit', edit_issue_url(@issue)
-        %td=tag_links(@issue)
+        %th Public?
+        %td{'id' => "issue_#{@issue.id}_public"}=@issue.public?
+    %tr
+      %th
+        Tags
+        -if admin?
+          %br
+          =link_to 'edit', edit_issue_url(@issue)
+      %td=tag_links(@issue)
 %h2.major
   Comments
   =feed_icon issue_url(@issue, :format => :atom)

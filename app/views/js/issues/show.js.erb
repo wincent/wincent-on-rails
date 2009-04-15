@@ -78,6 +78,45 @@
     field_id.hover(highlight, unhighlight);
   }
 
+  function ajax_check_box(selector, class_name, attribute_name, url) {
+    var model_id = jQuery(selector).attr('id'); /* issue_22 */
+    var record_id = model_id.match(/_(\d+)$/)[1]; /* 22 */
+    var field_id = jQuery('#' + model_id + '_' + attribute_name); /* issue_22_public */
+    var field_text = field_id.text(); /* eg. true, false */
+    var new_contents = '<input id="' + class_name + '_' + attribute_name +
+      '" name="' + class_name + '[' + attribute_name + ']" type="checkbox">' +
+      '<img alt="Spinner" id="' + class_name + '_' + attribute_name +
+      '_spinner" src="/images/spinner.gif" style="margin-left: 0.75em; display: none;" />';
+    field_id.html(new_contents);
+    var check_box_id = field_id.find('input');
+    if (field_text == 'true') {
+      check_box_id.attr('checked', 'checked');
+      }
+    var old_attr = check_box_id.attr('checked');
+    check_box_id.change(function() {
+      var spinner = field_id.find('#' + class_name + '_' + attribute_name + '_spinner');
+      spinner.show();
+      jQuery.ajax({
+        'url': url + record_id,
+        'type': 'post',
+        'dataType': 'json',
+        'data': '_method=put&' + class_name + '[' + attribute_name + ']=' +
+          check_box_id.attr('checked') + '&authenticity_token=' +
+          encodeURIComponent(authenticity_token),
+        'success': function(json) {
+          old_attr = check_box_id.attr('checked');
+        },
+        'error': function() {
+          alert('something went wrong');
+          check_box_id.attr('checked', old_attr);
+        },
+        'complete': function() {
+          spinner.hide();
+        }
+      });
+    });
+  }
+
   function ajax_select(selector, class_name, attribute_name, options, url) {
     var model_id = jQuery(selector).attr('id'); /* issue_22 */
     var record_id = model_id.match(/_(\d+)$/)[1]; /* 22 */
@@ -124,5 +163,7 @@
     ajax_select('div.issue', 'issue', 'status', options, '/issues/');
     options = <%= underscores_to_spaces(Issue::KIND).sort.to_json %>;
     ajax_select('div.issue', 'issue', 'kind', options, '/issues/');
+    ajax_check_box('div.issue', 'issue', 'public', '/issues/');
+    /* TODO: product; will need an "include blank" => true option */
   });
 <% end %>

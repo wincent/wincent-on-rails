@@ -7,18 +7,6 @@ module IssuesHelper
     "Currently showing only issues with #{scopes.join(', ')}" unless scopes.empty?
   end
 
-  def ajax_select form, attribute, options, extra_options = {}
-    popup   = form.select attribute, options, extra_options, :onchange => js_for_attribute(attribute, :value)
-    spinner = spinner_for_attribute attribute
-    "#{popup}&nbsp;#{spinner}"
-  end
-
-  def ajax_check_box form, attribute
-    box     = form.check_box attribute, :onchange => js_for_attribute(attribute, :checked)
-    spinner = spinner_for_attribute attribute
-    "#{box}&nbsp;#{spinner}"
-  end
-
   def spinner_for_attribute attribute
     image_tag 'spinner.gif', :id => "#{attribute.to_s}_spinner", :style => 'display:none;'
   end

@@ -74,7 +74,8 @@ class IssuesController < ApplicationController
       }
       format.js {
         require_admin do
-          render :json => @issue.to_json(:only => [:status, :summary])
+          visible = [:product_id, :public, :status, :summary]
+          render :json => @issue.to_json(:only => visible)
         end
       }
     end
