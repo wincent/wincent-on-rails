@@ -1,4 +1,16 @@
 # Full text search is like finding a needle in a hay stack.
+#
+# Table fields:
+#
+#   string  :model_class,     :default => '', :null => false
+#   integer :model_id,                        :null => false
+#   string  :attribute_name,  :default => '', :null => false
+#   string  :content,         :default => '', :null => false
+#   integer :user_id
+#   boolean :public
+#
+# Note that for speed neither a real ActiveRecord "belongs_to" association
+# nor timestamp fields (updated_at, created_at) are used.
 class Needle < ActiveRecord::Base
 
   def self.tokenize string
