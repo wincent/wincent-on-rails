@@ -32,6 +32,37 @@ describe Needle::NeedleQuery do
   end
 end
 
+# :model_class, :model_id, :attribute_name, :content, :user_id, :public
+describe Needle, 'accessible attributes' do
+  it 'should allow mass-assignment to the model class' do
+    new_needle(:model_class => 'Post').should allow_mass_assignment_of(:model_class => 'Issue')
+  end
+
+  it 'should allow mass-assignment to the model id' do
+    new_needle.should allow_mass_assignment_of(:model_id => 320)
+  end
+
+  it 'should allow mass-assignment to the attribute name' do
+    new_needle(:attribute_name => 'body').should allow_mass_assignment_of(:attribute_name => 'summary')
+  end
+
+  it 'should allow mass-assignment to the content' do
+    new_needle.should allow_mass_assignment_of(:content => 'foobarbaz')
+  end
+
+  it 'should allow mass-assignment to the user id' do
+    new_needle.should allow_mass_assignment_of(:user_id => 125)
+  end
+
+  it 'should allow mass-assignment to the public attribute' do
+    new_needle(:public => false).should allow_mass_assignment_of(:public => true)
+  end
+end
+
+describe Needle, 'protected attributes' do
+  # this model doesn't have any protected attributes
+end
+
 describe Needle, 'searching' do
   before do
     10.times { create_article; create_issue; create_post; create_topic; } # we'll be looking for needles in this "haystack"

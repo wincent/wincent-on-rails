@@ -17,6 +17,24 @@ describe Tweet, 'validation' do
   end
 end
 
+# :body
+describe Tweet, 'accessible attributes' do
+  it 'should allow mass-assignment to the body' do
+    new_tweet.should allow_mass_assignment_of(:body => 'foo')
+  end
+end
+
+# :created_at, :updated_at
+describe Tweet, 'protected attributes' do
+  it 'should deny mass-assignment to the created at attribute' do
+    create_tweet.should_not allow_mass_assignment_of(:created_at => 5.months.ago)
+  end
+
+  it 'should deny mass-assignment to the update at attribute' do
+    create_tweet.should_not allow_mass_assignment_of(:updated_at => 1.week.ago)
+  end
+end
+
 describe Tweet, 'find_recent (class) method (interaction-based approach)' do
   it 'should find no more than 20 tweets' do
     Tweet.should_receive(:find).with(:all, hash_including(:limit => 20))

@@ -12,6 +12,10 @@
 # Note that for speed neither a real ActiveRecord "belongs_to" association
 # nor timestamp fields (updated_at, created_at) are used.
 class Needle < ActiveRecord::Base
+  # internally generated from "safe" inputs, so basically everything is
+  # accessible
+  attr_accessible :model_class, :model_id, :attribute_name, :content, :user_id,
+    :public
 
   def self.tokenize string
     @@wikitext_parser ||= Wikitext::Parser.new

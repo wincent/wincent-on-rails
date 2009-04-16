@@ -28,4 +28,9 @@
 #
 class Message < ActiveRecord::Base
   belongs_to :related, :polymorphic => true
+
+  # internally generated from "safe" inputs, so basically everything is
+  # accessible
+  attr_accessible :related, :message_id_header, :to_header, :from_header,
+    :subject_header, :in_reply_to_header, :body, :incoming
 end
