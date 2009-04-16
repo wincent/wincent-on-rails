@@ -117,15 +117,20 @@
     });
   }
 
-  function ajax_select(selector, class_name, attribute_name, options, url) {
+  function ajax_select(selector, class_name, attribute_name, options, include_blank, url) {
     var model_id = jQuery(selector).attr('id'); /* issue_22 */
     var record_id = model_id.match(/_(\d+)$/)[1]; /* 22 */
     var field_id = jQuery('#' + model_id + '_' + attribute_name); /* issue_22_status */
     var field_text = field_id.text(); /* eg. New, Open, Closed (first letter capitalized by humanize method) */
     var new_contents = '<select id="' + class_name + '_' + attribute_name + '" name="' + class_name + '[' + attribute_name + ']">';
+    if (include_blank) {
+      new_contents = new_contents + '<option value=""></option>';
+    }
+    var selection_found = false;
     for (var i = 0; i < options.length; i++) {
       if (field_text.toLowerCase() == options[i][0]) {
         new_contents = new_contents + '<option value="' + options[i][1] + '" selected="selected">' + options[i][0] + '</option>';
+        selection_found = true;
       } else {
         new_contents = new_contents + '<option value="' + options[i][1] + '">' + options[i][0] + '</option>';
       }
@@ -133,6 +138,15 @@
     new_contents = new_contents + '</select><img alt="Spinner" id="' + class_name + '_' + attribute_name + '_spinner" src="/images/spinner.gif" style="margin-left: 0.75em; display: none;" />';
     field_id.html(new_contents);
     var select_id = field_id.find('select');
+    if (!selection_found) {
+      if (!include_blank) {
+        alert('option not found');
+        /* will probably choose to fail silently here instead, or fall back and select first option */
+      } else {
+        /* if none of the options match, eg "no product", must be the "blank" option */
+        select_id.find('option:first').attr('selected', 'selected');
+      }
+    }
     var old_val = field_id.find('select option:selected').text();
     select_id.change(function() {
       var spinner = field_id.find('#' + class_name + '_' + attribute_name + '_spinner');
@@ -160,10 +174,11 @@
   jQuery(document).ready(function() {
     edit_in_place('div.issue', 'issue', 'summary', '/issues/');
     var options = <%= underscores_to_spaces(Issue::STATUS).sort.to_json %>;
-    ajax_select('div.issue', 'issue', 'status', options, '/issues/');
+    ajax_select('div.issue', 'issue', 'status', options, false, '/issues/');
     options = <%= underscores_to_spaces(Issue::KIND).sort.to_json %>;
-    ajax_select('div.issue', 'issue', 'kind', options, '/issues/');
+    ajax_select('div.issue', 'issue', 'kind', options, false, '/issues/');
     ajax_check_box('div.issue', 'issue', 'public', '/issues/');
-    /* TODO: product; will need an "include blank" => true option */
+    options = <%= product_options.to_json %>;
+    ajax_select('div.issue', 'issue', 'product_id', options, true, '/issues/');
   });
 <% end %>
