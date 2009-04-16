@@ -29,7 +29,7 @@ end
 
 require 'json'
 
-World do |world|
+module CacheableFlash
   def cacheable_flash
     json = response.request.cookies['flash']
     if json
@@ -38,5 +38,6 @@ World do |world|
       {}
     end
   end
-  world # must return this or route helpers won't be available in world
 end
+
+World(CacheableFlash)
