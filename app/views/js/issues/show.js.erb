@@ -180,5 +180,6 @@
     ajax_check_box('div.issue', 'issue', 'public', '/issues/');
     options = <%= product_options.to_json %>;
     ajax_select('div.issue', 'issue', 'product_id', options, true, '/issues/');
+    edit_in_place('div.issue', 'issue', 'pending_tags', '/issues/');
   });
 <% end %>

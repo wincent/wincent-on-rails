@@ -45,12 +45,8 @@
         %th Public?
         %td{'id' => "issue_#{@issue.id}_public"}=@issue.public?
     %tr
-      %th
-        Tags
-        -if admin?
-          %br
-          =link_to 'edit', edit_issue_url(@issue)
-      %td=tag_links(@issue)
+      %th Tags
+      %td{'id' => "issue_#{@issue.id}_pending_tags"}=tag_links(@issue)
 %h2.major
   Comments
   =feed_icon issue_url(@issue, :format => :atom)
