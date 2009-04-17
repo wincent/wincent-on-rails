@@ -38,7 +38,9 @@ module IssuesHelper
   end
 
   def link_to_issue_search link_text = 'search'
-    link_to_function link_text, "$('issue_search').toggle(); $('issue_summary').focus();",
+    # TODO: make this unobtrusive, make it degrade gracefully
+    link_to_function link_text,
+      "jQuery('#issue_search').toggle(); jQuery('#issue_summary').focus()",
       :href => search_issues_url
   end
 end
