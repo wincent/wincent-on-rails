@@ -32,9 +32,10 @@
         %li=link_to 'Support', support_url
         -#%li=link_to 'About'
         %li.last
-          =link_to_function 'Search', "$('search').toggle(); $('search_box').focus();", :href => search_index_url
-          -form_tag search_index_url, :method => :post, :id => 'search', :style => 'display:none;' do
-            =text_field_tag :query, params[:query], :size => 20, :id => :search_box
+          -# TODO: make this unobtrusive
+          =link_to_function 'Search', "jQuery('#search_box').toggle(); jQuery('#search_box').focus();", :href => search_index_url
+          -form_tag search_index_url, :method => :post, :id => 'search' do
+            =text_field_tag :query, params[:query], :size => 20, :id => :search_box, :style => 'display:none;'
     #content
       #cacheable-flash
       =yield
