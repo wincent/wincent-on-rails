@@ -166,10 +166,11 @@ function edit_in_place(selector, class_name, attribute_name, url) {
           '&authenticity_token=' + encodeURIComponent(window.authenticity_token),
         'success': function(json) {
           field_id.text(json[class_name][attribute_name]);
+          field_id.removeClass('ajax_error');
         },
         'error': function() {
           field_id.text(value);
-          /* possibly add CSS error coloring here */
+          field_id.addClass('ajax_error');
           alert('something went wrong');
         },
         'complete': function() {
