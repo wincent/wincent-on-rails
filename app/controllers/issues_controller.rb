@@ -110,10 +110,9 @@ class IssuesController < ApplicationController
             page.visual_effect :fade, "issue_#{@issue.id}_ham_form"
           end
         else
-          @issue.pending_tags = params[:issue][:pending_tags]
-
-          # although note, I am not really sure why I choose to make "status" protected,
+          # I am not really sure why I chose to make "status" protected,
           # while attributes like "public" are accessible
+          set_protected_attribute :pending_tags, @issue, params[:issue]
           set_protected_attribute :status, @issue, params[:issue]
           if @issue.update_attributes params[:issue]
             redirect_to issue_url(@issue, :format => :js)
