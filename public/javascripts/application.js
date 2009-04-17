@@ -135,54 +135,58 @@ function escapeHTML(html) {
 }
 
 function edit_in_place(selector, class_name, attribute_name, url) {
-  var model_id = jQuery(selector).attr('id'); /* issue_22 */
-  var record_id = model_id.match(/_(\d+)$/)[1]; /* 22 */
-  var field_id = jQuery('#' + model_id + '_' + attribute_name); /* issue_22_summary */
-  function highlight() { field_id.addClass('highlight'); }
-  function unhighlight() { field_id.removeClass('highlight'); }
-  function clickFunction() {
-    var field_text = field_id.text();
-    field_id.unbind('mouseenter mouseleave');
-    unhighlight();
-    field_id.attr('title', 'Click outside to abort editing');
-    field_id.html('<form action="javascript:void(0)" style="display:inline;"><input type="text" value="' +
-      escapeHTML(field_text) +
-      '"></form>');
-    field_id.find('input')[0].select();
-    field_id.unbind('dblclick');
-    field_id.find('input').blur(function() {
-      field_id.text(field_text);
-      field_id.dblclick(clickFunction);
-      field_id.hover(highlight, unhighlight);
-    });
-    field_id.find('form').submit(function() {
-      var value = field_id.find('input').val();
-      field_id.text('saving...');
-      jQuery.ajax({
-        'url': url + record_id,
-        'type': 'post',
-        'dataType': 'json',
-        'data': '_method=put&' + class_name + '[' + attribute_name + ']=' + encodeURIComponent(value) +
-          '&authenticity_token=' + encodeURIComponent(window.authenticity_token),
-        'success': function(json) {
-          field_id.text(json[class_name][attribute_name]);
-          field_id.removeClass('ajax_error');
-        },
-        'error': function() {
-          field_id.text(value);
-          field_id.addClass('ajax_error');
-          alert('something went wrong');
-        },
-        'complete': function() {
-          field_id.hover(highlight, unhighlight);
-          field_id.dblclick(clickFunction);
-        }
+  var model = jQuery(selector); /* could be many */
+  model.each(function(i) {
+    /* these variable names all suck... */
+    var model_id = jQuery(this).attr('id'); /* issue_22 */
+    var record_id = model_id.match(/_(\d+)$/)[1]; /* 22 */
+    var field_id = jQuery('#' + model_id + '_' + attribute_name); /* issue_22_summary */
+    function highlight() { field_id.addClass('highlight'); }
+    function unhighlight() { field_id.removeClass('highlight'); }
+    function clickFunction() {
+      var field_text = field_id.text();
+      field_id.unbind('mouseenter mouseleave');
+      unhighlight();
+      field_id.attr('title', 'Click outside to abort editing');
+      field_id.html('<form action="javascript:void(0)" style="display:inline;"><input type="text" value="' +
+        escapeHTML(field_text) +
+        '"></form>');
+      field_id.find('input')[0].select();
+      field_id.unbind('dblclick');
+      field_id.find('input').blur(function() {
+        field_id.text(field_text);
+        field_id.dblclick(clickFunction);
+        field_id.hover(highlight, unhighlight);
       });
-    });
-  }
-  field_id.attr('title', 'Double-click to edit');
-  field_id.dblclick(clickFunction);
-  field_id.hover(highlight, unhighlight);
+      field_id.find('form').submit(function() {
+        var value = field_id.find('input').val();
+        field_id.text('saving...');
+        jQuery.ajax({
+          'url': url + record_id,
+          'type': 'post',
+          'dataType': 'json',
+          'data': '_method=put&' + class_name + '[' + attribute_name + ']=' + encodeURIComponent(value) +
+            '&authenticity_token=' + encodeURIComponent(window.authenticity_token),
+          'success': function(json) {
+            field_id.text(json[class_name][attribute_name]);
+            field_id.removeClass('ajax_error');
+          },
+          'error': function() {
+            field_id.text(value);
+            field_id.addClass('ajax_error');
+            alert('something went wrong');
+          },
+          'complete': function() {
+            field_id.hover(highlight, unhighlight);
+            field_id.dblclick(clickFunction);
+          }
+        });
+      });
+    }
+    field_id.attr('title', 'Double-click to edit');
+    field_id.dblclick(clickFunction);
+    field_id.hover(highlight, unhighlight);
+  });
 }
 
 function ajax_check_box(selector, class_name, attribute_name, url) {
