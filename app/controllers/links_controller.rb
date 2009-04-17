@@ -4,6 +4,7 @@ class LinksController < ApplicationController
   in_place_edit_for :link, :uri
   in_place_edit_for :link, :permalink
   acts_as_sortable  :by => [:id, :uri, :permalink, :click_count]
+  uses_dynamic_javascript :only => :index
 
   def index
     @links = Link.find :all, sort_options
