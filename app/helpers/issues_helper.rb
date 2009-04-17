@@ -7,16 +7,6 @@ module IssuesHelper
     "Currently showing only issues with #{scopes.join(', ')}" unless scopes.empty?
   end
 
-  def js_for_attribute attribute, value_accessor
-    remote_function \
-      :update   => attribute.to_sym,
-      :url      => { :action => "update_#{attribute.to_s}".to_sym, :id => @issue.id },
-      :with     => "'#{attribute.to_s}=' + $('issue_#{attribute.to_s}').#{value_accessor.to_s}",
-      :before   => "Element.show('#{attribute.to_s}_spinner')",
-      :complete => "Element.hide('#{attribute.to_s}_spinner')",
-      :failure  => "alert('HTTP Error ' + request.status)"
-  end
-
   def link_to_prev_issue
     link_to '&laquo; previous', issue_url(@prev), :title => "#{@prev.kind_string} \##{@prev.id}: #{@prev.summary}"
   end
