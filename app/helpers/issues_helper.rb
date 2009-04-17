@@ -7,10 +7,6 @@ module IssuesHelper
     "Currently showing only issues with #{scopes.join(', ')}" unless scopes.empty?
   end
 
-  def spinner_for_attribute attribute
-    image_tag 'spinner.gif', :id => "#{attribute.to_s}_spinner", :style => 'display:none;'
-  end
-
   def js_for_attribute attribute, value_accessor
     remote_function \
       :update   => attribute.to_sym,
