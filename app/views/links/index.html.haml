@@ -7,13 +7,15 @@
     -sortable_header_cell :click_count, 'Click count'
     %th Actions
   -for @link in @links
-    %tr{:class => cycle('odd', 'even')}
+    %tr{:class => "link #{cycle('odd', 'even')}", :id => "link_#{@link.id}"}
       %td=@link.id
-      %td=in_place_editor_field :link, :uri
-      %td=in_place_editor_field :link, :permalink
+      %td{'id' => "link_#{@link.id}_uri"}=h @link.uri
+      %td{'id' => "link_#{@link.id}_permalink"}=h @link.permalink
       %td=@link.click_count
       %td
-        = link_to 'edit', edit_link_url(@link)
+        =link_to 'edit', edit_link_url(@link)
         &nbsp;|&nbsp;
-        = link_to 'destroy', @link, :confirm => 'Are you sure?', :method => :delete
+        -# TODO: turn this into a real form; these confirm alerts aren't enough
+        -# alternatively, use the delete-but-offer-undo model
+        =link_to 'destroy', @link, :confirm => 'Are you sure?', :method => :delete
 %p=link_to 'new', new_link_url

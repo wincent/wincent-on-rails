@@ -1,8 +1,6 @@
 class LinksController < ApplicationController
   before_filter     :require_admin, :except => :show
   before_filter     :find_link, :only => [:edit, :show, :update, :destroy]
-  in_place_edit_for :link, :uri
-  in_place_edit_for :link, :permalink
   acts_as_sortable  :by => [:id, :uri, :permalink, :click_count]
   uses_dynamic_javascript :only => :index
 
@@ -30,9 +28,19 @@ class LinksController < ApplicationController
   end
 
   def show
-    # TODO: extract into Link#hit! method
-    Link.increment_counter :click_count, @link.id
-    redirect_to @link.uri, :status => 303 # "See other", GET request
+    respond_to do |format|
+      format.html {
+        # TODO: extract into Link#hit! method
+        Link.increment_counter :click_count, @link.id
+        redirect_to @link.uri, :status => 303 # "See other", GET request
+      }
+      format.js { # AJAX updates
+        require_admin do
+          # don't leak out any more information than necessary
+          render :json => @link.to_json(:only => [:uri, :permalink])
+        end
+      }
+    end
   end
 
   def edit
@@ -40,7 +48,15 @@ class LinksController < ApplicationController
   end
 
   def update
-
+    respond_to do |format|
+      format.js { # an AJAX update
+        if @link.update_attributes params[:link]
+          redirect_to link_url(@link, :format => :js)
+        else
+          render :text => '', :status => 422
+        end
+      }
+    end
   end
 
   def destroy

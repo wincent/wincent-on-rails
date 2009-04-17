@@ -24,5 +24,7 @@ POSSIBILITY OF SUCH DAMAGE.
 */
 
 jQuery(document).ready(function() {
-  /*edit_in_place('div.issue', 'issue', 'summary', '/issues/');*/
+  edit_in_place('tr.link', 'link', 'uri', '/links/');
+  /* TODO: make edit_in_place work on multiple targets, not just first one */
+  edit_in_place('tr.link', 'link', 'permalink', '/links/');
 });
