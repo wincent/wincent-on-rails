@@ -11,7 +11,29 @@ class ApplicationController < ActionController::Base
 
 protected
 
-  # For use in admin actions.
+  # For use in admin actions and other places where you want to explicitly set
+  # a protected attribute.
+  #
+  # The primary use case is the following kind of situation:
+  #
+  #   @model.foo = params[:model][:foo]           # set protected attribute
+  #   if @model.update_attributes params[:model]  # set remaining attributes
+  #     ...
+  #
+  # The problem with this workflow is that we'll get a warning like the
+  # following in the console even though we evidently know exactly what
+  # we're doing and did indeed want to set "foo":
+  #
+  #   WARNING: Can't mass-assign these protected attributes: foo
+  #
+  # So this method encapsulates the pattern of updating a protected
+  # attribute and then removing it from the params hash so that it
+  # won't provoke any unwanted warnings when the same params hash
+  # is passed in to update_attributes or similar.
+  #
+  # Given that said warning is emitted using logger.debug, it actually
+  # doesn't appear in the production environment, so this pattern
+  # is of dubious value.
   def set_protected_attribute attribute, model_instance, params_hash
     if params_hash and params_hash.has_key?(attribute)
       model_instance.send("#{attribute}=", params_hash[attribute])
