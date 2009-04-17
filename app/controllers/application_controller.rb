@@ -13,7 +13,7 @@ protected
 
   # For use in admin actions.
   def set_protected_attribute attribute, model_instance, params_hash
-    if params_hash and params_hash[attribute]
+    if params_hash and params_hash.has_key?(attribute)
       model_instance.send("#{attribute}=", params_hash[attribute])
       params_hash[attribute] = nil
     end
