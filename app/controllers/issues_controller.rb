@@ -7,7 +7,6 @@ class IssuesController < ApplicationController
   around_filter     :current_user_wrapper
   caches_page       :show, :if => Proc.new { |c| c.send(:is_atom?) }
   cache_sweeper     :issue_sweeper, :only => [ :create, :update, :destroy ]
-  in_place_edit_for :issue, :summary
   acts_as_sortable  :by => [:public, :kind, :id, :product_id, :summary, :status, :updated_at],
                     :default => :updated_at,
                     :descending => true
