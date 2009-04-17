@@ -23,7 +23,6 @@
   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
   POSSIBILITY OF SUCH DAMAGE.
   */
-  var authenticity_token = '<%= form_authenticity_token %>';
   function escapeHTML(html) {
     return html.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
   }
@@ -57,7 +56,7 @@
           'type': 'post',
           'dataType': 'json',
           'data': '_method=put&' + class_name + '[' + attribute_name + ']=' + encodeURIComponent(value) +
-            '&authenticity_token=' + encodeURIComponent(authenticity_token),
+            '&authenticity_token=' + encodeURIComponent(window.authenticity_token),
           'success': function(json) {
             field_id.text(json[class_name][attribute_name]);
           },
@@ -102,7 +101,7 @@
         'dataType': 'json',
         'data': '_method=put&' + class_name + '[' + attribute_name + ']=' +
           check_box_id.attr('checked') + '&authenticity_token=' +
-          encodeURIComponent(authenticity_token),
+          encodeURIComponent(window.authenticity_token),
         'success': function(json) {
           old_attr = check_box_id.attr('checked');
         },
@@ -156,7 +155,7 @@
         'type': 'post',
         'dataType': 'json',
         'data': '_method=put&' + class_name + '[' + attribute_name + ']=' + select_id.val() +
-          '&authenticity_token=' + encodeURIComponent(authenticity_token),
+          '&authenticity_token=' + encodeURIComponent(window.authenticity_token),
         'success': function(json) {
           old_val = field_id.find('select option:selected').text();
         },
