@@ -165,8 +165,8 @@ function edit_in_place(selector, class_name, attribute_name, url) {
           'url': url + record_id,
           'type': 'post',
           'dataType': 'json',
-          'data': '_method=put&' + class_name + '[' + attribute_name + ']=' + encodeURIComponent(value) +
-            '&authenticity_token=' + encodeURIComponent(window.authenticity_token),
+          'data': '_method=put&' + class_name + '[' + attribute_name + ']=' +
+            encodeURIComponent(value),
           'success': function(json) {
             field_id.text(json[class_name][attribute_name]);
             field_id.removeClass('ajax_error');
@@ -212,8 +212,7 @@ function ajax_check_box(selector, class_name, attribute_name, url) {
       'type': 'post',
       'dataType': 'json',
       'data': '_method=put&' + class_name + '[' + attribute_name + ']=' +
-        check_box_id.attr('checked') + '&authenticity_token=' +
-        encodeURIComponent(window.authenticity_token),
+        check_box_id.attr('checked'),
       'success': function(json) {
         old_attr = check_box_id.attr('checked');
       },
@@ -266,8 +265,8 @@ function ajax_select(selector, class_name, attribute_name, options, include_blan
       'url': url + record_id,
       'type': 'post',
       'dataType': 'json',
-      'data': '_method=put&' + class_name + '[' + attribute_name + ']=' + select_id.val() +
-        '&authenticity_token=' + encodeURIComponent(window.authenticity_token),
+      'data': '_method=put&' + class_name + '[' + attribute_name + ']=' +
+        select_id.val(),
       'success': function(json) {
         old_val = field_id.find('select option:selected').text();
       },

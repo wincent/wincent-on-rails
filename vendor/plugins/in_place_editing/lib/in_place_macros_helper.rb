@@ -41,7 +41,6 @@ module InPlaceMacrosHelper
 
     if protect_against_forgery?
       options[:with] ||= "Form.serialize(form)"
-      options[:with] += " + '&authenticity_token=' + encodeURIComponent('#{form_authenticity_token}')"
     end
 
     js_options['cancelText'] = %('#{options[:cancel_text]}') if options[:cancel_text]
