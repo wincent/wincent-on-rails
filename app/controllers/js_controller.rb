@@ -11,12 +11,13 @@ class JsController < ApplicationController
 private
 
   def template_path_from_params
-    # can't leave sanitization up to routing because attacker could still get here via default catch-all routes
-    delegating_controller = params[:delegating_controller]
-    delegated_action = params[:delegated_action]
-    unless delegating_controller =~ /\A[a-z_]+\z/ and delegated_action =~ /\A[a-z]+\z/
-      raise ArgumentError
+    # can't leave sanitization up to routing because attacker could still get
+    # here via default catch-all routes
+    delegated = params[:delegated].split('/')
+    raise ArgumentError unless delegated.length >= 2
+    raise ArgumentError unless delegated.all? do |component|
+      component =~ %r{\A[a-z_]+\z}
     end
-    "js/#{delegating_controller}/#{delegated_action}.js.erb"
+    "js/#{delegated.join('/')}.js.erb"
   end
 end

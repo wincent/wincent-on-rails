@@ -63,11 +63,10 @@ ActionController::Routing::Routes.draw do |map|
   # must pass an explicit :protocol whenever using url_for
   map.connect 'misc/:action', :controller => 'misc'
 
-  map.connect 'js/:delegating_controller/:delegated_action',
+  map.connect 'js/:delegated',
     :controller => 'js',
     :action => 'show',
-    :delegating_controller => /[a-z_]+/, # current no support for namespaces (eg. Admin::Issues)
-    :delegated_action => /[a-z]+/,
+    :delegated => %r{[a-z/_]+},
     :protocol => 'https'
 
   map.with_options :protocol => 'https' do |https|
