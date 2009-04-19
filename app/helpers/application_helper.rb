@@ -230,7 +230,15 @@ module ApplicationHelper
     else
       return
     end
-    delegating_controller = klass.to_s.gsub(/Controller$/, '').tableize
-    %Q{<script src="/js/#{delegating_controller}/#{params[:action].to_s}" type="text/javascript"></script>}
+
+    # handle namespaces (controllers with superclasses)
+    controllers = []
+    loop do
+      c = klass.to_s.gsub(/Controller$/, '')
+      break if c == 'Application'
+      controllers.unshift c.tableize
+      break unless klass = klass.superclass
+    end
+    %Q{<script src="/js/#{controllers.join('/')}/#{params[:action].to_s}" type="text/javascript"></script>}
   end
 end
