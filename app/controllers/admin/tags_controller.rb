@@ -21,7 +21,7 @@ class Admin::TagsController < ApplicationController
       format.js { # an AJAX update
         if @tag.update_attributes params[:tag]
           # don't use admin_tag_url here because we want to force the use of a
-          # numeric id
+          # numeric id; url_for will keep us in admin namespace here
           redirect_to url_for(:controller => 'tags', :action => 'show',
             :id => @tag.id, :protocol => 'https')
         else
