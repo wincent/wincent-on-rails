@@ -223,12 +223,26 @@ module ApplicationHelper
   end
 
   def button_to_moderate_model_as_ham model, url
-    haml_tag :form, { :id => "#{model.class.to_s.downcase}_#{model.id}_ham_form", :style => 'display:inline;' } do
-      button = submit_to_remote 'button', 'ham',
-        :url => url,
-        :method => :put,
-        :failure => "alert('Failed to mark as ham')"
-      concat button
+    form_id = "#{model.class.to_s.downcase}_#{model.id}_ham_form"
+    haml_tag :form, { :id => form_id, :style => 'display:inline;' } do
+      onclick = inline_js do
+        <<-JS
+          jQuery.ajax({
+            'url': '#{url}',
+            'type': 'post',
+            'dataType': 'json',
+            'data': '_method=put&button=ham',
+            'success': function() {
+              jQuery('\##{form_id}').fadeOut('slow');
+            },
+            'error': function() {
+              alert('Failed to mark as ham');
+            }
+          });
+        JS
+      end
+      haml_tag :input, { :name => 'button', :onclick => onclick,
+        :type => 'button', :value => 'ham' }
     end
   end
 

@@ -104,10 +104,7 @@ class IssuesController < ApplicationController
       format.js {
         if params[:button] == 'ham'
           @issue.moderate_as_ham!
-          render :update do |page|
-            page.visual_effect :highlight, "issue_#{@issue.id}", :duration => 1.5
-            page.visual_effect :fade, "issue_#{@issue.id}_ham_form"
-          end
+          render :json => {}.to_json
         else
           # I am not really sure why I chose to make "status" protected,
           # while attributes like "public" are accessible
