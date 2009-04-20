@@ -9,4 +9,4 @@ Feature: annotated changes to issue metadata
     And I edit the issue with summary "foo"
     And I fill in "Summary" with "bar"
     And I press "Save changes"
-    Then I should see "<strong>Summary</strong> changed"
+    Then I should see "Summary changed"

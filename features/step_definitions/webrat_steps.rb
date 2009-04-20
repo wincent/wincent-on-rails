@@ -87,10 +87,18 @@ When /^I attach the file at "(.*)" to "(.*)" $/ do |path, field|
 end
 
 Then /^I should see "(.*)"$/ do |text|
+  HTML::FullSanitizer.new.sanitize(response.body).should =~/#{text}/m
+end
+
+Then /^The page source should match "(.*)"$/ do |text|
   response.body.should =~ /#{text}/m
 end
 
 Then /^I should not see "(.*)"$/ do |text|
+  HTML::FullSanitizer.new.sanitize(response.body).should_not =~/#{text}/m
+end
+
+Then /^The page source should not match "(.*)"$/ do |text|
   response.body.should_not =~ /#{text}/m
 end
 
