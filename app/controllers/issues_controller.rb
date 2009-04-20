@@ -141,22 +141,6 @@ class IssuesController < ApplicationController
     end
   end
 
-  # AJAX method, admin only.
-  def update_product_id
-    if params[:product_id] == '' # special case: user selected the blank (no product) from the pop-up
-      @issue.product = nil
-    else
-      @issue.product_id = params[:product_id]
-    end
-    handle_ajax_request
-  end
-
-  # AJAX method, admin only.
-  def update_public
-    @issue.public = params[:public]
-    handle_ajax_request
-  end
-
   def search
     conditions  = Issue.prepare_search_conditions default_access_options, params[:issue]
     @paginator  = Paginator.new params, Issue.count(:conditions => conditions), search_issues_url
@@ -165,14 +149,6 @@ class IssuesController < ApplicationController
   end
 
 private
-
-  # If this is an AJAX request tries to save the model and returns a 200 status code on success, 422 on failure.
-  def handle_ajax_request
-    respond_to do |format|
-      format.js { render :text => '', :status => (@issue.save ? 200 : 422) }
-    end
-  end
-
 
   def find_product
     @product = Product.find_by_name(params[:product]) if params[:product]
