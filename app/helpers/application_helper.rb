@@ -187,14 +187,38 @@ module ApplicationHelper
     end
   end
 
+  # in the interests of readable JavaScript source code in helpers this allows
+  # us to use indentation and neatly format our JS across multiple lines, but
+  # "compress" the output when it is actually used in templates inline.
+  def inline_js &block
+    js = yield
+    js.gsub(/\s+/, ' ').strip
+  end
+
   def button_to_destroy_model model, url
-    haml_tag :form, { :id => "#{model.class.to_s.downcase}_#{model.id}_destroy_form", :style => 'display:inline;' } do
-      button = submit_to_remote 'button', 'destroy',
-        :url      => url,
-        :method   => :delete,
-        :failure  => "alert('Failed to delete')",
-        :confirm  => 'Really delete?'
-      concat button
+    model_id = "#{model.class.to_s.downcase}_#{model.id}"
+    form_id = "#{model_id}_destroy_form"
+    haml_tag :form, { :id => form_id, :style => 'display:inline;' } do
+      onclick = inline_js do
+        <<-JS
+          if (confirm('Really delete?')) {
+            jQuery.ajax({
+              'url': '#{url}',
+              'type': 'post',
+              'dataType': 'json',
+              'data': '_method=delete',
+              'success': function() {
+                jQuery('\##{model_id}').fadeOut('slow');
+              },
+              'error': function() {
+                alert('Failed to delete');
+              }
+            });
+          };
+        JS
+      end
+      haml_tag :input, { :name => 'button', :onclick => onclick,
+        :type => 'button', :value => 'destroy' }
     end
   end
 

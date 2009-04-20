@@ -134,9 +134,7 @@ class IssuesController < ApplicationController
         redirect_to issues_url
       }
       format.js {
-        render :update do |page|
-          page.visual_effect :fade, "issue_#{@issue.id}"
-        end
+        render :json => {}.to_json
       }
     end
   end
