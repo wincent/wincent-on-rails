@@ -6,9 +6,9 @@
     -sortable_header_cell :created_at, 'When'
     %th Actions
   -for @post in @posts
-    %tr{:class => cycle('odd', 'even')}
-      %td=in_place_editor_field :post, :title
-      %td=in_place_editor_field :post, :permalink
+    %tr{:class => "post #{cycle('odd', 'even')}", :id => "post_#{@post.id}"}
+      %td{'id' => "post_#{@post.id}_title"}=h @post.title
+      %td{'id' => "post_#{@post.id}_permalink"}=h @post.permalink
       %td=timeinfo @post
       %td.links
         =link_to 'edit', edit_post_url(@post)
