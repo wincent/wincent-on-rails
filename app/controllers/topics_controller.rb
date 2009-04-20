@@ -79,10 +79,7 @@ class TopicsController < ApplicationController
       format.js {
         if params[:button] == 'ham'
           @topic.moderate_as_ham!
-          render :update do |page|
-            page.visual_effect :highlight, "topic_#{@topic.id}", :duration => 1.5
-            page.visual_effect :fade, "topic_#{@topic.id}_ham_form"
-          end
+          render :json => {}.to_json
         else
           raise 'unrecognized AJAX action'
         end
@@ -97,11 +94,7 @@ class TopicsController < ApplicationController
     topic.destroy
     respond_to do |format|
       format.html { redirect_to forum_url(@forum) }
-      format.js {
-        render :update do |page|
-          page.visual_effect :fade, "topic_#{topic.id}"
-        end
-      }
+      format.js { render :json => {}.to_json }
     end
   end
 

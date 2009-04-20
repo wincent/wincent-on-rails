@@ -101,10 +101,7 @@ class CommentsController < ApplicationController
       format.js {
         if params[:button] == 'ham'
           @comment.moderate_as_ham!
-          render :update do |page|
-            page.visual_effect :highlight, "comment_#{@comment.id}", :duration => 1.5
-            page.visual_effect :fade, "comment_#{@comment.id}_ham_form"
-          end
+          render :json => {}.to_json
         else
           raise 'unrecognized AJAX action'
         end
@@ -121,9 +118,7 @@ class CommentsController < ApplicationController
         redirect_to comments_url
       }
       format.js {
-        render :update do |page|
-          page.visual_effect :fade, "comment_#{@comment.id}"
-        end
+        render :json => {}.to_json
       }
     end
   end
