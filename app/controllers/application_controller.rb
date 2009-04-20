@@ -26,12 +26,16 @@ protected
 
   # TODO: make a special 404 action that provides hints for where people could look
   def record_not_found(uri = nil)
-    if uri.class != String
-      # beware that in the default case uri will be an instance of ActiveRecord::RecordNotFound
-      uri = root_url
+    if request.xhr? or is_atom?
+      render :text => '', :status => 404
+    else # HTML requests
+      if uri.class != String
+        # beware that in the default case uri will be an instance of ActiveRecord::RecordNotFound
+        uri = root_url
+      end
+      flash[:error] = 'Requested %s not found' % controller_name.singularize
+      redirect_to uri
     end
-    flash[:error] = 'Requested %s not found' % controller_name.singularize
-    redirect_to uri
   end
 
   def is_atom?
