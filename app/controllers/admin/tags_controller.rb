@@ -1,7 +1,7 @@
 class Admin::TagsController < ApplicationController
-  before_filter     :require_admin
-  before_filter     :find_tag, :only => [:show, :update]
-  acts_as_sortable  :by => [:name, :taggings_count], :default => :name
+  before_filter           :require_admin
+  before_filter           :find_tag, :only => [:show, :update]
+  acts_as_sortable        :by => [:name, :taggings_count], :default => :name
   uses_dynamic_javascript :only => :index
 
   def index
@@ -11,7 +11,7 @@ class Admin::TagsController < ApplicationController
   def show
     respond_to do |format|
       format.js { # AJAX updates
-          render :json => @tag.to_json(:only => [:name])
+        render :json => @tag.to_json(:only => [:name])
       }
     end
   end
