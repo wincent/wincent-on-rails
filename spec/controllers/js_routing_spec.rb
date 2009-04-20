@@ -5,9 +5,15 @@ describe JsController do
     it 'maps #show' do
       route_for(:controller => 'js',
                 :action => 'show',
-                :delegating_controller => 'issues',
-                :delegated_action => 'edit',
+                :delegated => 'issues/edit',
                 :protocol => 'https').should == '/js/issues/edit'
+    end
+
+    it 'maps #show inside admin namespace' do
+      route_for(:controller => 'js',
+                :action => 'show',
+                :delegated => 'admin/issues/edit',
+                :protocol => 'https').should == '/js/admin/issues/edit'
     end
   end
 
@@ -16,8 +22,16 @@ describe JsController do
       params_from(:get, '/js/issues/edit').should == {
         :controller => 'js',
         :action => 'show',
-        :delegating_controller => 'issues',
-        :delegated_action => 'edit',
+        :delegated => 'issues/edit',
+        :protocol => 'https'
+      }
+    end
+
+    it 'generates params for #show inside admin namespace' do
+      params_from(:get, '/js/admin/issues/edit').should == {
+        :controller => 'js',
+        :action => 'show',
+        :delegated => 'admin/issues/edit',
         :protocol => 'https'
       }
     end
