@@ -288,11 +288,20 @@ function observe_field(options) {
     var new_content = options['field'].val();
     if (new_content != observe_field_last_content) {
       options['before']();
+      var data = options['fieldName'] + '=' + encodeURIComponent(new_content);
+      if (options['include']) {
+        var max = options['include'].length;
+        for (var i = 0; i < max; i++) {
+          var field = jQuery('\#' + options['kind'] + '_' +
+            options['include'][i]).val();
+          data += '&' + options['include'][i] +'=' +encodeURIComponent(field);
+        }
+      }
       jQuery.ajax({
         'url': options['url'],
         'type': 'post',
         'dataType': 'html',
-        'data': options['fieldName'] + '=' + encodeURIComponent(new_content),
+        'data': data,
         'success': function(html) { options['success'](html); },
         'error': function() { options['error'](); },
         'complete': function() {

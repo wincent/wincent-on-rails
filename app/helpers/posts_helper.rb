@@ -14,26 +14,75 @@ module PostsHelper
   end
 
   def link_to_update_preview
-    link_to_remote 'update', common_options, :class => 'update_link'
+    onclick = inline_js do
+      <<-JS
+        jQuery('\#spinner').show();
+        jQuery.ajax({
+          'url': '#{posts_url}.js',
+          'type': 'post',
+          'dataType': 'html',
+          'data': 'title=' + encodeURIComponent(jQuery('\#post_title').val()) +
+            '&excerpt=' + encodeURIComponent(jQuery('\#post_excerpt').val()) +
+            '&body=' + encodeURIComponent(jQuery('\#post_body').val()),
+          'success': function(html) { jQuery('\#preview').html(html); },
+          'error': function() { alert('an error occurred updating the preview'); },
+          'complete': function() { jQuery('\#spinner').hide(); }
+        });
+        return false;
+      JS
+    end
+    %Q{<a href="#" class="update_link" onclick="#{onclick}">update</a>}
+  end
+
+  def observe_title
+    javascript_tag <<-JS
+      observe_field({
+        'kind': 'post',
+        'field': jQuery('\#post_title'),
+        'fieldName': 'title',
+        'include': ['excerpt', 'body'],
+        'interval': 3,
+        'url': '#{posts_url}.js',
+        'before': function() { jQuery('\#spinner').show(); },
+        'success': function(html) { jQuery('\#preview').html(html); },
+        'error': function(html) { alert('an error occurred updating the preview'); },
+        'complete': function() { jQuery('\#spinner').hide(); },
+      });
+    JS
   end
 
   def observe_excerpt
-    observe_field 'post_excerpt', common_options.merge({:frequency => 30.0})
+    javascript_tag <<-JS
+      observe_field({
+        'kind': 'post',
+        'field': jQuery('\#post_excerpt'),
+        'fieldName': 'excerpt',
+        'include': ['title', 'body'],
+        'interval': 3,
+        'url': '#{posts_url}.js',
+        'before': function() { jQuery('\#spinner').show(); },
+        'success': function(html) { jQuery('\#preview').html(html); },
+        'error': function(html) { alert('an error occurred updating the preview'); },
+        'complete': function() { jQuery('\#spinner').hide(); },
+      });
+    JS
   end
 
   def observe_body
-    observe_field 'post_body', common_options.merge({:frequency => 30.0})
-  end
-
-  def common_options
-    {
-      :url => posts_url,
-      :method => 'post',
-      :update => 'preview',
-      :with => "'title=' + encodeURIComponent($('post_title').value) + '&excerpt=' + encodeURIComponent($('post_excerpt').value) + '&body=' + encodeURIComponent($('post_body').value)",
-      :before => "Element.show('spinner')",
-      :complete => "Element.hide('spinner')"
-    }
+    javascript_tag <<-JS
+      observe_field({
+        'kind': 'post',
+        'field': jQuery('\#post_body'),
+        'fieldName': 'body',
+        'include': ['title', 'excerpt'],
+        'interval': 3,
+        'url': '#{posts_url}.js',
+        'before': function() { jQuery('\#spinner').show(); },
+        'success': function(html) { jQuery('\#preview').html(html); },
+        'error': function(html) { alert('an error occurred updating the preview'); },
+        'complete': function() { jQuery('\#spinner').hide(); },
+      });
+    JS
   end
 
   def comment_count number
