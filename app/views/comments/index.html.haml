@@ -1,3 +1,5 @@
+-content_for :javascript do
+  =javascript_include_tag 'ajax'
 =page_title 'Comments awaiting moderation'
 -if @paginator
   .pagination=@paginator.pagination_links

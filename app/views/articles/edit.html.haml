@@ -1,3 +1,5 @@
+-content_for :javascript do
+  =javascript_include_tag 'ajax'
 %h1 Edit article
 =error_messages_for :article
 -form_for @article, :url => article_url, :method => 'put' do |f|

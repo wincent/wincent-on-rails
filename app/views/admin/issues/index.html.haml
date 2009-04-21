@@ -1,3 +1,5 @@
+-content_for :javascript do
+  =javascript_include_tag 'ajax'
 .pagination=@paginator.pagination_links if @paginator
 -for issue in @issues
   %div[issue]

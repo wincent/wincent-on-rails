@@ -1,4 +1,6 @@
 =page_title 'Posts administration'
+-content_for :javascript do
+  =javascript_include_tag 'ajax'
 %table
   %tr
     -sortable_header_cell :title, 'Title'

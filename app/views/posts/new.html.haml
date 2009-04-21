@@ -1,3 +1,5 @@
+-content_for :javascript do
+  =javascript_include_tag 'ajax'
 %h1 Create new post
 =error_messages_for :post
 -form_for @post, :url => posts_url do |f|
