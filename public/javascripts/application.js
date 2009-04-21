@@ -70,7 +70,8 @@ function insertFlash(css, msg) {
 function displayCacheableFlash() {
   var flash = getCookie('flash');
   if (flash) {
-    flash = unescape(flash).gsub(/\+/, ' ').evalJSON(true);
+    flash = unescape(flash).replace(/\+/g, ' ');
+    flash = eval('flash = ' + flash + ';');
     insertFlash('error', flash.error);
     insertFlash('notice', flash.notice);
     deleteCookie('flash');
@@ -88,7 +89,7 @@ function relativizeDates()
         'March', 'April', 'May', 'June', 'July',
         'August', 'September', 'October', 'November',
         'December');
-    var seconds = (dist / 1000).round();
+    var seconds = Math.round((dist / 1000));
     if (seconds < 0) {
       result = 'in the future';
     } else if (seconds == 0) {
@@ -102,19 +103,19 @@ function relativizeDates()
     } else if (seconds < 300) { // 5 minutes
       result = 'a few minutes ago';
     } else if (seconds < 3600) { // 60 minutes
-      result = (seconds / 60).round() + ' minutes ago';
+      result = Math.round(seconds / 60) + ' minutes ago';
     } else if (seconds < 7200) {
       result = 'an hour ago';
     } else if (seconds < 86400) { // 24 hours
-      result = (seconds / 3600).round() + ' hours ago';
+      result = Math.round(seconds / 3600) + ' hours ago';
     } else {
-      var days = (seconds / 86400).round();
+      var days = Math.round(seconds / 86400);
       if (days == 1) {
         result = 'yesterday';
       } else if (days <= 7) {
         result = days + ' days ago';
       } else {
-        var weeks = (days / 7).round();
+        var weeks = Math.round(days / 7);
         if (weeks == 1) {
           result = 'a week ago';
         } else if (weeks <= 6) {
