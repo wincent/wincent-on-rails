@@ -30,7 +30,7 @@
 %h2
   ==Preview (#{link_to_update_preview})
   =observe_body
-  =image_tag 'spinner.gif', :id => 'spinner', :style => 'display:none;'
+  =spinner_tag
   -# TODO: graceful non-JS fallback
 #preview=@article.body.w :base_heading_level => 2
 %p=link_to 'index', articles_url
