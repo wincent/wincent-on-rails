@@ -40,7 +40,7 @@ class ArticlesController < ApplicationController
       # this is the AJAX preview; we abuse the format here:
       # request URL ends in "js", but we'll send HTML
       format.js {
-        @preview = params[:body] || ''
+        @article = Article.new :title => params[:title], :body => params[:body]
         render :partial => 'preview'
       }
     end
