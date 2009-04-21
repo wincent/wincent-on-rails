@@ -282,19 +282,26 @@ function ajax_select(selector, class_name, attribute_name, options, include_blan
 }
 
 function observe_field(options) {
-  /* TODO: only post if content actually changed */
-  var last_content = null;
+  /* for now using an ugly global variable (one observed field per window) */
+  observe_field_last_content = options['field'].val();
   setInterval(function() {
-    options['before']();
-    jQuery.ajax({
-      'url': options['url'],
-      'type': 'post',
-      'dataType': 'html',
-      'data': options['fieldName'] + '=' + encodeURIComponent(options['field'].val()),
-      'success': function(html) { options['success'](html); },
-      'error': function() { options['error'](); },
-      'complete': function() { options['complete'](); }
-    });
+    var new_content = options['field'].val();
+    if (new_content != observe_field_last_content) {
+      options['before']();
+      jQuery.ajax({
+        'url': options['url'],
+        'type': 'post',
+        'dataType': 'html',
+        'data': options['fieldName'] + '=' + encodeURIComponent(new_content),
+        'success': function(html) { options['success'](html); },
+        'error': function() { options['error'](); },
+        'complete': function() {
+          options['complete']();
+          /* regardless of success/failure, only try to submit once */
+          observe_field_last_content = new_content;
+        }
+      });
+    }
   }, (options['interval'] || 30) * 1000);
 }
 
