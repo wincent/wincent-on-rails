@@ -59,9 +59,7 @@ ActionController::Routing::Routes.draw do |map|
   map.paginated_articles '/wiki/page/:page', :controller => 'articles', :action => 'index', :protocol => 'https'
 
   # regular routes
-  # note that we cannot specify :protocol here without breaking the url_for method
-  # must pass an explicit :protocol whenever using url_for
-  map.connect 'misc/:action', :controller => 'misc'
+  map.connect 'misc/:action', :controller => 'misc', :protocol => 'https'
 
   map.connect 'heartbeat/ping', :controller => 'heartbeat', :action => 'ping', :protocol => 'https'
 
@@ -89,6 +87,9 @@ ActionController::Routing::Routes.draw do |map|
       https.resources :issues
       https.resources :posts
       https.resources :tags
+
+      # without this url_for() is broken in app/views/layouts in the admin namespace
+      https.connect 'misc/:action', :controller => 'misc'
     end
   end
 
