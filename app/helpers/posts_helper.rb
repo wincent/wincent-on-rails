@@ -8,9 +8,12 @@ module PostsHelper
     @post.body ? (@post.body.w :base_heading_level => 1) : ''
   end
 
-  def excerpt_and_body_html
-    text = [(@post.excerpt || ''), (@post.body || '')].join("\n\n")
-    text.w :base_heading_level => 2
+  def title_excerpt_and_body_html
+    text = []
+    text << (@post.title.blank? ? '' : "= #{@post.title} =")
+    text << (@post.excerpt || '')
+    text << (@post.body || '')
+    text.join("\n\n").w :base_heading_level => 2
   end
 
   def link_to_update_preview
