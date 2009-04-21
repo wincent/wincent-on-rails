@@ -46,16 +46,31 @@ describe JsController, 'GET /js/:delegated' do
 
   it 'should complain if delegating namespace parameter is invalidly formatted' do
     @namespace = '99999'
-    lambda { do_get }.should raise_error(ArgumentError)
+    lambda { do_get }.should raise_error(ActionController::RoutingError)
   end
 
   it 'should complain if delegating controller parameter is invalidly formatted' do
     @delegating_controller = '99999'
-    lambda { do_get }.should raise_error(ArgumentError)
+    lambda { do_get }.should raise_error(ActionController::RoutingError)
   end
 
   it 'should complain if delegated action parameter is invalidly formatted' do
     @delegated_action = 'foo-bar'
-    lambda { do_get }.should raise_error(ArgumentError)
+    lambda { do_get }.should raise_error(ActionController::RoutingError)
+  end
+
+  it 'should complain if both controller and action not supplied' do
+    lambda {
+      get :show, :protocol => 'https', :delegated => 'mycontroller'
+    }.should raise_error(ActionController::RoutingError)
+    lambda {
+      get :show, :protocol => 'https', :delegated => 'mycontroller/'
+    }.should raise_error(ActionController::RoutingError)
+  end
+
+  it 'should complain about maliciously formatted parameters (..)' do
+    lambda {
+      get :show, :protocol => 'https', :delegated => '../../../../etc/passwd'
+    }.should raise_error(ActionController::RoutingError)
   end
 end

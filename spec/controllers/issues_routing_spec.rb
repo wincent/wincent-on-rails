@@ -69,9 +69,7 @@ describe IssuesController do
     end
 
     it "should generate params { :controller => 'issues', action => 'search', :protocol => 'https' } from POST /issues/search" do
-      # one wart remains in the move from HTTP to HTTPS: the "search" action, which is defined as a "collection"
-      # does not get the protocol right ("https") during recognition (but generation is ok)
-      params_from(:post, '/issues/search').should == { :controller => 'issues', :action => 'search' }
+      params_from(:post, '/issues/search').should == { :controller => 'issues', :action => 'search', :protocol => 'https' }
     end
   end
 end

@@ -169,7 +169,7 @@ describe IssuesController, 'PUT /issues/:id (html format)' do
   end
 
   def do_put
-    put :update, :issue => { :id => @issue.id, :pending_tags => 'foo bar baz' }, :protocol => 'https'
+    put :update, :id => @issue.id, :issue => { :pending_tags => 'foo bar baz' }, :protocol => 'https'
   end
 
   it 'should require administrator privileges' do

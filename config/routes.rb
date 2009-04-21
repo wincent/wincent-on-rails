@@ -7,7 +7,7 @@ ActionController::Routing::Routes.draw do |map|
     https.resources :confirmations, :as => :confirm
     https.resources :issues,
                     :has_many => [ :comments ],
-                    :collection => { :search => :get }
+                    :collection => { :search => [:get, :post] }
     https.resources :links
     https.resources :products
     https.resources :sessions
@@ -68,7 +68,7 @@ ActionController::Routing::Routes.draw do |map|
   map.connect 'js/:delegated',
     :controller => 'js',
     :action => 'show',
-    :delegated => %r{[a-z/_]+},
+    :delegated => %r{([a-z_]+/)+[a-z_]+},
     :protocol => 'https'
 
   map.with_options :protocol => 'https' do |https|
@@ -96,12 +96,4 @@ ActionController::Routing::Routes.draw do |map|
     #https.root :controller => 'products' # action defaults to index
     https.root :controller => 'posts' # temporary only
   end
-
-  # the default routes, at lowest priority, needed for AJAX in-place editing
-  # the alternative is to specify explicit ":member" or ":collection" parameters above,
-  # which won't work as soon as you start nesting resources
-  # NOTE: cannot specify :protocol => 'https' here (breaks url_for)
-  #       so _must_ be stringent about explicitly specifying https whenever using url_for
-  map.connect ':controller/:action/:id'
-  map.connect ':controller/:action/:id.:format'
 end
