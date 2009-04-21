@@ -1,20 +1,35 @@
 module ArticlesHelper
   def link_to_update_preview
-    link_to_remote 'update', common_options, :class => 'update_link'
+    onclick = inline_js do
+      <<-JS
+        jQuery('\#spinner').show();
+        jQuery.ajax({
+          'url': '#{articles_url}.js',
+          'type': 'post',
+          'dataType': 'html',
+          'data': 'body=' + encodeURIComponent(jQuery('\#article_body').val()),
+          'success': function(html) { jQuery('\#preview').html(html); },
+          'error': function() { alert('an error occurred updating the preview'); },
+          'complete': function() { jQuery('\#spinner').hide(); }
+        });
+        return false;
+      JS
+    end
+    %Q{<a href="#" class="update_link" onclick="#{onclick}">update</a>}
   end
 
   def observe_body
-    observe_field 'article_body', common_options.merge({:frequency => 30.0})
-  end
-
-  def common_options
-    {
-      :url => articles_url,
-      :method => 'post',
-      :update => 'preview',
-      :with => "'body=' + encodeURIComponent($('article_body').value)",
-      :before => "Element.show('spinner')",
-      :complete => "Element.hide('spinner')"
-    }
+    javascript_tag <<-JS
+      observe_field({
+        'field': jQuery('\#article_body'),
+        'fieldName': 'body',
+        'interval': 30,
+        'url': '#{articles_url}.js',
+        'before': function() { jQuery('\#spinner').show(); },
+        'success': function(html) { jQuery('\#preview').html(html); },
+        'error': function(html) { alert('an error occurred updating the preview'); },
+        'complete': function() { jQuery('\#spinner').hide(); },
+      });
+    JS
   end
 end

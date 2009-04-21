@@ -37,7 +37,8 @@ class ArticlesController < ApplicationController
         end
       }
 
-      # this is the AJAX preview
+      # this is the AJAX preview; we abuse the format here:
+      # request URL ends in "js", but we'll send HTML
       format.js {
         @preview = params[:body] || ''
         render :partial => 'preview'

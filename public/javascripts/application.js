@@ -281,6 +281,23 @@ function ajax_select(selector, class_name, attribute_name, options, include_blan
   });
 }
 
+function observe_field(options) {
+  /* TODO: only post if content actually changed */
+  var last_content = null;
+  setInterval(function() {
+    options['before']();
+    jQuery.ajax({
+      'url': options['url'],
+      'type': 'post',
+      'dataType': 'html',
+      'data': options['fieldName'] + '=' + encodeURIComponent(options['field'].val()),
+      'success': function(html) { options['success'](html); },
+      'error': function() { options['error'](); },
+      'complete': function() { options['complete'](); }
+    });
+  }, (options['interval'] || 30) * 1000);
+}
+
 jQuery(document).ready(function() {
   setUpLoginLogoutLinks();
   displayCacheableFlash();
