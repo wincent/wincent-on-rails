@@ -63,6 +63,8 @@ ActionController::Routing::Routes.draw do |map|
   # must pass an explicit :protocol whenever using url_for
   map.connect 'misc/:action', :controller => 'misc'
 
+  map.connect 'heartbeat/ping', :controller => 'heartbeat', :action => 'ping', :protocol => 'https'
+
   map.connect 'js/:delegated',
     :controller => 'js',
     :action => 'show',
