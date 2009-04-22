@@ -181,6 +181,40 @@ function ajax_select(selector, class_name, attribute_name, options, include_blan
   });
 }
 
+function setup_preview_link(options) {
+  var field = $('#' + options['kind'] + '_' + options['fieldName']);
+  $('#preview_link').append(' (<a href="#" class="update_link">update</a>)' +
+    '<img id="spinner" src="/images/spinner.gif" alt="spinner" style="display:none;" />');
+  $('#preview_link a').click(function() {
+    $('#spinner').show();
+    var data = options['fieldName'] + '=' + encodeURIComponent(field.val());
+    if (options['include']) {
+      var max = options['include'].length;
+      for (var i = 0; i < max; i++) {
+        var included = $('#' + options['kind'] + '_' +
+          options['include'][i]).val();
+        data += '&' + options['include'][i] +'=' +
+          encodeURIComponent(included);
+      }
+    }
+    $.ajax({
+      'url': options['url'],
+      'type': 'post',
+      'dataType': 'html',
+      'data': data,
+      'success': function(html) {
+        $('#preview').html(html);
+        clearAJAXFlash();
+      },
+      'error': function(req) {
+        insertAJAXFlash('error', req.responseText);
+      },
+      'complete': function() { $('#spinner').hide(); }
+    });
+    return false;
+  });
+}
+
 function observe_field(options) {
   // defaults
   var field = options['field'] ||

@@ -24,26 +24,6 @@
 $(function() {
   observe_field({ 'kind': 'tweet', 'fieldName': 'body', 'interval': 5, 'url':
     '<%= tweets_url %>.js' });
-
-  // this will be factored out into ajax.js after this initial trial
-  $('#preview_link').append(' (<a href="#" class="update_link">update</a>)' +
-    '<img id="spinner" src="/images/spinner.gif" alt="spinner" style="display:none;" />');
-  $('#preview_link a').click(function() {
-    $('#spinner').show();
-    $.ajax({
-      'url': '<%= tweets_url %>.js',
-      'type': 'post',
-      'dataType': 'html',
-      'data': 'body=' + encodeURIComponent($('#tweet_body').val()),
-      'success': function(html) {
-        $('#preview').html(html);
-        clearAJAXFlash();
-      },
-      'error': function(req) {
-        insertAJAXFlash('error', req.responseText);
-      },
-      'complete': function() { $('#spinner').hide(); }
-    });
-    return false;
-  });
+  setup_preview_link({ 'kind': 'tweet', 'fieldName': 'body', 'url':
+    '<%= tweets_url %>.js' });
 });
