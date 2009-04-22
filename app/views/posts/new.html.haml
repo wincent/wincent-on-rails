@@ -36,10 +36,8 @@
       %th Accepts comments
       %td=f.check_box :accepts_comments
   %p=f.submit 'Create'
-%h2
-  ==Preview (#{link_to_update_preview})
-  =spinner_tag
-  -# TODO: graceful non-JS fallback
+%h2#preview_link Preview
+-# TODO: graceful non-JS fallback
 #ajax-flash
 #preview=title_excerpt_and_body_html
 %p=link_to 'back', posts_url
