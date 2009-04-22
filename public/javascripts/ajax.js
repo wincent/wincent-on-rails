@@ -182,7 +182,10 @@ function ajax_select(selector, class_name, attribute_name, options, include_blan
 }
 
 function observe_field(options) {
+  // defaults
+  var interval = (options['interval'] || 30) * 1000;
   var before = options['before'] || function() { $('#spinner').show(); };
+
   if (typeof window.observed_field_contents == 'undefined')
     window.observed_field_contents = {};
   window.observed_field_contents[options['field'].attr('id')] =
@@ -217,5 +220,5 @@ function observe_field(options) {
         }
       });
     }
-  }, (options['interval'] || 30) * 1000);
+  }, interval);
 }
