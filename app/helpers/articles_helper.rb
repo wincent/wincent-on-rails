@@ -38,7 +38,6 @@ module ArticlesHelper
         'field': $('\#article_title'),
         'fieldName': 'title',
         'include': ['body'],
-        'interval': 30,
         'url': '#{articles_url}.js',
         'success': function(html) {
           $('\#preview').html(html);
@@ -59,7 +58,6 @@ module ArticlesHelper
         'field': $('\#article_body'),
         'fieldName': 'body',
         'include': ['title'],
-        'interval': 30,
         'url': '#{articles_url}.js',
         'success': function(html) {
           $('\#preview').html(html);

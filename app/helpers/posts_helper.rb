@@ -49,7 +49,6 @@ module PostsHelper
         'field': $('\#post_title'),
         'fieldName': 'title',
         'include': ['excerpt', 'body'],
-        'interval': 30,
         'url': '#{posts_url}.js',
         'success': function(html) {
           $('\#preview').html(html);
@@ -70,7 +69,6 @@ module PostsHelper
         'field': $('\#post_excerpt'),
         'fieldName': 'excerpt',
         'include': ['title', 'body'],
-        'interval': 30,
         'url': '#{posts_url}.js',
         'success': function(html) {
           $('\#preview').html(html);
@@ -91,7 +89,6 @@ module PostsHelper
         'field': $('\#post_body'),
         'fieldName': 'body',
         'include': ['title', 'excerpt'],
-        'interval': 30,
         'url': '#{posts_url}.js',
         'success': function(html) {
           $('\#preview').html(html);
