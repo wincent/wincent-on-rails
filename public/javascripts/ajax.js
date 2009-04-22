@@ -182,6 +182,7 @@ function ajax_select(selector, class_name, attribute_name, options, include_blan
 }
 
 function observe_field(options) {
+  var before = options['before'] || function() { $('#spinner').show(); };
   if (typeof window.observed_field_contents == 'undefined')
     window.observed_field_contents = {};
   window.observed_field_contents[options['field'].attr('id')] =
@@ -191,10 +192,7 @@ function observe_field(options) {
     var old_content =
       window.observed_field_contents[options['field'].attr('id')];
     if (new_content != old_content) {
-      if (options['before'])
-        options['before']();
-      else // default action
-        $('#spinner').show();
+      before();
       var data = options['fieldName'] + '=' + encodeURIComponent(new_content);
       if (options['include']) {
         var max = options['include'].length;
