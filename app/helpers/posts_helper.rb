@@ -42,39 +42,6 @@ module PostsHelper
     %Q{<a href="#" class="update_link" onclick="#{onclick}">update</a>}
   end
 
-  def observe_title
-    javascript_tag <<-JS
-      observe_field({
-        'kind': 'post',
-        'fieldName': 'title',
-        'include': ['excerpt', 'body'],
-        'url': '#{posts_url}.js'
-      });
-    JS
-  end
-
-  def observe_excerpt
-    javascript_tag <<-JS
-      observe_field({
-        'kind': 'post',
-        'fieldName': 'excerpt',
-        'include': ['title', 'body'],
-        'url': '#{posts_url}.js'
-      });
-    JS
-  end
-
-  def observe_body
-    javascript_tag <<-JS
-      observe_field({
-        'kind': 'post',
-        'fieldName': 'body',
-        'include': ['title', 'excerpt'],
-        'url': '#{posts_url}.js'
-      });
-    JS
-  end
-
   def comment_count number
     pluralizing_count number, 'comment'
   end
