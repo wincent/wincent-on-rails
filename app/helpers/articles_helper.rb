@@ -9,16 +9,16 @@ module ArticlesHelper
   def link_to_update_preview
     onclick = inline_js do
       <<-JS
-        jQuery('\#spinner').show();
-        jQuery.ajax({
+        $('\#spinner').show();
+        $.ajax({
           'url': '#{articles_url}.js',
           'type': 'post',
           'dataType': 'html',
-          'data': 'title=' + encodeURIComponent(jQuery('\#article_title').val()) +
-            '&body=' + encodeURIComponent(jQuery('\#article_body').val()),
-          'success': function(html) { jQuery('\#preview').html(html); },
+          'data': 'title=' + encodeURIComponent($('\#article_title').val()) +
+            '&body=' + encodeURIComponent($('\#article_body').val()),
+          'success': function(html) { $('\#preview').html(html); },
           'error': function() { alert('an error occurred updating the preview'); },
-          'complete': function() { jQuery('\#spinner').hide(); }
+          'complete': function() { $('\#spinner').hide(); }
         });
         return false;
       JS
@@ -30,15 +30,15 @@ module ArticlesHelper
     javascript_tag <<-JS
       observe_field({
         'kind': 'article',
-        'field': jQuery('\#article_title'),
+        'field': $('\#article_title'),
         'fieldName': 'title',
         'include': ['body'],
         'interval': 30,
         'url': '#{articles_url}.js',
-        'before': function() { jQuery('\#spinner').show(); },
-        'success': function(html) { jQuery('\#preview').html(html); },
+        'before': function() { $('\#spinner').show(); },
+        'success': function(html) { $('\#preview').html(html); },
         'error': function(html) { alert('an error occurred updating the preview'); },
-        'complete': function() { jQuery('\#spinner').hide(); },
+        'complete': function() { $('\#spinner').hide(); },
       });
     JS
   end
@@ -47,15 +47,15 @@ module ArticlesHelper
     javascript_tag <<-JS
       observe_field({
         'kind': 'article',
-        'field': jQuery('\#article_body'),
+        'field': $('\#article_body'),
         'fieldName': 'body',
         'include': ['title'],
         'interval': 30,
         'url': '#{articles_url}.js',
-        'before': function() { jQuery('\#spinner').show(); },
-        'success': function(html) { jQuery('\#preview').html(html); },
+        'before': function() { $('\#spinner').show(); },
+        'success': function(html) { $('\#preview').html(html); },
         'error': function(html) { alert('an error occurred updating the preview'); },
-        'complete': function() { jQuery('\#spinner').hide(); },
+        'complete': function() { $('\#spinner').hide(); },
       });
     JS
   end

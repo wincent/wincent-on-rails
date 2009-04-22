@@ -13,15 +13,15 @@ module TweetsHelper
   def link_to_update_preview
     onclick = inline_js do
       <<-JS
-        jQuery('\#spinner').show();
-        jQuery.ajax({
+        $('\#spinner').show();
+        $.ajax({
           'url': '#{tweets_url}.js',
           'type': 'post',
           'dataType': 'html',
-          'data': 'body=' + encodeURIComponent(jQuery('\#tweet_body').val()),
-          'success': function(html) { jQuery('\#preview').html(html); },
+          'data': 'body=' + encodeURIComponent($('\#tweet_body').val()),
+          'success': function(html) { $('\#preview').html(html); },
           'error': function() { alert('an error occurred updating the preview'); },
-          'complete': function() { jQuery('\#spinner').hide(); }
+          'complete': function() { $('\#spinner').hide(); }
         });
         return false;
       JS
@@ -32,14 +32,14 @@ module TweetsHelper
   def observe_body
     javascript_tag <<-JS
       observe_field({
-        'field': jQuery('\#tweet_body'),
+        'field': $('\#tweet_body'),
         'fieldName': 'body',
         'interval': 5,
         'url': '#{tweets_url}.js',
-        'before': function() { jQuery('\#spinner').show(); },
-        'success': function(html) { jQuery('\#preview').html(html); },
+        'before': function() { $('\#spinner').show(); },
+        'success': function(html) { $('\#preview').html(html); },
         'error': function(html) { alert('an error occurred updating the preview'); },
-        'complete': function() { jQuery('\#spinner').hide(); },
+        'complete': function() { $('\#spinner').hide(); },
       });
     JS
   end

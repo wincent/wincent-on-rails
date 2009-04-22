@@ -19,17 +19,17 @@ module PostsHelper
   def link_to_update_preview
     onclick = inline_js do
       <<-JS
-        jQuery('\#spinner').show();
-        jQuery.ajax({
+        $('\#spinner').show();
+        $.ajax({
           'url': '#{posts_url}.js',
           'type': 'post',
           'dataType': 'html',
-          'data': 'title=' + encodeURIComponent(jQuery('\#post_title').val()) +
-            '&excerpt=' + encodeURIComponent(jQuery('\#post_excerpt').val()) +
-            '&body=' + encodeURIComponent(jQuery('\#post_body').val()),
-          'success': function(html) { jQuery('\#preview').html(html); },
+          'data': 'title=' + encodeURIComponent($('\#post_title').val()) +
+            '&excerpt=' + encodeURIComponent($('\#post_excerpt').val()) +
+            '&body=' + encodeURIComponent($('\#post_body').val()),
+          'success': function(html) { $('\#preview').html(html); },
           'error': function() { alert('an error occurred updating the preview'); },
-          'complete': function() { jQuery('\#spinner').hide(); }
+          'complete': function() { $('\#spinner').hide(); }
         });
         return false;
       JS
@@ -41,15 +41,15 @@ module PostsHelper
     javascript_tag <<-JS
       observe_field({
         'kind': 'post',
-        'field': jQuery('\#post_title'),
+        'field': $('\#post_title'),
         'fieldName': 'title',
         'include': ['excerpt', 'body'],
         'interval': 30,
         'url': '#{posts_url}.js',
-        'before': function() { jQuery('\#spinner').show(); },
-        'success': function(html) { jQuery('\#preview').html(html); },
+        'before': function() { $('\#spinner').show(); },
+        'success': function(html) { $('\#preview').html(html); },
         'error': function(html) { alert('an error occurred updating the preview'); },
-        'complete': function() { jQuery('\#spinner').hide(); },
+        'complete': function() { $('\#spinner').hide(); },
       });
     JS
   end
@@ -58,15 +58,15 @@ module PostsHelper
     javascript_tag <<-JS
       observe_field({
         'kind': 'post',
-        'field': jQuery('\#post_excerpt'),
+        'field': $('\#post_excerpt'),
         'fieldName': 'excerpt',
         'include': ['title', 'body'],
         'interval': 30,
         'url': '#{posts_url}.js',
-        'before': function() { jQuery('\#spinner').show(); },
-        'success': function(html) { jQuery('\#preview').html(html); },
+        'before': function() { $('\#spinner').show(); },
+        'success': function(html) { $('\#preview').html(html); },
         'error': function(html) { alert('an error occurred updating the preview'); },
-        'complete': function() { jQuery('\#spinner').hide(); },
+        'complete': function() { $('\#spinner').hide(); },
       });
     JS
   end
@@ -75,15 +75,15 @@ module PostsHelper
     javascript_tag <<-JS
       observe_field({
         'kind': 'post',
-        'field': jQuery('\#post_body'),
+        'field': $('\#post_body'),
         'fieldName': 'body',
         'include': ['title', 'excerpt'],
         'interval': 30,
         'url': '#{posts_url}.js',
-        'before': function() { jQuery('\#spinner').show(); },
-        'success': function(html) { jQuery('\#preview').html(html); },
+        'before': function() { $('\#spinner').show(); },
+        'success': function(html) { $('\#preview').html(html); },
         'error': function(html) { alert('an error occurred updating the preview'); },
-        'complete': function() { jQuery('\#spinner').hide(); },
+        'complete': function() { $('\#spinner').hide(); },
       });
     JS
   end

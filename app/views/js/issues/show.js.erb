@@ -24,7 +24,7 @@
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-  jQuery(document).ready(function() {
+  $(document).ready(function() {
     edit_in_place('div.issue', 'issue', 'summary', '/issues/');
     var options = <%= underscores_to_spaces(Issue::STATUS).sort.to_json %>;
     ajax_select('div.issue', 'issue', 'status', options, false, '/issues/');

@@ -56,14 +56,14 @@ function setUpLoginLogoutLinks()
 {
   var user = getCookie('user_id');
   if (user == null || user == '')
-    jQuery('#logout').hide();
+    $('#logout').hide();
   else
-    jQuery('#login').hide();
+    $('#login').hide();
 }
 
 function insertFlash(css, msg) {
   if (msg) {
-    jQuery('#cacheable-flash').append('<div id="' + css + '">' + msg + '</div>');
+    $('#cacheable-flash').append('<div id="' + css + '">' + msg + '</div>');
   }
 }
 
@@ -80,7 +80,7 @@ function displayCacheableFlash() {
 
 function relativizeDates()
 {
-  jQuery('.relative-date').each(function(i) {
+  $('.relative-date').each(function(i) {
     var result  = this.innerHTML;
     var now     = new Date;
     var then    = new Date(result);
@@ -131,7 +131,7 @@ function relativizeDates()
   });
 }
 
-jQuery(document).ready(function() {
+$(document).ready(function() {
   setUpLoginLogoutLinks();
   displayCacheableFlash();
   relativizeDates();

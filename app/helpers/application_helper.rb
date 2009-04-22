@@ -201,13 +201,13 @@ module ApplicationHelper
       onclick = inline_js do
         <<-JS
           if (confirm('Really delete?')) {
-            jQuery.ajax({
+            $.ajax({
               'url': '#{url}',
               'type': 'post',
               'dataType': 'json',
               'data': '_method=delete',
               'success': function() {
-                jQuery('\##{model_id}').fadeOut('slow');
+                $('\##{model_id}').fadeOut('slow');
               },
               'error': function() {
                 alert('Failed to delete');
@@ -226,13 +226,13 @@ module ApplicationHelper
     haml_tag :form, { :id => form_id, :style => 'display:inline;' } do
       onclick = inline_js do
         <<-JS
-          jQuery.ajax({
+          $.ajax({
             'url': '#{url}',
             'type': 'post',
             'dataType': 'json',
             'data': '_method=put&button=ham',
             'success': function() {
-              jQuery('\##{form_id}').fadeOut('slow');
+              $('\##{form_id}').fadeOut('slow');
             },
             'error': function() {
               alert('Failed to mark as ham');

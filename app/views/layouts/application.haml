@@ -34,7 +34,7 @@
         -#%li=link_to 'About'
         %li.last
           -# TODO: make this unobtrusive
-          =link_to_function 'Search', "jQuery('#search_box').toggle(); jQuery('#search_box').focus();", :href => search_index_url
+          =link_to_function 'Search', "$('#search_box').toggle(); $('#search_box').focus();", :href => search_index_url
           %form{:id => 'search', :action => search_index_url, :method => 'post'}
             =text_field_tag :query, params[:query], :size => 20, :id => :search_box, :style => 'display:none;'
     #content

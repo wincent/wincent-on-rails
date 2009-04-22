@@ -28,12 +28,12 @@ function escapeHTML(html) {
 }
 
 function edit_in_place(selector, class_name, attribute_name, url) {
-  var model = jQuery(selector); /* could be many */
+  var model = $(selector); /* could be many */
   model.each(function(i) {
     /* these variable names all suck... */
-    var model_id = jQuery(this).attr('id'); /* issue_22 */
+    var model_id = $(this).attr('id'); /* issue_22 */
     var record_id = model_id.match(/_(\d+)$/)[1]; /* 22 */
-    var field_id = jQuery('#' + model_id + '_' + attribute_name); /* issue_22_summary */
+    var field_id = $('#' + model_id + '_' + attribute_name); /* issue_22_summary */
     function highlight() { field_id.addClass('highlight'); }
     function unhighlight() { field_id.removeClass('highlight'); }
     function clickFunction() {
@@ -54,7 +54,7 @@ function edit_in_place(selector, class_name, attribute_name, url) {
       field_id.find('form').submit(function() {
         var value = field_id.find('input').val();
         field_id.text('saving...');
-        jQuery.ajax({
+        $.ajax({
           'url': url + record_id,
           'type': 'post',
           'dataType': 'json',
@@ -83,9 +83,9 @@ function edit_in_place(selector, class_name, attribute_name, url) {
 }
 
 function ajax_check_box(selector, class_name, attribute_name, url) {
-  var model_id = jQuery(selector).attr('id'); /* issue_22 */
+  var model_id = $(selector).attr('id'); /* issue_22 */
   var record_id = model_id.match(/_(\d+)$/)[1]; /* 22 */
-  var field_id = jQuery('#' + model_id + '_' + attribute_name); /* issue_22_public */
+  var field_id = $('#' + model_id + '_' + attribute_name); /* issue_22_public */
   var field_text = field_id.text(); /* eg. true, false */
   var new_contents = '<input id="' + class_name + '_' + attribute_name +
     '" name="' + class_name + '[' + attribute_name + ']" type="checkbox">' +
@@ -100,7 +100,7 @@ function ajax_check_box(selector, class_name, attribute_name, url) {
   check_box_id.change(function() {
     var spinner = field_id.find('#' + class_name + '_' + attribute_name + '_spinner');
     spinner.show();
-    jQuery.ajax({
+    $.ajax({
       'url': url + record_id,
       'type': 'post',
       'dataType': 'json',
@@ -121,9 +121,9 @@ function ajax_check_box(selector, class_name, attribute_name, url) {
 }
 
 function ajax_select(selector, class_name, attribute_name, options, include_blank, url) {
-  var model_id = jQuery(selector).attr('id'); /* issue_22 */
+  var model_id = $(selector).attr('id'); /* issue_22 */
   var record_id = model_id.match(/_(\d+)$/)[1]; /* 22 */
-  var field_id = jQuery('#' + model_id + '_' + attribute_name); /* issue_22_status */
+  var field_id = $('#' + model_id + '_' + attribute_name); /* issue_22_status */
   var field_text = field_id.text(); /* eg. New, Open, Closed (first letter capitalized by humanize method) */
   var new_contents = '<select id="' + class_name + '_' + attribute_name + '" name="' + class_name + '[' + attribute_name + ']">';
   if (include_blank) {
@@ -154,7 +154,7 @@ function ajax_select(selector, class_name, attribute_name, options, include_blan
   select_id.change(function() {
     var spinner = field_id.find('#' + class_name + '_' + attribute_name + '_spinner');
     spinner.show();
-    jQuery.ajax({
+    $.ajax({
       'url': url + record_id,
       'type': 'post',
       'dataType': 'json',
@@ -189,12 +189,12 @@ function observe_field(options) {
       if (options['include']) {
         var max = options['include'].length;
         for (var i = 0; i < max; i++) {
-          var field = jQuery('\#' + options['kind'] + '_' +
+          var field = $('\#' + options['kind'] + '_' +
             options['include'][i]).val();
           data += '&' + options['include'][i] +'=' +encodeURIComponent(field);
         }
       }
-      jQuery.ajax({
+      $.ajax({
         'url': options['url'],
         'type': 'post',
         'dataType': 'html',
