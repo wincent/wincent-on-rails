@@ -33,15 +33,4 @@ module TweetsHelper
     end
     %Q{<a href="#" class="update_link" onclick="#{onclick}">update</a>}
   end
-
-  def observe_body
-    javascript_tag <<-JS
-      observe_field({
-        'kind': 'tweet',
-        'fieldName': 'body',
-        'interval': 5,
-        'url': '#{tweets_url}.js'
-      });
-    JS
-  end
 end
