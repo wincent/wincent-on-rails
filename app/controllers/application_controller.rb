@@ -26,7 +26,9 @@ protected
 
   # TODO: make a special 404 action that provides hints for where people could look
   def record_not_found(uri = nil)
-    if request.xhr? or is_atom?
+    if request.xhr?
+      render :text => 'Requested record not found', :status => 404
+    elsif is_atom?
       render :text => '', :status => 404
     else # HTML requests
       if uri.class != String
