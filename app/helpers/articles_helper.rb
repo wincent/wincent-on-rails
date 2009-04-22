@@ -30,26 +30,4 @@ module ArticlesHelper
     end
     %Q{<a href="#" class="update_link" onclick="#{onclick}">update</a>}
   end
-
-  def observe_title
-    javascript_tag <<-JS
-      observe_field({
-        'kind': 'article',
-        'fieldName': 'title',
-        'include': ['body'],
-        'url': '#{articles_url}.js'
-      });
-    JS
-  end
-
-  def observe_body
-    javascript_tag <<-JS
-      observe_field({
-        'kind': 'article',
-        'fieldName': 'body',
-        'include': ['title'],
-        'url': '#{articles_url}.js'
-      });
-    JS
-  end
 end

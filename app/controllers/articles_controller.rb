@@ -3,6 +3,7 @@ class ArticlesController < ApplicationController
   before_filter     :get_article,     :only => [ :show, :edit, :update ]
   caches_page       :index,           :if => Proc.new { |c| c.send(:is_atom?) }
   cache_sweeper     :article_sweeper, :only => [ :create, :update, :destroy ]
+  uses_dynamic_javascript :only => [:edit, :new]
 
   def index
     respond_to do |format|
