@@ -1,39 +1,37 @@
-/*
-   Copyright 2009 Wincent Colaiuta. All rights reserved.
-
-   Redistribution and use in source and binary forms, with or without
-   modification, are permitted provided that the following conditions are met:
-
-   1. Redistributions of source code must retain the above copyright notice,
-      this list of conditions and the following disclaimer.
-   2. Redistributions in binary form must reproduce the above copyright notice,
-      this list of conditions and the following disclaimer in the documentation
-      and/or other materials provided with the distribution.
-
-   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-   AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-   IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-   ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDERS OR CONTRIBUTORS BE
-   LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
-   CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
-   SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
-   INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
-   CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
-   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
-   POSSIBILITY OF SUCH DAMAGE.
- */
+// Copyright 2009 Wincent Colaiuta. All rights reserved.
+//
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions are met:
+//
+// 1. Redistributions of source code must retain the above copyright notice,
+//    this list of conditions and the following disclaimer.
+// 2. Redistributions in binary form must reproduce the above copyright notice,
+//    this list of conditions and the following disclaimer in the documentation
+//    and/or other materials provided with the distribution.
+//
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+// AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+// IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+// ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDERS OR CONTRIBUTORS BE
+// LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+// CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+// SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+// INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+// CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+// ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+// POSSIBILITY OF SUCH DAMAGE.
 
 function escapeHTML(html) {
-  return html.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  return html.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g,
+    '&gt;').replace(/"/g, '&quot;');
 }
 
 function edit_in_place(selector, class_name, attribute_name, url) {
-  var model = $(selector); /* could be many */
+  var model = $(selector); // could be many
   model.each(function(i) {
-    /* these variable names all suck... */
-    var model_id = $(this).attr('id'); /* issue_22 */
-    var record_id = model_id.match(/_(\d+)$/)[1]; /* 22 */
-    var field_id = $('#' + model_id + '_' + attribute_name); /* issue_22_summary */
+    var model_id = $(this).attr('id'); // issue_22
+    var record_id = model_id.match(/_(\d+)$/)[1]; // 22
+    var field_id = $('#' + model_id + '_' + attribute_name); // issue_22_summary
     function highlight() { field_id.addClass('highlight'); }
     function unhighlight() { field_id.removeClass('highlight'); }
     function clickFunction() {
@@ -83,10 +81,10 @@ function edit_in_place(selector, class_name, attribute_name, url) {
 }
 
 function ajax_check_box(selector, class_name, attribute_name, url) {
-  var model_id = $(selector).attr('id'); /* issue_22 */
-  var record_id = model_id.match(/_(\d+)$/)[1]; /* 22 */
-  var field_id = $('#' + model_id + '_' + attribute_name); /* issue_22_public */
-  var field_text = field_id.text(); /* eg. true, false */
+  var model_id = $(selector).attr('id'); // issue_22
+  var record_id = model_id.match(/_(\d+)$/)[1]; // 22
+  var field_id = $('#' + model_id + '_' + attribute_name); // issue_22_public
+  var field_text = field_id.text(); // eg. true, false
   var new_contents = '<input id="' + class_name + '_' + attribute_name +
     '" name="' + class_name + '[' + attribute_name + ']" type="checkbox">' +
     '<img alt="Spinner" id="' + class_name + '_' + attribute_name +
@@ -121,10 +119,10 @@ function ajax_check_box(selector, class_name, attribute_name, url) {
 }
 
 function ajax_select(selector, class_name, attribute_name, options, include_blank, url) {
-  var model_id = $(selector).attr('id'); /* issue_22 */
-  var record_id = model_id.match(/_(\d+)$/)[1]; /* 22 */
-  var field_id = $('#' + model_id + '_' + attribute_name); /* issue_22_status */
-  var field_text = field_id.text(); /* eg. New, Open, Closed (first letter capitalized by humanize method) */
+  var model_id = $(selector).attr('id'); // issue_22
+  var record_id = model_id.match(/_(\d+)$/)[1]; // 22
+  var field_id = $('#' + model_id + '_' + attribute_name); // issue_22_status
+  var field_text = field_id.text(); // eg. New, Open, Closed (first letter capitalized by humanize method)
   var new_contents = '<select id="' + class_name + '_' + attribute_name + '" name="' + class_name + '[' + attribute_name + ']">';
   if (include_blank) {
     new_contents = new_contents + '<option value=""></option>';
@@ -144,9 +142,9 @@ function ajax_select(selector, class_name, attribute_name, options, include_blan
   if (!selection_found) {
     if (!include_blank) {
       alert('option not found');
-      /* will probably choose to fail silently here instead, or fall back and select first option */
+      // will probably choose to fail silently here instead, or fall back and select first option
     } else {
-      /* if none of the options match, eg "no product", must be the "blank" option */
+      // if none of the options match, eg "no product", must be the "blank" option
       select_id.find('option:first').attr('selected', 'selected');
     }
   }
@@ -203,7 +201,7 @@ function observe_field(options) {
         'error': function() { options['error'](); },
         'complete': function() {
           options['complete']();
-          /* regardless of success/failure, only try to submit once */
+          // regardless of success/failure, only try to submit once
           window.observed_field_contents[options['field'].attr('id')] =
             new_content;
         }
