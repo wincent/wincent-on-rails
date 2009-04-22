@@ -61,6 +61,10 @@ ActionController::Routing::Routes.draw do |map|
   # regular routes
   map.connect 'misc/:action', :controller => 'misc', :protocol => 'https'
 
+  # test environment only; without this we get this in application layout:
+  # No route matches {:action=>"wikitext_cheatsheet", :controller=>"misc"}
+  #map.connect 'misc/:action', :controller => 'misc'
+
   map.connect 'heartbeat/ping', :controller => 'heartbeat', :action => 'ping', :protocol => 'https'
 
   map.connect 'js/:delegated',

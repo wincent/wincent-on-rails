@@ -31,8 +31,7 @@ module ApplicationHelper
   end
 
   def wikitext_cheatsheet
-    link_to 'wikitext markup help',
-      url_for(:controller => 'misc', :action => 'wikitext_cheatsheet', :protocol => 'https'),
+    link_to 'wikitext markup help', '/misc/wikitext_cheatsheet',
       :popup => ['height=700,width=400']
   end
 
