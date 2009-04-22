@@ -40,7 +40,6 @@ module ArticlesHelper
         'include': ['body'],
         'interval': 30,
         'url': '#{articles_url}.js',
-        'before': function() { $('\#spinner').show(); },
         'success': function(html) {
           $('\#preview').html(html);
           clearAJAXFlash();
@@ -62,7 +61,6 @@ module ArticlesHelper
         'include': ['title'],
         'interval': 30,
         'url': '#{articles_url}.js',
-        'before': function() { $('\#spinner').show(); },
         'success': function(html) {
           $('\#preview').html(html);
           clearAJAXFlash();

@@ -51,7 +51,6 @@ module PostsHelper
         'include': ['excerpt', 'body'],
         'interval': 30,
         'url': '#{posts_url}.js',
-        'before': function() { $('\#spinner').show(); },
         'success': function(html) {
           $('\#preview').html(html);
           clearAJAXFlash();
@@ -73,7 +72,6 @@ module PostsHelper
         'include': ['title', 'body'],
         'interval': 30,
         'url': '#{posts_url}.js',
-        'before': function() { $('\#spinner').show(); },
         'success': function(html) {
           $('\#preview').html(html);
           clearAJAXFlash();
@@ -95,7 +93,6 @@ module PostsHelper
         'include': ['title', 'excerpt'],
         'interval': 30,
         'url': '#{posts_url}.js',
-        'before': function() { $('\#spinner').show(); },
         'success': function(html) {
           $('\#preview').html(html);
           clearAJAXFlash();

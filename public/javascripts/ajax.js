@@ -191,7 +191,10 @@ function observe_field(options) {
     var old_content =
       window.observed_field_contents[options['field'].attr('id')];
     if (new_content != old_content) {
-      options['before']();
+      if (options['before'])
+        options['before']();
+      else // default action
+        $('#spinner').show();
       var data = options['fieldName'] + '=' + encodeURIComponent(new_content);
       if (options['include']) {
         var max = options['include'].length;

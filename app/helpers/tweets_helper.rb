@@ -41,7 +41,6 @@ module TweetsHelper
         'fieldName': 'body',
         'interval': 5,
         'url': '#{tweets_url}.js',
-        'before': function() { $('\#spinner').show(); },
         'success': function(html) {
           $('\#preview').html(html);
           clearAJAXFlash();
