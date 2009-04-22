@@ -50,10 +50,6 @@ module PostsHelper
         'fieldName': 'title',
         'include': ['excerpt', 'body'],
         'url': '#{posts_url}.js',
-        'success': function(html) {
-          $('\#preview').html(html);
-          clearAJAXFlash();
-        },
         'error': function(req) {
           insertAJAXFlash('error', req.responseText);
         },
@@ -70,10 +66,6 @@ module PostsHelper
         'fieldName': 'excerpt',
         'include': ['title', 'body'],
         'url': '#{posts_url}.js',
-        'success': function(html) {
-          $('\#preview').html(html);
-          clearAJAXFlash();
-        },
         'error': function(req) {
           insertAJAXFlash('error', req.responseText);
         },
@@ -90,10 +82,6 @@ module PostsHelper
         'fieldName': 'body',
         'include': ['title', 'excerpt'],
         'url': '#{posts_url}.js',
-        'success': function(html) {
-          $('\#preview').html(html);
-          clearAJAXFlash();
-        },
         'error': function(req) {
           insertAJAXFlash('error', req.responseText);
         },

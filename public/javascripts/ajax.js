@@ -185,6 +185,10 @@ function observe_field(options) {
   // defaults
   var interval = (options['interval'] || 30) * 1000;
   var before = options['before'] || function() { $('#spinner').show(); };
+  var success = options['success'] || function(html) {
+    $('#preview').html(html);
+    clearAJAXFlash();
+  };
 
   if (typeof window.observed_field_contents == 'undefined')
     window.observed_field_contents = {};
@@ -210,7 +214,7 @@ function observe_field(options) {
         'type': 'post',
         'dataType': 'html',
         'data': data,
-        'success': function(html) { options['success'](html); },
+        'success': function(html) { success(html); },
         'error': function(req) { options['error'](req); },
         'complete': function() {
           options['complete']();
