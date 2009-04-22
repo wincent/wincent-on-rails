@@ -243,7 +243,7 @@ function observe_field(options) {
       if (options['include']) {
         var max = options['include'].length;
         for (var i = 0; i < max; i++) {
-          var included = $('\#' + options['kind'] + '_' +
+          var included = $('#' + options['kind'] + '_' +
             options['include'][i]).val();
           data += '&' + options['include'][i] +'=' +
             encodeURIComponent(included);
