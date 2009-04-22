@@ -182,8 +182,8 @@ function ajax_select(selector, class_name, attribute_name, options, include_blan
 }
 
 function setup_preview_link(options) {
-  $('#preview_link').append(' &mdash; <a href="#" class="update_link">refresh</a>' +
-    '<img id="spinner" src="/images/spinner.gif" alt="spinner" style="display:none;" />');
+  $('#preview_link').append('<a href="#"><img src="/images/update.png" alt="refresh" /></a>' +
+    '<img id="spinner" src="/images/spinner.gif" alt="spinner" />');
   $('#preview_link a').click(function() {
     $('#spinner').show();
     var data = [];

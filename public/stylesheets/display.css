@@ -159,3 +159,6 @@ input[type=button]:hover { background: #aaa; color: white; }
 .comments .odd th + td { border: 1px solid #ccc; background: #f7f7f7; }
 
 .comments .even th + td { border: 1px solid #ccc; background: #eaeaea; }
+
+#preview_link img { padding-left: 0.33em; margin-bottom: -0.1em; }
+#preview_link #spinner { display: none; }
