@@ -40,8 +40,7 @@ module TweetsHelper
         'field': $('\#tweet_body'),
         'fieldName': 'body',
         'interval': 5,
-        'url': '#{tweets_url}.js',
-        'complete': function() { $('\#spinner').hide(); },
+        'url': '#{tweets_url}.js'
       });
     JS
   end

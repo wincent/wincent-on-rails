@@ -38,8 +38,7 @@ module ArticlesHelper
         'field': $('\#article_title'),
         'fieldName': 'title',
         'include': ['body'],
-        'url': '#{articles_url}.js',
-        'complete': function() { $('\#spinner').hide(); },
+        'url': '#{articles_url}.js'
       });
     JS
   end
@@ -51,8 +50,7 @@ module ArticlesHelper
         'field': $('\#article_body'),
         'fieldName': 'body',
         'include': ['title'],
-        'url': '#{articles_url}.js',
-        'complete': function() { $('\#spinner').hide(); },
+        'url': '#{articles_url}.js'
       });
     JS
   end

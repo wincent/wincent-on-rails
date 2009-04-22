@@ -49,8 +49,7 @@ module PostsHelper
         'field': $('\#post_title'),
         'fieldName': 'title',
         'include': ['excerpt', 'body'],
-        'url': '#{posts_url}.js',
-        'complete': function() { $('\#spinner').hide(); },
+        'url': '#{posts_url}.js'
       });
     JS
   end
@@ -62,8 +61,7 @@ module PostsHelper
         'field': $('\#post_excerpt'),
         'fieldName': 'excerpt',
         'include': ['title', 'body'],
-        'url': '#{posts_url}.js',
-        'complete': function() { $('\#spinner').hide(); },
+        'url': '#{posts_url}.js'
       });
     JS
   end
@@ -75,8 +73,7 @@ module PostsHelper
         'field': $('\#post_body'),
         'fieldName': 'body',
         'include': ['title', 'excerpt'],
-        'url': '#{posts_url}.js',
-        'complete': function() { $('\#spinner').hide(); },
+        'url': '#{posts_url}.js'
       });
     JS
   end
