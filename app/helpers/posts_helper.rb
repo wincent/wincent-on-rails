@@ -46,7 +46,6 @@ module PostsHelper
     javascript_tag <<-JS
       observe_field({
         'kind': 'post',
-        'field': $('\#post_title'),
         'fieldName': 'title',
         'include': ['excerpt', 'body'],
         'url': '#{posts_url}.js'
@@ -58,7 +57,6 @@ module PostsHelper
     javascript_tag <<-JS
       observe_field({
         'kind': 'post',
-        'field': $('\#post_excerpt'),
         'fieldName': 'excerpt',
         'include': ['title', 'body'],
         'url': '#{posts_url}.js'
@@ -70,7 +68,6 @@ module PostsHelper
     javascript_tag <<-JS
       observe_field({
         'kind': 'post',
-        'field': $('\#post_body'),
         'fieldName': 'body',
         'include': ['title', 'excerpt'],
         'url': '#{posts_url}.js'

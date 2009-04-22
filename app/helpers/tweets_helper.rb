@@ -37,7 +37,7 @@ module TweetsHelper
   def observe_body
     javascript_tag <<-JS
       observe_field({
-        'field': $('\#tweet_body'),
+        'kind': 'tweet',
         'fieldName': 'body',
         'interval': 5,
         'url': '#{tweets_url}.js'

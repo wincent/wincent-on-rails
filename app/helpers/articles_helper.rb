@@ -35,7 +35,6 @@ module ArticlesHelper
     javascript_tag <<-JS
       observe_field({
         'kind': 'article',
-        'field': $('\#article_title'),
         'fieldName': 'title',
         'include': ['body'],
         'url': '#{articles_url}.js'
@@ -47,7 +46,6 @@ module ArticlesHelper
     javascript_tag <<-JS
       observe_field({
         'kind': 'article',
-        'field': $('\#article_body'),
         'fieldName': 'body',
         'include': ['title'],
         'url': '#{articles_url}.js'

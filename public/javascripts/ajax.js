@@ -183,6 +183,8 @@ function ajax_select(selector, class_name, attribute_name, options, include_blan
 
 function observe_field(options) {
   // defaults
+  var field = options['field'] ||
+    $('#' + options['kind'] + '_' + options['fieldName']);
   var interval = (options['interval'] || 30) * 1000;
   var before = options['before'] || function() { $('#spinner').show(); };
   var success = options['success'] || function(html) {
@@ -196,21 +198,21 @@ function observe_field(options) {
 
   if (typeof window.observed_field_contents == 'undefined')
     window.observed_field_contents = {};
-  window.observed_field_contents[options['field'].attr('id')] =
-    options['field'].val();
+  window.observed_field_contents[field.attr('id')] = field.val();
   setInterval(function() {
-    var new_content = options['field'].val();
+    var new_content = field.val();
     var old_content =
-      window.observed_field_contents[options['field'].attr('id')];
+      window.observed_field_contents[field.attr('id')];
     if (new_content != old_content) {
       before();
       var data = options['fieldName'] + '=' + encodeURIComponent(new_content);
       if (options['include']) {
         var max = options['include'].length;
         for (var i = 0; i < max; i++) {
-          var field = $('\#' + options['kind'] + '_' +
+          var included = $('\#' + options['kind'] + '_' +
             options['include'][i]).val();
-          data += '&' + options['include'][i] +'=' +encodeURIComponent(field);
+          data += '&' + options['include'][i] +'=' +
+            encodeURIComponent(included);
         }
       }
       $.ajax({
@@ -223,8 +225,7 @@ function observe_field(options) {
         'complete': function() {
           complete();
           // regardless of success/failure, only try to submit once
-          window.observed_field_contents[options['field'].attr('id')] =
-            new_content;
+          window.observed_field_contents[field.attr('id')] = new_content;
         }
       });
     }
