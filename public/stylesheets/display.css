@@ -70,9 +70,9 @@ div.two-columns { float: left; width: 50%; margin-bottom: 3em; }
 
 .error, .notice { -webkit-border-radius: 1em; -moz-border-radius: 1em; font-weight: bold; margin: 1em; padding: 1em; }
 
-.error { border: 1px solid gray; background: #f9b8be; }
+.error { border: 2px solid gray; background: #f9b8be; }
 
-.notice { border: 1px solid gray; background: #c3e3b5; }
+.notice { border: 2px solid gray; background: #c3e3b5; }
 
 .ajax_error { background: #f9b8be; }
 
