@@ -26,6 +26,15 @@ function escapeHTML(html) {
     '&gt;').replace(/"/g, '&quot;');
 }
 
+function insertAJAXFlash(css_class, msg) {
+  $('#ajax-flash').html('<div class="' + css_class + '">' + escapeHTML(msg) +
+    '</div>').show();
+}
+
+function clearAJAXFlash() {
+  $('#ajax-flash').fadeOut('slow', function() { $('#ajax-flash').hide(); });
+}
+
 function edit_in_place(selector, class_name, attribute_name, url) {
   var model = $(selector); // could be many
   model.each(function(i) {
@@ -198,7 +207,7 @@ function observe_field(options) {
         'dataType': 'html',
         'data': data,
         'success': function(html) { options['success'](html); },
-        'error': function() { options['error'](); },
+        'error': function(req) { options['error'](req); },
         'complete': function() {
           options['complete']();
           // regardless of success/failure, only try to submit once

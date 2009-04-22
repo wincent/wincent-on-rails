@@ -27,8 +27,13 @@ module PostsHelper
           'data': 'title=' + encodeURIComponent($('\#post_title').val()) +
             '&excerpt=' + encodeURIComponent($('\#post_excerpt').val()) +
             '&body=' + encodeURIComponent($('\#post_body').val()),
-          'success': function(html) { $('\#preview').html(html); },
-          'error': function() { alert('an error occurred updating the preview'); },
+          'success': function(html) {
+            $('\#preview').html(html);
+            clearAJAXFlash();
+          },
+          'error': function(req) {
+            insertAJAXFlash('error', req.responseText);
+          },
           'complete': function() { $('\#spinner').hide(); }
         });
         return false;
@@ -47,8 +52,13 @@ module PostsHelper
         'interval': 30,
         'url': '#{posts_url}.js',
         'before': function() { $('\#spinner').show(); },
-        'success': function(html) { $('\#preview').html(html); },
-        'error': function(html) { alert('an error occurred updating the preview'); },
+        'success': function(html) {
+          $('\#preview').html(html);
+          clearAJAXFlash();
+        },
+        'error': function(req) {
+          insertAJAXFlash('error', req.responseText);
+        },
         'complete': function() { $('\#spinner').hide(); },
       });
     JS
@@ -64,8 +74,13 @@ module PostsHelper
         'interval': 30,
         'url': '#{posts_url}.js',
         'before': function() { $('\#spinner').show(); },
-        'success': function(html) { $('\#preview').html(html); },
-        'error': function(html) { alert('an error occurred updating the preview'); },
+        'success': function(html) {
+          $('\#preview').html(html);
+          clearAJAXFlash();
+        },
+        'error': function(req) {
+          insertAJAXFlash('error', req.responseText);
+        },
         'complete': function() { $('\#spinner').hide(); },
       });
     JS
@@ -81,8 +96,13 @@ module PostsHelper
         'interval': 30,
         'url': '#{posts_url}.js',
         'before': function() { $('\#spinner').show(); },
-        'success': function(html) { $('\#preview').html(html); },
-        'error': function(html) { alert('an error occurred updating the preview'); },
+        'success': function(html) {
+          $('\#preview').html(html);
+          clearAJAXFlash();
+        },
+        'error': function(req) {
+          insertAJAXFlash('error', req.responseText);
+        },
         'complete': function() { $('\#spinner').hide(); },
       });
     JS

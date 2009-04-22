@@ -16,8 +16,13 @@ module ArticlesHelper
           'dataType': 'html',
           'data': 'title=' + encodeURIComponent($('\#article_title').val()) +
             '&body=' + encodeURIComponent($('\#article_body').val()),
-          'success': function(html) { $('\#preview').html(html); },
-          'error': function() { alert('an error occurred updating the preview'); },
+          'success': function(html) {
+            $('\#preview').html(html);
+            clearAJAXFlash();
+          },
+          'error': function(req) {
+            insertAJAXFlash('error', req.responseText);
+          },
           'complete': function() { $('\#spinner').hide(); }
         });
         return false;
@@ -36,8 +41,13 @@ module ArticlesHelper
         'interval': 30,
         'url': '#{articles_url}.js',
         'before': function() { $('\#spinner').show(); },
-        'success': function(html) { $('\#preview').html(html); },
-        'error': function(html) { alert('an error occurred updating the preview'); },
+        'success': function(html) {
+          $('\#preview').html(html);
+          clearAJAXFlash();
+        },
+        'error': function(req) {
+           insertAJAXFlash('error', req.responseText);
+        },
         'complete': function() { $('\#spinner').hide(); },
       });
     JS
@@ -53,8 +63,13 @@ module ArticlesHelper
         'interval': 30,
         'url': '#{articles_url}.js',
         'before': function() { $('\#spinner').show(); },
-        'success': function(html) { $('\#preview').html(html); },
-        'error': function(html) { alert('an error occurred updating the preview'); },
+        'success': function(html) {
+          $('\#preview').html(html);
+          clearAJAXFlash();
+        },
+        'error': function(req) {
+          insertAJAXFlash('error', req.responseText);
+        },
         'complete': function() { $('\#spinner').hide(); },
       });
     JS

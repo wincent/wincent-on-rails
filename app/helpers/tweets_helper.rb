@@ -19,8 +19,13 @@ module TweetsHelper
           'type': 'post',
           'dataType': 'html',
           'data': 'body=' + encodeURIComponent($('\#tweet_body').val()),
-          'success': function(html) { $('\#preview').html(html); },
-          'error': function() { alert('an error occurred updating the preview'); },
+          'success': function(html) {
+            $('\#preview').html(html);
+            clearAJAXFlash();
+          },
+          'error': function(req) {
+            insertAJAXFlash('error', req.responseText);
+          },
           'complete': function() { $('\#spinner').hide(); }
         });
         return false;
@@ -37,8 +42,13 @@ module TweetsHelper
         'interval': 5,
         'url': '#{tweets_url}.js',
         'before': function() { $('\#spinner').show(); },
-        'success': function(html) { $('\#preview').html(html); },
-        'error': function(html) { alert('an error occurred updating the preview'); },
+        'success': function(html) {
+          $('\#preview').html(html);
+          clearAJAXFlash();
+        },
+        'error': function(req) {
+          insertAJAXFlash('error', req.responseText);
+        },
         'complete': function() { $('\#spinner').hide(); },
       });
     JS
