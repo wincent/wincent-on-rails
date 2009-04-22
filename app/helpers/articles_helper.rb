@@ -39,9 +39,6 @@ module ArticlesHelper
         'fieldName': 'title',
         'include': ['body'],
         'url': '#{articles_url}.js',
-        'error': function(req) {
-           insertAJAXFlash('error', req.responseText);
-        },
         'complete': function() { $('\#spinner').hide(); },
       });
     JS
@@ -55,9 +52,6 @@ module ArticlesHelper
         'fieldName': 'body',
         'include': ['title'],
         'url': '#{articles_url}.js',
-        'error': function(req) {
-          insertAJAXFlash('error', req.responseText);
-        },
         'complete': function() { $('\#spinner').hide(); },
       });
     JS

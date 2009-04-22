@@ -50,9 +50,6 @@ module PostsHelper
         'fieldName': 'title',
         'include': ['excerpt', 'body'],
         'url': '#{posts_url}.js',
-        'error': function(req) {
-          insertAJAXFlash('error', req.responseText);
-        },
         'complete': function() { $('\#spinner').hide(); },
       });
     JS
@@ -66,9 +63,6 @@ module PostsHelper
         'fieldName': 'excerpt',
         'include': ['title', 'body'],
         'url': '#{posts_url}.js',
-        'error': function(req) {
-          insertAJAXFlash('error', req.responseText);
-        },
         'complete': function() { $('\#spinner').hide(); },
       });
     JS
@@ -82,9 +76,6 @@ module PostsHelper
         'fieldName': 'body',
         'include': ['title', 'excerpt'],
         'url': '#{posts_url}.js',
-        'error': function(req) {
-          insertAJAXFlash('error', req.responseText);
-        },
         'complete': function() { $('\#spinner').hide(); },
       });
     JS

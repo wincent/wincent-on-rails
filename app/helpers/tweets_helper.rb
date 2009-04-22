@@ -41,9 +41,6 @@ module TweetsHelper
         'fieldName': 'body',
         'interval': 5,
         'url': '#{tweets_url}.js',
-        'error': function(req) {
-          insertAJAXFlash('error', req.responseText);
-        },
         'complete': function() { $('\#spinner').hide(); },
       });
     JS

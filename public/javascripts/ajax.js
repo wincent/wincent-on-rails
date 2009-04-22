@@ -189,6 +189,9 @@ function observe_field(options) {
     $('#preview').html(html);
     clearAJAXFlash();
   };
+  var error = options['error'] || function(req) {
+    insertAJAXFlash('error', req.responseText);
+  };
 
   if (typeof window.observed_field_contents == 'undefined')
     window.observed_field_contents = {};
@@ -215,7 +218,7 @@ function observe_field(options) {
         'dataType': 'html',
         'data': data,
         'success': function(html) { success(html); },
-        'error': function(req) { options['error'](req); },
+        'error': function(req) { error(req); },
         'complete': function() {
           options['complete']();
           // regardless of success/failure, only try to submit once
