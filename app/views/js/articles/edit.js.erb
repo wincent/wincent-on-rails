@@ -26,6 +26,6 @@ $(function() {
     'url': '<%= articles_url %>.js' });
   observe_field({ 'kind': 'article', 'fieldName': 'body', 'include': ['title'],
     'url': '<%= articles_url %>.js' });
-  setup_preview_link({ 'kind': 'article', 'fieldName': 'body', 'include': ['title'],
+  setup_preview_link({ 'kind': 'article', 'include': ['body', 'title'],
     'url': '<%= articles_url %>.js' });
 });

@@ -24,6 +24,6 @@
 $(function() {
   observe_field({ 'kind': 'tweet', 'fieldName': 'body', 'interval': 5, 'url':
     '<%= tweets_url %>.js' });
-  setup_preview_link({ 'kind': 'tweet', 'fieldName': 'body', 'url':
+  setup_preview_link({ 'kind': 'tweet', 'include': ['body'], 'url':
     '<%= tweets_url %>.js' });
 });

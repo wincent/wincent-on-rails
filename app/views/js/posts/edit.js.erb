@@ -28,6 +28,6 @@ $(function() {
     'body'], 'url': '<%= posts_url %>.js' });
   observe_field({ 'kind': 'post', 'fieldName': 'body', 'include': ['title',
     'excerpt'], 'url': '<%= posts_url %>.js' });
-  setup_preview_link({ 'kind': 'post', 'fieldName': 'body', 'include': ['title',
+  setup_preview_link({ 'kind': 'post', 'include': ['body', 'title',
     'excerpt'], 'url': '<%= posts_url %>.js' });
 });
