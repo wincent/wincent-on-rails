@@ -13,9 +13,7 @@
         %span.annotation==(#{wikitext_cheatsheet})
       %td=f.text_area(:body, :cols => 80, :rows => 5)
   %p=f.submit 'Update'
-%h2
-  ==Preview (#{link_to_update_preview})
-  =spinner_tag
+%h2{:id => 'preview_link'} Preview
 #ajax-flash
 #preview
   =render 'preview.html.haml'
