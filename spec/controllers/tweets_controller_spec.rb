@@ -316,7 +316,7 @@ describe TweetsController, 'POST /twitter.js (AJAX preview)' do
     do_post({}, :not_as_admin)
     response.should_not be_success
     response.status.should == '403 Forbidden'
-    response.body.should be_blank
+    response.body.should =~ /Forbidden/
   end
 
   it 'should assign to the @tweet instance variable' do

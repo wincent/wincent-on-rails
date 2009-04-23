@@ -37,16 +37,6 @@ describe '/tweets/edit.html.haml' do
     do_render
   end
 
-  it 'should provide a link for updating the preview' do
-    template.should_receive(:link_to_update_preview)
-    do_render
-  end
-
-  it 'should observe the tweet body (for the preview)' do
-    template.should_receive(:observe_body)
-    do_render
-  end
-
   it 'should have a preview div' do
     do_render
     response.should have_tag('#preview')
