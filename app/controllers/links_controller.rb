@@ -51,7 +51,7 @@ class LinksController < ApplicationController
     respond_to do |format|
       format.js { # an AJAX update
         if @link.update_attributes params[:link]
-          redirect_to link_url(@link, :format => :js)
+          render :json => @link.to_json(:only => [:uri, :permalink])
         else
           error = "Update failed: #{@link.flashable_error_string}"
           render :text => error, :status => 422
