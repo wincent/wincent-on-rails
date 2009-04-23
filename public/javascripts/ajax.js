@@ -183,9 +183,9 @@ function ajax_select(selector, class_name, attribute_name, options, include_blan
 
 function setup_preview_link(options) {
   $('#preview_link').append('<a href="#"><img src="/images/update.png" alt="refresh" /></a>' +
-    '<img id="spinner" src="/images/spinner.gif" alt="spinner" />');
+    '<img id="preview_spinner" src="/images/spinner.gif" alt="spinner" />');
   $('#preview_link a').click(function() {
-    $('#spinner').show();
+    $('#preview_spinner').show();
     var data = [];
     var max = options['include'].length;
     for (var i = 0; i < max; i++) {
@@ -205,7 +205,7 @@ function setup_preview_link(options) {
       'error': function(req) {
         insertAJAXFlash('error', req.responseText);
       },
-      'complete': function() { $('#spinner').hide(); }
+      'complete': function() { $('#preview_spinner').hide(); }
     });
     return false;
   });
@@ -216,7 +216,7 @@ function observe_field(options) {
   var field = options['field'] ||
     $('#' + options['kind'] + '_' + options['fieldName']);
   var interval = (options['interval'] || 30) * 1000;
-  var before = options['before'] || function() { $('#spinner').show(); };
+  var before = options['before'] || function() { $('#preview_spinner').show(); };
   var success = options['success'] || function(html) {
     $('#preview').html(html);
     clearAJAXFlash();
@@ -224,7 +224,7 @@ function observe_field(options) {
   var error = options['error'] || function(req) {
     insertAJAXFlash('error', req.responseText);
   };
-  var complete = options['complete'] || function() { $('#spinner').hide(); };
+  var complete = options['complete'] || function() { $('#preview_spinner').hide(); };
 
   if (typeof window.observed_field_contents == 'undefined')
     window.observed_field_contents = {};
