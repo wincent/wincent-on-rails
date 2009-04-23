@@ -53,9 +53,7 @@ class LinksController < ApplicationController
         if @link.update_attributes params[:link]
           redirect_to link_url(@link, :format => :js)
         else
-          # TODO: add "flashable_error_string" method to ActiveRecord:
-          #error = "Update failed: #{@link.flashable_error_string}"
-          error = "Update failed: #{@link.errors.full_messages.join(', ')}"
+          error = "Update failed: #{@link.flashable_error_string}"
           render :text => error, :status => 422
         end
       }
