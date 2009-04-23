@@ -12,7 +12,7 @@
 require 'active_record/acts/classifiable'
 require 'active_record/acts/taggable'
 require 'active_record/acts/searchable'
-require 'active_record/error_extensions'
+require 'wincent/active_record/error_extensions'
 require 'custom_atom_feed_helper'
 require 'authentication'
 require 'dynamic_javascript'
