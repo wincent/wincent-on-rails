@@ -97,7 +97,7 @@ function ajax_check_box(selector, class_name, attribute_name, url) {
   var new_contents = '<input id="' + class_name + '_' + attribute_name +
     '" name="' + class_name + '[' + attribute_name + ']" type="checkbox">' +
     '<img alt="Spinner" id="' + class_name + '_' + attribute_name +
-    '_spinner" src="/images/spinner.gif" style="margin-left: 0.75em; display: none;" />';
+    '_spinner" class="spinner" src="/images/spinner.gif" />';
   field_id.html(new_contents);
   var check_box_id = field_id.find('input');
   if (field_text == 'true') {
@@ -145,7 +145,7 @@ function ajax_select(selector, class_name, attribute_name, options, include_blan
       new_contents = new_contents + '<option value="' + options[i][1] + '">' + options[i][0] + '</option>';
     }
   }
-  new_contents = new_contents + '</select><img alt="Spinner" id="' + class_name + '_' + attribute_name + '_spinner" src="/images/spinner.gif" style="margin-left: 0.75em; display: none;" />';
+  new_contents = new_contents + '</select><img alt="Spinner" id="' + class_name + '_' + attribute_name + '_spinner" class= "spinner" src="/images/spinner.gif" />';
   field_id.html(new_contents);
   var select_id = field_id.find('select');
   if (!selection_found) {

@@ -74,6 +74,8 @@ div.two-columns { float: left; width: 50%; margin-bottom: 3em; }
 
 .notice { border: 2px solid gray; background: #c3e3b5; }
 
+.spinner { padding-left: 0.33em; margin-bottom: -0.1em; display: none; }
+
 .ajax_error { background: #f9b8be; }
 
 .pagination { margin: 1em; font-size: xx-small; text-align: right; }
