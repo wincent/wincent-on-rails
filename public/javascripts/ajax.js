@@ -116,10 +116,11 @@ function ajax_check_box(selector, class_name, attribute_name, url) {
         check_box_id.attr('checked'),
       'success': function(json) {
         old_attr = check_box_id.attr('checked');
+        clearAJAXFlash();
       },
-      'error': function() {
-        alert('something went wrong');
+      'error': function(req) {
         check_box_id.attr('checked', old_attr);
+        insertAJAXFlash('error', req.responseText);
       },
       'complete': function() {
         spinner.hide();
@@ -170,10 +171,11 @@ function ajax_select(selector, class_name, attribute_name, options, include_blan
         select_id.val(),
       'success': function(json) {
         old_val = field_id.find('select option:selected').text();
+        clearAJAXFlash();
       },
-      'error': function() {
-        alert('something went wrong');
+      'error': function(req) {
         select_id.val(old_val);
+        insertAJAXFlash('error', req.responseText);
       },
       'complete': function() {
         spinner.hide();
