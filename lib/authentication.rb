@@ -67,7 +67,7 @@ module ActionController
         session[:original_uri] = request.request_uri
         redirect_to login_url
       else # XML, Atom, JavaScript etc
-        render :text => '', :status => 403 # Forbidden
+        render :text => 'Forbidden', :status => 403 # Forbidden
       end
     end
 
