@@ -70,11 +70,12 @@ function edit_in_place(selector, class_name, attribute_name, url) {
           'success': function(json) {
             field_id.text(json[class_name][attribute_name]);
             field_id.removeClass('ajax_error');
+            clearAJAXFlash();
           },
-          'error': function() {
+          'error': function(req) {
             field_id.text(value);
             field_id.addClass('ajax_error');
-            alert('something went wrong');
+            insertAJAXFlash('error', req.responseText);
           },
           'complete': function() {
             field_id.hover(highlight, unhighlight);

@@ -25,7 +25,7 @@ class Admin::TagsController < ApplicationController
           redirect_to url_for(:controller => 'tags', :action => 'show',
             :id => @tag.id, :protocol => 'https')
         else
-          render :text => '', :status => 422
+          render :text => 'Update failed', :status => 422
         end
       }
     end

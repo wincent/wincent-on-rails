@@ -53,7 +53,7 @@ class LinksController < ApplicationController
         if @link.update_attributes params[:link]
           redirect_to link_url(@link, :format => :js)
         else
-          render :text => '', :status => 422
+          render :text => 'Update failed', :status => 422
         end
       }
     end

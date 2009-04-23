@@ -113,7 +113,7 @@ class IssuesController < ApplicationController
           if @issue.update_attributes params[:issue]
             redirect_to issue_url(@issue, :format => :js)
           else
-            render :text => '', :status => 422
+            render :text => 'Update failed', :status => 422
           end
         end
       }

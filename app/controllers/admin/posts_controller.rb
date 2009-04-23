@@ -29,7 +29,7 @@ class Admin::PostsController < ApplicationController
           redirect_to url_for(:controller => 'posts', :action => 'show',
             :id => @post.id, :protocol => 'https')
         else
-          render :text => '', :status => 422
+          render :text => 'Update failed', :status => 422
         end
       }
     end

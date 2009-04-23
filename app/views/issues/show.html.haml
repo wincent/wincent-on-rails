@@ -5,6 +5,8 @@
 -content_for :javascript do
   =javascript_include_tag 'ajax' if admin?
 -@page_title = "#{@issue.kind_string} \##{@issue.id.to_s}: #{@issue.summary}"
+-if admin?
+  #ajax-flash
 #breadcrumbs
   =link_to 'Home', root_url
   &raquo;
