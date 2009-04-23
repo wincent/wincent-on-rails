@@ -72,8 +72,8 @@ describe Issue, 'protected attributes' do
 end
 
 describe Issue, 'validating the description' do
-  it 'should require it to be present' do
-    new_issue(:description => nil).should fail_validation_for(:description)
+  it 'should not require it to be present' do
+    new_issue(:description => '').should_not fail_validation_for(:description)
   end
 
   it 'should complain if longer than 128k' do

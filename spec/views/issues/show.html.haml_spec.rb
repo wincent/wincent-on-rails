@@ -81,3 +81,23 @@ describe '/issues/show viewed by a normal user' do
     response.should_not have_text(/destroy/) # not sure how best to test this, so this is a cheap stand-in for now
   end
 end
+
+describe '/issues/show with no description' do
+  include IssuesHelper
+
+  before do
+    assigns[:issue]     = @issue = create_issue(:description => '')
+    assigns[:comments]  = []
+    assigns[:comment]   = Comment.new
+  end
+
+  def do_render
+    render '/issues/show'
+  end
+
+  it 'should show "none"' do
+    do_render
+    # this is currently a false positive (catches "Description ... Tags ... none")
+    response.should have_text(/Description.+none/m)
+  end
+end

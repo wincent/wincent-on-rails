@@ -43,7 +43,11 @@
         -if admin?
           %br
           =link_to 'edit', edit_issue_url(@issue)
-      %td=@issue.description.w :base_heading_level => 1
+      %td
+        -if @issue.description.blank?
+          none
+        -else
+          =@issue.description.w :base_heading_level => 1
     -if admin?
       %tr
         %th Public?

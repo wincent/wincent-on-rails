@@ -7,7 +7,11 @@ custom_atom_feed do |feed|
       entry.content 'Currently awaiting moderation'
     else
       entry.title "#{@issue.kind_string} \##{@issue.id}: #{@issue.summary}"
-      entry.content @issue.summary.w, :type => 'html'
+      if @issue.description.blank?
+        entry.content @issue.summary
+      else
+        entry.content @issue.description.w, :type => 'html'
+      end
     end
     entry.author { |author| author.name @issue.user ? @issue.user.display_name : 'anonymous' }
   end

@@ -50,7 +50,8 @@ describe '/search/_issue' do
   end
 
   it 'should get the issue description' do
-    @issue.should_receive(:description).and_return('foo')
+    # actually receives it twice (first time to check if blank)
+    @issue.should_receive(:description).at_least(:once).and_return('foo')
     do_render
   end
 

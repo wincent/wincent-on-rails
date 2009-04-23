@@ -7,7 +7,8 @@ Edit/moderate all issues:
   <%= @moderation_url %>
 
 Summary: <%= @issue.summary %>
-
+<% unless @issue.description.blank? %>
 ---- Start issue description ----
 <%= @issue.description %>
 ---- End issue description ----
+<% end %>
