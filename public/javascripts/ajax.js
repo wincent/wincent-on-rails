@@ -152,8 +152,8 @@ function ajax_select(selector, class_name, attribute_name, options, include_blan
   var select_id = field_id.find('select');
   if (!selection_found) {
     if (!include_blank) {
-      alert('option not found');
-      // will probably choose to fail silently here instead, or fall back and select first option
+      alert('failed to find selection');
+      return; // programmer error! bail
     } else {
       // if none of the options match, eg "no product", must be the "blank" option
       select_id.find('option:first').attr('selected', 'selected');
