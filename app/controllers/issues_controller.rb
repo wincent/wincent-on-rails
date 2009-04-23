@@ -113,7 +113,8 @@ class IssuesController < ApplicationController
           if @issue.update_attributes params[:issue]
             redirect_to issue_url(@issue, :format => :js)
           else
-            render :text => 'Update failed', :status => 422
+            error = "Update failed: #{@issue.flashable_error_string}"
+            render :text => error, :status => 422
           end
         end
       }
