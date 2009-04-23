@@ -44,11 +44,6 @@ describe '/tweets/new.html.haml' do
     do_render
   end
 
-  it 'should include a spinner tag (for the preview)' do
-    template.should_receive(:spinner_tag)
-    do_render
-  end
-
   it 'should have a preview div' do
     do_render
     response.should have_tag('#preview')

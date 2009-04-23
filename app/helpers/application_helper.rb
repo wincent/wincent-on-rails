@@ -253,10 +253,6 @@ module ApplicationHelper
     button_to_moderate_model_as_ham issue, issue_url(issue)
   end
 
-  def spinner_tag
-    image_tag 'spinner.gif', :id => 'spinner', :style => 'display:none;'
-  end
-
   def dynamic_javascript_include_tag
     klass = controller.class
     if klass.respond_to? :included_dynamic_javascript_actions
