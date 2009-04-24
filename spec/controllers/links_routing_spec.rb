@@ -44,7 +44,19 @@ describe LinksController do
       params_from(:get, "/links/1").should == {:controller => "links", :action => "show", :id => "1", :protocol => 'https'}
     end
 
-    it "should generate params { :controller => 'links', action => 'edit', id => '1', :protocol => 'https' } from GET /links/1;edit" do
+    it "should generate params { :controller => 'links', action => 'show', id => 'foo', :protocol => 'https' } from GET /links/foo (permalink)" do
+      params_from(:get, "/links/foo").should == {:controller => "links", :action => "show", :id => "foo", :protocol => 'https'}
+    end
+
+    it "should generate params { :controller => 'links', action => 'show', id => '1', :protocol => 'https' } from GET /l/1 (shortcut)" do
+      params_from(:get, "/l/1").should == {:controller => "links", :action => "show", :id => "1", :protocol => 'https'}
+    end
+
+    it "should generate params { :controller => 'links', action => 'show', id => 'foo', :protocol => 'https' } from GET /l/foo (shortcut, permalink)" do
+      params_from(:get, "/l/foo").should == {:controller => "links", :action => "show", :id => "foo", :protocol => 'https'}
+    end
+
+    it "should generate params { :controller => 'links', action => 'edit', id => '1', :protocol => 'https' } from GET /links/1/edit" do
       params_from(:get, "/links/1/edit").should == {:controller => "links", :action => "edit", :id => "1", :protocol => 'https'}
     end
 
