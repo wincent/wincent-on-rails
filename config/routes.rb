@@ -59,6 +59,7 @@ ActionController::Routing::Routes.draw do |map|
   map.paginated_articles '/wiki/page/:page', :controller => 'articles', :action => 'index', :protocol => 'https'
 
   # regular routes
+  map.connect 'l/:id', :controller => 'links', :action => 'show', :protocol => 'https'
   map.connect 'misc/:action', :controller => 'misc', :protocol => 'https'
 
   # test environment only; without this we get this in application layout:
