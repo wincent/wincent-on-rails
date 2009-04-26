@@ -17,6 +17,8 @@ class Forum < ActiveRecord::Base
       FROM forums
       LEFT OUTER JOIN (SELECT id, forum_id, updated_at
             FROM topics
+            WHERE awaiting_moderation = FALSE
+            AND public = TRUE
             ORDER BY forum_id, updated_at DESC) AS t
       ON forums.id = t.forum_id
       WHERE forums.public = TRUE
