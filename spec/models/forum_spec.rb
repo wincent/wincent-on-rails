@@ -157,7 +157,7 @@ describe Forum, 'find_all method' do
   end
 
   def add_topic
-    @forum.topics.create :title => String.random, :body => String.random
+    create_topic :forum => @forum
   end
 
   it 'should find forums with topics' do
@@ -227,6 +227,35 @@ describe Forum, 'find_all method' do
     @forum.update_attribute(:public, false)
     finish = Forum.find_all.length
     (finish - start).should == -1
+  end
+
+  # was a bug
+  it 'should not count a topic awaiting moderation as a "last active" topic' do
+    topic = add_topic
+    topic.awaiting_moderation = true
+    topic.save
+    Forum.find_all.first.last_topic_id.should be_nil
+  end
+
+  it 'should not allow a topic awaiting moderation to influence the "updated at" field' do
+    topic = add_topic
+    topic.awaiting_moderation = true
+    topic.save
+    Forum.find_all.first.last_active_at.should be_nil
+  end
+
+  it 'should not count a private topic as a "last active" topic' do
+    topic = add_topic
+    topic.public = false
+    topic.save
+    Forum.find_all.first.last_topic_id.should be_nil
+  end
+
+  it 'should not allow a private topic to influence the "updated at" field' do
+    topic = add_topic
+    topic.public = false
+    topic.save
+    Forum.find_all.first.last_active_at.should be_nil
   end
 end
 
