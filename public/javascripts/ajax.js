@@ -133,14 +133,14 @@ function ajax_select(selector, class_name, attribute_name, options, include_blan
   var model_id = $(selector).attr('id'); // issue_22
   var record_id = model_id.match(/_(\d+)$/)[1]; // 22
   var field_id = $('#' + model_id + '_' + attribute_name); // issue_22_status
-  var field_text = field_id.text(); // eg. New, Open, Closed (first letter capitalized by humanize method)
+  var field_text = field_id.text(); // eg. New, Open, Closed
   var new_contents = '<select id="' + class_name + '_' + attribute_name + '" name="' + class_name + '[' + attribute_name + ']">';
   if (include_blank) {
     new_contents = new_contents + '<option value=""></option>';
   }
   var selection_found = false;
   for (var i = 0; i < options.length; i++) {
-    if (field_text.toLowerCase() == options[i][0]) {
+    if (field_text.toLowerCase() == options[i][0].toLowerCase()) {
       new_contents = new_contents + '<option value="' + options[i][1] + '" selected="selected">' + options[i][0] + '</option>';
       selection_found = true;
     } else {
