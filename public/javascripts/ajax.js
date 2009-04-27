@@ -140,7 +140,7 @@ function ajax_select(selector, class_name, attribute_name, options, include_blan
   }
   var selection_found = false;
   for (var i = 0; i < options.length; i++) {
-    if (field_text.toLowerCase() == options[i][0].toLowerCase()) {
+    if (field_text == options[i][0]) {
       new_contents = new_contents + '<option value="' + options[i][1] + '" selected="selected">' + options[i][0] + '</option>';
       selection_found = true;
     } else {

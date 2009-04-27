@@ -109,8 +109,8 @@ describe Issue, "annotations" do
     @issue.save
     body = @issue.comments.first.body
     body.should =~ /Kind.*changed:/
-    body.should =~ /From:.*Bug/
-    body.should =~ /To:.*Feature request/
+    body.should =~ /From:.*bug/
+    body.should =~ /To:.*feature request/
   end
 
   it 'should add an annotation for status changes' do
@@ -119,8 +119,8 @@ describe Issue, "annotations" do
     @issue.save
     body = @issue.comments.first.body
     body.should =~ /Status.*changed:/
-    body.should =~ /From:.*Open/
-    body.should =~ /To:.*Closed/
+    body.should =~ /From:.*open/
+    body.should =~ /To:.*closed/
   end
 
   it 'should add an annotation for public changes' do
