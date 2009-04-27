@@ -42,12 +42,12 @@ class Issue < ActiveRecord::Base
 
   # We expose this for use in the controller layer.
   def self.string_for_status status
-    STATUS_MAP[status].to_s.humanize
+    STATUS_MAP[status].to_s.gsub('_', ' ')
   end
 
   # We expose this for use in the controller layer.
   def self.string_for_kind kind
-    KIND_MAP[kind].to_s.humanize
+    KIND_MAP[kind].to_s.gsub('_', ' ')
   end
 
   def status_string
