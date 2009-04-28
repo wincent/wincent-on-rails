@@ -100,8 +100,9 @@ class IssuesController < ApplicationController
         end
       }
 
-      # TODO: eventually retire the ham logic, rolling it into the standard AJAX handling (the "else" clause)
       format.js {
+        # I don't really like this special case but it seems to be the only
+        # way to classify as ham without updating the record timestamp
         if params[:button] == 'ham'
           @issue.moderate_as_ham!
           render :json => {}.to_json
