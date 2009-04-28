@@ -17,25 +17,25 @@
     =named_anchor 'top'
     #header
       #logo
-        -haml_tag :a, :href => root_url, :title => 'Wincent front page' do
+        -haml_tag :a, :href => root_path, :title => 'Wincent front page' do
           =image_tag('logo.png')
-      %h1=link_to 'Wincent', root_url
+      %h1=link_to 'Wincent', root_path
       %ul#navbar
-        %li#login=link_to 'log in', login_url
-        %li#logout=link_to 'log out', logout_url
-        -#%li=link_to 'Products', products_url
+        %li#login=link_to 'log in', login_path
+        %li#logout=link_to 'log out', logout_path
+        -#%li=link_to 'Products', products_path
         %li=link_to 'Products', 'http://wincent.com/a/products/'
         -#%li=link_to 'Store'
-        %li=link_to 'Blog', posts_url
-        %li=link_to 'Wiki', articles_url
+        %li=link_to 'Blog', posts_path
+        %li=link_to 'Wiki', articles_path
         -# not sure whether we'll leave this forums link in the navbar forever
-        %li=link_to 'Forums', forums_url
-        %li=link_to 'Support', support_url
+        %li=link_to 'Forums', forums_path
+        %li=link_to 'Support', support_path
         -#%li=link_to 'About'
         %li.last
           -# TODO: make this unobtrusive
-          =link_to_function 'Search', "$('#search_box').toggle(); $('#search_box').focus();", :href => search_index_url
-          %form{:id => 'search', :action => search_index_url, :method => 'post'}
+          =link_to_function 'Search', "$('#search_box').toggle(); $('#search_box').focus();", :href => search_index_path
+          %form{:id => 'search', :action => search_index_path, :method => 'post'}
             =text_field_tag :query, params[:query], :size => 20, :id => :search_box, :style => 'display:none;'
     #content
       #cacheable-flash

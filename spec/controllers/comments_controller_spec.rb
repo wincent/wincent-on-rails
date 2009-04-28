@@ -46,7 +46,7 @@ describe CommentsController, 'GET /comments/:id/edit logged in as normal user' d
   it 'should deny access to the "edit" action' do
     login_as_normal_user
     get :edit, :id => @comment.id, :protocol => 'https'
-    response.should redirect_to(login_url)
+    response.should redirect_to(login_path)
     flash[:notice].should =~ /requires administrator privileges/
   end
 end
@@ -60,7 +60,7 @@ describe CommentsController, 'GET /comments/:id/edit as an anonymous visitor' do
   # but the effort is minimal, so it doesn't hurt to err on the safe side
   it 'should deny access to the "edit" action' do
     get :edit, :id => @comment.id, :protocol => 'https'
-    response.should redirect_to(login_url)
+    response.should redirect_to(login_path)
     flash[:notice].should =~ /requires administrator privileges/
   end
 end
@@ -102,7 +102,7 @@ describe CommentsController, 'PUT /comments/:id logged in as admin' do
     @comment.stub!(:save).and_return(true)
     Comment.stub!(:find).and_return(@comment)
     do_put
-    response.should redirect_to(controller.send(:nested_comment_url, @comment))
+    response.should redirect_to(controller.send(:nested_comment_path, @comment))
   end
 
   it 'should redirect to the list of comments awaiting moderation on success for comments that are awaiting moderation' do
@@ -110,7 +110,7 @@ describe CommentsController, 'PUT /comments/:id logged in as admin' do
     @comment.stub!(:save).and_return(true)
     Comment.stub!(:find).and_return(@comment)
     do_put
-    response.should redirect_to(comments_url)
+    response.should redirect_to(comments_path)
   end
 
   it 'should show an error on failure' do

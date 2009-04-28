@@ -10,7 +10,7 @@ describe '/tweets/index.html.haml' do
   end
 
   before do
-    @paginator = RestfulPaginator.new({}, 2, tweets_url, 20)
+    @paginator = RestfulPaginator.new({}, 2, tweets_path, 20)
   end
 
   it 'should include an Atom feed link' do

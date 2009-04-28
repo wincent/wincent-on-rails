@@ -22,7 +22,7 @@ describe '/search/_tweet' do
 
   it 'should link to the tweet' do
     do_render
-    response.should have_tag('a[href=?]', tweet_url(@tweet))
+    response.should have_tag('a[href=?]', tweet_path(@tweet))
   end
 
   it 'should show the timeinfo for the tweet' do

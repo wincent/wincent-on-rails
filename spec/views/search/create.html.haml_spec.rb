@@ -39,7 +39,7 @@ describe '/search/create with one page of search results' do
   it 'should have a "search again" link' do
     do_render
     response.should have_tag('.links') do
-      with_tag 'a[href=?]', search_index_url
+      with_tag 'a[href=?]', search_index_path
     end
   end
 end
@@ -92,7 +92,7 @@ describe '/search/create with multiple pages of search results' do
 
   it 'should display a "more results" form button' do
     render 'search/create'
-    response.should have_tag('form[action=?]', search_index_url) do
+    response.should have_tag('form[action=?]', search_index_path) do
       with_tag 'input[type=hidden][name=query][value=?]', 'foo'
       with_tag 'input[type=hidden][name=offset][value=?]', @offset + 20
       with_tag 'input[type=submit][value=?]', 'more results...'

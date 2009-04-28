@@ -29,7 +29,7 @@ describe '/search/_issue' do
 
   it 'should link to the issue' do
     do_render
-    response.should have_tag('a[href=?]', issue_url(@issue))
+    response.should have_tag('a[href=?]', issue_path(@issue))
   end
 
   it 'should show the timeinfo for the issue' do

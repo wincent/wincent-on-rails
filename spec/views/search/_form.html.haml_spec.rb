@@ -13,20 +13,20 @@ describe '/search/_form' do
   it 'should have an "issue tracker search" link' do
     do_render
     response.should have_tag('div.links') do
-      with_tag 'a[href=?]', issues_search_url
+      with_tag 'a[href=?]', issues_search_path
     end
   end
 
   it 'should have an "tag search" link' do
     do_render
     response.should have_tag('div.links') do
-      with_tag 'a[href=?]', search_tags_url
+      with_tag 'a[href=?]', search_tags_path
     end
   end
 
   it 'should show the search form' do
     do_render
-    response.should have_tag('form[action=?]', search_index_url) do
+    response.should have_tag('form[action=?]', search_index_path) do
       with_tag 'input[name=?]', 'query'
       with_tag 'input[type=?]', 'text'
       with_tag 'input[value=?]', 'Search'

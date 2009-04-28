@@ -4,7 +4,7 @@
   =render :partial => 'shared/anonymous'
 -elsif !current_user.verified?
   =render :partial => 'shared/unverified'
--form_for @comment, :url => polymorphic_comments_url(@comment) do |f|
+-form_for @comment, :url => polymorphic_comments_path(@comment) do |f|
   %table.main
     %tr
       %th
@@ -23,4 +23,4 @@
 -#  =spinner_tag
 -#  -# TODO: graceful non-JS fallback
 -##preview=body_html
--#%p=link_to 'back', articles_url
+-#%p=link_to 'back', articles_path

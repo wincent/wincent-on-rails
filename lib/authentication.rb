@@ -65,7 +65,7 @@ module ActionController
       if params[:format].blank? or params[:format] =~ /html/i
         flash[:notice] = msg
         session[:original_uri] = request.request_uri
-        redirect_to login_url
+        redirect_to login_path
       else # XML, Atom, JavaScript etc
         render :text => 'Forbidden', :status => 403 # Forbidden
       end

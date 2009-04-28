@@ -22,7 +22,7 @@ class Admin::ForumsController < ApplicationController
         @forum.position = params[:forum][:position] if
           params[:forum].key?(:position)
         if @forum.update_attributes params[:forum]
-          # don't use admin_forum_url here because we want to force the use of a
+          # don't use admin_forum_path here because we want to force the use of a
           # numeric id; url_for will keep us in admin namespace here
           redirect_to url_for(:controller => 'forums', :action => 'show',
             :id => @forum.id, :protocol => 'https')

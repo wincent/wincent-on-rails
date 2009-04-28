@@ -31,7 +31,7 @@ class IssuesController < ApplicationController
       else
         flash[:notice] = 'Successfully submitted issue (awaiting moderation).'
       end
-      redirect_to issue_url(@issue)
+      redirect_to issue_path(@issue)
     else
       flash[:error] = 'Failed to create new issue.'
       render :action => 'new'
@@ -48,7 +48,7 @@ class IssuesController < ApplicationController
     # NOTE: have an N + 1 issue here (for each product we get the product info)
     # can't just :include => :product here because that will introduce an ambiguous "updated_at" column
     # thanks to acts_as_sortable (will need to update acts as sortable)
-    @paginator = Paginator.new params, Issue.count(:conditions => options), issues_url
+    @paginator = Paginator.new params, Issue.count(:conditions => options), issues_path
     @issues = Issue.find :all,
       sort_options.merge({ :offset => @paginator.offset, :limit => @paginator.limit, :conditions => options })
     @search = Issue.new
@@ -93,7 +93,7 @@ class IssuesController < ApplicationController
         @issue.pending_tags = params[:issue][:pending_tags]
         if @issue.update_attributes params[:issue]
           flash[:notice] = 'Successfully updated'
-          redirect_to (@issue.awaiting_moderation ? admin_issues_url : issue_url(@issue))
+          redirect_to (@issue.awaiting_moderation ? admin_issues_path : issue_path(@issue))
         else
           flash[:error] = 'Update failed'
           render :action => 'edit'
@@ -111,7 +111,7 @@ class IssuesController < ApplicationController
           @issue.pending_tags = params[:issue][:pending_tags]
           @issue.status       = params[:issue][:status] if params[:issue].key?(:status)
           if @issue.update_attributes params[:issue]
-            redirect_to issue_url(@issue, :format => :js)
+            redirect_to issue_path(@issue, :format => :js)
           else
             error = "Update failed: #{@issue.flashable_error_string}"
             render :text => error, :status => 422
@@ -129,7 +129,7 @@ class IssuesController < ApplicationController
     respond_to do |format|
       format.html {
         flash[:notice] = 'Issue destroyed'
-        redirect_to issues_url
+        redirect_to issues_path
       }
       format.js {
         render :json => {}.to_json
@@ -139,7 +139,7 @@ class IssuesController < ApplicationController
 
   def search
     conditions  = Issue.prepare_search_conditions default_access_options, params[:issue]
-    @paginator  = Paginator.new params, Issue.count(:conditions => conditions), search_issues_url
+    @paginator  = Paginator.new params, Issue.count(:conditions => conditions), search_issues_path
     @issues     = Issue.find :all,
       sort_options.merge({ :conditions => conditions, :offset => @paginator.offset, :limit => @paginator.limit })
   end
@@ -199,6 +199,6 @@ private
   end
 
   def record_not_found
-    super issues_url
+    super issues_path
   end
 end

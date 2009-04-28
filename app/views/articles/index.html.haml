@@ -1,9 +1,9 @@
--atom_link articles_url(:format => :atom)
+-atom_link articles_path(:format => :atom)
 -@page_title = 'wiki index'
 %h1 Wiki articles
 %h2.major
   Recently updated
-  =feed_icon articles_url(:format => :atom)
+  =feed_icon articles_path(:format => :atom)
 -if @paginator
   .pagination=@paginator.pagination_links
 %table
@@ -12,14 +12,14 @@
     %th When
   -for article in @articles
     %tr
-      %td=link_to h(article.title), article_url(article)
+      %td=link_to h(article.title), article_path(article)
       %td=timeinfo article
-%h2.major==Top #{link_to 'tags', tags_url} in the wiki
+%h2.major==Top #{link_to 'tags', tags_path} in the wiki
 .cloud
   -for tag in @tags
     =scaled_tag tag, 'article'
 %h2.major Tag search
--form_tag search_tags_url, :method => 'get' do
+-form_tag search_tags_path, :method => 'get' do
   %span.annotation Find items which feature <em>all</em> of the specified tags
   %br
   =text_field_tag :q, params[:q], :size => 40

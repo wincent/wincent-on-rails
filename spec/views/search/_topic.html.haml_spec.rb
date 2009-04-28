@@ -29,9 +29,9 @@ describe '/search/_topic' do
 
   it 'should link to the topic' do
     do_render
-    # must use protected topic_url method here because in the context of these specs url_for gives crazy results
+    # must use protected topic_path method here because in the context of these specs url_for gives crazy results
     # (ie "/topics/show/815" instead of the correct "https://test.host/topics/815")
-    response.should have_tag('a[href=?]', template.send(:topic_url, @topic))
+    response.should have_tag('a[href=?]', template.send(:topic_path, @topic))
   end
 
   it 'should show the timeinfo for the topic' do

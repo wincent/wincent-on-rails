@@ -1,7 +1,7 @@
 %h1 Edit user
 =error_messages_for :user
 =error_messages_for :email
--form_for @user, :url => user_url(@user) do |f|
+-form_for @user, :url => user_path(@user) do |f|
   %table.main
     %tr
       %th
@@ -15,7 +15,7 @@
         -# TODO: radio buttons or similar UI here to select default?
         -for email in @emails
           -if admin?
-            =link_to email.address, edit_user_email_url(@user, email)
+            =link_to email.address, edit_user_email_path(@user, email)
           -else
             =mail_to email.address
           =check_box_tag "delete_email[#{email.id}]"
@@ -48,6 +48,6 @@
   %p=f.submit 'Save changes'
   -# TODO: consider adding an "undelete emails" button here
 .links
-  =link_to 'user profile', user_url(@user)
+  =link_to 'user profile', user_path(@user)
   -if admin?
-    =link_to 'all users', users_url
+    =link_to 'all users', users_path

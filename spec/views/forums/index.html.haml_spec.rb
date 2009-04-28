@@ -12,7 +12,7 @@ describe '/forums/index' do
 
   it 'should show breadcrumbs' do
     response.should have_tag('div#breadcrumbs', /Forums/) do
-      with_tag 'a[href=?]', root_url
+      with_tag 'a[href=?]', root_path
     end
   end
 end

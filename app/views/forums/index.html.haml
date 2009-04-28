@@ -1,7 +1,7 @@
 -content_for :css do
   =stylesheet_link_tag 'forums'
 #breadcrumbs
-  =link_to 'Home', root_url
+  =link_to 'Home', root_path
   &raquo; Forums
 %h1.major Forums
 %table
@@ -14,7 +14,7 @@
   -for forum in @forums
     %tr{ :class => "forum #{cycle('odd', 'even')}" }
       %td
-        =link_to forum.name, forum_url(forum)
+        =link_to forum.name, forum_path(forum)
         -unless forum.description.blank?
           %br
           %span.annotation=h forum.description
@@ -25,7 +25,7 @@
         =link_to_topic_for_forum forum
       -if admin?
         %td
-          =link_to 'edit', edit_forum_url(forum)
+          =link_to 'edit', edit_forum_path(forum)
 -admin_only do
   .links
-    =link_to 'new forum', new_forum_url
+    =link_to 'new forum', new_forum_path

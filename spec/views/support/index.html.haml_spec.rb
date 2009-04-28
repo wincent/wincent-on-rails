@@ -17,7 +17,7 @@ describe '/support/index' do
   it 'should have a forums link' do
     do_render
     response.should have_tag('div.links') do
-      with_tag 'a[href=?]', forums_url
+      with_tag 'a[href=?]', forums_path
     end
   end
 
@@ -31,7 +31,7 @@ describe '/support/index' do
   it 'should have an "all issues" link' do
     do_render
     response.should have_tag('div.links') do
-      with_tag 'a[href=?]', issues_url
+      with_tag 'a[href=?]', issues_path
     end
   end
 
@@ -39,15 +39,15 @@ describe '/support/index' do
     do_render
     response.should have_tag('div.links') do
       # as noted elsewhere, url_for gives crazy results in view specs
-      # must use protected issues_search_url method
-      with_tag 'a[href=?]', template.send(:issues_search_url)
+      # must use protected issues_search_path method
+      with_tag 'a[href=?]', template.send(:issues_search_path)
     end
   end
 
   it 'should have a "new issue" link' do
     do_render
     response.should have_tag('div.links') do
-      with_tag 'a[href=?]', new_issue_url
+      with_tag 'a[href=?]', new_issue_path
     end
   end
 

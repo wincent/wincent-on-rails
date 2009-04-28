@@ -1,6 +1,6 @@
 #login_form
   %h1 Login
-  -form_tag sessions_url do
+  -form_tag sessions_path do
     =hidden_field_tag :original_uri, params[:original_uri]
     %p
       .label=label_tag :email, 'Email address'
@@ -12,5 +12,5 @@
       =submit_tag 'Log in'
       -# TODO: login via OpenID
 %ul
-  %li=link_to 'Sign up', new_user_url
-  %li=link_to 'Forgot your passphrase?', new_reset_url
+  %li=link_to 'Sign up', new_user_path
+  %li=link_to 'Forgot your passphrase?', new_reset_path

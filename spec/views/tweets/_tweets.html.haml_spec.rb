@@ -34,7 +34,7 @@ describe '/tweets/index.html.haml' do
 
   it 'should show a permalink for each tweet' do
     do_render
-    response.should have_tag('a[href=?]', tweet_url(@tweets[0]), 'permalink')
-    response.should have_tag('a[href=?]', tweet_url(@tweets[1]), 'permalink')
+    response.should have_tag('a[href=?]', tweet_path(@tweets[0]), 'permalink')
+    response.should have_tag('a[href=?]', tweet_path(@tweets[1]), 'permalink')
   end
 end

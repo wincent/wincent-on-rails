@@ -7,17 +7,6 @@ require 'cucumber/rails/rspec'
 
 include FixtureReplacement
 
-# Similar hack to the one used in spec/spec_helper.rb
-# but note that here we have to override ActionController::Request
-# not ActionController::TestRequest
-module ActionController
-  class Request
-    def ssl?
-      true
-    end
-  end
-end
-
 require 'json'
 
 module CacheableFlash

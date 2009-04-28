@@ -23,9 +23,9 @@
 
 $(function() {
   observe_field({ 'kind': 'article', 'fieldName': 'title', 'include': ['body'],
-    'url': '<%= articles_url %>.js' });
+    'url': '<%= articles_path %>.js' });
   observe_field({ 'kind': 'article', 'fieldName': 'body', 'include': ['title'],
-    'url': '<%= articles_url %>.js' });
+    'url': '<%= articles_path %>.js' });
   setup_preview_link({ 'kind': 'article', 'include': ['body', 'title'],
-    'url': '<%= articles_url %>.js' });
+    'url': '<%= articles_path %>.js' });
 });

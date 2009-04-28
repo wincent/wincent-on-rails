@@ -1,6 +1,6 @@
 %h1.major Support
 .links
-  =link_to 'forums', forums_url
+  =link_to 'forums', forums_path
   =link_to 'lost license codes', 'https://secure.wincent.com/a/support/registration/'
 -# mailing lists etc
 -#recent forum posts (topics? comments?) will want to fragment cache this
@@ -9,8 +9,8 @@
 -#and a contact form
 %h2.major Issues
 .links
-  =link_to 'show all issues', issues_url
-  =link_to 'search', issues_search_url # BUG: issues_search_url and search_issues_url are confusingly similar
-  =link_to 'open a ticket', new_issue_url, :title => "Don't forget to search first before opening a ticket"
+  =link_to 'show all issues', issues_path
+  =link_to 'search', issues_search_path # BUG: issues_search_path and search_issues_path are confusingly similar
+  =link_to 'open a ticket', new_issue_path, :title => "Don't forget to search first before opening a ticket"
 %h3 Recently modified
 =render :partial => 'issues/issues'

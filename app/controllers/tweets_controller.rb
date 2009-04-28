@@ -8,7 +8,7 @@ class TweetsController < ApplicationController
   def index
     respond_to do |format|
       format.html {
-        @paginator  = RestfulPaginator.new params, Tweet.count, tweets_url, 20
+        @paginator  = RestfulPaginator.new params, Tweet.count, tweets_path, 20
         @tweets     = Tweet.find_recent @paginator
       }
       format.atom {
@@ -29,7 +29,7 @@ class TweetsController < ApplicationController
         @tweet = Tweet.new params[:tweet]
         if @tweet.save
           flash[:notice] = 'Successfully created new tweet'
-          redirect_to tweet_url(@tweet)
+          redirect_to tweet_path(@tweet)
         else
           flash[:error] = 'Failed to create new tweet'
           render :action => 'new'
@@ -70,7 +70,7 @@ class TweetsController < ApplicationController
   def destroy
     # TODO: replace this with a delete-with-optional-undo model
     @tweet.destroy
-    redirect_to tweets_url
+    redirect_to tweets_path
   end
 
 private
@@ -80,6 +80,6 @@ private
   end
 
   def record_not_found
-    super tweets_url
+    super tweets_path
   end
 end

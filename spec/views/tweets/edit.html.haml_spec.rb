@@ -24,7 +24,7 @@ describe '/tweets/edit.html.haml' do
 
   it 'should have a form for the tweet' do
     do_render
-    response.should have_tag("form[action=?][method=post]", tweet_url(@tweet)) do
+    response.should have_tag("form[action=?][method=post]", tweet_path(@tweet)) do
       # real HTTP PUT is not supported, the form is just a normal POST
       # with a hidden field faking the PUT
       with_tag('input[name=_method][value=put]')
@@ -50,7 +50,7 @@ describe '/tweets/edit.html.haml' do
   it 'should have a "show" link' do
     do_render
     response.should have_tag('.links') do
-      # we use Rails shortcut @tweet instead of tweet_url(@tweet)
+      # we use Rails shortcut @tweet instead of tweet_path(@tweet)
       # so we end up getting tweet_path(@tweet)
       with_tag 'a[href=?]', tweet_path(@tweet)
     end
@@ -60,7 +60,7 @@ describe '/tweets/edit.html.haml' do
     do_render
     response.should have_tag('.links') do
       # again, using the shortcut gives us tweet_path(@tweet)
-      # instead of the habitual tweet_url(@tweet)
+      # instead of the habitual tweet_path(@tweet)
       with_tag 'a[href=?]', tweet_path(@tweet), 'destroy'
     end
     # link_to ..., :method => :delete produces some obtrusive JavaScript
@@ -70,7 +70,7 @@ describe '/tweets/edit.html.haml' do
   it 'should have an link to the tweets index' do
     do_render
     response.should have_tag('.links') do
-      with_tag 'a[href=?]', tweets_url
+      with_tag 'a[href=?]', tweets_path
     end
   end
 end

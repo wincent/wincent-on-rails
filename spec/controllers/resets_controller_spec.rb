@@ -102,7 +102,7 @@ describe ResetsController do
 
       it "should redirect to the new reset" do
         do_post
-        response.should redirect_to(reset_url("1"))
+        response.should redirect_to(reset_path("1"))
       end
     end
 
@@ -148,7 +148,7 @@ describe ResetsController do
 
       it "should redirect to the reset" do
         do_put
-        response.should redirect_to(reset_url("1"))
+        response.should redirect_to(reset_path("1"))
       end
     end
 

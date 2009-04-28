@@ -4,7 +4,7 @@
   =javascript_include_tag 'ajax'
 %h1 Edit tweet
 =error_messages_for :tweet
--form_for @tweet, :url => tweet_url(@tweet), :method => 'put' do |f|
+-form_for @tweet, :url => tweet_path(@tweet), :method => 'put' do |f|
   %table.main
     %tr
       %th
@@ -20,4 +20,4 @@
 .links
   =link_to 'show', @tweet
   =link_to 'destroy', @tweet, :confirm => 'Are you sure?', :method => :delete
-  =link_to 'all tweets', tweets_url
+  =link_to 'all tweets', tweets_path

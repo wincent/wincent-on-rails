@@ -28,20 +28,20 @@ describe TweetsController, 'GET /twitter ("internals" approach)' do
   end
 
   it 'should use the restful paginator' do
-    paginator = RestfulPaginator.new(@params, Tweet.count, tweets_url, 20)
-    RestfulPaginator.stub!(:new).with(@params, Tweet.count, tweets_url, 20).and_return(paginator)
+    paginator = RestfulPaginator.new(@params, Tweet.count, tweets_path, 20)
+    RestfulPaginator.stub!(:new).with(@params, Tweet.count, tweets_path, 20).and_return(paginator)
     do_get
     assigns[:paginator].should == paginator
   end
 
   it 'should correctly configure the restful paginator' do
-    RestfulPaginator.should_receive(:new).with(@params, Tweet.count, tweets_url, 20)
+    RestfulPaginator.should_receive(:new).with(@params, Tweet.count, tweets_path, 20)
     do_get
   end
 
   it 'should find recent tweets' do
-    paginator = RestfulPaginator.new(@params, Tweet.count, tweets_url, 20)
-    RestfulPaginator.stub!(:new).with(@params, Tweet.count, tweets_url, 20).and_return(paginator)
+    paginator = RestfulPaginator.new(@params, Tweet.count, tweets_path, 20)
+    RestfulPaginator.stub!(:new).with(@params, Tweet.count, tweets_path, 20).and_return(paginator)
     Tweet.should_receive(:find_recent).with(paginator)
     do_get
   end
@@ -114,7 +114,7 @@ describe TweetsController, 'GET /twitter ("black box" approach)' do
 
   it 'should tell the paginator to use the /twitter URL for link generation' do
     do_get
-    assigns[:paginator].path_or_url.should == tweets_url
+    assigns[:paginator].path_or_url.should == tweets_path
   end
 
   it 'should configure the paginator to paginate in groups of 20' do
@@ -215,7 +215,7 @@ describe TweetsController, 'GET /twitter/new' do
 
   it 'should redirect for non-admins' do
     do_get :not_as_admin
-    response.should redirect_to(login_url)
+    response.should redirect_to(login_path)
   end
 
   it 'should be successful' do
@@ -258,7 +258,7 @@ describe TweetsController, 'POST /twitter' do
 
   it 'should redirect for non-admins' do
     do_post({}, :not_as_admin)
-    response.should redirect_to(login_url)
+    response.should redirect_to(login_path)
   end
 
   it 'should create a new tweet record' do
@@ -286,7 +286,7 @@ describe TweetsController, 'POST /twitter' do
 
   it 'should redirect to the tweet "show" page on success' do
     do_successful_post
-    response.should redirect_to(tweet_url(@tweet))
+    response.should redirect_to(tweet_path(@tweet))
   end
 
   it 'should flash an error on failure' do
@@ -363,7 +363,7 @@ describe TweetsController, 'GET /twitter/:id' do
     tweet = new_tweet
     tweet.id = 1_342_103
     do_get tweet
-    response.should redirect_to(tweets_url)
+    response.should redirect_to(tweets_path)
   end
 
   it 'should page-cache the output' do
@@ -387,7 +387,7 @@ describe TweetsController, 'GET /twitter/:id/edit' do
 
   it 'should redirect for non-admins' do
     do_get @tweet, :not_as_admin
-    response.should redirect_to(login_url)
+    response.should redirect_to(login_path)
   end
 
   it 'should be successful' do
@@ -409,7 +409,7 @@ describe TweetsController, 'GET /twitter/:id/edit' do
     tweet = new_tweet
     tweet.id = 1_342_103
     do_get tweet
-    response.should redirect_to(tweets_url)
+    response.should redirect_to(tweets_path)
   end
 end
 
@@ -437,7 +437,7 @@ describe TweetsController, 'PUT /twitter/:id' do
 
   it 'should redirect for non-admins' do
     do_put @tweet, :not_as_admin
-    response.should redirect_to(login_url)
+    response.should redirect_to(login_path)
   end
 
   it 'should be successful' do
@@ -496,7 +496,7 @@ describe TweetsController, 'DELETE /twitter/:id' do
 
   it 'should redirect for non-admins' do
     do_delete @tweet, :not_as_admin
-    response.should redirect_to(login_url)
+    response.should redirect_to(login_path)
   end
 
   it 'should destroy the tweet' do
@@ -506,14 +506,14 @@ describe TweetsController, 'DELETE /twitter/:id' do
 
   it 'should redirect to the tweets index' do
     do_delete @tweet
-    response.should redirect_to(tweets_url)
+    response.should redirect_to(tweets_path)
   end
 
   it 'should redirect to the tweets index if not found' do
     tweet = new_tweet
     tweet.id = 1_342_103
     do_delete tweet
-    response.should redirect_to(tweets_url)
+    response.should redirect_to(tweets_path)
   end
 
   it 'should trigger the cache sweeper' do

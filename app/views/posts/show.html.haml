@@ -13,14 +13,14 @@
     =scaled_tag tag
 %p.links
   -if admin?
-    =link_to 'edit', edit_post_url(@post), :class => 'edit_link'
-  =link_to 'all posts', posts_url, :class => 'back_link'
+    =link_to 'edit', edit_post_path(@post), :class => 'edit_link'
+  =link_to 'all posts', posts_path, :class => 'back_link'
 -if @post.accepts_comments? || @post.comments_count != 0
   -# TODO: use divs to color-code comments (ie. private, awaiting moderation etc)
   =named_anchor 'comments'
   %h2.major
     Comments
-    =feed_icon post_url(@post, :format => :atom)
+    =feed_icon post_path(@post, :format => :atom)
   %table.comments
     -for comment in @comments
       %tr{ :class => "comment #{cycle('even', 'odd')}" + (comment.public? ? '' : ' private'), :id => "comment_#{comment.id}" }
@@ -32,7 +32,7 @@
           %span.when=timeinfo comment, :updated_string => 'edited'
           -if admin?
             %br
-            =link_to 'edit', edit_comment_url(comment)
+            =link_to 'edit', edit_comment_path(comment)
             -# TODO: add a means of marking individual comments as private
         %td=comment.body.w :base_heading_level => 2
   %h2.major Add a comment
@@ -40,4 +40,4 @@
     =render :partial => 'comments/comment'
   -else
     -# comments are currently closed but they were open in the past because we have at least one existing comment
-    %p==Comments are now closed for this post. You can discuss this further in the #{link_to 'forums', forums_url}.
+    %p==Comments are now closed for this post. You can discuss this further in the #{link_to 'forums', forums_path}.

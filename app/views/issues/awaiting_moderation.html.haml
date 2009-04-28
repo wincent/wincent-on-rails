@@ -8,12 +8,12 @@
   =link_to_next_issue if @next
 %h2
   This issue is currently awaiting moderation
-  =feed_icon issue_url(@issue, :format => :atom)
+  =feed_icon issue_path(@issue, :format => :atom)
 %div
   Subscribe to the
-  =link_to 'Atom feed', issue_url(@issue, :format => :atom)
+  =link_to 'Atom feed', issue_path(@issue, :format => :atom)
   to be informed when the issue is updated.
 .links
-  =link_to 'all issues', issues_url
+  =link_to 'all issues', issues_path
   -if admin?
-    =link_to 'destroy', issue_url(@issue), :method => :delete, :confirm => 'Really destroy this issue?'
+    =link_to 'destroy', issue_path(@issue), :method => :delete, :confirm => 'Really destroy this issue?'

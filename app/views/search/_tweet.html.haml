@@ -2,7 +2,7 @@
 %h2
   =result_number
   \:
-  =link_to "Tweet \##{model.id}", tweet_url(model)
+  =link_to "Tweet \##{model.id}", tweet_path(model)
 .when=timeinfo model
 %span.annotation Tweet
 .excerpt=truncate(model.body, :length => 240).w :base_heading_level => 2

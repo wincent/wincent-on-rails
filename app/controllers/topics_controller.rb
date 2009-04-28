@@ -25,10 +25,10 @@ class TopicsController < ApplicationController
         if @topic.save
           if logged_in_and_verified?
             flash[:notice] = 'Successfully created new topic.'
-            redirect_to forum_topic_url(@forum, @topic)
+            redirect_to forum_topic_path(@forum, @topic)
           else
             flash[:notice] = 'Successfully submitted topic (awaiting moderation).'
-            redirect_to forum_url(@forum)
+            redirect_to forum_path(@forum)
           end
         else
           flash[:error] = 'Failed to create new topic.'
@@ -70,7 +70,7 @@ class TopicsController < ApplicationController
         @topic.public           = params[:topic][:public]
         if @topic.update_attributes params[:topic]
           flash[:notice] = 'Successfully updated'
-          redirect_to forum_topic_url(@forum, @topic)
+          redirect_to forum_topic_path(@forum, @topic)
         else
           flash[:error] = 'Update failed'
           render :action => 'edit'
@@ -93,7 +93,7 @@ class TopicsController < ApplicationController
     topic = @forum.topics.find params[:id]
     topic.destroy
     respond_to do |format|
-      format.html { redirect_to forum_url(@forum) }
+      format.html { redirect_to forum_path(@forum) }
       format.js { render :json => {}.to_json }
     end
   end
@@ -113,7 +113,7 @@ private
       end
     else # special case for topic links without forum in params (helps us avoid some "N + 1 SELECT" problems)
       topic = Topic.find params[:id], :include => :forum
-      redirect_to forum_topic_url(topic.forum, topic)
+      redirect_to forum_topic_path(topic.forum, topic)
     end
   end
 
@@ -126,6 +126,6 @@ private
   end
 
   def record_not_found
-    super @forum ? forum_url(@forum) : forums_url
+    super @forum ? forum_path(@forum) : forums_path
   end
 end

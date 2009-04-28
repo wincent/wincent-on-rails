@@ -25,7 +25,7 @@ describe SessionsController, 'logging in with a valid username and passphrase' d
   end
 
   it 'should redirect to the user dashboard' do
-    response.should redirect_to(dashboard_url)
+    response.should redirect_to(dashboard_path)
   end
 end
 
@@ -59,7 +59,7 @@ describe SessionsController, 'logging out when previously logged in' do
   end
 
   it 'should redirect to the home path' do
-    response.should redirect_to(root_url)
+    response.should redirect_to(root_path)
   end
 end
 
@@ -73,7 +73,7 @@ describe SessionsController, 'logging out when not previously logged in' do
   end
 
   it 'should redirect to the home path' do
-    response.should redirect_to(root_url)
+    response.should redirect_to(root_path)
   end
 end
 
@@ -85,24 +85,24 @@ describe SessionsController, 'redirecting after login' do
 
   it 'should redirect to the user dashboard if no original uri supplied' do
     post 'create', :protocol => 'https'
-    response.should redirect_to(dashboard_url)
+    response.should redirect_to(dashboard_path)
   end
 
   it 'should redirect to if original uri supplied via session' do
     session[:original_uri] = '/comments'
     post 'create', :protocol => 'https'
-    response.should redirect_to(comments_url)
+    response.should redirect_to(comments_path)
   end
 
   it 'should redirect to if original uri supplied via params' do
     post 'create', :original_uri => '/comments', :protocol => 'https'
-    response.should redirect_to(comments_url)
+    response.should redirect_to(comments_path)
   end
 
   # was a bug were failing because even blank "original_uri" would redirect (to the root rather than the dashboard)
   it 'should redirect to the user dashboard if original uri is blank' do
     session[:original_uri] = ''
     post 'create', :protocol => 'https'
-    response.should redirect_to(dashboard_url)
+    response.should redirect_to(dashboard_path)
   end
 end

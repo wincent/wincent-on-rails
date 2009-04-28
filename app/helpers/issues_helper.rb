@@ -8,16 +8,16 @@ module IssuesHelper
   end
 
   def link_to_prev_issue
-    link_to '&laquo; previous', issue_url(@prev), :title => "#{@prev.kind_string} \##{@prev.id}: #{@prev.summary}"
+    link_to '&laquo; previous', issue_path(@prev), :title => "#{@prev.kind_string} \##{@prev.id}: #{@prev.summary}"
   end
 
   def link_to_next_issue
-    link_to 'next &raquo;', issue_url(@next), :title => "#{@next.kind_string} \##{@next.id}: #{@next.summary}"
+    link_to 'next &raquo;', issue_path(@next), :title => "#{@next.kind_string} \##{@next.id}: #{@next.summary}"
   end
 
   def link_to_product_issues product
     if product
-      link_to(product.name, issues_url(:product => product.name))
+      link_to(product.name, issues_path(:product => product.name))
     else
       'no product'
     end
@@ -27,6 +27,6 @@ module IssuesHelper
     # TODO: make this unobtrusive, make it degrade gracefully
     link_to_function link_text,
       "$('#issue_search').toggle(); $('#issue_summary').focus()",
-      :href => search_issues_url
+      :href => search_issues_path
   end
 end

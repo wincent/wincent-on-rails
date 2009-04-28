@@ -31,7 +31,7 @@ class TagsController < ApplicationController
 private
 
   def record_not_found
-    super tags_url
+    super tags_path
   end
 
 end

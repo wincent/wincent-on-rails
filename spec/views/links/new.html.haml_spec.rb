@@ -15,7 +15,7 @@ describe '/links/new.html.haml' do
   it 'should render new form' do
     render '/links/new.html.haml'
 
-    response.should have_tag('form[action=?][method=post]', links_url) do
+    response.should have_tag('form[action=?][method=post]', links_path) do
       with_tag('input#link_uri[name=?]', 'link[uri]')
       with_tag('input#link_permalink[name=?]', 'link[permalink]')
     end

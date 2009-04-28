@@ -25,7 +25,7 @@ describe '/tweets/show.html.haml' do
   it 'should have an link to the tweets index' do
     do_render
     response.should have_tag('.links') do
-      with_tag 'a[href=?]', tweets_url
+      with_tag 'a[href=?]', tweets_path
     end
   end
 end

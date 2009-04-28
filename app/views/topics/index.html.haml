@@ -5,15 +5,15 @@
       =h @topic.title
     %h3
       Topic in
-      =link_to h(@topic.forum.name), forum_url(@topic.forum)
+      =link_to h(@topic.forum.name), forum_path(@topic.forum)
       by
       =link_to_user @topic.user
     .when=timeinfo @topic
     %div=@topic.body.w :base_heading_level => 3
     .links
-      =link_to 'edit', edit_forum_topic_url(@topic.forum, @topic)
+      =link_to 'edit', edit_forum_topic_path(@topic.forum, @topic)
       =button_to_destroy_topic @topic
       =button_to_moderate_topic_as_ham @topic
 .links
-  =link_to 'forums index', forums_url
-  =link_to 'refresh', topics_url
+  =link_to 'forums index', forums_path
+  =link_to 'refresh', topics_path

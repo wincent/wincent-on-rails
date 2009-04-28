@@ -2,7 +2,7 @@
   =javascript_include_tag 'ajax'
 %h1 Create new article
 =error_messages_for :article
--form_for @article, :url => articles_url do |f|
+-form_for @article, :url => articles_path do |f|
   %table.main
     %tr
       %th Title
@@ -33,4 +33,4 @@
 -# TODO: graceful non-JS fallback
 #ajax-flash
 #preview=title_and_body_html
-%p=link_to 'index', articles_url
+%p=link_to 'index', articles_path

@@ -26,7 +26,7 @@ describe '/issues/edit' do
   it 'should have a "show" link' do
     do_render
     response.should have_tag('.links') do
-      with_tag 'a[href=?]', issue_url(@issue)
+      with_tag 'a[href=?]', issue_path(@issue)
     end
   end
 
@@ -43,14 +43,14 @@ describe '/issues/edit' do
   it 'should have a link back to the list of issues awaiting moderation' do
     do_render
     response.should have_tag('.links') do
-      with_tag 'a[href=?]', admin_issues_url
+      with_tag 'a[href=?]', admin_issues_path
     end
   end
 
   it 'should have a link to the list of public isues' do
     do_render
     response.should have_tag('.links') do
-      with_tag 'a[href=?]', issues_url
+      with_tag 'a[href=?]', issues_path
     end
   end
 end

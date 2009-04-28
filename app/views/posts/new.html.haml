@@ -2,7 +2,7 @@
   =javascript_include_tag 'ajax'
 %h1 Create new post
 =error_messages_for :post
--form_for @post, :url => posts_url do |f|
+-form_for @post, :url => posts_path do |f|
   %table.main
     %tr
       %th Title
@@ -40,4 +40,4 @@
 -# TODO: graceful non-JS fallback
 #ajax-flash
 #preview=title_excerpt_and_body_html
-%p=link_to 'back', posts_url
+%p=link_to 'back', posts_path

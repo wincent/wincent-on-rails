@@ -17,7 +17,7 @@ describe '/issues/index' do
   it 'should have an "all issues" link' do
     do_render
     response.should have_tag('div.links') do
-      with_tag 'a[href=?]', issues_url
+      with_tag 'a[href=?]', issues_path
     end
   end
 
@@ -36,14 +36,14 @@ describe '/issues/index' do
   it 'should have a "new issue" link' do
     do_render
     response.should have_tag('div.links') do
-      with_tag 'a[href=?]', new_issue_url
+      with_tag 'a[href=?]', new_issue_path
     end
   end
 
   it 'should have a "support overview" link' do
     do_render
     response.should have_tag('div.links') do
-      with_tag 'a[href=?]', support_url
+      with_tag 'a[href=?]', support_path
     end
   end
 

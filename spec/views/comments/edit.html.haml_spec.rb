@@ -24,7 +24,7 @@ describe '/comments/edit' do
   it 'should have a show button' do
     do_render
     response.should have_tag('.links') do
-      with_tag 'a[href=?]', comment_url(@comment)
+      with_tag 'a[href=?]', comment_path(@comment)
     end
   end
 
@@ -41,14 +41,14 @@ describe '/comments/edit' do
   it 'should have a link back to the list of comments awaiting moderation' do
     do_render
     response.should have_tag('.links') do
-      with_tag 'a[href=?]', comments_url
+      with_tag 'a[href=?]', comments_path
     end
   end
 
   it 'should have a link back to the administrator dashboard' do
     do_render
     response.should have_tag('.links') do
-      with_tag 'a[href=?]', admin_dashboard_url
+      with_tag 'a[href=?]', admin_dashboard_path
     end
   end
 end

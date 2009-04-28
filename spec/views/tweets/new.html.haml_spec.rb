@@ -24,7 +24,7 @@ describe '/tweets/new.html.haml' do
 
   it 'should have a form for the tweet' do
     do_render
-    response.should have_tag("form[action=?][method=post]", tweets_url) do
+    response.should have_tag("form[action=?][method=post]", tweets_path) do
       with_tag('textarea[name=?]', 'tweet[body]')
     end
   end
@@ -47,7 +47,7 @@ describe '/tweets/new.html.haml' do
   it 'should have an link to the tweets index' do
     do_render
     response.should have_tag('.links') do
-      with_tag 'a[href=?]', tweets_url
+      with_tag 'a[href=?]', tweets_path
     end
   end
 end

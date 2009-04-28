@@ -9,7 +9,7 @@ class EmailsController < ApplicationController
   def update
     if @email.update_attributes params[:email]
       flash[:notice] = 'Successfully updated'
-      redirect_to user_url(@user)
+      redirect_to user_path(@user)
     else
       flash[:error] = 'Update failed'
       render :action => :edit

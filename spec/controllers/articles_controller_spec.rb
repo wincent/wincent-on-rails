@@ -319,7 +319,7 @@ describe ArticlesController do
 
       it "should redirect to the new article" do
         do_post
-        response.should redirect_to(article_url("1"))
+        response.should redirect_to(article_path("1"))
       end
       
     end
@@ -370,7 +370,7 @@ describe ArticlesController do
 
       it "should redirect to the article" do
         do_put
-        response.should redirect_to(article_url("1"))
+        response.should redirect_to(article_path("1"))
       end
 
     end
@@ -413,7 +413,7 @@ describe ArticlesController do
   
     it "should redirect to the articles list" do
       do_delete
-      response.should redirect_to(articles_url)
+      response.should redirect_to(articles_path)
     end
   end
 end

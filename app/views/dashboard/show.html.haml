@@ -12,7 +12,7 @@
       %th When
     -for issue in @issues
       %tr{:class => "#{cycle 'odd', 'even'} issue", :id => "issue_#{issue.id}"}
-        %td=link_to "#{issue.kind_string} \##{issue.id}", issue_url(issue)
+        %td=link_to "#{issue.kind_string} \##{issue.id}", issue_path(issue)
         %td=h issue.summary
         %td=timeinfo issue
 %h2 My recent forum topics
@@ -26,8 +26,8 @@
       %th When
     -for topic in @topics
       %tr{:class => "#{cycle 'odd', 'even'} topic", :id => "topic_#{topic.id}"}
-        %td=link_to topic.forum.name, forum_url(topic.forum)
-        %td=link_to h(topic.title), forum_topic_url(topic.forum, topic)
+        %td=link_to topic.forum.name, forum_path(topic.forum)
+        %td=link_to h(topic.title), forum_topic_path(topic.forum, topic)
         %td=timeinfo topic
 %h2 My recent comments
 -if @comments.empty?
@@ -47,6 +47,6 @@
         %td=link_to_commentable comment.commentable
         %td=timeinfo comment
 .links
-  =link_to 'My public profile', user_url(current_user)
+  =link_to 'My public profile', user_path(current_user)
   -if admin?
-    =link_to 'Admin dashboard', admin_dashboard_url
+    =link_to 'Admin dashboard', admin_dashboard_path

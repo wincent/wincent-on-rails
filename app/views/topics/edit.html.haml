@@ -1,7 +1,7 @@
 %h1 Edit topic
 %div[@topic]
   =error_messages_for :topic
-  -form_for @topic, :url => forum_topic_url(@forum, @topic) do |f|
+  -form_for @topic, :url => forum_topic_path(@forum, @topic) do |f|
     %table.main
       %tr
         %th Title
@@ -23,13 +23,13 @@
     =button_to_destroy_topic @topic
     =button_to_moderate_topic_as_ham @topic if @topic.awaiting_moderation?
 .links
-  =link_to 'back to topics awaiting moderation', topics_url
+  =link_to 'back to topics awaiting moderation', topics_path
 -#%h4
 -#  ==Preview (#{link_to_update_preview})
 -#  =observe_body
 -#  =spinner_tag
 -#  -# TODO: graceful non-JS fallback
 -##preview=body_html
--#%p=link_to 'back', articles_url
+-#%p=link_to 'back', articles_path
 
 

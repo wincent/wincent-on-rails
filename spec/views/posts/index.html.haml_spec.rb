@@ -20,6 +20,6 @@ describe '/posts/index.html.haml' do
 
   it 'should have a link to the tweets Atom feed' do
     do_render
-    response.should have_tag('a[href=?]', tweets_url(:format => :atom))
+    response.should have_tag('a[href=?]', tweets_path(:format => :atom))
   end
 end

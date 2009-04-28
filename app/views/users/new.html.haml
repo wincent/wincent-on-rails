@@ -1,7 +1,7 @@
 %h1 Create new user
 =error_messages_for :user
 =error_messages_for :email
--form_for @user, :url => users_url do |f|
+-form_for @user, :url => users_path do |f|
   %table.main
     %tr
       %th
@@ -27,4 +27,4 @@
     -if admin?
       -# admins can manipulate some additional attributes at creation time
   %p=f.submit 'Create'
-%p=link_to 'back', users_url
+%p=link_to 'back', users_path

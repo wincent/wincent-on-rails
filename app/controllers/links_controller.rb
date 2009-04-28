@@ -17,7 +17,7 @@ class LinksController < ApplicationController
     respond_to do |format|
       if @link.save
         flash[:notice] = 'Successfully created new link.'
-        format.html { redirect_to links_url } # don't redirect to actual link ("show" itself is just a redirect)
+        format.html { redirect_to links_path } # don't redirect to actual link ("show" itself is just a redirect)
         #format.xml  { render :xml => @link, :status => :created, :location => @link }
       else
         flash[:error] = 'Failed to create new link.'
@@ -71,7 +71,7 @@ private
   end
 
   def record_not_found
-    super(admin? ? links_url : nil)
+    super(admin? ? links_path : nil)
   end
 
 end

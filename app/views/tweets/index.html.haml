@@ -1,7 +1,7 @@
--atom_link tweets_url(:format => :atom)
+-atom_link tweets_path(:format => :atom)
 %h1
   Tweets
-  =feed_icon tweets_url(:format => :atom)
+  =feed_icon tweets_path(:format => :atom)
 .pagination=@paginator.pagination_links
 =render 'tweets.html.haml'
 .pagination=@paginator.pagination_links

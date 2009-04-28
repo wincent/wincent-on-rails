@@ -23,11 +23,11 @@
 
 $(function() {
   observe_field({ 'kind': 'post', 'fieldName': 'title', 'include': ['excerpt',
-    'body'], 'url': '<%= posts_url %>.js' });
+    'body'], 'url': '<%= posts_path %>.js' });
   observe_field({ 'kind': 'post', 'fieldName': 'excerpt', 'include': ['title',
-    'body'], 'url': '<%= posts_url %>.js' });
+    'body'], 'url': '<%= posts_path %>.js' });
   observe_field({ 'kind': 'post', 'fieldName': 'body', 'include': ['title',
-    'excerpt'], 'url': '<%= posts_url %>.js' });
+    'excerpt'], 'url': '<%= posts_path %>.js' });
   setup_preview_link({ 'kind': 'post', 'include': ['body', 'title',
-    'excerpt'], 'url': '<%= posts_url %>.js' });
+    'excerpt'], 'url': '<%= posts_path %>.js' });
 });

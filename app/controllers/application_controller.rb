@@ -1,6 +1,6 @@
 class ApplicationController < ActionController::Base
   filter_parameter_logging  'passphrase'
-  before_filter             :ensure_correct_protocol, :login_before
+  before_filter             :login_before
   after_filter              :cache_flash
   protect_from_forgery
   rescue_from               ActiveRecord::RecordNotFound, :with => :record_not_found
@@ -13,14 +13,14 @@ protected
 
   # URL to the comment nested in the context of its parent (resources), including an anchor.
   # NOTE: this method is dog slow if called in an "N + 1 SELECT" situation
-  def nested_comment_url comment
+  def nested_comment_path comment
     commentable = comment.commentable
     anchor      = "comment_#{comment.id}"
     case commentable
     when Article, Issue, Post
-      send "#{commentable.class.to_s.downcase}_url", commentable, :anchor => anchor
+      send "#{commentable.class.to_s.downcase}_path", commentable, :anchor => anchor
     when Topic
-      forum_topic_url commentable.forum, commentable, :anchor => anchor
+      forum_topic_path commentable.forum, commentable, :anchor => anchor
     end
   end
 
@@ -33,7 +33,7 @@ protected
     else # HTML requests
       if uri.class != String
         # beware that in the default case uri will be an instance of ActiveRecord::RecordNotFound
-        uri = root_url
+        uri = root_path
       end
       flash[:error] = 'Requested %s not found' % controller_name.singularize
       redirect_to uri
@@ -62,22 +62,6 @@ protected
       'awaiting_moderation = FALSE AND ' + conditions
     else
       'awaiting_moderation = FALSE'
-    end
-  end
-
-  # nginx will rewrite HTTP URLs to HTTPs automatically
-  # but still need to catch improper direct access to the mongrels
-  # (if somebody guesses their port numbers, they can connect via HTTP)
-  def ensure_correct_protocol
-    if not request.ssl?
-      url = 'https://' + request.host
-      url << ":#{APP_CONFIG['port']}" if APP_CONFIG['port'] != 443
-      url << request.request_uri
-      redirect_to url
-      flash.keep
-      false
-    else
-      true
     end
   end
 

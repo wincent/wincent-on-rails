@@ -16,7 +16,7 @@ describe '/issues/_search' do
 
   it 'should display the search form' do
     do_render
-    response.should have_tag('form[action=?][method=post]', search_issues_url) do
+    response.should have_tag('form[action=?][method=post]', search_issues_path) do
       # "product" pop-up
       with_tag('select#issue_product_id[name=?]', 'issue[product_id]') do
         # empty selection

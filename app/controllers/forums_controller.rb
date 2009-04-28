@@ -10,7 +10,7 @@ class ForumsController < ApplicationController
     @forum = Forum.new(params[:forum])
     if @forum.save
       flash[:notice] = 'Successfully created new forum.'
-      redirect_to forum_url(@forum)
+      redirect_to forum_path(@forum)
     else
       flash[:error] = 'Failed to create new forum.'
       render :action => 'new'
@@ -24,7 +24,7 @@ class ForumsController < ApplicationController
   def show
     # for now we exclude topics awaiting moderation, could potentially include them and show them only to the admin
     @paginator = Paginator.new params, @forum.topics.count(:conditions => { :public => true, :awaiting_moderation => false }),
-      forum_url(@forum), 20
+      forum_path(@forum), 20
     @topics = Topic.find_topics_for_forum @forum, @paginator.offset, @paginator.limit
   end
 
@@ -43,6 +43,6 @@ private
   end
 
   def record_not_found
-    super forums_url
+    super forums_path
   end
 end

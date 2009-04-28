@@ -13,14 +13,14 @@ describe '/tags/show' do
   it 'should have an "all tags" link' do
     do_render
     response.should have_tag('.links') do
-      with_tag 'a[href=?]', tags_url
+      with_tag 'a[href=?]', tags_path
     end
   end
 
   it 'should have a "tag search" link' do
     do_render
     response.should have_tag('.links') do
-      with_tag 'a[href=?]', search_tags_url
+      with_tag 'a[href=?]', search_tags_path
     end
   end
 end

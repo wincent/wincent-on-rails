@@ -1,7 +1,7 @@
 -# NOTE: this adds a few hundred bytes and a db query to each page load, may consider loading this via AJAX
 %h2.major Search
 %span.annotation all fields are optional
--form_for :issue, :url => search_issues_url, :method => :post do |f|
+-form_for :issue, :url => search_issues_path, :method => :post do |f|
   %table.main
     %tr
       %th Product

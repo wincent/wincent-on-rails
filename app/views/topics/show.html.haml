@@ -2,17 +2,17 @@
 -content_for :css do
   =stylesheet_link_tag 'topics'
 #breadcrumbs
-  =link_to 'Home', root_url
+  =link_to 'Home', root_path
   &raquo;
-  =link_to 'Forums', forums_url
+  =link_to 'Forums', forums_path
   &raquo;
-  =link_to @forum.name, forum_url(@forum)
+  =link_to @forum.name, forum_path(@forum)
   &raquo;
   =h @topic.title
 -@page_title = @topic.title
 %h1.major
   =h @page_title
-  =feed_icon forum_topic_url(@topic.forum, @topic, :format => :atom)
+  =feed_icon forum_topic_path(@topic.forum, @topic, :format => :atom)
 %table[@topic]
   %tr{ :class => 'comment odd' }
     %td
@@ -24,7 +24,7 @@
         =timeinfo @topic, :updated_string => false
       -if admin?
         %br
-        =link_to 'edit', edit_forum_topic_url(@forum, @topic)
+        =link_to 'edit', edit_forum_topic_path(@forum, @topic)
     %td=@topic.body.w :base_heading_level => 1
   -for comment in @comments
     %tr{ :class => "comment #{cycle('even', 'odd')}", :id => "comment_#{comment.id}" }
@@ -37,7 +37,7 @@
           =timeinfo comment, :updated_string => 'edited'
         -if admin?
           %br
-          =link_to 'edit', edit_comment_url(comment)
+          =link_to 'edit', edit_comment_path(comment)
       %td=comment.body.w :base_heading_level => 1
 %h2.major Reply
 -if @topic.accepts_comments
@@ -45,6 +45,6 @@
 -else
   %p This topic is now closed.
 .links
-  =link_to 'back to topic index', forum_url(@forum)
+  =link_to 'back to topic index', forum_path(@forum)
   -if admin?
-    =link_to 'edit topic', edit_forum_topic_url(@forum, @topic)
+    =link_to 'edit topic', edit_forum_topic_path(@forum, @topic)

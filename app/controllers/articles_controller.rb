@@ -10,7 +10,7 @@ class ArticlesController < ApplicationController
       format.html {
         # can't use page caching here because the view features relative dates
         # TODO: that's not true any more, now that we do relative dates via JS
-        @paginator  = RestfulPaginator.new(params, Article.count(:conditions => { :public => true }), articles_url)
+        @paginator  = RestfulPaginator.new(params, Article.count(:conditions => { :public => true }), articles_path)
         @articles   = Article.find_recent @paginator
         @tags       = Article.find_top_tags
       }
@@ -31,7 +31,7 @@ class ArticlesController < ApplicationController
         @article = Article.new params[:article]
         if @article.save
           flash[:notice] = 'Successfully created new article.'
-          redirect_to article_url(@article)
+          redirect_to article_path(@article)
         else
           flash[:error] = 'Failed to create new article.'
           render :action => 'new'
@@ -53,7 +53,7 @@ class ArticlesController < ApplicationController
       if session[:redirection_count] and session[:redirection_count] > 5
         clear_redirection_info
         flash[:error] = 'Too many redirections'
-        redirect_to articles_url
+        redirect_to articles_path
       else
         if @article.wiki_redirect?
           session[:redirection_count] = session[:redirection_count] ? session[:redirection_count] + 1 : 1
@@ -75,7 +75,7 @@ class ArticlesController < ApplicationController
   def update
     if @article.update_attributes params[:article]
       flash[:notice] = 'Successfully updated'
-      redirect_to article_url(@article)
+      redirect_to article_path(@article)
     else
       flash[:error] = 'Update failed'
       render :action => 'edit'
@@ -93,15 +93,15 @@ private
       flash[:notice] = 'Requested article not found: create it?'
       title = Article.deparametrize(params[:id])
       session[:new_article_params] = { :title => Article.smart_capitalize(title) }
-      redirect_to new_article_url
+      redirect_to new_article_path
     else
-      super articles_url
+      super articles_path
     end
   end
 
   def url_for_redirect
     if @article.redirect =~ /\A\s*\[\[(.+)\]\]\s*\z/
-      article_url Article.parametrize($~[1])
+      article_path Article.parametrize($~[1])
     elsif @article.redirect =~ /\A\s*((https?:\/\/.+)|(\/.+))\s*\z/
       $~[1]
     else

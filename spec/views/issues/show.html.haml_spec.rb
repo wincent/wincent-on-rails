@@ -16,8 +16,8 @@ describe '/issues/show' do
   it 'should show breadcrumbs' do
     do_render
     response.should have_tag('div#breadcrumbs', /#{@issue.kind_string} \##{@issue.id}/) do
-      with_tag 'a[href=?]', root_url
-      with_tag 'a[href=?]', issues_url
+      with_tag 'a[href=?]', root_path
+      with_tag 'a[href=?]', issues_path
     end
   end
 
@@ -54,7 +54,7 @@ describe '/issues/show viewed by an administrator' do
   end
 
   it 'should show an edit link' do
-    response.should have_tag('a[href=?]', edit_issue_url(@issue))
+    response.should have_tag('a[href=?]', edit_issue_path(@issue))
   end
 
   it 'should show a destroy link' do

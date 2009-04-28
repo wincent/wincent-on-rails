@@ -13,7 +13,7 @@ class PostsController < ApplicationController
   def index
     respond_to do |format|
       format.html {
-        @paginator  = Paginator.new params, Post.count(:conditions => { :public => true }), posts_url
+        @paginator  = Paginator.new params, Post.count(:conditions => { :public => true }), posts_path
         @posts      = Post.find_recent :include => :tags, :offset => @paginator.offset
         @tweets     = Tweet.find_recent if !fragment_exist?(:tweets_sidebar)
       }
@@ -32,7 +32,7 @@ class PostsController < ApplicationController
         @post = Post.new params[:post]
         if @post.save
           flash[:notice] = 'Successfully created new post.'
-          redirect_to post_url(@post)
+          redirect_to post_path(@post)
         else
           flash[:error] = 'Failed to create new post.'
           render :action => 'new'
@@ -52,7 +52,7 @@ class PostsController < ApplicationController
   def destroy
     @post.destroy
     flash[:notice] = "Destroyed post: #{@post.title}"
-    redirect_to posts_url
+    redirect_to posts_path
   end
 
   def show
@@ -72,7 +72,7 @@ class PostsController < ApplicationController
   def update
     if @post.update_attributes params[:post]
       flash[:notice] = 'Successfully updated'
-      redirect_to post_url(@post)
+      redirect_to post_path(@post)
     else
       flash[:error] = 'Update failed'
       render :action => 'edit'
@@ -100,9 +100,9 @@ private
     if admin?
       flash[:notice] = 'Requested post not found: create it?'
       session[:new_post_params] = { :title => params[:id], :permalink => params[:id] }
-      redirect_to new_post_url
+      redirect_to new_post_path
     else
-      super posts_url
+      super posts_path
     end
   end
 end
