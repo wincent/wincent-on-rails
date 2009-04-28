@@ -9,10 +9,13 @@ config.action_controller.consider_all_requests_local = true
 config.action_view.debug_rjs                         = true
 
 # enable caching (when testing caching)
-config.action_controller.perform_caching             = true
+# beware of doing this on the production server (it can pollute the public
+# directory with cached files from the wrong environment)
+#config.action_controller.perform_caching             = true
 
 # disable caching (when not testing caching)
-#config.action_controller.perform_caching             = false
+config.action_controller.perform_caching             = false
+
 config.action_mailer.raise_delivery_errors = true
 
 config.after_initialize do
