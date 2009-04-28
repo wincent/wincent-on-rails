@@ -437,3 +437,15 @@ ended up moving it back to vendor/plugins, which funnily enough works:
   git add vendor/gems/rspec*
   script/generate rspec
   rake spec
+
+  # Wikitext 1.5.3 update
+  git rm -r vendor/gems/wikitext-1.5.2
+  rm -r vendor/gems/wikitext-1.5.2
+  sudo gem install wikitext
+  vim config/environment.rb # update config.gem line
+  rake gems:unpack
+  git add vendor/gems/wikitext-1.5.3
+  rake gems:build
+  git add vendor/gems/wikitext-1.5.3/ext/wikitext.bundle
+  rm vendor/gems/wikitext-1.5.3/ext/Makefile
+  rm vendor/gems/wikitext-1.5.3/ext/*.{o,log}
