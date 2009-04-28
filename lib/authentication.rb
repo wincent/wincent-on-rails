@@ -107,8 +107,11 @@ module ActionController
         user.session_key      = self.class.random_session_key
         user.session_expiry   = DEFAULT_SESSION_EXPIRY.days.from_now
         user.save
-        cookies[:user_id]     = { :value => user.id.to_s, :secure => true }
-        cookies[:session_key] = { :value => user.session_key, :secure => true }
+        secure_cookies        = !local_request?
+        cookies[:user_id]     = { :value => user.id.to_s, :secure =>
+          secure_cookies }
+        cookies[:session_key] = { :value => user.session_key, :secure =>
+          secure_cookies }
       end
     end
 
