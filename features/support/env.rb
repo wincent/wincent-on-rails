@@ -9,6 +9,8 @@ include FixtureReplacement
 
 require 'json'
 
+# evidently, response.request doesn't exist when running under Selenium
+# undefined method `request' for #<Webrat::SeleniumResponse:0x36fad58> (NoMethodError)
 module CacheableFlash
   def cacheable_flash
     json = response.request.cookies['flash']
