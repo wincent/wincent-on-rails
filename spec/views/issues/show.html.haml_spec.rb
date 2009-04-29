@@ -15,7 +15,7 @@ describe '/issues/show' do
 
   it 'should show breadcrumbs' do
     do_render
-    response.should have_tag('div#breadcrumbs', /#{@issue.kind_string} \##{@issue.id}/) do
+    response.should have_tag('div#breadcrumbs', /#{@issue.kind_string.humanize} \##{@issue.id}/) do
       with_tag 'a[href=?]', root_path
       with_tag 'a[href=?]', issues_path
     end

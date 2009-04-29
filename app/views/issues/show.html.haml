@@ -12,7 +12,7 @@
   &raquo;
   =link_to 'Issues', issues_path
   &raquo;
-  ="#{@issue.kind_string} \##{@issue.id.to_s}"
+  ="#{@issue.kind_string.humanize} \##{@issue.id.to_s}"
 %div{ :class => 'issue' + (@issue.public ? '' : ' private'), :id => "issue_#{@issue.id}" }
   %h1.major="#{@issue.kind_string.humanize} \##{@issue.id.to_s}"
   .prev_next
