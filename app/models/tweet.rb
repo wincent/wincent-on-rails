@@ -13,10 +13,9 @@ class Tweet < ActiveRecord::Base
   acts_as_searchable :attributes => [ :body ]
   attr_accessible :body
 
-  def self.find_recent paginator = nil
-    options = { :order => 'created_at DESC', :limit => 20 }
-    options.merge!({ :offset => paginator.offset, :limit => paginator.limit }) if paginator
-    find :all, options
+  def self.find_recent options = {}
+    base_options = { :order => 'created_at DESC', :limit => 20 }
+    find :all, base_options.merge(options)
   end
 
   def overlength?

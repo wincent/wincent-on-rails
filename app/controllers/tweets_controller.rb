@@ -9,7 +9,7 @@ class TweetsController < ApplicationController
     respond_to do |format|
       format.html {
         @paginator  = RestfulPaginator.new params, Tweet.count, tweets_path, 20
-        @tweets     = Tweet.find_recent @paginator
+        @tweets     = Tweet.find_recent :offset => @paginator.offset
       }
       format.atom {
         @tweets     = Tweet.find_recent

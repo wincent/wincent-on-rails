@@ -35,14 +35,15 @@ describe TweetsController, 'GET /twitter ("internals" approach)' do
   end
 
   it 'should correctly configure the restful paginator' do
-    RestfulPaginator.should_receive(:new).with(@params, Tweet.count, tweets_path, 20)
+    paginator = RestfulPaginator.new(@params, Tweet.count, tweets_path, 20)
+    RestfulPaginator.should_receive(:new).with(@params, Tweet.count, tweets_path, 20).and_return(paginator)
     do_get
   end
 
   it 'should find recent tweets' do
     paginator = RestfulPaginator.new(@params, Tweet.count, tweets_path, 20)
     RestfulPaginator.stub!(:new).with(@params, Tweet.count, tweets_path, 20).and_return(paginator)
-    Tweet.should_receive(:find_recent).with(paginator)
+    Tweet.should_receive(:find_recent).with({ :offset => paginator.offset })
     do_get
   end
 

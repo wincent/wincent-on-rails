@@ -26,10 +26,13 @@ class Article < ActiveRecord::Base
     find_by_title!(deparametrize(param))
   end
 
-  def self.find_recent paginator = nil
-    options = { :conditions => { :public => true }, :order => 'updated_at DESC', :limit => 10 }
-    options.merge!({ :offset => paginator.offset, :limit => paginator.limit }) if paginator
-    find :all, options
+  def self.find_recent options = {}
+    base_options = {
+      :conditions => { :public => true },
+      :order => 'updated_at DESC',
+      :limit => 10
+    }
+    find :all, base_options.merge(options)
   end
 
   # for the Atom feed

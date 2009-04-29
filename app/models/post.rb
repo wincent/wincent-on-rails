@@ -21,7 +21,11 @@ class Post < ActiveRecord::Base
   def self.find_recent options = {}
     # we use "posts.created_at" rather than just "created_at" to disambiguate in the case where we
     # pass an :include option (which will cause a join)
-    base_options = {:conditions => {'public' => true}, :order => 'posts.created_at DESC', :limit => 10}
+    base_options = {
+      :conditions => { 'public' => true },
+      :order => 'posts.created_at DESC',
+      :limit => 10
+    }
     find :all, base_options.merge(options)
   end
 

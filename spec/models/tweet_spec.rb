@@ -46,20 +46,14 @@ describe Tweet, 'find_recent (class) method (interaction-based approach)' do
     Tweet.find_recent
   end
 
-  it 'should use offset from paginator if supplied' do
-    paginator = mock('paginator')
-    paginator.should_receive(:offset).and_return(35)
-    paginator.stub!(:limit).and_return(10)
+  it 'should use custom offset if supplied' do
     Tweet.should_receive(:find).with(:all, hash_including(:offset => 35))
-    Tweet.find_recent paginator
+    Tweet.find_recent :offset => 35
   end
 
-  it 'should use limit from paginator if supplied' do
-    paginator = mock('paginator')
-    paginator.should_receive(:limit).and_return(100)
-    paginator.stub!(:offset).and_return(20)
+  it 'should use custom limit if supplied' do
     Tweet.should_receive(:find).with(:all, hash_including(:limit => 100))
-    Tweet.find_recent paginator
+    Tweet.find_recent :limit => 100
   end
 end
 
@@ -88,13 +82,15 @@ describe Tweet, 'find_recent (class) method (state-based approach)' do
     third = old_tweet(6)
     fourth = create_tweet
     paginator = RestfulPaginator.new({ :page => 2 }, 4, 'foo', 2)
-    Tweet.find_recent(paginator).should == [second, first]
+    Tweet.find_recent(:offset => paginator.offset,
+      :limit => paginator.limit).should == [second, first]
   end
 
   it 'should use limit from paginator if supplied' do
     20.times { create_tweet }
     paginator = RestfulPaginator.new({}, 20, 'foo', 10)
-    Tweet.find_recent(paginator).length.should == 10
+    Tweet.find_recent(:offset => paginator.offset,
+      :limit => paginator.limit).length.should == 10
   end
 end
 

@@ -8,8 +8,9 @@ class ArticlesController < ApplicationController
   def index
     respond_to do |format|
       format.html {
-        @paginator  = RestfulPaginator.new(params, Article.count(:conditions => { :public => true }), articles_path)
-        @articles   = Article.find_recent @paginator
+        @paginator  = RestfulPaginator.new params,
+          Article.count(:conditions => { :public => true }), articles_path
+        @articles   = Article.find_recent :offset => @paginator.offset
         @tags       = Article.find_top_tags
       }
       format.atom {
