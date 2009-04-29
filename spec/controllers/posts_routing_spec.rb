@@ -24,6 +24,11 @@ describe PostsController, 'route generation' do
   it "should map { :controller => 'posts', :action => 'destroy', :id => 1, :protocol => 'https'} to /blog/1" do
     route_for(:controller => 'posts', :action => 'destroy', :id => '1', :protocol => 'https').should == { :path => '/blog/1', :method => 'delete' }
   end
+
+  it "should map { controller: 'posts', action: 'index', page: '2', protocol: 'https' } to /blog/page/2" do
+    route_for(:controller => 'posts', :action => 'index', :page => '2',
+      :protocol => 'https').should == '/blog/page/2'
+  end
 end
 
 describe PostsController, 'route recognition' do
@@ -59,5 +64,10 @@ describe PostsController, 'route recognition' do
 
   it "should generate params { :controller => 'posts', action => 'destroy', id => '1', :protocol => 'https' } from DELETE /blog/1" do
     params_from(:delete, '/blog/1').should == {:controller => 'posts', :action => 'destroy', :id => '1', :protocol => 'https'}
+  end
+
+  it "should generate params { controller: 'posts', action: 'index', page: '2', protocol: 'https' } from GET /blog/page/2" do
+    params_from(:get, '/blog/page/2').should == { :controller => 'posts',
+      :action => 'index', :page => '2', :protocol => 'https' }
   end
 end

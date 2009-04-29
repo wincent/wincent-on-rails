@@ -26,6 +26,8 @@ ActionController::Routing::Routes.draw do |map|
                 :as => :blog,
                 :requirements => { :id => /[a-z0-9\-\.]+/, :protocol => 'https' },
                 :has_many => [ :comments ]
+  map.paginated_posts '/blog/page/:page', :controller => 'posts',
+    :action => 'index', :protocol => 'https'
 
   map.resources :forums, :requirements => { :protocol => 'https' } do |forum|
     forum.resources :topics,

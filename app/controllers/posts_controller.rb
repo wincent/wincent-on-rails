@@ -13,7 +13,8 @@ class PostsController < ApplicationController
   def index
     respond_to do |format|
       format.html {
-        @paginator  = Paginator.new params, Post.count(:conditions => { :public => true }), posts_path
+        @paginator  = RestfulPaginator.new params,
+          Post.count(:conditions => { :public => true }), posts_path
         @posts      = Post.find_recent :include => :tags, :offset => @paginator.offset
         @tweets     = Tweet.find_recent if !fragment_exist?(:tweets_sidebar)
       }
