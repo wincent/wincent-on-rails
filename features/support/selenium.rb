@@ -1,5 +1,6 @@
 Webrat.configure do |config|
   config.mode = :selenium
+  config.application_port = 3000
 end
 
 Before do
