@@ -48,9 +48,12 @@ class IssuesController < ApplicationController
     # NOTE: have an N + 1 issue here (for each product we get the product info)
     # can't just :include => :product here because that will introduce an ambiguous "updated_at" column
     # thanks to acts_as_sortable (will need to update acts as sortable)
-    @paginator = Paginator.new params, Issue.count(:conditions => options), issues_path
-    @issues = Issue.find :all,
-      sort_options.merge({ :offset => @paginator.offset, :limit => @paginator.limit, :conditions => options })
+    @paginator = RestfulPaginator.new params,
+      Issue.count(:conditions => options), issues_path
+    @issues = Issue.find :all, sort_options.merge({
+      :offset => @paginator.offset, :limit => @paginator.limit,
+      :conditions => options
+    })
     @search = Issue.new
   end
 
