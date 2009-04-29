@@ -8,8 +8,6 @@ class ArticlesController < ApplicationController
   def index
     respond_to do |format|
       format.html {
-        # can't use page caching here because the view features relative dates
-        # TODO: that's not true any more, now that we do relative dates via JS
         @paginator  = RestfulPaginator.new(params, Article.count(:conditions => { :public => true }), articles_path)
         @articles   = Article.find_recent @paginator
         @tags       = Article.find_top_tags
