@@ -14,7 +14,7 @@
   &raquo;
   ="#{@issue.kind_string} \##{@issue.id.to_s}"
 %div{ :class => 'issue' + (@issue.public ? '' : ' private'), :id => "issue_#{@issue.id}" }
-  %h1.major="#{@issue.kind_string} \##{@issue.id.to_s}"
+  %h1.major="#{@issue.kind_string.humanize} \##{@issue.id.to_s}"
   .prev_next
     =link_to_prev_issue if @prev
     =link_to_next_issue if @next
