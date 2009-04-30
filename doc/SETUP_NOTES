@@ -461,3 +461,8 @@ ended up moving it back to vendor/plugins, which funnily enough works:
   git add lib/tasks/rspec.rake
   rake spec
   cucumber
+
+  # Cucumber 0.3.1 update
+  sudo gem install cucumber
+  script/generate cucumber
+  cucumber
