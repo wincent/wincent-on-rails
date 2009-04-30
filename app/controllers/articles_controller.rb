@@ -25,23 +25,18 @@ class ArticlesController < ApplicationController
   end
 
   def create
-    respond_to do |format|
-      format.html {
-        @article = Article.new params[:article]
-        if @article.save
-          flash[:notice] = 'Successfully created new article.'
-          redirect_to article_path(@article)
-        else
-          flash[:error] = 'Failed to create new article.'
-          render :action => 'new'
-        end
-      }
-
-      # AJAX preview
-      format.js {
-        @article = Article.new :title => params[:title], :body => params[:body]
-        render :partial => 'preview.html.haml' # explicit extension required
-      }
+    if request.xhr? # live preview
+      @article = Article.new :title => params[:title], :body => params[:body]
+      render :partial => 'preview'
+    else # normal request
+      @article = Article.new params[:article]
+      if @article.save
+        flash[:notice] = 'Successfully created new article.'
+        redirect_to article_path(@article)
+      else
+        flash[:error] = 'Failed to create new article.'
+        render :action => 'new'
+      end
     end
   end
 

@@ -307,8 +307,9 @@ describe TweetsController, 'POST /twitter' do
   end
 end
 
-describe TweetsController, 'POST /twitter.js (AJAX preview)' do
+describe TweetsController, 'POST /twitter (via AJAX)' do
   def do_post params = {}, admin = true
+    request.env['HTTP_X_REQUESTED_WITH'] = 'XMLHttpRequest'
     login_as_admin if admin == true
     post :create, params.merge({ :protocol => 'https', :format => 'js' })
   end
@@ -325,9 +326,9 @@ describe TweetsController, 'POST /twitter.js (AJAX preview)' do
     do_post({ :body => 'foo' })
   end
 
-  it 'should render the "tweets/_preview.html.haml" template' do
+  it 'should render the "tweets/_preview" template' do
     do_post
-    response.should render_template('tweets/_preview.html.haml')
+    response.should render_template('tweets/_preview')
   end
 
   it 'should not trigger the cache sweeper' do

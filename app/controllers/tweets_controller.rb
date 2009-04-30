@@ -24,23 +24,18 @@ class TweetsController < ApplicationController
 
   # Admin only.
   def create
-    respond_to do |format|
-      format.html {
-        @tweet = Tweet.new params[:tweet]
-        if @tweet.save
-          flash[:notice] = 'Successfully created new tweet'
-          redirect_to tweet_path(@tweet)
-        else
-          flash[:error] = 'Failed to create new tweet'
-          render :action => 'new'
-        end
-      }
-
-      # AJAX preview
-      format.js {
-        @tweet  = Tweet.new :body => params[:body]
-        render :partial => 'preview.html.haml' # explicit extension required
-      }
+    if request.xhr? # live preview
+      @tweet = Tweet.new :body => params[:body]
+      render :partial => 'preview'
+    else # normal request
+      @tweet = Tweet.new params[:tweet]
+      if @tweet.save
+        flash[:notice] = 'Successfully created new tweet'
+        redirect_to tweet_path(@tweet)
+      else
+        flash[:error] = 'Failed to create new tweet'
+        render :action => 'new'
+      end
     end
   end
 

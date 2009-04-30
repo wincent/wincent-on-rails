@@ -17,31 +17,27 @@ class TopicsController < ApplicationController
 
   def create
     # TODO: tagging support (admin sees tag fields in the UI, but they have no effect yet)
-    respond_to do |format|
-      format.html {
-        @topic = @forum.topics.build(params[:topic])
-        @topic.user = current_user
-        @topic.awaiting_moderation = !(admin? or logged_in_and_verified?)
-        if @topic.save
-          if logged_in_and_verified?
-            flash[:notice] = 'Successfully created new topic.'
-            redirect_to forum_topic_path(@forum, @topic)
-          else
-            flash[:notice] = 'Successfully submitted topic (awaiting moderation).'
-            redirect_to forum_path(@forum)
-          end
+    if request.xhr? # live preview
+      # TODO: hook up live preview in templates
+      @title    = params[:title]   || ''
+      @excerpt  = params[:excerpt] || ''
+      render :partial => 'preview'
+    else # normal request
+      @topic = @forum.topics.build(params[:topic])
+      @topic.user = current_user
+      @topic.awaiting_moderation = !(admin? or logged_in_and_verified?)
+      if @topic.save
+        if logged_in_and_verified?
+          flash[:notice] = 'Successfully created new topic.'
+          redirect_to forum_topic_path(@forum, @topic)
         else
-          flash[:error] = 'Failed to create new topic.'
-          render :action => 'new'
+          flash[:notice] = 'Successfully submitted topic (awaiting moderation).'
+          redirect_to forum_path(@forum)
         end
-      }
-
-      # AJAX preview
-      format.js {
-        @title    = params[:title]   || ''
-        @excerpt  = params[:excerpt] || ''
-        render :partial => 'preview.html.haml' # explicit extension required
-      }
+      else
+        flash[:error] = 'Failed to create new topic.'
+        render :action => 'new'
+      end
     end
   end
 

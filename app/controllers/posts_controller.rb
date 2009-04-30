@@ -28,25 +28,20 @@ class PostsController < ApplicationController
   end
 
   def create
-    respond_to do |format|
-      format.html {
-        @post = Post.new params[:post]
-        if @post.save
-          flash[:notice] = 'Successfully created new post.'
-          redirect_to post_path(@post)
-        else
-          flash[:error] = 'Failed to create new post.'
-          render :action => 'new'
-        end
-      }
-
-      # AJAX preview
-      format.js {
-        @title    = params[:title]   || ''
-        @excerpt  = params[:excerpt] || ''
-        @body     = params[:body]    || ''
-        render :partial => 'preview.html.haml' # explicit extension required
-      }
+    if request.xhr? # live preview
+      @title    = params[:title]   || ''
+      @excerpt  = params[:excerpt] || ''
+      @body     = params[:body]    || ''
+      render :partial => 'preview'
+    else # normal request
+      @post = Post.new params[:post]
+      if @post.save
+        flash[:notice] = 'Successfully created new post.'
+        redirect_to post_path(@post)
+      else
+        flash[:error] = 'Failed to create new post.'
+        render :action => 'new'
+      end
     end
   end
 
