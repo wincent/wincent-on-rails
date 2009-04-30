@@ -1,12 +1,12 @@
 =page_title "New issue"
 =error_messages_for :issue
 -if !logged_in?
-  =render :partial => 'shared/anonymous'
+  =render 'shared/anonymous'
 -elsif !current_user.verified?
-  =render :partial => 'shared/unverified'
+  =render 'shared/unverified'
 -# TODO: big fat search link to try and avoid duplicate reports
 -form_for :issue, :url => issues_path, :method => :post do |f|
-  =render :partial => 'issues/form', :locals => { :f => f }
+  =render 'issues/form', :f => f
   %p=f.submit 'Create'
 .links
   =link_to 'back to issues index', issues_path

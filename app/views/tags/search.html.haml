@@ -1,8 +1,8 @@
 =search_page_title
 -if @taggables
   %h2.major=taggables_search_summary
-  =render :partial => 'filterbox', :locals => { :tags => @tags[:found] }
-  =render :partial => 'taggings'
+  =render 'filterbox', :tags => @tags[:found]
+  =render 'taggings'
 %div{ :style => 'clear:both;' }
   %h2.major Search
   -form_tag search_tags_path, :method => 'get' do

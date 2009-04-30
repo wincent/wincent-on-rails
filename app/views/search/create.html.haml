@@ -11,7 +11,7 @@
   -@models[0..19].each_with_index do |model, i|
     -next if model.nil?
     %div{ :class => "result #{cycle('odd', 'even')}" }
-      =render :partial => "search/#{model.class.to_s.downcase}", :locals => { :model => model, :result_number => @offset + i + 1 }
+      =render "search/#{model.class.to_s.downcase}", :model => model, :result_number => @offset + i + 1
 -if @models.length >= 20
   -form_tag search_index_path, :method => :post do
     =hidden_field_tag :query, params[:query]

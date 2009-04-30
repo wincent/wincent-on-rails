@@ -5,7 +5,7 @@
   =link_to 'open a ticket', new_issue_path, :title => "Don't forget to search first before opening a ticket"
   =link_to 'support overview', support_path
 #issue_search{:style => 'display:none;'}
-  =render :partial => 'issues/search'
+  =render 'issues/search'
 %h2.major Recently modified
 .annotation=scope_info
-=render :partial => 'issues/issues'
+=render 'issues/issues'

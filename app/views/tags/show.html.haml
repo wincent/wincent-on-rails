@@ -3,8 +3,8 @@
   =item_count @taggables.sum { |group| group.taggables.length }
   tagged with
   =@tag.name
-=render :partial => 'filterbox', :locals => { :tags => [@tag] }
-=render :partial => 'taggings'
+=render 'filterbox', :tags => [@tag]
+=render 'taggings'
 .links
   =link_to 'all tags', tags_path
   =link_to 'tag search', search_tags_path

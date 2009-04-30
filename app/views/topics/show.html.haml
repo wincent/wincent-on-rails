@@ -41,7 +41,7 @@
       %td=comment.body.w :base_heading_level => 1
 %h2.major Reply
 -if @topic.accepts_comments
-  =render :partial => 'comments/comment'
+  =render 'comments/comment'
 -else
   %p This topic is now closed.
 .links
