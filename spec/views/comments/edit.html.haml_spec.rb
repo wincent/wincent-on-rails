@@ -33,8 +33,16 @@ describe '/comments/edit' do
     do_render
   end
 
-  it 'should have a ham button' do
+  it 'should have a ham button if the comment is awaiting moderation' do
+    assigns[:comment] = @comment = create_comment(:awaiting_moderation => true)
     template.should_receive(:button_to_moderate_comment_as_ham).with(@comment)
+    do_render
+  end
+
+  # was a bug
+  it 'should not have a ham button if the comment is not awaiting moderation' do
+    assigns[:comment] = @comment = create_comment(:awaiting_moderation => false)
+    template.should_not_receive(:button_to_moderate_comment_as_ham)
     do_render
   end
 
