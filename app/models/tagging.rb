@@ -28,9 +28,11 @@ class Tagging < ActiveRecord::Base
 
   # Expects an array of tag names (String objects).
   # As above, restricts visibility of returned taggable objects according to who the current user is.
-  # Returns an array of groups (actually OpenStruct instances)
-  # that respond to the (group) "name" and "taggables" messages.
-  # If type is non-nil, the corresponding group ("post", "article") will appear first in the array.
+  # Returns a tuple (a 2-member Array) consisting of:
+  # - hash reporting "found" and "not_found" tag instances
+  # - array of groups (actually OpenStruct instances)
+  #   that respond to the (group) "name" and "taggables" messages.
+  #   If type is non-nil, the corresponding group ("post", "article") will appear first in the array.
   def self.grouped_taggables_for_tag_names tag_names, user, type = nil
     # first get the tags
     taggables         = nil
