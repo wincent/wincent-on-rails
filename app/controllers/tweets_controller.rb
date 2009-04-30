@@ -39,9 +39,7 @@ class TweetsController < ApplicationController
       # AJAX preview
       format.js {
         @tweet  = Tweet.new :body => params[:body]
-        # must specify full name here because 'preview' alone
-        # makes Rails look for 'preview.js.haml'
-        render :partial => 'preview.html.haml'
+        render :partial => 'preview.html.haml' # explicit extension required
       }
     end
   end

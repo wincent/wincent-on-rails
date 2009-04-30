@@ -36,11 +36,11 @@ class TopicsController < ApplicationController
         end
       }
 
-      # this is the AJAX preview
+      # AJAX preview
       format.js {
         @title    = params[:title]   || ''
         @excerpt  = params[:excerpt] || ''
-        render :partial => 'preview'
+        render :partial => 'preview.html.haml' # explicit extension required
       }
     end
   end
