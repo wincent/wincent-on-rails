@@ -35,8 +35,16 @@ describe '/issues/edit' do
     do_render
   end
 
-  it 'should have a ham button' do
+  it 'should have a ham button if the issue is awaiting moderation' do
+    assigns[:issue] = @issue = create_issue(:awaiting_moderation => true)
     template.should_receive(:button_to_moderate_issue_as_ham).with(@issue)
+    do_render
+  end
+
+  # was a bug
+  it 'should not have a ham button if the issue is not awaiting moderation' do
+    assigns[:issue] = @issue = create_issue(:awaiting_moderation => false)
+    template.should_not_receive(:button_to_moderate_issue_as_ham)
     do_render
   end
 
