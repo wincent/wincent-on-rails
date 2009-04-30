@@ -449,3 +449,15 @@ ended up moving it back to vendor/plugins, which funnily enough works:
   git add vendor/gems/wikitext-1.5.3/ext/wikitext.bundle
   rm vendor/gems/wikitext-1.5.3/ext/Makefile
   rm vendor/gems/wikitext-1.5.3/ext/*.{o,log}
+
+  # RSpec 1.2.5 update
+  sudo gem install rspec-rails
+  git rm -r vendor/gems/rspec*
+  rm -r vendor/gems/rspec*
+  vim config/environments/test.rb # update config.gem line
+  RAILS_ENV=test rake gems:unpack
+  git add vendor/gems/rspec*
+  script/generate rspec
+  git add lib/tasks/rspec.rake
+  rake spec
+  cucumber
