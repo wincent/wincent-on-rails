@@ -82,7 +82,7 @@ private
     taggings.each_key do |key|
       group = OpenStruct.new
       group.name = key.to_s.downcase
-      group.taggables = key.constantize.find_all_by_id(taggings[key].collect(&:taggable_id).uniq).select do |taggable|
+      group.taggables = key.constantize.find_all_by_id(taggings[key].collect(&:taggable_id).uniq, :order => 'updated_at DESC').select do |taggable|
         # filter out tagged items which user shouldn't have access to
         accessible taggable, user
       end
