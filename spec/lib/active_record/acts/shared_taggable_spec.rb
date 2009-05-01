@@ -44,4 +44,21 @@ describe ActiveRecord::Acts::Taggable, :shared => true do
     @object.save
     @object.tag_names.should == ['foo']
   end
+
+  it 'should validate pending tags' do
+    @object.pending_tags = 'foo bar baz.baz foo3'
+    @object.should_not fail_validation_for(:pending_tags)
+  end
+
+  # was a bug (passed but shouldn't have)
+  it 'should fail validation for incorrect pending tags' do
+    @object.pending_tags = 'foo_bar'
+    @object.should fail_validation_for(:pending_tags)
+  end
+
+  # was a bug (or rather, accidentally passed only due to a bug)
+  it 'should be valid with blank pending tags' do
+    @object.pending_tags = ''
+    @object.should_not fail_validation_for(:pending_tags)
+  end
 end

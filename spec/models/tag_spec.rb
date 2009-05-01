@@ -32,8 +32,8 @@ describe Tag, 'name validation' do
     create_tag(:name => 'foo.bar.baz').should be_valid
   end
 
-  it 'should reject names containing numbers' do
-    new_tag(:name => 'foo100').should fail_validation_for(:name)
+  it 'should accept names containing numbers' do
+    new_tag(:name => 'foo100').should be_valid
   end
 
   it 'should reject names containing spaces' do

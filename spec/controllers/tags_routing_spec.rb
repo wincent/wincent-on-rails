@@ -14,6 +14,16 @@ describe TagsController do
       route_for(:controller => "tags", :action => "show", :id => 'foo', :protocol => 'https').should == "/tags/foo"
     end
 
+    # tag name including period
+    it "should map { controller: 'tags', action: 'show', id: 'foo.bar', protocol: 'https' } to /tags/foo.bar" do
+      route_for(:controller => "tags", :action => "show", :id => 'foo.bar', :protocol => 'https').should == "/tags/foo.bar"
+    end
+
+    # tag name including number
+    it "should map { controller: 'tags', action: 'show', id: 'wopen3', protocol: 'https' } to /tags/wopen3" do
+      route_for(:controller => "tags", :action => "show", :id => 'wopen3', :protocol => 'https').should == "/tags/wopen3"
+    end
+
     it "should map { controller: 'tags', action: 'edit', id: 'foo', protocol: 'https' } to /tags/foo/edit" do
       route_for(:controller => "tags", :action => "edit", :id => 'foo', :protocol => 'https').should == "/tags/foo/edit"
     end
@@ -42,6 +52,16 @@ describe TagsController do
 
     it "should generate params { controller: 'tags', action: 'show', id: 'foo', protocol: 'https' } from GET /tags/foo" do
       params_from(:get, "/tags/foo").should == {:controller => "tags", :action => "show", :id => "foo", :protocol => 'https'}
+    end
+
+    # tag name including period
+    it "should generate params { controller: 'tags', action: 'show', id: 'foo.bar', protocol: 'https' } from GET /tags/foo.bar" do
+      params_from(:get, "/tags/foo.bar").should == {:controller => "tags", :action => "show", :id => "foo.bar", :protocol => 'https'}
+    end
+
+    # tag name including number
+    it "should generate params { controller: 'tags', action: 'show', id: 'wopen3', protocol: 'https' } from GET /tags/wopen3" do
+      params_from(:get, "/tags/wopen3").should == {:controller => "tags", :action => "show", :id => "wopen3", :protocol => 'https'}
     end
 
     it "should generate params { controller: 'tags', action: 'edit', id: 'foo', protocol: 'https' } from GET /tags/foo/edit" do

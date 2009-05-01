@@ -13,8 +13,10 @@ module ActiveRecord
             attr_writer   :pending_tags
 
             # only problem here is that error messages refer to "pending tags" instead of "tags"
-            validates_format_of :pending_tags, :with => /\A([a-z]+(.[a-z]+)*)*\z/, :allow_nil => true,
-                                :message => 'may only contain letters or periods'
+            validates_format_of :pending_tags, :with =>
+              /\A[a-z0-9]+(\.[a-z0-9]+)*(\s+[a-z0-9]+(\.[a-z0-9]+)*)*\z/i,
+              :allow_blank => true,
+              :message => 'may only contain letters, numbers and periods'
             include ActiveRecord::Acts::Taggable::InstanceMethods
             extend ActiveRecord::Acts::Taggable::MoreClassMethods
             alias_method_chain :after_save, :save_pending_tags

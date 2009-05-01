@@ -3,8 +3,9 @@ class Tag < ActiveRecord::Base
   has_many                :taggables, :through => :taggings
   validates_presence_of   :name
   validates_format_of     :name,
-                          :with => /\A[a-z]+(\.[a-z]+)*\z/i,
-                          :message => 'may only contain letters with words separated by periods'
+    :with => /\A[a-z0-9]+(\.[a-z0-9]+)*\z/i,
+    :message => 'may only contain words (letters and numbers) separated by ' +
+      'periods'
   validates_uniqueness_of :name
   attr_accessible         :name
 

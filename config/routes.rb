@@ -45,7 +45,7 @@ ActionController::Routing::Routes.draw do |map|
 
   # must explicitly allow period in the id part of the route otherwise it will be classified as a route separator
   map.resources :tags,
-                :requirements => { :id => /[a-z\.]+/, :protocol => 'https' },
+                :requirements => { :id => /[a-z0-9\.]+/, :protocol => 'https' },
                 :collection => { :search => :get }
 
   map.resources :users, :requirements => { :protocol => 'https' }  do |user|
