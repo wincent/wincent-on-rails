@@ -1,37 +1,16 @@
 --- !ruby/object:Gem::Specification 
 name: rspec
 version: !ruby/object:Gem::Version 
-  version: 1.2.5
+  version: 1.2.6
 platform: ruby
 authors: 
 - RSpec Development Team
 autorequire: 
 bindir: bin
-cert_chain: 
-- |
-  -----BEGIN CERTIFICATE-----
-  MIIDQDCCAiigAwIBAgIBADANBgkqhkiG9w0BAQUFADBGMRQwEgYDVQQDDAtyc3Bl
-  Yy1kZXZlbDEZMBcGCgmSJomT8ixkARkWCXJ1Ynlmb3JnZTETMBEGCgmSJomT8ixk
-  ARkWA29yZzAeFw0wOTA0MjgyMDQ5NDVaFw0xMDA0MjgyMDQ5NDVaMEYxFDASBgNV
-  BAMMC3JzcGVjLWRldmVsMRkwFwYKCZImiZPyLGQBGRYJcnVieWZvcmdlMRMwEQYK
-  CZImiZPyLGQBGRYDb3JnMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA
-  vFsOmL+2dKD2pskbJlzUvH/NZXL8oFy//5xssQydCbiv4Bx/PSs4JiL12/Rl4OjK
-  j+da8ml/8QqzoJqQwSo4T/wRamXd20MKgtn9K+MQ30wby6i0Ti/r85f3XW14Of+K
-  OwCoQvzf/kDNpyKYymkMzSdu6nT8GmgjEUpe8SAhwTuY6J/a/oCM0Eu7bFQs/u2f
-  B7r6V82E4WrxWy9bPUkUK9gk89HK7H605G6xoKjNiLPTz8v+TdZfNc0Cx94n+GT7
-  i/aaSs5lhJ0POB2dcbjvx+mCu+Qy7SbLH08wv8Q0oDlQPNkdgDwBRE+S3N44qOYj
-  AAxpF+EMI7NYzcYNETt5TQIDAQABozkwNzAJBgNVHRMEAjAAMAsGA1UdDwQEAwIE
-  sDAdBgNVHQ4EFgQUZFSx0Rt8FU0c2CpTa5gKgMDEXl8wDQYJKoZIhvcNAQEFBQAD
-  ggEBALP3T9ws/3qAEZxbK2ZVvebb76FrZjJSxVD/kJqbrAgfZXe0VcpF3c/nT7V7
-  983CvtPhIOBR7dZy+vIm+KPhuD2EraJHuPsW3xatVdxSGGHzPjm13X1TKjDCreb1
-  RZMEV+PAdjHdcPvHjg2HI3yM7SB0LhvS/iTylB2vrqyhd3Cgq6dgE9hA+db2r4h+
-  du+khTSJ/yAl0IkhpcGNoXI/L5VQXJMgg/lRwmfQl4nqrVN9co3CPciM13L3Kz24
-  7XHWIHZLt6PzpDxMa4RYOeFx0cgxH3Su/hFc086K0Y3BEWSmg+nF/2eCpu7Not1q
-  rxjzEkfOKoy3oCfGDf8/ZQyQaJo=
-  -----END CERTIFICATE-----
+cert_chain: []
 
-date: 2009-04-29 00:00:00 +02:00
-default_executable: autospec
+date: 2009-04-30 00:00:00 +02:00
+default_executable: 
 dependencies: 
 - !ruby/object:Gem::Dependency 
   name: cucumber
@@ -58,6 +37,7 @@ email:
 - rspec-devel@rubyforge.org
 executables: 
 - autospec
+- spec
 extensions: []
 
 extra_rdoc_files: 
@@ -438,7 +418,7 @@ homepage: http://rspec.info
 post_install_message: |
   **************************************************
   
-    Thank you for installing rspec-1.2.5
+    Thank you for installing rspec-1.2.6
   
     Please be sure to read History.rdoc and Upgrade.rdoc
     for useful information about this release.
@@ -468,6 +448,6 @@ rubyforge_project: rspec
 rubygems_version: 1.3.1
 signing_key: 
 specification_version: 3
-summary: rspec 1.2.5
+summary: rspec 1.2.6
 test_files: []
 
