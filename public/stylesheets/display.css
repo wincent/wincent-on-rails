@@ -129,16 +129,6 @@ tr.even { background: #eaeaea; }
 
 .comments_link { float: left; background: url(../images/comment-bubble.png) no-repeat left center; padding-left: 22px; padding-top: 2px; padding-bottom: 2px; min-height: 22px; }
 
-.edit_link { background: url(../images/edit.png) no-repeat left center; padding-left: 22px; padding-top: 2px; padding-bottom: 2px; min-height: 22px; }
-
-.new_link { background: url(../images/new.png) no-repeat left center; padding-left: 22px; padding-top: 2px; padding-bottom: 2px; min-height: 22px; }
-
-.back_link { background: url(../images/back.png) no-repeat left center; padding-left: 22px; padding-top: 2px; padding-bottom: 2px; min-height: 22px; }
-
-.show_link { background: url(../images/show.png) no-repeat left center; padding-left: 22px; padding-top: 2px; padding-bottom: 2px; min-height: 22px; }
-
-.update_link { background: url(../images/update.png) no-repeat left center; padding-left: 22px; padding-top: 2px; padding-bottom: 2px; min-height: 22px; }
-
 .links { margin-top: 2.5em; margin-bottom: 2.5em; }
 .links a { border: 2px solid #ccc; -webkit-border-radius: 1em; -moz-border-radius: 1.2em; background: #eaeaea; padding-left: 1.5em; padding-right: 1.5em; padding-top: 0.5em; padding-bottom: 0.5em; margin-left: 0.25em; margin-right: 0.25em; }
 .links a:hover { background: #aaa; color: white; text-decoration: none; }

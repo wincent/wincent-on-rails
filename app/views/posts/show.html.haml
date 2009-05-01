@@ -9,8 +9,8 @@
 =render 'shared/tags', :tags => @post.tags
 %p.links
   -if admin?
-    =link_to 'edit', edit_post_path(@post), :class => 'edit_link'
-  =link_to 'all posts', posts_path, :class => 'back_link'
+    =link_to 'edit', edit_post_path(@post)
+  =link_to 'all posts', posts_path
 -if @post.accepts_comments? || @post.comments_count != 0
   -# TODO: use divs to color-code comments (ie. private, awaiting moderation etc)
   =named_anchor 'comments'
