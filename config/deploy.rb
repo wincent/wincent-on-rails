@@ -11,6 +11,7 @@ default_run_options[:pty] = true
 depend :remote, :gem, :hpricot, '>= 0.6'
 depend :remote, :gem, 'rubygems-update', '>= 1.3.1' # Rails 2.2 bumps the minimum RubyGems requirement up
 depend :remote, :gem, 'rack', '>= 0.9.1'            # Rails 2.3 requires rack 0.9.0 minimum
+depend :remote, :gem, 'mkdtemp', '>= 1.0'           # needed for "rake spec", don't want to freeze
 depend :remote, :command, 'git'
 depend :remote, :command, 'monit'
 
