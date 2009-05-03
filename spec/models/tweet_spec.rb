@@ -1,4 +1,5 @@
-require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
+require File.join(File.dirname(__FILE__), '..', 'spec_helper')
+require File.join(File.dirname(__FILE__), '..', 'lib', 'active_record', 'acts', 'shared_taggable_spec')
 
 describe Tweet do
   it 'should be valid' do
@@ -9,6 +10,15 @@ describe Tweet do
   it 'should have a recommended maximum length of 140 characters' do
     Tweet::RECOMMENDED_MAX_LENGTH.should == 140
   end
+end
+
+describe Tweet, 'acting as taggable' do
+  before do
+    @object     = create_tweet
+    @new_object = new_tweet
+  end
+
+  it_should_behave_like 'ActiveRecord::Acts::Taggable'
 end
 
 describe Tweet, 'validation' do

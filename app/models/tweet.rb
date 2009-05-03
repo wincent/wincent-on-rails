@@ -11,6 +11,7 @@ class Tweet < ActiveRecord::Base
   RECOMMENDED_MAX_LENGTH = 140
   validates_presence_of :body
   acts_as_searchable :attributes => [ :body ]
+  acts_as_taggable
   attr_accessible :body
 
   def self.find_recent options = {}
