@@ -18,7 +18,8 @@ class Issue < ActiveRecord::Base
   validates_length_of     :description, :maximum => 128 * 1024
   validates_inclusion_of  :kind,    :in => KIND_MAP.keys,   :message => 'not a valid kind code'
   validates_inclusion_of  :status,  :in => STATUS_MAP.keys, :message => 'not a valid status code'
-  attr_accessible         :summary, :description, :public, :product_id, :kind
+  attr_accessible         :summary, :description, :public, :product_id, :kind,
+    :status
   acts_as_classifiable
   acts_as_taggable
   acts_as_searchable      :attributes => [:summary, :description]

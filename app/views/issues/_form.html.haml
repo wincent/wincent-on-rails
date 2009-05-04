@@ -14,6 +14,10 @@
       %br
       %span.annotation optional (leave blank for general issues)
     %td=f.select :product_id, product_options, :include_blank => true
+  -if admin?
+    %tr
+      %th=f.label :status, 'Status'
+      %td=f.select :status, underscores_to_spaces(Issue::STATUS).sort
   %tr
     %th
       =f.label :description, 'Description'

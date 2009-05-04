@@ -62,6 +62,11 @@ describe Issue, 'accessible attributes' do
   it 'should allow mass-assignment to the kind' do
     new_issue.should allow_mass_assignment_of(:kind => Issue::KIND[:feedback])
   end
+
+  it 'should allow mass-assignment to the "status" attribute' do
+    issue = new_issue :status => Issue::STATUS[:closed]
+    issue.should allow_mass_assignment_of(:status => Issue::STATUS[:open])
+  end
 end
 
 describe Issue, 'protected attributes' do
