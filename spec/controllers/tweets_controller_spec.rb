@@ -442,11 +442,6 @@ describe TweetsController, 'PUT /twitter/:id' do
     response.should redirect_to(login_path)
   end
 
-  it 'should be successful' do
-    do_put @tweet
-    response.should be_success
-  end
-
   it 'should assign to the @tweet instance variable' do
     do_put @tweet
     assigns[:tweet].should == @tweet
@@ -465,9 +460,9 @@ describe TweetsController, 'PUT /twitter/:id' do
     flash[:notice].should be_nil
   end
 
-  it 'should render the "tweets/show.html.haml" template on success' do
+  it 'should redirect to the tweet "show" page on success' do
     do_successful_update
-    response.should render_template('tweets/show.html.haml')
+    response.should redirect_to(tweet_path(@tweet))
   end
 
   it 'should flash an error on failure' do

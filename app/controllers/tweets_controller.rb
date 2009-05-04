@@ -52,7 +52,7 @@ class TweetsController < ApplicationController
   def update
     if @tweet.update_attributes params[:tweet]
       flash[:notice] = 'Successfully updated'
-      render :action => :show
+      redirect_to tweet_path(@tweet)
     else
       flash[:error] = 'Update failed'
       render :action => :edit
