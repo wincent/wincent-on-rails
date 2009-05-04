@@ -10,6 +10,8 @@ module TagsHelper
       # but a long-term solution will need to be found,
       # most likely involving "pre-seeding" in some way
       link_to h(model.title), forum_topic_path(model.forum, model)
+    when Tweet
+      link_to tweet_title(model), tweet_path(model)
     when Issue
       link_to h(model.summary), issue_path(model)
     else
