@@ -7,7 +7,7 @@ custom_atom_feed do |feed|
   end
   for tweet in @tweets
     feed.entry tweet do |entry|
-      entry.title atom_title(tweet)
+      entry.title tweet_title(tweet)
       entry.content tweet.body.w, :type => 'html'
     end
   end

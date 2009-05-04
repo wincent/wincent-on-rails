@@ -133,3 +133,30 @@ describe ApplicationHelper, '"link_to_commentable" method' do
     helper.link_to_commentable(issue).should_not =~ /<em>/
   end
 end
+
+describe ApplicationHelper, '"tweet_title" method' do
+  it 'should strip HTML tags' do
+    tweet = new_tweet :body => "foo ''bar''"
+    helper.tweet_title(tweet).should =~ /foo bar/
+  end
+
+  it 'should compress whitespace' do
+    tweet = new_tweet :body => "foo    bar   \n   baz"
+    helper.tweet_title(tweet).should =~ /foo bar baz/
+  end
+
+  it 'should remove leading whitespace' do
+    tweet = new_tweet :body => "  foo\n  bar"
+    helper.tweet_title(tweet).should =~ /\Afoo bar/
+  end
+
+  it 'should remove trailing whitespace' do
+    tweet = new_tweet :body => "foo  \nbar  "
+    helper.tweet_title(tweet).should =~ /foo bar\z/
+  end
+
+  it 'should truncate long text to 80 characters' do
+    tweet = new_tweet :body => 'x' * 100
+    helper.tweet_title(tweet).length.should == 80
+  end
+end

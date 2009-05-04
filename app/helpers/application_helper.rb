@@ -88,6 +88,14 @@ module ApplicationHelper
     pluralizing_count number, 'comment'
   end
 
+  # used in tweet#index, tags#show etc
+  def tweet_title tweet
+    stripped    = strip_tags tweet.body.w
+    compressed  = stripped.gsub /\s+/, ' '
+    compressed.strip!
+    truncate compressed, :length => 80
+  end
+
   def scaled_tag tag, type = nil
     # NOTE: that we report the full taggings count here: may want to exclude taggables to which the user doesn't have access
     path = type ? tag_path(tag, :type => type) : tag_path(tag)

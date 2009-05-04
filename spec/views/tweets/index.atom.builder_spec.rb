@@ -52,9 +52,9 @@ describe '/tweets/index.atom.builder' do
     author.at('email').innerHTML.should == APP_CONFIG['admin_email']
   end
 
-  it 'should use the "atom_title" helper to produce the entry titles' do
-    template.should_receive(:atom_title).with(@tweets[0]).and_return('atom title 0')
-    template.should_receive(:atom_title).with(@tweets[1]).and_return('atom title 1')
+  it 'should use the "tweet_title" helper to produce the entry titles' do
+    template.should_receive(:tweet_title).with(@tweets[0]).and_return('atom title 0')
+    template.should_receive(:tweet_title).with(@tweets[1]).and_return('atom title 1')
     do_render
     doc = Hpricot.XML(response.body)
     entry = doc.at('feed').at('entry')
