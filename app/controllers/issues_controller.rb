@@ -110,10 +110,7 @@ class IssuesController < ApplicationController
           @issue.moderate_as_ham!
           render :json => {}.to_json
         else
-          # I am not really sure why I chose to make "status" protected,
-          # while attributes like "public" are accessible
           @issue.pending_tags = params[:issue][:pending_tags]
-          @issue.status       = params[:issue][:status] if params[:issue].key?(:status)
           if @issue.update_attributes params[:issue]
             redirect_to issue_path(@issue, :format => :js)
           else
