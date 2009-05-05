@@ -3,6 +3,7 @@ ActionController::Routing::Routes.draw do |map|
   # resources
   # TODO: may be able to clean some of these routes up using :shallow and :only from Rails 2.2
   map.with_options :requirements => { :protocol => 'https' } do |https|
+    https.resources :attachments
     https.resources :comments
     https.resources :confirmations, :as => :confirm
     https.resources :issues,
