@@ -479,3 +479,15 @@ ended up moving it back to vendor/plugins, which funnily enough works:
   git patch config/environments/test.rb
   rake spec
   cucumber
+
+  # Wikitext 1.6 update
+  git rm -r vendor/gems/wikitext-1.5.3
+  rm -r vendor/gems/wikitext-1.5.3
+  sudo gem install wikitext
+  vim config/environment.rb # update config.gem line
+  rake gems:unpack
+  git add vendor/gems/wikitext-1.6
+  rake gems:build
+  git add vendor/gems/wikitext-1.6/ext/wikitext.bundle
+  rm vendor/gems/wikitext-1.6/ext/Makefile
+  rm vendor/gems/wikitext-1.6/ext/*.{o,log}

@@ -237,7 +237,7 @@ VALUE _Wikitext_hyperlink(parser_t *parser, VALUE link_prefix, VALUE link_target
         rb_str_append(string, link_prefix);
     rb_str_append(string, link_target);
 
-    /* special handling for mailto URIs */
+    // special handling for mailto URIs
     const char *mailto = "mailto:";
     if (NIL_P(link_prefix) &&
         RSTRING_LEN(link_target) >= (long)sizeof(mailto) &&
@@ -258,7 +258,7 @@ VALUE _Wikitext_hyperlink(parser_t *parser, VALUE link_prefix, VALUE link_target
 void _Wikitext_append_img(parser_t *parser, char *token_ptr, int token_len)
 {
     rb_str_cat(parser->output, img_start, sizeof(img_start) - 1);   // <img src="
-    if (!NIL_P(parser->img_prefix))
+    if (!NIL_P(parser->img_prefix) && *token_ptr != '/')            // len always > 0
         rb_str_append(parser->output, parser->img_prefix);
     rb_str_cat(parser->output, token_ptr, token_len);
     rb_str_cat(parser->output, img_alt, sizeof(img_alt) - 1);       // " alt="
@@ -271,6 +271,8 @@ void _Wikitext_append_img(parser_t *parser, char *token_ptr, int token_len)
 // each time we enter one of those spans must ++ the indentation level
 void _Wikitext_indent(parser_t *parser)
 {
+    if (parser->base_indent == -1) // indentation disabled
+        return;
     int space_count = parser->current_indent + parser->base_indent;
     if (space_count > 0)
     {
@@ -290,6 +292,8 @@ void _Wikitext_indent(parser_t *parser)
 
 void _Wikitext_dedent(parser_t *parser, VALUE emit)
 {
+    if (parser->base_indent == -1) // indentation disabled
+        return;
     parser->current_indent -= 2;
     if (emit != Qtrue)
         return;
@@ -990,9 +994,15 @@ VALUE Wikitext_parser_parse(int argc, VALUE *argv, VALUE self)
         // :indent => 0 (or more)
         if (rb_funcall(options, rb_intern("has_key?"), 1, ID2SYM(rb_intern("indent"))) == Qtrue)
         {
-            base_indent = NUM2INT(rb_hash_aref(options, ID2SYM(rb_intern("indent"))));
-            if (base_indent < 0)
-                base_indent = 0;
+            VALUE indent = rb_hash_aref(options, ID2SYM(rb_intern("indent")));
+            if (indent == Qfalse)
+                base_indent = -1; // indentation disabled
+            else
+            {
+                base_indent = NUM2INT(indent);
+                if (base_indent < 0)
+                    base_indent = 0;
+            }
         }
 
         // :base_heading_level => 0/1/2/3/4/5/6
@@ -2416,14 +2426,14 @@ VALUE Wikitext_parser_parse(int argc, VALUE *argv, VALUE self)
                     {
                         if (type == PATH || type == PRINTABLE || type == ALNUM || type == SPECIAL_URI_CHARS)
                             rb_str_cat(parser->link_target, token->start, TOKEN_LEN(token));
-                        else if (type == IMG_END)
+                        else if (type == IMG_END && RSTRING_LEN(parser->link_target) > 0)
                         {
                             // success
                             _Wikitext_append_img(parser, RSTRING_PTR(parser->link_target), RSTRING_LEN(parser->link_target));
                             token = NULL;
                             break;
                         }
-                        else // unexpected token (syntax error)
+                        else // unexpected token or zero-length target (syntax error)
                         {
                             // rollback
                             rb_str_cat(parser->output, literal_img_start, sizeof(literal_img_start) - 1);

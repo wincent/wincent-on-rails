@@ -21,20 +21,12 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
-require 'wikitext/parser'
+require File.expand_path(File.join(File.dirname(__FILE__), '..', '..', 'ext',
+  'wikitext'))
 
-class String
-  def to_wikitext options = {}
-    Wikitext::Parser.shared_parser.parse wikitext_preprocess, options
+class NilClass
+  def to_wikitext
+    ''
   end
   alias :w :to_wikitext
-
-private
-
-  # for now do this in pure Ruby
-  # if speed later becomes a concern can whip up a Ragel C extension to do it
-  # TODO: make this customizable (accept a lambda that performs preprocessing)
-  def wikitext_preprocess
-    gsub /\b(bug|issue|request|ticket) #(\d+)/i, '[/issues/\2 \1 #\2]'
-  end
 end

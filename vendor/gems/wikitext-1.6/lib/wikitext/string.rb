@@ -1,5 +1,4 @@
-#!/usr/bin/env ruby
-# Copyright 2009 Wincent Colaiuta. All rights reserved.
+# Copyright 2008-2009 Wincent Colaiuta. All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
@@ -22,13 +21,22 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
-require 'wikitext'
+require File.expand_path(File.join(File.dirname(__FILE__), 'parser'))
 
-module Wikitext
-  class Parser
-    def self.shared_parser
-      @@shared_parser_instance ||= new
-    end
-  end # class Parser
-end # module Wikitext
+class String
+  def to_wikitext options = {}
+    default_options = { :indent => false }
+    Wikitext::Parser.shared_parser.parse wikitext_preprocess,
+      default_options.merge(options)
+  end
+  alias :w :to_wikitext
 
+private
+
+  # for now do this in pure Ruby
+  # if speed later becomes a concern can whip up a Ragel C extension to do it
+  # TODO: make this customizable (accept a lambda that performs preprocessing)
+  def wikitext_preprocess
+    gsub /\b(bug|issue|request|ticket) #(\d+)/i, '[/issues/\2 \1 #\2]'
+  end
+end

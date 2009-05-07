@@ -21,14 +21,11 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
-require 'wikitext/string'
-
-module Wikitext
-  class TemplateHandler
-    def self.call template
-      'template.source.w'
-    end
-  end
+# Avoid Rails bug #2266 by not requiring during "rake gems:build"
+# See: https://rails.lighthouseapp.com/projects/8994/tickets/2266
+unless $gems_build_rake_task
+  libdir = File.join(File.dirname(__FILE__), '..', 'lib', 'wikitext')
+  require File.expand_path(File.join(libdir, 'nil_class'))
+  require File.expand_path(File.join(libdir, 'string'))
+  require File.expand_path(File.join(libdir, 'rails'))
 end
-
-ActionView::Template.register_template_handler :wikitext, Wikitext::TemplateHandler

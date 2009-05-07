@@ -1,4 +1,4 @@
-# Copyright 2008-2009 Wincent Colaiuta. All rights reserved.
+# Copyright 2007-2009 Wincent Colaiuta. All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
@@ -21,10 +21,6 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
-# Avoid Rails bug #2266 by not requiring during "rake gems:build"
-# See: https://rails.lighthouseapp.com/projects/8994/tickets/2266
-unless $gems_build_rake_task
-  require 'wikitext/nil_class'
-  require 'wikitext/string'
-  require 'wikitext/rails'
-end
+module Wikitext
+  VERSION = '1.6'
+end # module Wikitext

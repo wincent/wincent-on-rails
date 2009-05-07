@@ -1,4 +1,5 @@
-# Copyright 2007-2009 Wincent Colaiuta. All rights reserved.
+#!/usr/bin/env ruby
+# Copyright 2009 Wincent Colaiuta. All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
@@ -21,6 +22,14 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
+require File.expand_path(File.join(File.dirname(__FILE__), '..', '..', 'ext',
+  'wikitext'))
+
 module Wikitext
-  VERSION = '1.5.3'
+  class Parser
+    def self.shared_parser
+      @@shared_parser_instance ||= new
+    end
+  end # class Parser
 end # module Wikitext
+
