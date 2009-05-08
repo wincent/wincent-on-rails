@@ -5,7 +5,7 @@
   %h1.major=h @post.title
   .when=timeinfo @post
   .excerpt=excerpt_html
-  .body=body_html
+  #body=body_html
 =render 'shared/tags', :tags => @post.tags
 %p.links
   -if admin?
