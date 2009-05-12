@@ -24,8 +24,8 @@
 #include "ruby_compat.h"
 #include <stdint.h>     /* uint32_t */
 
-#define TOKEN_TEXT(token)   rb_str_new((const char *)token->start, (token->stop - token->start))
 #define TOKEN_LEN(token)    (token->stop - token->start)
+#define TOKEN_TEXT(token)   rb_str_new((const char *)token->start, TOKEN_LEN(token))
 
 typedef struct
 {
@@ -114,4 +114,4 @@ enum token_types {
 
 VALUE Wikitext_parser_token_types(VALUE self);
 
-VALUE _Wikitext_token(token_t *token);
+VALUE wiki_token(token_t *token);

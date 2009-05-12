@@ -1,4 +1,4 @@
-# Copyright 2008-2009 Wincent Colaiuta. All rights reserved.
+# Copyright 2007-2009 Wincent Colaiuta. All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
@@ -21,12 +21,6 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
-require 'mkmf'
-
-def missing item
-  puts "couldn't find #{item} (required)"
-  exit 1
-end
-
-have_header('ruby.h') or missing 'ruby.h'
-create_makefile('wikitext')
+module Wikitext
+  VERSION = '1.7'
+end # module Wikitext

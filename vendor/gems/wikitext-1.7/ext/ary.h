@@ -23,20 +23,26 @@
 
 #include "ruby_compat.h"
 
-VALUE Wikitext_parser_initialize(int argc, VALUE *argv, VALUE self);
+typedef struct
+{
+    int     count;
+    int     max;
+    int     *entries;
+} ary_t;
 
-VALUE Wikitext_parser_tokenize(VALUE self, VALUE string);
+// in the test suite array count goes no higher than 25 or 26
+#define DEFAULT_ENTRY_COUNT 64
 
-VALUE Wikitext_parser_benchmarking_tokenize(VALUE self, VALUE string);
+#define NO_ITEM(item) (item == INT_MAX)
 
-VALUE Wikitext_parser_fulltext_tokenize(int argc, VALUE *argv, VALUE self);
+ary_t *ary_new(void);
+int ary_entry(ary_t *ary, int idx);
+void ary_clear(ary_t *ary);
+int ary_pop(ary_t *ary);
+void ary_push(ary_t *ary, int val);
+int ary_includes(ary_t *ary, int val);
 
-VALUE Wikitext_parser_sanitize_link_target(VALUE self, VALUE string);
+// returns a count indicating the number of times the value appears in the collection
+int ary_count(ary_t *ary, int item);
 
-VALUE Wikitext_parser_encode_link_target(VALUE self, VALUE in);
-
-VALUE Wikitext_parser_encode_special_link_target(VALUE self, VALUE in);
-
-VALUE Wikitext_parser_parse(int argc, VALUE *argv, VALUE self);
-
-VALUE Wikitext_parser_profiling_parse(VALUE self, VALUE string);
+void ary_free(ary_t *ary);

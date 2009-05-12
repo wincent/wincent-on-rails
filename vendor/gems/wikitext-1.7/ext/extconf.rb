@@ -1,4 +1,4 @@
-# Copyright 2007-2009 Wincent Colaiuta. All rights reserved.
+# Copyright 2008-2009 Wincent Colaiuta. All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
@@ -21,6 +21,21 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
-module Wikitext
-  VERSION = '1.6'
-end # module Wikitext
+require 'mkmf'
+
+def missing item
+  puts "couldn't find #{item} (required)"
+  exit 1
+end
+
+case RUBY_VERSION
+when /\A1\.8/
+  $CFLAGS += ' -DRUBY_1_8_x'
+when /\A1\.9/
+  $CFLAGS += ' -DRUBY_1_9_x'
+else
+  raise "unsupported Ruby version: #{RUBY_VERSION}"
+end
+
+have_header('ruby.h') or missing 'ruby.h'
+create_makefile('wikitext')

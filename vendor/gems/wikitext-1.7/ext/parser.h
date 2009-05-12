@@ -23,32 +23,18 @@
 
 #include "ruby_compat.h"
 
-typedef struct
-{
-    int     count;
-    int     max;
-    int     *entries;
-} ary_t;
+VALUE Wikitext_parser_initialize(int argc, VALUE *argv, VALUE self);
 
-// in the test suite array count goes no higher than 25 or 26
-#define DEFAULT_ENTRY_COUNT 64
+VALUE Wikitext_parser_tokenize(VALUE self, VALUE string);
 
-#define NO_ITEM(item) (item == INT_MAX)
+VALUE Wikitext_parser_benchmarking_tokenize(VALUE self, VALUE string);
 
-// Mark the ary struct designated by ptr as a participant in Ruby's mark-and-sweep garbage collection scheme.
-// A variable named name is placed on the C stack to prevent the structure from being prematurely collected.
-#define GC_WRAP_ARY(ptr, name) volatile VALUE name __attribute__((unused)) = Data_Wrap_Struct(rb_cObject, 0, ary_free, ptr)
+VALUE Wikitext_parser_fulltext_tokenize(int argc, VALUE *argv, VALUE self);
 
-ary_t *ary_new(void);
-int ary_entry(ary_t *ary, int idx);
-void ary_clear(ary_t *ary);
-int ary_pop(ary_t *ary);
-void ary_push(ary_t *ary, int val);
-int ary_includes(ary_t *ary, int val);
+VALUE Wikitext_parser_sanitize_link_target(VALUE self, VALUE string);
 
-// returns a count indicating the number of times the value appears in the collection
-// refactored from _Wikitext_count()
-int ary_count(ary_t *ary, int item);
+VALUE Wikitext_parser_encode_link_target(VALUE self, VALUE in);
 
-// this method not inlined so its address can be passed to the Data_Wrap_Struct function.
-void ary_free(ary_t *ary);
+VALUE Wikitext_parser_parse(int argc, VALUE *argv, VALUE self);
+
+VALUE Wikitext_parser_profiling_parse(VALUE self, VALUE string);
