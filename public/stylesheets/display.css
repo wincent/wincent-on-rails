@@ -3,10 +3,10 @@ body { background: #ddd; margin: 0pt; padding: 0pt; font-family: "Lucida Grande"
 h1, h2, h3, h4, h5, h6 { color: #333333; }
 
 h1.major { border-bottom: 2px solid #ccc; }
-h1.major a:hover { text-decoration: none; color: #ccc; }
+h1.major a:hover { text-decoration: none; color: #ee7714; }
 
 h2.major { border-bottom: 2px solid #ccc; }
-h2.major a:hover { text-decoration: none; color: #ccc; }
+h2.major a:hover { text-decoration: none; color: #ee7714; }
 
 p, li { color: #666; }
 
