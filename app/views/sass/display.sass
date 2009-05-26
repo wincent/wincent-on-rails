@@ -34,6 +34,17 @@ pre
   line-height:      1.1em
   overflow:         auto
 
+pre span.line-number
+  counter-increment:  line-number
+  text-align:         right
+  float:              left
+  padding-right:      1em
+  width:              3em
+  color:              silver
+
+pre span.line-number:before
+  content:            counter(line-number)
+
 // for the benefit of Safari (Firefox is fine):
 // for super-wide pre spans inside tables Safari will grow the table as large as need be to avoid adding scrollbars to the pre
 // block; this has the unwanted side-effect of adding scrollbars to the window and making the rest of the text horribly

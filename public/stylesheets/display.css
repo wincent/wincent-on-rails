@@ -12,6 +12,10 @@ p, li { color: #666; }
 
 pre { color: #600; background-color: #eee; border: 1px dotted silver; padding: 1em; font-size: 125%; line-height: 1.1em; overflow: auto; }
 
+pre span.line-number { counter-increment: line-number; text-align: right; float: left; padding-right: 1em; width: 3em; color: silver; }
+
+pre span.line-number:before { content: counter(line-number); }
+
 table pre { max-width: 640px; }
 
 tt { color: #600; font-size: 125%; border: 1px dotted silver; padding-left: 0.3em; padding-right: 0.3em; }
