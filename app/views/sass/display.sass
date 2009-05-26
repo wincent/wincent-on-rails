@@ -30,6 +30,8 @@ pre
   background-color: #eee
   border:           1px dotted silver
   padding:          1em
+  padding-top:      0em
+  padding-bottom:   0em
   font-size:        125%
   line-height:      1.1em
   overflow:         auto
@@ -38,9 +40,13 @@ pre span.line-number
   counter-increment:  line-number
   text-align:         right
   float:              left
-  padding-right:      1em
+  margin-left:        -1.5em
+  margin-right:       0.5em
+  padding-right:      0.5em
+  border-right:       1px dotted silver
   width:              3em
   color:              silver
+  background:         #fee
 
 pre span.line-number:before
   content:            counter(line-number)

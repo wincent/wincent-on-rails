@@ -10,9 +10,9 @@ h2.major a:hover { text-decoration: none; color: #ee7714; }
 
 p, li { color: #666; }
 
-pre { color: #600; background-color: #eee; border: 1px dotted silver; padding: 1em; font-size: 125%; line-height: 1.1em; overflow: auto; }
+pre { color: #600; background-color: #eee; border: 1px dotted silver; padding: 1em; padding-top: 0em; padding-bottom: 0em; font-size: 125%; line-height: 1.1em; overflow: auto; }
 
-pre span.line-number { counter-increment: line-number; text-align: right; float: left; padding-right: 1em; width: 3em; color: silver; }
+pre span.line-number { counter-increment: line-number; text-align: right; float: left; margin-left: -1.5em; margin-right: 0.5em; padding-right: 0.5em; border-right: 1px dotted silver; width: 3em; color: silver; background: #fee; }
 
 pre span.line-number:before { content: counter(line-number); }
 
