@@ -167,7 +167,16 @@ function stylePreBlocks()
 {
   var styles = {
     'ruby-syntax': {
-      'keyword': /\b(begin|break|catch|class|continue|def|else|end|for|if|include|load|module|raise|redo|require|rescue|then|throw|while)\b/
+      // don't mangle entities: could almost make this an implicit rule
+      // the other thing to be wary of are A tags in the text, don't want to mangle those either
+      'entities':       /&\w+;/,
+      'comment':        /#.*/,
+      'string-literal': /("([^"\\]|\\.)*"|'([^'\\]|\\.)*')/,
+      'keyword':        /\b(begin|break|catch|class|continue|def|else|end|for|if|include|load|module|raise|redo|require|rescue|then|throw|while)\b/,
+      'boolean':        /\b(true|false)\b/,
+      'constant':       /\b[A-Z][a-zA-Z0-9_]*\b/,
+      'identifier':     /(\$|@{1,2})[a-z_][a-zA-Z0-9_]*\b/, // or to be zealous, add: |\b[a-z][a-zA-Z0-9_]*\b
+      'symbol':         /:[a-zA-Z_][a-zA-Z0-9_]*\b/
     }
   };
   $("pre[class$='syntax']").each(function(i) {

@@ -10,11 +10,19 @@ h2.major a:hover { text-decoration: none; color: #ee7714; }
 
 p, li { color: #666; }
 
-pre { color: #600; background-color: #eee; border: 1px dotted silver; padding: 1em; padding-top: 0em; padding-bottom: 0em; font-size: 125%; line-height: 1.1em; overflow: auto; }
+pre { color: black; background-color: #ffffb6; border: 1px dotted silver; padding: 1em; padding-top: 0em; padding-bottom: 0em; font-size: 125%; line-height: 1.1em; overflow: auto; }
 
 pre span.line-number { counter-increment: line-number; text-align: right; float: left; margin-left: -1.5em; margin-right: 0.5em; padding-right: 0.5em; border-right: 1px dotted silver; width: 3em; color: silver; background: #fee; }
 
 pre span.line-number:before { content: counter(line-number); }
+
+pre span.boolean-syntax { color: #cd0000; }
+pre span.comment-syntax { color: #00e; }
+pre span.constant-syntax { color: #1a8b0a; }
+pre span.identifier-syntax { color: #458b73; }
+pre span.keyword-syntax { color: #1673cc; }
+pre span.string-literal-syntax { color: #0068ab; }
+pre span.symbol-syntax { color: #fc8a0b; }
 
 table pre { max-width: 640px; }
 
