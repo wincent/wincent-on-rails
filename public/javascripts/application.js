@@ -169,16 +169,17 @@ function stylePreBlocks()
     'ruby-syntax': {
       // don't mangle entities: could almost make this an implicit rule
       // the other thing to be wary of are A tags in the text, don't want to mangle those either
-      'entities':       /&\w+;/,
-      'comment':        /#.*/,
-      'string-literal': /("([^"\\]|\\.)*"|'([^'\\]|\\.)*')/,
-      'keyword':        /\b(begin|break|catch|class|continue|def|else|end|for|if|include|load|module|raise|redo|require|rescue|then|throw|while)\b/,
-      'statement':      /\b(private|protected|public)\b/,
-      'boolean':        /\b(true|false)\b/,
-      'constant':       /\b[A-Z][a-zA-Z0-9_]*\b/,
-      'namespace':      /::/, // no CSS for this; just to stop false positives for the symbol rule
-      'identifier':     /(\$|@{1,2})[a-z_][a-zA-Z0-9_]*\b/, // or to be zealous, add: |\b[a-z][a-zA-Z0-9_]*\b
-      'symbol':         /:[a-zA-Z_][a-zA-Z0-9_]*\b/
+      'entities':         /&\w+;/,
+      'comment':          /#.*/,
+      'string-literal':   /("([^"\\]|\\.)*"|'([^'\\]|\\.)*')/,
+      'keyword':          /\b(begin|break|catch|class|continue|def|else|end|for|if|include|load|module|raise|redo|require|rescue|then|throw|while)\b/,
+      'statement':        /\b(private|protected|public)\b/,
+      'boolean':          /\b(true|false)\b/,
+      'constant':         /\b[A-Z][a-zA-Z0-9_]*\b/,
+      'namespace':        /::/, // no CSS for this; just to stop false positives for the symbol rule
+      'identifier':       /(\$|@{1,2})[a-z_][a-zA-Z0-9_]*\b/, // or to be zealous, add: |\b[a-z][a-zA-Z0-9_]*\b
+      'symbol':           /:[a-zA-Z_][a-zA-Z0-9_]*\b/,
+      'numeric-literal':  /(0[xX][a-fA-F0-9]+(_[a-fA-F0-9]+)*|0[bB][0-1]+(_[0-1]+)*|[0-9]+(_[0-9]+)*(\.[0-9]+(_[0-9]+)*)?)/
     }
   };
   $("pre[class$='syntax']").each(function(i) {
