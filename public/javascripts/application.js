@@ -129,11 +129,49 @@ function relativizeDates()
   });
 }
 
-function numberPreLines()
+function syntaxHighlight(text, rules)
 {
+  if (!rules)
+    return text;
+
+  // iterate through rules, leftmost match wins
+  // in case of tie, first matching rule wins (earlier rules have priority)
+  var output    = '';
+  var position  = 0;
+  var leftmost  = null;
+  var apply     = null;
+  for (var rule in rules) {
+    var match = text.match(rules[rule]);
+    if (match && ((leftmost && match.index < leftmost) || !leftmost)) {
+      leftmost    = match.index;
+      match.rule  = rule;
+      apply       = match;
+      if (leftmost == 0)
+        break;
+    }
+  }
+  if (apply) {
+    text = text.substring(0, apply.index) + '<span class="' + apply.rule +
+      '-syntax">' + apply[0] + '</span>' +
+      text.substring(apply.index + apply[0].length);
+  }
+  return text;
+}
+
+function stylePreBlocks()
+{
+  var styles = {
+    'ruby-syntax': {
+      'keyword': /\b(begin|break|catch|class|continue|def|else|end|for|if|include|load|module|raise|redo|require|rescue|then|throw|while)\b/
+    }
+  };
   $("pre[class$='syntax']").each(function(i) {
+    // syntax-highlighting
+    var content = syntaxHighlight(this.innerHTML, styles[$(this).attr('class')]);
+
+    // line-numbering
     var span = '<span class="line-number"></span>';
-    var lines = this.innerHTML.split('\n');
+    var lines = content.split('\n');
     this.innerHTML = span + lines.join('\n' + span);
   });
 }
@@ -142,5 +180,5 @@ $(document).ready(function() {
   setUpLoginLogoutLinks();
   displayCacheableFlash();
   relativizeDates();
-  numberPreLines();
+  stylePreBlocks();
 });
