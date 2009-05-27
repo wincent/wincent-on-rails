@@ -131,8 +131,7 @@ function relativizeDates()
 
 function numberPreLines()
 {
-  // for now do this on all <pre> blocks, later will target only "-syntax" ones
-  $('pre').each(function(i) {
+  $("pre[class$='syntax']").each(function(i) {
     var span = '<span class="line-number"></span>';
     var lines = this.innerHTML.split('\n');
     this.innerHTML = span + lines.join('\n' + span);
