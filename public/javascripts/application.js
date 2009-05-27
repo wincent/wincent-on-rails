@@ -134,28 +134,33 @@ function syntaxHighlight(text, rules)
   if (!rules)
     return text;
 
-  // iterate through rules, leftmost match wins
-  // in case of tie, first matching rule wins (earlier rules have priority)
   var output    = '';
-  var position  = 0;
-  var leftmost  = null;
-  var apply     = null;
-  for (var rule in rules) {
-    var match = text.match(rules[rule]);
-    if (match && ((leftmost && match.index < leftmost) || !leftmost)) {
-      leftmost    = match.index;
-      match.rule  = rule;
-      apply       = match;
-      if (leftmost == 0)
-        break;
+  while (text != '') {
+    // iterate through rules, leftmost match wins
+    // in case of tie, first matching rule wins (earlier rules have priority)
+    var leftmost  = null;
+    var apply     = null;
+    for (var rule in rules) {
+      var match = text.match(rules[rule]);
+      if (match && ((leftmost && match.index < leftmost) || !leftmost)) {
+        leftmost    = match.index;
+        match.rule  = rule;
+        apply       = match;
+        if (leftmost == 0)
+          break;
+      }
+    }
+    if (apply) {
+      output = output + text.substring(0, apply.index) + '<span class="' + apply.rule +
+        '-syntax">' + apply[0] + '</span>';
+      text = text.substring(apply.index + apply[0].length);
+    }
+    else {
+      output = output + text;
+      break;
     }
   }
-  if (apply) {
-    text = text.substring(0, apply.index) + '<span class="' + apply.rule +
-      '-syntax">' + apply[0] + '</span>' +
-      text.substring(apply.index + apply[0].length);
-  }
-  return text;
+  return output;
 }
 
 function stylePreBlocks()
