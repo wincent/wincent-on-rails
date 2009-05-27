@@ -173,6 +173,7 @@ function stylePreBlocks()
       'comment':        /#.*/,
       'string-literal': /("([^"\\]|\\.)*"|'([^'\\]|\\.)*')/,
       'keyword':        /\b(begin|break|catch|class|continue|def|else|end|for|if|include|load|module|raise|redo|require|rescue|then|throw|while)\b/,
+      'statement':      /\b(private|protected|public)\b/,
       'boolean':        /\b(true|false)\b/,
       'constant':       /\b[A-Z][a-zA-Z0-9_]*\b/,
       'namespace':      /::/, // no CSS for this; just to stop false positives for the symbol rule
