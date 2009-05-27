@@ -151,8 +151,13 @@ function syntaxHighlight(text, rules)
       }
     }
     if (apply) {
-      output = output + text.substring(0, apply.index) + '<span class="' + apply.rule +
-        '-syntax">' + apply[0] + '</span>';
+      var start_span = '<span class="' + apply.rule + '-syntax">';
+      var end_span = '</span>';
+      if (apply.rule.match(/^skip-/)) {
+        start_span = '';
+        end_span = '';
+      }
+      output = output + text.substring(0, apply.index) + start_span + apply[0] + end_span;
       text = text.substring(apply.index + apply[0].length);
     }
     else {
@@ -167,9 +172,9 @@ function stylePreBlocks()
 {
   var styles = {
     'ruby-syntax': {
-      // don't mangle entities: could almost make this an implicit rule
-      // the other thing to be wary of are A tags in the text, don't want to mangle those either
-      'entities':         /&\w+;/,
+      // could almost make these default rules
+      'skip-html':        /<[^>]*>/,  // don't mangle HTML tags ("a" tags)
+      'skip-entities':    /&\w+;/,    // or entities
       'comment':          /#.*/,
       'string-literal':   /("([^"\\]|\\.)*"|'([^'\\]|\\.)*')/,
       'keyword':          /\b(begin|break|catch|class|continue|def|else|end|for|if|include|load|module|raise|redo|require|rescue|then|throw|while)\b/,
