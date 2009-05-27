@@ -175,6 +175,7 @@ function stylePreBlocks()
       'keyword':        /\b(begin|break|catch|class|continue|def|else|end|for|if|include|load|module|raise|redo|require|rescue|then|throw|while)\b/,
       'boolean':        /\b(true|false)\b/,
       'constant':       /\b[A-Z][a-zA-Z0-9_]*\b/,
+      'namespace':      /::/, // no CSS for this; just to stop false positives for the symbol rule
       'identifier':     /(\$|@{1,2})[a-z_][a-zA-Z0-9_]*\b/, // or to be zealous, add: |\b[a-z][a-zA-Z0-9_]*\b
       'symbol':         /:[a-zA-Z_][a-zA-Z0-9_]*\b/
     }
