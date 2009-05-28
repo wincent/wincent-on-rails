@@ -172,7 +172,7 @@ function stylePreBlocks()
 {
   var styles = {};
   styles['c-syntax'] = {
-    'preprocessor':     /^\s*#.*/m, // without m (multi-line) mode, ^ anchors de start of string
+    'preprocessor':     /^\s*#.*/m, // without m (multi-line) mode, ^ anchors at start of string
     'comment':          /\/\/.*|\/\*([^\*]|\*(?!\/))*\*\//,
     'string-literal':   /("(<a .+?a>|[^"\\]|\\.)*"|'([^'\\]|\\.)?')/,
     'keyword':          /\b(_Bool|bool|char|const|int|long|short|struct|typedef|unsigned|void)\b/,
