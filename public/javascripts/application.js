@@ -191,7 +191,8 @@ function stylePreBlocks()
       'preprocessor':     /^\s*#.*/m, // without m (multi-line) mode, ^ anchors de start of string
       'comment':          /\/\/.*|\/\*([^\*]|\*(?!\/))*\*\//,
       'string-literal':   /("(<a .+?a>|[^"\\]|\\.)*"|'([^'\\]|\\.)?')/,
-      'keyword':          /\b(char|const|int|struct|typedef|void)\b/,
+      'keyword':          /\b(_Bool|BOOL|char|const|int|struct|typedef|void)\b/,
+      'statement':        /\b(break|case|continue|default|do|else|for|goto|if|return|sizeof|switch|while)\b/,
       'boolean':          /\b(YES|NO|true|false)\b/
     }
   };
