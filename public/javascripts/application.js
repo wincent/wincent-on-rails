@@ -173,8 +173,8 @@ function stylePreBlocks()
   var styles = {
     'ruby-syntax': {
       // could almost make these default rules
-      'skip-html':        /<[^>]*>/,  // don't mangle HTML tags ("a" tags)
-      'skip-entities':    /&\w+;/,    // or entities
+      'skip-anchor':      /<a .+?a>/,  // don't mangle HTML tags ("a" tags)
+      'skip-entities':    /&\w+;/,     // or entities
       'comment':          /#.*/,
       'string-literal':   /("([^"\\]|\\.)*"|'([^'\\]|\\.)*')/,
       'keyword':          /\b(begin|break|catch|class|continue|def|else|end|for|if|include|load|module|raise|redo|require|rescue|then|throw|while)\b/,
