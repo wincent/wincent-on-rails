@@ -191,7 +191,8 @@ function stylePreBlocks()
       'preprocessor':     /^\s*#.*/,
       'comment':          /\/\/.*|\/\*([^\*]|\*(?!\/))*\*\//,
       'string-literal':   /("(<a .+?a>|[^"\\]|\\.)*"|'([^'\\]|\\.)?')/,
-      'keyword':          /\b(char|const|int|struct|typedef|void)\b/
+      'keyword':          /\b(char|const|int|struct|typedef|void)\b/,
+      'boolean':          /\b(YES|NO|true|false)\b/
     }
   };
 
