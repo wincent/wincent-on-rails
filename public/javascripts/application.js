@@ -170,22 +170,24 @@ function syntaxHighlight(text, rules)
 
 function stylePreBlocks()
 {
-  var c = {
-      'preprocessor':     /^\s*#.*/m, // without m (multi-line) mode, ^ anchors de start of string
-      'comment':          /\/\/.*|\/\*([^\*]|\*(?!\/))*\*\//,
-      'string-literal':   /("(<a .+?a>|[^"\\]|\\.)*"|'([^'\\]|\\.)?')/,
-      'keyword':          /\b(_Bool|bool|char|const|int|long|short|struct|typedef|unsigned|void)\b/,
-      'statement':        /\b(break|case|continue|default|do|else|for|goto|if|return|sizeof|static|switch|while)\b/,
-      'boolean':          /\b(true|false)\b/,
-      'numeric-literal':  /\b(0[xX][a-fA-F0-9]+|\d+(\.\d+f?)?)\b/
-    };
+  var styles = {};
+  styles['c-syntax'] = {
+    'preprocessor':     /^\s*#.*/m, // without m (multi-line) mode, ^ anchors de start of string
+    'comment':          /\/\/.*|\/\*([^\*]|\*(?!\/))*\*\//,
+    'string-literal':   /("(<a .+?a>|[^"\\]|\\.)*"|'([^'\\]|\\.)?')/,
+    'keyword':          /\b(_Bool|bool|char|const|int|long|short|struct|typedef|unsigned|void)\b/,
+    'statement':        /\b(break|case|continue|default|do|else|for|goto|if|return|sizeof|static|switch|while)\b/,
+    'boolean':          /\b(true|false)\b/,
+    'numeric-literal':  /\b(0[xX][a-fA-F0-9]+|\d+(\.\d+f?)?)\b/
+  };
 
   // Objective-C is based on C with some overrides
-  var objc = $.extend({}, c); // shallow copy
-  objc['keyword'] = /\b(_Bool|BOOL|bool|char|const|int|long|short|struct|typedef|unsigned|void)\b/;
-  objc['boolean'] = /\b(YES|NO|true|false)\b/;
+  styles['objc-syntax'] = $.extend({}, styles['c-syntax'], {
+    'keyword': /\b(_Bool|BOOL|bool|char|const|int|long|short|struct|typedef|unsigned|void)\b/,
+    'boolean': /\b(YES|NO|true|false)\b/
+  });
 
-  var ruby = {
+  styles['ruby-syntax'] = {
     // could almost make these default rules
     'skip-anchor':      /<a .+?a>/,  // don't mangle HTML tags ("a" tags)
     'skip-entities':    /&\w+;/,     // or entities
@@ -199,12 +201,6 @@ function stylePreBlocks()
     'identifier':       /(\$|@{1,2})[a-z_][a-zA-Z0-9_]*\b/, // or to be zealous, add: |\b[a-z][a-zA-Z0-9_]*\b
     'symbol':           /:[a-zA-Z_][a-zA-Z0-9_]*\b/,
     'numeric-literal':  /\b(0[xX][a-fA-F0-9]+(_[a-fA-F0-9]+)*|0[bB][0-1]+(_[0-1]+)*|[0-9]+(_[0-9]+)*(\.[0-9]+(_[0-9]+)*)?)\b/
-  };
-
-  var styles = {
-    'c-syntax':     c,
-    'objc-syntax':  objc,
-    'ruby-syntax':  ruby
   };
 
   $("pre[class$='syntax']").each(function(i) {
