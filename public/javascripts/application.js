@@ -203,6 +203,13 @@ function stylePreBlocks()
     'numeric-literal':  /\b(0[xX][a-fA-F0-9]+(_[a-fA-F0-9]+)*|0[bB][0-1]+(_[0-1]+)*|[0-9]+(_[0-9]+)*(\.[0-9]+(_[0-9]+)*)?)\b/
   };
 
+  // syntax coloring for a transcript of a shell session
+  // for syntax coloring of a shell script see "bash-syntax"
+  styles['shell-syntax'] = {
+    'output':           /^[^#\$\n].*/m, // no CSS
+    'constant':         /(\\\n|.)+/m    // the command
+  };
+
   $("pre[class$='syntax']").each(function(i) {
     // syntax-highlighting
     var content = syntaxHighlight(this.innerHTML, styles[$(this).attr('class')]);
