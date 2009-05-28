@@ -171,6 +171,26 @@ function syntaxHighlight(text, rules)
 function stylePreBlocks()
 {
   var styles = {
+    'c-syntax': {
+      'preprocessor':     /^\s*#.*/m, // without m (multi-line) mode, ^ anchors de start of string
+      'comment':          /\/\/.*|\/\*([^\*]|\*(?!\/))*\*\//,
+      'string-literal':   /("(<a .+?a>|[^"\\]|\\.)*"|'([^'\\]|\\.)?')/,
+      'keyword':          /\b(_Bool|bool|char|const|int|long|short|struct|typedef|unsigned|void)\b/,
+      'statement':        /\b(break|case|continue|default|do|else|for|goto|if|return|sizeof|static|switch|while)\b/,
+      'boolean':          /\b(true|false)\b/,
+      'numeric-literal':  /\b(0[xX][a-fA-F0-9]+|\d+(\.\d+f?)?)\b/
+    },
+
+    'objc-syntax': {
+      'preprocessor':     /^\s*#.*/m, // without m (multi-line) mode, ^ anchors de start of string
+      'comment':          /\/\/.*|\/\*([^\*]|\*(?!\/))*\*\//,
+      'string-literal':   /("(<a .+?a>|[^"\\]|\\.)*"|'([^'\\]|\\.)?')/,
+      'keyword':          /\b(_Bool|BOOL|bool|char|const|int|long|short|struct|typedef|unsigned|void)\b/,
+      'statement':        /\b(break|case|continue|default|do|else|for|goto|if|return|sizeof|static|switch|while)\b/,
+      'boolean':          /\b(YES|NO|true|false)\b/,
+      'numeric-literal':  /\b(0[xX][a-fA-F0-9]+|\d+(\.\d+f?)?)\b/
+    },
+
     'ruby-syntax': {
       // could almost make these default rules
       'skip-anchor':      /<a .+?a>/,  // don't mangle HTML tags ("a" tags)
@@ -184,17 +204,7 @@ function stylePreBlocks()
       'namespace':        /::/, // no CSS for this; just to stop false positives for the symbol rule
       'identifier':       /(\$|@{1,2})[a-z_][a-zA-Z0-9_]*\b/, // or to be zealous, add: |\b[a-z][a-zA-Z0-9_]*\b
       'symbol':           /:[a-zA-Z_][a-zA-Z0-9_]*\b/,
-      'numeric-literal':  /(0[xX][a-fA-F0-9]+(_[a-fA-F0-9]+)*|0[bB][0-1]+(_[0-1]+)*|[0-9]+(_[0-9]+)*(\.[0-9]+(_[0-9]+)*)?)/
-    },
-
-    'objc-syntax': {
-      'preprocessor':     /^\s*#.*/m, // without m (multi-line) mode, ^ anchors de start of string
-      'comment':          /\/\/.*|\/\*([^\*]|\*(?!\/))*\*\//,
-      'string-literal':   /("(<a .+?a>|[^"\\]|\\.)*"|'([^'\\]|\\.)?')/,
-      'keyword':          /\b(_Bool|BOOL|char|const|int|struct|typedef|void)\b/,
-      'statement':        /\b(break|case|continue|default|do|else|for|goto|if|return|sizeof|switch|while)\b/,
-      'boolean':          /\b(YES|NO|true|false)\b/,
-      'numeric-literal':  /-?(0[xX][a-fA-F0-9]+|\d+(\.\d+f?)?)/
+      'numeric-literal':  /\b(0[xX][a-fA-F0-9]+(_[a-fA-F0-9]+)*|0[bB][0-1]+(_[0-1]+)*|[0-9]+(_[0-9]+)*(\.[0-9]+(_[0-9]+)*)?)\b/
     }
   };
 
