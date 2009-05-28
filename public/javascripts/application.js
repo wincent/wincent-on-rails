@@ -176,7 +176,7 @@ function stylePreBlocks()
       'skip-anchor':      /<a .+?a>/,  // don't mangle HTML tags ("a" tags)
       'skip-entities':    /&\w+;/,     // or entities
       'comment':          /#.*/,
-      'string-literal':   /("([^"\\]|\\.)*"|'([^'\\]|\\.)*')/,
+      'string-literal':   /("(<a .+?a>|[^"\\]|\\.)*"|'(<a .+?a>|[^'\\]|\\.)*')/,
       'keyword':          /\b(begin|break|catch|class|continue|def|else|end|for|if|include|load|module|raise|redo|require|rescue|then|throw|while)\b/,
       'statement':        /\b(private|protected|public)\b/,
       'boolean':          /\b(true|false)\b/,
