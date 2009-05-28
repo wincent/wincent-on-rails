@@ -188,7 +188,8 @@ function stylePreBlocks()
     },
 
     'objc-syntax': {
-      'comment': /\/\/.*/
+      'string-literal':   /("(<a .+?a>|[^"\\]|\\.)*"|'([^'\\]|\\.)?')/,
+      'comment':          /\/\/.*/
     }
   };
 
