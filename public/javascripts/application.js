@@ -193,7 +193,7 @@ function stylePreBlocks()
     'skip-entities':    /&\w+;/,     // or entities
     'comment':          /#.*/,
     'string-literal':   /("(<a .+?a>|[^"\\]|\\.)*"|'(<a .+?a>|[^'\\]|\\.)*')/,
-    'keyword':          /\b(begin|break|catch|class|continue|def|else|end|for|if|include|load|module|raise|redo|require|rescue|then|throw|while)\b/,
+    'keyword':          /\b(begin|break|catch|class|continue|def|else|end|for|if|include|load|module|raise|redo|require|rescue|retry|then|throw|unless|until|while|yield)\b/,
     'statement':        /\b(private|protected|public)\b/,
     'boolean':          /\b(true|false)\b/,
     'constant':         /\b[A-Z][a-zA-Z0-9_]*\b/,
