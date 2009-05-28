@@ -22,6 +22,7 @@ pre span.constant-syntax { color: #1a8b0a; }
 pre span.identifier-syntax { color: #458b73; }
 pre span.keyword-syntax { color: #1673cc; }
 pre span.numeric-literal-syntax { color: #fc8a0b; }
+pre span.preprocessor-syntax { color: #1673cc; }
 pre span.statement-syntax { color: #b02f5f; }
 pre span.string-literal-syntax { color: #0068ab; }
 pre span.symbol-syntax { color: #fc8a0b; }
