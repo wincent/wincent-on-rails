@@ -185,8 +185,13 @@ function stylePreBlocks()
       'identifier':       /(\$|@{1,2})[a-z_][a-zA-Z0-9_]*\b/, // or to be zealous, add: |\b[a-z][a-zA-Z0-9_]*\b
       'symbol':           /:[a-zA-Z_][a-zA-Z0-9_]*\b/,
       'numeric-literal':  /(0[xX][a-fA-F0-9]+(_[a-fA-F0-9]+)*|0[bB][0-1]+(_[0-1]+)*|[0-9]+(_[0-9]+)*(\.[0-9]+(_[0-9]+)*)?)/
+    },
+
+    'objc-syntax': {
+      'comment': /\/\/.*/
     }
   };
+
   $("pre[class$='syntax']").each(function(i) {
     // syntax-highlighting
     var content = syntaxHighlight(this.innerHTML, styles[$(this).attr('class')]);
