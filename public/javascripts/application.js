@@ -193,7 +193,8 @@ function stylePreBlocks()
       'string-literal':   /("(<a .+?a>|[^"\\]|\\.)*"|'([^'\\]|\\.)?')/,
       'keyword':          /\b(_Bool|BOOL|char|const|int|struct|typedef|void)\b/,
       'statement':        /\b(break|case|continue|default|do|else|for|goto|if|return|sizeof|switch|while)\b/,
-      'boolean':          /\b(YES|NO|true|false)\b/
+      'boolean':          /\b(YES|NO|true|false)\b/,
+      'numeric-literal':  /-?(0[xX][a-fA-F0-9]+|\d+(\.\d+f?)?)/
     }
   };
 
