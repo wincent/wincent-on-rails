@@ -189,7 +189,7 @@ function stylePreBlocks()
 
     'objc-syntax': {
       'preprocessor':     /^\s*#.*/,
-      'comment':          /\/\/.*|\/\*.*?\*\//,
+      'comment':          /\/\/.*|\/\*([^\*]|\*(?!\/))*\*\//,
       'string-literal':   /("(<a .+?a>|[^"\\]|\\.)*"|'([^'\\]|\\.)?')/,
       'keyword':          /\b(char|const|int|struct|typedef|void)\b/
     }
