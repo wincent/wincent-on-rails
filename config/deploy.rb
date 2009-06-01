@@ -76,6 +76,7 @@ task :staging do
   set     :branch,    'origin/master'
   depend  :remote,    :directory, '/home/kreacher.wincent.com/deploy'
   depend  :remote,    :directory, '/home/kreacher.wincent.com/deploy/shared'
+  depend  :remote,    :directory, '/home/kreacher.wincent.com/deploy/shared/files'
 end
 
 desc <<-END
@@ -98,6 +99,7 @@ task :production do
   set     :branch,    'origin/maint'
   depend  :remote,    :directory, '/home/rails.wincent.com/deploy'
   depend  :remote,    :directory, '/home/rails.wincent.com/deploy/shared'
+  depend  :remote,    :directory, '/home/rails.wincent.com/deploy/shared/files'
 end
 
 task :check_target_environment do
@@ -224,6 +226,8 @@ end
 task :after_symlink, :roles => :app do
   run "ln -s #{shared_path}/database.yml #{release_path}/config/database.yml"
   run "ln -s #{shared_path}/app_config.yml #{release_path}/config/app_config.yml"
+  run "rm -rf #{release_path}/files"
+  run "ln -s #{shared_path}/files #{release_path}/files"
 end
 
 desc 'Run all specs.'
