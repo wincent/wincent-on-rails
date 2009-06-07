@@ -29,6 +29,7 @@ The web application depends on or makes use of a number of open source projects:
 ** [http://rspec.info/ RSpec]
 ** [http://replacefixtures.rubyforge.org/ FixtureReplacement]
 ** [http://www.thaiopensource.com/relaxng/jing.html Jing]
+** [http://cukes.info/ Cucumber]
 
 === Graphics ===
 
