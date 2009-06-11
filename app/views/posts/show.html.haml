@@ -17,20 +17,16 @@
   %h2.major
     Comments
     =feed_icon post_path(@post, :format => :atom)
-  %table.comments
+  .comments
     -for comment in @comments
-      %tr{ :class => "comment #{cycle('even', 'odd')}" + (comment.public? ? '' : ' private'), :id => "comment_#{comment.id}" }
-        %th
+      %div{ :class => "comment #{cycle('even', 'odd')}" + (comment.public? ? '' : ' private'), :id => "comment_#{comment.id}" }
+        %blockquote=comment.body.w :base_heading_level => 2
+        %cite
           =link_to_user comment.user
-          %br
-          =pluralizing_count(comment.user.utterances_count, 'post') if comment.user
-          %br
           %span.when=timeinfo comment, :updated_string => 'edited'
           -if admin?
-            %br
             =link_to 'edit', edit_comment_path(comment)
             -# TODO: add a means of marking individual comments as private
-        %td=comment.body.w :base_heading_level => 2
   %h2.major Add a comment
   -if @comment
     =render 'comments/comment'
