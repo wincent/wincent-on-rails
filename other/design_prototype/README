@@ -1,8 +1,0 @@
-To preview the HTML source for these prototypes use a Haml command like:
-
-  haml input_file.haml
-
-Or for older versions of Haml, try:
-
-  haml input_file.haml
-
