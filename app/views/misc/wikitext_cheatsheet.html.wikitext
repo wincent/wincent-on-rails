@@ -31,4 +31,5 @@
 ** `<nowiki>[mailto:user@example.com link text]</nowiki>`
 * '''Automatic hyperlinking''':
 ** `<nowiki>http://example.com/</nowiki>` or
-** `<nowiki>user@example.com</nowiki>`
+** `<nowiki>user@example.com</nowiki>` or
+** `issue &#x0023;123`

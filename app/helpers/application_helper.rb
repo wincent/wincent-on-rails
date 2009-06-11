@@ -32,7 +32,7 @@ module ApplicationHelper
 
   def wikitext_cheatsheet
     link_to 'wikitext markup help', '/misc/wikitext_cheatsheet',
-      :popup => ['height=700,width=400']
+      :popup => ['height=720,width=400']
   end
 
   # Pretty formatting for model creation/update information.
