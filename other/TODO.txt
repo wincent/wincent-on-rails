@@ -4,13 +4,6 @@ acts_as_rateable
 - somewhat helpful
 - no, not helpful
 
-data importers from bugzilla, UBB.threads etc
-- importing users should be relatively easy
-- harder will be importing posts, comments etc due to ordering issues
-- MT is easy, just copy static files
-- MediaWiki may be easy, depending on how deltas are stored
-  (if need be can just do the static thing again)
-
 do I need to support multiple weblogs?
 - on the old site I had news, personal, mini-log, quicklinks, git-log,
   nightlies log
