@@ -167,5 +167,11 @@ input[type=button]:hover { background: #aaa; color: white; }
 
 .comments .even th + td { border: 1px solid #ccc; background: #eaeaea; }
 
+.comments .odd cite { display: block; font-style: normal; background-image: url(../images/comment-bubble-triangle-odd.png); background-repeat: no-repeat; background-position-x: 60px; background-posiiton-y: 0px; padding-top: 20px; margin-left: 1em; margin-top: -22px; }
+.comments .odd >blockquote { -webkit-border-radius: 1em; -moz-border-radius: 1em; border: 2px solid #ccc; background: #f7f7f7; margin-bottom: 20px; }
+
+.comments .even cite { display: block; font-style: normal; background-image: url(../images/comment-bubble-triangle-even.png); background-repeat: no-repeat; background-position-x: 60px; background-posiiton-y: 0px; padding-top: 20px; margin-left: 1em; margin-top: -22px; }
+.comments .even >blockquote { -webkit-border-radius: 1em; -moz-border-radius: 1em; border: 2px solid #ccc; background: #eaeaea; margin-bottom: 20px; }
+
 #preview_link img { padding-left: 0.33em; margin-bottom: -0.1em; }
 #preview_link #preview_spinner { display: none; }

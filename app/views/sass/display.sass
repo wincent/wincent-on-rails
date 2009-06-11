@@ -485,7 +485,7 @@ input[type=button]
   margin-top: -1em
   text-align: right
 
-// comments
+// comments (issue tracker, forums)
 .comments
   th
     padding: 1em
@@ -506,6 +506,45 @@ input[type=button]
   th + td
     border: 1px solid #ccc
     background: #eaeaea
+
+// comments (blog)
+.comments .odd
+  cite
+    display: block
+    font-style: normal
+    background-image: url(../images/comment-bubble-triangle-odd.png)
+    background-repeat: no-repeat
+    background-position-x: 60px
+    background-posiiton-y: 0px
+    padding-top: 20px
+    margin-left: 1em
+    margin-top: -22px
+
+  >blockquote
+    -webkit-border-radius: 1em
+    -moz-border-radius: 1em
+    border: 2px solid #ccc
+    background: #f7f7f7
+    margin-bottom: 20px
+
+.comments .even
+  cite
+    display: block
+    font-style: normal
+    background-image: url(../images/comment-bubble-triangle-even.png)
+    background-repeat: no-repeat
+    background-position-x: 60px
+    background-posiiton-y: 0px
+    padding-top: 20px
+    margin-left: 1em
+    margin-top: -22px
+
+  >blockquote
+    -webkit-border-radius: 1em
+    -moz-border-radius: 1em
+    border: 2px solid #ccc
+    background: #eaeaea
+    margin-bottom: 20px
 
 // live previews
 #preview_link
