@@ -12,7 +12,6 @@
     =link_to 'edit', edit_post_path(@post)
   =link_to 'all posts', posts_path
 -if @post.accepts_comments? || @post.comments_count != 0
-  -# TODO: use divs to color-code comments (ie. private, awaiting moderation etc)
   =named_anchor 'comments'
   %h2.major
     Comments
@@ -26,7 +25,6 @@
           %span.when=timeinfo comment, :updated_string => 'edited'
           -if admin?
             =link_to 'edit', edit_comment_path(comment)
-            -# TODO: add a means of marking individual comments as private
   %h2.major Add a comment
   -if @comment
     =render 'comments/comment'
