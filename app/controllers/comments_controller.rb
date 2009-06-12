@@ -39,7 +39,7 @@ class CommentsController < ApplicationController
         parent_instance = Post.find_by_permalink!(parent_id)
         parent_path = post_path parent_instance
       when 'wiki'
-        parent_instance = Article.find_by_title!(parent_id)
+        parent_instance = Article.find_with_param!(parent_id)
         parent_path = article_path parent_instance
       when 'issues'
         parent_instance = Issue.find(parent_id)
