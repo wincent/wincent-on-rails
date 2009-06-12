@@ -1,5 +1,6 @@
 require File.join(File.dirname(__FILE__), '..', 'spec_helper')
 require File.join(File.dirname(__FILE__), '..', 'lib', 'active_record', 'acts', 'shared_taggable_spec')
+require File.join(File.dirname(__FILE__), '..', 'lib', 'shared_commentable_spec')
 
 describe Tweet do
   it 'should be valid' do
@@ -10,6 +11,25 @@ describe Tweet do
   it 'should have a recommended maximum length of 140 characters' do
     Tweet::RECOMMENDED_MAX_LENGTH.should == 140
   end
+
+  it 'should default to not accepting comments' do
+    new_tweet.accepts_comments.should == false
+  end
+end
+
+describe Tweet, 'comments association' do
+  it 'should respond to the comments message' do
+    create_tweet.comments.should == []
+  end
+end
+
+describe Tweet, 'acting as commentable' do
+  before do
+    @commentable = create_tweet
+  end
+
+  it_should_behave_like 'Commentable'
+  it_should_behave_like 'Commentable not updating timestamps for comment changes'
 end
 
 describe Tweet, 'acting as taggable' do
