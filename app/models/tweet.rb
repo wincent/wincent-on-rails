@@ -19,7 +19,7 @@ class Tweet < ActiveRecord::Base
   validates_presence_of :body
   acts_as_searchable    :attributes       => [ :body ]
   acts_as_taggable
-  attr_accessible       :body,            :pending_tags
+  attr_accessible       :accepts_comments, :body, :pending_tags
 
   def self.find_recent options = {}
     base_options = { :order => 'created_at DESC', :limit => 20 }

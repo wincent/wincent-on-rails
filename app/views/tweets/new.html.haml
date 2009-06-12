@@ -15,6 +15,9 @@
     %tr
       %th Tags
       %td=f.text_field :pending_tags
+    %tr
+      %th Accepts comments
+      %td=f.check_box :accepts_comments
   %p=f.submit 'Create'
 %h2#preview_link Preview
 #ajax-flash
