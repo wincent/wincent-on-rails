@@ -7,3 +7,24 @@
 -# cf: http://twitter.com/sstephenson/status/1227528821
 .links
   =link_to 'all tweets', tweets_path
+-if @tweet.accepts_comments? || @tweet.comments_count != 0
+  =named_anchor 'comments'
+  %h2.major
+    Comments
+    -# TODO: per-tweet atom feed
+    -#=feed_icon tweet_path(@tweet, :format => :atom)
+  .comments
+    -for comment in @comments
+      %div{ :class => "comment " + (comment.user && comment.user.superuser? ? 'admin' : cycle('even', 'odd')), :id => "comment_#{comment.id}" }
+        %blockquote=comment.body.w :base_heading_level => 2
+        %cite
+          =link_to_user comment.user
+          %span.when=timeinfo comment, :updated_string => 'edited'
+  -# TODO: can't add a comment form just yet as it would break page cacheability:
+  -# will have to pull the comment form down via AJAX
+  -#%h2.major Add a comment
+  -#-if @comment
+  -#  =render 'comments/comment'
+  -#-else
+  -#  -# comments are currently closed but they were open in the past because we have at least one existing comment
+  -#  %p==Comments are now closed for this post. You can discuss this further in the #{link_to 'forums', forums_path}.
