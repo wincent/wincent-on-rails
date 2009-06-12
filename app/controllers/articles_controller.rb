@@ -56,6 +56,9 @@ class ArticlesController < ApplicationController
       end
     else # not a redirect
       @redirected_from = Article.find_with_param!(session[:redirected_from]) if session[:redirected_from]
+      # TODO: comments feed; see posts controller for example of how
+      @comments = @article.comments.published
+      @comment = @article.comments.build if @article.accepts_comments?
       render
       clear_redirection_info
     end
