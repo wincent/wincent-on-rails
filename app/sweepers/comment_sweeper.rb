@@ -13,34 +13,40 @@ class CommentSweeper < ActionController::Caching::Sweeper
   end
 
   def expire_cache comment
-    path = path_for_comment comment
-    expire_page(path) if path
+    paths_for_comment(comment).each do |path|
+      expire_page(path)
+    end
   end
 
-  def path_for_comment comment
-    path = nil
+  def paths_for_comment comment
+    paths = []
     commentable = comment.commentable
     case commentable
     when Article
-      path = article_path(commentable) + '.atom'
+      paths << article_path(commentable) + '.atom'
     when Issue
-      path = issue_path(commentable) + '.atom'
+      paths << issue_path(commentable) + '.atom'
     when Post
-      path = post_path(commentable) + '.atom'
+      paths << post_path(commentable) + '.atom'
     when Topic
       forum = commentable.forum
-      path = (forum_topic_path(forum, commentable) + '.atom') if forum
+      paths << (forum_topic_path(forum, commentable) + '.atom') if forum
+    when Tweet
+      paths << tweet_path(commentable) + '.atom'
+      paths << tweet_path(commentable) + '.html'
     end
-    path
+    paths
   end
 
   # on-demand cache expiration from rake, RSpec etc
   def self.expire_all
     # see notes in the IssueSweeper for full explanation of why we do it this way
     Comment.all.each do |comment|
-      relative_path = instance.path_for_comment comment
-      absolute_path = ActionController::Base.send(:page_cache_path, relative_path)
-      File.delete absolute_path if File.exist?(absolute_path)
+      relative_paths = instance.paths_for_comment comment
+      relative_paths.each do |relative_path|
+        absolute_path = ActionController::Base.send(:page_cache_path, relative_path)
+        File.delete absolute_path if File.exist?(absolute_path)
+      end
     end
   end
 end # class CommentSweeper

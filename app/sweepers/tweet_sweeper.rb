@@ -19,6 +19,7 @@ class TweetSweeper < ActionController::Caching::Sweeper
     # ActionController::Base.send trick
     # Very ugly; not sure if I want to add a "return if ... nil"
     expire_page(tweet_path(tweet) + '.html')  # twitter/321.html
+    expire_page(tweet_path(tweet) + '.atom')  # twitter/321.atom
     expire_page(tweets_path + '.atom')        # twitter.atom
     expire_page(tweets_path + '.html')        # twitter.html
     expire_fragment :tweets_sidebar
@@ -41,8 +42,9 @@ class TweetSweeper < ActionController::Caching::Sweeper
     File.delete(atom_index_path) if File.exist?(atom_index_path)  # twitter.atom
     File.delete(html_index_path) if File.exist?(html_index_path)  # twitter.html
 
-    # twitter/2.html, twitter/3.html etc
+    # twitter/2.html, twitter/2.atom etc
     File.delete(*Dir["#{index_path}/*.html"]) if File.exist?(index_path)
+    File.delete(*Dir["#{index_path}/*.atom"]) if File.exist?(index_path)
 
     # twitter/page/2.html, twitter/page/3.html etc
     File.delete(*Dir["#{page_dir}/*.html"]) if File.exist?(page_dir)
