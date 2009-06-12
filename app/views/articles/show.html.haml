@@ -17,8 +17,7 @@
   =named_anchor 'comments'
   %h2.major
     Comments
-    -# TODO: comments feed
-    -#=feed_icon article_path(@article, :format => :atom)
+    =feed_icon article_path(@article, :format => :atom)
   .comments
     -for comment in @comments
       %div{ :class => "comment " + (comment.user && comment.user.superuser? ? 'admin' : cycle('even', 'odd')), :id => "comment_#{comment.id}" }

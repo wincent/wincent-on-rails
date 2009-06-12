@@ -1,7 +1,7 @@
 class ArticlesController < ApplicationController
   before_filter     :require_admin,   :except => [ :index, :show ]
   before_filter     :get_article,     :only => [ :show, :edit, :update ]
-  caches_page       :index,           :if => Proc.new { |c| c.send(:is_atom?) }
+  caches_page       :index, :show,    :if => Proc.new { |c| c.send(:is_atom?) }
   cache_sweeper     :article_sweeper, :only => [ :create, :update, :destroy ]
   uses_dynamic_javascript :only => [:edit, :new]
 
@@ -56,10 +56,11 @@ class ArticlesController < ApplicationController
       end
     else # not a redirect
       @redirected_from = Article.find_with_param!(session[:redirected_from]) if session[:redirected_from]
-      # TODO: comments feed; see posts controller for example of how
       @comments = @article.comments.published
-      @comment = @article.comments.build if @article.accepts_comments?
-      render
+      respond_to do |format|
+        format.html { @comment = @article.comments.build if @article.accepts_comments? }
+        format.atom
+      end
       clear_redirection_info
     end
   end
@@ -81,7 +82,15 @@ class ArticlesController < ApplicationController
 private
 
   def get_article
+    # BUG: public/private distinction is ignored here
     @article = Article.find_with_param! params[:id]
+  rescue ActiveRecord::RecordNotFound => e
+    # given title "Foo" a request for "Foo.atom" will most likely wind up here
+    if params[:id] =~ /(.+)\.atom\Z/
+      params[:format] = 'atom'
+      @article = Article.find_with_param! $~[1]
+    end
+    raise e unless @article
   end
 
   def record_not_found

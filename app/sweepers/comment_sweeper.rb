@@ -21,7 +21,8 @@ class CommentSweeper < ActionController::Caching::Sweeper
     path = nil
     commentable = comment.commentable
     case commentable
-    when Article: # probably never will have per-Article feeds
+    when Article
+      path = article_path(commentable) + '.atom'
     when Issue
       path = issue_path(commentable) + '.atom'
     when Post

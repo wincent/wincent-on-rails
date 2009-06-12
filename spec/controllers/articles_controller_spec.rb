@@ -61,6 +61,33 @@ describe ArticlesController, 'GET /wiki.atom' do
   end
 end
 
+describe ArticlesController, 'GET /wiki/:title.atom' do
+  integrate_views # so that we can test layouts as well
+
+  before do
+    @article = create_article :title => 'foo bar baz'
+  end
+
+  def do_get
+    get :show, :id => 'foo_bar_baz', :format => 'atom', :protocol => 'https'
+  end
+
+  # guard against bugs like:
+  # https://wincent.com/issues/1227
+  it 'should produce valid atom when there are no comments' do
+    pending unless can_validate_feeds?
+    do_get
+    response.body.should be_valid_atom
+  end
+
+  it 'should produce valid atom when there are multiple comments' do
+    pending unless can_validate_feeds?
+    10.times { create_comment :commentable => @article }
+    do_get
+    response.body.should be_valid_atom
+  end
+end
+
 =begin
 describe ArticlesController do
   describe 'GET /wiki/new' do
