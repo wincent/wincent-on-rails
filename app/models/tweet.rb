@@ -9,10 +9,17 @@
 #
 class Tweet < ActiveRecord::Base
   RECOMMENDED_MAX_LENGTH = 140
+  has_many              :comments,
+                        :as               => :commentable,
+                        :extend           => Commentable,
+                        :order            => 'comments.created_at',
+                        :include          => :user,
+                        :dependent        => :destroy
+  belongs_to            :last_commenter,  :class_name => 'User'
   validates_presence_of :body
-  acts_as_searchable :attributes => [ :body ]
+  acts_as_searchable    :attributes       => [ :body ]
   acts_as_taggable
-  attr_accessible :body, :pending_tags
+  attr_accessible       :body,            :pending_tags
 
   def self.find_recent options = {}
     base_options = { :order => 'created_at DESC', :limit => 20 }
