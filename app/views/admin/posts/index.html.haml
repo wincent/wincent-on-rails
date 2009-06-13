@@ -2,6 +2,11 @@
 =page_title 'Posts administration'
 -content_for :javascript do
   =javascript_include_tag 'ajax'
+  :javascript
+    $(document).ready(function() {
+      edit_in_place('tr.post', 'post', 'title', '/admin/posts/');
+      edit_in_place('tr.post', 'post', 'permalink', '/admin/posts/');
+    });
 %table
   %tr
     -sortable_header_cell :title, 'Title'

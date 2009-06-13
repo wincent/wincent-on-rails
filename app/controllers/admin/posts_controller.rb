@@ -1,7 +1,6 @@
 class Admin::PostsController < ApplicationController
   before_filter           :require_admin
   before_filter           :find_post, :only => [:show, :update]
-  uses_dynamic_javascript :only => :index
 
   # TODO: really need a published_at field, I think
   # TODO: add "public", "accepts comments" and "comments_count" columns here
