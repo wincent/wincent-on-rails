@@ -1,5 +1,9 @@
 -content_for :javascript do
   =javascript_include_tag 'ajax'
+  :javascript
+    $(document).ready(function() {
+      edit_in_place('tr.tag', 'tag', 'name', '/admin/tags/');
+    });
 #ajax-flash
 %h1 Tags
 %table

@@ -2,7 +2,6 @@ class Admin::TagsController < ApplicationController
   before_filter           :require_admin
   before_filter           :find_tag, :only => [:show, :update]
   acts_as_sortable        :by => [:name, :taggings_count], :default => :name
-  uses_dynamic_javascript :only => :index
 
   def index
     @tags = Tag.find :all, sort_options
