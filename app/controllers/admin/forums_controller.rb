@@ -1,7 +1,6 @@
 class Admin::ForumsController < ApplicationController
   before_filter           :require_admin
   before_filter           :find_forum, :only => [:show, :update]
-  uses_dynamic_javascript :only => :index
 
   def index
     @forums = Forum.find :all
