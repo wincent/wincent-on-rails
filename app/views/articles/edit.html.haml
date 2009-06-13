@@ -1,5 +1,11 @@
 -content_for :javascript do
   =javascript_include_tag 'ajax'
+  :javascript
+    $(function() {
+      observe_field({ 'kind': 'article', 'fieldName': 'title', 'include': ['body'], 'url': '#{articles_path}' });
+      observe_field({ 'kind': 'article', 'fieldName': 'body', 'include': ['title'], 'url': '#{articles_path}' });
+      setup_preview_link({ 'kind': 'article', 'include': ['body', 'title'], 'url': '#{articles_path}' });
+    });
 %h1 Edit article
 =error_messages_for :article
 -form_for @article, :url => article_path, :method => 'put' do |f|
