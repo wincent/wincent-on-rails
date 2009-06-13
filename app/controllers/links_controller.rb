@@ -2,7 +2,6 @@ class LinksController < ApplicationController
   before_filter     :require_admin, :except => :show
   before_filter     :find_link, :only => [:edit, :show, :update, :destroy]
   acts_as_sortable  :by => [:id, :uri, :permalink, :click_count]
-  uses_dynamic_javascript :only => :index
 
   def index
     @links = Link.find :all, sort_options
