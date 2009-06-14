@@ -2,6 +2,11 @@
   =stylesheet_link_tag 'tweets'
 -content_for :javascript do
   =javascript_include_tag 'ajax'
+  :javascript
+    $(function() {
+      observe_field({ 'kind': 'tweet', 'fieldName': 'body', 'interval': 5, 'url': '#{tweets_path}' });
+      setup_preview_link({ 'kind': 'tweet', 'include': ['body'], 'url': '#{tweets_path}' });
+    });
 %h1 Edit tweet
 =error_messages_for :tweet
 -form_for @tweet, :url => tweet_path(@tweet), :method => 'put' do |f|

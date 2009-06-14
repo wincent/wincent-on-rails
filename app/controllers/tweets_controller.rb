@@ -3,7 +3,6 @@ class TweetsController < ApplicationController
   before_filter :get_tweet,     :only => [ :edit, :show, :update, :destroy ]
   caches_page   :index, :show   # Atom and HTML
   cache_sweeper :tweet_sweeper, :only => [ :create, :update, :destroy ]
-  uses_dynamic_javascript :only => [:edit, :new]
 
   def index
     respond_to do |format|
