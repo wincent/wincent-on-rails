@@ -101,19 +101,16 @@ private
       case parent
       when 'blog'
         @parent_instance = Post.find_by_permalink!(parent_id)
-        @parent_path = post_path @parent_instance
       when 'issues'
         @parent_instance = Issue.find(parent_id)
-        @parent_path = issue_path @parent_instance
       when 'twitter'
         @parent_instance = Twitter.find(parent_id)
-        @parent_path = twitter_path @parent_instance
       when 'wiki'
         @parent_instance = Article.find_with_param!(parent_id)
-        @parent_path = article_path @parent_instance
       else
         raise 'unexpected parent'
       end
+      @parent_path = polymorphic_path @parent_instance
     elsif components.length == 6
       # forums/:id/topics/:id/comments
       root, grandparent, grandparent_id, parent, parent_id, nested = components
