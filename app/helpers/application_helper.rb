@@ -186,7 +186,7 @@ module ApplicationHelper
   def polymorphic_comments_path comment
     commentable = comment.commentable
     case commentable
-    when Article, Issue, Post
+    when Article, Issue, Post, Tweet
       send "#{commentable.class.to_s.downcase}_comments_path", commentable
     when Topic
       forum_topic_comments_path commentable.forum, commentable

@@ -14,7 +14,7 @@ ActionController::Routing::Routes.draw do |map|
     https.resources :sessions
     https.resources :taggings
     https.resources :resets
-    https.resources :tweets, :as => 'twitter'
+    https.resources :tweets, :as => 'twitter', :has_many => [ :comments ]
 
     # not a real resource, but declaring it as such gives us some convenient routing helpers
     https.resources :search, :collection => { :issues => :get }
