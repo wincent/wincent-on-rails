@@ -1,6 +1,7 @@
 class CommentsController < ApplicationController
   before_filter :require_admin, :except => [ :create, :show ]
   before_filter :get_comment, :only => [ :edit, :update, :destroy ]
+  before_filter :get_parent, :only => :create
   cache_sweeper :comment_sweeper, :only => [ :create, :update, :destroy ]
 
   # Admin only.
@@ -24,46 +25,7 @@ class CommentsController < ApplicationController
   end
 
   def create
-    # not sure if this is the nicest way to do this
-    # seems a necessary evil of nested polymorphic associations
-    uri = request.request_uri
-    raise if uri =~ /\?/
-    components = uri.split '/'
-
-    if components.length == 4
-      # blog/:id/comments
-      # wiki/:id/comments
-      root, parent, parent_id, nested = components
-      case parent
-      when 'blog'
-        parent_instance = Post.find_by_permalink!(parent_id)
-        parent_path = post_path parent_instance
-      when 'wiki'
-        parent_instance = Article.find_with_param!(parent_id)
-        parent_path = article_path parent_instance
-      when 'issues'
-        parent_instance = Issue.find(parent_id)
-        parent_path = issue_path parent_instance
-      else
-        raise
-      end
-    elsif components.length == 6
-      # forums/:id/topics/:id/comments
-      root, grandparent, grandparent_id, parent, parent_id, nested = components
-      raise unless grandparent == 'forums'
-      raise unless parent == 'topics'
-      grandparent_instance = Forum.find_with_param! grandparent_id
-      parent_instance = Topic.first :conditions => { :forum_id => grandparent_instance.id, :id => parent_id }
-      raise unless parent_instance
-      parent_path = forum_topic_path grandparent_instance, parent_instance
-    else
-      raise
-    end
-    raise if root != ''
-    raise if not parent_instance.accepts_comments
-
-    # now create comment and try to add it
-    @comment = parent_instance.comments.build params[:comment]
+    @comment = @parent_instance.comments.build params[:comment]
     @comment.user = current_user
     @comment.public = params[:comment][:public] if admin? && params[:comment] && params[:comment].key?(:public)
     @comment.awaiting_moderation = !(admin? or logged_in_and_verified?)
@@ -76,7 +38,7 @@ class CommentsController < ApplicationController
     else
       flash[:error] = 'Failed to add new comment.'
     end
-    redirect_to parent_path
+    redirect_to @parent_path
   end
 
   # Admin only for now.
@@ -124,6 +86,50 @@ class CommentsController < ApplicationController
 
 private
 
+  def get_parent
+    # ugly but a necessary evil of multi-level, nested polymorphic associations
+    uri = request.request_uri
+    raise if uri =~ /\?/
+    components = uri.split '/'
+
+    if components.length == 4
+      # blog/:id/comments
+      # twitter/:id/comments
+      # issues/:id/comments
+      # wiki/:id/comments
+      root, parent, parent_id, nested = components
+      case parent
+      when 'blog'
+        @parent_instance = Post.find_by_permalink!(parent_id)
+        @parent_path = post_path @parent_instance
+      when 'issues'
+        @parent_instance = Issue.find(parent_id)
+        @parent_path = issue_path @parent_instance
+      when 'twitter'
+        @parent_instance = Twitter.find(parent_id)
+        @parent_path = twitter_path @parent_instance
+      when 'wiki'
+        @parent_instance = Article.find_with_param!(parent_id)
+        @parent_path = article_path @parent_instance
+      else
+        raise 'unexpected parent'
+      end
+    elsif components.length == 6
+      # forums/:id/topics/:id/comments
+      root, grandparent, grandparent_id, parent, parent_id, nested = components
+      raise 'unexpected grandparent' unless grandparent == 'forums'
+      raise 'unexpected parent' unless parent == 'topics'
+      grandparent_instance = Forum.find_with_param! grandparent_id
+      @parent_instance = Topic.first :conditions => { :forum_id => grandparent_instance.id, :id => parent_id }
+      raise 'no parent instance' unless @parent_instance
+      @parent_path = forum_topic_path grandparent_instance, @parent_instance
+    else
+      raise 'wrong number of components'
+    end
+    raise 'non-empty root' if root != ''
+    raise 'parent does not accept comments' if not @parent_instance.accepts_comments
+  end
+
   def get_comment
     if admin?
       @comment = Comment.find params[:id]
@@ -135,5 +141,4 @@ private
       raise "anonymous users can't manipulate comments"
     end
   end
-
 end
