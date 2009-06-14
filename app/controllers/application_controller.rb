@@ -17,7 +17,7 @@ protected
     commentable = comment.commentable
     anchor      = "comment_#{comment.id}"
     case commentable
-    when Article, Issue, Post
+    when Article, Issue, Post, Tweet
       send "#{commentable.class.to_s.downcase}_path", commentable, :anchor => anchor
     when Topic
       forum_topic_path commentable.forum, commentable, :anchor => anchor
