@@ -104,7 +104,7 @@ private
       when 'issues'
         @parent_instance = Issue.find(parent_id)
       when 'twitter'
-        @parent_instance = Twitter.find(parent_id)
+        @parent_instance = Tweet.find(parent_id)
       when 'wiki'
         @parent_instance = Article.find_with_param!(parent_id)
       else
