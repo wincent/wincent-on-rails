@@ -1,7 +1,7 @@
 class CommentsController < ApplicationController
-  before_filter :require_admin, :except => [ :create, :show ]
+  before_filter :require_admin, :except => [ :create, :new, :show ]
   before_filter :get_comment, :only => [ :edit, :update, :destroy ]
-  before_filter :get_parent, :only => :create
+  before_filter :get_parent, :only => [:create, :new]
   cache_sweeper :comment_sweeper, :only => [ :create, :update, :destroy ]
 
   # Admin only.
@@ -92,12 +92,13 @@ private
     raise if uri =~ /\?/
     components = uri.split '/'
 
-    if components.length == 4
-      # blog/:id/comments
-      # twitter/:id/comments
-      # issues/:id/comments
-      # wiki/:id/comments
-      root, parent, parent_id, nested = components
+    if (4..5).include? components.length
+      # blog/:id/comments,    blog/:id/comments/new
+      # twitter/:id/comments, twitter/:id/comments/new
+      # issues/:id/comments,  issues/:id/comments/new
+      # wiki/:id/comments,    wiki/:id/comments/new
+      root, parent, parent_id, nested, action = components
+      raise 'unexpected action' if action && action != 'new'
       case parent
       when 'blog'
         @parent_instance = Post.find_by_permalink!(parent_id)
