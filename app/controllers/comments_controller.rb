@@ -11,7 +11,12 @@ class CommentsController < ApplicationController
     @comments   = Comment.find_recent :offset => @paginator.offset, :conditions => { :awaiting_moderation => true }
   end
 
-  # Rather than showing a comment in isolation, always show it nested in the context of its parent resource
+  def new
+    @comment = @parent_instance.comments.build
+  end
+
+  # Rather than showing a comment in isolation, always show it nested in the
+  # context of its parent resource
   def show
     if admin?
       @comment = Comment.find params[:id]
