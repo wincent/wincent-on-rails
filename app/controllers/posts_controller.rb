@@ -4,12 +4,6 @@ class PostsController < ApplicationController
   caches_page   :index, :show,  :if => Proc.new { |c| c.send(:is_atom?) }
   cache_sweeper :post_sweeper,  :only => [ :create, :update, :destroy ]
 
-  # this is "dynamic" in the sense that it passes through ERB
-  # but it could be cached because it's content is unchanging over time
-  # only admin users should request it, but no harm done if a normal
-  # user inspects it
-  uses_dynamic_javascript :only => [:edit, :new]
-
   def index
     respond_to do |format|
       format.html {
