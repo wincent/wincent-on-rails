@@ -117,9 +117,10 @@ private
         raise 'unexpected parent'
       end
       @parent_path = polymorphic_path @parent_instance
-    elsif components.length == 6
-      # forums/:id/topics/:id/comments
-      root, grandparent, grandparent_id, parent, parent_id, nested = components
+    elsif (6..7).include? components.length
+      # forums/:id/topics/:id/comments, forums/:id/topics/.id/comments/new
+      root, grandparent, grandparent_id, parent, parent_id, nested, action = components
+      raise 'unexpected action' if action && action != 'new'
       raise 'unexpected grandparent' unless grandparent == 'forums'
       raise 'unexpected parent' unless parent == 'topics'
       grandparent_instance = Forum.find_with_param! grandparent_id
