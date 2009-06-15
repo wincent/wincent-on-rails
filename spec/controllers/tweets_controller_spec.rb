@@ -377,6 +377,33 @@ describe TweetsController, 'GET /twitter/:id' do
   end
 end
 
+describe TweetsController, 'GET /twitter/:id.atom' do
+  integrate_views # so that we can test layouts as well
+
+  before do
+    @tweet = create_tweet
+  end
+
+  def do_get
+    get :show, :id => @tweet.id.to_s, :format => 'atom', :protocol => 'https'
+  end
+
+  # make sure we don't get bitten by bugs like:
+  # https://wincent.com/issues/1227
+  it 'should produce valid atom when there are no comments' do
+    pending unless can_validate_feeds?
+    do_get
+    response.body.should be_valid_atom
+  end
+
+  it 'should produce valid atom when there are multiple comments' do
+    pending unless can_validate_feeds?
+    10.times { create_comment :commentable => @tweet }
+    do_get
+    response.body.should be_valid_atom
+  end
+end
+
 describe TweetsController, 'GET /twitter/:id/edit' do
   def do_get tweet, admin = true
     login_as_admin if admin == true
