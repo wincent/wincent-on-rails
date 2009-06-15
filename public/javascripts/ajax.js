@@ -21,6 +21,8 @@
 // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 // POSSIBILITY OF SUCH DAMAGE.
 
+var global_spinner_counter = 0;
+
 function escapeHTML(html) {
   return html.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g,
     '&gt;').replace(/"/g, '&quot;');
@@ -41,9 +43,9 @@ function ajax_comment_form(url) {
   anchor.attr('href', '#comment-form');
   var click = function() {
     anchor.unbind('click');
-    // TODO: generate unique spinner ID on the fly
-    comment_div.append('<img alt="Spinner" id="spinner" class="spinner" src="/images/spinner.gif" />');
-    var spinner = comment_div.find('#spinner');
+    var spinner_id = 'spinner_' + global_spinner_counter++;
+    comment_div.append('<img alt="Spinner" id="' + spinner_id + '" class="spinner" src="/images/spinner.gif" />');
+    var spinner = comment_div.find('#' + spinner_id);
     spinner.show();
     $.ajax({
       'url': url,
