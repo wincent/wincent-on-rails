@@ -45,10 +45,11 @@ class CommentsController < ApplicationController
       else
         flash[:notice] = 'Successfully added new comment.'
       end
+      redirect_to @parent_path
     else
       flash[:error] = 'Failed to add new comment.'
+      render 'new'
     end
-    redirect_to @parent_path
   end
 
   # Admin only for now.
