@@ -52,6 +52,7 @@ function ajax_comment_form(url) {
       'type': 'get',
       'dataType': 'html',
       'success': function(html) {
+        clearAJAXFlash();
         comment_div.html(html);
       },
       'error': function(req) {
