@@ -35,6 +35,33 @@ function clearAJAXFlash() {
   $('#ajax-flash').fadeOut('slow', function() { $('#ajax-flash').hide(); });
 }
 
+function ajax_comment_form(url) {
+  var comment_div = $('#comment-form');
+  var anchor = comment_div.find('a');
+  anchor.attr('href', '#comment-form');
+  var click = function() {
+    anchor.unbind('click');
+    // TODO: generate unique spinner ID on the fly
+    comment_div.append('<img alt="Spinner" id="spinner" class="spinner" src="/images/spinner.gif" />');
+    var spinner = comment_div.find('#spinner');
+    spinner.show();
+    $.ajax({
+      'url': url,
+      'type': 'get',
+      'dataType': 'html',
+      'success': function(html) {
+        comment_div.html(html);
+      },
+      'error': function(req) {
+        insertAJAXFlash('error', req.responseText);
+        spinner.remove();
+        anchor.click(click);
+      }
+    });
+  }
+  anchor.click(click);
+}
+
 function edit_in_place(selector, class_name, attribute_name, url) {
   var model = $(selector); // could be many
   model.each(function(i) {

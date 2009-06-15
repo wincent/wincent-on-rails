@@ -1,31 +1,8 @@
 -content_for :javascript do
   =javascript_include_tag 'ajax'
   :javascript
-    // TODO: extract this function into ajax.js and call it from here
     $(function() {
-      var comment_div = $('#comment-form');
-      var anchor = comment_div.find('a');
-      anchor.attr('href', '#comment-form');
-      var click = function() {
-        anchor.unbind('click');
-        comment_div.append('<img alt="Spinner" id="spinner" class="spinner" src="/images/spinner.gif" />');
-        var spinner = comment_div.find('#spinner');
-        spinner.show();
-        $.ajax({
-          'url': '/twitter/#{@tweet.id}/comments/new',
-          'type': 'get',
-          'dataType': 'html',
-          'success': function(html) {
-            comment_div.html(html);
-          },
-          'error': function(req) {
-            insertAJAXFlash('error', req.responseText);
-            spinner.remove();
-            anchor.click(click);
-          }
-        });
-      }
-      anchor.click(click);
+      ajax_comment_form('/twitter/#{@tweet.id}/comments/new');
     });
 %h1 Tweet
 %div[@tweet]
