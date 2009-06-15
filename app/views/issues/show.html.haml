@@ -73,7 +73,7 @@
           -# TODO: add a means of marking individual comments as private
       %td=comment.body.w :base_heading_level => 2
 %h2.major Add a comment
-=render 'comments/comment'
+=render 'comments/form'
 .links
   =link_to 'all issues', issues_path
   =link_to "all #{@issue.product.name} issues", issues_path(:product => @issue.product.name) if @issue.product

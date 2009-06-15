@@ -14,7 +14,7 @@ class CommentsController < ApplicationController
   def new
     @comment = @parent_instance.comments.build
     if request.xhr?
-      render :partial => 'comment'
+      render :partial => 'form'
     else
       render
     end
