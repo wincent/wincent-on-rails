@@ -13,6 +13,11 @@ class CommentsController < ApplicationController
 
   def new
     @comment = @parent_instance.comments.build
+    if request.xhr?
+      render :partial => 'comment'
+    else
+      render
+    end
   end
 
   # Rather than showing a comment in isolation, always show it nested in the
