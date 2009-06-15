@@ -1,13 +1,6 @@
-updated_at = @post.updated_at
-unless @comments.empty?
-  if @post.last_commented_at > updated_at
-    updated_at = @post.last_commented_at
-  end
-end
-
 custom_atom_feed do |feed|
   feed.title "wincent.com blog: #{@post.title}"
-  feed.updated updated_at
+  feed.updated last_activity(@post, @comments)
   feed.author do |author|
     author.name   'Wincent Colaiuta'
     author.email  APP_CONFIG['admin_email']

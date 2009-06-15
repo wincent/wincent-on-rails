@@ -1,6 +1,6 @@
 custom_atom_feed do |feed|
   feed.title "wincent.com: #{@issue.kind_string} \##{@issue.id}"
-  feed.updated @issue.updated_at
+  feed.updated last_activity(@issue, @comments)
   feed.entry @issue, :url => issue_url(@issue) + '#top' do |entry|
     if @issue.awaiting_moderation?
       entry.title "#{@issue.kind_string} \##{@issue.id}"
