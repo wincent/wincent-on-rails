@@ -125,10 +125,10 @@ function ajax_check_box(selector, class_name, attribute_name, url) {
   var record_id = model_id.match(/_(\d+)$/)[1]; // 22
   var field_id = $('#' + model_id + '_' + attribute_name); // issue_22_public
   var field_text = field_id.text(); // eg. true, false
+  var spinner_id = 'spinner_' + global_spinner_counter++;
   var new_contents = '<input id="' + class_name + '_' + attribute_name +
     '" name="' + class_name + '[' + attribute_name + ']" type="checkbox">' +
-    '<img alt="Spinner" id="' + class_name + '_' + attribute_name +
-    '_spinner" class="spinner" src="/images/spinner.gif" />';
+    '<img alt="Spinner" id="' + spinner_id + '" class="spinner" src="/images/spinner.gif" />';
   field_id.html(new_contents);
   var check_box_id = field_id.find('input');
   if (field_text == 'true') {
@@ -136,7 +136,7 @@ function ajax_check_box(selector, class_name, attribute_name, url) {
     }
   var old_attr = check_box_id.attr('checked');
   check_box_id.change(function() {
-    var spinner = field_id.find('#' + class_name + '_' + attribute_name + '_spinner');
+    var spinner = field_id.find('#' + spinner_id);
     spinner.show();
     $.ajax({
       'url': url + record_id,
@@ -164,6 +164,7 @@ function ajax_select(selector, class_name, attribute_name, options, include_blan
   var record_id = model_id.match(/_(\d+)$/)[1]; // 22
   var field_id = $('#' + model_id + '_' + attribute_name); // issue_22_status
   var field_text = field_id.text(); // eg. New, Open, Closed
+  var spinner_id = 'spinner_' + global_spinner_counter++;
   var new_contents = '<select id="' + class_name + '_' + attribute_name + '" name="' + class_name + '[' + attribute_name + ']">';
   if (include_blank) {
     new_contents = new_contents + '<option value=""></option>';
@@ -177,7 +178,7 @@ function ajax_select(selector, class_name, attribute_name, options, include_blan
       new_contents = new_contents + '<option value="' + options[i][1] + '">' + options[i][0] + '</option>';
     }
   }
-  new_contents = new_contents + '</select><img alt="Spinner" id="' + class_name + '_' + attribute_name + '_spinner" class= "spinner" src="/images/spinner.gif" />';
+  new_contents = new_contents + '</select><img alt="Spinner" id="' + spinner_id + '" class= "spinner" src="/images/spinner.gif" />';
   field_id.html(new_contents);
   var select_id = field_id.find('select');
   if (!selection_found) {
@@ -191,7 +192,7 @@ function ajax_select(selector, class_name, attribute_name, options, include_blan
   }
   var old_val = field_id.find('select option:selected').text();
   select_id.change(function() {
-    var spinner = field_id.find('#' + class_name + '_' + attribute_name + '_spinner');
+    var spinner = field_id.find('#' + spinner_id);
     spinner.show();
     $.ajax({
       'url': url + record_id,
