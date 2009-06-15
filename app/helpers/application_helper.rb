@@ -65,6 +65,24 @@ module ApplicationHelper
     %Q{<span class="relative-date">#{string}</span>}
   end
 
+  # This pattern is frequently used in Atom feeds, where the feed itself should
+  # have an "updated" field that reflects either the last edit to the main
+  # model itself (the first "entry" in the feed) or the "last commented at"
+  # value, whichever is most recent.
+  #
+  # (Strictly speaking, if any of the comments was updated after the "last
+  # commented at" value then that should be the "updated" value for the entire
+  # feed, but this is a reasonable approximation.)
+  def last_activity model, comments
+    updated_at = model.updated_at
+    unless comments.empty?
+      if model.last_commented_at > updated_at
+        updated_at = model.last_commented_at
+      end
+    end
+    updated_at
+  end
+
   def pluralizing_count number, thing
     # note that we sanitize thing because it can come from user params (eg. /tags/foo?type=article)
     if number == 1

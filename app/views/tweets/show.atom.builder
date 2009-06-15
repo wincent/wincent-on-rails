@@ -1,14 +1,6 @@
-# TODO: turn this into a helper
-updated_at = @tweet.updated_at
-unless @comments.empty?
-  if @tweet.last_commented_at > updated_at
-    updated_at = @tweet.last_commented_at
-  end
-end
-
 custom_atom_feed do |feed|
   feed.title "wincent.com tweet \##{@tweet.id}"
-  feed.updated updated_at
+  feed.updated last_activity(@tweet, @comments)
   feed.author do |author|
     author.name   'Wincent Colaiuta'
     author.email  APP_CONFIG['admin_email']
