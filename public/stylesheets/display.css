@@ -43,23 +43,22 @@ a.external:after { content: url(../images/external.png); }
 
 a.mailto:after { content: url(../images/mailto.png); }
 
-#header a { color: white; }
-#header h1 { font-size: small; float: right; margin-top: 1em; }
+#header h1 { font-size: medium; margin-top: -1em; margin-bottom: -1em; padding-top: 1em; padding-left: 1em; height: 54px; }
 #header h1 a { font-weight: bold; }
-
-#logo { float: right; margin: 0.2em; }
+#header h1 img { vertical-align: middle; }
+#header #meta { background: url(../images/header-bg.png) left bottom repeat-x; }
+#header #meta a { color: white; }
 
 #login { margin-right: 1em; float: right; }
 
 #logout { margin-right: 1em; float: right; }
 
-#navbar { font-size: small; background: url(../images/navbar.png) center center repeat-x; margin: 0em; padding-top: 1em; padding-bottom: 1em; }
+#navbar { font-size: 0.9em; font-weight: bold; background: url(../images/navbar-bg.png) left top repeat-x; margin: 0em; padding-top: 1em; padding-bottom: 1em; }
 #navbar li { display: inline; }
-#navbar a { padding: 1em; margin-left: -0.35em; border-right: 1px solid white; color: white; }
-#navbar a:hover { background: url(../images/navbar-current.png) center center repeat-x; }
-#navbar li.last a { border-right: none; }
+#navbar a { padding: 1em; color: black; font-weight: bold; }
+#navbar a:hover { background: url(../images/navbar-hover.png) center center repeat-x; color: white; }
 
-#navbar form { position: absolute; top: 1em; display: inline; font-size: 0.75em; }
+#navbar form { position: absolute; top: 44px; display: inline; padding: 0em; font-size: 0.75em; }
 
 #breadcrumbs { margin: 1em; font-size: 0.9em; }
 

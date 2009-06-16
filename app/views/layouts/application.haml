@@ -16,27 +16,25 @@
   %body
     =named_anchor 'top'
     #header
-      #logo
-        -haml_tag :a, :href => root_path, :title => 'Wincent front page' do
-          =image_tag('logo.png')
-      %h1=link_to 'Wincent', root_path
+      #meta
+        %h1
+          %a#logo{:href => root_path, :title => 'Wincent front page'}
+            =image_tag('logo.png')
+          =link_to 'Wincent &mdash; Software for your Mac', root_path
       %ul#navbar
-        %li#login=link_to 'log in', login_path
-        %li#logout=link_to 'log out', logout_path
-        -#%li=link_to 'Products', products_path
         %li=link_to 'Products', 'http://wincent.com/a/products/'
-        -#%li=link_to 'Store'
         %li=link_to 'Blog', posts_path
         %li=link_to 'Wiki', articles_path
-        -# not sure whether we'll leave this forums link in the navbar forever
         %li=link_to 'Forums', forums_path
         %li=link_to 'Support', support_path
         -#%li=link_to 'About'
-        %li.last
+        %li
           -# TODO: make this unobtrusive
           =link_to_function 'Search', "$('#search_box').toggle(); $('#search_box').focus();", :href => search_index_path
           %form{:id => 'search', :action => search_index_path, :method => 'post'}
             =text_field_tag :query, params[:query], :size => 20, :id => :search_box, :style => 'display:none;'
+        %li#login=link_to 'log in', login_path
+        %li#logout=link_to 'log out', logout_path
     #content
       #cacheable-flash
       =yield

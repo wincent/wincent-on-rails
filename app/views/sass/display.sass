@@ -127,51 +127,57 @@ a.mailto:after
 // overall page layout
 
 #header
-  a
-    color:          white
   h1
-    font-size:      small
-    float:          right
-    margin-top:     1em
+    font-size:        medium
+    margin-top:       -1em
+    margin-bottom:    -1em
+    padding-top:      1em
+    padding-left:     1em
+    height:           54px
     a
-      font-weight:  bold
+      font-weight:    bold
+    img
+      vertical-align: middle
 
-#logo
-  float:            right
-  margin:           0.2em
+  #meta
+    background: url(../images/header-bg.png) left bottom repeat-x
+    a
+      color: white
 
+// margin-top needed here for Firefox
 #login
   margin-right:     1em
+  //margin-top:       -1.3em
   float:            right
 #logout
   margin-right:     1em
+  //margin-top:       -1.3em
   float:            right
 
 #navbar
-  font-size:        small
-  background:       url(../images/navbar.png) center center repeat-x
-  margin: 0em
+  font-size:        0.9em
+  font-weight:      bold
+  background:       url(../images/navbar-bg.png) left top repeat-x
+  margin:           0em
   padding:
-    top:              1em
-    bottom:           1em
+    top:            1em
+    bottom:         1em
   li
     display:        inline
   a
-    padding: 1em
-    // why I need this to make the highlight reach the previous border is a mystery
-    margin-left:    -0.35em
-    border-right:   1px solid white
-    color:          white
+    padding:        1em
+    color:          black
+    font-weight:    bold
   a:hover
-    background:     url(../images/navbar-current.png) center center repeat-x
-  li.last a
-    border-right:   none
+    background:     url(../images/navbar-hover.png) center center repeat-x
+    color:          white
 
 #navbar form
-  position:   absolute
-  top:        1em
-  display:    inline
-  font-size:  0.75em
+  position:         absolute
+  top:              44px
+  display:          inline
+  padding:          0em
+  font-size:        0.75em
 
 #breadcrumbs
   margin:     1em
