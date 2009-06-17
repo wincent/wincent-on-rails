@@ -62,8 +62,8 @@ a.mailto:after { content: url(../images/mailto.png); }
 #navbar > li:hover > ul { display: block; border: 1px solid gray; background: white; padding: 1em; position: absolute; top: 70px; }
 #navbar > li:hover ul { display: block; margin-bottom: 1.5em; }
 #navbar > li:hover ul li li { margin-left: -2em; }
-#navbar a { padding: 1em; color: black; font-weight: bold; }
-#navbar a:hover { background: url(../images/navbar-hover.png) center center repeat-x; color: white; }
+#navbar > li > a { padding: 1em; color: black; font-weight: bold; }
+#navbar > li > a:hover { background: url(../images/navbar-hover.png) center center repeat-x; color: white; }
 
 #navbar form { position: absolute; top: 44px; display: inline; padding: 0em; font-size: 0.75em; }
 

@@ -29,26 +29,30 @@
               Desktop products
               %ul
                 -#%li Clipboard Commando
-                %li Synergy
-                %li Synergy Advance
+                %li=link_to 'Synergy', 'http://wincent.com/a/products/synergy-classic/', :title => 'Simple and effective iTunes controller'
+                %li=link_to 'Synergy Advance', 'http://wincent.com/a/products/synergy-advance/', :title => 'The multipurpose audio companion'
                 -#%li REnamer
+                %li=link_to 'WinSwitch', 'http://wincent.com/a/products/winswitch/', :title => "Enhanced replacement for Apple's Fast User Switching menu"
             %li
               Developer products
               %ul
-                %li atosym
-                %li Hextrapolate
-                %li Install
-                %li login-tool
-                %li Walrus
-                %li Wincent Icon Utility
-                %li Wincent Strings Utility
-                %li WOTest
-                %li WOPublic
+                %li=link_to 'atosym', 'http://wincent.com/a/products/atosym/', :title => 'Address-to-symbol conversion for the DWARF format'
+                %li=link_to 'Hextrapolate', 'http://wincent.com/a/products/hextrapolate/', :title => 'Convenient number conversion tool'
+                %li=link_to 'Install', 'http://wincent.com/a/products/install/', :title => 'Simple and powerful deployment solution'
+                -#%li login-tool
+                %li=link_to 'Walrus', 'http://wincent.com/a/products/walrus/', :title => 'Object-oriented templating system'
+                -#%li Wincent Icon Utility
+                %li=link_to 'Wincent Strings Utility', 'http://wincent.com/a/products/wincent-strings-util/', :title => 'Localization tool'
+                -#%li WOBezel
+                -#%li WOHotKey
+                %li=link_to 'WOPublic', 'http://git.wincent.com/WOPublic.git', :title => 'BSD-licensed Objective-C source code'
+                %li=link_to 'WOTest', 'http://wincent.com/a/products/wotest/', :title => 'Objective-C Unit Testing framework'
             %li
               Server products
               %ul
-                %li Bansshee
-                %li Wikitext
+                %li=link_to 'Bansshee', 'http://wincent.com/a/products/bansshee/', :title => 'Defense against SSH dictionary attacks'
+                %li=link_to 'Wikitext', 'http://wikitext.rubyforge.org/', :title => 'Fast wikitext-to-HTML translator'
+                -#%li wincent.com codebase
         %li=link_to 'Blog', posts_path
         %li=link_to 'Wiki', articles_path
         %li=link_to 'Forums', forums_path
