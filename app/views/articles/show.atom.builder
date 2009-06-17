@@ -2,15 +2,15 @@ custom_atom_feed do |feed|
   feed.title "wincent.com wiki: #{@article.title}"
   feed.updated last_activity(@article, @comments)
   feed.author do |author|
-    author.name   'Wincent Colaiuta'
+    author.name   APP_CONFIG['admin_name']
     author.email  APP_CONFIG['admin_email']
   end
   feed.entry @article do |entry|
     entry.title @article.title
     entry.content @article.body.w, :type => 'html'
     entry.author do |author|
-      author.name 'Wincent Colaiuta'
-      author.email APP_CONFIG['admin_email']
+      author.name   APP_CONFIG['admin_name']
+      author.email  APP_CONFIG['admin_email']
     end
   end
   for comment in @comments

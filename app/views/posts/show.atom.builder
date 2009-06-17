@@ -2,14 +2,14 @@ custom_atom_feed do |feed|
   feed.title "wincent.com blog: #{@post.title}"
   feed.updated last_activity(@post, @comments)
   feed.author do |author|
-    author.name   'Wincent Colaiuta'
+    author.name   APP_CONFIG['admin_name']
     author.email  APP_CONFIG['admin_email']
   end
   feed.entry @post do |entry|
     entry.title @post.title
     entry.content @post.excerpt.w, :type => 'html'
     entry.author do |author|
-      author.name   'Wincent Colaiuta'
+      author.name   APP_CONFIG['admin_name']
       author.email  APP_CONFIG['admin_email']
     end
   end
