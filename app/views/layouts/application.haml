@@ -22,7 +22,33 @@
             =image_tag('logo.png')
           =link_to 'Wincent &mdash; Software for your Mac', root_path
       %ul#navbar
-        %li=link_to 'Products', 'http://wincent.com/a/products/'
+        %li
+          =link_to 'Products', 'http://wincent.com/a/products/'
+          %ul
+            %li
+              Desktop products
+              %ul
+                -#%li Clipboard Commando
+                %li Synergy
+                %li Synergy Advance
+                -#%li REnamer
+            %li
+              Developer products
+              %ul
+                %li atosym
+                %li Hextrapolate
+                %li Install
+                %li login-tool
+                %li Walrus
+                %li Wincent Icon Utility
+                %li Wincent Strings Utility
+                %li WOTest
+                %li WOPublic
+            %li
+              Server products
+              %ul
+                %li Bansshee
+                %li Wikitext
         %li=link_to 'Blog', posts_path
         %li=link_to 'Wiki', articles_path
         %li=link_to 'Forums', forums_path
