@@ -57,7 +57,7 @@
         %li{ :class => navbar_selected?('wiki') }=link_to 'Wiki', articles_path
         %li{ :class => navbar_selected?('forums') }=link_to 'Forums', forums_path
         %li{ :class => navbar_selected?('support') }=link_to 'Support', support_path
-        -#%li=link_to 'About'
+        %li{ :class => navbar_selected?('about') }=link_to 'About', about_path
         %li{ :class => navbar_selected?('search') }
           -# TODO: make this unobtrusive
           =link_to_function 'Search', "$('#search_box').toggle(); $('#search_box').focus();", :href => search_index_path

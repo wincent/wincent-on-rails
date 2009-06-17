@@ -82,6 +82,7 @@ ActionController::Routing::Routes.draw do |map|
 
   map.with_options :protocol => 'https' do |https|
     # named routes
+    https.about           'about',            :controller => 'misc',            :action => 'about'
     https.admin_dashboard 'admin/dashboard',  :controller => 'admin/dashboard', :action => 'show'
     https.dashboard       'dashboard',        :controller => 'dashboard',       :action => 'show'
     https.login           'login',            :controller => 'sessions',        :action => 'new'
