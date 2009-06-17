@@ -3,6 +3,30 @@ require 'additions/time'
 module ApplicationHelper
   include CustomAtomFeedHelper
 
+  # Returns an appropriate CSS class to indicate whether the passed item
+  # should be drawn as selected.
+  def navbar_selected? item
+    match = case controller
+    when ArticlesController
+      item == 'wiki'
+    when CommentsController
+      false
+    when ForumsController
+      item == 'forums'
+    when IssuesController, SupportController
+      item == 'support'
+    when SearchController
+      item == 'search'
+    when TopicsController
+      item == 'forums'
+    when PostsController
+      item == 'blog'
+    else
+      false
+    end
+    match ? 'selected' : ''
+  end
+
   # sets up the application layout
   def atom_link model = nil
     case model

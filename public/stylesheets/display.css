@@ -56,6 +56,7 @@ a.mailto:after { content: url(../images/mailto.png); }
 #logout { margin-right: 1em; float: right; }
 
 #navbar { font-size: 0.9em; font-weight: bold; background: url(../images/navbar-bg.png) left top repeat-x; margin: 0em; padding-top: 1em; padding-bottom: 1em; }
+#navbar li.selected > a { background: url(../images/navbar-selected.png) left top repeat-x; color: white; text-decoration: underline; }
 #navbar li { display: inline; }
 #navbar li > ul { display: none; }
 #navbar li li { display: block; margin: 0.5em; }

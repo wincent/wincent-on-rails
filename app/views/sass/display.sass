@@ -158,15 +158,19 @@ a.mailto:after
   float:            right
 
 #navbar
-  font-size:        0.9em
-  font-weight:      bold
-  background:       url(../images/navbar-bg.png) left top repeat-x
-  margin:           0em
+  font-size:          0.9em
+  font-weight:        bold
+  background:         url(../images/navbar-bg.png) left top repeat-x
+  margin:             0em
   padding:
-    top:            1em
-    bottom:         1em
+    top:              1em
+    bottom:           1em
+  li.selected > a
+    background:       url(../images/navbar-selected.png) left top repeat-x
+    color:            white
+    text-decoration:  underline
   li
-    display:        inline
+    display:          inline
     > ul
       display:        none
     li
@@ -180,7 +184,6 @@ a.mailto:after
       padding:        1em
       position:       absolute
       top:            70px
-      //left:           0px
     ul
       display: block
       margin-bottom: 1.5em
