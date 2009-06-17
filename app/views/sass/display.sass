@@ -147,16 +147,6 @@ a.mailto:after
   height:             20px
   background:         url(../images/header-shadow.png) top repeat-x
 
-// margin-top needed here for Firefox
-#login
-  margin-right:     1em
-  //margin-top:       -1.3em
-  float:            right
-#logout
-  margin-right:     1em
-  //margin-top:       -1.3em
-  float:            right
-
 #navbar
   font-size:          0.9em
   font-weight:        bold
@@ -173,6 +163,12 @@ a.mailto:after
   > li
     float: left
     list-style-type: none
+  >li#login
+    margin-right:     1em
+    float:            right
+  >li#logout
+    margin-right:     1em
+    float:            right
   li
     > ul
       display:        none
