@@ -167,6 +167,26 @@ a.mailto:after
     bottom:         1em
   li
     display:        inline
+    > ul
+      display:        none
+    li
+      display:        block
+      margin:         0.5em
+  > li:hover
+    > ul
+      display:        block
+      border:         1px solid gray
+      background:     white
+      padding:        1em
+      position:       absolute
+      top:            70px
+      //left:           0px
+    ul
+      display: block
+      margin-bottom: 1.5em
+      li li
+        margin-left: -2em
+
   a
     padding:        1em
     color:          black

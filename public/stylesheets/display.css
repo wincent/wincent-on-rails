@@ -57,6 +57,11 @@ a.mailto:after { content: url(../images/mailto.png); }
 
 #navbar { font-size: 0.9em; font-weight: bold; background: url(../images/navbar-bg.png) left top repeat-x; margin: 0em; padding-top: 1em; padding-bottom: 1em; }
 #navbar li { display: inline; }
+#navbar li > ul { display: none; }
+#navbar li li { display: block; margin: 0.5em; }
+#navbar > li:hover > ul { display: block; border: 1px solid gray; background: white; padding: 1em; position: absolute; top: 70px; }
+#navbar > li:hover ul { display: block; margin-bottom: 1.5em; }
+#navbar > li:hover ul li li { margin-left: -2em; }
 #navbar a { padding: 1em; color: black; font-weight: bold; }
 #navbar a:hover { background: url(../images/navbar-hover.png) center center repeat-x; color: white; }
 
