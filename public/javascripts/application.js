@@ -221,8 +221,16 @@ function stylePreBlocks()
   });
 }
 
+function setUpSearchLink() {
+  $('#search-link').click(function () {
+    $('#search_box').toggle().focus();
+    return false;
+  });
+}
+
 $(document).ready(function() {
   setUpLoginLogoutLinks();
+  setUpSearchLink();
   displayCacheableFlash();
   relativizeDates();
   stylePreBlocks();
