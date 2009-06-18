@@ -37,7 +37,11 @@ module TagsHelper
 
   def taggables_search_summary
     count = @taggables.inject(0) { |acc, value| acc += value.taggables.length }
-    "#{item_count(count)} tagged with #{tag_names}"
+    if tag_names.empty?
+      '0 items tagged with specified tags'
+    else
+      "#{item_count(count)} tagged with #{tag_names}"
+    end
   end
 
   # make the search results a little more user-friendly
