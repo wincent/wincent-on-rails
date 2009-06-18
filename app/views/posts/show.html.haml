@@ -3,7 +3,7 @@
 .post
   -@page_title = @post.title
   %h1.major=h @post.title
-  .when=timeinfo @post
+  .when==#{timeinfo @post} by #{APP_CONFIG['admin_name']}
   .excerpt=excerpt_html
   #body=body_html
 =render 'shared/tags', :tags => @post.tags

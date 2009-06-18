@@ -7,7 +7,7 @@
 %h1 Tweet
 %div[@tweet]
   =@tweet.body.w
-  .when=timeinfo @tweet
+  .when==#{timeinfo @tweet} by #{APP_CONFIG['admin_name']}
 =render 'shared/tags', :tags => @tweet.tags
 -# Gravatar and user profile link
 -# cf: http://twitter.com/sstephenson/status/1227528821

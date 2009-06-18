@@ -1,6 +1,6 @@
 -@page_title = @article.title
 %h1.major=h @article.title
-.when=timeinfo @article
+.when==#{timeinfo @article} by #{APP_CONFIG['admin_name']}
 -if @redirected_from
   -if admin?
     %p==(Redirected from #{link_to h(@redirected_from.title), edit_article_path(@redirected_from)})
