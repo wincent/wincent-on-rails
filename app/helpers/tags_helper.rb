@@ -19,28 +19,28 @@ module TagsHelper
     end
   end
 
-  def tag_names
-    if @tags
-      "#{(@tags[:found].collect(&:name)).join ', '}"
+  def tag_names tags
+    if tags
+      "#{(tags[:found].collect(&:name)).join ', '}"
     else
       ''
     end
   end
 
-  def search_page_title
-    if @tags
-      page_title "Tags: #{tag_names}"
+  def search_page_title tags
+    if tags
+      page_title "Tags: #{tag_names(tags)}"
     else
       page_title "Tag search"
     end
   end
 
-  def taggables_search_summary
-    count = @taggables.inject(0) { |acc, value| acc += value.taggables.length }
-    if tag_names.empty?
+  def taggables_search_summary tags, taggables
+    count = taggables.inject(0) { |acc, value| acc += value.taggables.length }
+    if tag_names(tags).empty?
       '0 items tagged with specified tags'
     else
-      "#{item_count(count)} tagged with #{tag_names}"
+      "#{item_count(count)} tagged with #{tag_names(tags)}"
     end
   end
 

@@ -1,6 +1,6 @@
-=search_page_title
+=search_page_title @tags
 -if @taggables
-  %h2.major=taggables_search_summary
+  %h2.major=taggables_search_summary @tags, @taggables
   =render 'filterbox', :tags => @tags[:found]
   =render 'taggings'
 %div{ :style => 'clear:both;' }
