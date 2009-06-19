@@ -16,8 +16,8 @@
 %div{ :class => 'issue' + (@issue.public ? '' : ' private'), :id => "issue_#{@issue.id}" }
   %h1{ :class => "major #{@issue.kind_string.parameterize}" }="#{@issue.kind_string.humanize} \##{@issue.id.to_s}"
   .prev_next
-    =link_to_prev_issue if @prev
-    =link_to_next_issue if @next
+    =link_to_prev_issue @prev
+    =link_to_next_issue @next
   %table.main
     %tr
       %th Kind

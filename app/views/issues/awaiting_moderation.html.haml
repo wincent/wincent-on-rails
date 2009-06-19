@@ -4,8 +4,8 @@
 -@page_title = "#{@issue.kind_string} \##{@issue.id.to_s}"
 %h1.major="#{@issue.kind_string} \##{@issue.id.to_s}"
 .prev_next
-  =link_to_prev_issue if @prev
-  =link_to_next_issue if @next
+  =link_to_prev_issue @prev
+  =link_to_next_issue @next
 %h2
   This issue is currently awaiting moderation
   =feed_icon issue_path(@issue, :format => :atom)

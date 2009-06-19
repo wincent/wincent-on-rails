@@ -7,12 +7,18 @@ module IssuesHelper
     "Currently showing only issues with #{scopes.join(', ')}" unless scopes.empty?
   end
 
-  def link_to_prev_issue
-    link_to '&laquo; previous', issue_path(@prev), :title => "#{@prev.kind_string} \##{@prev.id}: #{@prev.summary}"
+  def link_to_prev_issue issue
+    if issue
+      link_to '&laquo; previous', issue_path(issue),
+        :title => "#{issue.kind_string} \##{issue.id}: #{issue.summary}"
+    end
   end
 
-  def link_to_next_issue
-    link_to 'next &raquo;', issue_path(@next), :title => "#{@next.kind_string} \##{@next.id}: #{@next.summary}"
+  def link_to_next_issue issue
+    if issue
+      link_to 'next &raquo;', issue_path(issue),
+        :title => "#{issue.kind_string} \##{issue.id}: #{issue.summary}"
+    end
   end
 
   def link_to_product_issues product
