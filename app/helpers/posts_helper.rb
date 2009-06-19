@@ -1,9 +1,4 @@
 module PostsHelper
-  def excerpt_html post, options = {}
-    level = options[:base_heading_level] || 1
-    post.excerpt.w :base_heading_level => level
-  end
-
   def comment_count number
     pluralizing_count number, 'comment'
   end
