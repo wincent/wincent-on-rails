@@ -8,14 +8,6 @@ module PostsHelper
     post.body ? (post.body.w :base_heading_level => 1) : ''
   end
 
-  def title_excerpt_and_body_html post
-    text = []
-    text << (post.title.blank? ? '' : "= #{post.title} =")
-    text << (post.excerpt || '')
-    text << (post.body || '')
-    text.join("\n\n").w :base_heading_level => 2
-  end
-
   def comment_count number
     pluralizing_count number, 'comment'
   end

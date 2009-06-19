@@ -23,9 +23,7 @@ class PostsController < ApplicationController
 
   def create
     if request.xhr? # live preview
-      @title    = params[:title]   || ''
-      @excerpt  = params[:excerpt] || ''
-      @body     = params[:body]    || ''
+      @post = Post.new :title => params[:title], :excerpt => params[:excerpt], :body => params[:body]
       render :partial => 'preview'
     else # normal request
       @post = Post.new params[:post]
