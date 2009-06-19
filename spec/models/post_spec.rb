@@ -17,8 +17,8 @@ describe Post, 'creation' do
     @post.public.should == true
   end
 
-  it 'should default to not accepting comments' do
-    @post.accepts_comments.should == false
+  it 'should default to accepting comments' do
+    @post.accepts_comments.should == true
   end
 
   # we test a value larger than the default MySQL TEXT size (65535)

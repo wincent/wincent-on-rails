@@ -4,7 +4,8 @@ describe '/tweets/show.html.haml' do
   include TweetsHelper
 
   def do_render
-    assigns[:tweet] = @tweet
+    assigns[:tweet]     = @tweet
+    assigns[:comments]  = @tweet.comments.published
     render '/tweets/show.html.haml'
   end
 

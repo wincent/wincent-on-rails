@@ -24,8 +24,8 @@ describe Article, 'creation' do
     @article.public.should == true
   end
 
-  it 'should default to not accepting comments' do
-    @article.accepts_comments.should == false
+  it 'should default to accepting comments' do
+    @article.accepts_comments.should == true
   end
 end
 

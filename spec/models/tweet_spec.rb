@@ -12,8 +12,8 @@ describe Tweet do
     Tweet::RECOMMENDED_MAX_LENGTH.should == 140
   end
 
-  it 'should default to not accepting comments' do
-    new_tweet.accepts_comments.should == false
+  it 'should default to accepting comments' do
+    new_tweet.accepts_comments.should == true
   end
 end
 

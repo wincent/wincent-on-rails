@@ -23,6 +23,12 @@ describe Issue do
   end
 end
 
+describe Issue, 'creation' do
+  it 'should default to accepting comments' do
+    new_issue.accepts_comments.should == true
+  end
+end
+
 describe Issue, 'acting as commentable' do
   before do
     @commentable = create_issue
