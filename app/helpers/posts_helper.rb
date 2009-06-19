@@ -17,14 +17,9 @@ module PostsHelper
     # For now we avoid the unwanted SELECTS by providing a ham + spam count
     # which uses the counter cache.
     if post.accepts_comments? || post.comments_count > 0
-      link_to comment_count(post.comments_count), {
-        :controller => 'posts',
-        :action => 'show',
-        :id => post.to_param,
-        :anchor => 'comments',
-        :protocol => 'https'
-      },
-      :class => 'comments_link'
+      link_to comment_count(post.comments_count),
+        post_path(post, :anchor => 'comments'),
+        :class => 'comments_link'
     else
       ''
     end
