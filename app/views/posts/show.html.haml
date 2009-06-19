@@ -5,7 +5,7 @@
   %h1.major=h @post.title
   .when==#{timeinfo @post} by #{APP_CONFIG['admin_name']}
   .excerpt=excerpt_html @post
-  #body=body_html @post
+  #body=@post.body.w :base_heading_level => 1
 =render 'shared/tags', :tags => @post.tags
 %p.links
   -if admin?

@@ -4,10 +4,6 @@ module PostsHelper
     post.excerpt.w :base_heading_level => level
   end
 
-  def body_html post
-    post.body ? (post.body.w :base_heading_level => 1) : ''
-  end
-
   def comment_count number
     pluralizing_count number, 'comment'
   end
