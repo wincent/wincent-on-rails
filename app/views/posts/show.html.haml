@@ -4,8 +4,8 @@
   -@page_title = @post.title
   %h1.major=h @post.title
   .when==#{timeinfo @post} by #{APP_CONFIG['admin_name']}
-  .excerpt=excerpt_html
-  #body=body_html
+  .excerpt=excerpt_html @post
+  #body=body_html @post
 =render 'shared/tags', :tags => @post.tags
 %p.links
   -if admin?

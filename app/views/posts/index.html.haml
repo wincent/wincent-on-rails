@@ -8,18 +8,18 @@
     =feed_icon posts_path(:format => :atom)
   -if @paginator
     .pagination=@paginator.pagination_links
-  -for @post in @posts
+  -for post in @posts
     .post
-      %h2.major=link_to h(@post.title), post_path(@post)
-      .when==#{timeinfo @post} by #{APP_CONFIG['admin_name']}
-      =excerpt_html :base_heading_level => 2
-      -unless @post.body.blank?
-        =link_to 'more...', post_path(@post, :anchor => 'body')
+      %h2.major=link_to h(post.title), post_path(post)
+      .when==#{timeinfo post} by #{APP_CONFIG['admin_name']}
+      =excerpt_html post, :base_heading_level => 2
+      -unless post.body.blank?
+        =link_to 'more...', post_path(post, :anchor => 'body')
       .info
-        =comments_link(@post)
+        =comments_link(post)
         =link_to 'Tags', tags_path
         \:
-        =tag_links(@post)
+        =tag_links(post)
   -# TODO: add search box here
   -if @paginator
     .pagination=@paginator.pagination_links
