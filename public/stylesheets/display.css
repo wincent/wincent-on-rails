@@ -138,6 +138,7 @@ tr.even { background: #eaeaea; }
 .filterbox p { font-size: xx-small; }
 
 .when { font-size: x-small; color: #bbb; }
+.when a { color: #bbb; font-weight: normal; }
 
 .deleted { color: #bbb; }
 .deleted a { color: #bbb; }
