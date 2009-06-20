@@ -3,7 +3,10 @@
 .post
   -@page_title = @post.title
   %h1.major=h @post.title
-  .when==#{timeinfo @post} by #{APP_CONFIG['admin_name']}
+  .when
+    =timeinfo @post
+    by
+    =mail_to APP_CONFIG['admin_email'], APP_CONFIG['admin_name']
   .excerpt=@post.excerpt.w :base_heading_level => 1
   #body=@post.body.w :base_heading_level => 1
 =render 'shared/tags', :tags => @post.tags

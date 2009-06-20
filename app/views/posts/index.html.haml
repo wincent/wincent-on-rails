@@ -11,7 +11,10 @@
   -for post in @posts
     .post
       %h2.major=link_to h(post.title), post_path(post)
-      .when==#{timeinfo post} by #{APP_CONFIG['admin_name']}
+      .when
+        =timeinfo post
+        by
+        =mail_to APP_CONFIG['admin_email'], APP_CONFIG['admin_name']
       =post.excerpt.w :base_heading_level => 2
       -unless post.body.blank?
         =link_to 'more...', post_path(post, :anchor => 'body')
