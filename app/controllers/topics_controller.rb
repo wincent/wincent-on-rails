@@ -74,7 +74,8 @@ class TopicsController < ApplicationController
       }
       format.js {
         if params[:button] == 'ham'
-          @topic.moderate_as_ham!
+          @topic.moderate_as_ham! # doesn't trigger sweeper automatically
+          TopicSweeper.instance.expire_cache @topic
           render :json => {}.to_json
         else
           raise 'unrecognized AJAX action'

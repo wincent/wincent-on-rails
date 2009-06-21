@@ -72,7 +72,8 @@ class CommentsController < ApplicationController
       }
       format.js {
         if params[:button] == 'ham'
-          @comment.moderate_as_ham!
+          @comment.moderate_as_ham! # doesn't trigger sweeper automatically
+          CommentSweeper.instance.expire_cache @comment
           render :json => {}.to_json
         else
           raise 'unrecognized AJAX action'

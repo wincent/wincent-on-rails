@@ -107,7 +107,8 @@ class IssuesController < ApplicationController
         # I don't really like this special case but it seems to be the only
         # way to classify as ham without updating the record timestamp
         if params[:button] == 'ham'
-          @issue.moderate_as_ham!
+          @issue.moderate_as_ham! # doesn't trigger sweeper automatically
+          IssueSweeper.instance.expire_cache @issue
           render :json => {}.to_json
         else
           @issue.pending_tags = params[:issue][:pending_tags]
