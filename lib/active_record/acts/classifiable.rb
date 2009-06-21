@@ -14,12 +14,17 @@ module ActiveRecord
       end # module ClassMethods
 
       module InstanceMethods
-        # BUG: this kind of modification won't trigger any cache sweepers, which means that feeds might get out of date
-        # may need to manually trigger sweepers
         def moderate_as_ham!
-          # we don't want moderating a model to mark it as updated, so use update_all
-          self.awaiting_moderation  = false
-          self.class.update_all 'awaiting_moderation = FALSE', ['id = ?', self.id]
+          begin
+            # we don't want moderating a model to mark it as updated
+            # this hack will work as long as we run single-threaded
+            record = self.class.record_timestamps
+            self.class.record_timestamps = false
+            self.awaiting_moderation  = false
+            self.save
+          ensure
+            self.class.record_timestamps = record
+          end
 
           # I don't really like intertwining the classifiable and searchable functionality,
           # but seems to be a necessary evil for now
