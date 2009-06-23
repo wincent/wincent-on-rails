@@ -3,12 +3,14 @@ require File.dirname(__FILE__) + "/../config/environment" unless defined?(RAILS_
 require File.dirname(__FILE__) + '/controller_helpers'
 require 'spec/autorun'
 require 'spec/rails'
+#require 'rr'
 
 # can't use the config.include trick with FixtureReplacement
 # (breaks zillions of specs)
 include FixtureReplacement
 
 Spec::Runner.configure do |config|
+  #config.mock_with RR::Adapters::Rspec
   config.use_transactional_fixtures = true
   config.use_instantiated_fixtures  = false
   config.fixture_path = RAILS_ROOT + '/spec/fixtures/'
