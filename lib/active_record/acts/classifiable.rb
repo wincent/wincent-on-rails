@@ -15,18 +15,14 @@ module ActiveRecord
 
       module InstanceMethods
         def moderate_as_ham!
-          begin
-            # we don't want moderating a model to mark it as updated
-            # this hack will work as long as we run single-threaded
-            record = self.class.record_timestamps
-            self.class.record_timestamps = false
-            self.awaiting_moderation  = false
-            self.save
-          ensure
-            self.class.record_timestamps = record
-          end
-
-          did_moderate if respond_to?(:did_moderate)
+          # we don't want moderating a model to mark it as updated
+          # this hack will work as long as we run single-threaded
+          record = self.class.record_timestamps
+          self.class.record_timestamps = false
+          self.awaiting_moderation  = false
+          self.save
+        ensure
+          self.class.record_timestamps = record
         end
       end # module InstanceMethods
     end # module Classifiable

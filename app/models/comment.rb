@@ -8,10 +8,13 @@ class Comment < ActiveRecord::Base
   acts_as_classifiable
   acts_as_taggable
 
-  # NOTE: by defining an after_create action we break the built-in counter-cache, so we must roll our own
-  # this isn't such a bad thing as we want to do something more complex than just increment the counter anyway
-  # if we wanted to avoid clobbering the Rails-generated counter cache callback we could use alias_method_chain
+  # NOTE: by defining an after_create action we break the built-in
+  # counter-cache, so we must roll our own this isn't such a bad thing as we
+  # want to do something more complex than just increment the counter anyway if
+  # we wanted to avoid clobbering the Rails-generated counter cache callback we
+  # could use alias_method_chain
   after_create          :update_caches_after_create, :send_new_comment_alert
+  after_update          :update_caches
   after_destroy         :update_caches_after_destroy
 
   def self.find_recent options = {}
@@ -73,10 +76,6 @@ protected
     timestamp = update_timestamps_for_changes? ? created_at : commentable.updated_at
     commentable.class.update_all [updates, user, id, created_at, timestamp], ['id = ?', commentable.id]
     User.update_all ['comments_count = comments_count + 1'], ['id = ?', user] if user
-  end
-
-  def did_moderate
-    update_caches
   end
 
   def update_caches_after_destroy
