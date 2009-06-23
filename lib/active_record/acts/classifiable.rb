@@ -26,10 +26,6 @@ module ActiveRecord
             self.class.record_timestamps = record
           end
 
-          # I don't really like intertwining the classifiable and searchable functionality,
-          # but seems to be a necessary evil for now
-          # could possibly provide an optional callback here to make things slightly cleaner
-          update_needles if self.class.private_method_defined? :update_needles
           did_moderate if respond_to?(:did_moderate)
         end
       end # module InstanceMethods
