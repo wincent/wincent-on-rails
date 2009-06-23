@@ -15,7 +15,7 @@ class Comment < ActiveRecord::Base
   # could use alias_method_chain
   after_create          :update_caches_after_create, :send_new_comment_alert
   after_update          :update_caches
-  after_destroy         :update_caches_after_destroy
+  after_destroy         :update_caches
 
   def self.find_recent options = {}
     base_options = { :conditions => { :public => true }, :order => 'created_at DESC', :limit => 10 }
@@ -76,10 +76,6 @@ protected
     timestamp = update_timestamps_for_changes? ? created_at : commentable.updated_at
     commentable.class.update_all [updates, user, id, created_at, timestamp], ['id = ?', commentable.id]
     User.update_all ['comments_count = comments_count + 1'], ['id = ?', user] if user
-  end
-
-  def update_caches_after_destroy
-    update_caches
   end
 
   def send_new_comment_alert
