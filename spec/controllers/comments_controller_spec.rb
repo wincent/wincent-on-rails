@@ -80,9 +80,9 @@ describe CommentsController, 'PUT /comments/:id logged in as admin' do
     do_put
   end
 
-  it 'should find the comment' do
-    Comment.should_receive(:find).with(@comment.id.to_s).and_return(@comment) # form params come through as strings
+  it 'should find the comment and assign it to an instance variable' do
     do_put
+    assigns[:comment].should == @comment
   end
 
   it 'should update the comment' do
