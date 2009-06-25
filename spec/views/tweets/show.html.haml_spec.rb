@@ -29,4 +29,9 @@ describe '/tweets/show.html.haml' do
       with_tag 'a[href=?]', tweets_path
     end
   end
+
+  it 'should show the tweet number' do
+    do_render
+    response.body.should =~ /Tweet ##{@tweet.id}/
+  end
 end
