@@ -65,10 +65,23 @@ protected
     end
   end
 
+  # if the flash contains multiple items, turns it into an unordered list
+  def listify_flash flashes
+    return flashes unless flashes.kind_of?(Array)
+    if flashes.empty?
+      ''
+    elsif flashes.length == 1
+      flashes.first
+    else
+      items = flashes.map { |i| "<li>#{i}</li>" }
+      "<ul>#{items.join}</ul>"
+    end
+  end
+
   def cache_flash
     flash_hash = {}
     flash.each do |key, value|
-      flash_hash[key.to_sym] = value
+      flash_hash[key.to_sym] = listify_flash(value)
     end
 
     # without this we'll get double-flashes for "render" followed by another page view
