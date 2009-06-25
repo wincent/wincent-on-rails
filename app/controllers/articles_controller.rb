@@ -57,7 +57,10 @@ class ArticlesController < ApplicationController
       @redirected_from = Article.find_with_param!(session[:redirected_from]) if session[:redirected_from]
       @comments = @article.comments.published
       respond_to do |format|
-        format.html { @comment = @article.comments.build if @article.accepts_comments? }
+        format.html {
+          flash[:notice] = stale_article_notice if @article.updated_at < 1.year.ago
+          @comment = @article.comments.build if @article.accepts_comments?
+        }
         format.atom
       end
       clear_redirection_info
@@ -79,6 +82,16 @@ class ArticlesController < ApplicationController
   end
 
 private
+
+  def stale_article_notice
+    <<-NOTICE
+      This article is over 1 year old; to check for a more recent resource see
+      the <a href="#{articles_path}">wiki</a> index, the
+      <a href="#{tags_path}">tag cloud</a>, the
+      <a href="#{search_tags_path}">tag search</a>,
+      or the <a href="#{search_index_path}">search</a> page.
+    NOTICE
+  end
 
   def get_article
     # BUG: public/private distinction is ignored here
