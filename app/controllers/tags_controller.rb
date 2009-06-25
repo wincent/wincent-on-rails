@@ -24,7 +24,6 @@ class TagsController < ApplicationController
       if @tags[:not_found].length > 0
         notices << "Non-existent tags excluded from search results: #{@tags[:not_found].join ', '}"
       end
-      # TODO: nice CSS for lists in flashes
       flash[:notice] = notices
     end
   end
