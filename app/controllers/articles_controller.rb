@@ -85,11 +85,11 @@ private
 
   def stale_article_notice
     <<-NOTICE
-      This article is over 1 year old; to check for a more recent resource see
-      the <a href="#{articles_path}">wiki</a> index, the
+      This article is over 1 year old <em>(to check for a more recent resource
+      see the <a href="#{articles_path}">wiki</a> index, the
       <a href="#{tags_path}">tag cloud</a>, the
       <a href="#{search_tags_path}">tag search</a>,
-      or the <a href="#{search_index_path}">search</a> page.
+      or the <a href="#{search_index_path}">search</a> page)</em>
     NOTICE
   end
 
