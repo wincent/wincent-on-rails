@@ -28,7 +28,7 @@ module ApplicationHelper
     else
       false
     end
-    match ? 'selected' : ''
+    match ? 'selected' : nil
   end
 
   # sets up the application layout
