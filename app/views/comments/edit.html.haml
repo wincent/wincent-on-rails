@@ -2,19 +2,7 @@
   Edit comment on
   =link_to_commentable @comment.commentable
 %div[@comment]
-  =error_messages_for :comment
-  -form_for @comment, :url => comment_path(@comment) do |f|
-    %table.main
-      %tr
-        %th
-          Body
-          %br
-          %span.annotation=wikitext_cheatsheet
-        %td=f.text_area(:body, :cols => 80, :rows => 10)
-      %tr
-        %th Public?
-        %td=f.check_box :public
-    %p=f.submit 'Save'
+  =render 'form'
   .links
     =link_to 'show', comment_path(@comment)
     =button_to_destroy_comment @comment
