@@ -1,6 +1,6 @@
 -content_for :css do
   =stylesheet_link_tag 'products'
--@page_title = @product.name
+-@page_title = product_page_title @product, @page
 #product-header=@product.header
 #product-page=@page.body if @page
 #product-footer=@product.footer

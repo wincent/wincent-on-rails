@@ -4,6 +4,7 @@
   %head
     %meta{'http-equiv' => 'Content-Type', :content => 'text/html;charset=UTF-8'}
     %title
+      -# TODO: suppress the wincent.com on some pages (products#show, for example)
       wincent.com:
       =@page_title.blank? ? controller.controller_name : h(@page_title)
     =stylesheet_link_tag 'display'
