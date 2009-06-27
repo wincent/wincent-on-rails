@@ -9,8 +9,7 @@ ActionController::Routing::Routes.draw do |map|
                     :has_many => [ :comments ],
                     :collection => { :search => [:get, :post] }
     https.resources :links
-    https.resources :pages
-    https.resources :products
+    https.resources :products, :has_many => [ :pages ]
     https.resources :sessions
     https.resources :taggings
     https.resources :resets
