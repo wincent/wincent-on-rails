@@ -10,10 +10,21 @@
 class PagesController < ApplicationController
   before_filter :require_admin
   before_filter :get_product
-  before_filter :get_page, :only => :edit
+  #before_filter :get_page, :only => :edit
 
   def new
     @page = @product.pages.build
+  end
+
+  def create
+    @page = @product.pages.build params[:page]
+    if @page.save
+      flash[:notice] = 'Successfully created new page'
+      redirect_to embedded_product_page_path(@product, :page_id => @page.to_param)
+    else
+      flash[:error] = 'Failed to create new page'
+      render :action => 'new'
+    end
   end
 
 private
