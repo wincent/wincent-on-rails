@@ -1,5 +1,5 @@
 =error_messages_for :product
--form_for @product, :url => products_path, :html => { :multipart => true } do |f|
+-form_for @product, :url => @product.new_record? ? products_path : product_path(@product), :html => { :multipart => true } do |f|
   %table.main
     %tr
       %th Name
