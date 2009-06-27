@@ -3,7 +3,7 @@
   =render 'shared/anonymous'
 -elsif !current_user.verified?
   =render 'shared/unverified'
--form_for @comment, :url => (@comment.new_record? ? polymorphic_comments_path(@comment) : comment_path(@comment)) do |f|
+-form_for @comment, :url => comment_form_path(@comment) do |f|
   %table.main
     %tr
       %th

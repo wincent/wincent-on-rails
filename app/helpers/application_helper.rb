@@ -235,6 +235,14 @@ module ApplicationHelper
     end
   end
 
+  def comment_form_path comment
+    if comment.new_record?
+      polymorphic_comments_path comment # eg. /issues/24/comments (create)
+    else
+      comment_path comment              # eg. /comments/34 (edit)
+    end
+  end
+
   # in the interests of readable JavaScript source code in helpers this allows
   # us to use indentation and neatly format our JS across multiple lines, but
   # "compress" the output when it is actually used in templates inline.
