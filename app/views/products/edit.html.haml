@@ -1,5 +1,22 @@
-%h1 Edit product
+%h1==Edit product [#{link_to 'edit pages', '#pages'}]
 =render 'form'
+%h2#pages Pages
+-unless @product.pages.empty?
+  %table
+    %tr
+      %th Title
+      %th Permalink
+      %th Front
+      %th Actions
+    -for page in @product.pages
+      -# TODO: make all these in-place AJAX editors
+      %tr
+        %td=h page.title
+        %td=page.permalink
+        %td=page.front? ? 'yes' : 'no'
+        %td=link_to 'edit', edit_product_page_path(@product, page)
+.links
+  =link_to 'create a new page', new_product_page_path(@product)
 .links
   =link_to 'show product', product_path(@product)
   =link_to 'all products', products_path
