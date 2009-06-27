@@ -6,7 +6,7 @@ class Product < ActiveRecord::Base
   after_save              :process_icon
   after_destroy           :cleanup_icons
   attr_accessible         :name, :permalink, :bundle_identifier, :description,
-    :icon
+    :footer, :header, :icon
 
   # path on disk relative to application root
   ICON_DIR  = 'public/system/products/icons'
