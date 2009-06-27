@@ -21,7 +21,7 @@ class UsersController < ApplicationController
     if @user.save
       confirm_email_and_redirect 'Successfully created new account'
     else
-      flash[:error] = 'Failed to create new account.'
+      flash[:error] = 'Failed to create new account'
       render :action => 'new'
     end
   end

@@ -20,25 +20,25 @@ class ResetsController < ApplicationController
       rescue Exception
         flash[:error] = "#{error_msg} (the cause of the error was unknown)"
       else
-        flash[:notice] = "Please check your mail: an email has been sent to #{address}."
+        flash[:notice] = "Please check your mail: an email has been sent to #{address}"
       end
       redirect_to login_path
     else
       @reset = Reset.new
-      flash[:error] = 'Invalid email address.'
+      flash[:error] = 'Invalid email address'
       render :action => 'new'
     end
   end
 
   def edit
     if @reset.nil?
-      flash[:error] = 'Reset token not found.'
+      flash[:error] = 'Reset token not found'
       redirect_to root_path
     elsif !@reset.completed_at.nil?
-      flash[:notice] = 'Reset token already used.'
+      flash[:notice] = 'Reset token already used'
       redirect_to login_path
     elsif @reset.cutoff < Time.now
-      flash[:error] = 'Reset token expiry date has already passed.'
+      flash[:error] = 'Reset token expiry date has already passed'
       redirect_to root_path
     else # success!
       render

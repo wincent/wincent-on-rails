@@ -41,13 +41,13 @@ class CommentsController < ApplicationController
     @comment.awaiting_moderation = !(admin? or logged_in_and_verified?)
     if @comment.save
       if @comment.awaiting_moderation
-        flash[:notice] = 'Your comment has been queued for moderation.'
+        flash[:notice] = 'Your comment has been queued for moderation'
       else
-        flash[:notice] = 'Successfully added new comment.'
+        flash[:notice] = 'Successfully added new comment'
       end
       redirect_to @parent_path
     else
-      flash[:error] = 'Failed to add new comment.'
+      flash[:error] = 'Failed to add new comment'
       render 'new'
     end
   end
