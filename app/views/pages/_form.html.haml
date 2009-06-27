@@ -1,0 +1,16 @@
+%table.main
+  %tr
+    %th Title
+    %td=f.text_field :title
+  %tr
+    %th Permalink
+    %td=f.text_field :permalink
+  %tr
+    %th
+      Body
+      %br
+      %span.annotation (HTML)
+    %td=f.text_area :body, :cols => 80, :rows => 30
+  %tr
+    %th Front page?
+    %td=f.check_box :front
