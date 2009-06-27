@@ -1,4 +1,5 @@
 class Product < ActiveRecord::Base
+  has_many                :pages, :dependent => :destroy
   validates_presence_of   :name, :permalink
   validates_uniqueness_of :name, :permalink
   # validates_format_of :permalink, :with => /\A[a-z0-9_\-]+\z/i, :message =>
@@ -7,6 +8,7 @@ class Product < ActiveRecord::Base
   after_destroy           :cleanup_icons
   attr_accessible         :name, :permalink, :bundle_identifier, :description,
     :footer, :header, :icon
+  # TODO: acts_as_searchable :attributes => [:footer, :header] (will require HTML tokenization)
 
   # path on disk relative to application root
   ICON_DIR  = 'public/system/products/icons'

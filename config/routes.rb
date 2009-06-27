@@ -1,5 +1,4 @@
 ActionController::Routing::Routes.draw do |map|
-
   # resources
   # TODO: may be able to clean some of these routes up using :shallow and :only from Rails 2.2
   map.with_options :requirements => { :protocol => 'https' } do |https|
@@ -10,6 +9,7 @@ ActionController::Routing::Routes.draw do |map|
                     :has_many => [ :comments ],
                     :collection => { :search => [:get, :post] }
     https.resources :links
+    https.resources :pages
     https.resources :products
     https.resources :sessions
     https.resources :taggings
@@ -20,6 +20,9 @@ ActionController::Routing::Routes.draw do |map|
     https.resources :search, :collection => { :issues => :get }
   end
 
+  # non-RESTful routing here
+  map.product_pages '/products/:id/:page_id', :controller => 'products',
+    :action => 'show', :protocol => 'https', :conditions => { :method => :get }
   map.paginated_issues '/issues/page/:page', :controller => 'issues',
     :action => 'index', :protocol => 'https'
   map.paginated_tweets '/twitter/page/:page', :controller => 'tweets',

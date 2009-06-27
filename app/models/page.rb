@@ -5,4 +5,8 @@ class Page < ActiveRecord::Base
                         :message => 'must only contain letters, numbers and hyphens'
   attr_accessible       :title, :permalink, :body, :front
   # TODO: acts_as_searchable :attributes => [:body, :title] (will require HTML tokenization)
+
+  def to_param
+    self.permalink
+  end
 end
