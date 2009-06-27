@@ -19,9 +19,10 @@ ActionController::Routing::Routes.draw do |map|
     https.resources :search, :collection => { :issues => :get }
   end
 
-  # non-RESTful routing here
-  map.product_pages '/products/:id/:page_id', :controller => 'products',
+  # mapping to "product_pages" would overwrite the nested RESTful route above
+  map.embedded_product_pages '/products/:id/:page_id', :controller => 'products',
     :action => 'show', :protocol => 'https', :conditions => { :method => :get }
+
   map.paginated_issues '/issues/page/:page', :controller => 'issues',
     :action => 'index', :protocol => 'https'
   map.paginated_tweets '/twitter/page/:page', :controller => 'tweets',
