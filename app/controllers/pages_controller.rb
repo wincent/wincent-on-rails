@@ -10,7 +10,7 @@
 class PagesController < ApplicationController
   before_filter :require_admin
   before_filter :get_product
-  before_filter :get_page, :only => [:edit, :update]
+  before_filter :get_page, :only => [:destroy, :edit, :update]
 
   def new
     @page = @product.pages.build
@@ -42,6 +42,14 @@ class PagesController < ApplicationController
       render :action => 'edit'
     end
   end
+
+   def destroy
+     # TODO: make this undoable
+     @page.destroy
+     respond_to do |format|
+       format.js { render :json => {}.to_json }
+     end
+   end
 
 private
 
