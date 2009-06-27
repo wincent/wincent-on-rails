@@ -16,7 +16,7 @@
         Body
         %br
         %span.annotation==(#{wikitext_cheatsheet})
-      %td=f.text_area(:body, :cols => 80, :rows => 5)
+      %td=f.text_area :body, :cols => 80, :rows => 5
     %tr
       %th Tags
       %td=f.text_field :pending_tags
