@@ -20,7 +20,7 @@ class PagesController < ApplicationController
     @page = @product.pages.build params[:page]
     if @page.save
       flash[:notice] = 'Successfully created new page'
-      redirect_to embedded_product_page_path(@product, :page_id => @page.to_param)
+      redirect_to embedded_product_page_path(@product, @page)
     else
       flash[:error] = 'Failed to create new page'
       render :action => 'new'
