@@ -10,7 +10,7 @@
 class PagesController < ApplicationController
   before_filter :require_admin
   before_filter :get_product
-  #before_filter :get_page, :only => :edit
+  before_filter :get_page, :only => [:edit, :update]
 
   def new
     @page = @product.pages.build
@@ -31,5 +31,9 @@ private
 
   def get_product
     @product = Product.find_by_permalink! params[:product_id]
+  end
+
+  def get_page
+    @page = @product.pages.find_by_permalink! params[:id]
   end
 end
