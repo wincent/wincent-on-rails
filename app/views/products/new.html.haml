@@ -9,8 +9,23 @@
       %th Permalink
       %td=f.text_field :permalink
     %tr
-      %th Description
+      %th
+        Description
+        %br
+        %span.annotation==(#{wikitext_cheatsheet})
       %td=f.text_area :description
+    %tr
+      %th
+        Header
+        %br
+        %span.annotation (optional, HTML)
+      %td=f.text_area :header
+    %tr
+      %th
+        Footer
+        %br
+        %span.annotation (optional, HTML)
+      %td=f.text_area :footer
     %tr
       %th
         Bundle identifier
