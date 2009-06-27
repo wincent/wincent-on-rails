@@ -27,6 +27,22 @@ class PagesController < ApplicationController
     end
   end
 
+  def edit
+    render
+  end
+
+  def update
+    if @page.update_attributes params[:page]
+      flash[:notice] = 'Successfully updated page'
+      redirect_to embedded_product_page_path(@product, @page)
+    else
+      # special case: form URL will be wrong here if the user edited the permalink
+      @page.permalink = params[:id]
+      flash[:error] = 'Failed to update page'
+      render :action => 'edit'
+    end
+  end
+
 private
 
   def get_product
