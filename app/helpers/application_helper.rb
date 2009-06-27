@@ -17,6 +17,8 @@ module ApplicationHelper
       item == 'support'
     when MiscController
       request[:action] == 'about' && item == 'about'
+    when ProductsController
+      item == 'products'
     when SearchController
       item == 'search'
     when TopicsController
