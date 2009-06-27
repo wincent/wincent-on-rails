@@ -28,7 +28,7 @@ class ConfirmationsController < ApplicationController
     end
     flash[:error] = errors.join('; ') if !errors.empty?
     flash[:notice]  = notices.join('; ') if !notices.empty?
-    redirect_to user_path(current_user)
+    redirect_to current_user
   end
 
   def show

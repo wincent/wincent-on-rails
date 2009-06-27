@@ -9,10 +9,10 @@ class ForumsController < ApplicationController
   def create
     @forum = Forum.new(params[:forum])
     if @forum.save
-      flash[:notice] = 'Successfully created new forum.'
-      redirect_to forum_path(@forum)
+      flash[:notice] = 'Successfully created new forum'
+      redirect_to @forum
     else
-      flash[:error] = 'Failed to create new forum.'
+      flash[:error] = 'Failed to create new forum'
       render :action => 'new'
     end
   end

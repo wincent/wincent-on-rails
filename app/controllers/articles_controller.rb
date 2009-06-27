@@ -30,10 +30,10 @@ class ArticlesController < ApplicationController
     else # normal request
       @article = Article.new params[:article]
       if @article.save
-        flash[:notice] = 'Successfully created new article.'
-        redirect_to article_path(@article)
+        flash[:notice] = 'Successfully created new article'
+        redirect_to @article
       else
-        flash[:error] = 'Failed to create new article.'
+        flash[:error] = 'Failed to create new article'
         render :action => 'new'
       end
     end
@@ -74,7 +74,7 @@ class ArticlesController < ApplicationController
   def update
     if @article.update_attributes params[:article]
       flash[:notice] = 'Successfully updated'
-      redirect_to article_path(@article)
+      redirect_to @article
     else
       flash[:error] = 'Update failed'
       render :action => 'edit'

@@ -28,10 +28,10 @@ class PostsController < ApplicationController
     else # normal request
       @post = Post.new params[:post]
       if @post.save
-        flash[:notice] = 'Successfully created new post.'
-        redirect_to post_path(@post)
+        flash[:notice] = 'Successfully created new post'
+        redirect_to @post
       else
-        flash[:error] = 'Failed to create new post.'
+        flash[:error] = 'Failed to create new post'
         render :action => 'new'
       end
     end
@@ -60,7 +60,7 @@ class PostsController < ApplicationController
   def update
     if @post.update_attributes params[:post]
       flash[:notice] = 'Successfully updated'
-      redirect_to post_path(@post)
+      redirect_to @post
     else
       flash[:error] = 'Update failed'
       render :action => 'edit'

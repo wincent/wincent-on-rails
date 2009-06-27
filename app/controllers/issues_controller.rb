@@ -27,13 +27,13 @@ class IssuesController < ApplicationController
     @issue.pending_tags         = params[:issue][:pending_tags] if admin?
     if @issue.save
       if logged_in_and_verified?
-        flash[:notice] = 'Successfully created new issue.'
+        flash[:notice] = 'Successfully created new issue'
       else
-        flash[:notice] = 'Successfully submitted issue (awaiting moderation).'
+        flash[:notice] = 'Successfully submitted issue (awaiting moderation)'
       end
-      redirect_to issue_path(@issue)
+      redirect_to @issue
     else
-      flash[:error] = 'Failed to create new issue.'
+      flash[:error] = 'Failed to create new issue'
       render :action => 'new'
     end
   end
@@ -96,7 +96,7 @@ class IssuesController < ApplicationController
         @issue.pending_tags = params[:issue][:pending_tags]
         if @issue.update_attributes params[:issue]
           flash[:notice] = 'Successfully updated'
-          redirect_to (@issue.awaiting_moderation ? admin_issues_path : issue_path(@issue))
+          redirect_to (@issue.awaiting_moderation ? admin_issues_path : @issue)
         else
           flash[:error] = 'Update failed'
           render :action => 'edit'

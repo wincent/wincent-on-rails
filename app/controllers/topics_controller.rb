@@ -28,14 +28,14 @@ class TopicsController < ApplicationController
       @topic.awaiting_moderation = !(admin? or logged_in_and_verified?)
       if @topic.save
         if logged_in_and_verified?
-          flash[:notice] = 'Successfully created new topic.'
+          flash[:notice] = 'Successfully created new topic'
           redirect_to forum_topic_path(@forum, @topic)
         else
-          flash[:notice] = 'Successfully submitted topic (awaiting moderation).'
-          redirect_to forum_path(@forum)
+          flash[:notice] = 'Successfully submitted topic (awaiting moderation)'
+          redirect_to @forum
         end
       else
-        flash[:error] = 'Failed to create new topic.'
+        flash[:error] = 'Failed to create new topic'
         render :action => 'new'
       end
     end
@@ -89,8 +89,8 @@ class TopicsController < ApplicationController
     topic = @forum.topics.find params[:id]
     topic.destroy
     respond_to do |format|
-      format.html { redirect_to forum_path(@forum) }
-      format.js { render :json => {}.to_json }
+      format.html { redirect_to @forum }
+      format.js   { render :json => {}.to_json }
     end
   end
 

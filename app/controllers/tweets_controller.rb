@@ -30,7 +30,7 @@ class TweetsController < ApplicationController
       @tweet = Tweet.new params[:tweet]
       if @tweet.save
         flash[:notice] = 'Successfully created new tweet'
-        redirect_to tweet_path(@tweet)
+        redirect_to @tweet
       else
         flash[:error] = 'Failed to create new tweet'
         render :action => 'new'
@@ -55,7 +55,7 @@ class TweetsController < ApplicationController
   def update
     if @tweet.update_attributes params[:tweet]
       flash[:notice] = 'Successfully updated'
-      redirect_to tweet_path(@tweet)
+      redirect_to @tweet
     else
       flash[:error] = 'Update failed'
       render :action => :edit
