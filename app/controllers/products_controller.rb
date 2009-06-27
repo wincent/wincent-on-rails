@@ -24,7 +24,14 @@ class ProductsController < ApplicationController
 
   # admin-only
   def create
-    @product = Product.create params[:product]
+    @product = Product.new params[:product]
+    if @product.save
+      flash[:notice] = 'Successfully created new product'
+      redirect_to @product
+    else
+      flash[:error] = 'Failed to create new product'
+      render :action => 'new'
+    end
   end
 
   # admin-only
