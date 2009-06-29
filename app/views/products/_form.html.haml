@@ -37,4 +37,4 @@
         %br
         %span.annotation (optional)
       %td=f.file_field :icon, :accept => 'image/png,image/jpeg,image/gif'
-  %p=f.submit 'Create'
+  %p=f.submit(@product.new_record? ? 'Create' : 'Save')
