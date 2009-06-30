@@ -34,3 +34,5 @@ The web application depends on or makes use of a number of open source projects:
 === Graphics ===
 
 Some icons on this site are copies of, or derived works based on, icons by [http://www.pinvoke.com/ Yusuke Kamiyamane], and are used under the [http://creativecommons.org/licenses/by/3.0/ Creative Commons Attribution 3.0 license].
+
+The shopping cart icon was created by and is used with the permission of [http://www.bartelme.at/journal/archive/shopping_cart_icon Bartelme Design].
