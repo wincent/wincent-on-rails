@@ -19,19 +19,19 @@ namespace :js do
       end
     end
 
-    desc 'move minified files into place for deployment environment'
+    desc 'symlink minified files for deployment environment'
     task :deploy do
       javascripts '*.min.js' do |f|
         # cp file.min.js -> file.js
-        FileUtils.cp f, f.gsub(/\.min\.js\z/, '.js')
+        FileUtils.ln_sf f, f.gsub(/\.min\.js\z/, '.js')
       end
     end
 
-    desc 'move unminified files into place for development environment'
+    desc 'symlink unminified files for development environment'
     task :undeploy do
       javascripts '*.max.js' do |f|
         # cp file.max.js -> file.js
-        FileUtils.cp f, f.gsub(/\.max\.js\z/, '.js')
+        FileUtils.ln_sf f, f.gsub(/\.max\.js\z/, '.js')
       end
     end
   end
