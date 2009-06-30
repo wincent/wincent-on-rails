@@ -59,7 +59,7 @@ describe Wikitext::Parser, 'parsing unordered lists' do
   end
 
   it 'should display excess <ul> markers as literals' do
-    # this provides feedback to the user
+    # this provides feedback to the user
     @parser.parse('** foo').should == "<ul>\n  <li>* foo</li>\n</ul>\n"
     @parser.parse('*** foo').should == "<ul>\n  <li>** foo</li>\n</ul>\n"
   end

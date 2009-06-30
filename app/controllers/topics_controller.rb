@@ -18,7 +18,7 @@ class TopicsController < ApplicationController
   def create
     # TODO: tagging support (admin sees tag fields in the UI, but they have no effect yet)
     if request.xhr? # live preview
-      # TODO: hook up live preview in templates
+      # TODO: hook up live preview in templates
       @title    = params[:title]   || ''
       @excerpt  = params[:excerpt] || ''
       render :partial => 'preview'

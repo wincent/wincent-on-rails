@@ -17,7 +17,7 @@ class ProductsController < ApplicationController
     render
   end
 
-  # admin-only
+  # admin-only
   def new
     @product = Product.new
   end

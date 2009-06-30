@@ -79,7 +79,7 @@ end
 
 describe Tag, 'tags_reachable_from_tag_names method' do
   before do
-    create_article      # no tags
+    create_article      # no tags
     create_issue        # no tags
     create_article.tag  'nginx'
     create_article.tag  'nginx updates'
@@ -149,7 +149,7 @@ end
 
 describe Tag, 'tags_reachable_from_tags method' do
   before do
-    create_article      # no tags
+    create_article      # no tags
     create_issue        # no tags
     create_article.tag  'nginx'
     create_article.tag  'nginx updates'

@@ -251,14 +251,14 @@ function observe_field(options) {
     $('#' + options['kind'] + '_' + options['fieldName']);
   var interval = (options['interval'] || 30) * 1000;
   var before = options['before'] || function() { $('#preview_spinner').show(); };
-  var success = options['success'] || function(html) {
+  var success = options['success'] || function(html) {
     $('#preview').html(html);
     clearAJAXFlash();
   };
-  var error = options['error'] || function(req) {
+  var error = options['error'] || function(req) {
     insertAJAXFlash('error', req.responseText);
   };
-  var complete = options['complete'] || function() { $('#preview_spinner').hide(); };
+  var complete = options['complete'] || function() { $('#preview_spinner').hide(); };
 
   if (typeof window.observed_field_contents == 'undefined')
     window.observed_field_contents = {};

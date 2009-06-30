@@ -75,7 +75,7 @@ module ActionView
                                     :order => 'asc',
                                     :protocol => request.ssl? ? 'https' : 'http' }
         url_options             = params.merge(url_options)
-        url_options.delete(:authenticity_token) # not needed for GET requests
+        url_options.delete(:authenticity_token) # not needed for GET requests
         tooltip                 = { :title => "Click to sort by #{display_name}" }
         if @sort_by == attribute_name # boldface this attribute
           tooltip               = { :title => 'Click to toggle sort order'}

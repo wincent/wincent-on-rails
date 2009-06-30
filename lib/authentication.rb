@@ -66,7 +66,7 @@ module ActionController
         flash[:notice] = msg
         session[:original_uri] = request.request_uri
         redirect_to login_path
-      else # XML, Atom, JavaScript etc
+      else # XML, Atom, JavaScript etc
         render :text => 'Forbidden', :status => 403 # Forbidden
       end
     end

@@ -26,7 +26,7 @@ class TweetsController < ApplicationController
     if request.xhr? # live preview
       @tweet = Tweet.new :body => params[:body]
       render :partial => 'preview'
-    else # normal request
+    else # normal request
       @tweet = Tweet.new params[:tweet]
       if @tweet.save
         flash[:notice] = 'Successfully created new tweet'

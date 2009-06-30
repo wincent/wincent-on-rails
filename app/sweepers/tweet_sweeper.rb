@@ -1,7 +1,7 @@
 class TweetSweeper < ActionController::Caching::Sweeper
   observe Tweet
 
-  # routing helpers (tweets_path etc)
+  # routing helpers (tweets_path etc)
   include ActionController::UrlWriter
 
   def after_destroy tweet

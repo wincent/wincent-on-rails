@@ -50,7 +50,7 @@ describe ActiveRecord::Acts::Taggable, :shared => true do
     @object.should_not fail_validation_for(:pending_tags)
   end
 
-  # was a bug (passed but shouldn't have)
+  # was a bug (passed but shouldn't have)
   it 'should fail validation for incorrect pending tags' do
     @object.pending_tags = 'foo_bar'
     @object.should fail_validation_for(:pending_tags)

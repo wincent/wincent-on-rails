@@ -147,7 +147,7 @@ begin
   end
   if foreground?
     trap 'INT' do
-      log "received SIGINT, will schedule shutdown for within #{SLEEP_INTERVAL} seconds"
+      log "received SIGINT, will schedule shutdown for within #{SLEEP_INTERVAL} seconds"
       $running = false
     end
   end

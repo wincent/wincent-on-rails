@@ -30,7 +30,7 @@ protected
       render :text => 'Requested record not found', :status => 404
     elsif is_atom?
       render :text => '', :status => 404
-    else # HTML requests
+    else # HTML requests
       if uri.class != String
         # beware that in the default case uri will be an instance of ActiveRecord::RecordNotFound
         uri = root_path
@@ -49,7 +49,7 @@ protected
   # rather than just do a "record not found".
   def default_access_options_including_awaiting_moderation
     if admin?
-      nil # find everything
+      nil # find everything
     elsif logged_in?
       "public = TRUE OR user_id = #{current_user.id}"
     else

@@ -1,4 +1,4 @@
-# The Message class models an incoming or outgoing email message.
+# The Message class models an incoming or outgoing email message.
 # In general, a message will have an associated "related" object.
 #
 # For example, an incoming mail to "support@wincent.com" will
