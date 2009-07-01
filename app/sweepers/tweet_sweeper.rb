@@ -31,22 +31,15 @@ class TweetSweeper < ActionController::Caching::Sweeper
     end
   end
 
-  # on-demand cache expiration from rake
+  # on-demand cache expiration from rake (rake cache:clear)
   def self.expire_all
     # see the notes in the IssueSweeper for full explanation of why we do it this way
     relative_path   = instance.send :tweets_path
     index_path      = ActionController::Base.send(:page_cache_directory) + relative_path
-    atom_index_path = index_path + '.atom'
-    html_index_path = index_path + '.html'
-    page_dir        = index_path + '/page'
-    File.delete(atom_index_path) if File.exist?(atom_index_path)  # twitter.atom
-    File.delete(html_index_path) if File.exist?(html_index_path)  # twitter.html
 
+    # twitter, twitter.atom, twitter.html
     # twitter/2.html, twitter/2.atom etc
-    File.delete(*Dir["#{index_path}/*.html"]) if File.exist?(index_path)
-    File.delete(*Dir["#{index_path}/*.atom"]) if File.exist?(index_path)
-
     # twitter/page/2.html, twitter/page/3.html etc
-    File.delete(*Dir["#{page_dir}/*.html"]) if File.exist?(page_dir)
+    FileUtils.rm_rf(Dir["#{index_path}*"])
   end
 end
