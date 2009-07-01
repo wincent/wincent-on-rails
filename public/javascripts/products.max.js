@@ -21,44 +21,68 @@
 // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 // POSSIBILITY OF SUCH DAMAGE.
 
-/* a cache of pre-loaded lightbox images */
-var global_lightbox_images = [];
+var global_pending_lightbox_image = null;
 
 /* set up lightbox */
 function lightbox(thumbnail) {
 
   /* add "expand" widget */
-  var link = thumbnail.parent();
+  var link = $(thumbnail).parent();
   link.wrap('<div class="lightbox-wrapper"></div>');
   link.prepend('<img class="widget" src="/images/dashboard-expand.png" />');
 
+  /* function to display image when required */
+  function show_image(image) {
+    alert('show');
+    /* if spinner on screen, hide it */
+    $('#lightbox-spinner-frame').hide();
+    var frame = $('#lightbox-image-frame');
+    if (frame.length == 0) {
+      /* add frame to DOM if not present already */
+      frame = $('<div id="lightbox-image-frame"></div>');
+      frame.append(image);
+      $('#content').prepend(frame);
+    }
+  };
+
+  /* (pre)load an image */
+  function load_image(img) {
+
+  };
+
   /* start preloading image on mouseenter */
   link.mouseenter(function() {
-    var image;
-    for (i = 0; i < global_lightbox_images.length; i++) {
-      image = global_lightbox_images[i];
-      if (image.attr('src') == link.attr('href'))
+    /* will store the preloaded image as a property in the thumbnail DOM element */
+    if (thumbnail.fullsized)
         return; /* already been here for this image */
-    }
-    image = $('<img />').attr('src', link.attr('href')).load(function() {
+    var image = $('<img />').attr('src', link.attr('href'));
+    $(image).load(function() {
+      image.loaded = true;
+      if (global_pending_lightbox_image == image) {
+        show_image(image);
+      }
     });
-    global_lightbox_images.push(image);
-
-    /* add hidden div
-     * add hidden spinner
-     * add hidden div inside
-     */
+    thumbnail.fullsized = image;
   });
 
   /* show lightbox on click */
   var click = function() {
-    var frame = $('<div id="lightbox-spinner-frame">' +
-      '<img id="lightbox-spinner" alt="spinner" src="/images/spinner-large.gif" />' +
-      '</div>');
-    link.append(frame);
+    /* don't add spinner more than once */
+    var frame = $('#lightbox-spinner-frame');
+    if (frame.length == 0) {
+      frame = $('<div id="lightbox-spinner-frame">' +
+        '<img id="lightbox-spinner" alt="spinner" src="/images/spinner-large.gif" />' +
+        '</div>');
+      link.append(frame);
+    }
     frame.show();
-    link.unbind('click');
+    link.unbind('click'); /* ignore multiple clicks */
     link.click(function() { return false; });
+
+    if (thumbnail.fullsized.loaded)
+      show_image(thumbnail.fullsized);
+    else
+      global_pending_lightbox_image = thumbnail.fullsized;
     return false;
   }
   link.click(click);
@@ -82,6 +106,6 @@ function lightbox(thumbnail) {
 
 $(document).ready(function() {
   $('.lightbox').each(function () {
-    lightbox($(this))
+    lightbox(this)
   });
 });
