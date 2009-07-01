@@ -51,9 +51,23 @@ function lightbox(thumbnail) {
   });
 
   /* show lightbox on click */
-  link.click(function() {
+  var click = function() {
+    var frame = $('<div id="lightbox-spinner-frame">' +
+      '<img id="lightbox-spinner" alt="spinner" src="/images/spinner-large.gif" />' +
+      '</div>');
+    link.append(frame);
+    frame.show();
+    link.unbind('click');
+    link.click(function() { return false; });
     return false;
-  });
+  }
+  link.click(click);
+
+  /* hide lightbox on second click */
+  var unclick = function() {
+
+    return false;
+  }
 
   /*
    * on click, show spinner and load image (if image not loaded yet)

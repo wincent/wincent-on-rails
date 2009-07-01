@@ -1,6 +1,10 @@
 
 
 
+#lightbox-spinner-frame { position: fixed; top: 40%; left: 45%; height: 45px; width: 45px; background: white; -webkit-border-radius: 5px; -moz-border-radius: 5px; -webkit-opacity: 0.75; -moz-opacity: 0.75; opacity: 0.75; filter: alpha(opacity=75); display: none; }
+
+#lightbox-spinner { position: absolute; top: 10px; left: 10px; }
+
 .lightbox-wrapper { position: relative; }
 
 .lightbox { padding: 8px; background: white; border: 1px solid gray; -webkit-box-shadow: 2px 2px 2px #888; -moz-box-shadow: 2px 2px 2px #888; box-shadow: 2px 2px 2px #888; }
