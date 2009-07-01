@@ -220,6 +220,7 @@ end
 task :after_update, :roles => :app do
   run "cd #{current_path} && rake gems:clean"
   run "cd #{current_path} && rake gems:build"
+  run "cd #{current_path} && rake js:minify:deploy"
 end
 
 # internal use only (no description)
