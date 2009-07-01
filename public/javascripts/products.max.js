@@ -21,14 +21,34 @@
 // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 // POSSIBILITY OF SUCH DAMAGE.
 
+/* a cache of pre-loaded lightbox images */
+var global_lightbox_images = [];
+
 /* set up lightbox */
 function lightbox(thumbnail) {
+
   /* add "expand" widget */
   var link = thumbnail.parent();
   link.wrap('<div class="lightbox-wrapper"></div>');
   link.prepend('<img class="widget" src="/images/dashboard-expand.png" />');
 
-  /* start preloading image on mouseover */
+  /* start preloading image on mouseenter */
+  link.mouseenter(function() {
+    var image;
+    for (i = 0; i < global_lightbox_images.length; i++) {
+      image = global_lightbox_images[i];
+      if (image.attr('src') == link.attr('href'))
+        return; /* already been here for this image */
+    }
+    image = $('<img />').attr('src', link.attr('href')).load(function() {
+    });
+    global_lightbox_images.push(image);
+
+    /* add hidden div
+     * add hidden spinner
+     * add hidden div inside
+     */
+  });
 
   /* show lightbox on click */
   link.click(function() {
