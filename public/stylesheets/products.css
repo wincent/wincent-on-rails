@@ -1,2 +1,8 @@
 
 
+
+.lightbox-wrapper { position: relative; }
+
+.lightbox { padding: 8px; background: white; border: 1px solid gray; -webkit-box-shadow: 2px 2px 2px #888; -moz-box-shadow: 2px 2px 2px #888; box-shadow: 2px 2px 2px #888; }
+
+.widget { position: absolute; top: -10px; left: -10px; }
