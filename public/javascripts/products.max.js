@@ -85,12 +85,11 @@ function lightbox(thumbnail) {
   function show_image(image) {
     /* if spinner on screen, hide it */
     $('#lightbox-spinner-frame').hide();
-    var frame = $('#lightbox-image-frame');
-    if (frame.length == 0) {
+    if ($('#lightbox-image-frame').length == 0) {
       /* add frame to DOM if not present already */
-      frame = $('<div id="lightbox-image-frame"></div>');
-      frame.append(image);
-      $('#content').prepend(frame);
+      $('#content').prepend(
+        $('<div id="lightbox-image-frame"></div>').append(image)
+      );
     }
   };
 
