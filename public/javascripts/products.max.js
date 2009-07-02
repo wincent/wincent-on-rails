@@ -37,6 +37,7 @@ function lightbox(thumbnail) {
     if (thumbnail.fullsized)
         return; /* already been here for this image */
     var image = $('<img />').attr('src', link.attr('href'));
+    image.thumbnail = $(thumbnail); /* keep reference to "parent" thumbnail */
     $(image).load(function() {
       image.loaded = true;
       if (global_pending_lightbox_image == image) {
@@ -93,6 +94,22 @@ function lightbox(thumbnail) {
           '</div>').append(image)
       );
     }
+
+    /* position lightbox relative to thumbnail before fading it in:
+     * - center horizontally relative to middle of document
+     * - center verticall relative to middle of thumbnail
+     */
+    var thumbnail_offset = image.thumbnail.offset();
+    var anchor_top = thumbnail_offset.top + image.thumbnail.height() / 2;
+    var image_top = anchor_top - (image[0].height / 2);
+    if (image_top + image[0].height + 20 > $(document).height()) /* allow 20px padding */
+      image_top = $(document).height() - (image[0].height + 85);
+    if (image_top < 25)
+      image_top = 25;
+    var left = ($(document).width() / 2) - (image[0].width / 2);
+    if (left < 25)
+      left = 25;
+    $('#lightbox-image-frame').css('top', image_top + 'px').css('left', left + 'px').fadeIn('def');
   };
 
   function show_spinner() {
