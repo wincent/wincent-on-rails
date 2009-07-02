@@ -50,6 +50,15 @@ function lightbox(thumbnail) {
 
   };
 
+  function show_spinner() {
+    if ($('#lightbox-spinner-frame').length == 0)
+      /* don't add spinner more than once */
+      $(document.body).append($('<div id="lightbox-spinner-frame">' +
+        '<img id="lightbox-spinner" alt="spinner" src="/images/spinner-large.gif" />' +
+        '</div>'));
+    $('#lightbox-spinner-frame').show();
+  };
+
   /* start preloading image on mouseenter */
   link.mouseenter(function() {
     /* will store the preloaded image as a property in the thumbnail DOM element */
@@ -67,15 +76,8 @@ function lightbox(thumbnail) {
 
   /* show lightbox on click */
   var click = function() {
-    /* don't add spinner more than once */
-    var frame = $('#lightbox-spinner-frame');
-    if (frame.length == 0) {
-      frame = $('<div id="lightbox-spinner-frame">' +
-        '<img id="lightbox-spinner" alt="spinner" src="/images/spinner-large.gif" />' +
-        '</div>');
-      link.append(frame);
-    }
-    frame.show();
+    show_spinner();
+    /* BUG: need to do this on all lightbox elements, not just this one */
     link.unbind('click'); /* ignore multiple clicks */
     link.click(function() { return false; });
 
