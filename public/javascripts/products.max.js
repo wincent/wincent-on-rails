@@ -76,9 +76,13 @@ function lightbox(thumbnail) {
   /* show lightbox on click */
   var click = function() {
     show_spinner();
-    /* BUG: need to do this on all lightbox elements, not just this one */
-    link.unbind('click'); /* ignore multiple clicks */
-    link.click(function() { return false; });
+
+    /* ignore multiple clicks for all lightboxes */
+    $('.lightbox').each(function () {
+      $(this).parent().each(function () {
+        $(this).unbind('click').click(function() { return false; });
+      });
+    });
 
     if (thumbnail.fullsized.loaded)
       show_image(thumbnail.fullsized);
