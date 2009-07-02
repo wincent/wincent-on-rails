@@ -31,45 +31,6 @@ function lightbox(thumbnail) {
   link.wrap('<div class="lightbox-wrapper"></div>');
   link.prepend('<img class="widget expand" src="/images/dashboard-expand.png" />');
 
-  /* function to display image when required */
-  function show_image(image) {
-    /* if spinner on screen, hide it */
-    $('#lightbox-spinner-frame').hide();
-    var frame = $('#lightbox-image-frame');
-    if (frame.length == 0) {
-      /* add frame to DOM if not present already */
-      frame = $('<div id="lightbox-image-frame"></div>');
-      frame.append(image);
-      $('#content').prepend(frame);
-    }
-  };
-
-  /* (pre)load an image */
-  function load_image(img) {
-
-  };
-
-  function show_spinner() {
-    if ($('#lightbox-spinner-frame').length == 0)
-      /* don't add spinner more than once */
-      $(document.body).append($('<div id="lightbox-spinner-frame">' +
-        '<img id="lightbox-spinner" alt="spinner" src="/images/spinner-large.gif" />' +
-        '</div>'));
-    $('#lightbox-spinner-frame').show();
-  };
-
-  function dim_expand_widgets() {
-    $('.widget.expand').each(function() {
-      $(this).removeClass('opaque').addClass('translucent');
-    })
-  };
-
-  function undim_expand_widgets() {
-    $('.widget.expand').each(function() {
-      $(this).removeClass('translucent').addClass('opaque');
-    })
-  };
-
   /* start preloading image on mouseenter */
   link.mouseenter(function() {
     /* will store the preloaded image as a property in the thumbnail DOM element */
@@ -120,6 +81,39 @@ function lightbox(thumbnail) {
    * clicking on image also closes box
    * show "title" attribute as caption (white text on transparent dark background?)
    */
+
+  function show_image(image) {
+    /* if spinner on screen, hide it */
+    $('#lightbox-spinner-frame').hide();
+    var frame = $('#lightbox-image-frame');
+    if (frame.length == 0) {
+      /* add frame to DOM if not present already */
+      frame = $('<div id="lightbox-image-frame"></div>');
+      frame.append(image);
+      $('#content').prepend(frame);
+    }
+  };
+
+  function show_spinner() {
+    if ($('#lightbox-spinner-frame').length == 0)
+      /* don't add spinner more than once */
+      $(document.body).append($('<div id="lightbox-spinner-frame">' +
+        '<img id="lightbox-spinner" alt="spinner" src="/images/spinner-large.gif" />' +
+        '</div>'));
+    $('#lightbox-spinner-frame').show();
+  };
+
+  function dim_expand_widgets() {
+    $('.widget.expand').each(function() {
+      $(this).removeClass('opaque').addClass('translucent');
+    })
+  };
+
+  function undim_expand_widgets() {
+    $('.widget.expand').each(function() {
+      $(this).removeClass('translucent').addClass('opaque');
+    })
+  };
 }
 
 $(document).ready(function() {
