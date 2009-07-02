@@ -48,17 +48,17 @@ function lightbox(thumbnail) {
   });
 
   /* show lightbox on click */
-  var click = function() {
+  var click = function(e) {
     disable_expand_widgets();
-    if (thumbnail.fullsized.loaded)
-      show_image(thumbnail.fullsized);
+    if (e.data.tag.fullsized.loaded)
+      show_image(e.data.tag.fullsized);
     else {
       show_spinner();
-      global_pending_lightbox_image = thumbnail.fullsized;
+      global_pending_lightbox_image = e.data.tag.fullsized;
     }
     return false;
   }
-  link.click(click);
+  link.bind('click', { tag: thumbnail }, click);
 
   /*
    * show "title" attribute as caption (white text on transparent dark background?)
@@ -126,7 +126,7 @@ function lightbox(thumbnail) {
     $('.widget.expand').each(function() {
       $(this).removeClass('translucent').addClass('opaque');
     })
-    $('.lightbox').each(function() { $(this).parent().unbind('click').click(click); });
+    $('.lightbox').each(function() { $(this).parent().unbind('click').bind('click', { tag: this }, click); });
   };
 }
 
