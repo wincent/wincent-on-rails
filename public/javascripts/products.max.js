@@ -38,6 +38,7 @@ function lightbox(thumbnail) {
         return; /* already been here for this image */
     var image = $('<img />').attr('src', link.attr('href'));
     image.thumbnail = $(thumbnail); /* keep reference to "parent" thumbnail */
+    image.attr('title', image.thumbnail.attr('title'));
     $(image).load(function() {
       image.loaded = true;
       if (global_pending_lightbox_image == image) {
