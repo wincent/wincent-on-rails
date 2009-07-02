@@ -33,7 +33,6 @@ function lightbox(thumbnail) {
 
   /* function to display image when required */
   function show_image(image) {
-    alert('show');
     /* if spinner on screen, hide it */
     $('#lightbox-spinner-frame').hide();
     var frame = $('#lightbox-image-frame');
