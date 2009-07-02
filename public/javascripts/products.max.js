@@ -88,7 +88,9 @@ function lightbox(thumbnail) {
     if ($('#lightbox-image-frame').length == 0) {
       /* add frame to DOM if not present already */
       $('#content').prepend(
-        $('<div id="lightbox-image-frame"></div>').append(image)
+        $('<div id="lightbox-image-frame">' +
+          '<img class="widget close" src="/images/dashboard-close.png" />' +
+          '</div>').append(image)
       );
     }
   };
