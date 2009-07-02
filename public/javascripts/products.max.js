@@ -112,9 +112,7 @@ function lightbox(thumbnail) {
       $(this).removeClass('opaque').addClass('translucent');
     })
     $('.lightbox').each(function () {
-      $(this).parent().each(function () {
-        $(this).unbind('click').click(function() { return false; });
-      });
+      $(this).parent().unbind('click').click(function() { return false; });
     });
 
   };
