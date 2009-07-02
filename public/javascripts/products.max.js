@@ -29,7 +29,7 @@ function lightbox(thumbnail) {
   /* add "expand" widget */
   var link = $(thumbnail).parent();
   link.wrap('<div class="lightbox-wrapper"></div>');
-  link.prepend('<img class="widget expand" src="/images/dashboard-expand.png" />');
+  link.prepend('<img class="widget expand" alt="expand" title="Click to enlarge" src="/images/dashboard-expand.png" />');
 
   /* start preloading image on mouseenter */
   link.mouseenter(function() {
