@@ -49,13 +49,13 @@ function lightbox(thumbnail) {
 
   /* show lightbox on click */
   var click = function() {
-    show_spinner();
     disable_expand_widgets();
-
     if (thumbnail.fullsized.loaded)
       show_image(thumbnail.fullsized);
-    else
+    else {
+      show_spinner();
       global_pending_lightbox_image = thumbnail.fullsized;
+    }
     return false;
   }
   link.click(click);
