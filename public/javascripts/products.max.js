@@ -29,7 +29,7 @@ function lightbox(thumbnail) {
   /* add "expand" widget */
   var link = $(thumbnail).parent();
   link.wrap('<div class="lightbox-wrapper"></div>');
-  link.prepend('<img class="widget" src="/images/dashboard-expand.png" />');
+  link.prepend('<img class="widget expand" src="/images/dashboard-expand.png" />');
 
   /* function to display image when required */
   function show_image(image) {
@@ -58,6 +58,18 @@ function lightbox(thumbnail) {
     $('#lightbox-spinner-frame').show();
   };
 
+  function dim_expand_widgets() {
+    $('.widget.expand').each(function() {
+      $(this).removeClass('opaque').addClass('translucent');
+    })
+  };
+
+  function undim_expand_widgets() {
+    $('.widget.expand').each(function() {
+      $(this).removeClass('translucent').addClass('opaque');
+    })
+  };
+
   /* start preloading image on mouseenter */
   link.mouseenter(function() {
     /* will store the preloaded image as a property in the thumbnail DOM element */
@@ -76,6 +88,7 @@ function lightbox(thumbnail) {
   /* show lightbox on click */
   var click = function() {
     show_spinner();
+    dim_expand_widgets();
 
     /* ignore multiple clicks for all lightboxes */
     $('.lightbox').each(function () {
