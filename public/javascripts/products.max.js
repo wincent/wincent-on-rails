@@ -121,7 +121,7 @@ function lightbox(thumbnail) {
     $('.widget.expand').each(function() {
       $(this).removeClass('translucent').addClass('opaque');
     })
-    $('.lightbox').each(function() { $(this).parent().click(click); });
+    $('.lightbox').each(function() { $(this).parent().unbind('click').click(click); });
   };
 }
 
