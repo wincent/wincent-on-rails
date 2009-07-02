@@ -61,10 +61,6 @@ function lightbox(thumbnail) {
   }
   link.bind('click', { tag: thumbnail }, click);
 
-  /*
-   * show "title" attribute as caption (white text on transparent dark background?)
-   */
-
   function show_image(image) {
     /* if spinner on screen, hide it */
     $('#lightbox-spinner-frame').hide();
@@ -75,6 +71,7 @@ function lightbox(thumbnail) {
           '<a href="#" title="Click to dismiss" onclick="return false;">' +
           '<img class="widget close" src="/images/dashboard-close.png" />' +
           '</a>' +
+          '<div id="lightbox-caption"></div>' +
           '</div>').append(image).click(function() {
             $('#lightbox-image-frame').fadeOut('def');
             enable_expand_widgets();
@@ -86,6 +83,9 @@ function lightbox(thumbnail) {
       $('#lightbox-image-frame').find('img').not('.widget').remove();
       $('#lightbox-image-frame').append(image);
     }
+
+    /* update caption */
+    $('#lightbox-caption').html(image.attr('title'));
 
     /* position lightbox relative to thumbnail before fading it in:
      * - center horizontally relative to middle of document
