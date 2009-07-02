@@ -50,14 +50,7 @@ function lightbox(thumbnail) {
   /* show lightbox on click */
   var click = function() {
     show_spinner();
-    dim_expand_widgets();
-
-    /* ignore multiple clicks for all lightboxes */
-    $('.lightbox').each(function () {
-      $(this).parent().each(function () {
-        $(this).unbind('click').click(function() { return false; });
-      });
-    });
+    disable_expand_widgets();
 
     if (thumbnail.fullsized.loaded)
       show_image(thumbnail.fullsized);
@@ -67,19 +60,7 @@ function lightbox(thumbnail) {
   }
   link.click(click);
 
-  /* hide lightbox on second click */
-  var unclick = function() {
-
-    return false;
-  }
-
   /*
-   * on click, show spinner and load image (if image not loaded yet)
-   * background will be dark black, semi-transparent
-   * will probably have rounded corners
-   * then zoom out to show image
-   * show close box
-   * clicking on image also closes box
    * show "title" attribute as caption (white text on transparent dark background?)
    */
 
@@ -90,8 +71,13 @@ function lightbox(thumbnail) {
       /* add frame to DOM if not present already */
       $('#content').prepend(
         $('<div id="lightbox-image-frame">' +
+          '<a href="#" title="Click to dismiss" onclick="return false;">' +
           '<img class="widget close" src="/images/dashboard-close.png" />' +
-          '</div>').append(image)
+          '</a>' +
+          '</div>').append(image).click(function() {
+            $('#lightbox-image-frame').fadeOut('def');
+            enable_expand_widgets();
+          })
       );
     }
 
@@ -121,16 +107,23 @@ function lightbox(thumbnail) {
     $('#lightbox-spinner-frame').show();
   };
 
-  function dim_expand_widgets() {
+  function disable_expand_widgets() {
     $('.widget.expand').each(function() {
       $(this).removeClass('opaque').addClass('translucent');
     })
+    $('.lightbox').each(function () {
+      $(this).parent().each(function () {
+        $(this).unbind('click').click(function() { return false; });
+      });
+    });
+
   };
 
-  function undim_expand_widgets() {
+  function enable_expand_widgets() {
     $('.widget.expand').each(function() {
       $(this).removeClass('translucent').addClass('opaque');
     })
+    $('.lightbox').each(function() { $(this).parent().click(click); });
   };
 }
 
