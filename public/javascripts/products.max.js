@@ -80,6 +80,11 @@ function lightbox(thumbnail) {
           })
       );
     }
+    else {
+      /* frame was already present, just have to swap in new image */
+      $('#lightbox-image-frame').find('img').not('.widget').remove();
+      $('#lightbox-image-frame').append(image);
+    }
 
     /* position lightbox relative to thumbnail before fading it in:
      * - center horizontally relative to middle of document
