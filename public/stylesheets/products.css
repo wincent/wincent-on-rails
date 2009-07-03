@@ -3,7 +3,7 @@
 
 #lightbox-image-frame { position: absolute; margin: 0 auto; z-index: 100; padding: 20px 20px 35px 20px; background: black; -webkit-border-radius: 15px; -moz-border-radius: 15px; -webkit-box-shadow: 4px 4px 4px #888; -moz-box-shadow: 4px 4px 4px #888; box-shadow: 4px 4px 4px #888; display: none; }
 
-#lightbox-caption { position: absolute; bottom: 10px; width: 100%; text-align: center; color: white; }
+#lightbox-caption { position: absolute; left: 0px; bottom: 10px; width: 100%; text-align: center; color: white; }
 
 #lightbox-spinner-frame { position: fixed; z-index: 100; top: 40%; left: 45%; height: 45px; width: 45px; background: white; -webkit-border-radius: 5px; -moz-border-radius: 5px; -webkit-opacity: 0.75; -moz-opacity: 0.75; opacity: 0.75; filter: alpha(opacity=75); display: none; }
 
