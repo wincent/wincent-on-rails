@@ -127,7 +127,10 @@ function lightbox(thumbnail) {
       w_origin_y = 0;
     else if (w_origin_y + w_height > $(document).height())
       w_origin_y = $(document).height() - w_height;
-    window.scrollTo(w_origin_x, w_origin_y); // the non-animated version
+    $('html,body').animate({
+      scrollLeft: w_origin_x,
+      scrollTop: w_origin_y
+    }, 'slow');
   };
 
   function show_spinner() {
