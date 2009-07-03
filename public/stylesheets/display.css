@@ -83,6 +83,8 @@ a.mailto:after { content: url(../images/mailto.png); }
 
 div.two-columns { float: left; width: 50%; margin-bottom: 3em; }
 
+div.column { padding-left: 1.5em; padding-right: 1.5em; }
+
 #cacheable-flash ul { margin: 0em; }
 #cacheable-flash li { color: black; }
 
