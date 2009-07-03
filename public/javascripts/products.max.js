@@ -102,6 +102,32 @@ function lightbox(thumbnail) {
     if (left < 25)
       left = 25;
     $('#lightbox-image-frame').css('top', image_top + 'px').css('left', left + 'px').fadeIn('def');
+
+    /* if possible, scroll so that lightbox is centered within viewport */
+    var w_width = window.innerWidth;
+    var w_height = window.innerHeight;
+    var w_origin_x = window.pageXOffset;
+    var w_origin_y = window.pageYOffset;
+    if (typeof w_width == 'undefined' ||
+        typeof w_height == 'undefined' ||
+        typeof w_origin_x == 'undefined' ||
+        typeof w_origin_y == 'undefined')
+      return;
+    var lightbox_center_x = left + image[0].width / 2;
+    var lightbox_center_y = image_top + image[0].height / 2;
+    var viewport_center_x = w_origin_x + w_width / 2;
+    var viewport_center_y = w_origin_y + w_height / 2;
+    w_origin_x -= viewport_center_x - lightbox_center_x;
+    w_origin_y -= viewport_center_y - lightbox_center_y;
+    if (w_origin_x < 0)
+      w_origin_x = 0;
+    else if (w_origin_x + w_width > $(document).width())
+      w_origin_x = $(document).width() - w_width;
+    if (w_origin_y < 0)
+      w_origin_y = 0;
+    else if (w_origin_y + w_height > $(document).height())
+      w_origin_y = $(document).height() - w_height;
+    window.scrollTo(w_origin_x, w_origin_y); // the non-animated version
   };
 
   function show_spinner() {
