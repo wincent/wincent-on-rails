@@ -89,7 +89,7 @@ function lightbox(thumbnail) {
 
     /* position lightbox relative to thumbnail before fading it in:
      * - center horizontally relative to middle of document
-     * - center verticall relative to middle of thumbnail
+     * - center vertically relative to middle of thumbnail
      */
     var thumbnail_offset = image.thumbnail.offset();
     var anchor_top = thumbnail_offset.top + image.thumbnail.height() / 2;
