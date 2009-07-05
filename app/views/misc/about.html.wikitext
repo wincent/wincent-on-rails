@@ -21,7 +21,7 @@ My development interests include:
 
 You'll find a number of resources that I hope will be useful:
 
-* '''[http://wincent.com/a/products/ Product pages]:''' where you can find information about all of my products.
+* '''[/products Product pages]:''' where you can find information about all of my products.
 * '''[/blog The blog]:''' where I post articles on things related to development and make announcements; see also the [/twitter twitter] log.
 * '''[/wiki The wiki]:''' where I keep notes on technical subjects.
 * '''[/support Support pages]:''' where you'll find things like [/issues the issue tracker] and the [/forums forums].
