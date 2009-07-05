@@ -51,8 +51,9 @@ private
     "#{self.permalink}.#{self.icon_extension}"
   end
 
+  # Absolute path to icon on disk
   def icon_path_on_disk
-    File.join(ICON_DIR, icon_filename)
+    File.join(Rails.root, ICON_DIR, icon_filename)
   end
 
   def write_icon
