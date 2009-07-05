@@ -1,7 +1,10 @@
 module ProductsHelper
   # for now only called by products#show
   def product_page_title product, page
-    title = product.name
-    title << ": #{page.title}" if page
+    if page
+      title = "#{product.name}: #{page.title}"
+    else
+      title = product.name
+    end
   end
 end
