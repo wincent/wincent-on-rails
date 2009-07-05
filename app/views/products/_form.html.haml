@@ -8,6 +8,19 @@
       %th Permalink
       %td=f.text_field :permalink
     %tr
+      -# TODO: AJAX outcomplete?
+      %th
+        Category
+        %br
+        %span.annotation (Consumer, Developer, Server)
+      %td=f.text_field :category
+    %tr
+      %th
+        Position
+        %br
+        %span.annotation (integer)
+      %td=f.text_field :position
+    %tr
       %th
         Description
         %br

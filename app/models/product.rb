@@ -7,8 +7,8 @@ class Product < ActiveRecord::Base
   validates_uniqueness_of :bundle_identifier, :allow_blank => true
   after_save              :process_icon
   after_destroy           :cleanup_icons
-  attr_accessible         :name, :permalink, :bundle_identifier, :description,
-    :footer, :header, :icon
+  attr_accessible         :category, :name, :permalink, :position,
+    :bundle_identifier, :description, :footer, :header, :icon
   # TODO: acts_as_searchable :attributes => [:footer, :header] (will require HTML tokenization)
 
   # path on disk relative to application root
