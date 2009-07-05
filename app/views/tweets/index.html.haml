@@ -1,4 +1,8 @@
 -atom_link tweets_path(:format => :atom)
+#breadcrumbs
+  =link_to 'Home', root_path
+  &raquo;
+  Twitter
 %h1
   Tweets
   =feed_icon tweets_path(:format => :atom)

@@ -4,6 +4,12 @@
     $(function() {
       ajax_comment_form('/twitter/#{@tweet.id}/comments/new');
     });
+#breadcrumbs
+  =link_to 'Home', root_path
+  &raquo;
+  =link_to 'Twitter', tweets_path
+  &raquo;
+  ==Tweet ##{@tweet.id}
 %h1==Tweet ##{@tweet.id}
 %div[@tweet]
   =@tweet.body.w
