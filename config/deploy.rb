@@ -77,6 +77,9 @@ task :staging do
   depend  :remote,    :directory, '/home/kreacher.wincent.com/deploy'
   depend  :remote,    :directory, '/home/kreacher.wincent.com/deploy/shared'
   depend  :remote,    :directory, '/home/kreacher.wincent.com/deploy/shared/files'
+  depend  :remote,    :directory, '/home/kreacher.wincent.com/deploy/shared/system'
+  depend  :remote,    :directory, '/home/kreacher.wincent.com/deploy/shared/system/products'
+  depend  :remote,    :directory, '/home/kreacher.wincent.com/deploy/shared/system/products/icons'
 end
 
 desc <<-END
@@ -100,6 +103,9 @@ task :production do
   depend  :remote,    :directory, '/home/rails.wincent.com/deploy'
   depend  :remote,    :directory, '/home/rails.wincent.com/deploy/shared'
   depend  :remote,    :directory, '/home/rails.wincent.com/deploy/shared/files'
+  depend  :remote,    :directory, '/home/rails.wincent.com/deploy/shared/system'
+  depend  :remote,    :directory, '/home/rails.wincent.com/deploy/shared/system/products'
+  depend  :remote,    :directory, '/home/rails.wincent.com/deploy/shared/system/products/icons'
 end
 
 task :check_target_environment do
