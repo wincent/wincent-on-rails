@@ -3,6 +3,17 @@
 -content_for :javascript do
   =javascript_include_tag 'products'
 -@page_title = product_page_title @product, @page
+#breadcrumbs
+  =link_to 'Home', root_path
+  &raquo;
+  =link_to 'Products', products_path
+  &raquo;
+  -if @page && !@page.front
+    =link_to @product.name, product_path(@product)
+    &raquo;
+    =@page.title
+  -else
+    =@product.name
 #product
   =@product.header
   =@page.body if @page

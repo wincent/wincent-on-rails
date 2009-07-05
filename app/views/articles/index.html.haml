@@ -1,5 +1,9 @@
 -atom_link articles_path(:format => :atom)
 -@page_title = 'wiki index'
+#breadcrumbs
+  =link_to 'Home', root_path
+  &raquo;
+  Wiki
 %h1 Wiki articles
 %h2.major
   Recently updated

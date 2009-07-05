@@ -1,5 +1,11 @@
 -if @post.public?
   -atom_link @post
+#breadcrumbs
+  =link_to 'Home', root_path
+  &raquo;
+  =link_to 'Blog', posts_path
+  &raquo;
+  =h @post.title
 .post
   -@page_title = @post.title
   %h1.major=h @post.title

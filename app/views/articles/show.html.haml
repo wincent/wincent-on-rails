@@ -1,4 +1,10 @@
 -@page_title = @article.title
+#breadcrumbs
+  =link_to 'Home', root_path
+  &raquo;
+  =link_to 'Wiki', articles_path
+  &raquo;
+  =h @article.title
 %h1.major=h @article.title
 .when
   =timeinfo @article

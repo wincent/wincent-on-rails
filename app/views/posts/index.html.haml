@@ -2,6 +2,10 @@
   =stylesheet_link_tag 'posts'
 -@page_title = 'blog index'
 -atom_link posts_path(:format => :atom)
+#breadcrumbs
+  =link_to 'Home', root_path
+  &raquo;
+  Blog
 #posts
   %h1
     Blog posts
