@@ -159,6 +159,7 @@ function ajax_check_box(selector, class_name, attribute_name, url) {
   });
 }
 
+// TODO: support optgroup here (for products, for example)
 function ajax_select(selector, class_name, attribute_name, options, include_blank, url) {
   var model_id = $(selector).attr('id'); // issue_22
   var record_id = model_id.match(/_(\d+)$/)[1]; // 22

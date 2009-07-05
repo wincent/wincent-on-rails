@@ -156,7 +156,6 @@ module ApplicationHelper
 
   # For use in product pop-up menus in forms.
   def product_options
-    # TODO: sort this by product position (Product model doesn't actually have this yet, but it will; see the Forum model)
     Product.find(:all).collect { |product| [product.name, product.id] }
   end
 
