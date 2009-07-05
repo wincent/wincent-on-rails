@@ -1,5 +1,6 @@
 class Product < ActiveRecord::Base
   has_many                :pages, :dependent => :destroy
+  default_scope           :order => 'category, position'
   validates_presence_of   :name, :permalink
   validates_uniqueness_of :name, :permalink
   # validates_format_of :permalink, :with => /\A[a-z0-9_\-]+\z/i, :message =>

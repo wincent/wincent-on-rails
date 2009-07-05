@@ -42,3 +42,25 @@ describe Product, 'validating the bundle identifier' do
     2.times { create_product(:bundle_identifier => '').should be_valid }
   end
 end
+
+describe Product, 'default scope' do
+  it 'should return products in category order by default' do
+    c1 = create_product :category => 'consumer', :position => 10
+    s1 = create_product :category => 'server', :position => 3
+    d1 = create_product :category => 'developer', :position => 6
+    Product.all.should == [c1, d1, s1]
+  end
+
+  it 'should return products in position order within each category' do
+    c1 = create_product :category => 'consumer', :position => 10
+    c2 = create_product :category => 'consumer', :position => 15
+    c3 = create_product :category => 'consumer', :position => 1
+    s1 = create_product :category => 'server', :position => 3
+    s2 = create_product :category => 'server', :position => 2
+    s3 = create_product :category => 'server', :position => 9
+    d1 = create_product :category => 'developer', :position => 6
+    d2 = create_product :category => 'developer', :position => 8
+    d3 = create_product :category => 'developer', :position => 1
+    Product.all.should == [c3, c1, c2, d3, d1, d2, s2, s1, s3]
+  end
+end
