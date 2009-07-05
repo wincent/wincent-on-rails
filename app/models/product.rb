@@ -17,6 +17,11 @@ class Product < ActiveRecord::Base
   # path for use when constructing URLs
   ICON_PATH = '/system/products/icons'
 
+  # returns ordered hash of all products organized by categories
+  def self.categorized_products
+    all.group_by(&:category)
+  end
+
   def before_save
     # empty strings might falsely trigger database-level uniqueness constraint
     self.bundle_identifier = nil if self.bundle_identifier.blank?
