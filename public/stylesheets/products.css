@@ -7,7 +7,7 @@ dd { margin-left: 0px; min-height: 64px; color: gray; }
 dt img { position: absolute; top: -10px; left: -96px; }
 
 
-#product-container { margin-top: 30px; width: 100%; }
+#product-container { margin: 15px -15px 0px -15px; width: 100%; }
 
 #product-container.synergy { background: url(../assets/synergy/reflection.png) no-repeat right top; }
 
