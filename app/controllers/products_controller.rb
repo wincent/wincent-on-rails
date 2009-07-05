@@ -6,7 +6,7 @@ class ProductsController < ApplicationController
   cache_sweeper :product_sweeper, :only => [ :create, :update ] # and later, :destroy
 
   def index
-    @products = Product.find :all
+    @products = Product.categorized_products
     # TODO: Atom feed will be for product update notices (all products)
   end
 
