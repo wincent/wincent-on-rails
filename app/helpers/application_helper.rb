@@ -154,9 +154,12 @@ module ApplicationHelper
       :title => "show items tagged with: #{query}"
   end
 
-  # For use in product pop-up menus in forms.
+  # For use in AJAX product pop-up menus.
   def product_options
-    Product.find(:all).collect { |product| [product.name, product.id] }
+    sql = 'SELECT id, name, category FROM products'
+    Product.find_by_sql(sql).group_by(&:category).to_a.collect do |category, products|
+      [category, products.collect { |product| [product.name, product.id] }]
+    end
   end
 
   # Convert key names from "feature_request" etc to "feature request".
