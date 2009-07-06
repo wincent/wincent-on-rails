@@ -170,31 +170,32 @@ function ajax_select(selector, class_name, attribute_name, options, include_blan
     new_contents = new_contents + '<option value=""></option>';
   }
   var selection_found = false;
+
+  // helper function to reduce duplication below
+  function option_tag(opt) {
+    var tag = '';
+    for (var i = 0; i < opt.length; i++) {
+      if (field_text == opt[i][0]) {
+        tag = tag + '<option value="' + opt[i][1] + '" selected="selected">' + opt[i][0] + '</option>';
+        selection_found = true;
+      } else {
+        tag = tag + '<option value="' + opt[i][1] + '">' + opt[i][0] + '</option>';
+      }
+    }
+    return tag;
+  };
+
   if (options.length > 0 && options[0].length >= 2 && (options[0][1] instanceof Array))
   {
     // we have an array of arrays of arrays: this is the optgroup case
     for (var i = 0; i < options.length; i++) {
       new_contents = new_contents + '<optgroup label="' + options[i][0] + '">';
-      for (var j = 0; j < options[i][1].length; j++) {
-        if (field_text == options[i][1][j][0]) {
-          new_contents = new_contents + '<option value="' + options[i][1][j][1] + '" selected="selected">' + options[i][1][j][0] + '</option>';
-          selection_found = true;
-        } else {
-          new_contents = new_contents + '<option value="' + options[i][1][j][1] + '">' + options[i][1][j][0] + '</option>';
-        }
-      }
+      new_contents = new_contents + option_tag(options[i][1]);
       new_contents = new_contents + '</optgroup>';
     }
   }
   else { // non-optgroup case
-    for (var i = 0; i < options.length; i++) {
-      if (field_text == options[i][0]) {
-        new_contents = new_contents + '<option value="' + options[i][1] + '" selected="selected">' + options[i][0] + '</option>';
-        selection_found = true;
-      } else {
-        new_contents = new_contents + '<option value="' + options[i][1] + '">' + options[i][0] + '</option>';
-      }
-    }
+    new_contents = new_contents + option_tag(options);
   }
   new_contents = new_contents + '</select><img alt="Spinner" id="' + spinner_id + '" class= "spinner" src="/images/spinner.gif" />';
   field_id.html(new_contents);
