@@ -12,9 +12,9 @@
   =mail_to APP_CONFIG['admin_email'], APP_CONFIG['admin_name']
 -if @redirected_from
   -if admin?
-    %p==(Redirected from #{link_to h(@redirected_from.title), edit_article_path(@redirected_from)})
+    %p (Redirected from #{link_to h(@redirected_from.title), edit_article_path(@redirected_from)})
   -else
-    %p==(Redirected from #{h @redirected_from.title})
+    %p (Redirected from #{h @redirected_from.title})
 .article
   =@article.body.w :base_heading_level => 1
 =render 'shared/tags', :tags => @article.tags
@@ -42,4 +42,4 @@
     =render 'comments/form'
   -else
     -# comments are currently closed but they were open in the past because we have at least one existing comment
-    %p==Comments are now closed for this article. You can discuss this further in the #{link_to 'forums', forums_path}.
+    %p Comments are now closed for this article. You can discuss this further in the #{link_to 'forums', forums_path}.

@@ -28,7 +28,7 @@
       %span.annotation
         please be as detailed as possible
         %br
-        ==(#{wikitext_cheatsheet})
+        (#{wikitext_cheatsheet})
     %td=f.text_area(:description)
   %tr
     %th
@@ -37,7 +37,7 @@
         %br
         %span.annotation
           this ticket must be public because you are posting anonymously
-          ==(#{link_to 'log in', login_path(:original_uri => request.request_uri)})
+          (#{link_to 'log in', login_path(:original_uri => request.request_uri)})
     %td
       =f.check_box :public, { :disabled => !logged_in? }
       allow other visitors to see this ticket? (it may be helpful to them)

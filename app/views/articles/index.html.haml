@@ -18,7 +18,7 @@
     %tr
       %td=link_to h(article.title), article_path(article)
       %td=timeinfo article
-%h2.major==Top #{link_to 'tags', tags_path} in the wiki
+%h2.major Top #{link_to 'tags', tags_path} in the wiki
 .cloud
   -for tag in @tags
     =scaled_tag tag, 'article'
