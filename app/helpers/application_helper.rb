@@ -198,14 +198,6 @@ module ApplicationHelper
     end
   end
 
-  def admin_only &block
-    if admin?
-      haml_tag :div, { :class => 'admin' } do
-        yield
-      end
-    end
-  end
-
   def link_to_commentable commentable
     case commentable
     when Article

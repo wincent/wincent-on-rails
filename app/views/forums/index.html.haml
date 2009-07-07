@@ -26,6 +26,6 @@
       -if admin?
         %td
           =link_to 'edit', edit_forum_path(forum)
--admin_only do
+-if admin?
   .links
     =link_to 'new forum', new_forum_path
