@@ -14,8 +14,8 @@
       =link_to 'edit', edit_issue_path(issue)
       -# TODO: make these into a static form which posts to issues#update or destroy
       -# then with unobtrusive JS replace it with the AJAX version
-      =button_to_destroy_issue issue
-      =button_to_moderate_issue_as_ham issue
+      -button_to_destroy_issue issue
+      -button_to_moderate_issue_as_ham issue
 .pagination=@paginator.pagination_links if @paginator
 .links
   =link_to 'public issues index', issues_path

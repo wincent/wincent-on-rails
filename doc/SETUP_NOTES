@@ -308,7 +308,7 @@ ended up moving it back to vendor/plugins, which funnily enough works:
 
   # Haml 2.0.8 update
   git rm -r vendor/gems/haml-2.0.6 # doesn't actually delete directory
-  rm -r vendor/gems/haml-2.0.6     # so must delete that manually
+  rm -r vendor/gems/haml-2.0.6     # so must delete that manually
   vi config/environment.rb         # update config.gem line
   rake gems:unpack
   rake spec
@@ -346,7 +346,7 @@ ended up moving it back to vendor/plugins, which funnily enough works:
   # Haml 2.0.9 update
   sudo gem install --no-ri haml
   git rm -r vendor/gems/haml-2.0.8 # doesn't actually delete directory
-  rm -r vendor/gems/haml-2.0.8     # so must delete that manually
+  rm -r vendor/gems/haml-2.0.8     # so must delete that manually
   vi config/environment.rb         # update config.gem line
   rake gems
   rake gems:unpack
@@ -408,7 +408,7 @@ ended up moving it back to vendor/plugins, which funnily enough works:
 
   # this step which we usually need obviously isn't necessary:
   #rm vendor/gems/wikitext-1.5.1/ext/*.o \
-  #   vendor/gems/wikitext-1.5.1/ext/Makefile \
+  #   vendor/gems/wikitext-1.5.1/ext/Makefile \
   #   vendor/gems/wikitext-1.5.1/ext/mkmf.log
 
   # RSpec 1.2.2 update
@@ -516,3 +516,15 @@ ended up moving it back to vendor/plugins, which funnily enough works:
   git patch config/environments/test.rb
   rake spec
   cucumber
+
+  # Haml 2.2.0 update
+  sudo gem install --no-ri haml
+  git rm -r vendor/gems/haml-2.0.9 # doesn't actually delete directory
+  rm -r vendor/gems/haml-2.0.9     # so must delete that manually
+  vi config/environment.rb         # update config.gem line
+  rake gems
+  rake gems:unpack
+  rake spec
+  git add vendor/gems/haml-2.2.0
+  git add config/environment.rb
+  git add doc/SETUP_NOTES
