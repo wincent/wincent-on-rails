@@ -268,7 +268,7 @@ module ApplicationHelper
         JS
       end
       haml_tag :input, { :name => 'button', :onclick => onclick,
-        :type => 'submit', :value => 'destroy' }
+        :type => 'button', :value => 'destroy' }
     end
   end
 
@@ -292,7 +292,7 @@ module ApplicationHelper
         JS
       end
       haml_tag :input, { :name => 'button', :onclick => onclick,
-        :type => 'submit', :value => 'ham' }
+        :type => 'button', :value => 'ham' }
     end
   end
 
