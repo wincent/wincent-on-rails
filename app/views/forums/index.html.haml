@@ -12,7 +12,7 @@
     -if admin?
       %th Actions
   -for forum in @forums
-    %tr{ :class => "forum #{cycle('odd', 'even')}" }
+    %tr(class="forum #{cycle('odd', 'even')}")
       %td
         =link_to forum.name, forum_path(forum)
         -unless forum.description.blank?

@@ -13,27 +13,27 @@
   =link_to 'Issues', issues_path
   &raquo;
   ="#{@issue.kind_string.humanize} \##{@issue.id.to_s}"
-%div{ :class => 'issue' + (@issue.public ? '' : ' private'), :id => "issue_#{@issue.id}" }
-  %h1{ :class => "major #{@issue.kind_string.parameterize}" }="#{@issue.kind_string.humanize} \##{@issue.id.to_s}"
+%div(class="issue#{@issue.public ? '' : ' private'" id="issue_#{@issue.id}")
+  %h1(class="major #{@issue.kind_string.parameterize}")="#{@issue.kind_string.humanize} \##{@issue.id.to_s}"
   .prev_next
     =link_to_prev_issue @prev
     =link_to_next_issue @next
   %table.main
     %tr
       %th Kind
-      %td{'id' => "issue_#{@issue.id}_kind"}=@issue.kind_string
+      %td(id="issue_#{@issue.id}_kind")=@issue.kind_string
     %tr
       %th Summary
-      %td{'id' => "issue_#{@issue.id}_summary"}=h @issue.summary
+      %td(id="issue_#{@issue.id}_summary")=h @issue.summary
     %tr
       %th Product
-      %td{'id' => "issue_#{@issue.id}_product_id"}=link_to_product_issues @issue.product
+      %td(id="issue_#{@issue.id}_product_id")=link_to_product_issues @issue.product
     %tr
       %th When
       %td=timeinfo @issue
     %tr
       %th Status
-      %td{'id' => "issue_#{@issue.id}_status"}=@issue.status_string
+      %td(id="issue_#{@issue.id}_status")=@issue.status_string
     %tr
       %th Reporter
       %td=link_to_user @issue.user
@@ -51,16 +51,16 @@
     -if admin?
       %tr
         %th Public?
-        %td{'id' => "issue_#{@issue.id}_public"}=@issue.public?
+        %td(id="issue_#{@issue.id}_public")=@issue.public?
     %tr
       %th Tags
-      %td{'id' => "issue_#{@issue.id}_pending_tags"}=tag_links(@issue)
+      %td(id="issue_#{@issue.id}_pending_tags")=tag_links(@issue)
 %h2.major
   Comments
   =feed_icon issue_path(@issue, :format => :atom)
 %table.comments
   -for comment in @comments
-    %tr{ :class => "comment #{cycle('even', 'odd')}" + (comment.public? ? '' : ' private'), :id => "comment_#{comment.id}" }
+    %tr(class="comment #{cycle('even', 'odd') + (comment.public? ? '' : ' private')}" id="comment_#{comment.id}")
       %th
         =link_to_user comment.user
         %br

@@ -3,7 +3,7 @@
   %h2.major=taggables_search_summary @tags, @taggables
   =render 'filterbox', :tags => @tags[:found]
   =render 'taggings'
-%div{ :style => 'clear:both;' }
+%div(style='clear:both;')
   %h2.major Search
   -form_tag search_tags_path, :method => 'get' do
     %span.annotation Find items which feature <em>all</em> of the specified tags

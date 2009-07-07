@@ -27,7 +27,8 @@
     =feed_icon post_path(@post, :format => :atom)
   .comments
     -for comment in @comments
-      %div{ :class => "comment " + (comment.user && comment.user.superuser? ? 'admin' : cycle('even', 'odd')), :id => "comment_#{comment.id}" }
+      %div(class="comment #{comment.user && comment.user.superuser? ? 'admin' : cycle('even', 'odd')}"
+           id="comment_#{comment.id}")
         %blockquote=comment.body.w :base_heading_level => 2
         %cite
           =link_to_user comment.user

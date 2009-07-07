@@ -4,7 +4,7 @@
   =link_to_issue_search 'search again'
   =link_to 'open a ticket', new_issue_path, :title => "Don't forget to search first before opening a ticket"
   =link_to 'support overview', support_path
-#issue_search{:style => 'display:none;'}
+#issue_search(style='display:none;')
   =render 'issues/search'
 %h2.major Results
 =render 'issues/issues'

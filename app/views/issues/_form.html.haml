@@ -14,8 +14,8 @@
       %br
       %span.annotation optional (leave blank for general issues)
     %td
-      %select.issue_product_id{:name => 'issue[product_id]'}
-        %option{:value => ''}
+      %select.issue_product_id(name='issue[product_id]')
+        %option(value='')
         =option_groups_from_collection_for_select Product.categorized_products, :last, :first, :id, :name, (@issue.product ? @issue.product.id : nil)
   -if admin?
     %tr

@@ -12,8 +12,8 @@
     -sortable_header_cell :taggings_count, 'Taggings count'
     %th Actions
   -for @tag in @tags
-    %tr{:class => "tag #{cycle('odd', 'even')}", :id => "tag_#{@tag.id}"}
-      %td{'id' => "tag_#{@tag.id}_name"}=@tag.name
+    %tr(class="tag #{cycle('odd', 'even')}" id="tag_#{@tag.id}")
+      %td(id="tag_#{@tag.id}_name")=@tag.name
       %td=@tag.taggings_count
       %td.links
         =link_to 'edit', edit_tag_path(@tag)

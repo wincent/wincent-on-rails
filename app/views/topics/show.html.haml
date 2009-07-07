@@ -14,7 +14,7 @@
   =h @page_title
   =feed_icon forum_topic_path(@topic.forum, @topic, :format => :atom)
 %table[@topic]
-  %tr{ :class => 'comment odd' }
+  %tr(class='comment odd')
     %td
       =link_to_user @topic.user
       %br
@@ -27,7 +27,7 @@
         =link_to 'edit', edit_forum_topic_path(@forum, @topic)
     %td=@topic.body.w :base_heading_level => 1
   -for comment in @comments
-    %tr{ :class => "comment #{cycle('even', 'odd')}", :id => "comment_#{comment.id}" }
+    %tr(class="comment #{cycle('even', 'odd')}" id="comment_#{comment.id}")
       %td
         =link_to_user comment.user
         %br
