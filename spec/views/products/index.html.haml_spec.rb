@@ -4,20 +4,22 @@ describe '/products/index.html.haml' do
   include ProductsHelper
 
   before do
-    product_1 = mock_model(Product)
-    product_1.should_receive(:name).and_return('Synergy')
-    product_1.should_receive(:icon_path).at_least(1).and_return(nil)
-    product_1.should_receive(:description).at_least(1).and_return('An iTunes controller')
-    product_2 = mock_model(Product)
-    product_2.should_receive(:name).and_return('Synergy Advance')
-    product_2.should_receive(:icon_path).at_least(1).and_return('/system/products/icons/synergy-advance.png')
-    product_2.should_receive(:description).at_least(1).and_return('An improved iTunes accessory')
-    assigns[:products] = [product_1, product_2]
+    create_product  :name => 'Synergy',
+                    :description => 'An iTunes controller',
+                    :category => 'Consumer'
+    create_product  :name => 'Synergy Advance',
+                    :description => 'An improved iTunes accessory',
+                    :category => 'Consumer'
+    assigns[:products] = Product.categorized_products
     render '/products/index.html.haml'
   end
 
   it 'should render list of products' do
-    response.should have_tag('h2', 'Synergy')
-    response.should have_tag('h2', 'Synergy Advance')
+    response.should have_tag('h3', 'Synergy')
+    response.should have_tag('h3', 'Synergy Advance')
+  end
+
+  it 'should show category headings' do
+    response.should have_tag('h2', 'Consumer products')
   end
 end

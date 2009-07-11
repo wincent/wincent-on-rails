@@ -20,12 +20,12 @@ describe ProductsController, 'index action' do
   end
 
   it 'should find all products' do
-    Product.should_receive(:find).with(:all).and_return(@products)
+    Product.should_receive(:categorized_products)
     do_get
   end
 
   it 'should assign found products for the view' do
-    Product.stub!(:find).and_return(@products)
+    Product.stub!(:categorized_products).and_return(@products)
     do_get
     assigns[:products].should == @products
   end
