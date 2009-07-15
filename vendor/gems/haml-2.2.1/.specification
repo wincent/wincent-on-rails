@@ -1,7 +1,7 @@
 --- !ruby/object:Gem::Specification 
 name: haml
 version: !ruby/object:Gem::Version 
-  version: 2.2.0
+  version: 2.2.1
 platform: ruby
 authors: 
 - Nathan Weizenbaum
@@ -10,7 +10,7 @@ autorequire:
 bindir: bin
 cert_chain: []
 
-date: 2009-07-06 00:00:00 +02:00
+date: 2009-07-12 00:00:00 +02:00
 default_executable: 
 dependencies: 
 - !ruby/object:Gem::Dependency 
@@ -75,12 +75,12 @@ files:
 - lib/sass/tree/node.rb
 - lib/sass/tree/for_node.rb
 - lib/sass/tree/debug_node.rb
+- lib/sass/tree/import_node.rb
 - lib/sass/tree/while_node.rb
 - lib/sass/tree/mixin_def_node.rb
 - lib/sass/tree/if_node.rb
 - lib/sass/tree/mixin_node.rb
 - lib/sass/tree/directive_node.rb
-- lib/sass/tree/file_node.rb
 - lib/sass/tree/rule_node.rb
 - lib/sass/tree/prop_node.rb
 - lib/sass/tree/variable_node.rb

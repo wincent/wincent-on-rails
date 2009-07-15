@@ -528,3 +528,15 @@ ended up moving it back to vendor/plugins, which funnily enough works:
   git add vendor/gems/haml-2.2.0
   git add config/environment.rb
   git add doc/SETUP_NOTES
+
+  # Haml 2.2.1 update
+  sudo gem install --no-ri haml
+  git rm -r vendor/gems/haml-2.2.0 # doesn't actually delete directory
+  rm -r vendor/gems/haml-2.2.0     # so must delete that manually
+  vi config/environment.rb         # update config.gem line
+  rake gems
+  rake gems:unpack
+  rake spec
+  git add vendor/gems/haml-2.2.1
+  git add config/environment.rb
+  git add doc/SETUP_NOTES

@@ -34,7 +34,7 @@ class SassPluginTest < Test::Unit::TestCase
   end
 
   def test_update_needed_when_modified
-    sleep(1)
+    sleep 1
     FileUtils.touch(template_loc('basic'))
     assert Sass::Plugin.stylesheet_needs_update?('basic', template_loc, tempfile_loc)
     Sass::Plugin.update_stylesheets
@@ -42,7 +42,7 @@ class SassPluginTest < Test::Unit::TestCase
   end
 
   def test_update_needed_when_dependency_modified
-    sleep(1)
+    sleep 1
     FileUtils.touch(template_loc('basic'))
     assert Sass::Plugin.stylesheet_needs_update?('import', template_loc, tempfile_loc)
     Sass::Plugin.update_stylesheets
@@ -89,15 +89,6 @@ class SassPluginTest < Test::Unit::TestCase
     assert_renders_correctly('more1_with_line_comments', 'more1', :prefix => 'more_')
   end
 
-  def test_rails_update    
-    File.delete(tempfile_loc('basic'))
-    assert Sass::Plugin.stylesheet_needs_update?('basic', template_loc, tempfile_loc)
-
-    ActionController::Base.new.process
-
-    assert !Sass::Plugin.stylesheet_needs_update?('basic', template_loc, tempfile_loc)
-  end
-
   def test_merb_update
     begin
       require 'merb'
@@ -129,6 +120,21 @@ class SassPluginTest < Test::Unit::TestCase
 
   def test_doesnt_render_partials
     assert !File.exists?(tempfile_loc('_partial'))
+  end
+
+  ## Regression
+
+  def test_cached_dependencies_update
+    FileUtils.mv(template_loc("basic"), template_loc("basic", "more_"))
+    set_plugin_opts :load_paths => [result_loc, template_loc(nil, "more_")]
+
+    sleep 1
+    FileUtils.touch(template_loc("basic", "more_"))
+    assert Sass::Plugin.stylesheet_needs_update?("import", template_loc, tempfile_loc)
+    Sass::Plugin.update_stylesheets
+    assert_renders_correctly("import")
+  ensure
+    FileUtils.mv(template_loc("basic", "more_"), template_loc("basic"))
   end
 
  private
@@ -191,6 +197,11 @@ class SassPluginTest < Test::Unit::TestCase
       :always_update => true,
     }.merge(overrides)
   end
+
+  def wait_a_tick
+    time = Time.now
+    loop {break if Time.now.sec != time.sec}
+  end
 end
 
 module Sass::Plugin
@@ -206,9 +217,4 @@ class Sass::Engine
     raise "bork bork bork!" if @template[0] == "{bork now!}"
     old_render
   end
-end
-
-class ActionController::Base
-  undef :sass_old_process
-  def sass_old_process(*args); end
 end
