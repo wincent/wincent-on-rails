@@ -554,3 +554,16 @@ ended up moving it back to vendor/plugins, which funnily enough works:
   rm vendor/gems/wikitext-1.9/ext/Makefile
   rm vendor/gems/wikitext-1.9/ext/*.{o,log}
   git add doc/SETUP_NOTES
+
+  # Rails 2.3.3 update
+  sudo gem install rails
+  rake rails:freeze:gems
+  rake rails:update
+  (cd .. && rails src)
+  vim config/environment.rb # update version number
+  git add -u vendor/rails
+  git patch config/environment.rb
+  rm public/images/rails.png public/index.html 
+  rm public/javascripts/{controls,dragdrop,effects,prototype}.js
+  rake spec
+  git add doc/SETUP_NOTES
