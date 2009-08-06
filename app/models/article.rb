@@ -16,7 +16,7 @@ class Article < ActiveRecord::Base
   validates_format_of     :redirect,
                           :with => /\A\s*((\[\[.+\]\])|(https?:\/\/.+)|(\/.+))\s*\z/,
                           :if => Proc.new { |a| !a.redirect.blank? },
-                          :message => 'must be a [[wikitext]] link or HTTP URL'
+                          :message => 'must be a valid [[wikitext]] link or HTTP/HTTPS URL'
   validates_length_of     :body, :maximum => 128 * 1024, :allow_blank => true
   attr_accessible         :title, :redirect, :body, :public, :accepts_comments, :pending_tags
   acts_as_searchable      :attributes => [:title, :body]
