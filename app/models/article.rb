@@ -1,6 +1,15 @@
-# This is not intended to be a community-driven wiki, so there are no author attributes or moderation flags.
-# Although note that the admin may selectively enable comments on a particular article.
+# This is not intended to be a community-driven wiki, so there are no author
+# attributes or moderation flags (although note that article comments are
+# enabled by default).
 class Article < ActiveRecord::Base
+  # titles may contain anything other than underscores and slashes
+  TITLE_REGEX = /\A[^_\/]+\z/
+
+  # for internal use only (see the links model/controller); does not support
+  # the more sophisticated features of the wikitext translator, such as
+  # optional link text
+  LINK_REGEX  = /\A\[\[[^_\/]+\]\]\z/
+
   has_many                :comments,
                           :as         => :commentable,
                           :extend     => Commentable,
@@ -11,10 +20,10 @@ class Article < ActiveRecord::Base
   validates_presence_of   :title
   validates_uniqueness_of :title
   validates_format_of     :title,
-                          :with => /\A[^_\/]+\z/,
+                          :with => TITLE_REGEX,
                           :message => 'must not contain underscores or slashes'
   validates_format_of     :redirect,
-                          :with => /\A\s*((\[\[.+\]\])|(https?:\/\/.+)|(\/.+))\s*\z/,
+                          :with => /\A\s*((\[\[[^_\/]\]\])|(https?:\/\/.+)|(\/.+))\s*\z/,
                           :if => Proc.new { |a| !a.redirect.blank? },
                           :message => 'must be a valid [[wikitext]] link or HTTP/HTTPS URL'
   validates_length_of     :body, :maximum => 128 * 1024, :allow_blank => true
