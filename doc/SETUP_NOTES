@@ -540,3 +540,17 @@ ended up moving it back to vendor/plugins, which funnily enough works:
   git add vendor/gems/haml-2.2.1
   git add config/environment.rb
   git add doc/SETUP_NOTES
+
+  # Wikitext 1.9 update
+  git rm -r vendor/gems/wikitext-1.8
+  rm -r vendor/gems/wikitext-1.8
+  sudo gem install wikitext
+  vim config/environment.rb # update config.gem line
+  rake gems:unpack
+  git patch config/environment.rb
+  git add vendor/gems/wikitext-1.9
+  rake gems:build
+  git add vendor/gems/wikitext-1.9/ext/wikitext.bundle
+  rm vendor/gems/wikitext-1.9/ext/Makefile
+  rm vendor/gems/wikitext-1.9/ext/*.{o,log}
+  git add doc/SETUP_NOTES

@@ -1,5 +1,4 @@
-#!/usr/bin/env ruby
-# Copyright 2009 Wincent Colaiuta. All rights reserved.
+# Copyright 2007-2009 Wincent Colaiuta. All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
@@ -22,15 +21,6 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
-require File.join(File.dirname(__FILE__), 'spec_helper.rb')
-require 'wikitext/nil_class'
-
-describe NilClass, 'wikitext extensions' do
-  it 'should provide a to_wikitext method on the nil singleton' do
-    nil.to_wikitext.should == ''
-  end
-
-  it 'should provide a w method on the nil singleton' do
-    nil.w.should == ''
-  end
-end
+module Wikitext
+  VERSION = '1.9'
+end # module Wikitext

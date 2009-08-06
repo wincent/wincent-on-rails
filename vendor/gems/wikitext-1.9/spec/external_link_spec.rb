@@ -83,7 +83,7 @@ describe Wikitext::Parser, 'external links' do
 
   it 'should not format relative path links' do
     # relative paths don't make sense in wikitext because
-    # they could be displayed anywhere (eg. /wiki/article, /dashboard/ etc)
+    # they could be displayed anywhere (eg. /wiki/article, /dashboard/ etc)
     expected = %Q{<p>[foo/bar fb]</p>\n}
     @parser.parse('[foo/bar fb]').should == expected
   end
