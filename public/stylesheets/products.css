@@ -2,7 +2,7 @@ dl { margin-left: 96px; }
 
 dt { position: relative; font-weight: bold; }
 
-dd { margin-left: 0px; min-height: 64px; color: gray; }
+dd { margin-left: 0px; margin-bottom: 15px; min-height: 64px; color: gray; }
 
 dt img { position: absolute; top: -10px; left: -96px; }
 
