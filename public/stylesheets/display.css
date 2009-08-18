@@ -187,6 +187,7 @@ input[type=button]:hover { background: #aaa; color: white; }
 
 .comments .admin cite { display: block; font-style: normal; background-image: url(../images/comment-bubble-triangle-admin.png); background-repeat: no-repeat; background-position-x: 60px; background-posiiton-y: 0px; padding-top: 20px; margin-left: 1em; margin-top: -22px; }
 .comments .admin >blockquote { -webkit-border-radius: 1em; -moz-border-radius: 1em; border: 2px solid #666; background: white; margin-bottom: 20px; }
+.comments .admin >blockquote p { color: #666; }
 
 #preview_link img { padding-left: 0.33em; margin-bottom: -0.1em; }
 #preview_link #preview_spinner { display: none; }
