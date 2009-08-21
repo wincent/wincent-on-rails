@@ -31,7 +31,7 @@ table pre { max-width: 640px; }
 
 tt { color: #600; font-size: 125%; border: 1px dotted silver; padding-left: 0.3em; padding-right: 0.3em; }
 
-blockquote { padding-left: 24px; min-height: 32px; background: url(../images/blockquote.png) no-repeat left top; margin-left: 1em; margin-right: 2em; }
+blockquote { padding-left: 24px; padding-right: 24px; min-height: 32px; background: url(../images/blockquote.png) no-repeat left top; margin-left: 1em; margin-right: 2em; }
 blockquote p, blockquote li { color: #999; }
 
 a { color: #2971a7; font-weight: bold; text-decoration: none; }
