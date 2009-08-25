@@ -8,7 +8,8 @@ class Product < ActiveRecord::Base
   after_save              :process_icon
   after_destroy           :cleanup_icons
   attr_accessible         :category, :name, :permalink, :position,
-    :bundle_identifier, :description, :footer, :header, :icon
+    :bundle_identifier, :description, :footer, :header, :icon,
+    :hide_from_front_page
   # TODO: acts_as_searchable :attributes => [:footer, :header] (will require HTML tokenization)
 
   # path on disk relative to application root
@@ -19,7 +20,7 @@ class Product < ActiveRecord::Base
 
   # returns ordered hash of all products organized by categories
   def self.categorized_products
-    all.group_by(&:category)
+    all(:conditions => { :hide_from_front_page => false }).group_by(&:category)
   end
 
   def before_save
