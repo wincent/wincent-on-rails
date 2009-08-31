@@ -42,6 +42,8 @@ dt img { position: absolute; top: -10px; left: -96px; }
 
 
 
+.centered-column { margin-left: 150px; margin-right: 150px; }
+
 #lightbox-image-frame { position: absolute; margin: 0 auto; z-index: 100; padding: 20px 20px 35px 20px; background: black; -webkit-border-radius: 15px; -moz-border-radius: 15px; -webkit-box-shadow: 4px 4px 4px #888; -moz-box-shadow: 4px 4px 4px #888; box-shadow: 4px 4px 4px #888; display: none; }
 
 #lightbox-caption { position: absolute; left: 0px; bottom: 10px; width: 100%; text-align: center; color: white; }
