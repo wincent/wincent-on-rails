@@ -69,10 +69,12 @@ echo "Environment for this session: $ENVIRONMENT"
 
 if [ -n "$UNLOCK" ]; then
    echo "Processing command: unlock"
+   ssh -t $LOCKDOWN_HOST sudo chsh -s /bin/sh $SERVER
 fi
 
 if [ -n "$LOCKDOWN" ]; then
   echo "Processing command: lockdown"
+  ssh -t $LOCKDOWN_HOST sudo chsh -s /sbin/nologin $SERVER
 fi
 
 SUCCESS=true
