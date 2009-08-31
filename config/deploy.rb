@@ -29,27 +29,27 @@ task :help do
 
   Performing a complete deployment cycle (staging environment then production):
 
-    cap staging deploy:unlock       # relax permissions (necessary to deploy)
-    cap staging deploy:check        # check dependencies
-    cap staging deploy:update       # deploy latest, no restart, no migrations
-    cap staging deploy:migrate_test # run the migrations on the test database
-    cap staging spec                # run the spec suite
-    cap staging deploy:web:disable  # (optional) display a maintenance page
-    cap staging deploy:migrate_all  # run all other migrations
-    cap staging deploy:restart      # restart server (changes go live)
-    cap staging deploy:web:enable   # (optional) remove maintenance page
-    cap staging deploy:lockdown     # tighten permissions again
+    cap _2.2.0_ staging deploy:unlock       # relax permissions (necessary to deploy)
+    cap _2.2.0_ staging deploy:check        # check dependencies
+    cap _2.2.0_ staging deploy:update       # deploy latest, no restart, no migrations
+    cap _2.2.0_ staging deploy:migrate_test # run the migrations on the test database
+    cap _2.2.0_ staging spec                # run the spec suite
+    cap _2.2.0_ staging deploy:web:disable  # (optional) display a maintenance page
+    cap _2.2.0_ staging deploy:migrate_all  # run all other migrations
+    cap _2.2.0_ staging deploy:restart      # restart server (changes go live)
+    cap _2.2.0_ staging deploy:web:enable   # (optional) remove maintenance page
+    cap _2.2.0_ staging deploy:lockdown     # tighten permissions again
 
-    cap deploy:unlock
-    cap deploy:check
-    cap deploy:update
-    cap deploy:migrate_test
-    cap spec
-    cap deploy:web:disable          # (optional)
-    cap deploy:migrate_all
-    cap deploy:restart
-    cap deploy:web:enable           # (optional)
-    cap deploy:lockdown
+    cap _2.2.0_ deploy:unlock
+    cap _2.2.0_ deploy:check
+    cap _2.2.0_ deploy:update
+    cap _2.2.0_ deploy:migrate_test
+    cap _2.2.0_ spec
+    cap _2.2.0_ deploy:web:disable          # (optional)
+    cap _2.2.0_ deploy:migrate_all
+    cap _2.2.0_ deploy:restart
+    cap _2.2.0_ deploy:web:enable           # (optional)
+    cap _2.2.0_ deploy:lockdown
 
   HELP
 end
