@@ -69,6 +69,17 @@ while test $# != 0; do
   shift
 done
 
+check_directory() {
+  echo "  checking: directory exists $1"
+  ssh $SERVER test -d $1
+}
+
+check_writable() {
+  echo "  checking: writable $1"
+  ssh $SERVER test -w $1
+}
+
+
 echo "Environment for this session: $ENVIRONMENT"
 
 if [ -n "$UNLOCK" ]; then
@@ -78,7 +89,11 @@ fi
 
 if [ -n "$CHECK" ]; then
   echo "Processing command: check"
-  ssh $SERVER test -d $DEPLOY/releases
+  check_directory $DEPLOY
+  check_directory $DEPLOY/shared
+  check_directory $DEPLOY/releases
+  check_writable $DEPLOY
+  check_writable $DEPLOY/releases
 fi
 
 if [ -n "$LOCKDOWN" ]; then
