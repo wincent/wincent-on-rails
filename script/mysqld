@@ -1,0 +1,13 @@
+if [ $(whoami) != "root" ]; then
+  echo "error:: this script requires root privileges"
+  exit 1
+fi
+
+HOSTNAME=$(hostname)
+if [ -f "/usr/local/mysql/var/$HOSTNAME.pid" ]; then
+  echo "mysql running: stopping"
+  mysqladmin shutdown
+else
+  echo "mysql not running: starting"
+  sudo -u mysql -b mysqld_safe
+fi
