@@ -41,11 +41,16 @@ trap 'test -n "$SUCCESS" || echo "error: aborted"' EXIT
 # process arguments
 while test $# != 0; do
   case "$1" in
-    --staging)
+    --staging|staging|--stage|stage)
       staging_environment_overrides
       ;;
     --rev=*)
-      REV="${1#--rev=}"
+      test -z "$REF" || echo "warn: multiple revision arguments passed"
+      REF="${1#--rev=}"
+      ;;
+    --revision=*)
+      test -z "$REF" || echo "warn: multiple revision arguments passed"
+      REF="${1#--revision=}"
       ;;
     unlock)
       UNLOCK=true
