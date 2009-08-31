@@ -99,6 +99,11 @@ if [ -n "$CHECK" ]; then
   LOCAL_BRANCH=${BRANCH#origin/}
   git diff --exit-code --quiet $LOCAL_BRANCH $BRANCH || \
     echo "  warning: local $LOCAL_BRANCH differs from remote $BRANCH: did you remember to 'git push'?"
+  echo "  checking: currently checked out branch"
+  CURRENT_BRANCH=$(git symbolic-ref HEAD 2> /dev/null)
+  CURRENT_BRANCH=${CURRENT_BRANCH#refs/heads/}
+  test "$CURRENT_BRANCH" = "$LOCAL_BRANCH" || \
+    echo "  warning: currently on branch $CURRENT_BRANCH (expected $LOCAL_BRANCH) -- sure you're working on the right branch?"
 fi
 
 if [ -n "$DEPLOY" ]; then
