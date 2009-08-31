@@ -108,6 +108,8 @@ fi
 
 if [ -n "$DEPLOY" ]; then
   echo "Processing command: deploy"
+  TIMESTAMP=$(date '+%Y%m%d%H%M%S')
+  echo "  timestamp: $TIMESTAMP"
 fi
 
 if [ -n "$LOCKDOWN" ]; then
