@@ -26,6 +26,7 @@ usage() {
   echo "  $0 [options] command..."
   echo "Commands:"
   echo "      unlock    loosen permissions to enable deployment"
+  echo "       check    check dependencies and prerequisites"
   echo "    lockdown    tighten permissions after deployment"
   echo "Options:"
   echo "   --staging    deploy to staging environment"
@@ -55,6 +56,9 @@ while test $# != 0; do
     unlock)
       UNLOCK=true
       ;;
+    check)
+      CHECK=true
+      ;;
     lockdown)
       LOCKDOWN=true
       ;;
@@ -70,6 +74,11 @@ echo "Environment for this session: $ENVIRONMENT"
 if [ -n "$UNLOCK" ]; then
    echo "Processing command: unlock"
    ssh -t $LOCKDOWN_HOST sudo chsh -s /bin/sh $SERVER
+fi
+
+if [ -n "$CHECK" ]; then
+  echo "Processing command: check"
+  ssh $SERVER test -d $DEPLOY/releases
 fi
 
 if [ -n "$LOCKDOWN" ]; then
