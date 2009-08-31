@@ -2,7 +2,7 @@ worker_processes 4;
 pid <%= ENV['RAILS_ROOT'] %>/tmp/nginx.pid;
 
 events {
-  worker_connections  1024;
+  worker_connections  256;
 }
 
 error_log <%= ENV['RAILS_ROOT'] %>/log/error_log notice;
