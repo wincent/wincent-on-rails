@@ -1,13 +1,20 @@
 #!/usr/bin/env ruby
 require 'pathname'
-root = Pathname.new(__FILE__).dirname + '..'
+require 'FileUtils'
+
+# new in nginx 0.7.x: conf path must be absolute
+root = (Pathname.new(__FILE__).dirname + '..').realpath
 template  = root + 'config' + 'nginx-local.conf.erb'
-conf      = root + 'tmp' + 'nginx-local.conf'
-pidfile   = root + 'tmp' + 'nginx.pid'
+tmp       = root + 'tmp'
+conf      = tmp + 'nginx-local.conf'
+pidfile   = tmp + 'nginx.pid'
 
 if not pidfile.exist?
   puts "nginx not running: starting"
-  `RAILS_ROOT=#{root.realpath} erb #{template} > #{conf}`
+
+  # new in nginx 0.7.x: expects to find mime.types alongside conf file
+  FileUtils.cp '/usr/local/nginx/conf/mime.types', tmp
+  `RAILS_ROOT=#{root} erb #{template} > #{conf}`
   system '/usr/local/nginx/sbin/nginx', '-c', conf
 else
   puts "nginx running: stopping"
