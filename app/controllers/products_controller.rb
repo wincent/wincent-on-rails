@@ -63,7 +63,7 @@ private
 
   def get_page
     if params[:page_id]
-      @page = Page.find_by_permalink params[:page_id]
+      @page = @product.pages.find_by_permalink params[:page_id]
       if @page.nil?
         # can't rely on normal "record_not_found" logic here because we want a custom flash
         flash[:error] = 'Requested page not found'
