@@ -69,22 +69,6 @@ while test $# != 0; do
   shift
 done
 
-check_directory() {
-  echo "  checking: directory exists $1"
-  ssh $SERVER test -d $1
-}
-
-check_writable() {
-  echo "  checking: writable $1"
-  ssh $SERVER test -w $1
-}
-
-check_gem() {
-  echo "  checking: gem $1 version $2"
-  ssh $SERVER gem specification --version "$2" $1
-}
-
-
 echo "Environment for this session: $ENVIRONMENT"
 
 if [ -n "$UNLOCK" ]; then
@@ -94,15 +78,19 @@ fi
 
 if [ -n "$CHECK" ]; then
   echo "Processing command: check"
-  check_directory $DEPLOY
-  check_directory $DEPLOY/shared
-  check_directory $DEPLOY/releases
-  check_writable  $DEPLOY
-  check_writable  $DEPLOY/releases
-  check_gem       hpricot         ">= 0.6"
-  check_gem       rubygems-update ">= 1.3.1"
-  check_gem       rack            ">= 0.9.1"
-  check_gem       mkdtemp         ">= 1.0"
+  echo "  checking: directories exist and are writable"
+  ssh $SERVER "sh -c 'test -d $DEPLOY && \
+                      test -d $DEPLOY/shared && \
+                      test -d $DEPLOY/releases && \
+                      test -w $DEPLOY && \
+                      test -w $DEPLOY/releases'"
+  echo "  checking: executables exist"
+  ssh $SERVER "sh -c 'which gem git > /dev/null'"
+  echo "  checking: gem versions"
+  ssh $SERVER "sh -c 'gem specification --version \">= 0.6\"   hpricot > /dev/null && \
+                      gem specification --version \">= 1.3.1\" rubygems-update > /dev/null && \
+                      gem specification --version \">= 0.9.1\" rack > /dev/null && \
+                      gem specification --version \">= 1.0\" mkdtemp > /dev/null'"
 fi
 
 if [ -n "$LOCKDOWN" ]; then
