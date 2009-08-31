@@ -1,0 +1,65 @@
+#!/bin/sh -e
+
+# base settings:
+# note that we don't specify users, but rely on per-host defaults from
+# ~/.ssh/config
+REPO="/pub/git/private/wincent.com.git"
+LOCKDOWN_HOST="wincent1.inetu.net"
+
+# default settings for production environment:
+SERVER="rails.wincent.com"
+MONIT_GROUP="production"
+BRANCH="origin/maint"
+DEPLOY="/home/rails.wincent.com/deploy"
+ENVIRONMENT="production"
+
+staging_environment_overrides() {
+  SERVER="kreacher.wincent.com"
+  MONIT_GROUP="staging"
+  BRANCH="origin/master"
+  DEPLOY="/home/kreacher.wincent.com/deploy"
+  ENVIRONMENT="staging"
+}
+
+usage() {
+  echo "Usage:"
+  echo "  $0 [options] command..."
+  echo "Commands:"
+  echo "      unlock    loosen permissions to enable deployment"
+  echo "    lockdown    tighten permissions after deployment"
+  echo "Options:"
+  echo "   --staging    deploy to staging environment"
+  echo "   --rev=REF    deploy specified tag/branch/commit"
+}
+
+# process arguments
+while test $# != 0; do
+  case "$1" in
+    --staging)
+      staging_environment_overrides
+      ;;
+    --rev=*)
+      REV="${1#--rev=}"
+      ;;
+    unlock)
+      UNLOCK=true
+      ;;
+    lockdown)
+      LOCKDOWN=true
+      ;;
+    *)
+      usage
+      ;;
+  esac
+  shift
+done
+
+echo "Environment for this session: $ENVIRONMENT"
+
+if [ -n "$UNLOCK" ]; then
+   echo "Processing command: unlock"
+fi
+
+if [ -n "$LOCKDOWN" ]; then
+  echo "Processing command: lockdown"
+fi
