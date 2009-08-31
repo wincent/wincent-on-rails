@@ -32,6 +32,12 @@ usage() {
   echo "   --rev=REF    deploy specified tag/branch/commit"
 }
 
+#
+# main
+#
+
+trap 'test -n "$SUCCESS" || echo "error: aborted"' EXIT
+
 # process arguments
 while test $# != 0; do
   case "$1" in
@@ -63,3 +69,5 @@ fi
 if [ -n "$LOCKDOWN" ]; then
   echo "Processing command: lockdown"
 fi
+
+SUCCESS=true
