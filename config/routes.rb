@@ -109,6 +109,7 @@ ActionController::Routing::Routes.draw do |map|
   end
 
   map.with_options :protocol => 'https' do |https|
-    https.root :controller => 'products' # action defaults to index
+    #https.root :controller => 'products' # action defaults to index
+    https.root :controller => 'posts' # action defaults to index
   end
 end
