@@ -224,7 +224,7 @@ if [ -n "$DO_MIGRATE" ]; then
   ssh $SERVER "sh -c 'cd $DEPLOY/latest && \
                       rake --silent RAILS_ENV=test         db:migrate && \
                       rake --silent RAILS_ENV=development  db:migrate && \
-                      rake --silent RAILS_ENV=production   db:migrate'"
+                      rake --silent RAILS_ENV=migrations   db:migrate'"
 fi
 
 if [ -n "$DO_SWITCH" ]; then
