@@ -4,7 +4,7 @@
 # note that we don't specify users, but rely on per-host defaults from
 # ~/.ssh/config
 REPO="/pub/git/private/wincent.com.git"
-LOCKDOWN_HOST="wincent1.inetu.net"
+ADMIN_HOST="wincent1.inetu.net"
 
 # default settings for production environment:
 SERVER="rails.wincent.com"
@@ -32,6 +32,8 @@ usage() {
   echo "          spec    run specs"
   echo "       disable    display a maintenance page"
   echo "       migrate    migrate all databases"
+  echo "        switch    update the symlink to point to the latest deployment"
+  echo "       restart    restart cluster (changes go live)"
   echo "        enable    remove maintenance page"
   echo "      lockdown    tighten permissions after deployment"
   echo "Options:"
@@ -80,6 +82,18 @@ while test $# != 0; do
     migrate)
       DO_MIGRATE=true
       ;;
+    switch)
+      DO_SWITCH=true
+      ;;
+    stop)  # not advertised in usage
+      DO_STOP=true
+      ;;
+    start) # not advertised in usage
+      DO_START=true
+      ;;
+    restart)
+      DO_RESTART=true
+      ;;
     enable)
       DO_ENABLE=true
       ;;
@@ -97,7 +111,7 @@ echo "Environment for this session: $ENVIRONMENT"
 
 if [ -n "$DO_UNLOCK" ]; then
    echo "Processing command: unlock (you may be asked for a password)"
-   ssh -t $LOCKDOWN_HOST sudo chsh -s /bin/sh $SERVER
+   ssh -t $ADMIN_HOST sudo chsh -s /bin/sh $SERVER
 fi
 
 if [ -n "$DO_CHECK" ]; then
@@ -135,7 +149,7 @@ if [ -n "$DO_DEPLOY" ]; then
   if [ -z "$REF" ]; then
     REF=$BRANCH
   fi
-  ssh $SERVER "sh -c '(test ! -e $TIMESTAMP || (echo \" failed: $CHECKOUT already exists\" && exit 1)) && \
+  ssh $SERVER "sh -c '(test ! -e $TIMESTAMP || (echo \"  failed: $CHECKOUT already exists\" && exit 1)) && \
                       git clone $REPO $CHECKOUT && \
                       cd $CHECKOUT && \
                       git checkout -b deploy $REF && \
@@ -183,6 +197,30 @@ if [ -n "$DO_MIGRATE" ]; then
                       rake --silent RAILS_ENV=production   db:migrate'"
 fi
 
+if [ -n "$DO_SWITCH" ]; then
+  echo "Processing command: switch"
+  LATEST=$DEPLOY/releases/latest
+  CURRENT=$DEPLOY/releases/current
+  ssh $SERVER "sh -c '(test -d $LATEST || echo \"  failed: no deployment found at $LATEST\") && \
+                      rm -f $CURRENT && \
+                      ln -s $LATEST $CURRENT'"
+fi
+
+if [ -n "$DO_STOP" ]; then
+  echo "Processing command: stop (you may be asked for a password)"
+  ssh -t $ADMIN_HOST sudo monit -g $MONIT_GROUP stop all
+fi
+
+if [ -n "$DO_RESTART" ]; then
+  echo "Processing command: restart (you may be asked for a password)"
+  ssh -t $ADMIN_HOST sudo monit -g $MONIT_GROUP restart all
+fi
+
+if [ -n "$DO_START" ]; then
+  echo "Processing command: start (you may be asked for a password)"
+  ssh -t $ADMIN_HOST sudo monit -g $MONIT_GROUP start all
+fi
+
 if [ -n "$DO_ENABLE" ]; then
   echo "Processing command: enable"
   ssh $SERVER rm -f $DEPLOY/shared/system/maintenance.html
@@ -190,7 +228,7 @@ fi
 
 if [ -n "$DO_LOCKDOWN" ]; then
   echo "Processing command: lockdown (you may be asked for a password)"
-  ssh -t $LOCKDOWN_HOST sudo chsh -s /sbin/nologin $SERVER
+  ssh -t $ADMIN_HOST sudo chsh -s /sbin/nologin $SERVER
 fi
 
 SUCCESS=true
