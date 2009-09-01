@@ -24,6 +24,7 @@ staging_environment_overrides() {
 usage() {
   echo "Usage:"
   echo "  $0 [options] command..."
+  echo ""
   echo "Commands:"
   echo "        unlock    loosen permissions to enable deployment"
   echo "         check    check dependencies and prerequisites"
@@ -36,9 +37,19 @@ usage() {
   echo "       restart    restart cluster (changes go live)"
   echo "        enable    remove maintenance page"
   echo "      lockdown    tighten permissions after deployment"
+  echo ""
   echo "Options:"
-  echo "     --staging    deploy to staging environment"
+  echo "     --staging    deploy to staging environment (can abbreviate to \"staging\")"
   echo "     --rev=REF    deploy specified tag/branch/commit"
+  echo ""
+  echo "Example workflow:"
+  echo "     # note how commands can be chained together:"
+  echo "     $0 staging unlock check deploy migrate_test spec"
+  echo "     $0 staging disable migrate switch restart enable lockdown"
+  echo ""
+  echo "     # now we repeat in the production environment:"
+  echo "     $0 unlock check deploy migrate_test spec"
+  echo "     $0 disable migrate switch restart enable lockdown"
   exit
 }
 
@@ -108,6 +119,21 @@ while test $# != 0; do
   esac
   shift
 done
+
+# make sure the user asked us to at least do something
+test -n "$DO_UNLOCK" \
+  -o -n "$DO_CHECK" \
+  -o -n "$DO_DEPLOY" \
+  -o -n "$DO_MIGRATE_TEST" \
+  -o -n "$DO_SPEC" \
+  -o -n "$DO_DISABLE" \
+  -o -n "$DO_MIGRATE" \
+  -o -n "$DO_SWITCH" \
+  -o -n "$DO_STOP" \
+  -o -n "$DO_START" \
+  -o -n "$DO_RESTART" \
+  -o -n "$DO_ENABLE" \
+  -o -n "$DO_LOCKDOWN" || usage
 
 trap 'test -n "$SUCCESS" || echo "error: aborted"' EXIT
 
