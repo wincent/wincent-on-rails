@@ -84,7 +84,7 @@ done
 echo "Environment for this session: $ENVIRONMENT"
 
 if [ -n "$DO_UNLOCK" ]; then
-   echo "Processing command: unlock"
+   echo "Processing command: unlock (you may be asked for a password)"
    ssh -t $LOCKDOWN_HOST sudo chsh -s /bin/sh $SERVER
 fi
 
@@ -161,7 +161,7 @@ if [ -n "$DO_MIGRATE" ]; then
 fi
 
 if [ -n "$DO_LOCKDOWN" ]; then
-  echo "Processing command: lockdown"
+  echo "Processing command: lockdown (you may be asked for a password)"
   ssh -t $LOCKDOWN_HOST sudo chsh -s /sbin/nologin $SERVER
 fi
 
