@@ -50,6 +50,16 @@ usage() {
   echo "     # now we repeat in the production environment:"
   echo "     $0 unlock check deploy migrate_test spec"
   echo "     $0 disable migrate switch restart enable lockdown"
+  echo ""
+  echo "     # the \"prep/finalize\" shorthand encapsulates the above patterns:"
+  echo "     $0 staging prep"
+  echo "     $0 staging finalize"
+  echo "     $0 prep"
+  echo "     $0 finalize"
+  echo ""
+  echo "     # the \"all\" shorthand is the same as \"prep\" then \"finalize\""
+  echo "     $0 staging all"
+  echo "     $0 all"
   exit
 }
 
@@ -111,6 +121,32 @@ while test $# != 0; do
       DO_ENABLE=true
       ;;
     lockdown)
+      DO_LOCKDOWN=true
+      ;;
+    prep)
+      DO_UNLOCK=true
+      DO_CHECK=true
+      DO_DEPLOY=true
+      DO_MIGRATE_TEST=true
+      DO_SPEC=true
+      ;;
+    finalize)
+      DO_DISABLE=true
+      DO_MIGRATE=true
+      DO_SWITCH=true
+      DO_RESTART=true
+      DO_LOCKDOWN=true
+      ;;
+    all)
+      DO_UNLOCK=true
+      DO_CHECK=true
+      DO_DEPLOY=true
+      DO_MIGRATE_TEST=true
+      DO_SPEC=true
+      DO_DISABLE=true
+      DO_MIGRATE=true
+      DO_SWITCH=true
+      DO_RESTART=true
       DO_LOCKDOWN=true
       ;;
     *)
