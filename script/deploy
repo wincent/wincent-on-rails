@@ -105,7 +105,7 @@ if [ -n "$DO_CHECK" ]; then
   echo "  checking: gem versions"
   ssh $SERVER "sh -c 'gem specification --version \">= 0.6\"   hpricot > /dev/null && \
                       gem specification --version \">= 1.3.1\" rubygems-update > /dev/null && \
-                      gem specification --version \">= 0.9.1\" rack > /dev/null && \
+                      gem specification --version \">= 1.0.0\" rack > /dev/null && \
                       gem specification --version \">= 1.0\" mkdtemp > /dev/null'"
   echo "  checking: local branch vs remote branch"
   LOCAL_BRANCH=${BRANCH#origin/}
