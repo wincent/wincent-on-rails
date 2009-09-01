@@ -24,32 +24,10 @@ task :help do
 
   Uploading a single file:
 
-    FILES=config/routes.rb cap staging deploy:upload
-    FILES=config/routes.rb cap deploy:upload
+    FILES=config/routes.rb cap _2.2.0_ staging deploy:upload
+    FILES=config/routes.rb cap _2.2.0_ deploy:upload
 
-  Performing a complete deployment cycle (staging environment then production):
-
-    cap _2.2.0_ staging deploy:unlock       # relax permissions (necessary to deploy)
-    cap _2.2.0_ staging deploy:check        # check dependencies
-    cap _2.2.0_ staging deploy:update       # deploy latest, no restart, no migrations
-    cap _2.2.0_ staging deploy:migrate_test # run the migrations on the test database
-    cap _2.2.0_ staging spec                # run the spec suite
-    cap _2.2.0_ staging deploy:web:disable  # (optional) display a maintenance page
-    cap _2.2.0_ staging deploy:migrate_all  # run all other migrations
-    cap _2.2.0_ staging deploy:restart      # restart server (changes go live)
-    cap _2.2.0_ staging deploy:web:enable   # (optional) remove maintenance page
-    cap _2.2.0_ staging deploy:lockdown     # tighten permissions again
-
-    cap _2.2.0_ deploy:unlock
-    cap _2.2.0_ deploy:check
-    cap _2.2.0_ deploy:update
-    cap _2.2.0_ deploy:migrate_test
-    cap _2.2.0_ spec
-    cap _2.2.0_ deploy:web:disable          # (optional)
-    cap _2.2.0_ deploy:migrate_all
-    cap _2.2.0_ deploy:restart
-    cap _2.2.0_ deploy:web:enable           # (optional)
-    cap _2.2.0_ deploy:lockdown
+  For other patterns, run script/deploy.
 
   HELP
 end
