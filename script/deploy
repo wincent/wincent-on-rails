@@ -30,7 +30,9 @@ usage() {
   echo "        deploy    clone repo and deploy"
   echo "  migrate_test    migrate test database only"
   echo "          spec    run specs"
+  echo "       disable    display a maintenance page"
   echo "       migrate    migrate all databases"
+  echo "        enable    remove maintenance page"
   echo "      lockdown    tighten permissions after deployment"
   echo "Options:"
   echo "     --staging    deploy to staging environment"
@@ -72,8 +74,14 @@ while test $# != 0; do
     spec)
       DO_SPEC=true
       ;;
+    disable)
+      DO_DISABLE=true
+      ;;
     migrate)
       DO_MIGRATE=true
+      ;;
+    enable)
+      DO_ENABLE=true
       ;;
     lockdown)
       DO_LOCKDOWN=true
@@ -161,12 +169,23 @@ if [ -n "$DO_SPEC" ]; then
   ssh $SERVER "sh -c 'cd $DEPLOY/latest && rake --silent RAILS_ENV=test spec'"
 fi
 
+if [ -n "$DO_DISABLE" ]; then
+  echo "Processing command: disable"
+  ssh $SERVER cp $DEPLOY/current/public/maintenance.html \
+                 $DEPLOY/shared/system/maintenance.html
+fi
+
 if [ -n "$DO_MIGRATE" ]; then
   echo "Processing command: migrate"
   ssh $SERVER "sh -c 'cd $DEPLOY/latest && \
                       rake --silent RAILS_ENV=test         db:migrate && \
                       rake --silent RAILS_ENV=development  db:migrate && \
                       rake --silent RAILS_ENV=production   db:migrate'"
+fi
+
+if [ -n "$DO_ENABLE" ]; then
+  echo "Processing command: enable"
+  ssh $SERVER rm -f $DEPLOY/shared/system/maintenance.html
 fi
 
 if [ -n "$DO_LOCKDOWN" ]; then
