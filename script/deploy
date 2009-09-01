@@ -55,16 +55,16 @@ while test $# != 0; do
       REF="${1#--revision=}"
       ;;
     unlock)
-      UNLOCK=true
+      DO_UNLOCK=true
       ;;
     check)
-      CHECK=true
+      DO_CHECK=true
       ;;
     deploy)
-      DEPLOY=true
+      DO_DEPLOY=true
       ;;
     lockdown)
-      LOCKDOWN=true
+      DO_LOCKDOWN=true
       ;;
     *)
       usage
@@ -75,12 +75,12 @@ done
 
 echo "Environment for this session: $ENVIRONMENT"
 
-if [ -n "$UNLOCK" ]; then
+if [ -n "$DO_UNLOCK" ]; then
    echo "Processing command: unlock"
    ssh -t $LOCKDOWN_HOST sudo chsh -s /bin/sh $SERVER
 fi
 
-if [ -n "$CHECK" ]; then
+if [ -n "$DO_CHECK" ]; then
   echo "Processing command: check"
   echo "  checking: directories exist and are writable"
   ssh $SERVER "sh -c '(test -d $DEPLOY          || (echo \"  failed -d: $DEPLOY\" && exit 1)) && \
@@ -106,13 +106,40 @@ if [ -n "$CHECK" ]; then
     echo "  warning: currently on branch $CURRENT_BRANCH (expected $LOCAL_BRANCH) -- sure you're working on the right branch?"
 fi
 
-if [ -n "$DEPLOY" ]; then
+if [ -n "$DO_DEPLOY" ]; then
   echo "Processing command: deploy"
   TIMESTAMP=$(date '+%Y%m%d%H%M%S')
   echo "  timestamp: $TIMESTAMP"
+  SHARED=$DEPLOY/shared
+  CHECKOUT=$DEPLOY/releases/$TIMESTAMP
+  if [ -z "$REF" ]; then
+    REF=$BRANCH
+  fi
+  ssh $SERVER "sh -c '(test ! -e $TIMESTAMP || (echo \" failed: $CHECKOUT already exists\" && exit 1)) && \
+                      git clone $REPO $CHECKOUT && \
+                      cd $CHECKOUT && \
+                      git checkout -b deploy $REF && \
+                      (echo $TIMESTAMP > $CHECKOUT/REVISION) && \
+                      rm -rf $CHECKOUT/log \
+                             $CHECKOUT/public/system \
+                             $CHECKOUT/tmp/pids && \
+                      ln -s $SHARED/log    $CHECKOUT/log && \
+                      ln -s $SHARED/system $CHECKOUT/public/system && \
+                      ln -s $SHARED/pids   $CHECKOUT/tmp/pids && \
+                      find $CHECKOUT/public/images \
+                           $CHECKOUT/public/stylesheets \
+                           $CHECKOUT/public/javascripts \
+                           -exec touch {} + && \
+                      ln -s $SHARED/database.yml    $CHECKOUT/config/database.yml && \
+                      ln -s $SHARED/app_config.yml  $CHECKOUT/config/app_config.yml && \
+                      rm -f $DEPLOY/latest && \
+                      ln -s $CHECKOUT $DEPLOY/latest && \
+                      cd $CHECKOUT && \
+                      rake gems:clean && \
+                      rake gems:build'"
 fi
 
-if [ -n "$LOCKDOWN" ]; then
+if [ -n "$DO_LOCKDOWN" ]; then
   echo "Processing command: lockdown"
   ssh -t $LOCKDOWN_HOST sudo chsh -s /sbin/nologin $SERVER
 fi
