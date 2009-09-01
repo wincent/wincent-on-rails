@@ -147,26 +147,26 @@ if [ -n "$DO_DEPLOY" ]; then
                       rm -f $DEPLOY/latest && \
                       ln -s $CHECKOUT $DEPLOY/latest && \
                       cd $CHECKOUT && \
-                      rake gems:clean && \
-                      rake gems:build'"
+                      rake --silent gems:clean && \
+                      rake --silent gems:build'"
 fi
 
 if [ -n "$DO_MIGRATE_TEST" ]; then
   echo "Processing command: migrate_test"
-  ssh $SERVER "sh -c 'cd $DEPLOY/latest && rake RAILS_ENV=test db:migrate'"
+  ssh $SERVER "sh -c 'cd $DEPLOY/latest && rake --silent RAILS_ENV=test db:migrate'"
 fi
 
 if [ -n "$DO_SPEC" ]; then
   echo "Processing command: spec"
-  ssh $SERVER "sh -c 'cd $DEPLOY/latest && rake RAILS_ENV=test spec'"
+  ssh $SERVER "sh -c 'cd $DEPLOY/latest && rake --silent RAILS_ENV=test spec'"
 fi
 
 if [ -n "$DO_MIGRATE" ]; then
   echo "Processing command: migrate"
   ssh $SERVER "sh -c 'cd $DEPLOY/latest && \
-                      rake RAILS_ENV=test         db:migrate && \
-                      rake RAILS_ENV=development  db:migrate && \
-                      rake RAILS_ENV=production   db:migrate'"
+                      rake --silent RAILS_ENV=test         db:migrate && \
+                      rake --silent RAILS_ENV=development  db:migrate && \
+                      rake --silent RAILS_ENV=production   db:migrate'"
 fi
 
 if [ -n "$DO_LOCKDOWN" ]; then
