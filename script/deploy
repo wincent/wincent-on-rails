@@ -229,9 +229,9 @@ fi
 
 if [ -n "$DO_SWITCH" ]; then
   echo "Processing command: switch"
-  LATEST=$DEPLOY/releases/latest
-  CURRENT=$DEPLOY/releases/current
-  ssh $SERVER "sh -c '(test -d $LATEST || echo \"  failed: no deployment found at $LATEST\") && \
+  LATEST=$DEPLOY/latest
+  CURRENT=$DEPLOY/current
+  ssh $SERVER "sh -c '(test -d $LATEST || (echo \"  failed: no deployment found at $LATEST\" && exit 1)) && \
                       rm -f $CURRENT && \
                       ln -s $LATEST $CURRENT'"
 fi
