@@ -29,6 +29,7 @@ usage() {
   echo "         check    check dependencies and prerequisites"
   echo "        deploy    clone repo and deploy"
   echo "  migrate_test    migrate test database only"
+  echo "          spec    run specs"
   echo "       migrate    migrate all databases"
   echo "      lockdown    tighten permissions after deployment"
   echo "Options:"
@@ -67,6 +68,9 @@ while test $# != 0; do
       ;;
     migrate_test)
       DO_MIGRATE_TEST=true
+      ;;
+    spec)
+      DO_SPEC=true
       ;;
     migrate)
       DO_MIGRATE=true
@@ -150,6 +154,11 @@ fi
 if [ -n "$DO_MIGRATE_TEST" ]; then
   echo "Processing command: migrate_test"
   ssh $SERVER "sh -c 'cd $DEPLOY/latest && rake RAILS_ENV=test db:migrate'"
+fi
+
+if [ -n "$DO_SPEC" ]; then
+  echo "Processing command: spec"
+  ssh $SERVER "sh -c 'cd $DEPLOY/latest && rake RAILS_ENV=test spec'"
 fi
 
 if [ -n "$DO_MIGRATE" ]; then
