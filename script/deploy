@@ -25,13 +25,15 @@ usage() {
   echo "Usage:"
   echo "  $0 [options] command..."
   echo "Commands:"
-  echo "      unlock    loosen permissions to enable deployment"
-  echo "       check    check dependencies and prerequisites"
-  echo "      deploy    clone repo and deploy"
-  echo "    lockdown    tighten permissions after deployment"
+  echo "        unlock    loosen permissions to enable deployment"
+  echo "         check    check dependencies and prerequisites"
+  echo "        deploy    clone repo and deploy"
+  echo "  migrate_test    migrate test database only"
+  echo "       migrate    migrate all databases"
+  echo "      lockdown    tighten permissions after deployment"
   echo "Options:"
-  echo "   --staging    deploy to staging environment"
-  echo "   --rev=REF    deploy specified tag/branch/commit"
+  echo "     --staging    deploy to staging environment"
+  echo "     --rev=REF    deploy specified tag/branch/commit"
 }
 
 #
@@ -62,6 +64,12 @@ while test $# != 0; do
       ;;
     deploy)
       DO_DEPLOY=true
+      ;;
+    migrate_test)
+      DO_MIGRATE_TEST=true
+      ;;
+    migrate)
+      DO_MIGRATE=true
       ;;
     lockdown)
       DO_LOCKDOWN=true
@@ -137,6 +145,19 @@ if [ -n "$DO_DEPLOY" ]; then
                       cd $CHECKOUT && \
                       rake gems:clean && \
                       rake gems:build'"
+fi
+
+if [ -n "$DO_MIGRATE_TEST" ]; then
+  echo "Processing command: migrate_test"
+  ssh $SERVER "sh -c 'cd $DEPLOY/latest && rake RAILS_ENV=test db:migrate'"
+fi
+
+if [ -n "$DO_MIGRATE" ]; then
+  echo "Processing command: migrate"
+  ssh $SERVER "sh -c 'cd $DEPLOY/latest && \
+                      rake RAILS_ENV=test         db:migrate && \
+                      rake RAILS_ENV=development  db:migrate && \
+                      rake RAILS_ENV=production   db:migrate'"
 fi
 
 if [ -n "$DO_LOCKDOWN" ]; then
