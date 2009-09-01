@@ -25,7 +25,7 @@ usage() {
   echo "Usage:"
   echo "  $0 [options] command..."
   echo ""
-  echo "Commands:"
+  echo "Deployment commands:"
   echo "        unlock    loosen permissions to enable deployment"
   echo "         check    check dependencies and prerequisites"
   echo "        deploy    clone repo and deploy"
@@ -37,6 +37,9 @@ usage() {
   echo "       restart    restart cluster (changes go live)"
   echo "        enable    remove maintenance page"
   echo "      lockdown    tighten permissions after deployment"
+  echo ""
+  echo "Other commands:"
+  echo "        upload    upload comma-separated files specified in FILES environment variable"
   echo ""
   echo "Options:"
   echo "     --staging    deploy to staging environment (can abbreviate to \"staging\")"
@@ -123,6 +126,9 @@ while test $# != 0; do
     lockdown)
       DO_LOCKDOWN=true
       ;;
+    upload)
+      DO_UPLOAD=true
+      ;;
     prep)
       DO_UNLOCK=true
       DO_CHECK=true
@@ -169,6 +175,7 @@ test -n "$DO_UNLOCK" \
   -o -n "$DO_START" \
   -o -n "$DO_RESTART" \
   -o -n "$DO_ENABLE" \
+  -o -n "$DO_UPLOAD" \
   -o -n "$DO_LOCKDOWN" || usage
 
 trap 'test -n "$SUCCESS" || echo "error: aborted"' EXIT
@@ -290,6 +297,20 @@ fi
 if [ -n "$DO_ENABLE" ]; then
   echo "Processing command: enable"
   ssh $SERVER rm -f $DEPLOY/shared/system/maintenance.html
+fi
+
+if [ -n "$DO_UPLOAD" ]; then
+  echo "Processing command: upload"
+  test -n "$FILES" || echo "  warning: nothing specified in FILES environment variable"
+  (IFS=","
+  for FILE in $FILES; do
+    echo "  file: $FILE"
+    if [[ "$FILE" =~ ' ' ]]; then
+      echo "  warning: \"$FILE\" contains a space; skipping"
+    else
+      scp $FILE $SERVER:$DEPLOY/current/$FILE
+    fi
+  done)
 fi
 
 if [ -n "$DO_LOCKDOWN" ]; then
