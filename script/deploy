@@ -180,7 +180,7 @@ if [ -n "$DO_DEPLOY" ]; then
     REF=$BRANCH
   fi
   ssh $SERVER "sh -c '(test ! -e $TIMESTAMP || (echo \"  failed: $CHECKOUT already exists\" && exit 1)) && \
-                      git clone $REPO $CHECKOUT && \
+                      git clone --shared $REPO $CHECKOUT && \
                       cd $CHECKOUT && \
                       git checkout -b deploy $REF && \
                       (echo $TIMESTAMP > $CHECKOUT/REVISION) && \
