@@ -40,7 +40,7 @@ usage() {
   echo ""
   echo "Options:"
   echo "     --staging    deploy to staging environment (can abbreviate to \"staging\")"
-  echo "     --rev=REF    deploy specified tag/branch/commit"
+  echo "     --rev=REF    deploy specified tag, branch (eg. \"origin/maint\"), commit (SHA1)"
   echo ""
   echo "Example workflow:"
   echo "     # note how commands can be chained together:"
