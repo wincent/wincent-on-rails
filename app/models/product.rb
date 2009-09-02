@@ -3,7 +3,8 @@ class Product < ActiveRecord::Base
   default_scope           :order => 'category, position'
   validates_presence_of   :name, :permalink
   validates_uniqueness_of :name, :permalink
-  # validates_format_of :permalink, :with => /\A[a-z0-9_\-]+\z/i, :message =>
+  validates_format_of     :permalink, :with => /\A[a-z0-9\-]+\z/i,
+    :message => 'may only contain lowercase letters, numbers and hypens'
   validates_uniqueness_of :bundle_identifier, :allow_blank => true
   after_save              :process_icon
   after_destroy           :cleanup_icons
