@@ -205,7 +205,7 @@ describe IssuesController, 'PUT /issues/:id (html format)' do
     @issue.stub!(:save).and_return(true)
     Issue.stub!(:find).and_return(@issue)
     do_put
-    response.should redirect_to(issue_path(@issue))
+    response.should redirect_to(issue_url(@issue))
   end
 
   it 'should redirect to the list of issues awaiting moderation on success for comments that are awaiting moderation' do
