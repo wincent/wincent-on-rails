@@ -1,0 +1,23 @@
+#!/bin/sh
+
+/bin/echo -n "nginx: "
+if [ $(ps x | grep -c 'nginx: master process') -eq 0 ]; then
+  echo "stopped"
+else
+  echo "running"
+fi
+
+/bin/echo -n "memcached: "
+if [ $(ps x | grep memcached | grep -c 127.0.0.1) -eq 0 ]; then
+  echo "stopped"
+else
+  echo "running"
+fi
+
+/bin/echo -n "mysqld: "
+if [ $(ps ax | grep -c 'mysqld --basedir') -eq 0 ]; then
+  echo "stopped"
+else
+  echo "running"
+fi
+
