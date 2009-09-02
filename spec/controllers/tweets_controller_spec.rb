@@ -287,7 +287,7 @@ describe TweetsController, 'POST /twitter' do
 
   it 'should redirect to the tweet "show" page on success' do
     do_successful_post
-    response.should redirect_to(tweet_path(@tweet))
+    response.should redirect_to(tweet_url(@tweet))
   end
 
   it 'should flash an error on failure' do
@@ -489,7 +489,7 @@ describe TweetsController, 'PUT /twitter/:id' do
 
   it 'should redirect to the tweet "show" page on success' do
     do_successful_update
-    response.should redirect_to(tweet_path(@tweet))
+    response.should redirect_to(tweet_url(@tweet))
   end
 
   it 'should flash an error on failure' do
