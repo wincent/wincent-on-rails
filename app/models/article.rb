@@ -23,7 +23,7 @@ class Article < ActiveRecord::Base
                           :with => TITLE_REGEX,
                           :message => 'must not contain underscores or slashes'
   validates_format_of     :redirect,
-                          :with => /\A\s*((\[\[[^_\/]\]\])|(https?:\/\/.+)|(\/.+))\s*\z/,
+                          :with => /\A\s*((\[\[[^_\/]+\]\])|(https?:\/\/.+)|(\/.+))\s*\z/,
                           :if => Proc.new { |a| !a.redirect.blank? },
                           :message => 'must be a valid [[wikitext]] link or HTTP/HTTPS URL'
   validates_length_of     :body, :maximum => 128 * 1024, :allow_blank => true
