@@ -141,6 +141,7 @@ while test $# != 0; do
       DO_MIGRATE=true
       DO_SWITCH=true
       DO_RESTART=true
+      DO_ENABLE=true
       DO_LOCKDOWN=true
       ;;
     all)
@@ -153,6 +154,7 @@ while test $# != 0; do
       DO_MIGRATE=true
       DO_SWITCH=true
       DO_RESTART=true
+      DO_ENABLE=true
       DO_LOCKDOWN=true
       ;;
     *)
