@@ -563,7 +563,7 @@ ended up moving it back to vendor/plugins, which funnily enough works:
   vim config/environment.rb # update version number
   git add -u vendor/rails
   git patch config/environment.rb
-  rm public/images/rails.png public/index.html 
+  rm public/images/rails.png public/index.html
   rm public/javascripts/{controls,dragdrop,effects,prototype}.js
   rake spec
   git add doc/SETUP_NOTES
@@ -578,4 +578,19 @@ ended up moving it back to vendor/plugins, which funnily enough works:
   rake spec
   git add vendor/gems/haml-2.2.3
   git add config/environment.rb
+  git add doc/SETUP_NOTES
+
+  # Rails 2.3.4 update
+  sudo gem install rails
+  rake rails:freeze:gems
+  rake rails:update
+  (cd .. && rails src)
+  vim config/environment.rb # update version number
+  git add -u vendor/rails # update all tracked files (including removed ones)
+  git add vendor/rails # add untracked files
+  git patch # (alias for git add --interactive)
+  git add db/seeds.rb # new file in this release
+  rm public/images/rails.png public/index.html
+  rm public/javascripts/{controls,dragdrop,effects,prototype}.js
+  rake spec
   git add doc/SETUP_NOTES

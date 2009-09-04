@@ -81,7 +81,7 @@ module ActionController #:nodoc:
       
       # Returns true or false if a request is verified.  Checks:
       #
-      # * is the format restricted?  By default, only HTML and AJAX requests are checked.
+      # * is the format restricted?  By default, only HTML requests are checked.
       # * is it a GET request?  Gets should be safe and idempotent
       # * Does the form_authenticity_token match the given token value from the params?
       def verified_request?
