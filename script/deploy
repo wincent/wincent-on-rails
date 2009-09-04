@@ -90,6 +90,9 @@ while test $# != 0; do
     unlock)
       DO_UNLOCK=true
       ;;
+    wait) # undocumented but helpful to wait for "unlock" to take effect
+      DO_WAIT=true
+      ;;
     check)
       DO_CHECK=true
       ;;
@@ -131,6 +134,7 @@ while test $# != 0; do
       ;;
     prep)
       DO_UNLOCK=true
+      DO_WAIT=true
       DO_CHECK=true
       DO_DEPLOY=true
       DO_MIGRATE_TEST=true
@@ -146,6 +150,7 @@ while test $# != 0; do
       ;;
     all)
       DO_UNLOCK=true
+      DO_WAIT=true
       DO_CHECK=true
       DO_DEPLOY=true
       DO_MIGRATE_TEST=true
@@ -166,6 +171,7 @@ done
 
 # make sure the user asked us to at least do something
 test -n "$DO_UNLOCK" \
+  -o -n "$DO_WAIT" \
   -o -n "$DO_CHECK" \
   -o -n "$DO_DEPLOY" \
   -o -n "$DO_MIGRATE_TEST" \
@@ -187,6 +193,12 @@ echo "Environment for this session: $ENVIRONMENT"
 if [ -n "$DO_UNLOCK" ]; then
    echo "Processing command: unlock (you may be asked for a password)"
    ssh -t $ADMIN_HOST sudo chsh -s /bin/sh $SERVER
+fi
+
+# useful because remote system sometimes won't notice "unlock" immediately
+if [ -n "$DO_WAIT" ]; then
+  echo "Processing command: wait"
+  sleep 5
 fi
 
 if [ -n "$DO_CHECK" ]; then
