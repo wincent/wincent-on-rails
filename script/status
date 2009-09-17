@@ -1,7 +1,7 @@
 #!/bin/sh
 
 /bin/echo -n "nginx: "
-if [ $(ps x | grep -c 'nginx: master process') -eq 0 ]; then
+if [ $(ps x | grep nginx | grep -c 'nginx: master process') -eq 0 ]; then
   echo "stopped"
 else
   echo "running"
@@ -15,9 +15,8 @@ else
 fi
 
 /bin/echo -n "mysqld: "
-if [ $(ps ax | grep -c 'mysqld --basedir') -eq 0 ]; then
+if [ $(ps ax | grep mysqld | grep -c 'mysqld --basedir') -eq 0 ]; then
   echo "stopped"
 else
   echo "running"
 fi
-
