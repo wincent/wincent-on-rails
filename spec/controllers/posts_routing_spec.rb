@@ -70,4 +70,23 @@ describe PostsController, 'route recognition' do
     params_from(:get, '/blog/page/2').should == { :controller => 'posts',
       :action => 'index', :page => '2', :protocol => 'https' }
   end
+
+  # see: https://wincent.com/issues/1410
+  it 'should handle comment creation on posts with periods in the permalink' do
+    expected = {  :controller => 'comments',
+                  :action => 'create',
+                  :post_id => 'foo.bar',
+                  :protocol => 'https' }
+    params_from(:post, '/blog/foo.bar/comments').should == expected
+  end
+
+  # same bug: requirements (in this case the protocol) don't trickle down when
+  # using nested routes
+  it 'should handle comment creation on posts' do
+    expected = {  :controller => 'comments',
+                  :action => 'create',
+                  :post_id => 'foo',
+                  :protocol => 'https' }
+    params_from(:post, '/blog/foo/comments').should == expected
+  end
 end

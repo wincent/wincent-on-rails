@@ -31,8 +31,9 @@ ActionController::Routing::Routes.draw do |map|
   # must explicitly allow period in the id part of the route otherwise it will be classified as a route separator
   map.resources :posts,
                 :as => :blog,
-                :requirements => { :id => /[a-z0-9\-\.]+/, :protocol => 'https' },
-                :has_many => [ :comments ]
+                :requirements => { :id => /[a-z0-9\-\.]+/, :protocol => 'https' } do |posts|
+    posts.resources :comments, :requirements => { :post_id => /[a-z0-9\-\.]+/, :protocol => 'https' }
+  end
   map.paginated_posts '/blog/page/:page', :controller => 'posts',
     :action => 'index', :protocol => 'https'
 
@@ -59,8 +60,9 @@ ActionController::Routing::Routes.draw do |map|
   # again, must explicitly allow period in the id part of the route otherwise it will be classified as a route separator
   map.resources :articles,
                 :as => :wiki,
-                :requirements => { :id => /[^\/]+/, :protocol => 'https' },
-                :has_many => [ :comments ]
+                :requirements => { :id => /[^\/]+/, :protocol => 'https' } do |articles|
+    articles.resources :comments, :requirements => { :article_id => /[^\/]+/, :protocol => 'https' }
+  end
 
   # this gives us pagination URLs like: /wiki/page/3
   # instead of: /wiki?page=3

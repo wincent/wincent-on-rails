@@ -71,5 +71,24 @@ describe ArticlesController do
     it "should generate params { :controller => 'articles', :action => 'show', :if => 'page', :protocol => 'https' } from GET /wiki/page" do
       params_from(:get, '/wiki/page').should == {:controller => 'articles', :action => 'show', :id => 'page', :protocol => 'https'}
     end
+
+    # see: https://wincent.com/issues/1410
+    it 'should handle comment creation on articles with periods in the title' do
+      expected = {  :controller => 'comments',
+                    :action => 'create',
+                    :article_id => 'foo.bar',
+                    :protocol => 'https' }
+      params_from(:post, '/wiki/foo.bar/comments').should == expected
+    end
+
+  # same bug: requirements (in this case the protocol) don't trickle down when
+  # using nested routes
+    it 'should handle comment creation on articles' do
+      expected = {  :controller => 'comments',
+                    :action => 'create',
+                    :article_id => 'foo',
+                    :protocol => 'https' }
+      params_from(:post, '/wiki/foo/comments').should == expected
+    end
   end
 end
