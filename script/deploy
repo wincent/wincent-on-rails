@@ -198,7 +198,7 @@ fi
 # useful because remote system sometimes won't notice "unlock" immediately
 if [ -n "$DO_WAIT" ]; then
   echo "Processing command: wait"
-  sleep 5
+  sleep 10
 fi
 
 if [ -n "$DO_CHECK" ]; then
