@@ -594,3 +594,17 @@ ended up moving it back to vendor/plugins, which funnily enough works:
   rm public/javascripts/{controls,dragdrop,effects,prototype}.js
   rake spec
   git add doc/SETUP_NOTES
+
+  # Haml 2.2.4 update
+  sudo gem install --no-ri haml
+  git rm -r vendor/gems/haml-2.2.3  # doesn't actually delete directory
+  rm -r vendor/gems/haml-2.2.3      # so must delete that manually
+  vi config/environment.rb          # update config.gem line
+  rake gems
+  rake gems:unpack                  # reported "You have a nil object when you didn't expect it!
+                                    # The error occurred while evaluating nil.version"
+  rake --trace gems:unpack          # worked
+  rake spec
+  git add vendor/gems/haml-2.2.4
+  git add config/environment.rb
+  git add doc/SETUP_NOTES
