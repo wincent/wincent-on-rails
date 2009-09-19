@@ -1,7 +1,7 @@
 --- !ruby/object:Gem::Specification 
 name: haml
 version: !ruby/object:Gem::Version 
-  version: 2.2.4
+  version: 2.2.5
 platform: ruby
 authors: 
 - Nathan Weizenbaum
@@ -10,7 +10,7 @@ autorequire:
 bindir: bin
 cert_chain: []
 
-date: 2009-09-14 00:00:00 +02:00
+date: 2009-09-18 00:00:00 +02:00
 default_executable: 
 dependencies: 
 - !ruby/object:Gem::Dependency 
@@ -48,6 +48,7 @@ extra_rdoc_files:
 - README.md
 - VERSION_NAME
 - REVISION
+- CONTRIBUTING
 files: 
 - rails/init.rb
 - lib/sass.rb
@@ -196,6 +197,10 @@ files:
 - test/haml/templates/original_engine.haml
 - test/haml/templates/breakage.haml
 - test/haml/templates/action_view.haml
+- test/haml/spec/tests.json
+- test/haml/spec/lua_haml_spec.lua
+- test/haml/spec/ruby_haml_spec.rb
+- test/haml/spec/README.md
 - test/haml/results/content_for_layout.xhtml
 - test/haml/results/just_stuff.xhtml
 - test/haml/results/whitespace_handling.xhtml
@@ -230,6 +235,7 @@ files:
 - README.md
 - VERSION_NAME
 - REVISION
+- CONTRIBUTING
 has_rdoc: true
 homepage: http://haml.hamptoncatlin.com/
 post_install_message: 

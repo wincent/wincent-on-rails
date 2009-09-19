@@ -595,7 +595,7 @@ ended up moving it back to vendor/plugins, which funnily enough works:
   rake spec
   git add doc/SETUP_NOTES
 
-  # Haml 2.2.4 update
+  # Haml 2.2.5 update
   sudo gem install --no-ri haml
   git rm -r vendor/gems/haml-2.2.3  # doesn't actually delete directory
   rm -r vendor/gems/haml-2.2.3      # so must delete that manually
@@ -605,6 +605,6 @@ ended up moving it back to vendor/plugins, which funnily enough works:
                                     # The error occurred while evaluating nil.version"
   rake --trace gems:unpack          # worked
   rake spec
-  git add vendor/gems/haml-2.2.4
+  git add vendor/gems/haml-2.2.5
   git add config/environment.rb
   git add doc/SETUP_NOTES
