@@ -47,7 +47,7 @@ Rails::Initializer.run do |config|
   config.action_mailer.default_url_options = url_options
 
   config.gem 'wikitext', :version => '1.9'
-  config.gem 'haml', :version => '2.2.5'
+  config.gem 'haml', :version => '2.2.9'
 end
 
 # Sometimes we need a reasonable, stable default date (for example, to provide
