@@ -175,14 +175,15 @@ module Haml
         @haml_buffer = buffer
       end
 
-      eval(precompiled, scope, @options[:filename], @options[:line])
+      str = eval(precompiled + ";" + precompiled_method_return_value,
+        scope, @options[:filename], @options[:line])
 
       # Get rid of the current buffer
       scope_object.instance_eval do
         @haml_buffer = buffer.upper
       end
 
-      buffer.buffer
+      str
     end
     alias_method :to_html, :render
 
