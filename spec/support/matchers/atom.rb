@@ -18,7 +18,7 @@ module Spec
         end
 
         def self.jing_path
-          Pathname.new(__FILE__).dirname + 'jing-20030619' + 'bin' + 'jing.jar'
+          Pathname.new(__FILE__).dirname + 'jing' + 'bin' + 'jing.jar'
         end
 
         def self.schema_path
