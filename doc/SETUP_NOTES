@@ -632,3 +632,16 @@ ended up moving it back to vendor/plugins, which funnily enough works:
   git add vendor/gems/haml-2.2.10
   git add config/environment.rb
   git add doc/SETUP_NOTES
+
+  # RSpec 1.2.9 update
+  sudo gem install rspec-rails
+  git rm -r vendor/gems/rspec*
+  rm -r vendor/gems/rspec*
+  vim config/environments/test.rb # update config.gem lines
+  RAILS_ENV=test rake gems:unpack
+  git add vendor/gems/rspec*
+  script/generate rspec
+  git add spec/spec_helper.rb
+  git patch config/environments/test.rb
+  rake spec
+  cucumber
