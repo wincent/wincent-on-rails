@@ -92,14 +92,17 @@ module Haml
     # Returns the precompiled string with the preamble and postamble
     def precompiled_with_ambles(local_names)
       preamble = <<END.gsub("\n", ";")
+begin
 extend Haml::Helpers
 _hamlout = @haml_buffer = Haml::Buffer.new(@haml_buffer, #{options_for_buffer.inspect})
 _erbout = _hamlout.buffer
 __in_erb_template = true
 END
       postamble = <<END.gsub("\n", ";")
-@haml_buffer = @haml_buffer.upper
 #{precompiled_method_return_value}
+ensure
+@haml_buffer = @haml_buffer.upper
+end
 END
       preamble + locals_code(local_names) + precompiled + postamble
     end
@@ -999,29 +1002,31 @@ END
 
     def resolve_newlines
       return unless @newlines > 0
+      flush_merged_text unless @to_merge.all? {|type, *_| type == :text}
       @precompiled << "\n" * @newlines
       @newlines = 0
     end
 
     # Get rid of and whitespace at the end of the buffer
     # or the merged text
-    def rstrip_buffer!
-      if @to_merge.empty?
+    def rstrip_buffer!(index = -1)
+      last = @to_merge[index]
+      if last.nil?
         push_silent("_hamlout.rstrip!", false)
         @dont_tab_up_next_text = true
         return
       end
 
-      last = @to_merge.last
       case last.first
       when :text
         last[1].rstrip!
         if last[1].empty?
-          @to_merge.pop
-          rstrip_buffer!
+          @to_merge.slice! index
+          rstrip_buffer! index
         end
       when :script
         last[1].gsub!(/\(haml_temp, (.*?)\);$/, '(haml_temp.rstrip, \1);')
+        rstrip_buffer! index - 1
       else
         raise SyntaxError.new("[HAML BUG] Undefined entry in Haml::Precompiler@to_merge.")
       end

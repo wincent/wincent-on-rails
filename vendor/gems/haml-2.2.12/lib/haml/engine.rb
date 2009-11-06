@@ -108,7 +108,6 @@ module Haml
       @precompiled = ''
       @to_merge = []
       @tab_change  = 0
-      @temp_count = 0
 
       precompile
     rescue Haml::Error => e
@@ -175,15 +174,13 @@ module Haml
         @haml_buffer = buffer
       end
 
-      str = eval(precompiled + ";" + precompiled_method_return_value,
+      eval(precompiled + ";" + precompiled_method_return_value,
         scope, @options[:filename], @options[:line])
-
+    ensure
       # Get rid of the current buffer
       scope_object.instance_eval do
         @haml_buffer = buffer.upper
       end
-
-      str
     end
     alias_method :to_html, :render
 

@@ -144,16 +144,20 @@ class TemplateTest < Test::Unit::TestCase
     end
   end
 
-  def test_action_view_templates_render_correctly
-    proc = lambda do
-      @base.content_for(:layout) {'Lorem ipsum dolor sit amet'}
-      assert_renders_correctly 'content_for_layout'
-    end
+  if ActionPack::VERSION::MAJOR < 3
+    # Rails 3.0.0 deprecates the use of yield with a layout
+    # for calls to render :file
+    def test_action_view_templates_render_correctly
+      proc = lambda do
+        @base.content_for(:layout) {'Lorem ipsum dolor sit amet'}
+        assert_renders_correctly 'content_for_layout'
+      end
 
-    if @base.respond_to?(:with_output_buffer)
-      @base.with_output_buffer("", &proc)
-    else
-      proc.call
+      if @base.respond_to?(:with_output_buffer)
+        @base.with_output_buffer("", &proc)
+      else
+        proc.call
+      end
     end
   end
 
@@ -203,7 +207,7 @@ HTML
   - with_output_buffer do
     bar
     = "foo".gsub(/./) do |s|
-      - s.ord
+      - "flup"
   baz
 HAML
   end
@@ -283,6 +287,10 @@ END
 
     def test_rendered_string_is_html_safe_with_action_view
       assert(render("Foo", :action_view).html_safe?)
+    end
+
+    def test_xss_html_escaping_with_non_strings
+      assert_equal("4\n", render("= html_escape(4)"))
     end
   end
 end

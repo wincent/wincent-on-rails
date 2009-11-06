@@ -645,3 +645,15 @@ ended up moving it back to vendor/plugins, which funnily enough works:
   git patch config/environments/test.rb
   rake spec
   cucumber
+
+  # Haml 2.2.12 update
+  sudo gem install --no-ri haml
+  git rm -r vendor/gems/haml-2.2.10 # doesn't actually delete directory
+  rm -r vendor/gems/haml-2.2.10     # so must delete that manually
+  vi config/environment.rb          # update config.gem line
+  rake gems
+  rake gems:unpack
+  rake spec
+  git add vendor/gems/haml-2.2.12
+  git add config/environment.rb
+  git add doc/SETUP_NOTES
