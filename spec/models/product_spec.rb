@@ -67,23 +67,31 @@ end
 
 describe Product, 'categorized_products method' do
   it 'should return an ordered hash' do
-    c1 = create_product :category => 'consumer', :position => 10
-    c2 = create_product :category => 'consumer', :position => 15
-    c3 = create_product :category => 'consumer', :position => 1
-    s1 = create_product :category => 'server', :position => 3
-    s2 = create_product :category => 'server', :position => 2
-    s3 = create_product :category => 'server', :position => 9
-    d1 = create_product :category => 'developer', :position => 6
-    d2 = create_product :category => 'developer', :position => 8
-    d3 = create_product :category => 'developer', :position => 1
-    m1 = create_product :position => 3  # nil/no category
-    m2 = create_product :position => 1  # nil/no category
-    m3 = create_product :position => 2  # nil/no category
+    c1 = create_product :category => 'consumer', :position => 10, :hide_from_front_page => false
+    c2 = create_product :category => 'consumer', :position => 15, :hide_from_front_page => false
+    c3 = create_product :category => 'consumer', :position => 1, :hide_from_front_page => false
+    s1 = create_product :category => 'server', :position => 3, :hide_from_front_page => false
+    s2 = create_product :category => 'server', :position => 2, :hide_from_front_page => false
+    s3 = create_product :category => 'server', :position => 9, :hide_from_front_page => false
+    d1 = create_product :category => 'developer', :position => 6, :hide_from_front_page => false
+    d2 = create_product :category => 'developer', :position => 8, :hide_from_front_page => false
+    d3 = create_product :category => 'developer', :position => 1, :hide_from_front_page => false
+    m1 = create_product :position => 3, :hide_from_front_page => false  # nil/no category
+    m2 = create_product :position => 1, :hide_from_front_page => false  # nil/no category
+    m3 = create_product :position => 2, :hide_from_front_page => false  # nil/no category
     products = Product.categorized_products
     products.keys.should == [nil, 'consumer', 'developer', 'server']
     products[nil].should == [m2, m3, m1]
     products['consumer'].should == [c3, c1, c2]
     products['developer'].should == [d3, d1, d2]
     products['server'].should == [s2, s1, s3]
+  end
+
+  it 'should include only products that are not hidden from front page' do
+    p1 = create_product :category => 'consumer', :hide_from_front_page => false
+    p2 = create_product :category => 'server'
+    products = Product.categorized_products
+    products.keys.should == ['consumer']
+    products['consumer'].should == [p1]
   end
 end
