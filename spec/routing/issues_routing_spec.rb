@@ -25,6 +25,15 @@ describe IssuesController do
     it "should map { :controller => 'issues', :action => 'destroy', :id => '123', :protocol => 'https' } to /issues/123" do
       route_for(:controller => 'issues', :action => 'destroy', :id => '123', :protocol => 'https').should == { :path => '/issues/123', :method => 'delete' }
     end
+
+    it 'maps #index/page/:page' do
+      pending 'due to RSpec 1.2.9 breakage'
+      { :get => '/issues/page/2' }.should \
+        route_to(:controller => 'issues',
+                 :action => 'index',
+                 :page => '2',
+                 :protocol => 'https')
+    end
   end
 
   describe 'non-RESTful route generation' do
@@ -60,6 +69,10 @@ describe IssuesController do
 
     it "should generate params { :controller => 'issues', action => 'destroy', id => '123', :protocol => 'https' } from DELETE /issues/123" do
       params_from(:delete, '/issues/123').should == { :controller => 'issues', :action => 'destroy', :id => '123', :protocol => 'https' }
+    end
+
+    it 'generates params for #index/page/:page' do
+      params_from(:get, '/issues/page/2').should == { :controller => 'issues', :action => 'index', :page => '2', :protocol => 'https' }
     end
   end
 
