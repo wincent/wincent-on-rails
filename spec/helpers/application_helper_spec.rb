@@ -69,7 +69,7 @@ end
 
 describe ApplicationHelper, 'product_options method' do
   it 'should find all products' do
-    Product.should_receive(:find).with(:all).and_return([])
+    Product.should_receive(:all).with(:select => 'id, name, category').and_return([])
     helper.product_options
   end
 
@@ -77,7 +77,7 @@ describe ApplicationHelper, 'product_options method' do
     Product.delete_all
     product1 = create_product :name => 'foo'
     product2 = create_product :name => 'bar'
-    helper.product_options.should == [['foo', product1.id], ['bar', product2.id]]
+    helper.product_options.should == [[nil, [["foo", product1.id], ["bar", product2.id]]]]
   end
 end
 

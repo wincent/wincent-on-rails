@@ -156,8 +156,7 @@ module ApplicationHelper
 
   # For use in AJAX product pop-up menus.
   def product_options
-    sql = 'SELECT id, name, category FROM products'
-    Product.find_by_sql(sql).group_by(&:category).to_a.collect do |category, products|
+    Product.all(:select => 'id, name, category').group_by(&:category).to_a.collect do |category, products|
       [category, products.collect { |product| [product.name, product.id] }]
     end
   end
