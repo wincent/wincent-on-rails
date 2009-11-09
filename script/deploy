@@ -205,10 +205,10 @@ if [ -n "$DO_CHECK" ]; then
   echo "Processing command: check"
   echo "  checking: directories exist and are writable"
   ssh $SERVER "sh -c '(test -d $DEPLOY          || (echo \"  failed -d: $DEPLOY\" && exit 1)) && \
-                      (test -d $DEPLOY/shared   || (echo \"  failed -d: $DEPLOY\" && exit 1)) && \
-                      (test -d $DEPLOY/releases || (echo \"  failed -d: $DEPLOY\" && exit 1)) && \
+                      (test -d $DEPLOY/shared   || (echo \"  failed -d: $DEPLOY/shared\" && exit 1)) && \
+                      (test -d $DEPLOY/releases || (echo \"  failed -d: $DEPLOY/releases\" && exit 1)) && \
                       (test -w $DEPLOY          || (echo \"  failed -w: $DEPLOY\" && exit 1)) && \
-                      (test -w $DEPLOY/releases || (echo \"  failed -w: $DEPLOY\" && exit 1))'"
+                      (test -w $DEPLOY/releases || (echo \"  failed -w: $DEPLOY/releases\" && exit 1))'"
   echo "  checking: executables exist"
   ssh $SERVER "sh -c 'which gem git > /dev/null'"
   echo "  checking: gem versions"
