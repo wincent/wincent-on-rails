@@ -203,6 +203,24 @@ fi
 
 if [ -n "$DO_CHECK" ]; then
   echo "Processing command: check"
+  echo "  checking: JavaScript is correctly minimized"
+  #COMPRESSOR=/usr/local/bin/closure/compiler.jar
+  COMPRESSOR=/usr/local/bin/yuicompressor.jar
+  test -f $COMPRESSOR || (echo "  failed: compressor not found at $COMPRESSOR" && exit 1)
+  #test -r $COMPRESSOR || (echo "  failed: compressor not readable at $COMPRESSOR" && exit 1)
+  TMPDIR=$(mktemp -q -d /private/tmp/deploy.XXXXXX) || (echo "  failed: could not create temporary directory" && exit 1)
+  if [ -z "$REF" ]; then
+    LOCAL_REF=$BRANCH
+  else
+    LOCAL_REF=$REF
+  fi
+  for JS in $(ls public/javascripts/*.max.js); do
+    git show $LOCAL_REF:$JS > $TMPDIR/max.js
+    git show $LOCAL_REF:${JS/.max.js/.min.js} > $TMPDIR/min.js
+    java -jar $COMPRESSOR -o $TMPDIR/out.js $TMPDIR/max.js
+    #java -jar $COMPRESSOR --js=$TMPDIR/max.js --js_output_file=$TMPDIR/out.js
+    diff -q $TMPDIR/min.js $TMPDIR/out.js > /dev/null || (echo "  failed: $JS is not minimized in $LOCAL_REF" && exit 1)
+  done
   echo "  checking: directories exist and are writable"
   ssh $SERVER "sh -c '(test -d $DEPLOY          || (echo \"  failed -d: $DEPLOY\" && exit 1)) && \
                       (test -d $DEPLOY/shared   || (echo \"  failed -d: $DEPLOY/shared\" && exit 1)) && \
@@ -233,12 +251,14 @@ if [ -n "$DO_DEPLOY" ]; then
   SHARED=$DEPLOY/shared
   CHECKOUT=$DEPLOY/releases/$TIMESTAMP
   if [ -z "$REF" ]; then
-    REF=origin/$BRANCH
+    REMOTE_REF=origin/$BRANCH
+  else
+    REMOTE_REF=$REF
   fi
   ssh $SERVER "sh -c '(test ! -e $TIMESTAMP || (echo \"  failed: $CHECKOUT already exists\" && exit 1)) && \
                       git clone --shared $REPO $CHECKOUT && \
                       cd $CHECKOUT && \
-                      git checkout -b deploy $REF && \
+                      git checkout -b deploy $REMOTE_REF && \
                       (echo $TIMESTAMP > $CHECKOUT/REVISION) && \
                       rm -rf $CHECKOUT/log \
                              $CHECKOUT/public/system \
