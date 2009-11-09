@@ -9,14 +9,14 @@ ADMIN_HOST="wincent1.inetu.net"
 # default settings for production environment:
 SERVER="rails.wincent.com"
 MONIT_GROUP="production"
-BRANCH="origin/maint"
+BRANCH="maint"
 DEPLOY="/home/rails.wincent.com/deploy"
 ENVIRONMENT="production"
 
 staging_environment_overrides() {
   SERVER="kreacher.wincent.com"
   MONIT_GROUP="staging"
-  BRANCH="origin/master"
+  BRANCH="master"
   DEPLOY="/home/kreacher.wincent.com/deploy"
   ENVIRONMENT="staging"
 }
@@ -217,14 +217,13 @@ if [ -n "$DO_CHECK" ]; then
                       gem specification --version \">= 1.0.0\" rack > /dev/null && \
                       gem specification --version \">= 1.0\" mkdtemp > /dev/null'"
   echo "  checking: local branch vs remote branch"
-  LOCAL_BRANCH=${BRANCH#origin/}
-  git diff --exit-code --quiet $LOCAL_BRANCH $BRANCH || \
-    echo "  warning: local $LOCAL_BRANCH differs from remote $BRANCH: did you remember to 'git push'?"
+  git diff --exit-code --quiet $BRANCH origin/$BRANCH || \
+    echo "  warning: local $BRANCH differs from remote origin/$BRANCH: did you remember to 'git push'?"
   echo "  checking: currently checked out branch"
   CURRENT_BRANCH=$(git symbolic-ref HEAD 2> /dev/null)
   CURRENT_BRANCH=${CURRENT_BRANCH#refs/heads/}
-  test "$CURRENT_BRANCH" = "$LOCAL_BRANCH" || \
-    echo "  warning: currently on branch $CURRENT_BRANCH (expected $LOCAL_BRANCH) -- sure you're working on the right branch?"
+  test "$CURRENT_BRANCH" = "$BRANCH" || \
+    echo "  warning: currently on branch $CURRENT_BRANCH (expected $BRANCH) -- sure you're working on the right branch?"
 fi
 
 if [ -n "$DO_DEPLOY" ]; then
@@ -234,7 +233,7 @@ if [ -n "$DO_DEPLOY" ]; then
   SHARED=$DEPLOY/shared
   CHECKOUT=$DEPLOY/releases/$TIMESTAMP
   if [ -z "$REF" ]; then
-    REF=$BRANCH
+    REF=origin/$BRANCH
   fi
   ssh $SERVER "sh -c '(test ! -e $TIMESTAMP || (echo \"  failed: $CHECKOUT already exists\" && exit 1)) && \
                       git clone --shared $REPO $CHECKOUT && \
