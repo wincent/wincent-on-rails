@@ -11,7 +11,8 @@ class Page < ActiveRecord::Base
   validates_format_of     :permalink, :with => /\A[a-zA-Z0-9\-]+\z/,
                           :message => 'must only contain letters, numbers and hyphens'
   validates_inclusion_of  :markup_type,
-                          :in => [ MarkupType::HTML, MarkupType::WIKITEXT ]
+                          :in => [ MarkupType::HTML, MarkupType::WIKITEXT ],
+                          :message => 'not a valid markup type'
   attr_accessible         :title, :permalink, :body, :markup_type, :front
   # TODO: acts_as_searchable :attributes => [:body, :title] (will require HTML tokenization)
 
