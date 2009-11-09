@@ -18,11 +18,14 @@ class Page < ActiveRecord::Base
     self.permalink
   end
 
-  def html?
-    self.markup_type == MarkupType::HTML
-  end
-
-  def wikitext?
-    self.markup_type == MarkupType::WIKITEXT
+  def body_html
+    case markup_type
+    when MarkupType::HTML
+      body
+    when MarkupType::WIKITEXT
+      body.w
+    else # unlikely to get here (due to validations)
+      raise "Unknown markup type #{markup_type}"
+    end
   end
 end

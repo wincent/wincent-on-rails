@@ -57,3 +57,20 @@ describe Page, 'accessible attributes' do
     create_page(:front => false).should allow_mass_assignment_of(:front => true)
   end
 end
+
+describe Page, 'body_html method' do
+  it 'should return raw HTML for HTML markup' do
+    page = create_page(:body => '<em>foo</em>')
+    page.body_html.should == '<em>foo</em>'
+  end
+
+  it 'should return transformed HTML for Wikitext markup' do
+    page = create_page(:body => "''foo''", :markup_type => Page::MarkupType::WIKITEXT)
+    page.body_html.should == "<p><em>foo</em></p>\n"
+  end
+
+  it 'should complain about unknown markup types' do
+    page = new_page(:markup_type => 351)
+    lambda { page.body_html }.should raise_error(RuntimeError, /Unknown markup type/)
+  end
+end
