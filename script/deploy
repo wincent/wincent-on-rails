@@ -3,22 +3,22 @@
 # base settings:
 # note that we don't specify users, but rely on per-host defaults from
 # ~/.ssh/config
-REPO="/pub/git/private/wincent.com.git"
-ADMIN_HOST="wincent1.inetu.net"
+REPO=/pub/git/private/wincent.com.git
+ADMIN_HOST=wincent1.inetu.net
 
 # default settings for production environment:
-SERVER="rails.wincent.com"
-MONIT_GROUP="production"
-BRANCH="maint"
-DEPLOY="/home/rails.wincent.com/deploy"
-ENVIRONMENT="production"
+SERVER=rails.wincent.com
+MONIT_GROUP=production
+BRANCH=maint
+DEPLOY=/home/rails.wincent.com/deploy
+ENVIRONMENT=production
 
 staging_environment_overrides() {
-  SERVER="kreacher.wincent.com"
-  MONIT_GROUP="staging"
-  BRANCH="master"
-  DEPLOY="/home/kreacher.wincent.com/deploy"
-  ENVIRONMENT="staging"
+  SERVER=kreacher.wincent.com
+  MONIT_GROUP=staging
+  BRANCH=master
+  DEPLOY=/home/kreacher.wincent.com/deploy
+  ENVIRONMENT=staging
 }
 
 usage() {
