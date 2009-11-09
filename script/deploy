@@ -281,7 +281,8 @@ if [ -n "$DO_DEPLOY" ]; then
                       ln -s $CHECKOUT $DEPLOY/latest && \
                       cd $CHECKOUT && \
                       rake --silent gems:clean && \
-                      rake --silent gems:build'"
+                      rake --silent gems:build && \
+                      rake --silent js:minify:deploy > /dev/null'"
 fi
 
 if [ -n "$DO_MIGRATE_TEST" ]; then
