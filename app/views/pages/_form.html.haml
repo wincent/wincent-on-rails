@@ -6,11 +6,11 @@
     %th Permalink
     %td=f.text_field :permalink
   %tr
-    %th
-      Body
-      %br
-      %span.annotation (HTML)
+    %th Body
     %td=f.text_area :body, :cols => 80, :rows => 30
+  %tr
+    %th Markup
+    %td=f.select :markup_type, Page::MARKUP_TYPES
   %tr
     %th Front page?
     %td=f.check_box :front

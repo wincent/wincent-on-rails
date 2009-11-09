@@ -3,6 +3,7 @@ class Page < ActiveRecord::Base
     HTML      = 0
     WIKITEXT  = 1
   end
+  MARKUP_TYPES = Hash.new(0).merge!({ 'HTML' => MarkupType::HTML, 'Wikitext' => MarkupType::WIKITEXT }).freeze
 
   belongs_to              :product
   validates_presence_of   :title
