@@ -21,6 +21,11 @@ staging_environment_overrides() {
   ENVIRONMENT=staging
 }
 
+bail() {
+  echo $1
+  exit 1
+}
+
 usage() {
   echo "Usage:"
   echo "  $0 [options] command..."
@@ -206,9 +211,9 @@ if [ -n "$DO_CHECK" ]; then
   echo "  checking: JavaScript is correctly minimized"
   #COMPRESSOR=/usr/local/bin/closure/compiler.jar
   COMPRESSOR=/usr/local/bin/yuicompressor.jar
-  test -f $COMPRESSOR || (echo "  failed: compressor not found at $COMPRESSOR" && exit 1)
-  #test -r $COMPRESSOR || (echo "  failed: compressor not readable at $COMPRESSOR" && exit 1)
-  TMPDIR=$(mktemp -q -d /private/tmp/deploy.XXXXXX) || (echo "  failed: could not create temporary directory" && exit 1)
+  test -f $COMPRESSOR || bail "  failed: compressor not found at $COMPRESSOR"
+  #test -r $COMPRESSOR || bail "  failed: compressor not readable at $COMPRESSOR"
+  TMPDIR=$(mktemp -q -d /private/tmp/deploy.XXXXXX) || bail "  failed: could not create temporary directory"
   if [ -z "$REF" ]; then
     LOCAL_REF=$BRANCH
   else
@@ -219,7 +224,7 @@ if [ -n "$DO_CHECK" ]; then
     git show $LOCAL_REF:${JS/.max.js/.min.js} > $TMPDIR/min.js
     java -jar $COMPRESSOR -o $TMPDIR/out.js $TMPDIR/max.js
     #java -jar $COMPRESSOR --js=$TMPDIR/max.js --js_output_file=$TMPDIR/out.js
-    diff -q $TMPDIR/min.js $TMPDIR/out.js > /dev/null || (echo "  failed: $JS is not minimized in $LOCAL_REF" && exit 1)
+    diff -q $TMPDIR/min.js $TMPDIR/out.js > /dev/null || bail "  failed: $JS is not minimized in $LOCAL_REF"
   done
   echo "  checking: directories exist and are writable"
   ssh $SERVER "sh -c '(test -d $DEPLOY          || (echo \"  failed -d: $DEPLOY\" && exit 1)) && \
