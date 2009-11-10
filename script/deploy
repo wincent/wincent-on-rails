@@ -233,7 +233,7 @@ if [ -n "$DO_CHECK" ]; then
                       (test -w $DEPLOY          || (echo \"  failed -w: $DEPLOY\" && exit 1)) && \
                       (test -w $DEPLOY/releases || (echo \"  failed -w: $DEPLOY/releases\" && exit 1))'"
   echo "  checking: executables exist"
-  ssh $SERVER "sh -c 'which gem git > /dev/null'"
+  ssh $SERVER "sh -l -c 'which gem git > /dev/null'"
   echo "  checking: gem versions"
   ssh $SERVER "sh -c 'gem specification --version \">= 0.6\"   hpricot > /dev/null && \
                       gem specification --version \">= 1.3.1\" rubygems-update > /dev/null && \
@@ -260,7 +260,7 @@ if [ -n "$DO_DEPLOY" ]; then
   else
     REMOTE_REF=$REF
   fi
-  ssh $SERVER "sh -c '(test ! -e $TIMESTAMP || (echo \"  failed: $CHECKOUT already exists\" && exit 1)) && \
+  ssh $SERVER "sh -l -c '(test ! -e $TIMESTAMP || (echo \"  failed: $CHECKOUT already exists\" && exit 1)) && \
                       git clone --shared $REPO $CHECKOUT && \
                       cd $CHECKOUT && \
                       git checkout -b deploy $REMOTE_REF && \
@@ -320,17 +320,17 @@ fi
 
 if [ -n "$DO_STOP" ]; then
   echo "Processing command: stop (you may be asked for a password)"
-  ssh -t $ADMIN_HOST sudo monit -g $MONIT_GROUP stop all
+  ssh -t $ADMIN_HOST "sh -l -c 'sudo monit -g $MONIT_GROUP stop all'"
 fi
 
 if [ -n "$DO_RESTART" ]; then
   echo "Processing command: restart (you may be asked for a password)"
-  ssh -t $ADMIN_HOST sudo monit -g $MONIT_GROUP restart all
+  ssh -t $ADMIN_HOST "sh -l -c 'sudo monit -g $MONIT_GROUP restart all'"
 fi
 
 if [ -n "$DO_START" ]; then
   echo "Processing command: start (you may be asked for a password)"
-  ssh -t $ADMIN_HOST sudo monit -g $MONIT_GROUP start all
+  ssh -t $ADMIN_HOST "sh -l -c 'sudo monit -g $MONIT_GROUP start all'"
 fi
 
 if [ -n "$DO_ENABLE" ]; then
