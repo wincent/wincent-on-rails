@@ -15,9 +15,9 @@ namespace :js do
     task :create do
       javascripts '*.max.js' do |f|
         # run them through yuicompressor -> .min.js
-        `java -jar /usr/local/bin/yuicompressor.jar -o #{f.gsub(/\.max\.js\z/, '.min.js')} #{f}`
+        #`java -jar /usr/local/bin/yuicompressor.jar -o #{f.gsub(/\.max\.js\z/, '.min.js')} #{f}`
         # run them through Closure compiler -> .min.js
-        #`java -jar /usr/local/bin/closure/compiler.jar --js=#{f} --js_output_file=#{f.gsub(/\.max\.js\z/, '.min.js')}`
+        `java -jar /usr/local/bin/closure/compiler.jar --js=#{f} --js_output_file=#{f.gsub(/\.max\.js\z/, '.min.js')}`
       end
     end
 
