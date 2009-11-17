@@ -12,5 +12,12 @@ if ENV['RAILS_ENV']
       include FixtureReplacement
     end
   end
+
+  begin
+    require 'rubygems'
+    require 'hirb'
+    Hirb.enable
+  rescue LoadError
+  end
 end
 
