@@ -189,10 +189,20 @@ Then /^show me the page$/ do
 end
 
 # custom additions
-Then /^I should read "([^\"]*)"$/ do |text|
-  HTML::FullSanitizer.new.sanitize(response.body).should =~ /#{text}/m
+Then /^I should see text "([^\"]*)"$/ do |text|
+  HTML::FullSanitizer.new.sanitize(response.body).should contain(text)
 end
 
-Then /^I should not read "([^\"]*)"$/ do |text|
-  HTML::FullSanitizer.new.sanitize(response.body).should_not =~ /#{text}/m
+Then /^I should not see text "([^\"]*)"$/ do |text|
+  HTML::FullSanitizer.new.sanitize(response.body).should_not contain(text)
+end
+
+Then /^I should see text \/([^\/]*)\/$/ do |regexp|
+  regexp = Regexp.new(regexp)
+  HTML::FullSanitizer.new.sanitize(response.body).should contain(regexp)
+end
+
+Then /^I should not see text \/([^\/]*)\/$/ do |regexp|
+  regexp = Regexp.new(regexp)
+  HTML::FullSanitizer.new.sanitize(response.body).should_not contain(regexp)
 end
