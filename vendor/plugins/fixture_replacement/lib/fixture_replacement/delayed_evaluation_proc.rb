@@ -1,1 +1,0 @@
-class DelayedEvaluationProc < Proc; end

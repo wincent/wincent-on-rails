@@ -8,7 +8,7 @@ describe ResetMailer, 'reset' do
   before do
     @administrator  = 'win@wincent.com'
     user            = create_user
-    @recipient      = user.emails.create(:address => "#{String.random}@example.com").address
+    @recipient      = user.emails.create(:address => "#{FR::random_string}@example.com").address
     @reset          = user.resets.create
     @reset.user.emails.create :address => @recipient
     @mail           = ResetMailer.create_reset_message @reset

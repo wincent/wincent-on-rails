@@ -71,7 +71,7 @@ describe IssuesController, 'GET /issues/:id.atom' do
     10.times {
       # feed has one entry for issue, and one entry for each comment
       # so to fully catch this bug need some comments on the issue
-      comment = issue.comments.build :body => String.random
+      comment = issue.comments.build :body => FR::random_string
       comment.awaiting_moderation = false
       comment.save
     }

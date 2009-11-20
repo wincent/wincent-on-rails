@@ -6,7 +6,7 @@ describe Product, 'validating the name' do
   end
 
   it 'should require it to be unique' do
-    name = String.random
+    name = FR::random_string
     create_product(:name => name).should be_valid
     new_product(:name => name).should fail_validation_for(:name)
   end
@@ -18,7 +18,7 @@ describe Product, 'validating the permalink' do
   end
 
   it 'should require it to be unique' do
-    permalink = String.random
+    permalink = FR::random_string
     create_product(:permalink => permalink).should be_valid
     new_product(:permalink => permalink).should fail_validation_for(:permalink)
   end
@@ -31,7 +31,7 @@ describe Product, 'validating the bundle identifier' do
   end
 
   it 'should require it to be unique ' do
-    bundle_id = "com.wincent.#{String.random}"
+    bundle_id = "com.wincent.#{FR::random_string}"
     create_product(:bundle_identifier => bundle_id).should be_valid
     product = new_product(:bundle_identifier => bundle_id)
     product.should fail_validation_for(:bundle_identifier)

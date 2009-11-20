@@ -27,7 +27,7 @@ describe TopicsController, 'GET /forums/:forum_id/topics/:id.atom' do
     10.times {
       # feed has one entry for topic, and one entry for each comment
       # so to fully catch this bug need some comments on the topic
-      comment = topic.comments.build :body => String.random
+      comment = topic.comments.build :body => FR::random_string
       comment.awaiting_moderation = false
       comment.save
     }

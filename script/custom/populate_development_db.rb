@@ -1,10 +1,10 @@
 #!/usr/bin/env script/runner
 # (must run from top level of application)
 
-include FixtureReplacement
+include FixtureReplacement # aliased as FR
 
 def chunk_of_text
-  (Array.new(rand(100) + 25)).collect { |a| String.random(rand(16) + 1) }.join(' ')
+  (Array.new(rand(100) + 25)).collect { |a| FR::random_string(rand(16) + 1) }.join(' ')
 end
 
 if ENV['RAILS_ENV'] != 'development'

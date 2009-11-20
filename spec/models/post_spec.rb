@@ -60,19 +60,19 @@ end
 # :title, :permalink, :excerpt, :body, :public, :accepts_comments, :pending_tags
 describe Post, 'accessible attributes' do
   it 'should allow mass-assignment to the title' do
-    new_post.should allow_mass_assignment_of(:title => String.random)
+    new_post.should allow_mass_assignment_of(:title => FR::random_string)
   end
 
   it 'should allow mass-assignment to the permalink' do
-    new_post.should allow_mass_assignment_of(:permalink => String.random)
+    new_post.should allow_mass_assignment_of(:permalink => FR::random_string)
   end
 
   it 'should allow mass-assignment to the excerpt' do
-    new_post.should allow_mass_assignment_of(:excerpt => String.random)
+    new_post.should allow_mass_assignment_of(:excerpt => FR::random_string)
   end
 
   it 'should allow mass-assignment to the body' do
-    new_post.should allow_mass_assignment_of(:body => String.random)
+    new_post.should allow_mass_assignment_of(:body => FR::random_string)
   end
 
   it 'should allow mass-assignment to the public attribute' do
@@ -94,7 +94,7 @@ describe Post, 'validating the title' do
   end
 
   it 'should not require it to be unique' do
-    title = String.random
+    title = FR::random_string
     create_post(:title => title).should be_valid
     new_post(:title => title).should_not fail_validation_for(:title)
   end
@@ -102,7 +102,7 @@ end
 
 describe Post, 'validating the permalink' do
   it 'should require it to be unique' do
-    permalink = String.random.downcase
+    permalink = FR::random_string.downcase
     create_post(:permalink => permalink).should be_valid
     new_post(:permalink => permalink).should fail_validation_for(:permalink)
   end
@@ -139,7 +139,7 @@ end
 
 describe Post, 'autogeneration of permalink' do
   it 'should generate it based on title if not present' do
-    title = String.random
+    title = FR::random_string
     post = new_post(:title => title, :permalink => nil)
     post.should_not fail_validation_for(:permalink)
     post.permalink.should == title.downcase
@@ -200,7 +200,7 @@ describe Post, 'autogeneration of permalink' do
   end
 
   it 'should generate unique permalinks' do
-    permalink = String.random.downcase
+    permalink = FR::random_string.downcase
     create_post(:permalink => permalink)
     post = create_post(:title => permalink, :permalink => nil)
     post.permalink.should == "#{permalink}-2"
@@ -223,7 +223,7 @@ end
 
 describe Post, 'parametrization' do
   it 'should use the permalink as the param' do
-    permalink = String.random.downcase
+    permalink = FR::random_string.downcase
     new_post(:permalink => permalink).to_param.should == permalink
   end
 end

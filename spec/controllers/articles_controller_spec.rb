@@ -4,7 +4,7 @@ require 'hpricot'
 describe ArticlesController, 'regressions' do
   it 'should handle HTTPS URLs in the url_or_path_for_redirect method' do
     # previously only handled HTTP URLs
-    title = String.random
+    title = FR::random_string
     target = 'https://example.com/'
     create_article :title => title, :redirect => target, :body => ''
     # BUG: this "get" doesn't do what we want it to do

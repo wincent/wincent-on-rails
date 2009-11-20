@@ -12,13 +12,13 @@ describe Tag, 'name validation' do
   end
 
   it 'should require name to be unique' do
-    name = String.random
+    name = FR::random_string
     create_tag(:name => name)
     new_tag(:name => name).should fail_validation_for(:name)
   end
 
   it 'should compare names in a case-insensitive manner' do
-    name = String.random
+    name = FR::random_string
     create_tag(:name => name.upcase)
     new_tag(:name => name.downcase).should fail_validation_for(:name)
   end
@@ -64,13 +64,13 @@ end
 
 describe Tag, 'name normalization' do
   it 'should normalize names to lowercase upon creation' do
-    name = String.random.upcase
+    name = FR::random_string.upcase
     tag = new_tag(:name => name)
     tag.name.should == name.downcase
   end
 
   it 'should normalize names when updating attributes via the accessor' do
-    name = String.random
+    name = FR::random_string
     tag = create_tag
     tag.name = name.upcase
     tag.name.should == name.downcase

@@ -1,139 +1,107 @@
 module FixtureReplacement
-  def article_attributes
-    {
-      :title                    => String.random,
-      :body                     => String.random
-    }
+  attributes_for :article do |a|
+    a.title = random_string
+    a.body  = random_string
   end
 
-  def comment_attributes
-    {
-      :user                     => default_user,
-      :body                     => 'hello world',
-      :commentable              => default_article,
-      :awaiting_moderation      => false
-    }
+  attributes_for :attachment do |a|
+    a.mime_type         = 'image/png'
+    a.original_filename = "#{random_string}.png"
+    a.filesize          = rand(1_000_000)
   end
 
-  def confirmation_attributes
-    {
-      :email                    => default_email
-    }
+  attributes_for :comment do |c|
+    c.user                = new_user
+    c.body                = 'hello world'
+    c.commentable         = new_article
+    c.awaiting_moderation = false
   end
 
-  def email_attributes
-    {
-      :address                  => "#{String.random}@example.com",
-      :user                     => default_user,
-      :verified                 => true
-    }
+  attributes_for :confirmation do |c|
+    c.email = new_email
   end
 
-  def forum_attributes
-    {
-      :name                     => String.random
-    }
+  attributes_for :email do |e|
+    e.address   = "#{random_string}@example.com"
+    e.user      = new_user
+    e.verified  = true
   end
 
-  def issue_attributes
-    {
-      :summary                  => String.random,
-      :description              => String.random,
-      :awaiting_moderation      => false
-    }
+  attributes_for :forum do |f|
+    f.name = random_string
   end
 
-  def link_attributes
-    {
-      :uri                      => "http://#{String.random}/",
-      :permalink                => String.random
-    }
+  attributes_for :issue do |i|
+    i.summary             = random_string
+    i.description         = random_string
+    i.awaiting_moderation = false
   end
 
-  def message_attributes
-    {
-      # all fields optional or have default values already
-    }
+  attributes_for :link do |l|
+    l.uri       = "http://#{random_string}/"
+    l.permalink = random_string
   end
 
-  def needle_attributes
-    {
-      # needles don't use real ActiveRecord associations, so don't even bother
-      # creating a real model object for the model fields here
-      :model_class              => 'Article',
-      :model_id                 => 5000,
-      :attribute_name           => 'body',
-      :content                  => 'word'
-    }
+  attributes_for :message do |m|
+    # all fields optional or have default values already
   end
 
-  def page_attributes
-    {
-      :title      => String.random,
-      :permalink  => String.random,
-      :body       => "<p>#{String.random}</p>\n"
-    }
+  attributes_for :needle do |n|
+    # needles don't use real ActiveRecord associations, so don't even
+    # bother creating a real model object for the model fields here
+    n.model_class     = 'Article'
+    n.model_id        = 5000
+    n.attribute_name  = 'body'
+    n.content         = 'word'
   end
 
-  def post_attributes
-    {
-      :title                    => String.random,
-      :permalink                => String.random,
-      :excerpt                  => String.random,
-    }
+  attributes_for :page do |p|
+    p.title     = random_string
+    p.permalink = random_string
+    p.body      = "<p>#{random_string}</p>\n"
   end
 
-  def product_attributes
-    {
-      :name                     => String.random,
-      :permalink                => String.random
-    }
+  attributes_for :post do |p|
+    p.title     = random_string
+    p.permalink = random_string
+    p.excerpt   = random_string
   end
 
-  def reset_attributes
-    {
-      :user                     => default_user
-    }
+  attributes_for :product do |p|
+    p.name      = random_string
+    p.permalink = random_string
   end
 
-  def tag_attributes
-    {
-      :name                     => String.random
-    }
+  attributes_for :reset do |r|
+    r.user = new_user
   end
 
-  def tagging_attributes
-    {
-    }
+  attributes_for :tag do |t|
+    t.name = random_string
   end
 
-  def topic_attributes
-    {
-      :forum                    => default_forum,
-      :title                    => String.random,
-      :body                     => String.random,
-      :awaiting_moderation      => false
-    }
+  attributes_for :tagging do |t|
   end
 
-  def tweet_attributes
-    {
-      :body                     => String.random
-    }
+  attributes_for :topic do |t|
+    t.forum               = new_forum
+    t.title               = random_string
+    t.body                = random_string
+    t.awaiting_moderation = false
+  end
+
+  attributes_for :tweet do |t|
+    t.body = random_string
   end
 
   PASSPHRASE = 'supersecret'
-  def user_attributes
-    {
-      :display_name             => String.random,
-      :passphrase               => PASSPHRASE,
-      :passphrase_confirmation  => PASSPHRASE,
-      :verified                 => true
-    }
+  attributes_for :user do |u|
+    u.display_name            = random_string
+    u.passphrase              = PASSPHRASE
+    u.passphrase_confirmation = PASSPHRASE
+    u.verified                = true
   end
 
-  def word_attributes
-    {
-    }
+  attributes_for :word do |w|
   end
 end

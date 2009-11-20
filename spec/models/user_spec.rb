@@ -34,32 +34,32 @@ describe User, 'setting a passphrase' do
   it 'should generate a new salt' do
     u = new_user
     old_salt = u.passphrase_salt
-    u.passphrase = String.random
+    u.passphrase = FR::random_string
     u.passphrase_salt.should_not == old_salt
   end
 
   it 'should generate a new hash' do
     u = new_user
     old_hash = u.passphrase_hash
-    u.passphrase = String.random
+    u.passphrase = FR::random_string
     u.passphrase_hash.should_not == old_hash
   end
 end
 
 describe User, 'authenticating' do
   before do
-    @email      = "#{String.random}@example.com"
-    @passphrase = String.random
+    @email      = "#{FR::random_string}@example.com"
+    @passphrase = FR::random_string
     @user       = create_user :passphrase => @passphrase, :passphrase_confirmation => @passphrase
     @user.emails.create :address => @email
   end
 
   it 'should return nil if invalid email address' do
-    User.authenticate(String.random, @passphrase).should be_nil
+    User.authenticate(FR::random_string, @passphrase).should be_nil
   end
 
   it 'should return nil if invalid passphrase' do
-    User.authenticate(@email, String.random).should be_nil
+    User.authenticate(@email, FR::random_string).should be_nil
   end
 
   it 'should return the user if valid email and passphrase' do
@@ -69,27 +69,27 @@ end
 
 describe User, 'accessible attributes' do
   it 'should allow mass-assignment to the display name' do
-    new_user.should allow_mass_assignment_of(:display_name => String.random)
+    new_user.should allow_mass_assignment_of(:display_name => FR::random_string)
   end
 
   it 'should allow mass-assignment to the passphrase (and confirmation)' do
     # have to test these two together otherwise validation fails
-    passphrase = String.random
+    passphrase = FR::random_string
     new_user.should allow_mass_assignment_of(:passphrase => passphrase, :passphrase_confirmation => passphrase)
   end
 
   it 'should allow mass-assignment to the old passphrase' do
-    new_user.should allow_mass_assignment_of(:old_passphrase => String.random)
+    new_user.should allow_mass_assignment_of(:old_passphrase => FR::random_string)
   end
 end
 
 describe User, 'protected attributes' do
   it 'should deny mass-assignment to the passphrase hash' do
-    new_user.should_not allow_mass_assignment_of(:passphrase_hash => String.random)
+    new_user.should_not allow_mass_assignment_of(:passphrase_hash => FR::random_string)
   end
 
   it 'should deny mass-assignment to the passphrase salt' do
-    new_user.should_not allow_mass_assignment_of(:passphrase_salt => String.random)
+    new_user.should_not allow_mass_assignment_of(:passphrase_salt => FR::random_string)
   end
 
   it 'should deny mass-assignment to the superuser flag' do
@@ -105,7 +105,7 @@ describe User, 'protected attributes' do
   end
 
   it 'should deny mass-assignment to the session key' do
-    new_user.should_not allow_mass_assignment_of(:session_key => String.random)
+    new_user.should_not allow_mass_assignment_of(:session_key => FR::random_string)
   end
 
   it 'should deny mass-assignment to the session expiry' do
@@ -119,13 +119,13 @@ end
 
 describe User, 'validating the display name' do
   it 'should require it to be unique' do
-    name = String.random
+    name = FR::random_string
     create_user(:display_name => name).should be_valid
     new_user(:display_name => name).should fail_validation_for(:display_name)
   end
 
   it 'should require it to be at least 3 characters long' do
-    new_user(:display_name => String.random(2)).should fail_validation_for(:display_name)
+    new_user(:display_name => FR::random_string(2)).should fail_validation_for(:display_name)
   end
 
   it 'should require it to begin with at least 2 letters' do
@@ -154,7 +154,12 @@ end
 
 describe User, 'validating the passphrase' do
   it 'should require it to be present on new records' do
-    new_user(:passphrase => nil, :passphrase_confirmation => nil).should fail_validation_for(:passphrase)
+    # for some reason, FixtureReplacement 3.0 doesn't work here, so create
+    # record manually (specifically, "new_user :passphrase => nil,
+    # :passphrase_confirmation => nil" returns a valid model with a
+    # passphrase set on it)
+    user = User.new :display_name => FR::random_string, :passphrase => nil, :passphrase_confirmation => nil
+    user.should fail_validation_for(:passphrase)
   end
 
   it 'should not require it to be present on non-new records' do
@@ -164,19 +169,20 @@ describe User, 'validating the passphrase' do
   end
 
   it 'should require it to be at least 8 characters long' do
-    passphrase = String.random(7)
+    passphrase = FR::random_string(7)
     new_user(:passphrase => passphrase, :passphrase_confirmation => passphrase).should fail_validation_for(:passphrase)
   end
 
   it 'should require it to be confirmed' do
-    new_user(:passphrase => String.random, :passphrase_confirmation => String.random).should fail_validation_for(:passphrase)
+    user = new_user(:passphrase => FR::random_string, :passphrase_confirmation => FR::random_string)
+    user.should fail_validation_for(:passphrase)
   end
 
   it 'should require the old password in order to set a new password' do
-    passphrase = String.random
+    passphrase = FR::random_string
     u = create_user(:passphrase => passphrase, :passphrase_confirmation => passphrase)
     u.should be_valid
-    new_passphrase = String.random
+    new_passphrase = FR::random_string
     u.update_attributes(:passphrase => new_passphrase, :passphrase_confirmation => new_passphrase)
     u.should fail_validation_for(:old_passphrase)
   end

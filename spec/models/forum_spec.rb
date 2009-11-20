@@ -28,7 +28,7 @@ describe Forum, 'topics association' do
   end
 
   def add_topic
-    @forum.topics.create :title => String.random, :body => String.random
+    @forum.topics.create :title => FR::random_string, :body => FR::random_string
   end
 
   it 'should have many topics' do
@@ -53,11 +53,11 @@ end
 # :name, :description
 describe Forum, 'accessible attributes' do
   it 'should allow mass-assignment of the name' do
-    new_forum.should allow_mass_assignment_of(:name => String.random)
+    new_forum.should allow_mass_assignment_of(:name => FR::random_string)
   end
 
   it 'should allow mass-assignment of the description' do
-    new_forum.should allow_mass_assignment_of(:description => String.random)
+    new_forum.should allow_mass_assignment_of(:description => FR::random_string)
   end
 end
 
@@ -82,7 +82,7 @@ describe Forum, 'validating the name' do
   end
 
   it 'should allow letters and spaces' do
-    words = Array.new(10).collect {|i| String.random }
+    words = Array.new(10).collect {|i| FR::random_string }
     new_forum(:name => words.join(' ')).should_not fail_validation_for(:name)
   end
 

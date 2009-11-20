@@ -6,8 +6,8 @@ describe '/links/new.html.haml' do
   before(:each) do
     @link = mock_model(Link)
     @link.stub!(:new_record?).and_return(true)
-    @link.stub!(:uri).and_return(String.random)
-    @link.stub!(:permalink).and_return(String.random)
+    @link.stub!(:uri).and_return(FR::random_string)
+    @link.stub!(:permalink).and_return(FR::random_string)
     @link.stub!(:click_count).and_return(1)
     assigns[:link] = @link
   end

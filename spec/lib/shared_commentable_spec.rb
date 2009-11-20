@@ -15,7 +15,7 @@ describe Commentable, :shared => true do
   end
 
   def add_comment overrides = {}
-    comment = @commentable.comments.build :body => String.random
+    comment = @commentable.comments.build :body => FR::random_string
     overrides.each { |k,v| comment.send("#{k.to_s}=", v) }
     comment.save
     comment
@@ -105,7 +105,7 @@ end
 # ie. issues, forum topics
 describe Commentable, "updating timestamps for comment changes", :shared => true do
   def add_comment overrides = {}
-    comment = @commentable.comments.build :body => String.random
+    comment = @commentable.comments.build :body => FR::random_string
     overrides.each { |k,v| comment.send("#{k.to_s}=", v) }
     comment.save
     comment
@@ -163,7 +163,7 @@ end
 # ie. blog posts, wiki articles
 describe Commentable, "not updating timestamps for comment changes", :shared => true do
   def add_comment overrides = {}
-    comment = @commentable.comments.build :body => String.random
+    comment = @commentable.comments.build :body => FR::random_string
     overrides.each { |k,v| comment.send("#{k.to_s}=", v) }
     comment.save
     comment

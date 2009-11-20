@@ -50,11 +50,11 @@ end
 # :summary, :description, :public, :product_id, :kind
 describe Issue, 'accessible attributes' do
   it 'should allow mass-assignment to the summary' do
-    new_issue.should allow_mass_assignment_of(:summary => String.random)
+    new_issue.should allow_mass_assignment_of(:summary => FR::random_string)
   end
 
   it 'should allow mass-assignment to the description' do
-    new_issue.should allow_mass_assignment_of(:description => String.random)
+    new_issue.should allow_mass_assignment_of(:description => FR::random_string)
   end
 
   it 'should allow mass-assignment to the public attribute' do
@@ -105,7 +105,7 @@ describe Issue, "annotations" do
 
   it 'should add an annotation for summary changes' do
     old = @issue.summary
-    new = String.random
+    new = FR::random_string
     @issue.summary = new
     @issue.save
     body = @issue.comments.first.body
@@ -172,7 +172,7 @@ describe Issue, "annotations" do
 
     # summary: old -> new
     old_summary = @issue.summary
-    @issue.summary = new_summary = String.random
+    @issue.summary = new_summary = FR::random_string
     @issue.save
     body = @issue.comments.first.body
     body.should =~ /Summary.*changed:/
@@ -185,7 +185,7 @@ describe Issue, "annotations" do
 
   it 'should create anonymous annotations for changes made outside of controller actions' do
     # although in practice we never want to make changes outside of the controller
-    @issue.summary = String.random
+    @issue.summary = FR::random_string
     @issue.save
     @issue.comments.first.user_id.should be_nil
   end

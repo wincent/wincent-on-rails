@@ -4,7 +4,7 @@ describe '/topics/show' do
   include TopicsHelper
 
   before do
-    @title              = String.random
+    @title              = FR::random_string
     assigns[:topic]     = @topic = create_topic({ :title => @title })
     assigns[:forum]     = @forum = @topic.forum
     assigns[:comments]  = []

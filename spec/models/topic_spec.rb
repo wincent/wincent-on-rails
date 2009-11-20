@@ -57,7 +57,7 @@ describe Topic, 'forum association' do
   end
 
   def add_topic
-    @forum.topics.create :title => String.random, :body => String.random
+    @forum.topics.create :title => FR::random_string, :body => FR::random_string
   end
 
   it 'should belong to a forum' do
@@ -89,7 +89,7 @@ describe Topic, '"last commenter" association' do
 
   it 'should belong to a last commenter' do
     @user = create_user
-    @comment = @topic.comments.build :body => String.random # can't set user here (protected)
+    @comment = @topic.comments.build :body => FR::random_string # can't set user here (protected)
     @comment.user = @user
     @comment.save
     @comment.moderate_as_ham! # only here does the last commenter actually get set
@@ -107,7 +107,7 @@ describe Topic, 'comments association' do
   end
 
   def add_comment
-    comment = @topic.comments.create :body => String.random
+    comment = @topic.comments.create :body => FR::random_string
   end
 
   it 'should have many comments' do
@@ -159,14 +159,14 @@ end
 
 describe Topic, '"find_topics_for_forum" method' do
   before do
-    @display_name = String.random
+    @display_name = FR::random_string
     @user         = create_user :display_name => @display_name
     @topic        = create_topic :awaiting_moderation => false
     @forum        = @topic.forum
   end
 
   def add_comment overrides = {}
-    comment = @topic.comments.build :body => String.random
+    comment = @topic.comments.build :body => FR::random_string
     comment.awaiting_moderation = false
     overrides.each { |k,v| comment.send("#{k.to_s}=", v) }
     comment.save!
@@ -313,7 +313,7 @@ describe Topic, '"comments.published"' do
   end
 
   def add_comment_with_override attribute, val
-    comment = @topic.comments.create :body => String.random
+    comment = @topic.comments.create :body => FR::random_string
     comment.update_attribute attribute, val
     comment
   end

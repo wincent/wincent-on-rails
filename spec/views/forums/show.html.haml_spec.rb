@@ -4,7 +4,7 @@ describe '/forums/show' do
   include ForumsHelper
 
   before do
-    @name = String.random
+    @name = FR::random_string
     assigns[:forum]   = create_forum :name => @name
     assigns[:topics]  = []
     render '/forums/show'

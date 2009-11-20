@@ -10,7 +10,7 @@ describe Link, 'URI validation' do
   end
 
   it 'should require URIs to be unique' do
-    uri = String.random
+    uri = FR::random_string
     link = create_link :uri => uri
     link.should_not fail_validation_for(:uri)
     link = new_link :uri => uri
@@ -25,7 +25,7 @@ describe Link, 'permalink validation' do
   end
 
   it 'should require permalinks to be unique' do
-    permalink = String.random
+    permalink = FR::random_string
     link = create_link :permalink => permalink
     link.should_not fail_validation_for(:permalink)
     link = new_link :permalink => permalink
@@ -42,11 +42,11 @@ end
 
 describe Link, 'accessible attributes' do
   it 'should allow mass-assignment to the uri' do
-    new_link.should allow_mass_assignment_of(:uri => String.random)
+    new_link.should allow_mass_assignment_of(:uri => FR::random_string)
   end
 
   it 'should allow mass-assignment to the permalink' do
-    new_link.should allow_mass_assignment_of(:permalink => String.random)
+    new_link.should allow_mass_assignment_of(:permalink => FR::random_string)
   end
 end
 

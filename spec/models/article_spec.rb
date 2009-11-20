@@ -17,7 +17,7 @@ end
 
 describe Article, 'creation' do
   before do
-    @article = Article.create(:title => String.random, :body => String.random)
+    @article = Article.create(:title => FR::random_string, :body => FR::random_string)
   end
 
   it 'should default to being public' do
@@ -56,15 +56,15 @@ end
 # :title, :redirect, :body, :public, :accepts_comments, :pending_tags
 describe Article, 'accessible attributes' do
   it 'should allow mass-assignment to the title' do
-    new_article.should allow_mass_assignment_of(:title => String.random)
+    new_article.should allow_mass_assignment_of(:title => FR::random_string)
   end
 
   it 'should allow mass-assignment to the redirect' do
-    new_article.should allow_mass_assignment_of(:body => "[[#{String.random}]]")
+    new_article.should allow_mass_assignment_of(:body => "[[#{FR::random_string}]]")
   end
 
   it 'should allow mass-assignment to the body' do
-    new_article.should allow_mass_assignment_of(:body => String.random)
+    new_article.should allow_mass_assignment_of(:body => FR::random_string)
   end
 
   it 'should allow mass-assignment to the public attribute' do
@@ -86,7 +86,7 @@ describe Article, 'validating the title' do
   end
 
   it 'should require it to be unique' do
-    title = String.random
+    title = FR::random_string
     create_article(:title => title).should be_valid
     new_article(:title => title).should fail_validation_for(:title)
   end
@@ -157,7 +157,7 @@ end
 
 describe Article, 'parametrization' do
   it 'should use the title as the param' do
-    title = String.random
+    title = FR::random_string
     new_article(:title => title).to_param.should == title
   end
 
