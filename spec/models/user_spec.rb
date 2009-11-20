@@ -158,6 +158,8 @@ describe User, 'validating the passphrase' do
     # record manually (specifically, "new_user :passphrase => nil,
     # :passphrase_confirmation => nil" returns a valid model with a
     # passphrase set on it)
+    # for full discussion see:
+    #   http://github.com/smtlaissezfaire/fixturereplacement/issues#issue/10
     user = User.new :display_name => FR::random_string, :passphrase => nil, :passphrase_confirmation => nil
     user.should fail_validation_for(:passphrase)
   end
