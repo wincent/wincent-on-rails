@@ -657,3 +657,26 @@ ended up moving it back to vendor/plugins, which funnily enough works:
   git add vendor/gems/haml-2.2.12
   git add config/environment.rb
   git add doc/SETUP_NOTES
+
+  # JRuby, Celerity etc
+  curl -O http://jruby.kenai.com/downloads/1.4.0/jruby-bin-1.4.0.tar.gz
+  tar xzvf jruby-bin-1.4.0.tar.gz
+  sudo mv jruby-1.4.0 /usr/local/
+  cd /usr/local
+  sudo ln -s jruby-1.4.0 jruby
+  export PATH=$PATH:/usr/local/jruby/bin
+  jruby -S gem install gemcutter
+  jruby -S gem tumble
+  jruby -S gem install celerity
+    # at this point we can run "jirb" and try the code example found at:
+    #   http://celerity.rubyforge.org/
+    # (it works, so we proceed)
+
+  # to work with Capybara need a post-0.2.3 release of Culerity
+  git clone git://github.com/langalex/culerity.git culerity.git
+  cd culerity.git
+  git rev-parse --short HEAD # find out current HEAD: it's 218f631
+  vim VERSION.yml # bump version number to 0.2.3.218f631
+  rake gemspec
+  rake build
+  sudo gem install pkg/culerity-0.2.3.218f631.gem

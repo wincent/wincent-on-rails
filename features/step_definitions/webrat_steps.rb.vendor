@@ -187,22 +187,3 @@ end
 Then /^show me the page$/ do
   save_and_open_page
 end
-
-# custom additions
-Then /^I should see text "([^\"]*)"$/ do |text|
-  HTML::FullSanitizer.new.sanitize(response.body).should contain(text)
-end
-
-Then /^I should not see text "([^\"]*)"$/ do |text|
-  HTML::FullSanitizer.new.sanitize(response.body).should_not contain(text)
-end
-
-Then /^I should see text \/([^\/]*)\/$/ do |regexp|
-  regexp = Regexp.new(regexp)
-  HTML::FullSanitizer.new.sanitize(response.body).should contain(regexp)
-end
-
-Then /^I should not see text \/([^\/]*)\/$/ do |regexp|
-  regexp = Regexp.new(regexp)
-  HTML::FullSanitizer.new.sanitize(response.body).should_not contain(regexp)
-end
