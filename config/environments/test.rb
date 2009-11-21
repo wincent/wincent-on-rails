@@ -22,3 +22,4 @@ config.action_mailer.delivery_method = :test
 
 config.gem 'rspec', :lib => false, :version => '1.2.9'
 config.gem 'rspec-rails', :lib => false, :version => '1.2.9'
+config.gem 'fixture_replacement', :lib => false, :version => '3.0.1'

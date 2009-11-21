@@ -24,3 +24,5 @@ config.after_initialize do
   Sass::Plugin.options[:always_update] = true
   Sass::Plugin.options[:always_check] = true
 end
+
+config.gem 'fixture_replacement', :lib => false, :version => '3.0.1'

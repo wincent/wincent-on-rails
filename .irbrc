@@ -9,6 +9,7 @@ if ENV['RAILS_ENV']
     ActiveResource::Base.logger = logger
 
     if ENV['RAILS_ENV']  != 'production'
+      require 'fixture_replacement'
       include FixtureReplacement
     end
   end

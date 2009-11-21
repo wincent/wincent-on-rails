@@ -53,6 +53,7 @@ Spec::Runner.configure do |config|
   # For more information take a look at Spec::Runner::Configuration and Spec::Runner
 end
 
+require 'fixture_replacement'
 include FixtureReplacement
 Spec::Runner.configure do |config|
   config.include(ControllerHelpers, :type => :controller)
