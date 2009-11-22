@@ -39,11 +39,11 @@ executables: []
 extensions: []
 
 extra_rdoc_files: 
-- README.textile
+- README.md
 files: 
 - .gitignore
 - MIT-LICENSE
-- README.textile
+- README.md
 - Rakefile
 - VERSION.yml
 - culerity.gemspec
@@ -66,12 +66,13 @@ files:
 - rails_generators/culerity/culerity_generator.rb
 - rails_generators/culerity/templates/config/environments/culerity_continuousintegration.rb
 - rails_generators/culerity/templates/config/environments/culerity_development.rb
-- rails_generators/culerity/templates/features/step_definitions/common_celerity_steps.rb
+- rails_generators/culerity/templates/features/step_definitions/culerity_steps.rb
 - rails_generators/culerity/templates/lib/tasks/culerity.rake
 - script/console
 - script/destroy
 - script/generate
 - spec/celerity_server_spec.rb
+- spec/culerity_spec.rb
 - spec/remote_browser_proxy_spec.rb
 - spec/remote_object_proxy_spec.rb
 - spec/spec_helper.rb
@@ -105,6 +106,7 @@ specification_version: 3
 summary: Culerity integrates Cucumber and Celerity in order to test your application's full stack.
 test_files: 
 - spec/celerity_server_spec.rb
+- spec/culerity_spec.rb
 - spec/remote_browser_proxy_spec.rb
 - spec/remote_object_proxy_spec.rb
 - spec/spec_helper.rb
