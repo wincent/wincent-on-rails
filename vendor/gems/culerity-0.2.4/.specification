@@ -1,0 +1,110 @@
+--- !ruby/object:Gem::Specification 
+name: culerity
+version: !ruby/object:Gem::Version 
+  version: 0.2.4
+platform: ruby
+authors: 
+- Alexander Lang
+autorequire: 
+bindir: bin
+cert_chain: []
+
+date: 2009-11-22 00:00:00 +01:00
+default_executable: 
+dependencies: 
+- !ruby/object:Gem::Dependency 
+  name: cucumber
+  type: :runtime
+  version_requirement: 
+  version_requirements: !ruby/object:Gem::Requirement 
+    requirements: 
+    - - ">="
+      - !ruby/object:Gem::Version 
+        version: "0"
+    version: 
+- !ruby/object:Gem::Dependency 
+  name: rspec
+  type: :runtime
+  version_requirement: 
+  version_requirements: !ruby/object:Gem::Requirement 
+    requirements: 
+    - - ">="
+      - !ruby/object:Gem::Version 
+        version: "0"
+    version: 
+description: Culerity integrates Cucumber and Celerity in order to test your application's full stack.
+email: alex@upstream-berlin.com
+executables: []
+
+extensions: []
+
+extra_rdoc_files: 
+- README.textile
+files: 
+- .gitignore
+- MIT-LICENSE
+- README.textile
+- Rakefile
+- VERSION.yml
+- culerity.gemspec
+- features/fixtures/sample_feature
+- features/installing_culerity.feature
+- features/running_cucumber_without_explicitly_running_external_services.feature
+- features/step_definitions/common_steps.rb
+- features/step_definitions/culerity_setup_steps.rb
+- features/step_definitions/jruby_steps.rb
+- features/step_definitions/rails_setup_steps.rb
+- features/support/common.rb
+- features/support/env.rb
+- features/support/matchers.rb
+- init.rb
+- lib/culerity.rb
+- lib/culerity/celerity_server.rb
+- lib/culerity/remote_browser_proxy.rb
+- lib/culerity/remote_object_proxy.rb
+- rails/init.rb
+- rails_generators/culerity/culerity_generator.rb
+- rails_generators/culerity/templates/config/environments/culerity_continuousintegration.rb
+- rails_generators/culerity/templates/config/environments/culerity_development.rb
+- rails_generators/culerity/templates/features/step_definitions/common_celerity_steps.rb
+- rails_generators/culerity/templates/lib/tasks/culerity.rake
+- script/console
+- script/destroy
+- script/generate
+- spec/celerity_server_spec.rb
+- spec/remote_browser_proxy_spec.rb
+- spec/remote_object_proxy_spec.rb
+- spec/spec_helper.rb
+has_rdoc: true
+homepage: http://github.com/langalex/culerity
+licenses: []
+
+post_install_message: 
+rdoc_options: 
+- --charset=UTF-8
+require_paths: 
+- lib
+required_ruby_version: !ruby/object:Gem::Requirement 
+  requirements: 
+  - - ">="
+    - !ruby/object:Gem::Version 
+      version: "0"
+  version: 
+required_rubygems_version: !ruby/object:Gem::Requirement 
+  requirements: 
+  - - ">="
+    - !ruby/object:Gem::Version 
+      version: "0"
+  version: 
+requirements: []
+
+rubyforge_project: 
+rubygems_version: 1.3.5
+signing_key: 
+specification_version: 3
+summary: Culerity integrates Cucumber and Celerity in order to test your application's full stack.
+test_files: 
+- spec/celerity_server_spec.rb
+- spec/remote_browser_proxy_spec.rb
+- spec/remote_object_proxy_spec.rb
+- spec/spec_helper.rb
