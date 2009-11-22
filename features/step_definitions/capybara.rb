@@ -26,23 +26,12 @@ When /^I fill in "(.+)" with "(.+)"$/ do |field, value|
 end
 
 # querying primitives
-Then /^the page source should contain "(.+)"$/ do |text|
+Then /^I should see "(.+)"$/ do |text|
   page.should have_content(text)
 end
 
-Then /^the page source should match \/(.+)\/$/ do |regexp|
-  regexp = Regexp.new regexp
-  page.should have_content(regexp)
-end
-
-Then /^I should see "(.+)"$/ do |text|
-  regexp = Regexp.new(Regexp.escape(text))
-  HTML::FullSanitizer.new.sanitize(page.body).should match(regexp)
-end
-
-Then /^I should see \/(.+)\/$/ do |regexp|
-  regexp = Regexp.new regexp
-  HTML::FullSanitizer.new.sanitize(page.body).should match(regexp)
+Then /^I should not see "(.+)"$/ do |text|
+  page.should_not have_content(text)
 end
 
 # aliases for primitive methods
