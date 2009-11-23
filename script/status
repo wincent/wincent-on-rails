@@ -1,21 +1,21 @@
 #!/bin/sh
 
 /bin/echo -n "nginx: "
-if [ $(ps x | grep nginx | grep -c 'nginx: master process') -eq 0 ]; then
+if [ $(ps x | grep -v grep | grep -c 'nginx: master process') -eq 0 ]; then
   echo "stopped"
 else
   echo "running"
 fi
 
 /bin/echo -n "memcached: "
-if [ $(ps x | grep memcached | grep -c 127.0.0.1) -eq 0 ]; then
+if [ $(ps x | grep -v grep | grep -c 'memcached -d') -eq 0 ]; then
   echo "stopped"
 else
   echo "running"
 fi
 
 /bin/echo -n "mysqld: "
-if [ $(ps ax | grep mysqld | grep -c 'mysqld --basedir') -eq 0 ]; then
+if [ $(ps ax | grep -v grep | grep -c 'mysqld --basedir') -eq 0 ]; then
   echo "stopped"
 else
   echo "running"
