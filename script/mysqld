@@ -11,5 +11,5 @@ if [ -f "/usr/local/mysql/var/$HOSTNAME.pid" ]; then
   mysqladmin shutdown
 else
   echo "mysql not running: starting"
-  sudo -u mysql -b mysqld_safe
+  (cd /usr/local/mysql && sudo -u mysql -b mysqld_safe)
 fi
