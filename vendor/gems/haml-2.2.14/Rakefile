@@ -80,6 +80,7 @@ task :release => [:check_release, :release_elpa, :package] do
   sh %{rubyforge add_file    haml haml "#{name} (v#{version})" pkg/haml-#{version}.tar.gz}
   sh %{rubyforge add_file    haml haml "#{name} (v#{version})" pkg/haml-#{version}.tar.bz2}
   sh %{rubyforge add_file    haml haml "#{name} (v#{version})" pkg/haml-#{version}.zip}
+  sh %{gem push pkg/haml-#{version}.gem}
 end
 
 # Releases haml-mode.el and sass-mode.el to ELPA.
@@ -312,11 +313,11 @@ rescue LoadError; end
 # ----- Testing Multiple Rails Versions -----
 
 rails_versions = [
-  "v2.3.0",
+  "v2.3.4",
   "v2.2.2",
   "v2.1.2",
-  "v2.0.5"
 ]
+rails_versions << "v2.0.5" if RUBY_VERSION =~ /^1\.8/
 
 namespace :test do
   desc "Test all supported versions of rails. This takes a while."

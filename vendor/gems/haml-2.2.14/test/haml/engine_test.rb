@@ -729,6 +729,7 @@ HAML
   def test_doctypes
     assert_equal('<!DOCTYPE html>',
       render('!!!', :format => :html5).strip)
+    assert_equal('<!DOCTYPE html>', render('!!! 5').strip)
     assert_equal('<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">',
       render('!!! strict').strip)
     assert_equal('<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">',
@@ -832,12 +833,18 @@ HAML
         line_no ||= key.split("\n").length
 
         if expected_message == :compile
-          assert_match(/^compile error\n/, err.message, "Line: #{key}")
+          if Haml::Util.ruby1_8?
+            assert_match(/^compile error\n/, err.message, "Line: #{key}")
+          else
+            assert_match(/^#{Regexp.quote __FILE__}:#{line_no}: syntax error,/, err.message, "Line: #{key}")
+          end
         else
           assert_equal(expected_message, err.message, "Line: #{key}")
         end
 
-        assert_match(/^#{Regexp.escape(__FILE__)}:#{line_no}/, err.backtrace[0], "Line: #{key}")
+        if Haml::Util.ruby1_8?
+          assert_match(/^#{Regexp.escape(__FILE__)}:#{line_no}/, err.backtrace[0], "Line: #{key}")
+        end
       else
         assert(false, "Exception not raised for\n#{key}")
       end
@@ -1027,6 +1034,11 @@ END
     assert_equal("<a></a>\n", render('%a{:b => "a #{1 + 1} b", :c => "d"}', :suppress_eval => true))
   end
 
+  def test_utf8_attrs
+    assert_equal("<a href='héllo'></a>\n", render("%a{:href => 'héllo'}"))
+    assert_equal("<a href='héllo'></a>\n", render("%a(href='héllo')"))
+  end
+
   # HTML 4.0
 
   def test_html_has_no_self_closing_tags
@@ -1175,6 +1187,16 @@ HAML
 
     def test_convert_template_render
       assert_equal(<<HTML, render(<<HAML.encode("iso-8859-1"), :encoding => "utf-8"))
+<p>bâr</p>
+<p>föö</p>
+HTML
+%p bâr
+%p föö
+HAML
+    end
+
+    def test_fake_ascii_encoding
+      assert_equal(<<HTML.force_encoding("ascii-8bit"), render(<<HAML, :encoding => "ascii-8bit"))
 <p>bâr</p>
 <p>föö</p>
 HTML

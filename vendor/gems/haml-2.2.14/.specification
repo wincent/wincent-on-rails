@@ -1,7 +1,7 @@
 --- !ruby/object:Gem::Specification 
 name: haml
 version: !ruby/object:Gem::Version 
-  version: 2.2.12
+  version: 2.2.14
 platform: ruby
 authors: 
 - Nathan Weizenbaum
@@ -10,7 +10,7 @@ autorequire:
 bindir: bin
 cert_chain: []
 
-date: 2009-11-05 00:00:00 +01:00
+date: 2009-11-22 00:00:00 +01:00
 default_executable: 
 dependencies: 
 - !ruby/object:Gem::Dependency 
@@ -53,6 +53,7 @@ files:
 - rails/init.rb
 - lib/sass.rb
 - lib/sass/plugin/rails.rb
+- lib/sass/plugin/rack.rb
 - lib/sass/plugin/merb.rb
 - lib/sass/script.rb
 - lib/sass/error.rb

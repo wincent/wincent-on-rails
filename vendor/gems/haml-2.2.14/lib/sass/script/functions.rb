@@ -11,6 +11,9 @@ module Sass::Script
   # \{#hsl}
   # : Converts an `hsl(hue, saturation, lightness)` triplet into a color.
   #
+  # \{#rgb}
+  # : Converts an `rgb(red, green, blue)` triplet into a color.
+  #
   # \{#percentage}
   # : Converts a unitless number to a percentage.
   #
@@ -26,10 +29,28 @@ module Sass::Script
   # \{#abs}
   # : Returns the absolute value of a number.
   #
-  # You can add your own functions to this module,
-  # but there are a few things to keep in mind.
+  # These functions are described in more detail below.
+  #
+  # ## Adding Custom Functions
+  #
+  # New Sass functions can be added by adding Ruby methods to this module.
+  # For example:
+  #
+  #     module Sass::Script::Functions
+  #       def reverse(string)
+  #         assert_type string, :String
+  #         Sass::Script::String.new(string.value.reverse)
+  #       end
+  #     end
+  #
+  # There are a few things to keep in mind when modifying this module.
   # First of all, the arguments passed are {Sass::Script::Literal} objects.
   # Literal objects are also expected to be returned.
+  # This means that Ruby values must be unwrapped and wrapped.
+  #
+  # Most Literal objects support the {Sass::Script::Literal#value value} accessor
+  # for getting their Ruby values.
+  # Color objects, though, must be accessed using {Sass::Script::Color#rgb rgb}.
   #
   # Second, making Ruby functions accessible from Sass introduces the temptation
   # to do things like database access within stylesheets.
@@ -57,6 +78,22 @@ module Sass::Script
       def initialize(options)
         @options = options
       end
+
+      # Asserts that the type of a given SassScript value
+      # is the expected type (designated by a symbol).
+      # For example:
+      #
+      #     assert_type value, :String
+      #     assert_type value, :Number
+      #
+      # Valid types are `:Bool`, `:Color`, `:Number`, and `:String`.
+      #
+      # @param value [Sass::Script::Literal] A SassScript value
+      # @param type [Symbol] The name of the type the value is expected to be
+      def assert_type(value, type)
+        return if value.is_a?(Sass::Script.const_get(type))
+        raise ArgumentError.new("#{value.inspect} is not a #{type.to_s.downcase}")
+      end
     end
 
     instance_methods.each { |m| undef_method m unless m.to_s =~ /^__/ }
@@ -64,21 +101,34 @@ module Sass::Script
 
     # Creates a {Color} object from red, green, and blue values.
     # @param red
-    #   A number between 0 and 255 inclusive
+    #   A number between 0 and 255 inclusive,
+    #   or between 0% and 100% inclusive
     # @param green
-    #   A number between 0 and 255 inclusive
+    #   A number between 0 and 255 inclusive,
+    #   or between 0% and 100% inclusive
     # @param blue
-    #   A number between 0 and 255 inclusive
+    #   A number between 0 and 255 inclusive,
+    #   or between 0% and 100% inclusive
     def rgb(red, green, blue)
-      [red.value, green.value, blue.value].each do |v|
-        next unless v < 0 || v > 255
-        raise ArgumentError.new("Color value #{v} must be between 0 and 255 inclusive")
+      assert_type red, :Number
+      assert_type green, :Number
+      assert_type blue, :Number
+
+      rgb = [red, green, blue].map do |c|
+        v = c.value
+        if c.numerator_units == ["%"] && c.denominator_units.empty?
+          next v * 255 / 100.0 if (0..100).include?(v)
+          raise ArgumentError.new("Color value #{c} must be between 0% and 100% inclusive")
+        else
+          next v if (0..255).include?(v)
+          raise ArgumentError.new("Color value #{v} must be between 0 and 255 inclusive")
+        end
       end
-      Color.new([red.value, green.value, blue.value])
+      Color.new(rgb)
     end
 
-    # Creates a {Color} object from hue, saturation, and lightness
-    # as per the CSS3 spec (http://www.w3.org/TR/css3-color/#hsl-color).
+    # Creates a {Color} object from hue, saturation, and lightness.
+    # Uses the algorithm from the [CSS3 spec](http://www.w3.org/TR/css3-color/#hsl-color).
     #
     # @param hue [Number] The hue of the color.
     #   Should be between 0 and 360 degrees, inclusive
@@ -89,6 +139,10 @@ module Sass::Script
     # @return [Color] The resulting color
     # @raise [ArgumentError] if `saturation` or `lightness` are out of bounds
     def hsl(hue, saturation, lightness)
+      assert_type hue, :Number
+      assert_type saturation, :Number
+      assert_type lightness, :Number
+
       original_s = saturation
       original_l = lightness
       # This algorithm is from http://www.w3.org/TR/css3-color#hsl-color
@@ -117,7 +171,7 @@ module Sass::Script
     # @raise [ArgumentError] If `value` isn't a unitless number
     def percentage(value)
       unless value.is_a?(Sass::Script::Number) && value.unitless?
-        raise ArgumentError.new("#{value} is not a unitless number")
+        raise ArgumentError.new("#{value.inspect} is not a unitless number")
       end
       Sass::Script::Number.new(value.value * 100, ['%'])
     end
@@ -180,10 +234,7 @@ module Sass::Script
     # another numeric value with the same units.
     # It yields a number to a block to perform the operation and return a number
     def numeric_transformation(value)
-      unless value.is_a?(Sass::Script::Number)
-        calling_function = caller.first.scan(/`([^']+)'/).first.first
-        raise Sass::SyntaxError.new("#{value} is not a number for `#{calling_function}'")
-      end
+      assert_type value, :Number
       Sass::Script::Number.new(yield(value.value), value.numerator_units, value.denominator_units)
     end
 

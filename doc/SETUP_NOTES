@@ -680,3 +680,16 @@ ended up moving it back to vendor/plugins, which funnily enough works:
   rake gemspec
   rake build
   sudo gem install pkg/culerity-0.2.3.218f631.gem
+
+  # Haml 2.2.14 update
+  sudo gem install --no-ri haml
+  git rm -r vendor/gems/haml-2.2.12 # doesn't actually delete directory
+  rm -r vendor/gems/haml-2.2.12     # so must delete that manually
+  vi config/environment.rb          # update config.gem line
+  rake gems
+  rake gems:unpack
+  rake spec
+  cucumber
+  git add vendor/gems/haml-2.2.14
+  git add config/environment.rb
+  git add doc/SETUP_NOTES
