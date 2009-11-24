@@ -19,13 +19,13 @@ config.action_controller.allow_forgery_protection    = false
 # ActionMailer::Base.deliveries array.
 config.action_mailer.delivery_method = :test
 
-config.gem 'cucumber',    :lib => false,        :version => '>=0.4.3' unless File.directory?(File.join(Rails.root, 'vendor/plugins/cucumber'))
-config.gem 'webrat',      :lib => false,        :version => '>=0.5.3' unless File.directory?(File.join(Rails.root, 'vendor/plugins/webrat'))
-config.gem 'rspec',       :lib => false,        :version => '>=1.2.9' unless File.directory?(File.join(Rails.root, 'vendor/plugins/rspec'))
-config.gem 'rspec-rails', :lib => false,        :version => '>=1.2.9' unless File.directory?(File.join(Rails.root, 'vendor/plugins/rspec-rails'))
+config.gem 'cucumber',    :lib => false,        :version => '0.4.3' unless File.directory?(File.join(Rails.root, 'vendor/plugins/cucumber'))
+config.gem 'webrat',      :lib => false,        :version => '0.5.3' unless File.directory?(File.join(Rails.root, 'vendor/plugins/webrat'))
+config.gem 'rspec',       :lib => false,        :version => '1.2.9' unless File.directory?(File.join(Rails.root, 'vendor/plugins/rspec'))
+config.gem 'rspec-rails', :lib => false,        :version => '1.2.9' unless File.directory?(File.join(Rails.root, 'vendor/plugins/rspec-rails'))
 
 # custom additions
 config.gem 'fixture_replacement', :lib => false, :version => '3.0.1'
-config.gem 'culerity', :lib => false, :version => '> 0.2.3'
+config.gem 'culerity', :lib => false, :version => '0.2.4'
 config.gem 'jarib-celerity', :lib => false, :version => '0.0.7.1'
 config.gem 'capybara', :lib => false, :version => '0.1.1'
