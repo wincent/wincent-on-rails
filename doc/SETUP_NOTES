@@ -693,3 +693,10 @@ ended up moving it back to vendor/plugins, which funnily enough works:
   git add vendor/gems/haml-2.2.14
   git add config/environment.rb
   git add doc/SETUP_NOTES
+
+  # Cucumber 0.4.4 update
+  sudo gem install cucumber
+  git rm -r vendor/gems/cucumber-0.4.3  # doesn't actually delete directory
+  rm -r vendor/gems/cucumber-0.4.3      # so must delete that manually
+  script/generate cucumber
+  cucumber
