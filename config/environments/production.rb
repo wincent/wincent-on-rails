@@ -19,3 +19,8 @@ config.cache_store = :mem_cache_store, APP_CONFIG['memcached_host']
 
 # Disable delivery errors, bad email addresses will be ignored
 # config.action_mailer.raise_delivery_errors = false
+
+# To locally test exception mailer must run in production mode with the
+# following line uncommented, and APP_CONFIG['admin_email'] set to a local
+# user on the development machine (eg. "wincent" rather than "win@wincent.com")
+#config.action_mailer.delivery_method = :sendmail

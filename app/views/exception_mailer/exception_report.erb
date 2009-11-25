@@ -1,0 +1,9 @@
+        Exception: <%= @exception.class %>
+Controller#action: <%= @controller.controller_name %>#<%= @controller.action_name %>
+              URL: <%= @request.protocol %><%= APP_CONFIG['host'] %><%= @request.request_uri %>
+          Message: <%= @exception.message %>
+             Time: <%= Time.now %> (this report generated at)
+
+BACKTRACE:
+
+<%= @backtrace %>
