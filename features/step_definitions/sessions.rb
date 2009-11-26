@@ -34,3 +34,7 @@ end
 When /^I am logged out$/ do
   When 'I log out'
 end
+
+When /^I am not logged in$/ do
+  When 'I log out'
+end
