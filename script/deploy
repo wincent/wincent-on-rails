@@ -316,7 +316,7 @@ if [ -n "$DO_SWITCH" ]; then
                       ln -s \$(readlink $LATEST) $CURRENT'"
   REVISION=$(ssh $SERVER cat $LATEST/REVISION)
   if [ ! $(git describe --exact-match $REVISION 2> /dev/null) ]; then
-    TAG=$(git tag -l | tail -1 | awk -F . '{ printf "%d.%d", $1, $2 + 1}')
+    TAG=$(git describe $(git rev-list --tags --max-count=1) | awk -F . '{ printf "%d.%d", $1, $2 + 1}')
     echo "  warning: deployed version $REVISION is not yet tagged; tagging now as $TAG"
     git tag -s -m "Deployed $(LANG=en_GB.UTF-8; date '+%d %B %Y')." $TAG
   fi
