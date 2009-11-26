@@ -54,9 +54,9 @@ function setUpLoginLogoutLinks()
 {
   var user = getCookie('user_id');
   if (user == null || user == '')
-    $('#logout').hide();
+    $('#logout').remove();
   else
-    $('#login').hide();
+    $('#login').remove();
 }
 
 function insertFlash(css, msg) {
