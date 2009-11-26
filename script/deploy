@@ -314,6 +314,12 @@ if [ -n "$DO_SWITCH" ]; then
   ssh $SERVER "sh -c '(test -d $LATEST || (echo \"  failed: no deployment found at $LATEST\" && exit 1)) && \
                       rm -f $CURRENT && \
                       ln -s $LATEST $CURRENT'"
+  REVISION=$(ssh $SERVER cat $LATEST/REVISION)
+  if [ ! $(git describe --exact-match $REVISION 2> /dev/null) ]; then
+    TAG=$(git tag -l | tail -1 | awk -F . '{ printf "%d.%d", $1, $2 + 1}')
+    echo "  warning: deployed version $REVISION is not yet tagged; tagging now as $TAG"
+    git tag -s -m "Deployed $(LANG=en_GB.UTF-8; date '+%d %B %Y')." $TAG
+  fi
 fi
 
 if [ -n "$DO_STOP" ]; then
