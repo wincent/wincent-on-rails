@@ -34,6 +34,14 @@ Then /^I should not see "(.+)"$/ do |text|
   page.should_not have_content(text)
 end
 
+Then /^the page should have CSS "(.+)"$/ do |css|
+  page.should have_css(css)
+end
+
+Then /^the page should not have CSS "(.+)"$/ do |css|
+  page.should_not have_css(css)
+end
+
 # aliases for primitive methods
 When /^I go to (.+)$/ do |path|
   When "I visit #{path}"
