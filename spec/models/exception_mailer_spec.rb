@@ -3,8 +3,11 @@ require 'ostruct'
 
 describe ExceptionMailer, 'exception report' do
   before do
+    @root = Rails.root
     @exception = RuntimeError.new 'Reactor meltdown'
-    @exception.stub!(:backtrace).and_return(['foo', 'bar', 'baz'])
+    @exception.stub!(:backtrace).and_return([@root + 'foo',
+                                             @root + 'bar',
+                                             @root + 'baz'])
     @controller = Object.new
     @controller.stub!(:controller_name).and_return('cartons')
     @controller.stub!(:action_name).and_return('destroy')
@@ -49,6 +52,10 @@ describe ExceptionMailer, 'exception report' do
   end
 
   it 'should contain the backtrace' do
-    @mail.body.should match(/  foo\n  bar\n  baz/)
+    @mail.body.should match(%r{  RAILS_ROOT/foo\n  RAILS_ROOT/bar\n  RAILS_ROOT/baz})
+  end
+
+  it 'should show the full expansion of RAILS_ROOT' do
+    @mail.body.should match(/RAILS_ROOT = #{Regexp.escape @root}/)
   end
 end

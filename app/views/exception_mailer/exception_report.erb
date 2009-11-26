@@ -4,6 +4,7 @@ Controller#action: <%= @controller.controller_name %>#<%= @controller.action_nam
           Message: <%= @exception.message %>
              Time: <%= Time.now %> (this report generated at)
 
-BACKTRACE:
+Backtrace:
+  [RAILS_ROOT = <%= Rails.root %>]
 
 <%= @backtrace %>

@@ -16,6 +16,8 @@ class ExceptionMailer < ActionMailer::Base
 private
 
   def pretty_backtrace exception
-    exception.backtrace.map { |line| "  #{line}" }.join("\n")
+    exception.backtrace.map do |line|
+      "  #{line.sub(/^#{Regexp.escape(Rails.root)}/, 'RAILS_ROOT')}"
+    end.join("\n")
   end
 end
