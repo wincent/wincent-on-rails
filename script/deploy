@@ -262,7 +262,7 @@ if [ -n "$DO_DEPLOY" ]; then
                       git clone --shared $REPO $CHECKOUT && \
                       cd $CHECKOUT && \
                       git checkout -b deploy $REMOTE_REF && \
-                      (echo $TIMESTAMP > $CHECKOUT/REVISION) && \
+                      (git rev-parse HEAD > $CHECKOUT/REVISION) && \
                       rm -rf $CHECKOUT/log \
                              $CHECKOUT/public/system \
                              $CHECKOUT/tmp/pids && \
