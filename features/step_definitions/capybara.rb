@@ -67,3 +67,8 @@ end
 When /^I press "(.+)"$/ do |button|
   When %Q{I press the "#{button}"}
 end
+
+# debugging steps
+When /^I print an HTML dump of the DOM$/ do
+  puts page.driver.send(:browser).text
+end
