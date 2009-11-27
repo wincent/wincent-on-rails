@@ -1,5 +1,5 @@
 Feature: logging in to the site
-  As a usr
+  As a user
   I want to be able to log in to the site
   So that I can own my own content
 
