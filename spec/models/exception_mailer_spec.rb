@@ -26,9 +26,14 @@ describe ExceptionMailer, 'exception report' do
     @mail.to.first.should == APP_CONFIG['admin_email']
   end
 
-  it 'should be from the administrator' do
+  it 'should be from the support address' do
     @mail.from.length.should == 1
-    @mail.from.first.should == APP_CONFIG['admin_email']
+    @mail.from.first.should == APP_CONFIG['support_email']
+  end
+
+  it 'should include a "return-path" header containing "support@wincent.com"' do
+    # will be used as "Envelope from" address
+    @mail.header['return-path'].to_s.should =~ /#{Regexp.escape APP_CONFIG['support_email']}/
   end
 
   it 'should contain the exception class' do

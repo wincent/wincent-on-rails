@@ -4,7 +4,8 @@ class ExceptionMailer < ActionMailer::Base
                "#{controller.controller_name}\##{controller.action_name} " +
                "(#{exception.class}: #{exception.message})"
     recipients APP_CONFIG['admin_email']
-    from       APP_CONFIG['admin_email']
+    from(from_header = APP_CONFIG['support_email'])
+    headers   'return-path' => from_header
     body({
       :controller => controller,
       :exception  => exception,

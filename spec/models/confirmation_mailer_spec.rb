@@ -7,6 +7,7 @@ describe ConfirmationMailer, 'confirmation' do
 
   before do
     @administrator  = 'win@wincent.com'
+    @support        = 'support@wincent.com'
     @confirmation   = create_confirmation
     @mail           = ConfirmationMailer.create_confirmation_message @confirmation
   end
@@ -25,10 +26,9 @@ describe ConfirmationMailer, 'confirmation' do
     @mail.bcc.first.should == @administrator
   end
 
-  it 'should be from the administrator' do
-    # the administrator will receive bounce messages and so can keep an eye on abuse
+  it 'should be from the support address' do
     @mail.from.length.should == 1
-    @mail.from.first.should == @administrator
+    @mail.from.first.should == @support
   end
 
   it 'should mention the confirmation address in the body' do
@@ -45,6 +45,11 @@ describe ConfirmationMailer, 'confirmation' do
 
   it 'should include "support@wincent.com" in the Message-ID header' do
     @mail.header['message-id'].to_s.should =~ %r{\A<.+support@wincent.com>\z}
+  end
+
+  it 'should include a "return-path" header containing "support@wincent.com"' do
+    # will be used as "Envelope from" address
+    @mail.header['return-path'].to_s.should =~ /#{Regexp.escape @support}/
   end
 
   it 'should create a corresponding Message object' do

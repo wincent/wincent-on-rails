@@ -8,11 +8,10 @@ class ConfirmationMailer < ActionMailer::Base
       })
     recipients(to_header = confirmation.email.address)
     bcc APP_CONFIG['admin_email']
-
-    # TODO: once incoming mail support is in, "from" will be support@wincent.com
-    from(from_header = APP_CONFIG['admin_email'])
+    from(from_header = APP_CONFIG['support_email'])
     sent_on Time.now
-    headers 'Message-ID' => (message_id_header = SupportMailer.new_message_id)
+    headers 'Message-ID' => (message_id_header = SupportMailer.new_message_id),
+            'return-path' => from_header
     Message.create  :related => confirmation,
                     :message_id_header => message_id_header,
                     :to_header => to_header,
