@@ -700,3 +700,18 @@ ended up moving it back to vendor/plugins, which funnily enough works:
   rm -r vendor/gems/cucumber-0.4.3      # so must delete that manually
   script/generate cucumber
   cucumber
+
+  # Rails 2.3.5 update
+  sudo gem install rails
+  rake rails:freeze:gems
+  rake rails:update
+  (cd .. && rails src)
+  vim config/environment.rb # update version number
+  git add -u vendor/rails   # update all tracked files (including removed ones)
+  git add vendor/rails      # add untracked files
+  git patch                 # (alias for git add --interactive)
+  rm public/images/rails.png public/index.html
+  rm public/javascripts/{controls,dragdrop,effects,prototype}.js
+  rake spec
+  cucumber
+  git add doc/SETUP_NOTES
