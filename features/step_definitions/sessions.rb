@@ -33,8 +33,9 @@ end
 
 When /^I am logged out$/ do
   When 'I log out'
+  And 'I go to /' # get rid of "Can't log out" flash, if present
 end
 
 When /^I am not logged in$/ do
-  When 'I log out'
+  When 'I am logged out'
 end
