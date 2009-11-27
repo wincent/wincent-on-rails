@@ -42,6 +42,19 @@ Then /^the page should not have CSS "(.+)"$/ do |css|
   page.should_not have_css(css)
 end
 
+# scoped queries
+Then /^I should see "(.+)" within "(.+)"$/ do |text, scope|
+  within scope do
+    page.should have_content(text)
+  end
+end
+
+Then /^I should not see "(.+)" within "(.+)"$/ do |text, scope|
+  within scope do
+    page.should_not have_content(text)
+  end
+end
+
 # aliases for primitive methods
 When /^I go to (.+)$/ do |path|
   When "I visit #{path}"
