@@ -10,8 +10,7 @@ Feature: accessing the wiki index
     And I should see "Top tags"
 
   Scenario: the wiki has various articles
-    Given no articles in the wiki
-    And an article titled "foo"
+    Given an article titled "foo"
     And an article titled "bar"
     And an article titled "baz"
     When I go to /wiki
