@@ -6,19 +6,19 @@ Feature: logging in to the site
   @javascript
   Scenario: logging in and seeing a flash
     Given I am logged out
-    And I log in
+    When I log in
     Then I should see "Successfully logged in"
 
   @javascript
   Scenario: logging out and seeing a flash
     Given I am logged in
-    And I log out
+    When I log out
     Then I should see "You have logged out successfully"
 
   @javascript
   Scenario: trying to log out when not logged in and seeing a flash
     Given I am logged out
-    And I log out
+    When I log out
     # full message is "Can't log out (weren't logged in)"
     # but Capybara chokes on single quotes
     # see: http://github.com/jnicklas/capybara/issues/#issue/7
