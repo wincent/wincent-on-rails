@@ -3,8 +3,7 @@
   %table.main
     %tr
       %th
-        Email
-        %br
+        .label=label_tag :reset_email_address, 'Email address'
         %span.annotation an email will be sent to this address
       %td=f.text_field :email_address
   %p=f.submit 'Reset passphrase'

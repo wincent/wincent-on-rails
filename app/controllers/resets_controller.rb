@@ -8,21 +8,24 @@ class ResetsController < ApplicationController
   def create
     address = params[:reset][:email_address]
     if email = Email.find_by_address(address, :conditions => { :deleted_at => nil })
-      # TODO: rate-limit resets to prevent abuse
-      reset       = email.user.resets.build
-      reset.email = email
-      reset.save!
-      error_msg   = "An error occurred while sending the email to #{address}"
-      begin
-        ResetMailer.deliver_reset_message reset
-      rescue Net::SMTPFatalError
-        flash[:error] = "#{error_msg} (this looks like a permanent delivery problem; please check the address)"
-      rescue Net::SMTPServerBusy, Net::SMTPUnknownError, Net::SMTPSyntaxError, TimeoutError
-        flash[:error] = "#{error_msg} (this looks like a temporary delivery problem; you may want to try again later)"
-      rescue Exception
-        flash[:error] = "#{error_msg} (the cause of the error was unknown)"
+      if email.user.resets.count(:conditions => ['created_at > ?', 3.days.ago]) > 5
+        flash[:error] = 'You have exceeded the resets limit for this email address for today; please try again later'
       else
-        flash[:notice] = "Please check your mail: an email has been sent to #{address}"
+        reset       = email.user.resets.build
+        reset.email = email
+        reset.save!
+        error_msg   = "An error occurred while sending the email to #{address}"
+        begin
+          ResetMailer.deliver_reset_message reset
+        rescue Net::SMTPFatalError
+          flash[:error] = "#{error_msg} (this looks like a permanent delivery problem; please check the address)"
+        rescue Net::SMTPServerBusy, Net::SMTPUnknownError, Net::SMTPSyntaxError, TimeoutError
+          flash[:error] = "#{error_msg} (this looks like a temporary delivery problem; you may want to try again later)"
+        rescue Exception
+          flash[:error] = "#{error_msg} (the cause of the error was unknown)"
+        else
+          flash[:notice] = "Please check your mail: an email has been sent to #{address}"
+        end
       end
       redirect_to login_path
     else
