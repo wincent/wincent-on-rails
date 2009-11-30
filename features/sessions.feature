@@ -19,10 +19,7 @@ Feature: logging in to the site
   Scenario: trying to log out when not logged in and seeing a flash
     Given I am logged out
     When I log out
-    # full message is "Can't log out (weren't logged in)"
-    # but Capybara chokes on single quotes
-    # see: http://github.com/jnicklas/capybara/issues/#issue/7
-    Then I should see "t log out (weren"
+    Then I should see "Can't log out (weren't logged in)"
 
   @javascript
   Scenario: dynamic "log in"/"log out" links (when logged in)
