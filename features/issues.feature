@@ -7,6 +7,6 @@ Feature: annotated changes to issue metadata
     Given an issue with summary "foo"
     When I log in as an admin user
     And I edit the issue with summary "foo"
-    And I fill in "Summary" with "bar"
-    And I click the "Save changes" button
+    And fill in "Summary" with "bar"
+    And click the "Save changes" button
     Then I should see "Summary changed"

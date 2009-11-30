@@ -7,7 +7,7 @@ Feature: accessing the wiki index
     Given no articles in the wiki
     When I go to /wiki
     Then I should see "Recently updated"
-    And I should see "Top tags"
+    And should see "Top tags"
 
   Scenario: the wiki has various articles
     Given an article titled "foo"
@@ -15,6 +15,6 @@ Feature: accessing the wiki index
     And an article titled "baz"
     When I go to /wiki
     Then I should see "Recently updated"
-    And I should see "foo"
-    And I should see "bar"
-    And I should see "baz"
+    And should see "foo"
+    And should see "bar"
+    And should see "baz"

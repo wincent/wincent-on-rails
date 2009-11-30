@@ -28,15 +28,15 @@ Feature: logging in to the site
   Scenario: dynamic "log in"/"log out" links (when logged in)
     Given I am logged in
     Then I should see "log out"
-    And I should not see "log in"
+    And should not see "log in"
 
   @javascript
   Scenario: dynamic "log in"/"log out" links (when logged out)
     Given I am logged out
     Then I should see "log in"
-    And I should not see "log out"
+    And should not see "log out"
 
   Scenario: dynamic "log in"/"log out" links (with no JavaScript)
     Given I go to /
     Then I should see "log in"
-    And I should see "log out"
+    And should see "log out"
