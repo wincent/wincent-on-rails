@@ -4,6 +4,7 @@ class ApplicationController < ActionController::Base
   after_filter              :cache_flash
   protect_from_forgery
   rescue_from               ActiveRecord::RecordNotFound, :with => :record_not_found
+  rescue_from               ActionController::ForbiddenError, :with => :forbidden
 
   # fix feed breakage caused by Rails 2.3.0 RC1
   # see: https://wincent.com/issues/1227
@@ -38,6 +39,11 @@ protected
       flash[:error] = 'Requested %s not found' % controller_name.singularize
       redirect_to uri
     end
+  end
+
+  # 403 error: request understood by refused, and authentication will not help
+  def forbidden
+    head :forbidden
   end
 
   def is_atom?

@@ -137,7 +137,7 @@ private
       raise 'wrong number of components'
     end
     raise 'non-empty root' if root != ''
-    raise 'parent does not accept comments' if not @parent_instance.accepts_comments
+    raise ActionController::ForbiddenError.new('parent does not accept comments') if not @parent_instance.accepts_comments
   end
 
   def get_comment
