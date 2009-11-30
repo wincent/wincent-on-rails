@@ -145,6 +145,27 @@ shared_examples_for "session" do
       end
     end
 
+    context "with text given on a button defined by <button> tag" do
+      it "should submit the associated form" do
+        @session.click_button('Click me')
+        extract_results(@session)['first_name'].should == 'John'
+      end
+    end
+
+   context "with id given on a button defined by <button> tag" do
+      it "should submit the associated form" do
+        @session.click_button('click_me_123')
+        extract_results(@session)['first_name'].should == 'John'
+      end
+    end
+
+   context "with value given on a button defined by <button> tag" do
+      it "should submit the associated form" do
+        @session.click_button('click_me')
+        extract_results(@session)['first_name'].should == 'John'
+      end
+    end
+
     context "with a locator that doesn't exist" do
       it "should raise an error" do
         running do
@@ -303,6 +324,21 @@ shared_examples_for "session" do
       @session.visit('/with_html')
       @session.should_not have_content('xxxxyzzz')
       @session.should_not have_content('monkey')
+    end
+
+    it 'should handle single quotes in the content' do
+      @session.visit('/with-quotes')
+      @session.should have_content("can't")
+    end
+
+    it 'should handle double quotes in the content' do
+      @session.visit('/with-quotes')
+      @session.should have_content(%q{"No," he said})
+    end
+
+    it 'should handle mixed single and double quotes in the content' do
+      @session.visit('/with-quotes')
+      @session.should have_content(%q{"you can't do that."})
     end
   end
 
@@ -542,7 +578,30 @@ shared_examples_for "session" do
         @session.body.should include('<h1>Bar</h1>')
       end
     end
-
+    
+    context "with the default selector" do
+      it "should use XPath" do
+        @session.within("//li[contains(., 'With Simple HTML')]") do
+          @session.click_link('Go')
+        end
+        @session.body.should include('<h1>Bar</h1>')
+      end
+    end
+    
+    context "with the default selector set to CSS" do
+      after do
+        Capybara.default_selector = :xpath
+      end
+      
+      it "should use CSS" do
+        Capybara.default_selector = :css
+        @session.within("ul li[contains('With Simple HTML')]") do
+          @session.click_link('Go')
+        end
+        @session.body.should include('<h1>Bar</h1>')
+      end
+    end
+    
     context "with click_link" do
       it "should click links in the given scope" do
         @session.within("//li[contains(.,'With Simple HTML')]") do
@@ -592,6 +651,50 @@ shared_examples_for "session" do
         end
         extract_results(@session)['first_name'].should == 'Dagobert'
       end
+    end
+  end
+  
+  describe '#within_fieldset' do
+    before do
+      @session.visit('/fieldsets')
+    end
+    
+    it "should restrict scope to a fieldset given by id" do
+      @session.within_fieldset("villain_fieldset") do
+        @session.fill_in("Name", :with => 'Goldfinger')
+        @session.click_button("Create")
+      end
+      extract_results(@session)['villain_name'].should == 'Goldfinger'
+    end
+    
+    it "should restrict scope to a fieldset given by legend" do
+      @session.within_fieldset("Villain") do
+        @session.fill_in("Name", :with => 'Goldfinger')
+        @session.click_button("Create")
+      end
+      extract_results(@session)['villain_name'].should == 'Goldfinger'
+    end
+  end
+  
+  describe '#within_table' do
+    before do
+      @session.visit('/tables')
+    end
+    
+    it "should restrict scope to a fieldset given by id" do
+      @session.within_table("girl_table") do
+        @session.fill_in("Name", :with => 'Christmas')
+        @session.click_button("Create")
+      end
+      extract_results(@session)['girl_name'].should == 'Christmas'
+    end
+    
+    it "should restrict scope to a fieldset given by legend" do
+      @session.within_table("Villain") do
+        @session.fill_in("Name", :with => 'Quantum')
+        @session.click_button("Create")
+      end
+      extract_results(@session)['villain_name'].should == 'Quantum'
     end
   end
 end

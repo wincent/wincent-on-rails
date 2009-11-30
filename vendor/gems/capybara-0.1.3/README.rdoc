@@ -10,10 +10,18 @@ a DSL for interacting with a webapplication. It is agnostic about the driver
 running your tests and currently comes bundled with rack-test, Culerity and
 Selenium support built in.
 
-== Disclaimer:
+== Install:
 
-Capybara is alpha level software, don't use it unless you're prepared to get
-your hands dirty.
+Capybara is hosted on Gemcutter, install it with:
+
+    sudo gem install capybara
+
+== Development:
+
+* Source hosted at {GitHub}[http://github.com/jnicklas/capybara].
+* Please direct questions, discussions at the {mailing list}[http://groups.google.com/group/ruby-capybara].
+* Report issues on {GitHub Issues}[http://github.com/jnicklas/capybara/issues]
+* Pull requests are very welcome!
 
 == Using Capybara with Cucumber
 
@@ -86,6 +94,8 @@ Navigation:
 Scoping:
 
     within – Takes a block which executes in the given scope
+    within_fieldset – Execute the block in the fieldset given by id or legend
+    within_table – Execute the block in the table given by id or caption
 
 Interaction:
 
@@ -143,16 +153,24 @@ For ultimate control, you can instantiate and use a session manually.
     end
     session.click_link 'Sign in'
 
-== Install:
+== XPath and CSS
 
-Capybara is hosted on Gemcutter, install it with:
+Capybara does not try to guess what kind of selector you are going to give it,
+if you want to use CSS with your 'within' declarations for example, you'll need
+to do:
+    
+    within(:css, 'ul li') { ... }
 
-    sudo gem install capybara
+Alternatively you can set the default selector to CSS, which may help if you are
+moving from Webrat and used CSS a lot, or simply generally prefer CSS:
+
+    Capybara.default_selector = :css
+    within('ul li') { ... }
 
 == Gotchas:
 
-* Install JRuby and the 'jarib-celerity' gem (not the 'celerity' gem) for
-  Culerity support.
+* Install JRuby and the 'celerity' gem, version 0.7.4 (0.7.5 has a bug with
+  password fields) under JRuby for Culerity support.
 
 * Everything is *case sensitive*. Capybara heavily relies on XPath, which
   doesn't support case insensitive searches.
@@ -165,7 +183,7 @@ Capybara is hosted on Gemcutter, install it with:
 * Domain names (including subdomains) don't work under rack-test. Since it's a
   pain to set up subdomains for the other drivers anyway, you should consider an
   alternate solution. You might use
-  [default_url_options](https://gist.github.com/643a758320a2926bd2ed) in Rails
+  {default_url_options}[https://gist.github.com/643a758320a2926bd2ed] in Rails
   for example.
 
 * The <tt>set_hidden_field</tt> method from Webrat is not implemented, since it doesn't
@@ -181,6 +199,14 @@ Capybara is hosted on Gemcutter, install it with:
 * <tt><a href="#"></tt> Will cause problems under rack-test, please do
   <tt><a href="/same/url#"></tt> instead. You can achieve this in Rails with
   <tt>link_to('foo', :anchor => '')</tt>
+
+== Contributors:
+
+The following people have dedicated their time and effort to Capybara:
+
+* Jonas Nicklas
+* Dennis Rogenius
+* Rob Holland
 
 == License:
 

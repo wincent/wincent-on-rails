@@ -698,6 +698,8 @@ ended up moving it back to vendor/plugins, which funnily enough works:
   sudo gem install cucumber
   git rm -r vendor/gems/cucumber-0.4.3  # doesn't actually delete directory
   rm -r vendor/gems/cucumber-0.4.3      # so must delete that manually
+  RAILS_ENV=cucumber rake gems
+  RAILS_ENV=cucumber rake gems:unpack
   script/generate cucumber
   cucumber
 
@@ -715,3 +717,12 @@ ended up moving it back to vendor/plugins, which funnily enough works:
   rake spec
   cucumber
   git add doc/SETUP_NOTES
+
+  # Capybara 0.1.3
+  sudo gem install capybara
+  git rm -r vendor/gems/capybara-0.1.1
+  rm -r vendor/gems/capybara-0.1.1
+  vim config/environments/cucumber.rb # edit config.gem line
+  RAILS_ENV=cucumber rake gems
+  RAILS_ENV=cucumber rake gems:unpack
+  git add vendor/gems/capybara-0.1.3
