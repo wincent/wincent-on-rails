@@ -1,4 +1,4 @@
-When /^I log in as an admin user$/ do
+When /^(?:I |)log in as an admin user$/ do
   email = create_email
   user = email.user
   user.superuser = true
@@ -13,7 +13,7 @@ When /^(?:I am |)logged in as an admin user$/ do
   When 'I log in as an admin user'
 end
 
-When /^I log in$/ do
+When /^(?:I |)log in$/ do
   email = create_email
   user = email.user
   user.save!
@@ -27,7 +27,7 @@ When /^(?:I am |)logged in$/ do
   When 'I log in'
 end
 
-When /^I log out$/ do
+When /^(?:I |)log out$/ do
   When 'I go to /logout'
 end
 

@@ -8,29 +8,29 @@ REGULAR_EXPRESSION  = %q{}
 #
 
 # navigation primitives
-When /^I visit (.+)$/ do |path|
+When /^(?:I |)visit (.+)$/ do |path|
   visit path
 end
 
 # interaction primitives
-When /^I click the "(.+)" link$/ do |link|
+When /^(?:I |)click the "(.+)" link$/ do |link|
   click_link link
 end
 
-When /^I click the "(.+)" button$/ do |button|
+When /^(?:I |)click the "(.+)" button$/ do |button|
   click_button button
 end
 
-When /^I fill in "(.+)" with "(.+)"$/ do |field, value|
+When /^(?:I |)fill in "(.+)" with "(.+)"$/ do |field, value|
   fill_in field, :with => value
 end
 
 # querying primitives
-Then /^I should see "(.+)"$/ do |text|
+Then /^(?:I |)should see "(.+)"$/ do |text|
   page.should have_content(text)
 end
 
-Then /^I should not see "(.+)"$/ do |text|
+Then /^(?:I |)should not see "(.+)"$/ do |text|
   page.should_not have_content(text)
 end
 
@@ -43,32 +43,36 @@ Then /^the page should not have CSS "(.+)"$/ do |css|
 end
 
 # scoped queries
-Then /^I should see "(.+)" within "(.+)"$/ do |text, scope|
+Then /^(?:I |)should see "(.+)" within "(.+)"$/ do |text, scope|
   within scope do
     page.should have_content(text)
   end
 end
 
-Then /^I should not see "(.+)" within "(.+)"$/ do |text, scope|
+Then /^(?:I |)should not see "(.+)" within "(.+)"$/ do |text, scope|
   within scope do
     page.should_not have_content(text)
   end
 end
 
 # aliases for primitive methods
-When /^I go to (.+)$/ do |path|
+When /^(?:I |)go to (.+)$/ do |path|
   When "I visit #{path}"
 end
 
-When /^I press the "(.+)" button$/ do |button|
+When /^at (.+)$/ do |path|
+  When "I visit #{path}"
+end
+
+When /^(?:I |)press the "(.+)" button$/ do |button|
   When %Q{I press the "#{button}"}
 end
 
-When /^I press "(.+)"$/ do |button|
+When /^(?:I |)press "(.+)"$/ do |button|
   When %Q{I press the "#{button}"}
 end
 
 # debugging steps
-When /^I print an HTML dump of the DOM$/ do
+When /^(?:I |)print an HTML dump of the DOM$/ do
   puts page.driver.send(:browser).text
 end
