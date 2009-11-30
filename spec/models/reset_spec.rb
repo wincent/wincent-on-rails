@@ -23,9 +23,10 @@ describe Reset, 'email address validation' do
 
   it "should require the reset's email address to match the user's email address" do
     # set-up
-    user = create_user
-    user.emails.create(:address => 'foo@example.com')
-    reset = user.resets.create
+    email = create_email(:address => 'foo@example.com')
+    reset = email.user.resets.create
+    reset.email = email
+    reset.save
 
     # success case
     reset.email_address = 'foo@example.com'

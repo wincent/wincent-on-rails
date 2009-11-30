@@ -1,14 +1,13 @@
 class ResetMailer < ActionMailer::Base
   def reset_message reset
-    # TODO: allow user to set default email address
-    email = reset.user.emails.first(:conditions => 'deleted_at IS NULL') || (raise ActiveRecord::RecordNotFound)
+    address = reset.email.address
     subject(subject_header = 'wincent.com forgotten passphrase helper')
     body({
-      :address          => email.address,
+      :address          => address,
       :reset_url        => edit_reset_url(reset), # will provide user with a form to change the passphrase
       :cutoff           => reset.cutoff.utc
       })
-    recipients(to_header = email.address)
+    recipients(to_header = address)
     bcc APP_CONFIG['admin_email']
     from(from_header = APP_CONFIG['support_email'])
     sent_on Time.now

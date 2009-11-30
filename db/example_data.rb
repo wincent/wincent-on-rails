@@ -21,9 +21,9 @@ module FixtureReplacement
     c.email = new_email
   end
 
-  attributes_for :email do |e|
+  attributes_for :email do |e, hash|
     e.address   = "#{random_string}@example.com"
-    e.user      = new_user
+    e.user      = new_user(:email => e) unless hash[:email]
     e.verified  = true
   end
 
@@ -73,7 +73,8 @@ module FixtureReplacement
   end
 
   attributes_for :reset do |r|
-    r.user = new_user
+    r.email = (e = new_email)
+    r.user  = e.user
   end
 
   attributes_for :tag do |t|

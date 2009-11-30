@@ -7,10 +7,12 @@ class ResetsController < ApplicationController
 
   def create
     address = params[:reset][:email_address]
-    if @user = User.find_by_email(address)
+    if email = Email.find_by_address(address, :conditions => { :deleted_at => nil })
       # TODO: rate-limit resets to prevent abuse
-      reset     = @user.resets.create
-      error_msg = "An error occurred while sending the email to #{address}"
+      reset       = email.user.resets.build
+      reset.email = email
+      reset.save!
+      error_msg   = "An error occurred while sending the email to #{address}"
       begin
         ResetMailer.deliver_reset_message reset
       rescue Net::SMTPFatalError
