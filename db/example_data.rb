@@ -73,8 +73,9 @@ module FixtureReplacement
   end
 
   attributes_for :reset do |r|
-    r.email = (e = new_email)
-    r.user  = e.user
+    r.email         = (e = new_email)
+    r.user          = e.user
+    r.email_address = e.address
   end
 
   attributes_for :tag do |t|
@@ -82,6 +83,8 @@ module FixtureReplacement
   end
 
   attributes_for :tagging do |t|
+    t.tag       = new_tag
+    t.taggable  = new_article
   end
 
   attributes_for :topic do |t|
