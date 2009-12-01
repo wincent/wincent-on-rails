@@ -2,7 +2,7 @@ require File.dirname(__FILE__) + '/../../spec_helper'
 
 describe "/articles/new.html.haml" do
   include ArticlesHelper
-  
+
   before(:each) do
     #@article = mock_model(Article)
     #@article.stub!(:new_record?).and_return(true)

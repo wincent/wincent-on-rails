@@ -2,7 +2,7 @@ require File.dirname(__FILE__) + '/../../spec_helper'
 
 describe "/articles/index.html.haml" do
   include ArticlesHelper
-  
+
   before(:each) do
     #article_98 = mock_model(Article)
     #article_99 = mock_model(Article)

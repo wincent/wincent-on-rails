@@ -56,7 +56,7 @@ This is how Rails creates standard counter caches:
             "before_destroy '#{reflection.name}.class.decrement_counter(\"#{cache_column}\", #{reflection.primary_key_name})" +
             " unless #{reflection.name}.nil?'"
           )
-          
+
           module_eval(
             "#{reflection.class_name}.send(:attr_readonly,\"#{cache_column}\".intern) if defined?(#{reflection.class_name}) && #{ref
 lection.class_name}.respond_to?(:attr_readonly)"
