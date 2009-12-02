@@ -3,13 +3,13 @@ require File.join(File.dirname(__FILE__), '..', 'spec_helper')
 describe 'Source code files' do
   module Wincent
     Dir.chdir File.join(File.dirname(__FILE__), '..', '..') do
-      SOURCE_FILES = Dir['app/**/*',
-                         'config/**/*',
-                         'db/example_data.rb',
-                         'db/migrate/*',
-                         'features/**/*',
-                         'lib/**/*',
-                         'spec/**/*']
+      SOURCE_FILES = Dir['app/**/*'] +
+                     Dir['config/**/*'] +
+                     Dir['db/example_data.rb'] +
+                     Dir['db/migrate/*'] +
+                     Dir['features/**/*'] +
+                     Dir['lib/**/*'] +
+                     Dir['spec/**/*']
       SOURCE_FILES.reject! do |path|
         case path
         when 'features/support/env.rb',
