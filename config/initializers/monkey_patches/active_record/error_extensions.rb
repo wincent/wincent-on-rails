@@ -8,7 +8,9 @@ module Wincent
   end
 end
 
-if ActiveRecord::Base.instance_methods.include? 'flashable_error_string'
-  raise 'ActiveRecord::Base#flashable_error_string already exists'
+Wincent::ActiveRecord::ErrorExtensions.instance_methods.each do |m|
+  if ActiveRecord::Base.instance_methods.include? m
+    raise "ActiveRecord::Base\##{m} already exists"
+  end
 end
 ActiveRecord::Base.send(:include, Wincent::ActiveRecord::ErrorExtensions)
