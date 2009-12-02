@@ -43,7 +43,13 @@ protected
 
   # 403 error: request understood by refused, and authentication will not help
   def forbidden
-    head :forbidden
+    if request.xhr?
+      render :text => 'Forbidden', :status => 403
+    elsif is_atom?
+      render :text => '', :status => 403
+    else # HTML requests
+      render :file => Rails.root + 'public' + '403.html', :status => 403
+    end
   end
 
   def is_atom?
