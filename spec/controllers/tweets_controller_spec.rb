@@ -545,3 +545,24 @@ describe TweetsController, 'DELETE /twitter/:id' do
     do_delete @tweet
   end
 end
+
+# Testing the CommentsController (use of ActionController::ForbiddenError) and
+# AppController (use of "forbidden" method) here, but using the
+# TweetsController as a concrete example seeing as that's where we first saw
+# this kind of request (see commit 2a897ba).
+describe CommentsController, 'GET /twitter/:id/comments/new' do
+  describe 'when commenting not allowed' do
+    before do
+      tweet = create_tweet :accepts_comments => false
+      get :new, { :tweet_id => tweet.id }, :protocol => 'https'
+    end
+
+    it 'should not be successful' do
+      response.should_not be_success
+    end
+
+    it 'should return a 403 status' do
+      response.status.should == "403 Forbidden"
+    end
+  end
+end

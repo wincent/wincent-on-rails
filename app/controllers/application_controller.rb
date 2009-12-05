@@ -3,8 +3,8 @@ class ApplicationController < ActionController::Base
   before_filter             :login_before
   after_filter              :cache_flash
   protect_from_forgery
-  rescue_from               ActiveRecord::RecordNotFound, :with => :record_not_found
   rescue_from               ActionController::ForbiddenError, :with => :forbidden
+  rescue_from               ActiveRecord::RecordNotFound, :with => :record_not_found
 
   # fix feed breakage caused by Rails 2.3.0 RC1
   # see: https://wincent.com/issues/1227
@@ -25,30 +25,34 @@ protected
     end
   end
 
-  # TODO: make a special 404 action that provides hints for where people could look
-  def record_not_found(uri = nil)
+  def handle_http_status_code code, &block
     if request.xhr?
-      render :text => 'Requested record not found', :status => 404
+      render :text => ActionController::StatusCodes::STATUS_CODES[code], :status => code
     elsif is_atom?
-      render :text => '', :status => 404
+      render :text => '', :status => code
     else # HTML requests
+      if block_given?
+        yield
+      else
+        render :file => Rails.root + 'public' + "#{code}.html", :status => code
+      end
+    end
+  end
+
+  # 403 error: request understood by refused, and authentication will not help
+  def forbidden
+    handle_http_status_code 403
+  end
+
+  # TODO: make a special 404 action that provides hints for where people could look
+  def record_not_found uri = nil
+    handle_http_status_code 404 do
       if uri.class != String
         # beware that in the default case uri will be an instance of ActiveRecord::RecordNotFound
         uri = root_path
       end
       flash[:error] = 'Requested %s not found' % controller_name.singularize
       redirect_to uri
-    end
-  end
-
-  # 403 error: request understood by refused, and authentication will not help
-  def forbidden
-    if request.xhr?
-      render :text => 'Forbidden', :status => 403
-    elsif is_atom?
-      render :text => '', :status => 403
-    else # HTML requests
-      render :file => Rails.root + 'public' + '403.html', :status => 403
     end
   end
 
