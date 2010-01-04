@@ -1,1 +1,15 @@
+*.o
+ffi-*/ext/ffi_c/Makefile
+ffi-*/ext/ffi_c/extconf.h
+ffi-*/ext/ffi_c/libffi-i386/
+ffi-*/ext/ffi_c/libffi-x86_64/
+ffi-*/ext/ffi_c/libffi/.libs/
+ffi-*/ext/ffi_c/libffi/include/ffi.h
+ffi-*/ext/ffi_c/libffi/include/ffitarget.h
+ffi-*/ext/ffi_c/mkmf.log
+ffi-*/lib/ffi/types.conf
+
+nokogiri-*/ext/nokogiri/*.dSYM/
+nokogiri-*/ext/nokogiri/Makefile
+nokogiri-*/ext/nokogiri/mkmf.log
 wikitext-*/ext/Makefile
