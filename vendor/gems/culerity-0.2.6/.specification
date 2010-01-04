@@ -1,7 +1,7 @@
 --- !ruby/object:Gem::Specification 
 name: culerity
 version: !ruby/object:Gem::Version 
-  version: 0.2.4
+  version: 0.2.6
 platform: ruby
 authors: 
 - Alexander Lang
@@ -9,12 +9,12 @@ autorequire:
 bindir: bin
 cert_chain: []
 
-date: 2009-11-22 00:00:00 +01:00
+date: 2009-12-09 00:00:00 +01:00
 default_executable: 
 dependencies: 
 - !ruby/object:Gem::Dependency 
   name: cucumber
-  type: :runtime
+  type: :development
   version_requirement: 
   version_requirements: !ruby/object:Gem::Requirement 
     requirements: 
@@ -24,7 +24,7 @@ dependencies:
     version: 
 - !ruby/object:Gem::Dependency 
   name: rspec
-  type: :runtime
+  type: :development
   version_requirement: 
   version_requirements: !ruby/object:Gem::Requirement 
     requirements: 
@@ -42,11 +42,13 @@ extra_rdoc_files:
 - README.md
 files: 
 - .gitignore
+- CHANGES.md
 - MIT-LICENSE
 - README.md
 - Rakefile
 - VERSION.yml
 - culerity.gemspec
+- features/fixtures/jquery
 - features/fixtures/sample_feature
 - features/installing_culerity.feature
 - features/running_cucumber_without_explicitly_running_external_services.feature
@@ -67,7 +69,9 @@ files:
 - rails_generators/culerity/templates/config/environments/culerity_continuousintegration.rb
 - rails_generators/culerity/templates/config/environments/culerity_development.rb
 - rails_generators/culerity/templates/features/step_definitions/culerity_steps.rb
+- rails_generators/culerity/templates/features/support/env.rb
 - rails_generators/culerity/templates/lib/tasks/culerity.rake
+- rails_generators/culerity/templates/public/javascripts/culerity.js
 - script/console
 - script/destroy
 - script/generate
