@@ -26,6 +26,5 @@ config.gem 'rspec-rails', :lib => false,        :version => '1.2.9' unless File.
 
 # custom additions
 config.gem 'fixture_replacement', :lib => false, :version => '3.0.1'
-config.gem 'culerity', :lib => false, :version => '0.2.4'
-config.gem 'jarib-celerity', :lib => false, :version => '0.0.7.1'
-config.gem 'capybara', :lib => false, :version => '0.1.3'
+config.gem 'culerity', :lib => false, :version => '0.2.6'
+config.gem 'capybara', :lib => false, :version => '0.2.0'
