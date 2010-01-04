@@ -726,3 +726,14 @@ ended up moving it back to vendor/plugins, which funnily enough works:
   RAILS_ENV=cucumber rake gems
   RAILS_ENV=cucumber rake gems:unpack
   git add vendor/gems/capybara-0.1.3
+
+  # Capybara 0.2.0
+  sudo gem install capybara
+  git rm -r vendor/gems/capybara-0.1.3
+  rm -r vendor/gems/capybara-0.1.3
+  vim config/environments/cucumber.rb # edit config.gem line
+  RAILS_ENV=cucumber rake gems
+  RAILS_ENV=cucumber rake gems:unpack
+  git add vendor/gems/capybara-0.2.0
+  cucumber # check that features still work
+  # (they don't thanks to Aslak Hellesøy, requiring additional fixes)
