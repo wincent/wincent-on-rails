@@ -736,4 +736,53 @@ ended up moving it back to vendor/plugins, which funnily enough works:
   RAILS_ENV=cucumber rake gems:unpack
   git add vendor/gems/capybara-0.2.0
   cucumber # check that features still work
-  # (they don't thanks to Aslak Hellesøy, requiring additional fixes)
+
+  # update dependencies of Capybara
+  sudo gem install nokogiri
+  git rm -r vendor/gems/nokogiri-1.3.3
+  rm -r vendor/gems/nokogiri-1.3.3
+  RAILS_ENV=cucumber rake gems:unpack:dependencies # also unpacks rack-test-0.5.2
+  git add vendor/gems/nokogiri-1.4.1
+  git add vendor/gems/rack-test-0.5.2
+  cucumber # check that features still work (they don't)
+  RAILS_ENV=cucumber rake gems:build
+  git add vendor/gems/nokogiri-1.4.1/lib/nokogiri/nokogiri.bundle
+  git add vendor/gems/nokogiri-1.4.1/ext/nokogiri/nokogiri.bundle
+  git add vendor/gems/ffi-0.5.3/lib/ffi_c.bundle
+  git add vendor/gems/ffi-0.5.3/ext/ffi_c/ffi_c.bundle
+  cucumber # check that features still work
+  sudo gem install culerity
+  vim config/environments/cucumber.rb # update config.gem line
+  git rm -r vendor/gems/culerity-0.2.4
+  rm -r vendor/gems/culerity-0.2.4
+  RAILS_ENV=cucumber rake gems:unpack:dependencies
+  cucumber # check that features still work
+  git add vendor/gems/culerity-0.2.6
+  git rm -r jarib-celerity-0.0.7.1
+  rm -r jarib-celerity-0.0.7.1
+  vim config/environments/cucumber.rb # remove config.gem line
+  jruby -S gem install celerity # update from 0.7.5 to 0.7.6
+  cucumber # check that features still work
+  git rm -r vendor/gems/ffi-0.5.3
+  rm -r vendor/gems/ffi-0.5.3
+  git rm -r vendor/gems/selenium-webdriver-0.0.6
+  rm -r vendor/gems/selenium-webdriver-0.0.6
+  git rm -r vendor/gems/json_pure-1.1.9
+  rm -r vendor/gems/json_pure-1.1.9
+  RAILS_ENV=cucumber rake gems:unpack:dependencies
+  RAILS_ENV=cucumber rake gems:build
+  git add vendor/gems/ffi-0.5.4 \
+          vendor/gems/json_pure-1.2.0 \
+          vendor/gems/selenium-webdriver-0.0.13
+  cucumber # check that features still work
+
+  # cucumber 0.6.1 (now Rails support is in a separate gem)
+  sudo gem install cucumber
+  sudo gem install cucumber-rails
+  vim config/environments/cucumber.rb # edit config.gem line, add one for cucumber-rails
+  git rm -r vendor/gems/cucumber-0.4.4
+  RAILS_ENV=cucumber rake gems:unpack
+  script/generate cucumber
+  cucumber # check that features still work
+  git add vendor/gems/cucumber-0.6.0
+  git add vendor/gems/cucumber-rails-0.2.3
