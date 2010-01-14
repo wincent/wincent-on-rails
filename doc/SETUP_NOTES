@@ -795,7 +795,22 @@ ended up moving it back to vendor/plugins, which funnily enough works:
   RAILS_ENV=cucumber rake gems
   RAILS_ENV=cucumber rake gems:unpack
   RAILS_ENV=cucumber rake gems:unpack:dependencies # new dependency: mime-types
+  cucumber
+  rake spec
   git add vendor/gems/capybara-0.3.0
   git add vendor/gems/mime-types-1.16
   git patch config/environments/cucumber.rb
+  git patch doc/SETUP_NOTES
+
+  # haml 2.2.17
+  sudo gem install --no-ri haml
+  git rm -r vendor/gems/haml-2.2.14
+  rm -r vendor/gems/haml-2.2.14
+  vi config/environment.rb
+  rake gems
+  rake gems:unpack
+  rake spec
   cucumber
+  git add vendor/gems/haml-2.2.17
+  git patch config/environment.rb
+  git patch doc/SETUP_NOTES
