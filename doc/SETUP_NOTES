@@ -814,3 +814,25 @@ ended up moving it back to vendor/plugins, which funnily enough works:
   git add vendor/gems/haml-2.2.17
   git patch config/environment.rb
   git patch doc/SETUP_NOTES
+
+  # rspec 1.3.0, rspec-rails 1.3.2
+  sudo gem install rspec-rails
+  less /Library/Ruby/Gems/1.8/gems/rspec-1.3.0/History.rdoc
+  less /Library/Ruby/Gems/1.8/gems/rspec-1.3.0/Upgrade.rdoc
+  less /Library/Ruby/Gems/1.8/gems/rspec-rails-1.3.2/History.rdoc
+  less /Library/Ruby/Gems/1.8/gems/rspec-rails-1.3.2/Upgrade.rdoc
+  git rm -r vendor/gems/rspec*
+  rm -r vendor/gems/rspec*
+  vim config/environments/test.rb
+  vim config/environments/cucumber.rb
+  RAILS_ENV=test rake gems
+  RAILS_ENV=test rake gems:unpack
+  RAILS_ENV=cucumber rake gems
+  git add vendor/gems/rspec*
+  script/generate rspec
+  vim spec/spec_helper.rb # manually merge in changes
+  git patch spec/spec_helper.rb
+  git patch config/environments
+  rake spec
+  cucumber
+  git add doc/SETUP_NOTES
