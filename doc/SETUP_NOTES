@@ -786,3 +786,16 @@ ended up moving it back to vendor/plugins, which funnily enough works:
   cucumber # check that features still work
   git add vendor/gems/cucumber-0.6.0
   git add vendor/gems/cucumber-rails-0.2.3
+
+  # capybara 0.3.0
+  sudo gem install capybara
+  git rm -r vendor/gems/capybara-0.2.0
+  rm -r vendor/gems/capybara-0.2.0
+  vim config/environments/cucumber.rb
+  RAILS_ENV=cucumber rake gems
+  RAILS_ENV=cucumber rake gems:unpack
+  RAILS_ENV=cucumber rake gems:unpack:dependencies # new dependency: mime-types
+  git add vendor/gems/capybara-0.3.0
+  git add vendor/gems/mime-types-1.16
+  git patch config/environments/cucumber.rb
+  cucumber
