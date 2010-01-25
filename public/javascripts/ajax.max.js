@@ -38,7 +38,9 @@ function insertAJAXFlash(css_class, msg) {
 }
 
 function clearAJAXFlash() {
-  $('#ajax-flash').fadeOut('slow', function() { $(this).hide(); });
+  $('#ajax-flash')
+    .fadeOut('slow', function() { $(this).hide(); })
+    .empty();
 }
 
 function ajax_comment_form(url) {
