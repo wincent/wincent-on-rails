@@ -24,8 +24,11 @@
 var global_spinner_counter = 0;
 
 function escapeHTML(html) {
-  return html.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g,
-    '&gt;').replace(/"/g, '&quot;');
+  return html
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
 }
 
 function insertAJAXFlash(css_class, msg) {
