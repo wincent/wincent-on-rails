@@ -1,4 +1,4 @@
-// Copyright 2008-2009 Wincent Colaiuta. All rights reserved.
+// Copyright 2008-2010 Wincent Colaiuta. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are met:
@@ -61,7 +61,7 @@ function setUpLoginLogoutLinks()
 
 function insertFlash(css, msg) {
   if (msg) {
-    $('#cacheable-flash').append('<div id="' + css + '">' + msg + '</div>');
+    $('#cacheable-flash').append($('<div/>', { 'class': css, html: msg }));
   }
 }
 
