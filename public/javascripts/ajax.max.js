@@ -35,7 +35,6 @@ function insertAJAXFlash(css_class, msg) {
   $('#ajax-flash')
     .append($('<div/>', { 'class': css_class, html: escapeHTML(msg) }))
     .show();
-  alert('worked');
 }
 
 function clearAJAXFlash() {
