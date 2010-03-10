@@ -195,7 +195,7 @@ echo "Environment for this session: $ENVIRONMENT"
 
 if [ -n "$DO_UNLOCK" ]; then
    echo "Processing command: unlock"
-   ssh $SERVER chsh -s /bin/sh rails
+   ssh root@$SERVER chsh -s /bin/sh rails
 fi
 
 # useful because remote system sometimes won't notice "unlock" immediately
@@ -322,17 +322,17 @@ fi
 
 if [ -n "$DO_STOP" ]; then
   echo "Processing command: stop"
-  ssh $SERVER "sh -l -c 'sudo monit -g $MONIT_GROUP stop all'"
+  ssh root@$SERVER sudo monit -g $MONIT_GROUP stop all
 fi
 
 if [ -n "$DO_RESTART" ]; then
   echo "Processing command: restart"
-  ssh $SERVER "sh -l -c 'sudo monit -g $MONIT_GROUP restart all'"
+  ssh root@$SERVER sudo monit -g $MONIT_GROUP restart all
 fi
 
 if [ -n "$DO_START" ]; then
   echo "Processing command: start"
-  ssh $SERVER "sh -l -c 'sudo monit -g $MONIT_GROUP start all'"
+  ssh root@$SERVER sudo monit -g $MONIT_GROUP start all
 fi
 
 if [ -n "$DO_ENABLE" ]; then
@@ -356,7 +356,7 @@ fi
 
 if [ -n "$DO_LOCKDOWN" ]; then
   echo "Processing command: lockdown"
-  ssh $SERVER sudo chsh -s /sbin/nologin rails
+  ssh root@$SERVER chsh -s /sbin/nologin rails
 fi
 
 SUCCESS=true
