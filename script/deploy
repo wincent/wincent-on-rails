@@ -8,7 +8,6 @@ ADMIN_HOST=wincent1.inetu.net
 
 # default settings for production environment:
 SERVER=mondatta.unixhosts.net
-MONIT_GROUP=production
 BRANCH=master
 DEPLOY=/home/rails.wincent.com/deploy
 ENVIRONMENT=production
