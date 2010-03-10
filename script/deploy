@@ -4,7 +4,6 @@
 # note that we don't specify users, but rely on per-host defaults from
 # ~/.ssh/config
 REPO=/pub/git/private/wincent.com.git
-ADMIN_HOST=wincent1.inetu.net
 
 # default settings for production environment:
 SERVER=mondatta.unixhosts.net
@@ -195,8 +194,8 @@ trap 'test -n "$SUCCESS" || echo "error: aborted"' EXIT
 echo "Environment for this session: $ENVIRONMENT"
 
 if [ -n "$DO_UNLOCK" ]; then
-   echo "Processing command: unlock (you may be asked for a password)"
-   ssh -t $ADMIN_HOST sudo chsh -s /bin/sh $SERVER
+   echo "Processing command: unlock"
+   ssh $SERVER chsh -s /bin/sh rails
 fi
 
 # useful because remote system sometimes won't notice "unlock" immediately
@@ -322,18 +321,18 @@ if [ -n "$DO_SWITCH" ]; then
 fi
 
 if [ -n "$DO_STOP" ]; then
-  echo "Processing command: stop (you may be asked for a password)"
-  ssh -t $ADMIN_HOST "sh -l -c 'sudo monit -g $MONIT_GROUP stop all'"
+  echo "Processing command: stop"
+  ssh $SERVER "sh -l -c 'sudo monit -g $MONIT_GROUP stop all'"
 fi
 
 if [ -n "$DO_RESTART" ]; then
-  echo "Processing command: restart (you may be asked for a password)"
-  ssh -t $ADMIN_HOST "sh -l -c 'sudo monit -g $MONIT_GROUP restart all'"
+  echo "Processing command: restart"
+  ssh $SERVER "sh -l -c 'sudo monit -g $MONIT_GROUP restart all'"
 fi
 
 if [ -n "$DO_START" ]; then
-  echo "Processing command: start (you may be asked for a password)"
-  ssh -t $ADMIN_HOST "sh -l -c 'sudo monit -g $MONIT_GROUP start all'"
+  echo "Processing command: start"
+  ssh $SERVER "sh -l -c 'sudo monit -g $MONIT_GROUP start all'"
 fi
 
 if [ -n "$DO_ENABLE" ]; then
@@ -356,8 +355,8 @@ if [ -n "$DO_UPLOAD" ]; then
 fi
 
 if [ -n "$DO_LOCKDOWN" ]; then
-  echo "Processing command: lockdown (you may be asked for a password)"
-  ssh -t $ADMIN_HOST sudo chsh -s /sbin/nologin $SERVER
+  echo "Processing command: lockdown"
+  ssh $SERVER sudo chsh -s /sbin/nologin rails
 fi
 
 SUCCESS=true
