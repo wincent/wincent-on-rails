@@ -9,7 +9,7 @@ ADMIN_HOST=wincent1.inetu.net
 # default settings for production environment:
 SERVER=rails.wincent.com
 MONIT_GROUP=production
-BRANCH=maint
+BRANCH=master
 DEPLOY=/home/rails.wincent.com/deploy
 ENVIRONMENT=production
 
