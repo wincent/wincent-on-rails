@@ -194,7 +194,7 @@ test -n "$DO_UNLOCK" \
   -o -n "$DO_UPLOAD" \
   -o -n "$DO_LOCKDOWN" || usage
 
-trap 'test -n "$SUCCESS" || echo "error: aborted"' EXIT
+trap 'test -n "$SUCCESS" || echo "  error: aborted"' EXIT
 
 echo "Environment for this session: $ENVIRONMENT"
 
