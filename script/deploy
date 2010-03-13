@@ -20,7 +20,7 @@ staging_environment_overrides() {
 }
 
 bail() {
-  echo $1
+  echo "  failed: $1"
   exit 1
 }
 
@@ -208,9 +208,9 @@ if [ -n "$DO_CHECK" ]; then
   echo "Processing command: check"
   echo "  checking: JavaScript is correctly minimized"
   COMPRESSOR=/usr/local/bin/closure/compiler.jar
-  test -f $COMPRESSOR || bail "  failed: compressor not found at $COMPRESSOR"
-  test -r $COMPRESSOR || bail "  failed: compressor not readable at $COMPRESSOR"
-  TMPDIR=$(mktemp -q -d /private/tmp/deploy.XXXXXX) || bail "  failed: could not create temporary directory"
+  test -f $COMPRESSOR || bail "compressor not found at $COMPRESSOR"
+  test -r $COMPRESSOR || bail "compressor not readable at $COMPRESSOR"
+  TMPDIR=$(mktemp -q -d /private/tmp/deploy.XXXXXX) || bail "could not create temporary directory"
   if [ -z "$REF" ]; then
     LOCAL_REF=$BRANCH
   else
@@ -220,7 +220,7 @@ if [ -n "$DO_CHECK" ]; then
     git show $LOCAL_REF:$JS > $TMPDIR/max.js
     git show $LOCAL_REF:${JS/.max.js/.min.js} > $TMPDIR/min.js
     java -jar $COMPRESSOR --js=$TMPDIR/max.js --js_output_file=$TMPDIR/out.js
-    diff -q $TMPDIR/min.js $TMPDIR/out.js > /dev/null || bail "  failed: $JS is not minimized in $LOCAL_REF"
+    diff -q $TMPDIR/min.js $TMPDIR/out.js > /dev/null || bail "$JS is not minimized in $LOCAL_REF"
   done
   echo "  checking: directories exist and are writable"
   ssh $SERVER "sh -c '(test -d $DEPLOY          || (echo \"  failed -d: $DEPLOY\" && exit 1)) && \
