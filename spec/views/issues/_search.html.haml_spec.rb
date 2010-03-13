@@ -4,8 +4,8 @@ describe '/issues/_search' do
   include IssuesHelper
 
   before do
-    @product1 = create_product
-    @product2 = create_product
+    @product1 = create_product :hide_from_front_page => false
+    @product2 = create_product :hide_from_front_page => false
     Product.stub!(:find_all).and_return([@product1, @product2])
     assigns[:issue] = new_issue
   end
