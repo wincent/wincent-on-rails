@@ -1,12 +1,13 @@
 #!/bin/sh -e
 
-REPO=elastic1.unixhosts.net:/pub/git/private/wincent.com.git
-
-# default settings for production environment:
+# deploy to:
 SERVER=mondatta.unixhosts.net
-BRANCH=master
 DEPLOY=/data/rails/deploy
 ENVIRONMENT=production
+
+# clone source from:
+REPO=elastic1.unixhosts.net:/pub/git/private/wincent.com.git
+BRANCH=master
 
 staging_environment_overrides() {
   # expect something like
