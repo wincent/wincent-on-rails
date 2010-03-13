@@ -36,6 +36,7 @@ staging_environment_overrides() {
     bail 'STAGING_SERVER environment variable not set'
   fi
   SERVER=$STAGING_SERVER
+  ENVIRONMENT=staging
 }
 
 bail() {
