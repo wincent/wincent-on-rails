@@ -228,18 +228,18 @@ if [ -n "$DO_CHECK" ]; then
     diff -q $TMPDIR/min.js $TMPDIR/out.js > /dev/null || bail "$JS is not minimized in $LOCAL_REF"
   done
   echo "  checking: directories exist and are writable"
-  ssh $SERVER "sh -c '(test -d $DEPLOY          || (echo \"  failed -d: $DEPLOY\" && exit 1)) && \
-                      (test -d $DEPLOY/shared   || (echo \"  failed -d: $DEPLOY/shared\" && exit 1)) && \
-                      (test -d $DEPLOY/releases || (echo \"  failed -d: $DEPLOY/releases\" && exit 1)) && \
-                      (test -w $DEPLOY          || (echo \"  failed -w: $DEPLOY\" && exit 1)) && \
-                      (test -w $DEPLOY/releases || (echo \"  failed -w: $DEPLOY/releases\" && exit 1))'"
+  ssh rails@$SERVER "sh -c '(test -d $DEPLOY          || (echo \"  failed -d: $DEPLOY\" && exit 1)) && \
+                            (test -d $DEPLOY/shared   || (echo \"  failed -d: $DEPLOY/shared\" && exit 1)) && \
+                            (test -d $DEPLOY/releases || (echo \"  failed -d: $DEPLOY/releases\" && exit 1)) && \
+                            (test -w $DEPLOY          || (echo \"  failed -w: $DEPLOY\" && exit 1)) && \
+                            (test -w $DEPLOY/releases || (echo \"  failed -w: $DEPLOY/releases\" && exit 1))'"
   echo "  checking: executables exist"
-  ssh $SERVER "sh -l -c 'which gem git > /dev/null'"
+  ssh rails@$SERVER "sh -l -c 'which gem git > /dev/null'"
   echo "  checking: gem versions"
-  ssh $SERVER "sh -c 'gem specification --version \">= 0.6\"   hpricot > /dev/null && \
-                      gem specification --version \">= 1.3.1\" rubygems-update > /dev/null && \
-                      gem specification --version \">= 1.0.0\" rack > /dev/null && \
-                      gem specification --version \">= 1.0\" mkdtemp > /dev/null'"
+  ssh rails@$SERVER "sh -c 'gem specification --version \">= 0.6\"   hpricot > /dev/null && \
+                            gem specification --version \">= 1.3.1\" rubygems-update > /dev/null && \
+                            gem specification --version \">= 1.0.0\" rack > /dev/null && \
+                            gem specification --version \">= 1.0\" mkdtemp > /dev/null'"
   echo "  checking: local branch vs remote branch"
   git diff --exit-code --quiet $BRANCH origin/$BRANCH || \
     warn "local $BRANCH differs from remote origin/$BRANCH: did you remember to 'git push'?"
@@ -261,63 +261,63 @@ if [ -n "$DO_DEPLOY" ]; then
   else
     REMOTE_REF=$REF
   fi
-  ssh $SERVER "sh -l -c '(test ! -e $TIMESTAMP || (echo \"  failed: $CHECKOUT already exists\" && exit 1)) && \
-                      git clone --shared $REPO $CHECKOUT && \
-                      cd $CHECKOUT && \
-                      git checkout -b deploy $REMOTE_REF && \
-                      (git rev-parse HEAD > $CHECKOUT/REVISION) && \
-                      rm -rf $CHECKOUT/log \
-                             $CHECKOUT/public/system \
-                             $CHECKOUT/tmp/pids && \
-                      ln -s $SHARED/log    $CHECKOUT/log && \
-                      ln -s $SHARED/system $CHECKOUT/public/system && \
-                      ln -s $SHARED/pids   $CHECKOUT/tmp/pids && \
-                      find $CHECKOUT/public/images \
-                           $CHECKOUT/public/stylesheets \
-                           $CHECKOUT/public/javascripts \
-                           -exec touch {} + && \
-                      ln -s $SHARED/database.yml    $CHECKOUT/config/database.yml && \
-                      ln -s $SHARED/app_config.yml  $CHECKOUT/config/app_config.yml && \
-                      rm -f $DEPLOY/latest && \
-                      ln -s $CHECKOUT $DEPLOY/latest && \
-                      cd $CHECKOUT && \
-                      rake --silent gems:clean && \
-                      rake --silent gems:build && \
-                      rake --silent js:minify:deploy > /dev/null'"
+  ssh rails@$SERVER "sh -l -c '(test ! -e $TIMESTAMP || (echo \"  failed: $CHECKOUT already exists\" && exit 1)) && \
+                                git clone --shared $REPO $CHECKOUT && \
+                                cd $CHECKOUT && \
+                                git checkout -b deploy $REMOTE_REF && \
+                                (git rev-parse HEAD > $CHECKOUT/REVISION) && \
+                                rm -rf $CHECKOUT/log \
+                                       $CHECKOUT/public/system \
+                                       $CHECKOUT/tmp/pids && \
+                                ln -s $SHARED/log    $CHECKOUT/log && \
+                                ln -s $SHARED/system $CHECKOUT/public/system && \
+                                ln -s $SHARED/pids   $CHECKOUT/tmp/pids && \
+                                find $CHECKOUT/public/images \
+                                     $CHECKOUT/public/stylesheets \
+                                     $CHECKOUT/public/javascripts \
+                                     -exec touch {} + && \
+                                ln -s $SHARED/database.yml    $CHECKOUT/config/database.yml && \
+                                ln -s $SHARED/app_config.yml  $CHECKOUT/config/app_config.yml && \
+                                rm -f $DEPLOY/latest && \
+                                ln -s $CHECKOUT $DEPLOY/latest && \
+                                cd $CHECKOUT && \
+                                rake --silent gems:clean && \
+                                rake --silent gems:build && \
+                                rake --silent js:minify:deploy > /dev/null'"
 fi
 
 if [ -n "$DO_MIGRATE_TEST" ]; then
   echo "Processing command: migrate_test"
-  ssh $SERVER "sh -c 'cd $DEPLOY/latest && rake --silent RAILS_ENV=test db:migrate'"
+  ssh rails@$SERVER "sh -c 'cd $DEPLOY/latest && rake --silent RAILS_ENV=test db:migrate'"
 fi
 
 if [ -n "$DO_SPEC" ]; then
   echo "Processing command: spec"
-  ssh $SERVER "sh -c 'cd $DEPLOY/latest && rake --silent RAILS_ENV=test spec'"
+  ssh rails@$SERVER "sh -c 'cd $DEPLOY/latest && rake --silent RAILS_ENV=test spec'"
 fi
 
 if [ -n "$DO_DISABLE" ]; then
   echo "Processing command: disable"
-  ssh $SERVER cp $DEPLOY/current/public/maintenance.html \
-                 $DEPLOY/shared/system/maintenance.html
+  ssh rails@$SERVER cp $DEPLOY/current/public/maintenance.html \
+                       $DEPLOY/shared/system/maintenance.html
 fi
 
 if [ -n "$DO_MIGRATE" ]; then
   echo "Processing command: migrate"
-  ssh $SERVER "sh -c 'cd $DEPLOY/latest && \
-                      rake --silent RAILS_ENV=test         db:migrate && \
-                      rake --silent RAILS_ENV=development  db:migrate && \
-                      rake --silent RAILS_ENV=migrations   db:migrate'"
+  ssh rails@$SERVER "sh -c 'cd $DEPLOY/latest && \
+                            rake --silent RAILS_ENV=test         db:migrate && \
+                            rake --silent RAILS_ENV=development  db:migrate && \
+                            rake --silent RAILS_ENV=migrations   db:migrate'"
 fi
 
 if [ -n "$DO_SWITCH" ]; then
   echo "Processing command: switch"
   LATEST=$DEPLOY/latest
   CURRENT=$DEPLOY/current
-  ssh $SERVER "sh -c '(test -d $LATEST || (echo \"  failed: no deployment found at $LATEST\" && exit 1)) && \
-                      rm -f $CURRENT && \
-                      ln -s \$(readlink $LATEST) $CURRENT'"
-  REVISION=$(ssh $SERVER cat $LATEST/REVISION)
+  ssh rails@$SERVER "sh -c '(test -d $LATEST || (echo \"  failed: no deployment found at $LATEST\" && exit 1)) && \
+                             rm -f $CURRENT && \
+                             ln -s \$(readlink $LATEST) $CURRENT'"
+  REVISION=$(ssh rails@$SERVER cat $LATEST/REVISION)
   if [ ! $(git describe --exact-match $REVISION 2> /dev/null) ]; then
     TAG=$(git describe $(git rev-list --tags --max-count=1) | awk -F . '{ printf "%d.%d", $1, $2 + 1}')
     warn "deployed version $REVISION is not yet tagged; tagging now as $TAG"
@@ -342,7 +342,7 @@ fi
 
 if [ -n "$DO_ENABLE" ]; then
   echo "Processing command: enable"
-  ssh $SERVER rm -f $DEPLOY/shared/system/maintenance.html
+  ssh rails@$SERVER rm -f $DEPLOY/shared/system/maintenance.html
 fi
 
 if [ -n "$DO_UPLOAD" ]; then
@@ -354,7 +354,7 @@ if [ -n "$DO_UPLOAD" ]; then
     if [[ "$FILE" =~ ' ' ]]; then
       warn "\"$FILE\" contains a space; skipping"
     else
-      scp $FILE $SERVER:$DEPLOY/current/$FILE
+      scp $FILE rails@$SERVER:$DEPLOY/current/$FILE
     fi
   done)
 fi
