@@ -10,9 +10,6 @@ REPO=elastic1.unixhosts.net:/pub/git/private/wincent.com.git
 BRANCH=master
 
 staging_environment_overrides() {
-  # expect something like
-  #   ec2-184-73-234-210.compute-1.amazonaws.com
-  # to come from environment
   if [ -z "$STAGING_SERVER" ]; then
     bail 'STAGING_SERVER environment variable not set'
   fi
@@ -47,8 +44,12 @@ usage() {
   echo "Options:"
   echo "     --staging    deploy to staging environment (can abbreviate to \"staging\")"
   echo "     --rev=REF    deploy tag (eg. \"0.7\"), branch (eg. \"origin/maint\"), commit (SHA1)"
+  echo "                  by default the HEAD of the master branch is deployed"
   echo ""
   echo "Example workflow:"
+  echo "     # set an environment variable to indicate the staging server"
+  echo "     STAGING_SERVER=ec2-184-73-234-210.compute-1.amazonaws.com"
+  echo ""
   echo "     # note how commands can be chained together:"
   echo "     $0 staging unlock check deploy migrate_test spec"
   echo "     $0 staging disable migrate switch restart enable lockdown"
