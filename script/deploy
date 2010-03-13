@@ -326,17 +326,17 @@ fi
 
 if [ -n "$DO_STOP" ]; then
   echo "Processing command: stop"
-  ssh root@$SERVER sudo monit stop unicorn
+  ssh root@$SERVER monit stop unicorn
 fi
 
 if [ -n "$DO_RESTART" ]; then
   echo "Processing command: restart"
-  ssh root@$SERVER sudo monit restart unicorn
+  ssh root@$SERVER monit restart unicorn
 fi
 
 if [ -n "$DO_START" ]; then
   echo "Processing command: start"
-  ssh root@$SERVER sudo monit start unicorn
+  ssh root@$SERVER monit start unicorn
 fi
 
 if [ -n "$DO_ENABLE" ]; then
