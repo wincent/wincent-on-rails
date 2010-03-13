@@ -21,6 +21,10 @@ bail() {
   exit 1
 }
 
+warn() {
+  echo "  warning: $1"
+}
+
 usage() {
   echo "Usage:"
   echo "  $0 [options] command..."
@@ -84,11 +88,11 @@ while test $# != 0; do
       staging_environment_overrides
       ;;
     --rev=*)
-      test -z "$REF" || echo "warn: multiple revision arguments passed"
+      test -z "$REF" || warn 'multiple revision arguments passed'
       REF="${1#--rev=}"
       ;;
     --revision=*)
-      test -z "$REF" || echo "warn: multiple revision arguments passed"
+      test -z "$REF" || warn 'multiple revision arguments passed'
       REF="${1#--revision=}"
       ;;
     unlock)
@@ -238,12 +242,12 @@ if [ -n "$DO_CHECK" ]; then
                       gem specification --version \">= 1.0\" mkdtemp > /dev/null'"
   echo "  checking: local branch vs remote branch"
   git diff --exit-code --quiet $BRANCH origin/$BRANCH || \
-    echo "  warning: local $BRANCH differs from remote origin/$BRANCH: did you remember to 'git push'?"
+    warn "local $BRANCH differs from remote origin/$BRANCH: did you remember to 'git push'?"
   echo "  checking: currently checked out branch"
   CURRENT_BRANCH=$(git symbolic-ref HEAD 2> /dev/null)
   CURRENT_BRANCH=${CURRENT_BRANCH#refs/heads/}
   test "$CURRENT_BRANCH" = "$BRANCH" || \
-    echo "  warning: currently on branch $CURRENT_BRANCH (expected $BRANCH) -- sure you're working on the right branch?"
+    warn "currently on branch $CURRENT_BRANCH (expected $BRANCH) -- sure you're working on the right branch?"
 fi
 
 if [ -n "$DO_DEPLOY" ]; then
@@ -316,7 +320,7 @@ if [ -n "$DO_SWITCH" ]; then
   REVISION=$(ssh $SERVER cat $LATEST/REVISION)
   if [ ! $(git describe --exact-match $REVISION 2> /dev/null) ]; then
     TAG=$(git describe $(git rev-list --tags --max-count=1) | awk -F . '{ printf "%d.%d", $1, $2 + 1}')
-    echo "  warning: deployed version $REVISION is not yet tagged; tagging now as $TAG"
+    warn "deployed version $REVISION is not yet tagged; tagging now as $TAG"
     git tag -s -m "Deployed $(LANG=en_GB.UTF-8; date '+%d %B %Y')." $TAG
   fi
 fi
@@ -343,12 +347,12 @@ fi
 
 if [ -n "$DO_UPLOAD" ]; then
   echo "Processing command: upload"
-  test -n "$FILES" || echo "  warning: nothing specified in FILES environment variable"
+  test -n "$FILES" || warn "nothing specified in FILES environment variable"
   (IFS=","
   for FILE in $FILES; do
     echo "  file: $FILE"
     if [[ "$FILE" =~ ' ' ]]; then
-      echo "  warning: \"$FILE\" contains a space; skipping"
+      warn "\"$FILE\" contains a space; skipping"
     else
       scp $FILE $SERVER:$DEPLOY/current/$FILE
     fi
