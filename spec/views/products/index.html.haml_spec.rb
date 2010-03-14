@@ -6,10 +6,12 @@ describe '/products/index.html.haml' do
   before do
     create_product  :name => 'Synergy',
                     :description => 'An iTunes controller',
-                    :category => 'Consumer'
+                    :category => 'Consumer',
+                    :hide_from_front_page => false
     create_product  :name => 'Synergy Advance',
                     :description => 'An improved iTunes accessory',
-                    :category => 'Consumer'
+                    :category => 'Consumer',
+                    :hide_from_front_page => false
     assigns[:products] = Product.categorized_products
     render '/products/index.html.haml'
   end
