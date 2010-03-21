@@ -1,7 +1,12 @@
 --- !ruby/object:Gem::Specification 
 name: wikitext
 version: !ruby/object:Gem::Version 
-  version: "1.9"
+  prerelease: false
+  segments: 
+  - 1
+  - 10
+  - 1
+  version: 1.10.1
 platform: ruby
 authors: 
 - Wincent Colaiuta
@@ -9,19 +14,64 @@ autorequire:
 bindir: bin
 cert_chain: []
 
-date: 2009-08-06 00:00:00 +02:00
-default_executable: 
-dependencies: []
-
+date: 2010-03-21 00:00:00 +01:00
+default_executable: wikitext
+dependencies: 
+- !ruby/object:Gem::Dependency 
+  name: rspec
+  prerelease: false
+  requirement: &id001 !ruby/object:Gem::Requirement 
+    requirements: 
+    - - ">="
+      - !ruby/object:Gem::Version 
+        segments: 
+        - 0
+        version: "0"
+  type: :development
+  version_requirements: *id001
+- !ruby/object:Gem::Dependency 
+  name: wopen3
+  prerelease: false
+  requirement: &id002 !ruby/object:Gem::Requirement 
+    requirements: 
+    - - ">="
+      - !ruby/object:Gem::Version 
+        segments: 
+        - 0
+        version: "0"
+  type: :development
+  version_requirements: *id002
 description: Wikitext is a fast wikitext-to-HTML translator written in C.
 email: win@wincent.com
-executables: []
-
+executables: 
+- wikitext
 extensions: 
 - ext/extconf.rb
 extra_rdoc_files: []
 
 files: 
+- bin/wikitext
+- ext/wikitext_ragel.c
+- ext/extconf.rb
+- ext/ary.c
+- ext/parser.c
+- ext/str.c
+- ext/token.c
+- ext/wikitext.c
+- ext/ary.h
+- ext/parser.h
+- ext/ruby_compat.h
+- ext/str.h
+- ext/token.h
+- ext/wikitext.h
+- ext/wikitext_ragel.h
+- ext/depend
+- lib/wikitext/nil_class.rb
+- lib/wikitext/parser.rb
+- lib/wikitext/rails.rb
+- lib/wikitext/string.rb
+- lib/wikitext/version.rb
+- rails/init.rb
 - spec/autolinking_spec.rb
 - spec/base_heading_level_spec.rb
 - spec/blockquote_spec.rb
@@ -61,29 +111,10 @@ files:
 - spec/version_spec.rb
 - spec/vim_formatter.rb
 - spec/wikitext_spec.rb
-- ext/wikitext_ragel.c
-- ext/extconf.rb
-- ext/ary.c
-- ext/parser.c
-- ext/str.c
-- ext/token.c
-- ext/wikitext.c
-- ext/ary.h
-- ext/parser.h
-- ext/ruby_compat.h
-- ext/str.h
-- ext/token.h
-- ext/wikitext.h
-- ext/wikitext_ragel.h
-- ext/depend
-- lib/wikitext/nil_class.rb
-- lib/wikitext/parser.rb
-- lib/wikitext/rails.rb
-- lib/wikitext/string.rb
-- lib/wikitext/version.rb
-- rails/init.rb
 has_rdoc: true
 homepage: http://wikitext.rubyforge.org/
+licenses: []
+
 post_install_message: 
 rdoc_options: []
 
@@ -94,18 +125,20 @@ required_ruby_version: !ruby/object:Gem::Requirement
   requirements: 
   - - ">="
     - !ruby/object:Gem::Version 
+      segments: 
+      - 0
       version: "0"
-  version: 
 required_rubygems_version: !ruby/object:Gem::Requirement 
   requirements: 
   - - ">="
     - !ruby/object:Gem::Version 
+      segments: 
+      - 0
       version: "0"
-  version: 
 requirements: []
 
 rubyforge_project: wikitext
-rubygems_version: 1.3.1
+rubygems_version: 1.3.6
 signing_key: 
 specification_version: 2
 summary: Wikitext-to-HTML translator

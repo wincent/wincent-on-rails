@@ -48,7 +48,7 @@ Rails::Initializer.run do |config|
   end
   config.action_mailer.default_url_options = url_options
 
-  config.gem 'wikitext', :version => '1.9'
+  config.gem 'wikitext', :version => '1.10.1'
   config.gem 'haml', :version => '2.2.17'
 end
 

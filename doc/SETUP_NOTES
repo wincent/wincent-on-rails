@@ -836,3 +836,17 @@ ended up moving it back to vendor/plugins, which funnily enough works:
   rake spec
   cucumber
   git add doc/SETUP_NOTES
+
+  # wikitext 1.10.1
+  sudo gem install wikitext
+  git rm -r vendor/gems/wikitext-1.9
+  rm -r vendor/gems/wikitext-1.9
+  vim config/environment.rb # update config.gem line for wikitext
+  sudo rake gems:unpack # new bug: fails without sudo here
+  sudo chown -R wincent vendor/gems
+  git add vendor/gems/wikitext-1.10.1
+  rake gems:build
+  rm vendor/gems/wikitext-1.10.1/ext/Makefile
+  rm vendor/gems/wikitext-1.10.1/ext/*{.o,log}
+  git patch config/environment.rb
+  git patch doc/SETUP_NOTES
