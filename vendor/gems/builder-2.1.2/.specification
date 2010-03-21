@@ -1,6 +1,11 @@
 --- !ruby/object:Gem::Specification 
 name: builder
 version: !ruby/object:Gem::Version 
+  prerelease: false
+  segments: 
+  - 2
+  - 1
+  - 2
   version: 2.1.2
 platform: ruby
 authors: 
@@ -58,23 +63,36 @@ rdoc_options:
 - README
 - --line-numbers
 require_paths: 
+- bin
+- bin
+- bin
+- bin
+- bin
+- bin
+- bin
 - lib
 required_ruby_version: !ruby/object:Gem::Requirement 
   requirements: 
   - - ">"
     - !ruby/object:Gem::Version 
+      segments: 
+      - 0
+      - 0
+      - 0
       version: 0.0.0
   version: 
 required_rubygems_version: !ruby/object:Gem::Requirement 
   requirements: 
   - - ">="
     - !ruby/object:Gem::Version 
+      segments: 
+      - 0
       version: "0"
   version: 
 requirements: []
 
 rubyforge_project: 
-rubygems_version: 1.3.5
+rubygems_version: 1.3.6
 signing_key: 
 specification_version: 1
 summary: Builders for MarkUp.

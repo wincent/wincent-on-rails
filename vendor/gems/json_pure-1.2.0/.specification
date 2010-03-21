@@ -1,6 +1,10 @@
 --- !ruby/object:Gem::Specification 
 name: json_pure
 version: !ruby/object:Gem::Version 
+  segments: 
+  - 1
+  - 2
+  - 0
   version: 1.2.0
 platform: ruby
 authors: 
@@ -148,23 +152,34 @@ rdoc_options:
 - --main
 - README
 require_paths: 
+- bin
+- bin
+- bin
+- bin
+- bin
+- bin
+- bin
 - lib
 required_ruby_version: !ruby/object:Gem::Requirement 
   requirements: 
   - - ">="
     - !ruby/object:Gem::Version 
+      segments: 
+      - 0
       version: "0"
   version: 
 required_rubygems_version: !ruby/object:Gem::Requirement 
   requirements: 
   - - ">="
     - !ruby/object:Gem::Version 
+      segments: 
+      - 0
       version: "0"
   version: 
 requirements: []
 
 rubyforge_project: json
-rubygems_version: 1.3.5
+rubygems_version: 1.3.6
 signing_key: 
 specification_version: 3
 summary: A JSON implementation in Ruby

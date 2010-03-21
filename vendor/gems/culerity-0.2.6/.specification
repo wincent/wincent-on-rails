@@ -1,6 +1,10 @@
 --- !ruby/object:Gem::Specification 
 name: culerity
 version: !ruby/object:Gem::Version 
+  segments: 
+  - 0
+  - 2
+  - 6
   version: 0.2.6
 platform: ruby
 authors: 
@@ -14,24 +18,30 @@ default_executable:
 dependencies: 
 - !ruby/object:Gem::Dependency 
   name: cucumber
-  type: :development
-  version_requirement: 
-  version_requirements: !ruby/object:Gem::Requirement 
+  requirement: &id001 !ruby/object:Gem::Requirement 
     requirements: 
     - - ">="
       - !ruby/object:Gem::Version 
+        segments: 
+        - 0
         version: "0"
     version: 
+  type: :development
+  version_requirement: 
+  version_requirements: *id001
 - !ruby/object:Gem::Dependency 
   name: rspec
-  type: :development
-  version_requirement: 
-  version_requirements: !ruby/object:Gem::Requirement 
+  requirement: &id002 !ruby/object:Gem::Requirement 
     requirements: 
     - - ">="
       - !ruby/object:Gem::Version 
+        segments: 
+        - 0
         version: "0"
     version: 
+  type: :development
+  version_requirement: 
+  version_requirements: *id002
 description: Culerity integrates Cucumber and Celerity in order to test your application's full stack.
 email: alex@upstream-berlin.com
 executables: []
@@ -93,18 +103,22 @@ required_ruby_version: !ruby/object:Gem::Requirement
   requirements: 
   - - ">="
     - !ruby/object:Gem::Version 
+      segments: 
+      - 0
       version: "0"
   version: 
 required_rubygems_version: !ruby/object:Gem::Requirement 
   requirements: 
   - - ">="
     - !ruby/object:Gem::Version 
+      segments: 
+      - 0
       version: "0"
   version: 
 requirements: []
 
 rubyforge_project: 
-rubygems_version: 1.3.5
+rubygems_version: 1.3.6
 signing_key: 
 specification_version: 3
 summary: Culerity integrates Cucumber and Celerity in order to test your application's full stack.

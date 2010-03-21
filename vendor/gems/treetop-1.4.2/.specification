@@ -1,6 +1,10 @@
 --- !ruby/object:Gem::Specification 
 name: treetop
 version: !ruby/object:Gem::Version 
+  segments: 
+  - 1
+  - 4
+  - 2
   version: 1.4.2
 platform: ruby
 authors: 
@@ -14,14 +18,19 @@ default_executable: tt
 dependencies: 
 - !ruby/object:Gem::Dependency 
   name: polyglot
-  type: :runtime
-  version_requirement: 
-  version_requirements: !ruby/object:Gem::Requirement 
+  requirement: &id001 !ruby/object:Gem::Requirement 
     requirements: 
     - - ">="
       - !ruby/object:Gem::Version 
+        segments: 
+        - 0
+        - 2
+        - 5
         version: 0.2.5
     version: 
+  type: :runtime
+  version_requirement: 
+  version_requirements: *id001
 description: 
 email: nathansobo@gmail.com
 executables: 
@@ -108,18 +117,22 @@ required_ruby_version: !ruby/object:Gem::Requirement
   requirements: 
   - - ">="
     - !ruby/object:Gem::Version 
+      segments: 
+      - 0
       version: "0"
   version: 
 required_rubygems_version: !ruby/object:Gem::Requirement 
   requirements: 
   - - ">="
     - !ruby/object:Gem::Version 
+      segments: 
+      - 0
       version: "0"
   version: 
 requirements: []
 
 rubyforge_project: 
-rubygems_version: 1.3.5
+rubygems_version: 1.3.6
 signing_key: 
 specification_version: 3
 summary: A Ruby-based text parsing and interpretation DSL
