@@ -31,9 +31,17 @@ function lightbox(thumbnail) {
   link.wrap('<div class="lightbox-wrapper"></div>');
   link.prepend('<img class="widget expand" alt="expand" title="Click to enlarge" src="/images/dashboard-expand.png" />');
 
-  // for images, start preloading on mouseenter
+  // examine target href for type and params
   var href = link.attr('href');
   var is_image = !href.match(/\.mov(\?.*)?$/);
+  href.match(/\?(.+)$/);
+  var params = {};
+  $.each(RegExp.$1.split('&'), function(idx, val) {
+    var key_value_pair = val.split('=');
+    params[key_value_pair[0]] = key_value_pair[1];
+  });
+
+  // for images, start preloading on mouseenter
   if (is_image) {
     link.mouseenter(function() {
       // will store the preloaded image as a property in the thumbnail DOM element
