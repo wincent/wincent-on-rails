@@ -75,7 +75,7 @@ usage() {
   echo ""
   echo "Example workflow:"
   echo "     # set an environment variable to indicate the staging server"
-  echo "     STAGING_SERVER=ec2-184-73-234-210.compute-1.amazonaws.com"
+  echo "     export STAGING_SERVER=ec2-184-73-234-210.compute-1.amazonaws.com"
   echo ""
   echo "     # note how commands can be chained together:"
   echo "     $0 staging unlock check deploy migrate_test spec"
