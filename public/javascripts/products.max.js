@@ -64,8 +64,8 @@ function lightbox(thumbnail) {
   else {
     // movie dimensions come from query string
     // or if no query string, from image thumbnail
-    var width = params['width'] || link.width();
-    var height = (params['height'] || link.height()) + 16; // plus 16 pixels for controls
+    var width = parseInt(params['width'] || link.width());
+    var height = parseInt(params['height'] || link.height()) + 16; // plus 16 pixels for controls
     var movie = $('<object/>', {
       classid: "clsid:02BF25D5-8C17-4B23-BC80-D3488ABDDC6B",
       codebase: "http://www.apple.com/qtactivex/qtplugin.cab",
