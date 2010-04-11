@@ -69,19 +69,23 @@ function lightbox(thumbnail) {
     var movie = $('<object/>', {
       classid: "clsid:02BF25D5-8C17-4B23-BC80-D3488ABDDC6B",
       codebase: "http://www.apple.com/qtactivex/qtplugin.cab",
-      width: width,
-      height: height,
       title: $(thumbnail).attr('title')
       })
+    .attr({
+      width: width,   // must set these using attr()
+      height: height  // otherwise they get applied as CSS styles
+    })
     .append($('<param/>', { name: 'src', value: href }))
     .append($('<param/>', { name: 'autoplay', value: 'true' }))
     .append($('<embed/>', {
       src: href,
-      width: width,
-      height: height,
       type: 'quicktime/video',
       autoplay: 'true',
       pluginspage: 'http://www.apple.com/quicktime/download/'
+    })
+    .attr({
+      width: width,   // must set these using attr()
+      height: height  // otherwise they get applied as CSS styles
     }));
     movie.thumbnail = $(thumbnail); // keep reference to "parent" thumbnail
     thumbnail.fullsized = movie;
