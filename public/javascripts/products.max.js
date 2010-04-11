@@ -34,12 +34,14 @@ function lightbox(thumbnail) {
   // examine target href for type and params
   var href = link.attr('href');
   var is_image = !href.match(/\.mov(\?.*)?$/);
-  href.match(/\?(.+)$/);
   var params = {};
-  $.each(RegExp.$1.split('&'), function(idx, val) {
-    var key_value_pair = val.split('=');
-    params[key_value_pair[0]] = key_value_pair[1];
-  });
+  if (href.match(/(.+)\?(.+)$/)) {
+    href = RegExp.$1; // strip off query component
+    $.each(RegExp.$2.split('&'), function(idx, val) {
+      var key_value_pair = val.split('=');
+      params[key_value_pair[0]] = key_value_pair[1];
+    });
+  }
 
   // for images, start preloading on mouseenter
   if (is_image) {
