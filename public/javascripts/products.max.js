@@ -106,12 +106,22 @@ function lightbox(thumbnail) {
 
   function show_overlay() {
     if (!$('#lightbox-overlay').length)
-      $('#content').prepend($('<div id="lightbox-overlay"></div>'));
+      $('#content').prepend($('<div id="lightbox-overlay"></div>').click(function() {
+        hide_lightbox();
+      }));
     $('#lightbox-overlay').fadeIn();
   }
 
   function hide_overlay() {
     $('#lightbox-overlay').fadeOut('def');
+  }
+
+  function hide_lightbox() {
+    hide_overlay();
+    $('#lightbox-image-frame').fadeOut('def', function() {
+      $(this).remove();
+    });
+    enable_expand_widgets();
   }
 
   function show_lightbox(content, is_image) {
@@ -132,11 +142,7 @@ function lightbox(thumbnail) {
       $('#lightbox-image-frame') :
       $('#lightbox-image-frame').find('a[href=#]'); // the close widget
     dismiss.click(function() {
-      hide_overlay();
-      $('#lightbox-image-frame').fadeOut('def', function() {
-        $(this).remove();
-      });
-      enable_expand_widgets();
+      hide_lightbox();
     });
 
     // update caption
