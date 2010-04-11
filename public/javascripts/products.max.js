@@ -33,7 +33,7 @@ function lightbox(thumbnail) {
 
   // examine target href for type and params
   var href = link.attr('href');
-  var is_image = !href.match(/\.mov(\?.*)?$/);
+  thumbnail.image = !href.match(/\.mov(\?.*)?$/);
   var params = {};
   if (href.match(/(.+)\?(.+)$/)) {
     href = RegExp.$1; // strip off query component
@@ -44,7 +44,7 @@ function lightbox(thumbnail) {
   }
 
   // for images, start preloading on mouseenter
-  if (is_image) {
+  if (thumbnail.image) {
     link.mouseenter(function() {
       // will store the preloaded image as a property in the thumbnail DOM element
       if (thumbnail.fullsized)
@@ -90,7 +90,7 @@ function lightbox(thumbnail) {
   // show lightbox on click
   var click = function(e) {
     disable_expand_widgets();
-    if (is_image) {
+    if (e.data.tag.image) {
       if (e.data.tag.fullsized.loaded)
         show_image(e.data.tag.fullsized);
       else {
