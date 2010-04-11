@@ -46,13 +46,14 @@ dt img { position: absolute; top: -10px; left: -96px; }
 
 #lightbox-image-frame { position: absolute; margin: 0 auto; z-index: 100; padding: 20px 20px 35px 20px; background: black; -webkit-border-radius: 15px; -moz-border-radius: 15px; -webkit-box-shadow: 4px 4px 4px #888; -moz-box-shadow: 4px 4px 4px #888; box-shadow: 4px 4px 4px #888; display: none; z-index: 5000; }
 
-#lightbox-caption { position: absolute; left: 0px; bottom: 10px; width: 100%; text-align: center; color: white; }
+#lightbox-caption { margin-top: 10px; margin-bottom: -10px; text-align: center; color: white; }
+#lightbox-caption img { margin-top: 10px; }
 
 #lightbox-spinner-frame { position: fixed; z-index: 100; top: 40%; left: 45%; height: 55px; width: 55px; background: black; -webkit-border-radius: 5px; -moz-border-radius: 5px; -webkit-opacity: 0.5; -moz-opacity: 0.5; opacity: 0.5; filter: alpha(opacity=50); display: none; z-index: 5000; }
 
 #lightbox-spinner { position: absolute; top: 9px; left: 9px; }
 
-#lightbox-overlay { display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: #000; opacity: 0.25; -webkit-opacity: 0.25; -moz-opacity: 0.25; filter: alpha(opacity=25); z-index: 4000; }
+#lightbox-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: #000; opacity: 0.25; -webkit-opacity: 0.25; -moz-opacity: 0.25; filter: alpha(opacity=25); z-index: 4000; }
 
 .lightbox-wrapper { position: relative; display: inline; }
 

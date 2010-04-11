@@ -137,8 +137,9 @@ function lightbox(thumbnail) {
         '<a href="#" title="Click to dismiss" onclick="return false;">' +
         '<img class="widget close" src="/images/dashboard-close.png" />' +
         '</a>' +
-        '<div id="lightbox-caption"></div>' +
-        '</div>').append(content));
+        '</div>')
+        .append(content)
+        .append('<div id="lightbox-caption"></div>'));
 
     // for images, entire lightbox should be clickable to dismiss
     // for movies, just the close widget
@@ -151,6 +152,16 @@ function lightbox(thumbnail) {
 
     // update caption
     $('#lightbox-caption').html(content.attr('title'));
+
+    // show QuickTime badge if appropriate
+    if (!is_image) {
+      $('#lightbox-caption').append('<br />' +
+        '<a href="http://www.apple.com/quicktime/download/">' +
+        '<img src="/images/quicktime.gif"  alt="Get QuickTime">' +
+        '</a>');
+      //var old_height = $('#lightbox-image-frame').height();
+      //$('#lightbox-image-frame').height(old_height + 31);
+    }
 
     // position lightbox relative to thumbnail before fading it in:
     // - center horizontally relative to middle of document
