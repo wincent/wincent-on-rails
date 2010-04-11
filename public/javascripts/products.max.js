@@ -79,7 +79,7 @@ function lightbox(thumbnail) {
     .append($('<param/>', { name: 'autoplay', value: 'true' }))
     .append($('<embed/>', {
       src: href,
-      type: 'quicktime/video',
+      type: 'video/quicktime',
       autoplay: 'true',
       pluginspage: 'http://www.apple.com/quicktime/download/'
     })
