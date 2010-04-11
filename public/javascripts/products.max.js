@@ -124,7 +124,9 @@ function lightbox(thumbnail) {
           '</a>' +
           '<div id="lightbox-caption"></div>' +
           '</div>').append(content).click(function() {
-            $('#lightbox-image-frame').fadeOut('def');
+            $('#lightbox-image-frame').fadeOut('def', function() {
+              $(this).remove();
+            });
             enable_expand_widgets();
           })
       );
