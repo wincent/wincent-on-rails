@@ -135,12 +135,15 @@ function lightbox(thumbnail) {
     // - center vertically relative to middle of thumbnail
     var thumbnail_offset = content.thumbnail.offset();
     var anchor_top = thumbnail_offset.top + content.thumbnail.height() / 2;
-    var content_top = anchor_top - (content[0].height / 2);
-    if (content_top + content[0].height + 20 > $(document).height()) // allow 20px padding
-      content_top = $(document).height() - (content[0].height + 85);
+    var content_width = $('#lightbox-image-frame').width();
+    var content_height = $('#lightbox-image-frame').height();
+
+    var content_top = anchor_top - (content_height / 2);
+    if (content_top + content_height + 20 > $(document).height()) // allow 20px padding
+      content_top = $(document).height() - (content_height + 85);
     if (content_top < 25)
       content_top = 25;
-    var left = ($(document).width() / 2) - (content[0].width / 2);
+    var left = ($(document).width() / 2) - (content_width / 2);
     if (left < 25)
       left = 25;
     $('#lightbox-image-frame').css('top', content_top + 'px').css('left', left + 'px').fadeIn('def');
@@ -155,8 +158,8 @@ function lightbox(thumbnail) {
         typeof w_origin_x == 'undefined' ||
         typeof w_origin_y == 'undefined')
       return;
-    var lightbox_center_x = left + content[0].width / 2;
-    var lightbox_center_y = content_top + content[0].height / 2;
+    var lightbox_center_x = left + content_width / 2;
+    var lightbox_center_y = content_top + content_height / 2;
     var viewport_center_x = w_origin_x + w_width / 2;
     var viewport_center_y = w_origin_y + w_height / 2;
     w_origin_x -= viewport_center_x - lightbox_center_x;
