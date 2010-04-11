@@ -55,7 +55,7 @@ function lightbox(thumbnail) {
       $(image).load(function() {
         image.loaded = true;
         if (global_pending_lightbox_image == image) {
-          show_image(image);
+          show_lightbox(image, true);
         }
       });
       thumbnail.fullsized = image;
@@ -92,50 +92,40 @@ function lightbox(thumbnail) {
     disable_expand_widgets();
     if (e.data.tag.image) {
       if (e.data.tag.fullsized.loaded)
-        show_image(e.data.tag.fullsized);
+        show_lightbox(e.data.tag.fullsized, true);
       else {
         show_spinner();
         global_pending_lightbox_image = e.data.tag.fullsized;
       }
     }
     else
-      show_movie(e.data.tag.fullsized);
+      show_lightbox(e.data.tag.fullsized, false);
     return false;
   }
   link.bind('click', { tag: thumbnail }, click);
 
-  function show_movie(movie) {
-    show_lightbox(movie);
-  }
-
-  function show_image(image) {
-    show_lightbox(image);
-  }
-
-  function show_lightbox(content) {
+  function show_lightbox(content, is_image) {
     // if spinner on screen, hide it
     $('#lightbox-spinner-frame').hide();
-    if ($('#lightbox-image-frame').length == 0) {
-      // add frame to DOM if not present already
-      $('#content').prepend(
-        $('<div id="lightbox-image-frame">' +
-          '<a href="#" title="Click to dismiss" onclick="return false;">' +
-          '<img class="widget close" src="/images/dashboard-close.png" />' +
-          '</a>' +
-          '<div id="lightbox-caption"></div>' +
-          '</div>').append(content).click(function() {
-            $('#lightbox-image-frame').fadeOut('def', function() {
-              $(this).remove();
-            });
-            enable_expand_widgets();
-          })
-      );
-    }
-    else {
-      // frame was already present, just have to swap in new content
-      $('#lightbox-image-frame').find('img').not('.widget').remove();
-      $('#lightbox-image-frame').append(content);
-    }
+    $('#content').prepend(
+      $('<div id="lightbox-image-frame">' +
+        '<a href="#" title="Click to dismiss" onclick="return false;">' +
+        '<img class="widget close" src="/images/dashboard-close.png" />' +
+        '</a>' +
+        '<div id="lightbox-caption"></div>' +
+        '</div>').append(content));
+
+    // for images, entire lightbox should be clickable to dismiss
+    // for movies, just the close widget
+    var dismiss = is_image ?
+      $('#lightbox-image-frame') :
+      $('#lightbox-image-frame').find('a[href=#]'); // the close widget
+    dismiss.click(function() {
+      $('#lightbox-image-frame').fadeOut('def', function() {
+        $(this).remove();
+      });
+      enable_expand_widgets();
+    });
 
     // update caption
     $('#lightbox-caption').html(content.attr('title'));
