@@ -70,8 +70,9 @@ function lightbox(thumbnail) {
       classid: "clsid:02BF25D5-8C17-4B23-BC80-D3488ABDDC6B",
       codebase: "http://www.apple.com/qtactivex/qtplugin.cab",
       width: width,
-      height: height
-    })
+      height: height,
+      title: $(thumbnail).attr('title')
+      })
     .append($('<param/>', { name: 'src', value: href }))
     .append($('<param/>', { name: 'autoplay', value: 'true' }))
     .append($('<embed/>', {
