@@ -103,7 +103,7 @@ function lightbox(thumbnail) {
   }
   link.bind('click', { tag: thumbnail }, click);
 
-  function show_movie() {
+  function show_movie(movie) {
     show_lightbox(movie);
   }
 
