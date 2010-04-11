@@ -104,9 +104,20 @@ function lightbox(thumbnail) {
   }
   link.bind('click', { tag: thumbnail }, click);
 
+  function show_overlay() {
+    if (!$('#lightbox-overlay').length)
+      $('#content').prepend($('<div id="lightbox-overlay"></div>'));
+    $('#lightbox-overlay').fadeIn();
+  }
+
+  function hide_overlay() {
+    $('#lightbox-overlay').fadeOut('def');
+  }
+
   function show_lightbox(content, is_image) {
     // if spinner on screen, hide it
     $('#lightbox-spinner-frame').hide();
+    show_overlay();
     $('#content').prepend(
       $('<div id="lightbox-image-frame">' +
         '<a href="#" title="Click to dismiss" onclick="return false;">' +
@@ -121,6 +132,7 @@ function lightbox(thumbnail) {
       $('#lightbox-image-frame') :
       $('#lightbox-image-frame').find('a[href=#]'); // the close widget
     dismiss.click(function() {
+      hide_overlay();
       $('#lightbox-image-frame').fadeOut('def', function() {
         $(this).remove();
       });

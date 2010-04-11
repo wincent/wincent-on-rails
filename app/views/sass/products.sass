@@ -119,6 +119,7 @@ dt img
   -moz-box-shadow:        4px 4px 4px #888
   box-shadow:             4px 4px 4px #888
   display:                none
+  z-index:                5000
 
 #lightbox-caption
   position:               absolute
@@ -143,11 +144,26 @@ dt img
   opacity:                0.5
   filter:                 alpha(opacity=50)
   display:                none
+  z-index:                5000
 
 #lightbox-spinner
   position: absolute
   top:      9px
   left:     9px
+
+#lightbox-overlay
+  display:                none
+  position:               absolute
+  top:                    0
+  left:                   0
+  width:                  100%
+  height:                 100%
+  background-color:       #000
+  opacity:                0.25
+  -webkit-opacity:        0.25
+  -moz-opacity:           0.25
+  filter:                 alpha(opacity=25)
+  z-index:                4000
 
 .lightbox-wrapper
   position: relative
