@@ -229,6 +229,10 @@ describe Forum, 'find_all method' do
     Forum.find_all.first.name.should == @forum.name
   end
 
+  it 'should select the forum permalink' do
+    Forum.find_all.first.permalink.should == @forum.permalink
+  end
+
   it 'should select the forum description' do
     Forum.find_all.first.description.should == @forum.description
   end

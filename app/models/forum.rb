@@ -22,7 +22,8 @@ class Forum < ActiveRecord::Base
 
   def self.find_all
     find_by_sql <<-SQL
-      SELECT forums.id, forums.name, forums.description, forums.topics_count,
+      SELECT forums.id, forums.name, forums.permalink,
+             forums.description, forums.topics_count,
              t.updated_at AS last_active_at, t.id AS last_topic_id
       FROM forums
       LEFT OUTER JOIN (SELECT id, forum_id, updated_at
