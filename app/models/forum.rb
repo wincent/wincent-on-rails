@@ -1,13 +1,23 @@
 class Forum < ActiveRecord::Base
-  has_many                :topics, :order => 'topics.updated_at DESC', :dependent => :destroy
+  has_many                :topics,
+                          :order => 'topics.updated_at DESC',
+                          :dependent => :destroy
   validates_presence_of   :name
-  validates_format_of     :name, :with => /\A[a-z ]+\z/i, :message => 'may only contain letters and spaces'
+  validates_format_of     :name,
+                          :with => /\A[a-z0-9\- ]+\z/i,
+                          :message => 'may only contain letters, numbers, hyphens and spaces'
   validates_uniqueness_of :name
-  attr_accessible         :name, :description
+  validates_presence_of   :permalink
+  validates_format_of     :permalink,
+                          :with => /\A[a-z0-9\-]+\z/,
+                          :message => 'must contain only lowercase letters, numbers and hyphens'
+  validates_uniqueness_of :permalink
+  attr_accessible         :name, :description, :permalink
 
   def self.find_with_param! param, conditions = {}
-    # forum name will be downcased in the URL, but MySQL will do a case-insensitive search for us anyway
-    find_by_name!(deparametrize(param), :conditions => conditions)
+    # forum name will be downcased in the URL, but MySQL will do a
+    # case-insensitive search for us anyway
+    find_by_permalink! param, :conditions => conditions
   end
 
   def self.find_all
@@ -27,14 +37,6 @@ class Forum < ActiveRecord::Base
     SQL
   end
 
-  def self.deparametrize string
-    string.gsub '-', ' '
-  end
-
-  def self.parametrize string
-    string.downcase.gsub ' ', '-'
-  end
-
   def before_create
     if self.position.nil?
       max = Forum.maximum(:position)
@@ -42,7 +44,17 @@ class Forum < ActiveRecord::Base
     end
   end
 
+  def before_validation
+    if permalink.blank?
+      # Given that collisions here are unlikely (unlike the Post model),
+      # we just make a reasonable effort and rely on uniqueness
+      # validations and database contraints to warn us of any clash.
+      self.permalink = name.to_s.downcase.gsub ' ', '-'
+    end
+    true
+  end
+
   def to_param
-    Forum.parametrize name
+    permalink
   end
 end

@@ -59,6 +59,10 @@ describe Forum, 'accessible attributes' do
   it 'should allow mass-assignment of the description' do
     new_forum.should allow_mass_assignment_of(:description => FR::random_string)
   end
+
+  it 'should allow mass-assignment of the permalink' do
+    new_forum.should allow_mass_assignment_of(:permalink => FR::random_string)
+  end
 end
 
 # :topics_count, :position, :public
@@ -86,7 +90,17 @@ describe Forum, 'validating the name' do
     new_forum(:name => words.join(' ')).should_not fail_validation_for(:name)
   end
 
-  it 'should disallow punctuation' do
+  it 'should allow numbers' do
+    name = "#{FR::random_string}2"
+    new_forum(:name => name).should_not fail_validation_for(:name)
+  end
+
+  it 'should allow hyphens' do
+    name ="#{FR::random_string}-#{FR::random_string}"
+    new_forum(:name => name).should_not fail_validation_for(:name)
+  end
+
+  it 'should disallow other punctuation' do
     new_forum(:name => 'foo.bar').should fail_validation_for(:name)
   end
 
@@ -97,23 +111,61 @@ describe Forum, 'validating the name' do
   end
 end
 
-describe Forum, 'parametrization' do
-  it 'should convert spaces into hyphens' do
-    Forum.parametrize('foo bar').should == 'foo-bar'
+describe Forum, 'validating the permalink' do
+  it 'should require it to be unique' do
+    permalink = FR::random_string
+    create_forum(:permalink => permalink).should be_valid
+    new_forum(:permalink => permalink).should fail_validation_for(:permalink)
   end
 
-  it 'should downcase' do
-    Forum.parametrize('FooBAR').should == 'foobar'
+  it 'should allow letters, numbers and hyphens' do
+    forum = new_forum(:permalink => 'foo-bar-2')
+    forum.should_not fail_validation_for(:permalink)
   end
 
-  it 'should use the name as the param, with spaces converted into hyphens' do
-    new_forum(:name => 'foo bar').to_param.should == 'foo-bar'
+  it 'should disallow spaces' do
+    new_forum(:permalink => 'foo bar').should fail_validation_for(:permalink)
+  end
+
+  it 'should disallow other punctuation' do
+    new_forum(:permalink => 'foo.bar').should fail_validation_for(:permalink)
   end
 end
 
-describe Forum, 'deparametrization' do
-  it 'should convert hyphens into spaces' do
-    Forum.deparametrize('foo-bar').should == 'foo bar'
+describe Forum, 'autogeneration of permalink' do
+  it 'should generate it based on name if not present' do
+    name = FR::random_string
+    forum = new_forum(:name => name, :permalink => nil)
+    forum.should_not fail_validation_for(:permalink)
+    forum.permalink.should == name.downcase
+  end
+
+  it 'should downcase' do
+    name = 'FooBar'
+    forum = new_forum(:name => name, :permalink => nil)
+    forum.should_not fail_validation_for(:permalink)
+    forum.permalink.should == 'foobar'
+  end
+
+  it 'should convert spaces into hyphens' do
+    name = 'hello world'
+    forum = new_forum(:name => name, :permalink => nil)
+    forum.should_not fail_validation_for(:permalink)
+    forum.permalink.should == 'hello-world'
+  end
+
+  it 'should allow numbers' do
+    name = 'area 51'
+    forum = new_forum(:name => name, :permalink => nil)
+    forum.should_not fail_validation_for(:permalink)
+    forum.permalink.should == 'area-51'
+  end
+end
+
+describe Forum, 'parametrization' do
+  it 'should use the permalink as the param' do
+    permalink = FR::random_string.downcase
+    new_forum(:permalink => permalink).to_param.should == permalink
   end
 end
 
@@ -123,8 +175,8 @@ describe Forum, 'find_with_param! method' do
     @forum  = create_forum :name => @name
   end
 
-  it 'should find by name' do
-    Forum.should_receive(:find_by_name!).and_return(@forum)
+  it 'should find by permalink' do
+    Forum.should_receive(:find_by_permalink!).and_return(@forum)
     Forum.find_with_param!(@name)
   end
 
