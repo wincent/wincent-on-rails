@@ -6,7 +6,7 @@ if [ $(whoami) != "root" ]; then
 fi
 
 HOSTNAME=$(hostname)
-if [ -f "/usr/local/mysql/var/$HOSTNAME.pid" ]; then
+if [ -f "/usr/local/mysql/data/$HOSTNAME.pid" ]; then
   echo "mysql running: stopping"
   mysqladmin shutdown
 else
