@@ -16,8 +16,11 @@ if not pidfile.exist?
   FileUtils.cp '/usr/local/nginx/conf/mime.types', tmp
   `RAILS_ROOT=#{root} erb #{template} > #{conf}`
   system '/usr/local/nginx/sbin/nginx', '-c', conf
-else
+elsif `ps x`.split("\n").any? { |line| line.match 'nginx: master process' }
   puts "nginx running: stopping"
   pid = pidfile.read.chomp
   system 'kill', pid
+else
+  puts "nginx not running but stale PID file found: cleaning up"
+  pidfile.delete
 end
