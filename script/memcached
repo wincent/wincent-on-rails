@@ -11,11 +11,10 @@ if not pidfile.exist?
 elsif `ps x`.split("\n").any? { |line| line.match 'memcached -d' }
   puts "memcached running: stopping"
   pid = pidfile.read.chomp
-  system 'kill', pid
+  system 'quit', pid
 
-  # it appears that memcached doesn't clean up its pid file
-  # unless you send it a QUIT signal (TERM, KILL, HUP don't)
-  # unfortuantely, QUIT on Mac OS X causes memcached to crash
+  # as of right now (memcached 1.2.8, Mac OS X 10.6.3) memcached
+  # never cleans up its own PID file
   pidfile.delete
 else
   puts "memcached not running but stale PID file found: cleaning up"
