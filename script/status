@@ -1,8 +1,16 @@
 #!/bin/sh
 
+function check_stale_pid_file()
+{
+  if [ -f "$1" ]; then
+    echo "warning: stale pid file still exists at $1"
+  fi
+}
+
 /bin/echo -n "nginx: "
 if [ $(ps x | grep -v grep | grep -c 'nginx: master process') -eq 0 ]; then
   echo "stopped"
+  check_stale_pid_file 'tmp/nginx.pid'
 else
   echo "running"
 fi
@@ -10,6 +18,7 @@ fi
 /bin/echo -n "memcached: "
 if [ $(ps x | grep -v grep | grep -c 'memcached -d') -eq 0 ]; then
   echo "stopped"
+  check_stale_pid_file 'tmp/memcached.pid'
 else
   echo "running"
 fi
@@ -17,6 +26,9 @@ fi
 /bin/echo -n "mysqld: "
 if [ $(ps ax | grep -v grep | grep -c 'mysqld --basedir') -eq 0 ]; then
   echo "stopped"
+
+  # note that this check will only work when running as root/mysql
+  check_stale_pid_file "/usr/local/mysql/data/$(hostname).pid"
 else
   echo "running"
 fi
