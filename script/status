@@ -3,7 +3,8 @@
 function check_stale_pid_file()
 {
   if [ -f "$1" ]; then
-    echo "warning: stale pid file still exists at $1"
+    echo "warning: stale pid file still exists at $1 (removing)"
+    rm "$1"
   fi
 }
 
