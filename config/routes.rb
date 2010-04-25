@@ -1,4 +1,4 @@
-ActionController::Routing::Routes.draw do |map|
+Wincent::Application.routes.draw do |map|
   # resources
   # TODO: may be able to clean some of these routes up using :shallow and :only from Rails 2.2
   map.with_options :requirements => { :protocol => 'https' } do |https|
