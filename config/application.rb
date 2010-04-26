@@ -7,7 +7,7 @@ require 'rails/all'
 Bundler.require(:default, Rails.env) if defined?(Bundler)
 
 require 'yaml'
-APP_CONFIG = YAML.load_file("#{Rails.root}/config/app_config.yml")
+APP_CONFIG = YAML.load_file File.join(File.dirname(__FILE__), 'app_config.yml')
 
 module Wincent
   class Application < Rails::Application
