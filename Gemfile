@@ -1,7 +1,7 @@
 source 'http://rubygems.org'
 gem 'rails',    '>= 3.0.0.beta3'
 gem 'haml',     '2.2.17'
-gem 'wikitext', '1.10.1'
+gem 'wikitext', '>= 1.11'
 
 group :cucumber, :development, :test do
   gem 'fixture_replacement', '3.0.1'
@@ -19,5 +19,6 @@ group :cucumber do
 end
 
 group :test do
+  gem 'hpricot', '>= 0.6'
   gem 'mkdtemp', '1.1.1'
 end
