@@ -8,15 +8,15 @@ dependencies:
     group: 
     - :default
     version: = 2.2.17
+  database_cleaner: 
+    group: 
+    - :cucumber
+    version: ">= 0"
   rspec-rails: 
     group: 
     - :cucumber
     - :test
     version: ">= 2.0.0.beta"
-  database_cleaner: 
-    group: 
-    - :cucumber
-    version: ">= 0"
   mkdtemp: 
     group: 
     - :test
@@ -25,20 +25,24 @@ dependencies:
     group: 
     - :cucumber
     version: ">= 0"
-  wikitext: 
-    group: 
-    - :default
-    version: = 1.10.1
   culerity: 
     group: 
     - :cucumber
     version: ">= 0"
+  wikitext: 
+    group: 
+    - :default
+    version: ">= 1.11"
   fixture_replacement: 
     group: 
     - :cucumber
     - :development
     - :test
     version: = 3.0.1
+  hpricot: 
+    group: 
+    - :test
+    version: ">= 0.6"
   capybara: 
     group: 
     - :cucumber
@@ -99,7 +103,7 @@ specs:
 - ffi: 
     version: 0.6.3
 - json_pure: 
-    version: 1.4.0
+    version: 1.4.1
 - selenium-webdriver: 
     version: 0.0.18
 - capybara: 
@@ -118,6 +122,8 @@ specs:
     version: 3.0.1
 - haml: 
     version: 2.2.17
+- hpricot: 
+    version: 0.8.2
 - mkdtemp: 
     version: 1.1.1
 - thor: 
@@ -139,8 +145,8 @@ specs:
 - rspec-rails: 
     version: 2.0.0.beta.7
 - wikitext: 
-    version: 1.10.1
-hash: ebfd467f8df06ffba37284ab618824c2c0cd46dc
+    version: "1.11"
+hash: 42028f825353368534ae0e19c10f146a09d35ad2
 sources: 
 - Rubygems: 
     uri: http://rubygems.org
