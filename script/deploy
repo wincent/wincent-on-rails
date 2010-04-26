@@ -259,9 +259,7 @@ if [ -n "$DO_CHECK" ]; then
   echo "  checking: executables exist"
   ssh rails@$SERVER "sh -l -c 'which gem git > /dev/null'"
   echo "  checking: gem versions"
-  ssh rails@$SERVER "sh -c 'gem specification --version \">= 0.6\"   hpricot > /dev/null && \
-                            gem specification --version \">= 1.0.0\" rack > /dev/null && \
-                            gem specification --version \">= 1.0\" mkdtemp > /dev/null'"
+  ssh rails@$SERVER "sh -c 'gem specification --version \">= 0.9.21\" bundler > /dev/null'"
   echo "  checking: local branch vs remote branch"
   git diff --exit-code --quiet $BRANCH origin/$BRANCH || \
     warn "local $BRANCH differs from remote origin/$BRANCH: did you remember to 'git push'?"
