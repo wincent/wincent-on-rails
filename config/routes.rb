@@ -1,117 +1,125 @@
-Wincent::Application.routes do |map|
-  # resources
-  # TODO: may be able to clean some of these routes up using :shallow and :only from Rails 2.2
-  map.with_options :requirements => { :protocol => 'https' } do |https|
-    https.resources :attachments
-    https.resources :comments
-    https.resources :confirmations, :as => :confirm
-    https.resources :issues,
-                    :has_many => [ :comments ],
-                    :collection => { :search => [:get, :post] }
-    https.resources :links
-    https.resources :products, :has_many => [ :pages ]
-    https.resources :sessions
-    https.resources :taggings
-    https.resources :resets
-    https.resources :tweets, :as => 'twitter', :has_many => [ :comments ]
+Wincent::Application.routes.draw do |map|
+  constraints :protocol => 'https' do
+    resources :attachments
+    resources :comments
+    resources :confirmations, :as => 'confirm'
 
-    # not a real resource, but declaring it as such gives us some convenient routing helpers
-    https.resources :search, :collection => { :issues => :get }
-  end
-
-  # mapping to "product_page" would overwrite the nested RESTful route above
-  map.embedded_product_page '/products/:id/:page_id', :controller => 'products',
-    :action => 'show', :protocol => 'https', :conditions => { :method => :get }
-
-  map.paginated_issues '/issues/page/:page', :controller => 'issues',
-    :action => 'index', :protocol => 'https'
-  map.paginated_tweets '/twitter/page/:page', :controller => 'tweets',
-    :action => 'index', :protocol => 'https'
-
-  # must explicitly allow period in the id part of the route otherwise it will be classified as a route separator
-  map.resources :posts,
-                :as => :blog,
-                :requirements => { :id => /[a-z0-9\-\.]+/, :protocol => 'https' } do |posts|
-    posts.resources :comments, :requirements => { :post_id => /[a-z0-9\-\.]+/, :protocol => 'https' }
-  end
-  map.paginated_posts '/blog/page/:page', :controller => 'posts',
-    :action => 'index', :protocol => 'https'
-
-  map.resources :forums, :requirements => { :protocol => 'https' } do |forum|
-    forum.resources :topics,
-                    :requirements => { :protocol => 'https' },
-                    :has_many => [ :comments ]
-  end
-
-  # avoid some N+1 SELECT problems by allowing unnested links to forum topics
-  # (useful, for example, when displaying search results; no need to lookup forum from db)
-  # ie. /topics/12/ will redirect to /forum/foo/topic/12/ only if the user clicks on link
-  map.resources :topics, :only => [ :index, :show ], :requirements => { :protocol => 'https' }
-
-  # must explicitly allow period in the id part of the route otherwise it will be classified as a route separator
-  map.resources :tags,
-                :requirements => { :id => /[a-z0-9\.]+/, :protocol => 'https' },
-                :collection => { :search => :get }
-
-  map.resources :users, :requirements => { :protocol => 'https' }  do |user|
-    user.resources :emails, :requirements => { :id => /[^\/]+/, :protocol => 'https' }
-  end
-
-  # again, must explicitly allow period in the id part of the route otherwise it will be classified as a route separator
-  map.resources :articles,
-                :as => :wiki,
-                :requirements => { :id => /[^\/]+/, :protocol => 'https' } do |articles|
-    articles.resources :comments, :requirements => { :article_id => /[^\/]+/, :protocol => 'https' }
-  end
-
-  # this gives us pagination URLs like: /wiki/page/3
-  # instead of: /wiki?page=3
-  # note that an article called "page" can still be accessed at: /wiki/page
-  map.paginated_articles '/wiki/page/:page', :controller => 'articles', :action => 'index', :protocol => 'https'
-
-  # regular routes
-  map.connect 'l/:id', :controller => 'links', :action => 'show', :protocol => 'https'
-  map.connect 'misc/:action', :controller => 'misc', :protocol => 'https'
-
-  # test environment only; without this we get this in application layout:
-  # No route matches {:action=>"wikitext_cheatsheet", :controller=>"misc"}
-  #map.connect 'misc/:action', :controller => 'misc'
-
-  map.connect 'heartbeat/ping', :controller => 'heartbeat', :action => 'ping', :protocol => 'https'
-
-  map.connect 'js/:delegated',
-    :controller => 'js',
-    :action => 'show',
-    :delegated => %r{([a-z_]+/)+[a-z_]+},
-    :protocol => 'https'
-
-  map.with_options :protocol => 'https' do |https|
-    # named routes
-    https.about           'about',            :controller => 'misc',            :action => 'about'
-    https.admin_dashboard 'admin/dashboard',  :controller => 'admin/dashboard', :action => 'show'
-    https.dashboard       'dashboard',        :controller => 'dashboard',       :action => 'show'
-    https.login           'login',            :controller => 'sessions',        :action => 'new'
-    https.logout          'logout',           :controller => 'sessions',        :action => 'destroy'
-    https.support         'support',          :controller => 'support'
-  end
-
-  # although conditionally inlining admin functionality in the standard resources is elegant
-  # it makes page caching difficult because the page looks different for admin users
-  # so we provide a separate admin interface for some resources
-  map.namespace :admin do |admin|
-    admin.with_options :requirements => { :protocol => 'https' } do |https|
-      https.resources :forums
-      https.resources :issues
-      https.resources :posts
-      https.resources :tags
-
-      # without this url_for() is broken in app/views/layouts in the admin namespace
-      https.connect 'misc/:action', :controller => 'misc'
+    resources :issues do
+      resources :comments
+      collection do
+        get :search
+        post :search
+      end
     end
-  end
+    match '/issues/page/:page' => 'issues#index', :as => 'paginated_issues'
 
-  map.with_options :protocol => 'https' do |https|
-    #https.root :controller => 'products' # action defaults to index
-    https.root :controller => 'posts' # action defaults to index
+    resources :links
+    resources :products do
+      resources :pages
+    end
+    resources :sessions
+    resources :taggings
+    resources :resets
+
+    resources :tweets, :as => 'twitter' do
+      resources :comments
+    end
+    match '/twitter/page/:page' => 'tweets#index', :as => 'paginated_tweets'
+
+    # not a real resource, but declaring it as such gives us some
+    # convenient routing helpers
+    # TODO: use named routes instead?
+    resources :search do
+      collection do
+        get :issues
+      end
+    end
+
+    # mapping to "product_page" would overwrite the nested RESTful route above
+    match '/products/:id/:page_id' => 'products#show',
+          :via => :get,
+          :as => 'embedded_product_page'
+
+
+    # must explicitly allow period in the id part of the route otherwise it
+    # will be classified as a route separator
+    resources :posts, :as => 'blog', :id => /[a-z0-9\-\.]+/ do
+      resources :comments
+    end
+    match '/blog/page/:page' => 'posts#index', :as => 'paginated_posts'
+
+    resources :forums do
+      resources :topics do
+        resources :comments
+      end
+    end
+
+    # avoid some N+1 SELECT problems by allowing unnested links to forum
+    # topics (useful, for example, when displaying search results; no need
+    # to lookup forum from db) ie. /topics/12/ will redirect to
+    # /forum/foo/topic/12/ only if the user clicks on link
+    resources :topics, :only => [ :index, :show ]
+
+    # must explicitly allow period in the id part of the route otherwise
+    # it will be classified as a route separator
+    resources :tags, :id => /[a-z0-9\.]+/ do
+      collection do
+        get :search
+      end
+    end
+
+    resources :users do
+      resources :emails, :id => /[^\/]+/
+    end
+
+    # again, must explicitly allow period in the id part of the route
+    # otherwise it will be classified as a route separator
+    # BUG: :as doesn't actually change the path, only the name of the routing
+    # helpers (eg. "wiki_comments_url()" is created, but it matches URLs of
+    # the form "/articles/:wiki_id/comments"
+    # see: https://rails.lighthouseapp.com/projects/8994/tickets/4485
+    resources :articles, :id => /[^\/]+/ , :as => 'wiki' do
+      resources :comments
+    end
+
+    # this gives us pagination URLs like: /wiki/page/3
+    # instead of: /wiki?page=3
+    # note that an article called "page" can still be accessed at: /wiki/page
+    match 'wiki/page/:page' => 'articles#index',
+          :as => 'paginated_articles',
+          :page => %r{\d+}
+
+    # regular routes
+    match 'l/:id'           => 'links#show'
+    match 'misc/:action'    => 'misc'
+    match 'heartbeat/ping'
+    match 'js/:delegated'   => 'js#show', :delegated => %r{([a-z_]+/)+[a-z_]+}
+
+    # named routes
+    match 'about'           => 'misc#about'
+    match 'admin/dashboard' => 'admin/dashboard#show', :as => 'admin_dashboard'
+    match 'dashboard'       => 'dashboard#show'
+    match 'login'           => 'sessions#new'
+    match 'logout'          => 'sessions#destroy'
+    match 'support'         => 'support#index'
+
+    # although conditionally inlining admin functionality in the standard
+    # resources is elegant it makes page caching difficult because the page
+    # looks different for admin users so we provide a separate admin interface
+    # for some resources
+    namespace :admin do
+      resources :forums
+      resources :issues
+      resources :posts
+      resources :tags
+
+      # without this url_for() is broken in app/views/layouts in the admin
+      # namespace
+      # TODO: check that this is still the case in Rails 3
+      match 'misc/:action' => 'misc'
+    end
+
+    root :to => 'posts#index'     # now
+    #root :to => 'products#index' # later
   end
 end
