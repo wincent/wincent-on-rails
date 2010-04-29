@@ -2,7 +2,7 @@ Wincent::Application.routes.draw do |map|
   constraints :protocol => 'https' do
     resources :attachments
     resources :comments
-    resources :confirmations, :as => 'confirm'
+    resources :confirmations, :path => 'confirm'
 
     resources :issues do
       resources :comments
@@ -21,7 +21,7 @@ Wincent::Application.routes.draw do |map|
     resources :taggings
     resources :resets
 
-    resources :tweets, :as => 'twitter' do
+    resources :tweets, :path => 'twitter' do
       resources :comments
     end
     match '/twitter/page/:page' => 'tweets#index', :as => 'paginated_tweets'
@@ -43,7 +43,7 @@ Wincent::Application.routes.draw do |map|
 
     # must explicitly allow period in the id part of the route otherwise it
     # will be classified as a route separator
-    resources :posts, :as => 'blog', :id => /[a-z0-9\-\.]+/ do
+    resources :posts, :path => 'blog', :id => /[a-z0-9\-\.]+/ do
       resources :comments
     end
     match '/blog/page/:page' => 'posts#index', :as => 'paginated_posts'
@@ -74,11 +74,7 @@ Wincent::Application.routes.draw do |map|
 
     # again, must explicitly allow period in the id part of the route
     # otherwise it will be classified as a route separator
-    # BUG: :as doesn't actually change the path, only the name of the routing
-    # helpers (eg. "wiki_comments_url()" is created, but it matches URLs of
-    # the form "/articles/:wiki_id/comments"
-    # see: https://rails.lighthouseapp.com/projects/8994/tickets/4485
-    resources :articles, :id => /[^\/]+/ , :as => 'wiki' do
+    resources :articles, :id => /[^\/]+/ , :path => 'wiki' do
       resources :comments
     end
 
