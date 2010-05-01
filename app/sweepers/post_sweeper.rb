@@ -1,9 +1,6 @@
 class PostSweeper < ActionController::Caching::Sweeper
   observe Post
 
-  # routing helpers (articles_path etc) _might_ not work without this include (behaviour seems erratic)
-  include ActionController::UrlWriter
-
   def after_destroy post
     expire_cache post
   end

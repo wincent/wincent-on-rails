@@ -1,9 +1,6 @@
 class ProductSweeper < ActionController::Caching::Sweeper
   observe Product
 
-  # routing helpers (products_path etc)
-  include ActionController::UrlWriter
-
   # not yet required
   #def after_destroy product
   #  expire_cache product

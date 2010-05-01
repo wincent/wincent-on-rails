@@ -3,9 +3,6 @@
 class PageSweeper < ActionController::Caching::Sweeper
   observe Page
 
-  # routing helpers (products_path etc)
-  include ActionController::UrlWriter
-
   def after_destroy page
     expire_cache page
   end

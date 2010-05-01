@@ -1,9 +1,6 @@
 class IssueSweeper < ActionController::Caching::Sweeper
   observe Issue
 
-  # routing helpers (issue_path etc) _might_ not work without this include (behaviour seems erratic)
-  include ActionController::UrlWriter
-
   def after_destroy issue
     expire_cache issue
   end

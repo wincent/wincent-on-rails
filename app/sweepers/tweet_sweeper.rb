@@ -1,9 +1,6 @@
 class TweetSweeper < ActionController::Caching::Sweeper
   observe Tweet
 
-  # routing helpers (tweets_path etc)
-  include ActionController::UrlWriter
-
   def after_destroy tweet
     expire_cache tweet
   end

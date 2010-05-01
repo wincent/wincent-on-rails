@@ -1,9 +1,6 @@
 class TopicSweeper < ActionController::Caching::Sweeper
   observe Topic
 
-  # routing helpers (forum_topic_path etc) _might_ not work without this include (behaviour seems erratic)
-  include ActionController::UrlWriter
-
   def after_destroy topic
     expire_cache topic
   end
