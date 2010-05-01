@@ -19,7 +19,7 @@ module ActiveRecord
               :message => 'may only contain letters, numbers and periods'
             include ActiveRecord::Acts::Taggable::InstanceMethods
             extend ActiveRecord::Acts::Taggable::MoreClassMethods
-            alias_method_chain :after_save, :save_pending_tags
+            set_callback :save, :after, :save_pending_tags
           end
         end
       end # module ClassMethods

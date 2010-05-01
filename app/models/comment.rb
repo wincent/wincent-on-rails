@@ -13,9 +13,10 @@ class Comment < ActiveRecord::Base
   # want to do something more complex than just increment the counter anyway if
   # we wanted to avoid clobbering the Rails-generated counter cache callback we
   # could use alias_method_chain
-  after_create          :update_caches_after_create, :send_new_comment_alert
-  after_update          :update_caches
-  after_destroy         :update_caches
+  set_callback :after, :create, :update_caches_after_create
+  set_callback :after, :create, :send_new_comment_alert
+  set_callback :after, :update, :update_caches
+  set_callback :after, :destroy, :update_caches
 
   def self.find_recent options = {}
     base_options = { :conditions => { :public => true }, :order => 'created_at DESC', :limit => 10 }

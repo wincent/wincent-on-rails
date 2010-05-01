@@ -15,30 +15,31 @@ class Topic < ActiveRecord::Base
   acts_as_classifiable
   acts_as_searchable    :attributes => [:title, :body]
   acts_as_taggable
+  set_callback          :create, :after, :send_new_topic_alert
 
-  # we use alias_method_chain here because if we just declare an after_create callback
-  # we'll clobber the method that Rails set up for us when we specified :counter_cache above
-  def after_create_with_send_new_topic_alert
-    after_create_without_send_new_topic_alert # let Rails update the counter cache
+  def send_new_topic_alert
     begin
-      return if self.user && self.user.superuser? # don't inform admin of his own comments
+      # don't inform admin of his own comments
+      return if self.user && self.user.superuser?
       TopicMailer.deliver_new_topic_alert self
     rescue Exception => e
       logger.error \
-        "\nerror: Topic#after_create_with_send_new_topic_alert for topic #{self.id} failed due to exception #{e.class}: #{e}\n\n"
+        "\nerror: Topic#send_new_topic_alert for topic #{self.id} failed due to exception #{e.class}: #{e}\n\n"
     end
   end
-  alias_method_chain :after_create, :send_new_topic_alert
 
   def before_create
     # part of fix for: http://rails.wincent.com/issues/671
-    # this allows us to drop the MySQL-specific conditional IFNULL logic from the find_topics_for_forum method
-    # - with the logic if the last commenter was anonymous we would end up showing the topic owner as the last commenter
-    #   in the forums#show action
-    # - without the logic we fix that problem but encounter another: now topics without replies no longer have "last post"
-    #   info; the solution is to set things up here
-    # - there is one more problem: if we delete all comments then we'll lose this information again
-    #   so we also need to set it in the "after_destroy" callback in the Comment model
+    # this allows us to drop the MySQL-specific conditional IFNULL logic from
+    # the find_topics_for_forum method
+    # - with the logic if the last commenter was anonymous we would end up
+    #   showing the topic owner as the last commenter in the forums#show action
+    # - without the logic we fix that problem but encounter another: now topics
+    #   without replies no longer have "last post" info; the solution is to set
+    #   things up here
+    # - there is one more problem: if we delete all comments then we'll lose
+    #   this information again so we also need to set it in the "after_destroy"
+    #   callback in the Comment model
     self[:last_commenter_id] = user ? user.id : nil
     self[:last_commented_at] = Time.now
   end

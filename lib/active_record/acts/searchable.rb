@@ -14,9 +14,9 @@ module ActiveRecord
           class_eval do
             self.searchable_attributes  = options[:attributes] || [] # the "self" is _not_ optional
             include ActiveRecord::Acts::Searchable::InstanceMethods
-            alias_method_chain :after_create, :needles
-            alias_method_chain :after_update, :needles
-            alias_method_chain :after_destroy, :needles
+            set_callback :create, :after, :needles
+            set_callback :update, :after, :needles
+            set_callback :destroy, :after, :needles
           end
         end
       end # module ClassMethods

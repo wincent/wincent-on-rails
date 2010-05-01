@@ -23,9 +23,9 @@ class Issue < ActiveRecord::Base
   acts_as_classifiable
   acts_as_taggable
   acts_as_searchable      :attributes => [:summary, :description]
-  after_create            :send_new_issue_alert
-  before_save             :prepare_annotation
-  after_save              :annotate
+  set_callback            :create, :after, :send_new_issue_alert
+  set_callback            :save, :before, :prepare_annotation
+  set_callback            :save, :after, :annotate
 
   # Sanitizes an untrusted hash of search parameters and prepares a conditions string suitable for passing to find(:all).
   # The calling controller should pass in the appropriate access options string to constrain the search depending on whether

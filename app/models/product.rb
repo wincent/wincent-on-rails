@@ -6,8 +6,8 @@ class Product < ActiveRecord::Base
   validates_format_of     :permalink, :with => /\A[a-z0-9\-]+\z/i,
     :message => 'may only contain lowercase letters, numbers and hypens'
   validates_uniqueness_of :bundle_identifier, :allow_blank => true
-  after_save              :process_icon
-  after_destroy           :cleanup_icons
+  set_callback            :save, :after, :process_icon
+  set_callback            :destroy, :after, :cleanup_icons
   attr_accessible         :category, :name, :permalink, :position,
     :bundle_identifier, :description, :footer, :header, :icon,
     :hide_from_front_page
