@@ -90,7 +90,7 @@ module ApplicationHelper
 
   # return string wrapped in relative-date CSS span
   def relative_date string
-    %Q{<span class="relative-date">#{string}</span>}
+    %Q{<span class="relative-date">#{string}</span>}.html_safe
   end
 
   # This pattern is frequently used in Atom feeds, where the feed as a whole
@@ -108,9 +108,9 @@ module ApplicationHelper
   def pluralizing_count number, thing
     # note that we sanitize thing because it can come from user params (eg. /tags/foo?type=article)
     if number == 1
-      h "1 #{thing.singularize}"
+      "1 #{thing.singularize}"
     else
-      h "#{number_with_delimiter(number)} #{thing.pluralize}"
+      "#{number_with_delimiter(number)} #{thing.pluralize}"
     end
   end
 
@@ -314,6 +314,6 @@ module ApplicationHelper
       controllers.unshift c.tableize
       break unless klass = klass.superclass
     end
-    %Q{<script src="/js/#{controllers.join('/')}/#{params[:action].to_s}" type="text/javascript"></script>}
+    %Q{<script src="/js/#{controllers.join('/')}/#{params[:action].to_s}" type="text/javascript"></script>}.html_safe
   end
 end

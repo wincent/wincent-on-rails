@@ -2,18 +2,18 @@ module TagsHelper
   def taggable_link model
     case model
     when Article, Post
-      link_to h(model.title), (send "#{model.class.to_s.downcase}_path", model)
+      link_to model.title, (send "#{model.class.to_s.downcase}_path", model)
     when Topic
       # BUG: another "n + 1 SELECT" issue here
       # if we present a list of model tags, each model here does a model.forum, which means an additional database query for each
       # for now the workaround will be to simply avoid tagging forum topics!
       # but a long-term solution will need to be found,
       # most likely involving "pre-seeding" in some way
-      link_to h(model.title), forum_topic_path(model.forum, model)
+      link_to model.title, forum_topic_path(model.forum, model)
     when Tweet
       link_to tweet_title(model), tweet_path(model)
     when Issue
-      link_to h(model.summary), issue_path(model)
+      link_to model.summary, issue_path(model)
     else
       raise 'not yet implemented'
     end
