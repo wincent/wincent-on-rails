@@ -19,7 +19,7 @@ module ApplicationHelper
       request[:action] == 'about' && item == 'about'
     when ProductsController
       item == 'products'
-    when SearchController
+    when SearchesController
       item == 'search'
     when TopicsController
       item == 'forums'
