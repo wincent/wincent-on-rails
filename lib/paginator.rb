@@ -31,7 +31,8 @@ class Paginator
 
   # Displaying x-y of z | << First | < Previous | Next > | Last >>
   def pagination_links
-    [label_text, first_link, prev_link, next_link, last_link].join " | "
+    links = [label_text, first_link, prev_link, next_link, last_link]
+    links.join(" | ").html_safe
   end
 
 private
