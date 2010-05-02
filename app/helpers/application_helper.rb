@@ -75,8 +75,9 @@ module ApplicationHelper
   # we can turn on page caching even for pages with relative dates on them).
   #
   # Accepts an options hash which may contain the following values:
-  #   - :updated_string: joining string shown if a record has been updated/edited (default: 'updated').
-  #       If false, no updated date info is shown.
+  #   - :updated_string: joining string shown if a record has been
+  #     updated/edited (default: 'updated'). If false, no updated date info is
+  #     shown.
   def timeinfo model, options = {}
     created = model.created_at
     updated = model.updated_at

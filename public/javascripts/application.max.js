@@ -76,13 +76,28 @@ function displayCacheableFlash() {
   }
 }
 
+function dateFromUTCString(s) {
+  var m = s.match(/(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2}) UTC/);
+
+  // use an explicit radix to avoid misinterpretation as hex due to possible
+  // leading 0 on all fields except for year
+  return m ?
+    new Date(Date.UTC(parseInt(m[1]),
+                      parseInt(m[2], 10),
+                      parseInt(m[3], 10),
+                      parseInt(m[4], 10),
+                      parseInt(m[5], 10),
+                      parseInt(m[6], 10)))
+    : new Date; // fall back to current time if regex failed
+}
+
 function relativizeDates()
 {
   $('.relative-date').each(function(i) {
     var result  = this.innerHTML;
     var now     = new Date;
-    var then    = new Date(result);
-    var dist    = now.getTime() - then.getTime();
+    var then    = dateFromUTCString(result);
+    var dist    = then.getTime() - now.getTime();
     var months  = new Array('January', 'February',
         'March', 'April', 'May', 'June', 'July',
         'August', 'September', 'October', 'November',
@@ -119,12 +134,11 @@ function relativizeDates()
         } else if (weeks <= 6) {
           result = weeks + ' weeks ago';
         } else {
-          // %d %B %Y
-          result = then.getDate() + ' ' + months[then.getMonth()] + ' ' + then.getFullYear();
+          result = then.toLocaleDateString();
         }
       }
     }
-    this.title = this.innerHTML;
+    this.title = then.toLocaleString();
     this.innerHTML = result;
   });
 }
