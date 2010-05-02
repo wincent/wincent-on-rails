@@ -14,20 +14,15 @@ module ActiveRecord
           class_eval do
             self.searchable_attributes  = options[:attributes] || [] # the "self" is _not_ optional
             include ActiveRecord::Acts::Searchable::InstanceMethods
-            set_callback :create, :after, :needles
-            set_callback :update, :after, :needles
-            set_callback :destroy, :after, :needles
+            set_callback :create, :after, :create_needles
+            set_callback :update, :after, :update_needles
+            set_callback :destroy, :after, :destroy_needles
           end
         end
       end # module ClassMethods
 
       module InstanceMethods
       private
-        def after_create_with_needles
-          after_create_without_needles
-          create_needles
-        end
-
         # Three ways to insert needles:
         #
         # (1) Use Needle.create
@@ -79,19 +74,9 @@ module ActiveRecord
           end
         end
 
-        def after_update_with_needles
-          after_update_without_needles
-          update_needles
-        end
-
         def update_needles
           destroy_needles
           create_needles
-        end
-
-        def after_destroy_with_needles
-          after_destroy_without_needles
-          destroy_needles
         end
 
         def destroy_needles
