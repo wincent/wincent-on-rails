@@ -139,10 +139,15 @@ class IssuesController < ApplicationController
   end
 
   def search
-    conditions  = Issue.prepare_search_conditions default_access_options, params[:issue]
-    @paginator  = Paginator.new params, Issue.count(:conditions => conditions), search_issues_path
-    @issues     = Issue.find :all,
-      sort_options.merge({ :conditions => conditions, :offset => @paginator.offset, :limit => @paginator.limit })
+    if request.post?
+      conditions  = Issue.prepare_search_conditions default_access_options, params[:issue]
+      @paginator  = Paginator.new params, Issue.count(:conditions => conditions), search_issues_path
+      @issues     = Issue.find :all,
+        sort_options.merge({ :conditions => conditions, :offset => @paginator.offset, :limit => @paginator.limit })
+      render 'issues/search/create'
+    else
+      render 'issues/search/new'
+    end
   end
 
 private

@@ -12,7 +12,7 @@
 %h2.major Issues
 .links
   =link_to 'show all issues', issues_path
-  =link_to 'search', issues_search_path # BUG: issues_search_path and search_issues_path are confusingly similar
+  =link_to 'search', search_issues_path
   =link_to 'open a ticket', new_issue_path, :title => "Don't forget to search first before opening a ticket"
 %h3 Recently modified
 =render 'issues/issues'

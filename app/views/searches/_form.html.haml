@@ -1,7 +1,7 @@
 -content_for :css do
   =stylesheet_link_tag 'search'
 %h1.major Search
--form_tag search_index_path, :method => :post do
+-form_tag searches_path, :method => :post do
   =text_field_tag :query, 'enter your search terms here', :size => 75
   =submit_tag 'Search'
 .tips
@@ -25,5 +25,5 @@
     %li The <tt>excerpt</tt> attribute is available on #{link_to 'blog posts', posts_path}
 %h2.major Other kinds of search
 .links
-  =link_to 'issue tracker search', issues_search_path
+  =link_to 'issue tracker search', search_issues_path
   =link_to 'tag search', search_tags_path

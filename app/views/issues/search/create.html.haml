@@ -1,13 +1,11 @@
--content_for :css do
-  =stylesheet_link_tag 'issues'
-%h1 Issues
+-page_title 'Issue search'
 .links
   =link_to 'show all issues', issues_path
-  =link_to_issue_search
+  =link_to_issue_search 'search again'
   =link_to 'open a ticket', new_issue_path, :title => "Don't forget to search first before opening a ticket"
   =link_to 'support overview', support_path
+  =link_to 'site search', new_search_path
 #issue_search(style='display:none;')
   =render 'issues/search/form'
-%h2.major Recently modified
-.annotation=scope_info
+%h2.major Results
 =render 'issues/issues'
