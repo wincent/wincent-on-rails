@@ -2,6 +2,7 @@ require 'digest/sha1'
 
 class Confirmation < ActiveRecord::Base
   belongs_to :email
+  set_callback :create, :before, :before_create
 
   attr_accessor   :nothing
   attr_accessible :nothing
