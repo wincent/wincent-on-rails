@@ -1,11 +1,11 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 require File.dirname(__FILE__) + '/application_controller_spec'
 
-describe SearchController do
+describe SearchesController do
   it_should_behave_like 'ApplicationController'
 end
 
-describe SearchController, 'create action' do
+describe SearchesController, 'create action' do
   it 'should assign the offset for use by the view' do
     post :create, :offset => '5', :protocol => 'https'
     assigns[:offset].should == 5

@@ -26,14 +26,9 @@ Wincent::Application.routes.draw do |map|
     end
     match '/twitter/page/:page' => 'tweets#index', :as => 'paginated_tweets'
 
-    # not a real resource, but declaring it as such gives us some
-    # convenient routing helpers
-    # TODO: use named routes instead?
-    resources :search do
-      collection do
-        get :issues
-      end
-    end
+    resources :searches,
+              :only => [ :create, :new ],
+              :path => 'search'
 
     # mapping to "product_page" would overwrite the nested RESTful route above
     match '/products/:id/:page_id' => 'products#show',
