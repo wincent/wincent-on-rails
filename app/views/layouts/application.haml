@@ -62,7 +62,7 @@
         %li{ :class => navbar_selected?('support') }=link_to 'Support', support_path
         %li{ :class => navbar_selected?('about') }=link_to 'About', about_path
         %li{ :class => navbar_selected?('search') }
-          =link_to 'Search', searches_path, :id => 'search-link'
+          =link_to 'Search', new_search_path, :id => 'search-link'
           %form(id='search' action=searches_path method='post')
             =text_field_tag :query, params[:query], :size => 20, :id => :search_box, :style => 'display:none;'
         %li#login=link_to 'log in', login_path
