@@ -2,8 +2,8 @@
   =stylesheet_link_tag 'search'
 -@page_title = 'Search results'
 %h1.major Search results
--form_tag search_index_path, :method => :post do
-  =text_field_tag :query, params[:query], :size => 75
+-form_tag searches_path, :method => :post do
+  =text_field_tag :query, @query, :size => 75
   =submit_tag 'Search'
 -if @models.length == 0
   %p No results.
@@ -13,8 +13,8 @@
     %div(class="result #{cycle('odd', 'even')}")
       =render "search/#{model.class.to_s.downcase}", :model => model, :result_number => @offset + i + 1
 -if @models.length >= 20
-  -form_tag search_index_path, :method => :post do
-    =hidden_field_tag :query, params[:query]
+  -form_tag searches_path, :method => :post do
+    =hidden_field_tag :query, @query
     =hidden_field_tag :offset, @offset + 20
     =submit_tag 'more results...'
 .links
