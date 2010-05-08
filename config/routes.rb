@@ -88,7 +88,6 @@ Wincent::Application.routes.draw do |map|
 
     # named routes
     match 'about'           => 'misc#about'
-    match 'admin/dashboard' => 'admin/dashboard#show', :as => 'admin_dashboard'
     match 'dashboard'       => 'dashboard#show'
     match 'login'           => 'sessions#new'
     match 'logout'          => 'sessions#destroy'
@@ -99,6 +98,7 @@ Wincent::Application.routes.draw do |map|
     # looks different for admin users so we provide a separate admin interface
     # for some resources
     namespace :admin do
+      match 'dashboard' => 'dashboard#show'
       resources :forums
       resources :issues
       resources :posts
