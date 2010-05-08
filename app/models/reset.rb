@@ -9,11 +9,13 @@ class Reset < ActiveRecord::Base
   validates_presence_of :email
   validates_presence_of :email_address, :on => :update
   validates_each        :email_address, :on => :update do |reset, att, value|
-    # guard against brute force attacks by requiring the user to supply an associated email address
+    # guard against brute force attacks by requiring the user to supply an
+    # associated email address
     unless reset.user.emails.first :conditions => { :address => value }
       reset.errors.add(att, 'must match existing email on record')
     end
   end
+  before_create         :set_secret_and_cutoff
 
   attr_accessor         :email_address
   attr_accessible       :email_address
@@ -23,13 +25,15 @@ class Reset < ActiveRecord::Base
     Digest::SHA1.hexdigest(Time.now.to_s + rand.to_s + SECRET_SALT)
   end
 
-  def before_create
-    self.secret = Reset.secret if self.secret.blank?
-    self.cutoff = 3.days.from_now if self.cutoff.nil?
-    true # don't accidentally abort the save
-  end
-
   def to_param
     secret
   end
+
+private
+
+  def set_secret_and_cutoff
+    self.secret = Reset.secret if self.secret.blank?
+    self.cutoff = 3.days.from_now if self.cutoff.nil?
+  end
+
 end

@@ -8,6 +8,7 @@ class Product < ActiveRecord::Base
   validates_uniqueness_of :bundle_identifier, :allow_blank => true
   set_callback            :save, :after, :process_icon
   set_callback            :destroy, :after, :cleanup_icons
+  before_save             :set_bundle_identifier
   attr_accessible         :category, :name, :permalink, :position,
     :bundle_identifier, :description, :footer, :header, :icon,
     :hide_from_front_page
@@ -22,11 +23,6 @@ class Product < ActiveRecord::Base
   # returns ordered hash of all products organized by categories
   def self.categorized_products
     all(:conditions => { :hide_from_front_page => false }).group_by(&:category)
-  end
-
-  def before_save
-    # empty strings might falsely trigger database-level uniqueness constraint
-    self.bundle_identifier = nil if self.bundle_identifier.blank?
   end
 
   def icon= icon
@@ -48,6 +44,12 @@ class Product < ActiveRecord::Base
   end
 
 private
+
+  def set_bundle_identifier
+    # empty strings might falsely trigger database-level uniqueness constraint
+    self.bundle_identifier = nil if self.bundle_identifier.blank?
+  end
+
 
   def icon_filename
     "#{self.permalink}.#{self.icon_extension}"

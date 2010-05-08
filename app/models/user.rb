@@ -38,38 +38,7 @@ class User < ActiveRecord::Base
       model.errors.add att, 'must match existing passphrase on record'
     end
   end
-
-  def after_save
-    # What happens on User.create, or User.save on a new record?
-    #   - Rails runs the :save validations
-    #     - validates_length_of :passphrase runs (if passphrase is non-blank)
-    #     - validates_confirmation_of :passphrase runs (again, when passphrase is non-blank)
-    #   - Rails runs the :create validations because this is a new record
-    #     - validates_presence_of :passphrase runs
-    #   - the after_save callback is fired and the @passphrase instance variable is cleared;
-    #     this prevents the old_passphrase validations from running when not applicable
-    #
-    # What happens if the user sets a new passphrase on an existing, saved record and then calls user.save?
-    #   - Rails runs the :save validations
-    #     - validates_length_of :passphrase runs (because passphrase is non-blank)
-    #     - validates_confirmation_of :passphrase runs (for the same reason)
-    #   - Rails runs the :update validations because this is not a new record
-    #     - validates_presence_of :old_passphrase runs (because passphrase is non-blank)
-    #     - validates_each :old_passphrase runs (because the passphrase is non-blank);
-    #       checks with the database that the old passphrase is correct
-    #   - the after_save callback is fired and the @passphrase instance variable is cleared;
-    #     this prevents the old_passphrase validations from running when not applicable
-    #
-    # What happens if we call user.valid? or user.save on a non-new record?
-    #   - Rails runs the :save validations
-    #     - validates_length_of :passphrase does not run (because the passphrase is now blank)
-    #     - validates_confirmation_of :passphrase does not run (because the passphrase is blank)
-    #   - Rails runs the :update validations
-    #     - validates_presence_of :old_passphrase is skipped (because the passphrase is blank)
-    #     - validates_each :old_passphrase is skipped (because the passphrase is blank)
-    #
-    @passphrase = nil
-  end
+  after_save                :clear_passphrase
 
   # pull in User.digest and User.random_salt from Authentication module
   extend ActiveRecord::Authentication::ClassMethods
@@ -135,4 +104,49 @@ class User < ActiveRecord::Base
   def to_param
     User.parametrize display_name
   end
+
+private
+
+  def clear_passphrase
+    # What happens on User.create, or User.save on a new record?
+    #   - Rails runs the "save" validations
+    #     - validates_length_of :passphrase runs (if passphrase is non-blank)
+    #     - validates_confirmation_of :passphrase runs (again, when passphrase
+    #       is non-blank)
+    #   - Rails runs the "create" validations because this is a new record
+    #     - validates_presence_of :passphrase runs
+    #   - the after_save callback is fired and the @passphrase instance
+    #     variable is cleared; this prevents the old_passphrase validations
+    #     from running when not applicable
+    #
+    # What happens if the user sets a new passphrase on an existing, saved
+    # record and then calls user.save?
+    #   - Rails runs the :save validations
+    #     - validates_length_of :passphrase runs (because passphrase is
+    #       non-blank)
+    #     - validates_confirmation_of :passphrase runs (for the same reason)
+    #   - Rails runs the :update validations because this is not a new record
+    #     - validates_presence_of :old_passphrase runs (because passphrase is
+    #       non-blank)
+    #     - validates_each :old_passphrase runs (because the passphrase is
+    #       non-blank); checks with the database that the old passphrase is
+    #       correct
+    #   - the after_save callback is fired and the @passphrase instance
+    #     variable is cleared; this prevents the old_passphrase validations
+    #     from running when not applicable
+    #
+    # What happens if we call user.valid? or user.save on a non-new record?
+    #   - Rails runs the :save validations
+    #     - validates_length_of :passphrase does not run (because the
+    #       passphrase is now blank)
+    #     - validates_confirmation_of :passphrase does not run (because the
+    #       passphrase is blank)
+    #   - Rails runs the :update validations
+    #     - validates_presence_of :old_passphrase is skipped (because the
+    #       passphrase is blank)
+    #     - validates_each :old_passphrase is skipped (because the passphrase
+    #       is blank)
+    @passphrase = nil
+  end
+
 end

@@ -15,6 +15,7 @@ class Post < ActiveRecord::Base
   validates_presence_of   :excerpt
   validates_length_of     :body, :maximum => 128 * 1024, :allow_blank => true
   attr_accessible         :title, :permalink, :excerpt, :body, :public, :accepts_comments, :pending_tags
+  before_validation       :set_permalink
   acts_as_taggable
   acts_as_searchable      :attributes => [:title, :excerpt, :body]
 
@@ -27,13 +28,6 @@ class Post < ActiveRecord::Base
       :limit => 10
     }
     find :all, base_options.merge(options)
-  end
-
-  def before_validation
-    if permalink.blank?
-      self.permalink = self.suggested_permalink
-    end
-    true
   end
 
   def suggested_permalink
@@ -66,4 +60,13 @@ class Post < ActiveRecord::Base
   def to_param
     permalink
   end
+
+private
+
+  def set_permalink
+    if permalink.blank?
+      self.permalink = self.suggested_permalink
+    end
+  end
+
 end

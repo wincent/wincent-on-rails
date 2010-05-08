@@ -13,6 +13,8 @@ class Forum < ActiveRecord::Base
                           :message => 'must contain only lowercase letters, numbers and hyphens'
   validates_uniqueness_of :permalink
   attr_accessible         :name, :description, :permalink
+  before_create           :set_position
+  before_validation       :set_permalink
 
   def self.find_with_param! param, conditions = {}
     # forum name will be downcased in the URL, but MySQL will do a
@@ -38,24 +40,26 @@ class Forum < ActiveRecord::Base
     SQL
   end
 
-  def before_create
+  def to_param
+    permalink
+  end
+
+private
+
+  def set_position
     if self.position.nil?
       max = Forum.maximum(:position)
       self.position = max ? max + 1 : 0
     end
   end
 
-  def before_validation
+  def set_permalink
     if permalink.blank?
       # Given that collisions here are unlikely (unlike the Post model),
       # we just make a reasonable effort and rely on uniqueness
       # validations and database contraints to warn us of any clash.
       self.permalink = name.to_s.downcase.gsub ' ', '-'
     end
-    true
   end
 
-  def to_param
-    permalink
-  end
 end
