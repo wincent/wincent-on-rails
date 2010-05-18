@@ -1,6 +1,6 @@
 %h1 Edit page
 %div[@page]
-  =error_messages_for :page
+  =render 'shared/error_messages', :model => @page
   -form_for @page, :url => product_page_path(@product, @page) do |f|
     =render 'form', :f => f
     %p=f.submit 'Save'

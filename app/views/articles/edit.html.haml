@@ -7,7 +7,7 @@
       setup_preview_link({ 'kind': 'article', 'include': ['body', 'title'], 'url': '#{articles_path}' });
     });
 %h1 Edit article
-=error_messages_for :article
+=render 'shared/error_messages', :model => @article
 -form_for @article, :url => article_path, :method => 'put' do |f|
   %table.main
     %tr

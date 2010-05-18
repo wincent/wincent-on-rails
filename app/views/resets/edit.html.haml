@@ -1,6 +1,7 @@
 %h1 Reset passphrase
-=error_messages_for :reset
-=error_messages_for :user
+-# BUG: if there are errors for both user and reset well get two divs with same ID
+=render 'shared/error_messages', :model => @reset
+=render 'shared/error_messages', :model => @user
 -form_for @reset, :url => reset_path(@reset) do |f|
   %table.main
     %tr

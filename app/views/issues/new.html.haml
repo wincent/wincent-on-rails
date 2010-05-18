@@ -1,5 +1,5 @@
 -page_title "New issue"
-=error_messages_for :issue
+=render 'shared/error_messages', :model => @issue
 -if !logged_in?
   =render 'shared/anonymous'
 -elsif !current_user.verified?

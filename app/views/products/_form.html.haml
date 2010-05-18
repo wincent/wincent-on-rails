@@ -1,4 +1,4 @@
-=error_messages_for :product
+=render 'shared/error_messages', :model => @product
 -form_for @product, :url => @product.new_record? ? products_path : product_path(@product), :html => { :multipart => true } do |f|
   %table.main
     %tr

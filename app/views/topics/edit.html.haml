@@ -1,6 +1,6 @@
 %h1 Edit topic
 %div[@topic]
-  =error_messages_for :topic
+  =render 'shared/error_messages', :model => @topic
   -form_for @topic, :url => forum_topic_path(@forum, @topic) do |f|
     %table.main
       %tr

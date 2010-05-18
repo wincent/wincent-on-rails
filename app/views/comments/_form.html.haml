@@ -1,4 +1,4 @@
-=error_messages_for :comment
+=render 'shared/error_messages', :model => @comment
 -if !logged_in?
   =render 'shared/anonymous'
 -elsif !current_user.verified?

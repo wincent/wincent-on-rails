@@ -8,7 +8,7 @@
       setup_preview_link({ 'kind': 'post', 'include': ['body', 'title', 'excerpt'], 'url': '#{posts_path}' });
     });
 %h1 Edit post
-=error_messages_for :post
+=render 'shared/error_messages', :model => @post
 -form_for @post, :url => post_path, :method => 'put' do |f|
   %table.main
     %tr

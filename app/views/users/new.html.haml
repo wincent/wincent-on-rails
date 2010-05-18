@@ -1,6 +1,7 @@
 %h1 Create new user
-=error_messages_for :user
-=error_messages_for :email
+-# BUG: same bug as elsewhere, if errors on both models we get two divs with same "unique" ID
+=render 'shared/error_messages', :model => @user
+=render 'shared/error_messages', :model => @email
 -form_for @user, :url => users_path do |f|
   %table.main
     %tr

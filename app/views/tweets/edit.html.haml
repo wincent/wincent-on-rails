@@ -8,7 +8,7 @@
       setup_preview_link({ 'kind': 'tweet', 'include': ['body'], 'url': '#{tweets_path}' });
     });
 %h1 Edit tweet
-=error_messages_for :tweet
+=render 'shared/error_messages', :model => @tweet
 -form_for @tweet, :url => tweet_path(@tweet), :method => 'put' do |f|
   %table.main
     %tr
