@@ -1,5 +1,8 @@
 source 'http://rubygems.org'
-gem 'haml',     '3.0.0.rc.3'
+
+#gem 'ruby-debug'
+
+gem 'haml',     '3.0.4'
 gem 'mysql',    '2.8.1'
 gem 'rails',    '3.0.0.beta3'
 gem 'wikitext', '1.11'

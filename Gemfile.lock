@@ -11,7 +11,7 @@ dependencies:
   haml: 
     group: 
     - :default
-    version: = 3.0.0.rc.3
+    version: = 3.0.4
   database_cleaner: 
     group: 
     - :cucumber
@@ -85,7 +85,7 @@ specs:
 - treetop: 
     version: 1.4.5
 - mail: 
-    version: 2.2.0
+    version: 2.2.1
 - text-hyphen: 
     version: 1.0.0
 - text-format: 
@@ -99,7 +99,7 @@ specs:
 - activeresource: 
     version: 3.0.0.beta3
 - bundler: 
-    version: 0.9.24
+    version: 0.9.25
 - culerity: 
     version: 0.2.10
 - nokogiri: 
@@ -107,25 +107,29 @@ specs:
 - ffi: 
     version: 0.6.3
 - json_pure: 
-    version: 1.4.2
+    version: 1.4.3
 - selenium-webdriver: 
     version: 0.0.18
 - capybara: 
-    version: 0.3.7
+    version: 0.3.8
 - diff-lcs: 
     version: 1.1.2
+- trollop: 
+    version: 1.16.2
+- gherkin: 
+    version: 1.0.27
 - term-ansicolor: 
     version: 1.0.5
 - cucumber: 
-    version: 0.6.4
+    version: 0.7.3
 - cucumber-rails: 
-    version: 0.3.0
+    version: 0.3.1
 - database_cleaner: 
     version: 0.5.2
 - fixture_replacement: 
     version: 3.0.1
 - haml: 
-    version: 3.0.0.rc.3
+    version: 3.0.4
 - hpricot: 
     version: 0.6.164
 - mkdtemp: 
@@ -152,7 +156,7 @@ specs:
     version: 2.0.0.beta.8
 - wikitext: 
     version: "1.11"
-hash: 71430d433169af694b31514c8b7cbf39491a8eb0
+hash: c381056d9b88316935f3527933446699fb92900f
 sources: 
 - Rubygems: 
     uri: http://rubygems.org
