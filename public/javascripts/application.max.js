@@ -83,7 +83,7 @@ function dateFromUTCString(s) {
   // leading 0 on all fields except for year
   return m ?
     new Date(Date.UTC(parseInt(m[1]),
-                      parseInt(m[2], 10),
+                      parseInt(m[2], 10) - 1, // Date.UTC expects zero-based month numbers (0-11)
                       parseInt(m[3], 10),
                       parseInt(m[4], 10),
                       parseInt(m[5], 10),
@@ -97,7 +97,7 @@ function relativizeDates()
     var result  = this.innerHTML;
     var now     = new Date;
     var then    = dateFromUTCString(result);
-    var dist    = then.getTime() - now.getTime();
+    var dist    = now.getTime() - then.getTime();
     var months  = new Array('January', 'February',
         'March', 'April', 'May', 'June', 'July',
         'August', 'September', 'October', 'November',
