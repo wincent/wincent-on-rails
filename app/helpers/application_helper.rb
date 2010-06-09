@@ -85,7 +85,7 @@ module ApplicationHelper
       relative_date created
     else
       updated_string = options[:updated_string] || 'updated'
-      "Created #{relative_date created}, #{updated_string} #{relative_date updated}"
+      "Created #{relative_date created}, #{updated_string} #{relative_date updated}".html_safe
     end
   end
 
