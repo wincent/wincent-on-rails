@@ -13,19 +13,21 @@ module IssuesHelper
 
   def link_to_prev_issue issue
     if issue
-      link_to '&laquo; previous', issue_path(issue), :title => issue_tooltip(issue)
+      link_to '&laquo; previous'.html_safe, issue_path(issue),
+        :title => issue_tooltip(issue)
     end
   end
 
   def link_to_next_issue issue
     if issue
-      link_to 'next &raquo;', issue_path(issue), :title => issue_tooltip(issue)
+      link_to 'next &raquo;'.html_safe, issue_path(issue),
+        :title => issue_tooltip(issue)
     end
   end
 
   def link_to_product_issues product
     if product
-      link_to(product.name, issues_path(:product => product.name))
+      link_to product.name, issues_path(:product => product.name)
     else
       'no product'
     end
