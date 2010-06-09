@@ -3,7 +3,7 @@ dependencies:
   rails: 
     group: 
     - :default
-    version: = 3.0.0.beta3
+    version: = 3.0.0.beta4
   mysql: 
     group: 
     - :default
@@ -11,7 +11,7 @@ dependencies:
   haml: 
     group: 
     - :default
-    version: = 3.0.4
+    version: = 3.0.10
   database_cleaner: 
     group: 
     - :cucumber
@@ -20,7 +20,7 @@ dependencies:
     group: 
     - :cucumber
     - :test
-    version: ">= 2.0.0.beta"
+    version: ">= 2.0.0.beta.11"
   mkdtemp: 
     group: 
     - :test
@@ -36,7 +36,7 @@ dependencies:
   wikitext: 
     group: 
     - :default
-    version: = 1.11
+    version: = 1.12
   fixture_replacement: 
     group: 
     - :cucumber
@@ -56,18 +56,14 @@ specs:
     version: 0.8.7
 - abstract: 
     version: 1.0.0
+- activesupport: 
+    version: 3.0.0.beta4
 - builder: 
     version: 2.1.2
 - i18n: 
-    version: 0.3.7
-- memcache-client: 
-    version: 1.8.3
-- tzinfo: 
-    version: 0.3.20
-- activesupport: 
-    version: 3.0.0.beta3
+    version: 0.4.1
 - activemodel: 
-    version: 3.0.0.beta3
+    version: 3.0.0.beta4
 - erubis: 
     version: 2.6.5
 - rack: 
@@ -75,41 +71,39 @@ specs:
 - rack-mount: 
     version: 0.6.3
 - rack-test: 
-    version: 0.5.3
+    version: 0.5.4
+- tzinfo: 
+    version: 0.3.22
 - actionpack: 
-    version: 3.0.0.beta3
+    version: 3.0.0.beta4
 - mime-types: 
     version: "1.16"
 - polyglot: 
     version: 0.3.1
 - treetop: 
-    version: 1.4.5
+    version: 1.4.8
 - mail: 
-    version: 2.2.1
-- text-hyphen: 
-    version: 1.0.0
-- text-format: 
-    version: 1.0.0
+    version: 2.2.3
 - actionmailer: 
-    version: 3.0.0.beta3
+    version: 3.0.0.beta4
 - arel: 
-    version: 0.3.3
+    version: 0.4.0
 - activerecord: 
-    version: 3.0.0.beta3
+    version: 3.0.0.beta4
 - activeresource: 
-    version: 3.0.0.beta3
+    version: 3.0.0.beta4
 - bundler: 
-    version: 0.9.25
+    version: 0.9.26
 - culerity: 
     version: 0.2.10
 - nokogiri: 
-    version: 1.4.1
+    version: 1.4.2
 - ffi: 
     version: 0.6.3
 - json_pure: 
     version: 1.4.3
 - selenium-webdriver: 
-    version: 0.0.18
+    version: 0.0.20
 - capybara: 
     version: 0.3.8
 - diff-lcs: 
@@ -117,19 +111,19 @@ specs:
 - trollop: 
     version: 1.16.2
 - gherkin: 
-    version: 1.0.27
+    version: 1.0.30
 - term-ansicolor: 
     version: 1.0.5
 - cucumber: 
-    version: 0.7.3
+    version: 0.8.0
 - cucumber-rails: 
-    version: 0.3.1
+    version: 0.3.2
 - database_cleaner: 
     version: 0.5.2
 - fixture_replacement: 
     version: 3.0.1
 - haml: 
-    version: 3.0.4
+    version: 3.0.10
 - hpricot: 
     version: 0.6.164
 - mkdtemp: 
@@ -139,24 +133,24 @@ specs:
 - thor: 
     version: 0.13.6
 - railties: 
-    version: 3.0.0.beta3
+    version: 3.0.0.beta4
 - rails: 
-    version: 3.0.0.beta3
+    version: 3.0.0.beta4
 - rspec-core: 
-    version: 2.0.0.beta.8
+    version: 2.0.0.beta.11
 - rspec-expectations: 
-    version: 2.0.0.beta.8
+    version: 2.0.0.beta.11
 - rspec-mocks: 
-    version: 2.0.0.beta.8
+    version: 2.0.0.beta.11
 - rspec: 
-    version: 2.0.0.beta.8
+    version: 2.0.0.beta.11
 - webrat: 
     version: 0.7.1
 - rspec-rails: 
-    version: 2.0.0.beta.8
+    version: 2.0.0.beta.11
 - wikitext: 
-    version: "1.11"
-hash: c381056d9b88316935f3527933446699fb92900f
+    version: "1.12"
+hash: 1308d3c7d6d07ab6fe8d0ee093275bf3c1268c4d
 sources: 
 - Rubygems: 
     uri: http://rubygems.org

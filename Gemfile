@@ -2,17 +2,18 @@ source 'http://rubygems.org'
 
 #gem 'ruby-debug'
 
-gem 'haml',     '3.0.4'
+gem 'haml',     '3.0.10'
 gem 'mysql',    '2.8.1'
-gem 'rails',    '3.0.0.beta3'
-gem 'wikitext', '1.11'
+gem 'rails',    '3.0.0.beta4'
+gem 'wikitext', '1.12'
 
 group :cucumber, :development, :test do
   gem 'fixture_replacement', '3.0.1'
 end
 
+# TODO: replace Cucumber with Steak
 group :cucumber, :test do
-  gem 'rspec-rails', '>= 2.0.0.beta'
+  gem 'rspec-rails', '>= 2.0.0.beta.11'
 end
 
 group :cucumber do
