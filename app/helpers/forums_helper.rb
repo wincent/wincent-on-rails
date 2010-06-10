@@ -11,7 +11,7 @@ module ForumsHelper
     return if forum.last_topic_id.nil?
     topic = Topic.new # another temporary object so that we can call forum_topic_path
     topic.id = forum.last_topic_id
-    link_to 'view &raquo;', forum_topic_path(forum, topic)
+    link_to 'view &raquo;'.html_safe, forum_topic_path(forum, topic)
   end
 
   def timeinfo_for_forum forum
