@@ -67,7 +67,9 @@ protected
     if admin?
       nil # find everything
     elsif logged_in?
-      "public = TRUE OR user_id = #{current_user.id}"
+      # be careful with operator precendence
+      # see: https://wincent.com/issues/1546
+      "(public = TRUE OR user_id = #{current_user.id})"
     else
       'public = TRUE'
     end
