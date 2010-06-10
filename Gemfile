@@ -2,7 +2,7 @@ source 'http://rubygems.org'
 
 #gem 'ruby-debug'
 
-gem 'haml',     '3.0.10'
+gem 'haml',     '3.0.11'
 gem 'mysql',    '2.8.1'
 gem 'rails',    '3.0.0.beta4'
 gem 'wikitext', '1.12'

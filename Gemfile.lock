@@ -11,7 +11,7 @@ dependencies:
   haml: 
     group: 
     - :default
-    version: = 3.0.10
+    version: = 3.0.11
   database_cleaner: 
     group: 
     - :cucumber
@@ -123,7 +123,7 @@ specs:
 - fixture_replacement: 
     version: 3.0.1
 - haml: 
-    version: 3.0.10
+    version: 3.0.11
 - hpricot: 
     version: 0.6.164
 - mkdtemp: 
@@ -150,7 +150,7 @@ specs:
     version: 2.0.0.beta.11
 - wikitext: 
     version: "1.12"
-hash: 1308d3c7d6d07ab6fe8d0ee093275bf3c1268c4d
+hash: 3488c5e681f3a956075c689497324302256d4413
 sources: 
 - Rubygems: 
     uri: http://rubygems.org
