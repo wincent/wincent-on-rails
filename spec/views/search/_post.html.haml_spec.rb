@@ -43,7 +43,7 @@ describe '/search/_post' do
   end
 
   it 'should truncate the post excerpt to 240 characters' do
-    template.should_receive(:truncate).with(@post.excerpt, :length => 240).and_return('foo')
+    template.should_receive(:truncate).with(@post.excerpt, :length => 240, :safe => true).and_return('foo')
     do_render
   end
 

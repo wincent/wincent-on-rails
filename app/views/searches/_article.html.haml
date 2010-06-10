@@ -4,4 +4,4 @@
   =link_to h(model.title), article_path(model)
 .when=timeinfo model
 %span.annotation Wiki article
-.excerpt=truncate(model.body, :length => 240).w :base_heading_level => 2
+.excerpt=truncate(model.body, :length => 240, :safe => true).w :base_heading_level => 2
