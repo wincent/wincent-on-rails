@@ -23,7 +23,7 @@ class Page < ActiveRecord::Base
   def body_html
     case markup_type
     when MarkupType::HTML
-      body
+      body.html_safe
     when MarkupType::WIKITEXT
       body.w
     else # unlikely to get here (due to validations)

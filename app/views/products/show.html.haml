@@ -15,6 +15,6 @@
   -else
     =@product.name
 #product
-  =@product.header
+  =@product.header.html_safe
   =@page.body_html if @page
-  =@product.footer
+  =@product.footer.html_safe
