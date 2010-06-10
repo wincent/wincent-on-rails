@@ -19,8 +19,8 @@
     -for @forum in @forums
       %tr(class="forum #{cycle('odd', 'even')}" id="forum_#{@forum.id}")
         %td(id="forum_#{@forum.id}_position")=@forum.position
-        %td(id="forum_#{@forum.id}_name")=h @forum.name
-        %td(id="forum_#{@forum.id}_description")=h @forum.description
+        %td(id="forum_#{@forum.id}_name")=@forum.name
+        %td(id="forum_#{@forum.id}_description")=@forum.description
         %td.links
           =link_to 'edit', edit_forum_path(@forum)
           =link_to 'view', forum_path(@forum)

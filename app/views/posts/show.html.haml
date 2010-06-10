@@ -5,10 +5,10 @@
   &raquo;
   =link_to 'Blog', posts_path
   &raquo;
-  =h @post.title
+  =@post.title
 .post
   -@page_title = @post.title
-  %h1.major=h @post.title
+  %h1.major=@post.title
   .when
     =timeinfo @post
     by

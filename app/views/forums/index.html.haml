@@ -17,7 +17,7 @@
         =link_to forum.name, forum_path(forum)
         -unless forum.description.blank?
           %br
-          %span.annotation=h forum.description
+          %span.annotation=forum.description
       %td
         =topic_count forum.topics_count
       %td

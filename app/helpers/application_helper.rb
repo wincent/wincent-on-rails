@@ -202,13 +202,13 @@ module ApplicationHelper
   def link_to_commentable commentable
     case commentable
     when Article
-      link_to h(commentable.title), article_path(commentable)
+      link_to commentable.title, article_path(commentable)
     when Issue
-      link_to h(commentable.summary), issue_path(commentable)
+      link_to commentable.summary, issue_path(commentable)
     when Post
-      link_to h(commentable.title), post_path(commentable)
+      link_to commentable.title, post_path(commentable)
     when Topic
-      link_to h(commentable.title), forum_topic_path(commentable.forum, commentable)
+      link_to commentable.title, forum_topic_path(commentable.forum, commentable)
     when Tweet
       link_to "Tweet \##{commentable.id}", tweet_path(commentable)
     when NilClass

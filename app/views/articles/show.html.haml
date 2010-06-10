@@ -4,17 +4,17 @@
   &raquo;
   =link_to 'Wiki', articles_path
   &raquo;
-  =h @article.title
-%h1.major=h @article.title
+  =@article.title
+%h1.major=@article.title
 .when
   =timeinfo @article
   by
   =mail_to APP_CONFIG['admin_email'], APP_CONFIG['admin_name']
 -if @redirected_from
   -if admin?
-    %p (Redirected from #{link_to h(@redirected_from.title), edit_article_path(@redirected_from)})
+    %p (Redirected from #{link_to @redirected_from.title, edit_article_path(@redirected_from)})
   -else
-    %p (Redirected from #{h @redirected_from.title})
+    %p (Redirected from #{@redirected_from.title})
 .article
   =@article.body.w :base_heading_level => 1
 =render 'shared/tags', :tags => @article.tags

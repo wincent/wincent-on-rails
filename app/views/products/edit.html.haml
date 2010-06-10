@@ -11,7 +11,7 @@
     -for page in @product.pages
       -# TODO: make all these in-place AJAX editors
       %tr
-        %td=h page.title
+        %td=page.title
         %td=page.permalink
         %td=page.front? ? 'yes' : 'no'
         %td=link_to 'edit', edit_product_page_path(@product, page)

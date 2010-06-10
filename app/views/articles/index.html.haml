@@ -16,7 +16,7 @@
     %th When
   -for article in @articles
     %tr
-      %td=link_to h(article.title), article_path(article)
+      %td=link_to article.title, article_path(article)
       %td=timeinfo article
 %h2.major Top #{link_to 'tags', tags_path} in the wiki
 .cloud

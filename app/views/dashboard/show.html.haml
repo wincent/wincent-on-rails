@@ -13,7 +13,7 @@
     -for issue in @issues
       %tr(class="#{cycle 'odd', 'even'} issue" id="issue_#{issue.id}")
         %td=link_to "#{issue.kind_string} \##{issue.id}", issue_path(issue)
-        %td=h issue.summary
+        %td=issue.summary
         %td=timeinfo issue
 %h2 My recent forum topics
 -if @topics.empty?
@@ -27,7 +27,7 @@
     -for topic in @topics
       %tr(class="#{cycle 'odd', 'even'} topic" id="topic_#{topic.id}")
         %td=link_to topic.forum.name, forum_path(topic.forum)
-        %td=link_to h(topic.title), forum_topic_path(topic.forum, topic)
+        %td=link_to topic.title, forum_topic_path(topic.forum, topic)
         %td=timeinfo topic
 %h2 My recent comments
 -if @comments.empty?
@@ -41,7 +41,7 @@
       %th When
     -for comment in @comments
       %tr(class="#{cycle 'odd', 'even'} comment" id="comment_#{comment.id}")
-        %td=truncate(comment.body).w :base_heading_level => 2
+        %td=truncate(comment.body, :safe => true).w :base_heading_level => 2
         %td=comment.commentable_type
         -# BUG: N + 1 select problem here, and can't do eager loading on a polymorphic association
         %td=link_to_commentable comment.commentable

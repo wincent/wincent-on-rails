@@ -4,7 +4,7 @@
 -for issue in @issues
   %div[issue]
     %h2
-      =h issue.summary
+      =issue.summary
       by
       =link_to_user issue.user
     .when=timeinfo issue

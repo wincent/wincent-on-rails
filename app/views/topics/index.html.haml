@@ -2,10 +2,10 @@
 -for @topic in @topics
   %div[@topic]
     %h2
-      =h @topic.title
+      =@topic.title
     %h3
       Topic in
-      =link_to h(@topic.forum.name), forum_path(@topic.forum)
+      =link_to @topic.forum.name, forum_path(@topic.forum)
       by
       =link_to_user @topic.user
     .when=timeinfo @topic

@@ -14,7 +14,7 @@
     .pagination=@paginator.pagination_links
   -for post in @posts
     .post
-      %h2.major=link_to h(post.title), post_path(post)
+      %h2.major=link_to post.title, post_path(post)
       .when
         =timeinfo post
         by

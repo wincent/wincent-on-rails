@@ -5,10 +5,10 @@
   &raquo;
   =link_to 'Forums', forums_path
   &raquo;
-  =h @forum.name
+  =@forum.name
 #forum
   -@page_title = @forum.name
-  %h1.major=h @page_title
+  %h1.major=@page_title
   %h2=@forum.description unless @forum.description.blank?
   -if @paginator
     .pagination=@paginator.pagination_links
@@ -20,16 +20,16 @@
       %th Last post
     -for topic in @topics
       %tr{ :class => cycle('even', 'odd') }
-        %td=link_to h(topic.title), forum_topic_path(@forum, topic)
+        %td=link_to topic.title, forum_topic_path(@forum, topic)
         %td=number_with_delimiter topic.comments_count
         %td=number_with_delimiter topic.view_count
         %td
           =link_to_user_for_topic topic
           =topic.updated_at.distance_in_words
           -if topic.last_comment_id
-            =link_to 'view &raquo;', forum_topic_path(@forum, topic) + "\#comment_#{topic.last_comment_id}"
+            =link_to 'view &raquo;'.html_safe, forum_topic_path(@forum, topic) + "\#comment_#{topic.last_comment_id}"
           -else
-            =link_to 'view &raquo;', forum_topic_path(@forum, topic)
+            =link_to 'view &raquo;'.html_safe, forum_topic_path(@forum, topic)
   -if @paginator
     .pagination=@paginator.pagination_links
 .links

@@ -1,9 +1,9 @@
 module IssuesHelper
   def scope_info
     scopes = []
-    scopes << "product: #{h(params[:product])}" if params[:product]
-    scopes << "kind: #{h(params[:kind].pluralize)}" if params[:kind]
-    scopes << "status: #{h(params[:status])}" if params[:status]
+    scopes << "product: #{params[:product]}" if params[:product]
+    scopes << "kind: #{params[:kind].pluralize}" if params[:kind]
+    scopes << "status: #{params[:status]}" if params[:status]
     "Currently showing only issues with #{scopes.join(', ')}" unless scopes.empty?
   end
 

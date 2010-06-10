@@ -10,13 +10,13 @@ module CommentsHelper
   def link_to_parent parent
     case parent
     when Article
-      link_to h(parent.title), article_path(parent)
+      link_to parent.title, article_path(parent)
     when Issue
       link_to "issue \##{parent.id}", issue_path(parent)
     when Post
-      link_to h(parent.title), post_path(parent)
+      link_to parent.title, post_path(parent)
     when Topic
-      link_to h(parent.title), forum_topic_path(parent.forum, parent)
+      link_to parent.title, forum_topic_path(parent.forum, parent)
     when Tweet
       link_to "tweet \##{parent.id}", tweet_path(parent)
     end

@@ -1,7 +1,7 @@
 %h2
   =result_number
   \:
-  =link_to h(model.summary), issue_path(model)
+  =link_to model.summary, issue_path(model)
 .when=timeinfo model
 %span.annotation Issue tracker ticket (#{model.status_string.downcase}, #{model.kind_string.downcase})
 -unless model.description.blank?

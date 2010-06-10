@@ -15,8 +15,8 @@
     %th Actions
   -for @post in @posts
     %tr(class="post #{cycle('odd', 'even')}" id="post_#{@post.id}")
-      %td(id="post_#{@post.id}_title")=h @post.title
-      %td(id="post_#{@post.id}_permalink")=h @post.permalink
+      %td(id="post_#{@post.id}_title")=@post.title
+      %td(id="post_#{@post.id}_permalink")=@post.permalink
       %td=timeinfo @post
       %td.links
         =link_to 'edit', edit_post_path(@post)
