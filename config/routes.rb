@@ -29,6 +29,7 @@ Wincent::Application.routes.draw do |map|
     resources :searches,
               :only => [ :create, :new ],
               :path => 'search'
+    get '/search' => 'searches#new' # anticipate users who might guess this URL
 
     # mapping to "product_page" would overwrite the nested RESTful route above
     match '/products/:id/:page_id' => 'products#show',
