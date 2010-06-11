@@ -111,7 +111,7 @@ Wincent::Application.routes.draw do |map|
       match 'misc/:action' => 'misc'
     end
 
-    root :to => 'posts#index'     # now
+    root :to => 'products#show', :id => 'synergy' # now
     #root :to => 'products#index' # later
   end
 end
