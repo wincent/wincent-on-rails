@@ -2,7 +2,6 @@ class ApplicationController < ActionController::Base
   before_filter             :login_before
   after_filter              :cache_flash
   protect_from_forgery
-  layout                    'application'
   rescue_from               ActionController::ForbiddenError, :with => :forbidden
   rescue_from               ActiveRecord::RecordNotFound, :with => :record_not_found
 
