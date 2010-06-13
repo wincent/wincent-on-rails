@@ -5,7 +5,7 @@ source 'http://rubygems.org'
 gem 'haml',     '3.0.12'
 gem 'mysql',    '2.8.1'
 gem 'rails',    '3.0.0.beta4'
-gem 'wikitext', '1.12'
+gem 'wikitext', '2.0'
 
 group :cucumber, :development, :test do
   gem 'fixture_replacement', '3.0.1'

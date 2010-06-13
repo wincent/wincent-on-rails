@@ -36,7 +36,7 @@ dependencies:
   wikitext: 
     group: 
     - :default
-    version: = 1.12
+    version: = 2.0
   fixture_replacement: 
     group: 
     - :cucumber
@@ -69,7 +69,7 @@ specs:
 - rack: 
     version: 1.1.0
 - rack-mount: 
-    version: 0.6.3
+    version: 0.6.4
 - rack-test: 
     version: 0.5.4
 - tzinfo: 
@@ -83,7 +83,7 @@ specs:
 - treetop: 
     version: 1.4.8
 - mail: 
-    version: 2.2.3
+    version: 2.2.4
 - actionmailer: 
     version: 3.0.0.beta4
 - arel: 
@@ -103,7 +103,7 @@ specs:
 - json_pure: 
     version: 1.4.3
 - selenium-webdriver: 
-    version: 0.0.21
+    version: 0.0.22
 - capybara: 
     version: 0.3.8
 - diff-lcs: 
@@ -149,8 +149,8 @@ specs:
 - rspec-rails: 
     version: 2.0.0.beta.11
 - wikitext: 
-    version: "1.12"
-hash: ea2a3eb3c37f356291e2d42acf1db86c2a5b11ed
+    version: "2.0"
+hash: 9fcfc60b2175f1ef55ebd202e07e404bc9ae60bb
 sources: 
 - Rubygems: 
     uri: http://rubygems.org
