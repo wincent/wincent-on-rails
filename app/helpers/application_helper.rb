@@ -242,6 +242,14 @@ module ApplicationHelper
     end
   end
 
+  # in the interests of readable JavaScript source code in helpers this allows
+  # us to use indentation and neatly format our JS across multiple lines, but
+  # "compress" the output when it is actually used in templates inline.
+  def inline_js &block
+    js = yield
+    js.gsub(/\s+/, ' ').strip
+  end
+
   def button_to_destroy_model model, url
     model_id = "#{model.class.to_s.downcase}_#{model.id}"
     form_id = "#{model_id}_destroy_form"
