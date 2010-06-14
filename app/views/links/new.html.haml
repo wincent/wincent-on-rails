@@ -1,6 +1,6 @@
 %h1 Create new link
 =render 'shared/error_messages', :model => @link
-=form_for @link, :builder => ValidatingFormBuilder do |f|
+=form_for @link do |f|
   %ul
     %li
       =f.label :uri, 'URI'

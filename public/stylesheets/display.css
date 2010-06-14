@@ -133,7 +133,7 @@ tr.even { background: #eaeaea; }
 
 .annotation { font-size: xx-small; font-weight: normal; color: #666666; }
 
-.field_with_errors input, .field_with_errors textarea { border: 4px solid #f9b8be; }
+input.field_with_errors, textarea.field_with_errors { border: 4px solid #f9b8be; }
 
 label { display: inline-block; text-align: right; vertical-align: top; padding-right: 1em; width: 30%; }
 
