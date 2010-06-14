@@ -512,11 +512,10 @@ form li
     &:active
       top:                  1px
 
-// mark submit buttons look like the "buttons" used in ".link" divs
-input[type=submit]
+// make real buttons look like the "buttons" used in ".link" divs
+=button
   position:                 relative
   margin:
-    left:                   21%
     right:                  0.25em
   border:
     top:                    0
@@ -543,28 +542,15 @@ input[type=submit]
   &:active
     top:                    1px
 
-// TODO: remove repetition here using Sass mixins
+input[type=submit]
+  +button
+
+// make submit button line up with lists of label/input pairs in forms
+li > input[type=submit]
+  margin-left:              21%
+
 input[type=button]
-  margin:
-    top:                    2.5em
-    bottom:                 2.5em
-    left:                   0.25em
-    right:                  0.25em
-  border:                   2px solid #ccc
-  -webkit-border-radius:    1em
-  -moz-border-radius:       1.2em
-  background:               #eaeaea
-  padding:
-    left:                   1.5em
-    right:                  1.5em
-    top:                    0.5em
-    bottom:                 0.5em
-  color:                    #2971a7
-  font-weight:              bold
-  text-decoration:          none
-  &:hover
-    background:             #aaa
-    color:                  white
+  +button
 
 // products
 // NOTE: could potentially split this off into a separate CSS file
