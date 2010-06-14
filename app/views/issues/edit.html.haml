@@ -1,7 +1,7 @@
 -page_title "Edit issue"
 %div[@issue]
   =render 'shared/error_messages', :model => @issue
-  -form_for @issue, :url => issue_path(@issue) do |f|
+  =form_for @issue do |f|
     =render 'issues/form', :f => f
     %p=f.submit 'Save changes'
   .links
