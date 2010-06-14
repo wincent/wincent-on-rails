@@ -85,7 +85,10 @@ Wincent::Application.routes.draw do |map|
     match 'l/:id'           => 'links#show'
     match 'misc/:action'    => 'misc'
     match 'heartbeat/ping'
-    match 'js/:delegated'   => 'js#show', :delegated => %r{([a-z_]+/)+[a-z_]+}
+
+    # explicit extension here to help nginx send correct Content-Type
+    match 'js/:delegated'   => 'js#show',
+          :delegated        => %r{([a-z_]+/)+[a-z_]+\.js}
 
     # named routes
     match 'about'           => 'misc#about'

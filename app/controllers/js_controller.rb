@@ -1,5 +1,5 @@
 class JsController < ApplicationController
-  # need this or JavaScript will get embedded in default application layout (HTML)
+  # don't embed JS in default application layout (HTML)
   layout false
 
   def show
@@ -11,8 +11,8 @@ class JsController < ApplicationController
 private
 
   def template_path_from_params
-    # default catch-all routes aren't enabled
-    # so path should already be sanitized by now
-    "js/#{params[:delegated]}.js.erb"
+    # no need to sanitize as router ensures param is of format:
+    #   ([a-z_]+/)+[a-z_]+\.js
+    "js/#{params[:delegated]}.erb"
   end
 end
