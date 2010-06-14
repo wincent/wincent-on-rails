@@ -1,0 +1,8 @@
+-if model && model.errors.any?
+  #errorExplanation
+    %h2
+      =pluralize model.errors.count, 'error'
+      prevented this record from being saved
+    %ul
+      -model.errors.full_messages.each do |msg|
+        %li=msg
