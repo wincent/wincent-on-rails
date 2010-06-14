@@ -3,7 +3,6 @@
   =render 'shared/error_messages', :model => @issue
   =form_for @issue do |f|
     =render 'issues/form', :f => f
-    %p=f.submit 'Save changes'
   .links
     =link_to 'show issue', issue_path(@issue)
     -button_to_destroy_issue @issue

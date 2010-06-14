@@ -7,6 +7,5 @@
 -# TODO: big fat search link to try and avoid duplicate reports
 -form_for :issue, :url => issues_path, :method => :post do |f|
   =render 'issues/form', :f => f
-  %p=f.submit 'Create'
 .links
   =link_to 'back to issues index', issues_path
