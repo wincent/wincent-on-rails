@@ -9,7 +9,7 @@
     });
 %h1 Create new post
 =render 'shared/error_messages', :model => @post
--form_for @post, :url => posts_path do |f|
+-form_for @post do |f|
   %table.main
     %tr
       %th Title
