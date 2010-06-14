@@ -29,4 +29,4 @@
       =f.label :tags, 'Tags'
       =f.text_field :pending_tags
   %li
-    =f.submit(!f.object || f.object.new_record? ? 'Create ticket' : 'Save changes')
+    =f.submit(f.object.new_record? ? 'Create ticket' : 'Save changes')
