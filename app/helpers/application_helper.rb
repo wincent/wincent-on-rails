@@ -54,8 +54,8 @@ module ApplicationHelper
     haml_tag :h1, h(string)
   end
 
-  def annotation field, annotation
-    "#{field}<br><span class=\"annotation\">(#{annotation})</span>".html_safe
+  def annotation field, *annotation
+    "#{field}<br><span class=\"annotation\">#{annotation.join('<br>')}</span>".html_safe
   end
 
   def named_anchor name
