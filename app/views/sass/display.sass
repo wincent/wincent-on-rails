@@ -398,8 +398,23 @@ tr.even
 .field_with_errors input
   border:           4px solid #f9b8be
 
-label
+label, input
+  float:            left
   display:          block
+
+label
+  clear:            left
+  text-align:       right
+  padding-right:    1em
+  width:            30%
+
+input
+  width:            50%
+
+// remainder of definition appears below
+input[type="submit"]
+  float:            none
+  clear:            left
 
 // tags
 

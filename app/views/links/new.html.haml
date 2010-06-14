@@ -1,12 +1,10 @@
 %h1 Create new link
 =render 'shared/error_messages', :model => @link
 =form_for @link, :builder => ValidatingFormBuilder do |f|
-  %label
-    URI
-    =f.text_field :uri
-  %label
-    Permalink
-    %span.annotation (optional)
-    =f.text_field :permalink
+  =f.label :uri, 'URI'
+  =f.text_field :uri
+  =f.label :permalink,
+    raw('Permalink <br><span class="annotation">(optional)</span>')
+  =f.text_field :permalink
   =f.submit 'Create'
 %p=link_to 'back', links_path
