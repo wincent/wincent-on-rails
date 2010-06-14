@@ -1,6 +1,6 @@
 %h1 Create new link
 =render 'shared/error_messages', :model => @link
--form_for :link, :url => links_path do |f|
+-form_for @link do |f|
   %table.main
     %tr
       %th URI

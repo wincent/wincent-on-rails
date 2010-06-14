@@ -8,7 +8,7 @@ class LinksController < ApplicationController
   end
 
   def new
-    render
+    @link = Link.new
   end
 
   def create
