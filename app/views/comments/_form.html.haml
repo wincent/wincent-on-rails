@@ -4,15 +4,13 @@
 -elsif !current_user.verified?
   =render 'shared/unverified'
 -form_for @comment, :url => comment_form_path(@comment) do |f|
-  %table.main
-    %tr
-      %th
-        Body
-        %br
-        %span.annotation=wikitext_cheatsheet
-      %td=f.text_area(:body, :cols => 80, :rows => 10)
+  %ul
+    %li
+      =f.label :body, annotation('Body', wikitext_cheatsheet)
+      =f.text_area :body, :rows => 10
     -if admin?
-      %tr
-        %th Public?
-        %td=f.check_box :public
-  %p=f.submit 'Submit comment'
+      %li
+        =f.label :public, 'Public?'
+        =f.check_box :public
+    %li
+      =f.submit 'Submit comment'
