@@ -480,47 +480,68 @@ form li
     top:                    2.5em
     bottom:                 2.5em
   a
-    border:                 2px solid #ccc
-    // if we go too far here webkit won't draw rounded corners at all
-    -webkit-border-radius:  1em
-    -moz-border-radius:     1.2em
-    background:             #eaeaea
+    position:               relative
+    border:
+      top:                  0
+      right:                0
+      left:                 0
+      bottom:               1px solid rgba(0, 0, 0, 0.25)
+    -webkit-border-radius:  5px
+    -moz-border-radius:     5px
+    border-radius:          5px
+    -webkit-box-shadow:     0 1px 3px rgba(0, 0, 0, 0.5)
+    -moz-box-shadow:        0 1px 3px rgba(0, 0, 0, 0.5)
+    box-shadow:             0 1px 3px rgba(0, 0, 0, 0.5)
+    text-shadow:            0 -1px 1px rgba(0, 0, 0, 0.25)
+    background:             #77bed2
     padding:
       left:                 1.5em
       right:                1.5em
       top:                  0.5em
       bottom:               0.5em
+    color:                  #fff
     margin:
       left:                 0.25em
       right:                0.25em
     &:hover
-      background:           #aaa
+      background:           #007d9a
       color:                white
       text-decoration:      none
+    &:active
+      top:                  1px
 
 // mark submit buttons look like the "buttons" used in ".link" divs
 input[type=submit]
+  position:                 relative
   margin:
     top:                    2.5em
     bottom:                 2.5em
     left:                   0.25em
     right:                  0.25em
-  border:                   2px solid #ccc
-  -webkit-border-radius:    1em
-  -moz-border-radius:       1.2em
-  background:               #eaeaea
+  border:
+    top:                    0
+    right:                  0
+    left:                   0
+    bottom:                 1px solid rgba(0, 0, 0, 0.25)
+  -webkit-border-radius:    5px
+  -moz-border-radius:       5px
+  border-radius:            5px
+  -webkit-box-shadow:       0 1px 3px rgba(0, 0, 0, 0.5)
+  -moz-box-shadow:          0 1px 3px rgba(0, 0, 0, 0.5)
+  box-shadow:               0 1px 3px rgba(0, 0, 0, 0.5)
+  text-shadow:              0 -1px 1px rgba(0, 0, 0, 0.25)
+  background:               #77bed2
   padding:
     left:                   1.5em
     right:                  1.5em
     top:                    0.5em
     bottom:                 0.5em
-  color:                    #2971a7
+  color:                    #fff
   font-weight:              bold
-  font-size:                1.03em
-  text-decoration:          none
   &:hover
-    background:             #aaa
-    color:                  white
+    background:             #007d9a
+  &:active
+    top:                    1px
 
 // TODO: remove repetition here using Sass mixins
 input[type=button]
@@ -540,7 +561,6 @@ input[type=button]
     bottom:                 0.5em
   color:                    #2971a7
   font-weight:              bold
-  font-size:                1.03em
   text-decoration:          none
   &:hover
     background:             #aaa
