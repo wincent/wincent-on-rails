@@ -12,14 +12,11 @@
 -form_for @post do |f|
   =f.label :title
   =f.text_field :title
-  =f.label :permalink,
-    raw('Permalink <br><span class="annotation">(optional)</span>')
+  =f.label :permalink, annotation('Permalink', 'optional')
   =f.text_field :permalink
-  =f.label :excerpt,
-    raw("Excerpt <br><span class=\"annotation\">(#{wikitext_cheatsheet})</span>")
+  =f.label :excerpt, annotation('Excerpt', wikitext_cheatsheet)
   =f.text_area(:excerpt, :cols => 80)
-  =f.label :body,
-    raw('Body <br><span class="annotation">(optional)</span>')
+  =f.label :body, annotation('Body', 'optional')
   -# TODO: make text area grow with window
   =f.text_area(:body, :cols => 80, :rows => 30)
   =f.label :pending_tags, 'Tags'
