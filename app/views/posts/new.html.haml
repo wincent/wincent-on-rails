@@ -10,21 +10,29 @@
 %h1 Create new post
 =render 'shared/error_messages', :model => @post
 -form_for @post do |f|
-  =f.label :title
-  =f.text_field :title
-  =f.label :permalink, annotation('Permalink', 'optional')
-  =f.text_field :permalink
-  =f.label :excerpt, annotation('Excerpt', wikitext_cheatsheet)
-  =f.text_area(:excerpt, :cols => 80)
-  =f.label :body, annotation('Body', 'optional')
-  -# TODO: make text area grow with window
-  =f.text_area(:body, :cols => 80, :rows => 30)
-  =f.label :pending_tags, 'Tags'
-  =f.text_field :pending_tags
-  =f.label :public
-  =f.check_box :public
-  =f.label :accepts_comments
-  =f.check_box :accepts_comments
+  %ul
+    %li
+      =f.label :title
+      =f.text_field :title
+    %li
+      =f.label :permalink, annotation('Permalink', 'optional')
+      =f.text_field :permalink
+    %li
+      =f.label :excerpt, annotation('Excerpt', wikitext_cheatsheet)
+      =f.text_area :excerpt
+    %li
+      =f.label :body, annotation('Body', 'optional')
+      -# TODO: make text area grow with window
+      =f.text_area :body, :rows => 30
+    %li
+      =f.label :pending_tags, 'Tags'
+      =f.text_field :pending_tags
+    %li
+      =f.label :public
+      =f.check_box :public
+    %li
+      =f.label :accepts_comments
+      =f.check_box :accepts_comments
   =f.submit 'Create'
 %h2#preview_link Preview
 -# TODO: graceful non-JS fallback
