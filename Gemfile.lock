@@ -31,7 +31,7 @@ dependencies:
   steak: 
     group: 
     - :test
-    version: ">= 0"
+    version: ">= 0.4.0.beta.1"
   culerity: 
     group: 
     - :test
@@ -138,10 +138,10 @@ specs:
 - rspec-rails: 
     version: 2.0.0.beta.12
 - steak: 
-    version: 0.3.8
+    version: 0.4.0.beta.1
 - wikitext: 
     version: "2.0"
-hash: 1d6feea7f0be66575c9ef6da34f27487220c323d
+hash: 7e301479587581274f20000cc5a456bd48d7f86a
 sources: 
 - Rubygems: 
     uri: http://rubygems.org

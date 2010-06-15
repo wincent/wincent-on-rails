@@ -14,6 +14,6 @@ group :test do
   gem 'factory_girl_rails'
   gem 'mkdtemp'
   gem 'rr'
-  gem 'rspec-rails', '>= 2.0.0.beta.12'
-  gem 'steak'
+  gem 'rspec-rails',  '>= 2.0.0.beta.12'
+  gem 'steak',        '>= 0.4.0.beta.1'
 end
