@@ -1,6 +1,9 @@
 class PostSweeper < ActionController::Caching::Sweeper
   observe Post
 
+  # Rails BUG: https://rails.lighthouseapp.com/projects/8994/tickets/4868
+  include Rails.application.routes.url_helpers
+
   def after_destroy post
     expire_cache post
   end

@@ -1,6 +1,9 @@
 class CommentSweeper < ActionController::Caching::Sweeper
   observe Comment
 
+  # Rails BUG: https://rails.lighthouseapp.com/projects/8994/tickets/4868
+  include Rails.application.routes.url_helpers
+
   def after_destroy comment
     expire_cache comment
   end

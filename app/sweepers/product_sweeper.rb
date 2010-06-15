@@ -1,6 +1,9 @@
 class ProductSweeper < ActionController::Caching::Sweeper
   observe Product
 
+  # Rails BUG: https://rails.lighthouseapp.com/projects/8994/tickets/4868
+  include Rails.application.routes.url_helpers
+
   # not yet required
   #def after_destroy product
   #  expire_cache product

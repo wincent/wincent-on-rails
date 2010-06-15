@@ -3,6 +3,9 @@
 class PageSweeper < ActionController::Caching::Sweeper
   observe Page
 
+  # Rails BUG: https://rails.lighthouseapp.com/projects/8994/tickets/4868
+  include Rails.application.routes.url_helpers
+
   def after_destroy page
     expire_cache page
   end

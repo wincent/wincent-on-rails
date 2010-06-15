@@ -1,6 +1,9 @@
 class TweetSweeper < ActionController::Caching::Sweeper
   observe Tweet
 
+  # Rails BUG: https://rails.lighthouseapp.com/projects/8994/tickets/4868
+  include Rails.application.routes.url_helpers
+
   def after_destroy tweet
     expire_cache tweet
   end

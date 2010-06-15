@@ -1,6 +1,9 @@
 class ArticleSweeper < ActionController::Caching::Sweeper
   observe Article
 
+  # Rails BUG: https://rails.lighthouseapp.com/projects/8994/tickets/4868
+  include Rails.application.routes.url_helpers
+
   def after_destroy article
     expire_cache article
   end

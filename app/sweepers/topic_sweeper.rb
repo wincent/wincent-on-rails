@@ -1,6 +1,9 @@
 class TopicSweeper < ActionController::Caching::Sweeper
   observe Topic
 
+  # Rails BUG: https://rails.lighthouseapp.com/projects/8994/tickets/4868
+  include Rails.application.routes.url_helpers
+
   def after_destroy topic
     expire_cache topic
   end
