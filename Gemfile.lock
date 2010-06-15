@@ -14,42 +14,40 @@ dependencies:
     version: = 3.0.12
   database_cleaner: 
     group: 
-    - :cucumber
+    - :test
     version: ">= 0"
   rspec-rails: 
     group: 
-    - :cucumber
     - :test
-    version: ">= 2.0.0.beta.11"
+    version: ">= 2.0.0.beta.12"
   mkdtemp: 
     group: 
     - :test
-    version: = 1.1.1
-  cucumber-rails: 
-    group: 
-    - :cucumber
     version: ">= 0"
-  culerity: 
+  steak: 
     group: 
-    - :cucumber
+    - :test
     version: ">= 0"
   wikitext: 
     group: 
     - :default
     version: = 2.0
+  culerity: 
+    group: 
+    - :test
+    version: ">= 0"
   fixture_replacement: 
     group: 
-    - :cucumber
     - :development
     - :test
     version: = 3.0.1
   hpricot: 
     group: 
     - :test
-    version: = 0.6.164
+    version: ">= 0"
   capybara: 
     group: 
-    - :cucumber
+    - :test
     version: ">= 0"
 specs: 
 - rake: 
@@ -106,26 +104,16 @@ specs:
     version: 0.0.22
 - capybara: 
     version: 0.3.8
-- diff-lcs: 
-    version: 1.1.2
-- trollop: 
-    version: 1.16.2
-- gherkin: 
-    version: 1.0.30
-- term-ansicolor: 
-    version: 1.0.5
-- cucumber: 
-    version: 0.8.0
-- cucumber-rails: 
-    version: 0.3.2
 - database_cleaner: 
     version: 0.5.2
+- diff-lcs: 
+    version: 1.1.2
 - fixture_replacement: 
     version: 3.0.1
 - haml: 
     version: 3.0.12
 - hpricot: 
-    version: 0.6.164
+    version: 0.8.2
 - mkdtemp: 
     version: 1.1.1
 - mysql: 
@@ -137,20 +125,22 @@ specs:
 - rails: 
     version: 3.0.0.beta4
 - rspec-core: 
-    version: 2.0.0.beta.11
+    version: 2.0.0.beta.12
 - rspec-expectations: 
-    version: 2.0.0.beta.11
+    version: 2.0.0.beta.12
 - rspec-mocks: 
-    version: 2.0.0.beta.11
+    version: 2.0.0.beta.12
 - rspec: 
-    version: 2.0.0.beta.11
+    version: 2.0.0.beta.12
 - webrat: 
     version: 0.7.1
 - rspec-rails: 
-    version: 2.0.0.beta.11
+    version: 2.0.0.beta.12
+- steak: 
+    version: 0.3.8
 - wikitext: 
     version: "2.0"
-hash: 9fcfc60b2175f1ef55ebd202e07e404bc9ae60bb
+hash: 678b93a07218d4bff5267c5a49d5b1c841140153
 sources: 
 - Rubygems: 
     uri: http://rubygems.org

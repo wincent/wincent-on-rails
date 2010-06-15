@@ -14,16 +14,13 @@ development:
   password: bar
   host: localhost
 
-test: &TEST
+test:
   adapter: mysql
   encoding: utf8
   database: wincent_on_rails_test
   username: foo
   password: bar
   host: localhost
-
-cucumber:
-  <<: *TEST
 
 migrations:
   adapter: mysql
