@@ -1,3 +1,4 @@
 .bundle
 previous_failures.txt
+capybara-*.html
 coverage
