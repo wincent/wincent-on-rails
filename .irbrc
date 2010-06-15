@@ -9,6 +9,10 @@ if Object.const_defined? :Rails
     ActiveResource::Base.logger = logger
   end
 
+  if Rails.env != 'production'
+    require "#{Rails.root}/spec/acceptance/support/factory_girl"
+  end
+
   begin
     require 'rubygems'
     require 'hirb'
