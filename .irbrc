@@ -2,7 +2,7 @@ if File.exists?('/etc/irbrc')
   eval File.read('/etc/irbrc')
 end
 
-if ENV['RAILS_ENV']
+if Object.const_defined? :Rails
   IRB.conf[:IRB_RC] = Proc.new do
     logger = Logger.new(STDOUT)
     ActiveRecord::Base.logger = logger
