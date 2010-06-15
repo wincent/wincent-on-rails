@@ -7,11 +7,6 @@ if ENV['RAILS_ENV']
     logger = Logger.new(STDOUT)
     ActiveRecord::Base.logger = logger
     ActiveResource::Base.logger = logger
-
-    if ENV['RAILS_ENV']  != 'production'
-      require 'fixture_replacement'
-      include FixtureReplacement
-    end
   end
 
   begin
