@@ -9,9 +9,11 @@ gem 'wikitext', '2.0'
 
 group :test do
   gem 'capybara'
+  gem 'celerity',     :require => nil # don't require, it's JRuby-only
   gem 'culerity'
   gem 'database_cleaner'
   gem 'factory_girl_rails'
+  gem 'launchy'
   gem 'mkdtemp'
   gem 'rr'
   gem 'rspec-rails',  '>= 2.0.0.beta.12'

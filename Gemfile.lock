@@ -16,6 +16,12 @@ dependencies:
     group: 
     - :default
     version: = 3.0.12
+  celerity: 
+    group: 
+    - :test
+    version: ">= 0"
+    require: []
+
   database_cleaner: 
     group: 
     - :test
@@ -32,19 +38,23 @@ dependencies:
     group: 
     - :test
     version: ">= 0.4.0.beta.1"
-  culerity: 
-    group: 
-    - :test
-    version: ">= 0"
   wikitext: 
     group: 
     - :default
     version: = 2.0
-  factory_girl_rails: 
+  culerity: 
+    group: 
+    - :test
+    version: ">= 0"
+  launchy: 
     group: 
     - :test
     version: ">= 0"
   capybara: 
+    group: 
+    - :test
+    version: ">= 0"
+  factory_girl_rails: 
     group: 
     - :test
     version: ">= 0"
@@ -103,6 +113,10 @@ specs:
     version: 0.0.22
 - capybara: 
     version: 0.3.8
+- celerity: 
+    version: 0.7.9
+- configuration: 
+    version: 1.1.0
 - database_cleaner: 
     version: 0.5.2
 - diff-lcs: 
@@ -119,6 +133,8 @@ specs:
     version: "1.0"
 - haml: 
     version: 3.0.12
+- launchy: 
+    version: 0.3.5
 - mkdtemp: 
     version: 1.1.1
 - mysql: 
@@ -141,7 +157,7 @@ specs:
     version: 0.4.0.beta.1
 - wikitext: 
     version: "2.0"
-hash: 7e301479587581274f20000cc5a456bd48d7f86a
+hash: 34578d6d467f72c4c58d1fb83650b5571ef66cdd
 sources: 
 - Rubygems: 
     uri: http://rubygems.org
