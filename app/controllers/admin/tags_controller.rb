@@ -22,7 +22,7 @@ class Admin::TagsController < ApplicationController
           # don't use admin_tag_path here because we want to force the use of a
           # numeric id; url_for will keep us in admin namespace here
           redirect_to url_for(:controller => 'tags', :action => 'show',
-            :id => @tag.id, :protocol => 'https')
+            :id => @tag.id)
         else
           error = "Update failed: #{@tag.flashable_error_string}"
           render :text => error, :status => 422

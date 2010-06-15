@@ -24,7 +24,7 @@ class Admin::ForumsController < ApplicationController
           # don't use admin_forum_path here because we want to force the use of a
           # numeric id; url_for will keep us in admin namespace here
           redirect_to url_for(:controller => 'forums', :action => 'show',
-            :id => @forum.id, :protocol => 'https')
+            :id => @forum.id)
         else
           error = "Update failed: #{@forum.flashable_error_string}"
           render :text => error, :status => 422

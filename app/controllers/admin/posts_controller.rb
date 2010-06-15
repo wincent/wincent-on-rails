@@ -26,7 +26,7 @@ class Admin::PostsController < ApplicationController
           # don't use admin_post_path here because we want to force the use of a
           # numeric id; url_for will keep us in admin namespace here
           redirect_to url_for(:controller => 'posts', :action => 'show',
-            :id => @post.id, :protocol => 'https')
+            :id => @post.id)
         else
           error = "Update failed: #{@post.flashable_error_string}"
           render :text => error, :status => 422
