@@ -7,12 +7,15 @@ gem 'mysql',    '2.8.1'
 gem 'rails',    '3.0.0.beta4'
 gem 'wikitext', '2.0'
 
+group :development, :test do
+  gem 'factory_girl_rails'
+end
+
 group :test do
   gem 'capybara'
   gem 'celerity',     :require => nil # don't require, it's JRuby-only
   gem 'culerity'
   gem 'database_cleaner'
-  gem 'factory_girl_rails'
   gem 'launchy'
   gem 'mkdtemp'
   gem 'rr'
