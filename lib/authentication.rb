@@ -97,6 +97,13 @@ module ActionController
     # TODO: allow user to adjust this in their preferences
     DEFAULT_SESSION_EXPIRY = 7 # days
 
+    LOCALHOST_ADDRESSES = ['127.0.0.1', '::1'].freeze
+
+    def local_request?
+      ip = request.remote_ip
+      LOCALHOST_ADDRESSES.any? { |l| l == ip }
+    end
+
     # this does a little bit more than the current_user= method
     # (which just sets the @current_user instance variable)
     # this is intended to be called from the SessionsController,
