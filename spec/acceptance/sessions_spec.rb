@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/acceptance_helper'
+require File.expand_path('acceptance_helper', File.dirname(__FILE__))
 
 feature "Logging in to the site:" do
   before :each do
