@@ -7,14 +7,16 @@
 #  scenario "this one doesn't need JavaScript" do
 #    ...
 #  end
-Rspec.configure do |config|
-  config.before :each do |d|
-    # TODO: find out how to access arbitrary metadata here in RSpec 2
-    #Capybara.current_driver = :culerity if option[:js]
+RSpec.configure do |config|
+  config.before :each do
+    if self.running_example.instance_variable_get(:@options)[:js]
+      Capybara.current_driver = :culerity
+    end
   end
 
   config.after :each do
-    # TODO: find out how to access arbitrary metadata here in RSpec 2
-    #Capybara.use_default_driver if option[:js]
+    if self.running_example.instance_variable_get(:@options)[:js]
+      Capybara.use_default_driver
+    end
   end
 end
