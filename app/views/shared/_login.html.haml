@@ -2,15 +2,16 @@
   %h1 Login
   =form_tag sessions_path do
     =hidden_field_tag :original_uri, params[:original_uri]
-    %p
-      .label=label_tag :email, 'Email address'
-      =text_field_tag :email, params[:email]
-    %p
-      .label=label_tag :passphrase, 'Passphrase'
-      =password_field_tag :passphrase, params[:passphrase]
-    %p
-      =submit_tag 'Log in'
-      -# TODO: login via OpenID
-%ul
-  %li=link_to 'Sign up', new_user_path
-  %li=link_to 'Forgot your passphrase?', new_reset_path
+    %ul
+      %li
+        =label_tag :email, 'Email address'
+        =text_field_tag :email, params[:email]
+      %li
+        =label_tag :passphrase, 'Passphrase'
+        =password_field_tag :passphrase, params[:passphrase]
+      %li
+        =submit_tag 'Log in'
+        -# TODO: login via OpenID
+.links
+  =link_to 'Sign up', new_user_path
+  =link_to 'Forgot your passphrase?', new_reset_path
