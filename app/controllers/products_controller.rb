@@ -6,14 +6,7 @@ class ProductsController < ApplicationController
   cache_sweeper :product_sweeper, :only => [ :create, :update ] # and later, :destroy
 
   def index
-    # NOTE: currently only the Synergy product pages are ready
-    #       and there is no sense in preparing the other product
-    #       pages until those products are Snow Leopard-ready.
-    #       So for now just disable the index action, making it
-    #       redirect to the old product index.
-    redirect_to 'http://wincent.com/a/products/'
-
-    #@products = Product.categorized_products
+    @products = Product.categorized_products
     # TODO: Atom feed will be for product update notices (all products)
   end
 
