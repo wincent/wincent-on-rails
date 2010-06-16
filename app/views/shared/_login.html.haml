@@ -1,6 +1,6 @@
 #login_form
   %h1 Login
-  -form_tag sessions_path do
+  =form_tag sessions_path do
     =hidden_field_tag :original_uri, params[:original_uri]
     %p
       .label=label_tag :email, 'Email address'
