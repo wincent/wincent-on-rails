@@ -17,6 +17,10 @@ Sham.product_permalink do |n|
 end
 
 Factory.define :product do |p|
+  # required attributes
   p.name { Sham.product_name }
   p.permalink { Sham.product_permalink }
+
+  # useful defaults
+  p.hide_from_front_page false
 end
