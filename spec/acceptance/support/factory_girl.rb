@@ -1,3 +1,26 @@
+require 'factory_girl/syntax/sham'
+
+# Generate a string of 10 random lowercase letters
+Sham.random do |n|
+  chars = ('a'..'z').to_a
+  length = chars.length
+  Array.new(10) { chars[rand(length)] }.join
+end
+
+Sham.random_first_name do |n|
+  names = %w{Jacob Isabella Ethan Emma Michael Olivia Alexander Sophia William
+    Ava Joshua Emily Daniel Madison Jayden Abigail Noah Chloe Anthony Mia}
+  length = names.length
+  names[rand(length)]
+end
+
+Sham.random_last_name do |n|
+  names = %w{Lee Smith Long Martin Brown Roy Tremblay McGraw Gagnon Wilson
+    Clark Johnson White Williams Taylor Campbell Anderson Chan Jones}
+  length = names.length
+  names[rand(length)]
+end
+
 # Convenience methods added to invoke Factory Girl factories by sending
 # messages directly to ActiveRecord classes.
 #
