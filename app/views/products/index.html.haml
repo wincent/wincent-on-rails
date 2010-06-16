@@ -9,6 +9,4 @@
   -products.each do |product|
     %div[product]
       %h3=link_to product.name, product_path(product)
-      -if product.icon_path
-        .icon=image_tag(product.icon_path)
       =product.description.w if product.description

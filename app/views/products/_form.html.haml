@@ -1,5 +1,5 @@
 =render 'shared/error_messages', :model => @product
--form_for @product, :url => @product.new_record? ? products_path : product_path(@product), :html => { :multipart => true } do |f|
+=form_for @product do |f|
   %table.main
     %tr
       %th Name
@@ -47,10 +47,4 @@
         %br
         %span.annotation (optional)
       %td=f.text_field :bundle_identifier
-    %tr
-      %th
-        Icon image
-        %br
-        %span.annotation (optional)
-      %td=f.file_field :icon, :accept => 'image/png,image/jpeg,image/gif'
   %p=f.submit(@product.new_record? ? 'Create' : 'Save')
