@@ -43,7 +43,8 @@
       %th When
     -for comment in @comments
       %tr(class="#{cycle 'odd', 'even'} comment" id="comment_#{comment.id}")
-        %td=truncate(comment.body, :safe => true).w :base_heading_level => 2
+        -# see Rails BUG note above
+        %td=truncate(strip_tags(comment.body.w), :length => 60, :safe => true)
         %td=comment.commentable_type
         -# BUG: N + 1 select problem here, and can't do eager loading on a polymorphic association
         %td=link_to_commentable comment.commentable
