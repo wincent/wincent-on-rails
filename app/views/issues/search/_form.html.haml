@@ -2,23 +2,21 @@
 %h2.major Search
 %span.annotation all fields are optional
 =form_for :issue, :url => search_issues_path, :method => :post do |f|
-  %table.main
-    %tr
-      %th Product
-      %td
-        %select#issue_product_id(name='issue[product_id]')
-          %option(value='')
-          -# Rails BUG: https://rails.lighthouseapp.com/projects/8994/tickets/4879
-          =raw option_groups_from_collection_for_select Product.categorized,
-            :last, :first, :id, :name
-    %tr
-      %th Kind
-      %td=f.select :kind, underscores_to_spaces(Issue::KIND).sort, :include_blank => true
-    %tr
-      %th Status
-      %td=f.select :status, underscores_to_spaces(Issue::STATUS).sort, :include_blank => true
-    %tr
-      %th Search for
-      %td
-        =f.text_field :summary
-  %p=f.submit 'Search'
+  %ul
+    %li
+      =label_tag 'issue_product_id', 'Product'
+      %select#issue_product_id(name='issue[product_id]')
+        %option(value='')
+        -# Rails BUG: https://rails.lighthouseapp.com/projects/8994/tickets/4879
+        =raw option_groups_from_collection_for_select Product.categorized,
+          :last, :first, :id, :name
+    %li
+      =label_tag 'issue_kind', 'Kind'
+      =f.select :kind, underscores_to_spaces(Issue::KIND).sort, :include_blank => true
+    %li
+      =label_tag 'issue_status', 'Status'
+      =f.select :status, underscores_to_spaces(Issue::STATUS).sort, :include_blank => true
+    %li
+      =label_tag 'issue_summary', 'Search for'
+      =f.text_field :summary
+    %li=f.submit 'Search'
