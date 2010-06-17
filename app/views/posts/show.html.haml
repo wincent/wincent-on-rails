@@ -1,11 +1,6 @@
 -if @post.public?
   -atom_link @post
-#breadcrumbs
-  =link_to 'Home', root_path
-  &raquo;
-  =link_to 'Blog', posts_path
-  &raquo;
-  =@post.title
+=breadcrumbs link_to('Blog', posts_path), @post.title
 .post
   -@page_title = @post.title
   %h1.major=@post.title

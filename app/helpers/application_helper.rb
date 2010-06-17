@@ -175,6 +175,14 @@ module ApplicationHelper
     options.collect { |k,v| [k.to_s.gsub('_', ' '), v] }
   end
 
+  def breadcrumbs *crumbs
+    content_tag :div, :id => 'breadcrumbs' do
+      [link_to('Home', root_path), *crumbs].map do |crumb|
+        crumb.html_safe? ? crumb : h(crumb)
+      end.join(' &raquo; ')
+    end
+  end
+
   def tag_links object
     links = object.tags.collect do |tag|
       link_to tag.name, tag_path(tag), :title => "#{item_count(tag.taggings_count)} tagged with '#{tag.name}'"
