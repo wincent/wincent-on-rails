@@ -8,7 +8,9 @@
       %td
         %select#issue_product_id(name='issue[product_id]')
           %option(value='')
-          =option_groups_from_collection_for_select Product.categorized_products, :last, :first, :id, :name
+          -# Rails BUG: https://rails.lighthouseapp.com/projects/8994/tickets/4879
+          =raw option_groups_from_collection_for_select Product.categorized_products,
+            :last, :first, :id, :name
     %tr
       %th Kind
       %td=f.select :kind, underscores_to_spaces(Issue::KIND).sort, :include_blank => true

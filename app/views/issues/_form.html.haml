@@ -9,7 +9,9 @@
     =f.label :product, annotation('Product', 'optional', '(leave blank for general issues)')
     %select.issue_product_id(name='issue[product_id]')
       %option(value='')
-      =option_groups_from_collection_for_select Product.categorized_products, :last, :first, :id, :name, (@issue.product ? @issue.product.id : nil)
+      -# Rails BUG: https://rails.lighthouseapp.com/projects/8994/tickets/4879
+      =raw option_groups_from_collection_for_select Product.categorized_products,
+        :last, :first, :id, :name, (@issue.product ? @issue.product.id : nil)
   -if admin?
     %li
       =f.label :status
