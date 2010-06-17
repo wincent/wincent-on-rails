@@ -3,8 +3,7 @@ require 'ostruct'
 class Tagging < ActiveRecord::Base
   belongs_to      :tag, :counter_cache => true
   belongs_to      :taggable, :polymorphic => true
-  attr_accessor   :nothing
-  attr_accessible :nothing
+  attr_accessible :tag_id, :taggable_id, :taggable_type
 
   # Expects an actual Tag instance.
   # If user is a superuser, returns all taggables.
