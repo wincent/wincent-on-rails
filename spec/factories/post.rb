@@ -1,9 +1,17 @@
 Sham.post_title do |n|
-  "Post number #{n}"
+  if Rails.env == 'development'
+    "Random post on #{Sham.random}"
+  else
+    "Post number #{n}"
+  end
 end
 
 Sham.post_permalink do |n|
-  "post-#{n}"
+  if Rails.env == 'development'
+    "random-post-#{rand(1000)}-#{n}"
+  else
+    "post-#{n}"
+  end
 end
 
 Sham.post_excerpt do |n|
