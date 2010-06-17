@@ -15,7 +15,9 @@
     -for issue in @issues
       %tr(class="#{cycle 'odd', 'even'} issue" id="issue_#{issue.id}")
         %td=link_to "#{issue.kind_string} \##{issue.id}", issue_path(issue)
-        %td=issue.summary
+        -# Rails? BUG: output of truncate is inappropriately marked as HTML safe and possibly mutilated unless we pass in :safe
+        -# see: https://rails.lighthouseapp.com/projects/8994/tickets/4825
+        %td=truncate issue.summary, :length => 60, :safe => true
         %td=timeinfo issue
 %h2 My recent forum topics
 -if @topics.empty?
