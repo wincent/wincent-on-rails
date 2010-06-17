@@ -31,9 +31,10 @@ class Post < ActiveRecord::Base
   end
 
   def suggested_permalink
-    # iconv can't be trusted to behave the same across platforms, so don't use it
-    # this doesn't handle non-ASCII characters very well (they just get eaten), but for my uses it will be fine
-    base = title.downcase.split(/[^a-z0-9\.]+/).join('-')
+    # iconv can't be trusted to behave the same across platforms, so don't use
+    # it this doesn't handle non-ASCII characters very well (they just get
+    # eaten), but for my uses it will be fine
+    base = title ? title.downcase.split(/[^a-z0-9\.]+/).join('-') : ''
     if base.length == 0
       # handle pathological case
       base = id.nil? ? 'post' : id.to_s
@@ -42,9 +43,12 @@ class Post < ActiveRecord::Base
     # now need to make sure it is unique
     # there is a race here, but it is harmless for two reasons:
     # - I am the only user creating articles
-    # - if the proposed permalink is not unique validation will fail and the user can correct the problem
-    # worst case scenario is that validation passes and then the database-level constraint kicks in
-    last =  Post.last :conditions => ['permalink REGEXP ?', "^#{base}(-[0-9]+)?$"], :order => 'permalink'
+    # - if the proposed permalink is not unique validation will fail and the
+    #   user can correct the problem
+    # worst case scenario is that validation passes and then the database-level
+    # constraint kicks in
+    last =  Post.last :conditions => ['permalink REGEXP ?', "^#{base}(-[0-9]+)?$"],
+      :order => 'permalink'
     if last.nil?
       base
     else
