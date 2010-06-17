@@ -10,7 +10,7 @@
     %select.issue_product_id(name='issue[product_id]')
       %option(value='')
       -# Rails BUG: https://rails.lighthouseapp.com/projects/8994/tickets/4879
-      =raw option_groups_from_collection_for_select Product.categorized_products,
+      =raw option_groups_from_collection_for_select Product.categorized,
         :last, :first, :id, :name, (@issue.product ? @issue.product.id : nil)
   -if admin?
     %li

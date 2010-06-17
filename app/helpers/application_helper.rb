@@ -161,9 +161,11 @@ module ApplicationHelper
   end
 
   # For use in AJAX product pop-up menus.
+  # Take OrderedHash output from Product.categorized and massage it into
+  # nested-arrays, suitable for conversion to JSON.
   def product_options
-    Product.all(:select => 'id, name, category').group_by(&:category).to_a.collect do |category, products|
-      [category, products.collect { |product| [product.name, product.id] }]
+    Product.categorized.map do |category, products|
+      [category, products.map { |product| [product.name, product.id] }]
     end
   end
 

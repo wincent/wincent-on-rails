@@ -12,7 +12,7 @@ describe '/products/index.html.haml' do
                     :description => 'An improved iTunes accessory',
                     :category => 'Consumer',
                     :hide_from_front_page => false
-    assigns[:products] = Product.categorized_products
+    assigns[:products] = Product.categorized
     render '/products/index.html.haml'
   end
 
