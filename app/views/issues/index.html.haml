@@ -1,6 +1,7 @@
 -content_for :css do
   =stylesheet_link_tag 'issues'
-%h1 Issues
+=breadcrumbs 'Issues'
+%h1.major Issues
 .links
   =link_to 'show all issues', issues_path
   =link_to_issue_search

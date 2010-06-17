@@ -1,6 +1,7 @@
 -content_for :css do
   =stylesheet_link_tag 'search'
 -@page_title = 'Search results'
+=breadcrumbs 'Search'
 %h1.major Search results
 -form_tag searches_path, :method => :post do
   =text_field_tag :query, @query, :size => 75

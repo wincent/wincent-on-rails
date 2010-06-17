@@ -1,4 +1,6 @@
--page_title 'Issue search'
+-@page_title = 'Issue search'
+=breadcrumbs link_to('Issues', issues_path), 'Search'
+%h1.major=@page_title
 .links
   =link_to 'show all issues', issues_path
   =link_to_issue_search 'search again'

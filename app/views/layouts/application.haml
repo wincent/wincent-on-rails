@@ -69,6 +69,11 @@
     #header-shadow
     #content
       #cacheable-flash
+      -# BUG: this is a bit of kludge so that we don't have to define a
+      -# separate layout just to get breadcrumbs on our wikitext pages
+      -# handled by the "misc" controller
+      -if controller.kind_of? MiscController
+        =breadcrumbs params[:action].capitalize
       =yield
     #footer
       =link_to 'Copyright and legal information', '/misc/legal'

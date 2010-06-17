@@ -1,6 +1,8 @@
 -content_for :css do
   =stylesheet_link_tag 'dashboard'
--page_title "#{current_user.display_name}'s dashboard"
+-@page_title = "#{current_user.display_name}'s dashboard"
+=breadcrumbs 'Dashboard'
+%h1.major=@page_title
 %h2 My recent issues
 -if @issues.empty?
   %p None.

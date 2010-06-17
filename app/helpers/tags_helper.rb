@@ -29,9 +29,9 @@ module TagsHelper
 
   def search_page_title tags
     if tags
-      page_title "Tags: #{tag_names(tags)}"
+      "Tags: #{tag_names(tags)}"
     else
-      page_title "Tag search"
+      'Tag search'
     end
   end
 

@@ -1,4 +1,6 @@
--search_page_title @tags
+-@page_title = search_page_title @tags
+=breadcrumbs 'Tags'
+%h1.major=@page_title
 -if @taggables
   %h2.major=taggables_search_summary @tags, @taggables
   =render 'filterbox', :tags => @tags[:found]
