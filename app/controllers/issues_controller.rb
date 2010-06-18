@@ -4,6 +4,7 @@ class IssuesController < ApplicationController
   before_filter     :find_issue, :except => [:create, :destroy, :edit, :index, :new, :search, :show, :update]
   before_filter     :find_issue_awaiting_moderation, :only => [:edit, :show, :update]
   before_filter     :find_prev_next, :only => [:show], :unless => Proc.new { |c| c.send(:is_atom?) }
+  before_filter     :prepare_issue_for_search, :only => [:index, :search]
   around_filter     :current_user_wrapper
   caches_page       :show, :if => Proc.new { |c| c.send(:is_atom?) }
   cache_sweeper     :issue_sweeper, :only => [ :create, :update, :destroy ]
@@ -54,7 +55,6 @@ class IssuesController < ApplicationController
       :offset => @paginator.offset, :limit => @paginator.limit,
       :conditions => options
     })
-    @search = Issue.new
   end
 
   def show
@@ -139,7 +139,7 @@ class IssuesController < ApplicationController
   end
 
   def search
-    if request.post?
+    if params[:issue]
       conditions  = Issue.prepare_search_conditions default_access_options, params[:issue]
       @paginator  = Paginator.new params, Issue.count(:conditions => conditions), search_issues_path
       @issues     = Issue.find :all,
@@ -158,6 +158,15 @@ private
 
   def find_issue
     @issue = Issue.find params[:id], :conditions => default_access_options
+  end
+
+  # This simplifies our search form, and allows it to "remember" search params
+  # in case the user wants to modify an existing search.
+  def prepare_issue_for_search
+    options = params[:issue] || {}
+    options[:status] = nil unless options.has_key?(:status) # suppress default
+    options[:kind] = nil unless options.has_key?(:kind)     # suppress default
+    @issue = Issue.new options
   end
 
   # model will need to know current user for annotations

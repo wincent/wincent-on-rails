@@ -14,7 +14,7 @@ class Paginator
     params.each do |key, value|
       # we exclude protocol here to keep the URLs pretty
       # if you want your protocol preserved, pass in a URL rather than a path
-      next if ['page', 'action', 'controller', 'protocol'].include? key
+      next if ['page', 'action', 'controller', 'protocol', 'authenticity_token'].include? key
       @additional_params << { key => value }.to_query
     end
 
@@ -41,7 +41,8 @@ private
   def params_for_page page
     params = @additional_params.clone
     params.unshift "page=#{page}" if page > 1
-    params.length > 0 ? "?#{params.join('&')}" : ''
+    params = params.join('&').gsub('&', '&amp;')
+    params.empty? ? '' : "?#{params}"
   end
 
   def on_first_page?

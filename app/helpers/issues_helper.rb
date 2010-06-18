@@ -39,4 +39,12 @@ module IssuesHelper
       "$('#issue_search').toggle(); $('#issue_summary').focus()",
       :href => search_issues_path
   end
+
+  def kind_options_for_select
+    underscores_to_spaces(Issue::KIND).sort
+  end
+
+  def status_options_for_select
+    underscores_to_spaces(Issue::STATUS).sort
+  end
 end

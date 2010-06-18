@@ -7,7 +7,11 @@ private
   # additional params (like sort options) will be passed through but have no effect
   def params_for_page page
     page_string = page > 1 ? "/page/#{page}" : ''
-    query_string = @additional_params.length > 0 ? "?#{@additional_params.join('&')}" : ''
-    page_string + query_string
+    params = @additional_params.join('&').gsub('&', '&amp;')
+    if params.empty?
+      page_string
+    else
+      page_string + "?#{params}"
+    end
   end
 end # class RestfulPaginator
