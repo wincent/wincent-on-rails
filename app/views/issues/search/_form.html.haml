@@ -9,7 +9,7 @@
         %option(value='')
         -# Rails BUG: https://rails.lighthouseapp.com/projects/8994/tickets/4879
         =raw option_groups_from_collection_for_select Product.categorized,
-          :last, :first, :id, :name
+          :last, :first, :id, :name, (@issue.product ? @issue.product.id : nil)
     %li
       =label_tag 'issue_kind', 'Kind'
       =f.select :kind, kind_options_for_select, :include_blank => true
