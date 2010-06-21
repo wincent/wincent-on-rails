@@ -62,6 +62,7 @@ function ajax_comment_form(url) {
         comment_div.html(html);
       },
       'error': function(req) {
+        clearAJAXFlash();
         insertAJAXFlash('error', req.responseText);
         spinner.remove();
         anchor.click(click);
