@@ -26,7 +26,7 @@ protected
 
   def handle_http_status_code code, &block
     if request.xhr?
-      render :text => ActionController::StatusCodes::STATUS_CODES[code], :status => code
+      render :text => Rack::Utils::HTTP_STATUS_CODES[code], :status => code
     elsif is_atom?
       render :text => '', :status => code
     else # HTML requests
