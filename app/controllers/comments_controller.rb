@@ -118,6 +118,7 @@ private
       when 'twitter'
         @parent_instance = Tweet.find(parent_id)
       when 'wiki'
+        parent_id = params[:article_id]
         @parent_instance = Article.find_with_param!(parent_id)
       else
         raise 'unexpected parent'
