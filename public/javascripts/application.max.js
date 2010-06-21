@@ -236,7 +236,9 @@ $.fn.syntaxHighlight = function()
     var lines = content.split('\n');
     this.innerHTML = span + lines.join('\n' + span);
   });
-}
+
+  return this;
+};
 
 function setUpSearchLink() {
   $('#search-link').click(function () {
