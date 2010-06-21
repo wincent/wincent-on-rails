@@ -1,3 +1,9 @@
+-content_for :javascript do
+  =javascript_include_tag 'ajax'
+  :javascript
+    $(function() {
+      ajax_comment_form('#{new_post_comment_path @post}');
+    });
 -if @post.public?
   -atom_link @post
 =breadcrumbs link_to('Blog', posts_path), @post.title
@@ -32,7 +38,10 @@
             =link_to 'edit', edit_comment_path(comment)
   %h2.major Add a comment
   -if @comment
-    =render 'comments/form'
+    #ajax-flash
+    #comment-form
+      .links=link_to 'add a comment', new_post_comment_path(@post)
   -else
-    -# comments are currently closed but they were open in the past because we have at least one existing comment
-    %p Comments are now closed for this post. You can discuss this further in the #{link_to 'forums', forums_path}.
+    %p
+      Comments are now closed for this post. You can discuss it further in
+      the #{link_to 'forums', forums_path}.
