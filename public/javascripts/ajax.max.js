@@ -53,6 +53,7 @@ function ajax_comment_form(url) {
     comment_div.append('<img alt="Spinner" id="' + spinner_id + '" class="spinner" src="/images/spinner.gif" />');
     var spinner = comment_div.find('#' + spinner_id);
     spinner.show();
+    clearAJAXFlash();
     $.ajax({
       'url': url,
       'type': 'get',
@@ -62,7 +63,6 @@ function ajax_comment_form(url) {
         comment_div.html(html);
       },
       'error': function(req) {
-        clearAJAXFlash();
         insertAJAXFlash('error', req.responseText);
         spinner.remove();
         anchor.click(click);
