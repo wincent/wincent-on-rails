@@ -27,6 +27,7 @@ class Article < ActiveRecord::Base
                           :if => Proc.new { |a| !a.redirect.blank? },
                           :message => 'must be a valid [[wikitext]] link or HTTP/HTTPS URL'
   validates_length_of     :body, :maximum => 128 * 1024, :allow_blank => true
+  validate                :check_redirect_and_body
   attr_accessible         :title, :redirect, :body, :public, :accepts_comments, :pending_tags
   acts_as_searchable      :attributes => [:title, :body]
   acts_as_taggable
@@ -49,7 +50,7 @@ class Article < ActiveRecord::Base
     find :all, :conditions => "public = TRUE AND (redirect IS NULL OR redirect = '')", :order => 'updated_at DESC', :limit => 10
   end
 
-  def validate
+  def check_redirect_and_body
     if redirect.blank? && body.blank?
       errors.add_to_base 'must supply either redirect or body'
     end
