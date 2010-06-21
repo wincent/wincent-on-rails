@@ -260,4 +260,10 @@ $(document).ready(function() {
   $('a[data-confirm],input[data-confirm]').live('click', function() {
     return confirm($(this).attr('data-confirm'));
   });
+
+  // set up "popup" links
+  $('a[data-popup]').live('click', function() {
+    window.open(this.href, null, $(this).attr('data-popup'));
+    return false;
+  });
 });
