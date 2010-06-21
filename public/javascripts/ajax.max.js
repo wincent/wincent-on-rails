@@ -49,6 +49,7 @@ function ajax_comment_form(url) {
   anchor.attr('href', '#comment-form');
   var click = function() {
     anchor.unbind('click');
+    anchor.addClass('disabled');
     var spinner_id = 'spinner_' + global_spinner_counter++;
     comment_div.append('<img alt="Spinner" id="' + spinner_id + '" class="spinner" src="/images/spinner.gif" />');
     var spinner = comment_div.find('#' + spinner_id);
@@ -66,6 +67,7 @@ function ajax_comment_form(url) {
         insertAJAXFlash('error', req.responseText);
         spinner.remove();
         anchor.click(click);
+        anchor.removeClass('disabled');
       }
     });
   }
