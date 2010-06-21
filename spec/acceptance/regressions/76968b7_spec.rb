@@ -4,7 +4,6 @@ require File.expand_path('../acceptance_helper', File.dirname(__FILE__))
 feature 'wiki article comments' do
   before :each do
     Article.make! :title => 'has <strange> stuff'
-                         #/wiki/has_%3Cstrange%3E_stuff
     @article_path     = '/wiki/has_%3Cstrange%3E_stuff'
     @comment_path     = '/wiki/has_%3Cstrange%3E_stuff/comments'
     @new_comment_path = '/wiki/has_%3Cstrange%3E_stuff/comments/new'
