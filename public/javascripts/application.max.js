@@ -143,46 +143,7 @@ function relativizeDates()
   });
 }
 
-function syntaxHighlight(text, rules)
-{
-  if (!rules)
-    return text;
-
-  var output    = '';
-  while (text != '') {
-    // iterate through rules, leftmost match wins
-    // in case of tie, first matching rule wins (earlier rules have priority)
-    var leftmost  = null;
-    var apply     = null;
-    for (var rule in rules) {
-      var match = text.match(rules[rule]);
-      if (match && ((leftmost && match.index < leftmost) || !leftmost)) {
-        leftmost    = match.index;
-        match.rule  = rule;
-        apply       = match;
-        if (leftmost == 0)
-          break;
-      }
-    }
-    if (apply) {
-      var start_span = '<span class="' + apply.rule + '-syntax">';
-      var end_span = '</span>';
-      if (apply.rule.match(/^skip-/)) {
-        start_span = '';
-        end_span = '';
-      }
-      output = output + text.substring(0, apply.index) + start_span + apply[0] + end_span;
-      text = text.substring(apply.index + apply[0].length);
-    }
-    else {
-      output = output + text;
-      break;
-    }
-  }
-  return output;
-}
-
-function stylePreBlocks()
+$.fn.syntaxHighlight = function()
 {
   var styles = {};
   styles['c-syntax'] = {
@@ -224,12 +185,51 @@ function stylePreBlocks()
     'constant':         /(\\\n|.)+/m    // the command
   };
 
-  $("pre[class$=syntax][class!=highlighted]").each(function(i) {
+  function highlightText(text, rules)
+  {
+    if (!rules)
+      return text;
+
+    var output    = '';
+    while (text != '') {
+      // iterate through rules, leftmost match wins
+      // in case of tie, first matching rule wins (earlier rules have priority)
+      var leftmost  = null;
+      var apply     = null;
+      for (var rule in rules) {
+        var match = text.match(rules[rule]);
+        if (match && ((leftmost && match.index < leftmost) || !leftmost)) {
+          leftmost    = match.index;
+          match.rule  = rule;
+          apply       = match;
+          if (leftmost == 0)
+            break;
+        }
+      }
+      if (apply) {
+        var start_span = '<span class="' + apply.rule + '-syntax">';
+        var end_span = '</span>';
+        if (apply.rule.match(/^skip-/)) {
+          start_span = '';
+          end_span = '';
+        }
+        output = output + text.substring(0, apply.index) + start_span + apply[0] + end_span;
+        text = text.substring(apply.index + apply[0].length);
+      }
+      else {
+        output = output + text;
+        break;
+      }
+    }
+    return output;
+  }
+
+  this.find("pre[class$=syntax][class!=highlighted]").each(function(i) {
     // guard against repeated highlighting
     $(this).addClass('highlighted');
 
-    // syntax-highlighting
-    var content = syntaxHighlight(this.innerHTML, styles[$(this).attr('class')]);
+    // do the syntax-highlighting
+    var content = highlightText(this.innerHTML, styles[$(this).attr('class')]);
 
     // line-numbering
     var span = '<span class="line-number"></span>';
@@ -250,7 +250,9 @@ $(document).ready(function() {
   setUpSearchLink();
   displayCacheableFlash();
   relativizeDates();
-  stylePreBlocks();
+
+  // syntax highlight for pre blocks
+  $('body').syntaxHighlight();
 
   // set up "confirm" dialogs
   $('a[data-confirm],input[data-confirm]').live('click', function() {

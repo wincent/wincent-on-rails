@@ -258,8 +258,7 @@ function setup_preview_link(options) {
       'dataType': 'html',
       'data': data.join('&'),
       'success': function(html) {
-        $('#preview').html(html);
-        stylePreBlocks();
+        $('#preview').html(html).syntaxHighlight();
         clearAJAXFlash();
       },
       'error': function(req) {
@@ -278,8 +277,7 @@ function observe_field(options) {
   var interval = (options['interval'] || 30) * 1000;
   var before = options['before'] || function() { $('#preview_spinner').show(); };
   var success = options['success'] || function(html) {
-    $('#preview').html(html);
-    stylePreBlocks();
+    $('#preview').html(html).syntaxHighlight();
     clearAJAXFlash();
   };
   var error = options['error'] || function(req) {
