@@ -1,7 +1,7 @@
 require 'pathname'
 
 def javascripts blob
-  Dir.chdir "#{RAILS_ROOT}/public/javascripts" do
+  Dir.chdir "#{Rails.root}/public/javascripts" do
     Dir[blob].each do |f|
       puts "Processing: #{f}"
       yield f
