@@ -77,4 +77,5 @@
   =link_to "all #{@issue.kind_string.pluralize.downcase}", issues_path(:kind => @issue.kind_string)
   -if admin?
     =link_to 'edit', edit_issue_path(@issue)
-    =link_to 'destroy', issue_path(@issue), :method => :delete, :confirm => 'Really destroy this issue?'
+    =link_to 'destroy', issue_path(@issue), :method => :delete,
+      :confirm => 'Really destroy this issue?', :class => 'destructive'

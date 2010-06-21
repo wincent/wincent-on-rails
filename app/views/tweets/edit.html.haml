@@ -30,5 +30,6 @@
   =render 'preview.html.haml'
 .links
   =link_to 'show', @tweet
-  =link_to 'destroy', @tweet, :confirm => 'Are you sure?', :method => :delete
+  =link_to 'destroy', @tweet, :confirm => 'Are you sure?',
+    :method => :delete, :class => 'destructive'
   =link_to 'all tweets', tweets_path

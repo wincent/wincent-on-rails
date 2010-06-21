@@ -25,5 +25,6 @@
         &nbsp;|&nbsp;
         -# TODO: turn this into a real form; these confirm alerts aren't enough
         -# alternatively, use the delete-but-offer-undo model
-        =link_to 'destroy', @link, :confirm => 'Are you sure?', :method => :delete
+        =link_to 'destroy', @link, :confirm => 'Are you sure?',
+          :method => :delete, :class => 'destructive'
 %p=link_to 'new', new_link_path
