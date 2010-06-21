@@ -259,6 +259,7 @@ function setup_preview_link(options) {
       'data': data.join('&'),
       'success': function(html) {
         $('#preview').html(html);
+        stylePreBlocks();
         clearAJAXFlash();
       },
       'error': function(req) {
@@ -278,6 +279,7 @@ function observe_field(options) {
   var before = options['before'] || function() { $('#preview_spinner').show(); };
   var success = options['success'] || function(html) {
     $('#preview').html(html);
+    stylePreBlocks();
     clearAJAXFlash();
   };
   var error = options['error'] || function(req) {

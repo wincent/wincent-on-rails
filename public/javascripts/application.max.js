@@ -235,7 +235,6 @@ function stylePreBlocks()
     var span = '<span class="line-number"></span>';
     var lines = content.split('\n');
     this.innerHTML = span + lines.join('\n' + span);
-    return false;
   });
 }
 
