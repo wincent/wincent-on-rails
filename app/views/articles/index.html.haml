@@ -20,7 +20,7 @@
   -for tag in @tags
     =scaled_tag tag, 'article'
 %h2.major Tag search
--form_tag search_tags_path, :method => 'get' do
+=form_tag search_tags_path, :method => 'get' do
   %span.annotation Find items which feature <em>all</em> of the specified tags
   %br
   =text_field_tag :q, params[:q], :size => 40
