@@ -248,4 +248,9 @@ $(document).ready(function() {
   displayCacheableFlash();
   relativizeDates();
   stylePreBlocks();
+
+  // set up "confirm" dialogs
+  $('a[data-confirm],input[data-confirm]').live('click', function() {
+    return confirm($(this).attr('data-confirm'));
+  });
 });
