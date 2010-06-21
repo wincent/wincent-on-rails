@@ -1,6 +1,6 @@
         Exception: <%= @exception.class %>
 Controller#action: <%= @controller.controller_name %>#<%= @controller.action_name %>
-              URL: <%= @request.protocol %><%= APP_CONFIG['host'] %><%= @request.request_uri %>
+              URL: <%= @request.protocol %><%= APP_CONFIG['host'] %><%= @request.fullpath %>
           Message: <%= @exception.message %>
              Time: <%= Time.now %> (this report generated at)
 

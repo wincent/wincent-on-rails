@@ -99,7 +99,7 @@ private
 
   def get_parent
     # ugly but a necessary evil of multi-level, nested polymorphic associations
-    uri = request.request_uri
+    uri = request.fullpath
     raise if uri =~ /\?/
     components = uri.split '/'
 

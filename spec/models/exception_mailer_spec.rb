@@ -13,7 +13,7 @@ describe ExceptionMailer, 'exception report' do
     @controller.stub!(:action_name).and_return('destroy')
     @request = Object.new
     @request.stub!(:protocol).and_return('https://')
-    @request.stub!(:request_uri).and_return('/cartons/xxl')
+    @request.stub!(:fullpath).and_return('/cartons/xxl')
     @mail = ExceptionMailer.create_exception_report @exception, @controller, @request
   end
 

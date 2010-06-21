@@ -17,7 +17,7 @@ module CustomAtomFeedHelper
     # Recommended feed elements:  author, link
     # Optional feed elements:     category, contributor, generator, icon, logo, rights, subtitle
     xml.feed 'xml:lang' => 'en-US', 'xmlns' => 'http://www.w3.org/2005/Atom' do
-      xml.id "tag:#{request.host},2008:#{request.request_uri.split('.')[0]}"
+      xml.id "tag:#{request.host},2008:#{request.fullpath.split('.')[0]}"
       xml.link :rel => 'alternate', :type => 'text/html', :href => request.url.gsub(/\.atom$/, '')
       xml.link :rel => 'self', :type => 'application/atom+xml', :href => request.url
       yield CustomAtomFeedBuilder.new(xml, self)

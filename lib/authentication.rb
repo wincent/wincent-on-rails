@@ -64,7 +64,7 @@ module ActionController
       # in practice for HTML requests, format is always blank, but program defensively
       if params[:format].blank? or params[:format] =~ /html/i
         flash[:notice] = msg
-        session[:original_uri] = request.request_uri
+        session[:original_uri] = request.fullpath
         redirect_to login_path
       else # XML, Atom, JavaScript etc
         render :text => Rack::Utils::HTTP_STATUS_CODES[403], :status => 403 # Forbidden
