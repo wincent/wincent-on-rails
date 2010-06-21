@@ -21,15 +21,28 @@ No claim of copyright is made with respect to content contributed by other users
 The web application depends on or makes use of a number of open source projects:
 
 * Runtime dependencies:
-** [http://rubyonrails.org/ Ruby on Rails]
-** [http://jquery.com/ jQuery]
 ** [http://haml.hamptoncatlin.com/ Haml]
+** [http://jquery.com/ jQuery]
+** [http://rubyonrails.org/ Ruby on Rails]
 ** [http://wikitext.rubyforge.org/ Wikitext]
 * Development dependencies:
-** [http://rspec.info/ RSpec]
-** [http://replacefixtures.rubyforge.org/ FixtureReplacement]
+** [http://github.com/jnicklas/capybara Capybara]
+** [http://celerity.rubyforge.org/ Celerity]
+** [http://github.com/langalex/culerity Culerity]
+** [http://github.com/bmabey/database_cleaner Database Cleaner]
+** [http://github.com/thoughtbot/factory_girl Factory Girl]
 ** [http://www.thaiopensource.com/relaxng/jing.html Jing]
-** [http://cukes.info/ Cucumber]
+** [http://github.com/btakita/rr RR]
+** [http://rspec.info/ RSpec]
+** [http://github.com/cavalle/steak Steak]
+* Other supporting software:
+** [http://git-scm.com/ Git]
+** [http://memcached.org/ memcached]
+** [http://mmonit.com/monit/ Monit]
+** [http://www.mysql.com/downloads/mysql/ MySQL]
+** [http://nginx.org/ nginx]
+** [http://unicorn.bogomips.org/ Unicorn]
+** [http://www.vim.org/ Vim]
 
 === Graphics ===
 
