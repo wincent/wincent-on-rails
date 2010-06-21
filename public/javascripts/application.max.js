@@ -224,7 +224,10 @@ function stylePreBlocks()
     'constant':         /(\\\n|.)+/m    // the command
   };
 
-  $("pre[class$='syntax']").each(function(i) {
+  $("pre[class$=syntax][class!=highlighted]").each(function(i) {
+    // guard against repeated highlighting
+    $(this).addClass('highlighted');
+
     // syntax-highlighting
     var content = syntaxHighlight(this.innerHTML, styles[$(this).attr('class')]);
 
@@ -232,6 +235,7 @@ function stylePreBlocks()
     var span = '<span class="line-number"></span>';
     var lines = content.split('\n');
     this.innerHTML = span + lines.join('\n' + span);
+    return false;
   });
 }
 
