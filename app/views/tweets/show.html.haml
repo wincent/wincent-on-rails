@@ -31,6 +31,9 @@
           =link_to_user comment.user
           %span.when=timeinfo comment, :updated_string => 'edited'
   %h2.major Add a comment
-  #ajax-flash
-  #comment-form
-    .links=link_to 'add a comment', new_tweet_comment_path(@tweet)
+  -if @comment
+    #ajax-flash
+    #comment-form
+      .links=link_to 'add a comment', new_tweet_comment_path(@tweet)
+  -else
+    %p Comments are now closed for this tweet. You can discuss it further in the #{link_to 'forums', forums_path}.
