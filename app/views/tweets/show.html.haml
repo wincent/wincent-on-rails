@@ -2,7 +2,7 @@
   =javascript_include_tag 'ajax'
   :javascript
     $(function() {
-      ajax_comment_form('/twitter/#{@tweet.id}/comments/new');
+      ajax_comment_form('#{new_tweet_comment_path @tweet.id}');
     });
 =breadcrumbs link_to('Twitter', tweets_path), "Tweet \##{@tweet.id}"
 %h1 Tweet ##{@tweet.id}
