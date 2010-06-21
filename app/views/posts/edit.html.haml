@@ -9,7 +9,7 @@
     });
 %h1 Edit post
 =render 'shared/error_messages', :model => @post
--form_for @post, :url => post_path, :method => 'put' do |f|
+=form_for @post do |f|
   %table.main
     %tr
       %th Title
