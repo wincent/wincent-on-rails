@@ -229,12 +229,16 @@ a.mailto:after
     left:                 2em
     right:                3em
   margin:
-    top:                  -0.5em
-    left:                 2em
-    right:                2em
+    top:                  1em
+    left:                 1em
+    right:                1em
   -webkit-border-radius:  1em
   -moz-border-radius:     1em
   background:             #fff
+
+// tighter fit for application layout, standard fit for empty layout
+#header-shadow + #content
+  margin-top:             -0.5em
 
 #posts
   float: left

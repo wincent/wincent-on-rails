@@ -69,7 +69,9 @@ a.mailto:after { content: url(../images/mailto.png); }
 
 #breadcrumbs { margin: 10px 10px 0px 10px; font-size: 0.9em; }
 
-#content { clear: both; padding-top: 0.5em; padding-bottom: 1em; padding-left: 2em; padding-right: 3em; margin-top: -0.5em; margin-left: 2em; margin-right: 2em; -webkit-border-radius: 1em; -moz-border-radius: 1em; background: white; }
+#content { clear: both; padding-top: 0.5em; padding-bottom: 1em; padding-left: 2em; padding-right: 3em; margin-top: 1em; margin-left: 1em; margin-right: 1em; -webkit-border-radius: 1em; -moz-border-radius: 1em; background: white; }
+
+#header-shadow + #content { margin-top: -0.5em; }
 
 #posts { float: left; width: 70%; margin: 0; }
 
