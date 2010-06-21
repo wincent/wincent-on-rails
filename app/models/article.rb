@@ -52,7 +52,8 @@ class Article < ActiveRecord::Base
 
   def check_redirect_and_body
     if redirect.blank? && body.blank?
-      errors.add_to_base 'must supply either redirect or body'
+      errors.add :body, "can't be blank unless a redirect is supplied"
+      errors.add :redirect, "can't be blank unless a body is supplied"
     end
   end
 
