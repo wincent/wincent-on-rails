@@ -20,8 +20,7 @@
       %td=timeinfo @post
       %td.links
         =link_to 'edit', edit_post_path(@post)
-        -# TODO: replace this with a real form (link with confirmation isn't safe enough)
-        =link_to 'destroy', post_path(@post), :confirm => 'Are you sure?',
+        =button_to 'destroy', @post, :confirm => 'Are you sure?',
           :method => :delete, :class => 'destructive'
 %p.links
   =link_to 'new', new_post_path

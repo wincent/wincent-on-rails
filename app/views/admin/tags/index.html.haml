@@ -17,8 +17,8 @@
       %td=@tag.taggings_count
       %td.links
         =link_to 'edit', edit_tag_path(@tag)
-        -# TODO: use real form instead of mere link; confirm alerts aren't enough
-        =link_to 'destroy', @tag, :confirm => 'Are you sure?',
+        -# BUG: TagsController doesn't even have a destroy action yet
+        =button_to 'destroy', @tag, :confirm => 'Are you sure?',
           :method => :delete, :class => 'destructive'
 %p.links
   =link_to 'new', new_tag_path
