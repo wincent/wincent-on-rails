@@ -1,3 +1,8 @@
+GIT
+  remote: git://github.com/cavalle/steak.git
+  revision: d6fd5a9
+  specs:
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -58,6 +63,9 @@ GEM
     ffi (0.6.3-x86-mswin32)
       rake (>= 0.8.7)
     haml (3.0.12)
+    hpricot (0.8.2)
+    hpricot (0.8.2-java)
+    hpricot (0.8.2-x86-mswin32)
     i18n (0.4.1)
     json_pure (1.4.3)
     launchy (0.3.5)
@@ -132,11 +140,12 @@ DEPENDENCIES
   database_cleaner
   factory_girl_rails
   haml (= 3.0.12)
+  hpricot
   launchy
   mkdtemp
   mysql (= 2.8.1)
   rails (= 3.0.0.beta4)
   rr
   rspec-rails (>= 2.0.0.beta.12)
-  steak (>= 0.4.0.beta.1)
+  steak!
   wikitext (= 2.0)

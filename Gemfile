@@ -16,9 +16,10 @@ group :test do
   gem 'celerity',     :require => nil # don't require, it's JRuby-only
   gem 'culerity'
   gem 'database_cleaner'
+  gem 'hpricot'
   gem 'launchy'
   gem 'mkdtemp'
   gem 'rr'
   gem 'rspec-rails',  '>= 2.0.0.beta.12'
-  gem 'steak',        '>= 0.4.0.beta.1'
+  gem 'steak',        :git => 'git://github.com/cavalle/steak.git'
 end
