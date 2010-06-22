@@ -2,7 +2,7 @@ require File.expand_path('../acceptance_helper', File.dirname(__FILE__))
 
 # Bug fixed in commit 76968b7.
 feature 'wiki article comments' do
-  before :each do
+  background do
     Article.make! :title => 'has <strange> stuff'
     @article_path     = '/wiki/has_%3Cstrange%3E_stuff'
     @comment_path     = '/wiki/has_%3Cstrange%3E_stuff/comments'
@@ -10,7 +10,7 @@ feature 'wiki article comments' do
   end
 
   scenario 'a title with "strange" characters (AJAX)', :js => true do
-    pending # Capybara gets a 404 when using js (Culerity) here
+    pending 'Celerity BUG: overescapes URL parameters'
     visit @article_path
     page.should_not have_css("form[action='#{@comment_path}']")
     click 'add a comment' # form pulled down via AJAX

@@ -1,13 +1,7 @@
 require File.expand_path('acceptance_helper', File.dirname(__FILE__))
 
 feature "Logging in to the site:" do
-  before :each do
-    # BUG: routing assumes that /products/synergy exists
-    # if we visit "/" without creating the product first we get a
-    # 404 and an infinite redirection loop (back to "/")
-    # getting a real products#index action finished is a high priority
-    Product.make! :permalink => 'synergy'
-
+  background do
     @email = Email.make!
   end
 
