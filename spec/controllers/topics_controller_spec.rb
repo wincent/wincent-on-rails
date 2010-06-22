@@ -3,7 +3,8 @@ require File.dirname(__FILE__) + '/application_controller_spec'
 require 'hpricot'
 
 describe TopicsController do
-  it_should_behave_like 'ApplicationController'
+  it_should_behave_like 'ApplicationController protected methods'
+  it_should_behave_like 'ApplicationController parameter filtering'
 end
 
 describe TopicsController, 'GET /forums/:forum_id/topics/:id.atom' do

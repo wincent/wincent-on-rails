@@ -1,7 +1,7 @@
 require File.join(File.dirname(__FILE__), '..', 'spec_helper')
 require 'commentable'
 
-describe Commentable, :shared => true do
+shared_examples_for Commentable do
 
   # seems that as this is a shared block I can't use a "before" block here
   # (records persist in the database across examples)
@@ -103,7 +103,7 @@ describe Commentable, :shared => true do
 end
 
 # ie. issues, forum topics
-describe Commentable, "updating timestamps for comment changes", :shared => true do
+shared_examples_for 'Commentable  updating timestamps for comment changes' do
   def add_comment overrides = {}
     comment = @commentable.comments.build :body => FR::random_string
     overrides.each { |k,v| comment.send("#{k.to_s}=", v) }
@@ -161,7 +161,7 @@ describe Commentable, "updating timestamps for comment changes", :shared => true
 end
 
 # ie. blog posts, wiki articles
-describe Commentable, "not updating timestamps for comment changes", :shared => true do
+shared_examples_for 'Commentable not updating timestamps for comment changes' do
   def add_comment overrides = {}
     comment = @commentable.comments.build :body => FR::random_string
     overrides.each { |k,v| comment.send("#{k.to_s}=", v) }

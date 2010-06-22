@@ -1,7 +1,7 @@
 require File.join(File.dirname(__FILE__), '..', '..', '..', 'spec_helper')
 require 'active_record/acts/taggable'
 
-describe ActiveRecord::Acts::Taggable, :shared => true do
+shared_examples_for ActiveRecord::Acts::Taggable do
   it 'should respond to the tag message' do
     @object.tag 'foo'
     @object.tag_names.should == ['foo']

@@ -3,7 +3,8 @@ require File.dirname(__FILE__) + '/application_controller_spec'
 require 'hpricot'
 
 describe TweetsController do
-  it_should_behave_like 'ApplicationController'
+  it_should_behave_like 'ApplicationController protected methods'
+  it_should_behave_like 'ApplicationController parameter filtering'
 end
 
 # For an explanation of why I test this method in two ways,

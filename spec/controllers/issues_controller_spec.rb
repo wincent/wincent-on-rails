@@ -3,7 +3,8 @@ require File.dirname(__FILE__) + '/application_controller_spec'
 require 'hpricot'
 
 describe IssuesController do
-  it_should_behave_like 'ApplicationController'
+  it_should_behave_like 'ApplicationController protected methods'
+  it_should_behave_like 'ApplicationController parameter filtering'
 end
 
 describe IssuesController, 'GET /issues/search' do

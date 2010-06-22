@@ -2,7 +2,8 @@ require File.dirname(__FILE__) + '/../spec_helper'
 require File.dirname(__FILE__) + '/application_controller_spec'
 
 describe SearchesController do
-  it_should_behave_like 'ApplicationController'
+  it_should_behave_like 'ApplicationController protected methods'
+  it_should_behave_like 'ApplicationController parameter filtering'
 end
 
 describe SearchesController, 'create action' do
