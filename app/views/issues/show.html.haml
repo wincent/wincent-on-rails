@@ -4,7 +4,6 @@
   =stylesheet_link_tag 'issues'
 -content_for :javascript do
   =javascript_include_tag 'ajax' if admin?
-  =csrf_meta_tag
 -@page_title = "#{@issue.kind_string.humanize} \##{@issue.id.to_s}: #{@issue.summary}"
 -if admin?
   #ajax-flash
@@ -78,5 +77,5 @@
   =link_to "all #{@issue.kind_string.pluralize.downcase}", issues_path(:kind => @issue.kind_string)
   -if admin?
     =link_to 'edit', edit_issue_path(@issue)
-    =link_to 'destroy', @issue, :method => :delete,
+    =button_to 'destroy', @issue, :method => :delete,
       :confirm => 'Really destroy this issue?', :class => 'destructive'
