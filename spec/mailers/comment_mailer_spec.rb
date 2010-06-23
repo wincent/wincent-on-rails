@@ -1,11 +1,11 @@
 require File.expand_path('../spec_helper', File.dirname(__FILE__))
 
 describe CommentMailer, 'comment' do
-  default_url_options[:host] = APP_CONFIG['host']
-  default_url_options[:port] = APP_CONFIG['port'] if APP_CONFIG['port'] != 80 and APP_CONFIG['port'] != 443
+  #default_url_options[:host] = APP_CONFIG['host']
+  #default_url_options[:port] = APP_CONFIG['port'] if APP_CONFIG['port'] != 80 and APP_CONFIG['port'] != 443
 
   before do
-    @comment  = create_comment
+    @comment  = Comment.make!
     @mail     = CommentMailer.create_new_comment_alert @comment
   end
 
@@ -24,14 +24,14 @@ describe CommentMailer, 'comment' do
   end
 
   it 'should show "awaiting moderation" where applicable' do
-    comment = create_comment :awaiting_moderation => true
+    comment = Comment.make! :awaiting_moderation => true
     mail    = CommentMailer.create_new_comment_alert comment
     mail.body.should match(/awaiting moderation/)
     mail.body.should_not match(/not awaiting moderation/)
   end
 
   it 'should show "not awaiting moderation" where applicable' do
-    comment = create_comment :awaiting_moderation => false
+    comment = Comment.make! :awaiting_moderation => false
     mail    = CommentMailer.create_new_comment_alert comment
     mail.body.should match(/not awaiting moderation/)
   end
