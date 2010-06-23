@@ -1,6 +1,4 @@
-require 'commentable'
-
-shared_examples_for Commentable do
+shared_examples_for 'Commentable' do
 
   # seems that as this is a shared block I can't use a "before" block here
   # (records persist in the database across examples)

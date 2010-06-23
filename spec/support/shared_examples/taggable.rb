@@ -1,6 +1,4 @@
-require 'active_record/acts/taggable'
-
-shared_examples_for ActiveRecord::Acts::Taggable do
+shared_examples_for 'ActiveRecord::Acts::Taggable' do
   it 'should respond to the tag message' do
     @object.tag 'foo'
     @object.tag_names.should == ['foo']

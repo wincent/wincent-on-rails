@@ -1,5 +1,3 @@
-require 'active_record/acts/classifiable'
-
 shared_examples_for 'ActiveRecord::Acts::Classifiable "moderate_as_ham!" method' do
   it 'should turn off the "awaiting moderation" flag' do
     lambda { @object.moderate_as_ham! }.should change(@object, :awaiting_moderation).from(true).to(false)
