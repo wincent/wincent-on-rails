@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/../spec_helper'
+require File.expand_path('../spec_helper', File.dirname(__FILE__))
 
 describe PostsController, 'route generation' do
   it "should map { :controller => 'posts', :action => 'index', :protocol => 'https' } to /blog" do

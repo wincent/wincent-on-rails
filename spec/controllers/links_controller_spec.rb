@@ -1,5 +1,4 @@
-require File.dirname(__FILE__) + '/../spec_helper'
-require File.dirname(__FILE__) + '/application_controller_spec'
+require File.expand_path('../spec_helper', File.dirname(__FILE__))
 
 describe LinksController do
   it_should_behave_like 'ApplicationController protected methods'

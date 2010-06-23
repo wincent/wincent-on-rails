@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/../spec_helper'
+require File.expand_path('../spec_helper', File.dirname(__FILE__))
 
 describe User, 'creation' do
   it 'should not promote the first-created user to superuser' do

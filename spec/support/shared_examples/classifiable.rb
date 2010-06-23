@@ -1,4 +1,3 @@
-require File.join(File.dirname(__FILE__), '..', '..', '..', 'spec_helper')
 require 'active_record/acts/classifiable'
 
 shared_examples_for 'ActiveRecord::Acts::Classifiable "moderate_as_ham!" method' do
@@ -22,13 +21,10 @@ shared_examples_for 'ActiveRecord::Acts::Classifiable "moderate_as_ham!" method'
   end
 
   it 'should update the full-text search index if appropriate' do
-    count = needle_count
+    count = Needle.where(:model_class => @object.class.to_s,
+                         :model_id    => @object.id).count
     count.should == 0
     @object.should_receive(:update_needles) if @object.class.private_method_defined?(:update_needles)
     @object.moderate_as_ham!
-  end
-
-  def needle_count
-    Needle.count :conditions => { :model_class => @object.class.to_s, :model_id => @object.id }
   end
 end

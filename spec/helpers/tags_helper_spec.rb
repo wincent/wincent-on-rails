@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/../spec_helper'
+require File.expand_path('../spec_helper', File.dirname(__FILE__))
 
 describe TagsHelper, 'taggable_link method' do
   it 'should work with article models' do

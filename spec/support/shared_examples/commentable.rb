@@ -1,4 +1,3 @@
-require File.join(File.dirname(__FILE__), '..', 'spec_helper')
 require 'commentable'
 
 shared_examples_for Commentable do
@@ -103,7 +102,7 @@ shared_examples_for Commentable do
 end
 
 # ie. issues, forum topics
-shared_examples_for 'Commentable  updating timestamps for comment changes' do
+shared_examples_for 'Commentable updating timestamps for comment changes' do
   def add_comment overrides = {}
     comment = @commentable.comments.build :body => FR::random_string
     overrides.each { |k,v| comment.send("#{k.to_s}=", v) }

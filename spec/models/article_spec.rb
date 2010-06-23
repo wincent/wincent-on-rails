@@ -1,6 +1,4 @@
-require File.join(File.dirname(__FILE__), '..', 'spec_helper')
-require File.join(File.dirname(__FILE__), '..', 'lib', 'active_record', 'acts', 'shared_taggable_spec')
-require File.join(File.dirname(__FILE__), '..', 'lib', 'shared_commentable_spec')
+require File.expand_path('../spec_helper', File.dirname(__FILE__))
 
 describe Article do
   # we test a value larger than the default MySQL TEXT size (65535)

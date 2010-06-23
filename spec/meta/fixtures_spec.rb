@@ -1,5 +1,5 @@
 # all create_foo and new_foo methods should produce valid instances, no exceptions raised
-require File.join(File.dirname(__FILE__), '..', 'spec_helper')
+require File.expand_path('../spec_helper', File.dirname(__FILE__))
 
 describe 'FixtureReplacement example data' do
   describe 'create_article' do

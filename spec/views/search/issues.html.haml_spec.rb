@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/../../spec_helper'
+require File.expand_path('../../spec_helper', File.dirname(__FILE__))
 
 describe '/search/issues' do
   def do_render

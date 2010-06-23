@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/../spec_helper'
+require File.expand_path('../spec_helper', File.dirname(__FILE__))
 
 def sample_email name
   path = File.dirname(__FILE__) + '/../fixtures/mail/' + name

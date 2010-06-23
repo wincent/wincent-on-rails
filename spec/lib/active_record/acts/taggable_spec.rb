@@ -1,5 +1,4 @@
-require File.dirname(__FILE__) + '/../../../spec_helper'
-require File.join(File.dirname(__FILE__), 'shared_taggable_spec')
+require File.expand_path('../../../spec_helper', File.dirname(__FILE__))
 
 # There are no plans to extract this into a separate plug-in, so piggy-back on the application's own test database.
 # (An extracted version would need to set up an in-memory SQLite database; see the acts_as_list plug-in for an example.)
