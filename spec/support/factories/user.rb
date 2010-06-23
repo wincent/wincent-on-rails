@@ -1,5 +1,3 @@
-require 'factory_girl/syntax/sham'
-
 # always return the same passphrase
 Sham.passphrase { |n| 'supersecret' }
 

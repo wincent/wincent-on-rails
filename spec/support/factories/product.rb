@@ -1,5 +1,3 @@
-require 'factory_girl/syntax/sham'
-
 Sham.product_name do |n|
   if Rails.env == 'development'
     Sham.random

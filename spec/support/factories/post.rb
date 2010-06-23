@@ -1,5 +1,3 @@
-require 'factory_girl/syntax/sham'
-
 Sham.post_title do |n|
   if Rails.env == 'development'
     "Random post on #{Sham.random}"

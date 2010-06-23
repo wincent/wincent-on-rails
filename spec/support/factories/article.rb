@@ -1,5 +1,3 @@
-require 'factory_girl/syntax/sham'
-
 Sham.article_title do |n|
   if Rails.env == 'development'
     "Random article about #{Sham.random}"
