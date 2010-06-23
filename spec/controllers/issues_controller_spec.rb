@@ -46,7 +46,7 @@ describe IssuesController, 'GET /issues/:id' do
 end
 
 describe IssuesController, 'GET /issues/:id.atom' do
-  integrate_views # so that we can test layouts as well
+  render_views # so that we can test layouts as well
 
   def do_get issue
     get :show, :id => issue.id, :format => 'atom', :protocol => 'https'

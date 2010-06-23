@@ -138,7 +138,7 @@ describe TweetsController, 'GET /twitter ("black box" approach)' do
 end
 
 describe TweetsController, 'GET /twitter.atom' do
-  integrate_views # so that we can test layouts as well
+  render_views # so that we can test layouts as well
 
   before do
     10.times { create_tweet }
@@ -378,7 +378,7 @@ describe TweetsController, 'GET /twitter/:id' do
 end
 
 describe TweetsController, 'GET /twitter/:id.atom' do
-  integrate_views # so that we can test layouts as well
+  render_views # so that we can test layouts as well
 
   before do
     @tweet = create_tweet

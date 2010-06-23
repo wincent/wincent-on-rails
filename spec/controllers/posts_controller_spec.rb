@@ -2,7 +2,7 @@ require File.expand_path('../spec_helper', File.dirname(__FILE__))
 require 'hpricot'
 
 describe PostsController, 'GET /blog.atom' do
-  integrate_views # so that we can test layouts as well
+  render_views # so that we can test layouts as well
 
   def do_get
     get :index, :format => 'atom', :protocol => 'https'
@@ -38,7 +38,7 @@ describe PostsController, 'GET /blog.atom' do
 end
 
 describe PostsController, 'GET /blog/:permalink.atom' do
-  integrate_views # so that we can test layouts as well
+  render_views # so that we can test layouts as well
 
   before do
     @post = create_post :permalink => 'hello'

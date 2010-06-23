@@ -7,7 +7,7 @@ describe TopicsController do
 end
 
 describe TopicsController, 'GET /forums/:forum_id/topics/:id.atom' do
-  integrate_views # so that we can test layouts as well
+  render_views # so that we can test layouts as well
 
   def do_get topic
     get :show, :forum_id => topic.forum.to_param, :id => topic.id, :format => 'atom', :protocol => 'https'

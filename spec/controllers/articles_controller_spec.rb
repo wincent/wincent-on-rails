@@ -23,7 +23,7 @@ describe ArticlesController, 'regressions' do
 end
 
 describe ArticlesController, 'GET /wiki.atom' do
-  integrate_views # so that we can test layouts as well
+  render_views # so that we can test layouts as well
 
   before do
     10.times { create_article }
@@ -62,7 +62,7 @@ describe ArticlesController, 'GET /wiki.atom' do
 end
 
 describe ArticlesController, 'GET /wiki/:title.atom' do
-  integrate_views # so that we can test layouts as well
+  render_views # so that we can test layouts as well
 
   before do
     @article = create_article :title => 'foo bar baz'
