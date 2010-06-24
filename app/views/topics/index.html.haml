@@ -1,4 +1,6 @@
--page_title "Topics awaiting moderation"
+-@page_title = "Topics awaiting moderation"
+=breadcrumbs @page_title
+%h1.major=@page_title
 -for @topic in @topics
   %div[@topic]
     %h2
