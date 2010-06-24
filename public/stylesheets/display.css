@@ -90,17 +90,17 @@ div.column { padding-left: 1.5em; padding-right: 1.5em; }
 #cacheable-flash ul { margin: 0em; }
 #cacheable-flash li { color: black; }
 
-#error, #notice { -webkit-border-radius: 1em; -moz-border-radius: 1em; font-weight: bold; margin: 1em; padding: 1em; }
+#error, #notice { border-radius: 3px; -moz-border-radius: 3px; -webkit-border-radius: 3px; font-weight: bold; margin: 1em; padding: 1em; }
 
-#error { border: 2px solid #b77d74; background: #f9b8be; }
+#error { background: #f9b8be; border: 1px solid #b77d74; }
 
-#notice { border: 2px solid #72a384; background: #c3e3b5; }
+#notice { background: #c3e3b5; border: 1px solid #72a384; }
 
-.error, .notice { -webkit-border-radius: 1em; -moz-border-radius: 1em; font-weight: bold; margin: 1em; padding: 1em; }
+.error, .notice { border-radius: 3px; -moz-border-radius: 3px; -webkit-border-radius: 3px; font-weight: bold; margin: 1em; padding: 1em; }
 
-.error { border: 2px solid gray; background: #f9b8be; }
+.error { background: #f9b8be; border: 1px solid gray; }
 
-.notice { border: 2px solid gray; background: #c3e3b5; }
+.notice { background: #c3e3b5; border: 1px solid gray; }
 
 .spinner { padding-left: 0.33em; margin-bottom: -0.1em; display: none; }
 
