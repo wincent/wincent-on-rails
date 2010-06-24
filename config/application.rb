@@ -16,8 +16,10 @@ module Wincent
     config.encoding = "utf-8"
     config.filter_parameters += [ :passphrase ]
 
-    url_options = { :host => APP_CONFIG['host'] }
-    if APP_CONFIG['port'] != 80 and APP_CONFIG['port'] != 443
+    url_options = {}
+    url_options[:protocol] = APP_CONFIG['protocol'] if APP_CONFIG['protocol']
+    url_options[:host] = APP_CONFIG['host'] if APP_CONFIG['host']
+    if APP_CONFIG['port'] and APP_CONFIG['port'] != 80 and APP_CONFIG['port'] != 443
       url_options[:port] = APP_CONFIG['port']
     end
     config.action_mailer.default_url_options = url_options
