@@ -1,5 +1,27 @@
-# This file is copied to ~/spec when you run 'ruby script/generate rspec'
-# from the project root directory.
+unless Object.const_defined? :Bundler
+  puts <<-HERE
+
+    * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+    *                                                                       *
+    *  WARNING: Bundler is not loaded                                       *
+    *  ==============================                                       *
+    *                                                                       *
+    *  To ensure that the environment is set-up as defined in the Gemfile   *
+    *  use either Rake:                                                     *
+    *                                                                       *
+    *      rake spec                                                        *
+    *      rake spec:acceptance                                             *
+    *                                                                       *
+    *  or "bundle exec":                                                    *
+    *                                                                       *
+    *      bundle exec rspec spec/mailers                                   *
+    *      bundle exec rspec spec/models                                    *
+    *                                                                       *
+    * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+    HERE
+end
+
 ENV["RAILS_ENV"] ||= 'test'
 require File.dirname(__FILE__) + "/../config/environment" unless defined?(Rails)
 require 'rspec/rails'
