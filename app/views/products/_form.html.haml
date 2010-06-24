@@ -1,50 +1,32 @@
 =render 'shared/error_messages', :model => @product
 =form_for @product do |f|
-  %table.main
-    %tr
-      %th Name
-      %td=f.text_field :name
-    %tr
-      %th Permalink
-      %td=f.text_field :permalink
-    %tr
+  %ul
+    %li
+      =f.label :name
+      =f.text_field :name
+    %li
+      =f.label :permalink
+      =f.text_field :permalink
+    %li
       -# TODO: AJAX outcomplete?
-      %th
-        Category
-        %br
-        %span.annotation (Consumer, Developer, Server)
-      %td=f.text_field :category
-    %tr
-      %th Hide from front page?
-      %td=f.check_box :hide_from_front_page
-    %tr
-      %th
-        Position
-        %br
-        %span.annotation (integer)
-      %td=f.text_field :position
-    %tr
-      %th
-        Description
-        %br
-        %span.annotation (#{wikitext_cheatsheet})
-      %td=f.text_area :description
-    %tr
-      %th
-        Header
-        %br
-        %span.annotation (optional, HTML)
-      %td=f.text_area :header
-    %tr
-      %th
-        Footer
-        %br
-        %span.annotation (optional, HTML)
-      %td=f.text_area :footer
-    %tr
-      %th
-        Bundle identifier
-        %br
-        %span.annotation (optional)
-      %td=f.text_field :bundle_identifier
-  %p=f.submit(@product.new_record? ? 'Create' : 'Save')
+      =f.label :category, annotation('Category', 'Consumer, Developer, Server')
+      =f.text_field :category
+    %li
+      =f.label :hide_from_front_page, 'Hide from front page?'
+      =f.check_box :hide_from_front_page
+    %li
+      =f.label :position, annotation('Position', 'integer')
+      =f.text_field :position
+    %li
+      =f.label :description, annotation('Description', "#{wikitext_cheatsheet}")
+      =f.text_area :description
+    %li
+      =f.label :header, annotation('Header', 'optional, HTML')
+      =f.text_area :header
+    %li
+      =f.label :footer, annotation('Footer', 'optional, HTML')
+      =f.text_area :footer
+    %li
+      =f.label :bundle_identifier, annotation('Bundle identifier', 'optional')
+      =f.text_field :bundle_identifier
+    %li=f.submit
