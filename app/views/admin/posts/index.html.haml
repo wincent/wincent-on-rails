@@ -8,20 +8,23 @@
       edit_in_place('tr.post', 'post', 'permalink', '/admin/posts/');
     });
 %table
-  %tr
-    -sortable_header_cell :title, 'Title'
-    -sortable_header_cell :permalink, 'Permalink'
-    -sortable_header_cell :created_at, 'When'
-    %th Actions
-  -for @post in @posts
-    %tr(class="post #{cycle('odd', 'even')}" id="post_#{@post.id}")
-      %td(id="post_#{@post.id}_title")=@post.title
-      %td(id="post_#{@post.id}_permalink")=@post.permalink
-      %td=timeinfo @post
-      %td.links
-        =link_to 'edit', edit_post_path(@post)
-        =button_to 'destroy', @post, :confirm => 'Are you sure?',
-          :method => :delete, :class => 'destructive'
+  %thead
+    %tr
+      -sortable_header_cell :title, 'Title'
+      -sortable_header_cell :permalink, 'Permalink'
+      -sortable_header_cell :created_at, 'When'
+      %th Actions
+  -unless @posts.empty?
+    %tbody
+      -for post in @posts
+        %tr(class="post #{cycle('odd', 'even')}" id="post_#{post.id}")
+          %td(id="post_#{post.id}_title")=post.title
+          %td(id="post_#{post.id}_permalink")=post.permalink
+          %td=timeinfo post
+          %td.links
+            =link_to 'edit', edit_post_path(post)
+            =button_to 'destroy', post, :confirm => 'Are you sure?',
+              :method => :delete, :class => 'destructive'
 %p.links
   =link_to 'new', new_post_path
   =link_to 'public index', posts_path
