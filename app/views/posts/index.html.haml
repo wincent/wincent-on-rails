@@ -29,7 +29,7 @@
     .pagination=@paginator.pagination_links
 #sidebar
   -cache :tweets_sidebar do
-    %h1
+    %h2.major
       Tweets
       =feed_icon tweets_path(:format => :atom)
     =render 'tweets/tweets.html.haml'
