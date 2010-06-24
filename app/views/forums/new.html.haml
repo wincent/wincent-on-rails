@@ -1,21 +1,18 @@
-%h1 Create new forum
+-@page_title = 'New forum'
+=breadcrumbs link_to('Forums', forums_path), @page_title
+%h1.major=@page_title
 =render 'shared/error_messages', :model => @forum
--form_for @forum, :url => forums_path, :method => 'post' do |f|
-  %table.main
-    %tr
-      %th Name
-      %td=f.text_field :name
-    %tr
-      %th
-        Permalink
-        %br
-        %span.annotation (leave blank to autogenerate)
-      %td=f.text_field :permalink
-    %tr
-      %th
-        Description
-        %br
-        %span.annotation (optional)
-      %td=f.text_field :description
-  %p=f.submit 'Create'
-%p=link_to 'back', forums_path
+=form_for @forum do |f|
+  %ul
+    %li
+      =f.label :name
+      =f.text_field :name
+    %li
+      =f.label :permalink, annotation('Permalink', 'leave blank to autogenerate')
+      =f.text_field :permalink
+    %li
+      =f.label :description, annotation('Description', 'optional')
+      =f.text_field :description
+    %li=f.submit 'Create'
+.links
+  =link_to 'forums index', forums_path
