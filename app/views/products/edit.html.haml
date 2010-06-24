@@ -1,20 +1,25 @@
-%h1 Edit product [#{link_to 'edit pages', '#pages'}]
+-@page_title = @product.name
+=breadcrumbs link_to('Products', products_path), @page_title
+%h1.major Edit product [#{link_to 'edit pages', '#pages'}]
 =render 'form'
-%h2#pages Pages
+%h2#pages.major Pages
 -unless @product.pages.empty?
   %table
-    %tr
-      %th Title
-      %th Permalink
-      %th Front
-      %th Actions
-    -for page in @product.pages
-      -# TODO: make all these in-place AJAX editors
+    %thead
       %tr
-        %td=page.title
-        %td=page.permalink
-        %td=page.front? ? 'yes' : 'no'
-        %td=link_to 'edit', edit_product_page_path(@product, page)
+        %th Title
+        %th Permalink
+        %th Front
+        %th Actions
+    -unless @product.pages.empty?
+      %tbody
+        -for page in @product.pages
+          -# TODO: make all these in-place AJAX editors
+          %tr
+            %td=page.title
+            %td=page.permalink
+            %td=page.front? ? image_tag('tick.png') : raw('&nbsp;')
+            %td.links=link_to 'edit', edit_product_page_path(@product, page)
 .links
   =link_to 'create a new page', new_product_page_path(@product)
 .links
