@@ -8,13 +8,16 @@
 -if @paginator
   .pagination=@paginator.pagination_links
 %table
-  %tr
-    %th Title
-    %th When
-  -for article in @articles
+  %thead
     %tr
-      %td=link_to article.title, article_path(article)
-      %td=timeinfo article
+      %th Title
+      %th When
+  -unless @articles.empty?
+    %tbody
+    -for article in @articles
+      %tr
+        %td=link_to article.title, article_path(article)
+        %td=timeinfo article
 %h2.major Top #{link_to 'tags', tags_path} in the wiki
 .cloud
   -for tag in @tags
