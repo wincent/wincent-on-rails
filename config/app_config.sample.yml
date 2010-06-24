@@ -1,5 +1,6 @@
-host: rails.wincent.com
-port: 80
+host: wincent.com
+port: 443
+protocol: https
 admin_email: win@wincent.com
 admin_name: Wincent Colaiuta
 support_email: support@wincent.com
