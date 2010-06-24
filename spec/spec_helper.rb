@@ -19,4 +19,6 @@ RSpec.configure do |config|
   config.mock_with :rr
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
   config.use_transactional_fixtures = true
+  config.include ControllerSpecHelpers, :example_group => { :file_path => %r{\bspec/controllers/} }
+  config.include MailerSpecHelpers, :example_group => { :file_path => %r{\bspec/mailers/} }
 end

@@ -1,8 +1,6 @@
 require File.expand_path('../spec_helper', File.dirname(__FILE__))
 
 describe CommentMailer, 'comment' do
-  include MailerSpecHelpers
-
   before do
     @comment  = Comment.make!
     @mail     = CommentMailer.create_new_comment_alert @comment
