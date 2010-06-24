@@ -8,49 +8,55 @@
   %p None.
 -else
   %table.main
-    %tr
-      %th Issue
-      %th Summary
-      %th When
-    -for issue in @issues
-      %tr(class="#{cycle 'odd', 'even'} issue" id="issue_#{issue.id}")
-        %td=link_to "#{issue.kind_string} \##{issue.id}", issue_path(issue)
-        -# Rails? BUG: output of truncate is inappropriately marked as HTML safe and possibly mutilated unless we pass in :safe
-        -# see: https://rails.lighthouseapp.com/projects/8994/tickets/4825
-        %td=truncate issue.summary, :length => 60, :safe => true
-        %td=timeinfo issue
+    %thead
+      %tr
+        %th Issue
+        %th Summary
+        %th When
+    %tbody
+      -for issue in @issues
+        %tr(class="#{cycle 'odd', 'even'} issue" id="issue_#{issue.id}")
+          %td=link_to "#{issue.kind_string} \##{issue.id}", issue_path(issue)
+          -# Rails? BUG: output of truncate is inappropriately marked as HTML safe and possibly mutilated unless we pass in :safe
+          -# see: https://rails.lighthouseapp.com/projects/8994/tickets/4825
+          %td=truncate issue.summary, :length => 60, :safe => true
+          %td=timeinfo issue
 %h2 My recent forum topics
 -if @topics.empty?
   %p None.
 -else
   %table.main
-    %tr
-      %th Forum
-      %th Topic
-      %th When
-    -for topic in @topics
-      %tr(class="#{cycle 'odd', 'even'} topic" id="topic_#{topic.id}")
-        %td=link_to topic.forum.name, forum_path(topic.forum)
-        %td=link_to topic.title, forum_topic_path(topic.forum, topic)
-        %td=timeinfo topic
+    %thead
+      %tr
+        %th Forum
+        %th Topic
+        %th When
+    %tbody
+      -for topic in @topics
+        %tr(class="#{cycle 'odd', 'even'} topic" id="topic_#{topic.id}")
+          %td=link_to topic.forum.name, forum_path(topic.forum)
+          %td=link_to topic.title, forum_topic_path(topic.forum, topic)
+          %td=timeinfo topic
 %h2 My recent comments
 -if @comments.empty?
   %p None.
 -else
   %table.main
-    %tr
-      %th Comment
-      %th Kind
-      %th On
-      %th When
-    -for comment in @comments
-      %tr(class="#{cycle 'odd', 'even'} comment" id="comment_#{comment.id}")
-        -# see Rails BUG note above
-        %td=truncate(strip_tags(comment.body.w), :length => 60, :safe => true)
-        %td=comment.commentable_type
-        -# BUG: N + 1 select problem here, and can't do eager loading on a polymorphic association
-        %td=link_to_commentable comment.commentable
-        %td=timeinfo comment
+    %thead
+      %tr
+        %th Comment
+        %th Kind
+        %th On
+        %th When
+    %tbody
+      -for comment in @comments
+        %tr(class="#{cycle 'odd', 'even'} comment" id="comment_#{comment.id}")
+          -# see Rails BUG note above
+          %td=truncate(strip_tags(comment.body.w), :length => 60, :safe => true)
+          %td=comment.commentable_type
+          -# BUG: N + 1 select problem here, and can't do eager loading on a polymorphic association
+          %td=link_to_commentable comment.commentable
+          %td=timeinfo comment
 .links
   =link_to 'My public profile', user_path(current_user)
   -if admin?
