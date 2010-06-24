@@ -63,7 +63,7 @@ module ApplicationHelper
   end
 
   def wikitext_cheatsheet
-    link_to 'wikitext markup help', '/misc/wikitext_cheatsheet',
+    link_to 'wikitext markup', '/misc/wikitext_cheatsheet',
       'data-popup' => 'height=720,width=400'
   end
 
