@@ -1,18 +1,22 @@
-%h1 Edit user
+-@page_title = 'Edit user'
+=breadcrumbs link_to(@user.display_name, user_path(@path)),
+  @page_title
+%h1.major=@page_title
 -# BUG: same as elsewhere, if errors on both we get two divs with same "unique" ID
 =render 'shared/error_messages', :model => @user
 =render 'shared/error_messages', :model => @email
-=form_for @user, :url => user_path(@user) do |f|
-  %table.main
-    %tr
-      %th
-        Display name
-        %br
-        %span.annotation what other users will see
-      %td=f.text_field :display_name
-    %tr
-      %th=@emails.length != 1 ? 'Emails' : 'Email'
-      %td
+=form_for @user do |f|
+  %ul
+    %li
+      =f.label :display_name,
+        annotation('Display name', 'what other users will see')
+      =f.text_field :display_name
+    %li
+      =f.label :emails,
+        (@emails.length != 1 ? 'Emails' : 'Email')
+      -# BUG: need to get CSS sorted out for multiple rows like this
+      -# may need to display 1 "li" for each email
+      %div(style='display:inline')
         -# TODO: radio buttons or similar UI here to select default?
         -for email in @emails
           -if admin?
@@ -23,30 +27,24 @@
           delete
           %br
           -# would be nice to offer the user an undo for this deletion on landing on the next page
-    %tr
-      %th
-        Add a new email
-        %br
-        %span.annotation a confirmation email will be sent to this address
-      %td=f.text_field :email
-    %tr
-      %th
-        Old passphrase
-        %br
-        %span.annotation leave blank unless you want to set a new passphrase
-      %td=f.password_field :old_passphrase
-    %tr
-      %th New passphrase
-      %td=f.password_field :passphrase
-    %tr
-      %th
-        New passhrase again
-        %br
-        %span.annotation confirm your new passphrase
-      %td=f.password_field :passphrase_confirmation
+    %li
+      =f.label :email,
+        annotation('Add a new email', 'a confirmation email will be sent to this address')
+      =f.text_field :email
+    %li
+      =f.label :old_passphrase,
+        annotation('Old passphrase', 'leave blank unless you want to set a new passphrase')
+      =f.password_field :old_passphrase
+    %li
+      =f.label :passphrase, 'New passphrase'
+      =f.password_field :passphrase
+    %li
+      =f.label :passphrase_confirmation,
+        annotation('New passhrase again', 'confirm your new passphrase')
+      =f.password_field :passphrase_confirmation
     -if admin?
       -# admins can manipulate some additional attributes at creation time
-  %p=f.submit 'Save changes'
+    %li=f.submit
   -# TODO: consider adding an "undelete emails" button here
 .links
   =link_to 'user profile', user_path(@user)
