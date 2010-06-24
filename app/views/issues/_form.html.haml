@@ -6,7 +6,7 @@
     =f.label :summary, annotation('Summary', 'a one-line summary of your issue')
     =f.text_field :summary
   %li
-    =f.label :product, annotation('Product', 'optional', '(leave blank for general issues)')
+    =f.label :product_id, annotation('Product', 'optional', '(leave blank for general issues)')
     %select.issue_product_id(name='issue[product_id]')
       %option(value='')
       -# Rails BUG: https://rails.lighthouseapp.com/projects/8994/tickets/4879
@@ -28,7 +28,7 @@
     =f.check_box :public, { :disabled => !logged_in? }
   -if admin?
     %li
-      =f.label :tags, 'Tags'
+      =f.label :pending_tags, 'Tags'
       =f.text_field :pending_tags
   %li
     =f.submit(f.object.new_record? ? 'Create ticket' : 'Save changes')
