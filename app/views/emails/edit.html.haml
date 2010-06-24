@@ -1,21 +1,18 @@
--page_title "Edit email: #{@email.address}"
+-@page_title = @email.address
+=breadcrumbs link_to(@user.display_name, user_path(@user)), @page_title
+%h1.major=@page_title
 =render 'shared/error_messages', :model => @email
 =form_for @email, :url => user_email_path(@user, @email) do |f|
-  %table.main
-    %tbody
-      %tr
-        %th User
-        %td
-          =link_to @user.display_name, user_path(@user)
-          |
-          =link_to 'edit', edit_user_path(@user)
-      %tr
-        %th Address
-        %td=f.text_field :address
-      %tr
-        %th Verified?
-        %td=f.check_box :verified
-      %tr
-        %th Deleted?
-        %td=f.check_box :deleted
-  %p=f.submit 'Save changes'
+  %ul
+    %li
+      =f.label :address
+      =f.text_field :address
+    %li
+      =f.label :verified, 'Verified?'
+      =f.check_box :verified
+    %li
+      =f.label :deleted, 'Deleted?'
+      =f.check_box :deleted
+    %li=f.submit 'Save changes'
+.links
+  =link_to 'edit user', edit_user_path(@user)
