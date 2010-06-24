@@ -3,7 +3,6 @@
   =render 'shared/error_messages', :model => @page
   -form_for @page, :url => product_page_path(@product, @page) do |f|
     =render 'form', :f => f
-    %p=f.submit 'Save'
 .links
   =link_to 'show page', embedded_product_page_path(@product, @page)
   =link_to 'show product', product_path(@product)
