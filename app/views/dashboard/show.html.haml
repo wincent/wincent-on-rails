@@ -45,17 +45,17 @@
     %thead
       %tr
         %th Comment
-        %th Kind
         %th On
+        %th Kind
         %th When
     %tbody
       -for comment in @comments
         %tr(class="#{cycle 'odd', 'even'} comment" id="comment_#{comment.id}")
           -# see Rails BUG note above
           %td=truncate(strip_tags(comment.body.w), :length => 60, :safe => true)
-          %td=comment.commentable_type
           -# BUG: N + 1 select problem here, and can't do eager loading on a polymorphic association
           %td=link_to_commentable comment.commentable
+          %td=comment.commentable_type
           %td=timeinfo comment
 .links
   =link_to 'My public profile', user_path(current_user)
