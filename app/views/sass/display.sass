@@ -284,6 +284,13 @@ div.column
 
 // flashes
 
+=flash_icon($color,$url)
+  background:
+    color:                $color
+    image:                $url
+    position:             10px center
+    repeat:               no-repeat
+
 #cacheable-flash
   ul
     margin: 0em
@@ -297,14 +304,15 @@ div.column
   font-weight:            bold
   margin:                 1em
   padding:                1em
+    left:                 36px
 
 #error
-  background:             #f9b8be
   border:                 1px solid #b77d74
+  +flash_icon(#f9b8be, url(../images/exclamation.png))
 
 #notice
-  background:             #c3e3b5
   border:                 1px solid #72a384
+  +flash_icon(#c3e3b5, url(../images/information.png))
 
 // pseudo-flashes
 // just like the real flashes, but class-based rather than id-based so that they can be used multiple times
@@ -316,14 +324,15 @@ div.column
   font-weight:            bold
   margin:                 1em
   padding:                1em
+    left:                 36px
 
 .error
-  background:             #f9b8be
   border:                 1px solid gray
+  +flash_icon(#f9b8be, url(../images/exclamation.png))
 
 .notice
-  background:             #c3e3b5
   border:                 1px solid gray
+  +flash_icon(#c3e3b5, url(../images/information.png))
 
 // AJAX
 .spinner

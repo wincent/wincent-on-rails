@@ -90,17 +90,17 @@ div.column { padding-left: 1.5em; padding-right: 1.5em; }
 #cacheable-flash ul { margin: 0em; }
 #cacheable-flash li { color: black; }
 
-#error, #notice { border-radius: 3px; -moz-border-radius: 3px; -webkit-border-radius: 3px; font-weight: bold; margin: 1em; padding: 1em; }
+#error, #notice { border-radius: 3px; -moz-border-radius: 3px; -webkit-border-radius: 3px; font-weight: bold; margin: 1em; padding: 1em; padding-left: 36px; }
 
-#error { background: #f9b8be; border: 1px solid #b77d74; }
+#error { border: 1px solid #b77d74; background-color: #f9b8be; background-image: url(../images/exclamation.png); background-position: 10px center; background-repeat: no-repeat; }
 
-#notice { background: #c3e3b5; border: 1px solid #72a384; }
+#notice { border: 1px solid #72a384; background-color: #c3e3b5; background-image: url(../images/information.png); background-position: 10px center; background-repeat: no-repeat; }
 
-.error, .notice { border-radius: 3px; -moz-border-radius: 3px; -webkit-border-radius: 3px; font-weight: bold; margin: 1em; padding: 1em; }
+.error, .notice { border-radius: 3px; -moz-border-radius: 3px; -webkit-border-radius: 3px; font-weight: bold; margin: 1em; padding: 1em; padding-left: 36px; }
 
-.error { background: #f9b8be; border: 1px solid gray; }
+.error { border: 1px solid gray; background-color: #f9b8be; background-image: url(../images/exclamation.png); background-position: 10px center; background-repeat: no-repeat; }
 
-.notice { background: #c3e3b5; border: 1px solid gray; }
+.notice { border: 1px solid gray; background-color: #c3e3b5; background-image: url(../images/information.png); background-position: 10px center; background-repeat: no-repeat; }
 
 .spinner { padding-left: 0.33em; margin-bottom: -0.1em; display: none; }
 
