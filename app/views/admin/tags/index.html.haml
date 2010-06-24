@@ -4,8 +4,10 @@
     $(document).ready(function() {
       edit_in_place('tr.tag', 'tag', 'name', '/admin/tags/');
     });
+-@page_title = 'Tag administration'
+=breadcrumbs link_to('Dashboard', admin_dashboard_path), @page_title
 #ajax-flash
-%h1 Tags
+%h1.major=@page_title
 %table
   %tr
     -sortable_header_cell :name, 'Name'

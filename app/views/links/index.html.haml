@@ -6,7 +6,9 @@
       edit_in_place('tr.link', 'link', 'permalink', '/links/');
     });
 #ajax-flash
-%h1 Links
+-@page_title = 'Link administration'
+=breadcrumbs link_to('Dashboard', admin_dashboard_path), @page_title
+%h1.major=@page_title
 %table
   %tr
     -sortable_header_cell :id, 'Id'
