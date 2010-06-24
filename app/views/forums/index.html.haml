@@ -3,27 +3,30 @@
 =breadcrumbs 'Forums'
 %h1.major Forums
 %table
-  %tr
-    %th Forum
-    %th Topics
-    %th Last active
-    -if admin?
-      %th Actions
-  -for forum in @forums
-    %tr(class="forum #{cycle('odd', 'even')}")
-      %td
-        =link_to forum.name, forum_path(forum)
-        -unless forum.description.blank?
-          %br
-          %span.annotation=forum.description
-      %td
-        =topic_count forum.topics_count
-      %td
-        =timeinfo_for_forum forum
-        =link_to_topic_for_forum forum
+  %thead
+    %tr
+      %th Forum
+      %th Topics
+      %th Last active
       -if admin?
-        %td
-          =link_to 'edit', edit_forum_path(forum)
+        %th Actions
+  -unless @forums.empty?
+    %tbody
+      -for forum in @forums
+        %tr(class="forum #{cycle('odd', 'even')}")
+          %td
+            =link_to forum.name, forum_path(forum)
+            -unless forum.description.blank?
+              %br
+              %span.annotation=forum.description
+          %td
+            =topic_count forum.topics_count
+          %td
+            =timeinfo_for_forum forum
+            =link_to_topic_for_forum forum
+          -if admin?
+            %td
+              =link_to 'edit', edit_forum_path(forum)
 -if admin?
   .links
     =link_to 'new forum', new_forum_path
