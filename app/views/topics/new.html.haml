@@ -1,29 +1,31 @@
--page_title "#{@forum.name}: new topic"
+-@page_title = 'New topic'
+=breadcrumbs link_to('Forums', forums_path),
+  link_to(@forum.name, forum_path(@forum)),
+  @page_title
+%h1.major=@page_title
 =render 'shared/error_messages', :model => @topic
 -if !logged_in?
   =render 'shared/anonymous'
 -elsif !current_user.verified?
   =render 'shared/unverified'
 =form_for :topic, :url => forum_topics_path(@forum), :method => :post do |f|
-  %table.main
-    %tr
-      %th Title
-      %td=f.text_field :title
-    %tr
-      %th
-        Body
-        %br
-        %span.annotation (#{wikitext_cheatsheet})
-      %td=f.text_area :body
+  %ul
+    %li
+      =f.label :title
+      =f.text_field :title
+    %li
+      =f.label :body, annotation('Body', wikitext_cheatsheet)
+      =f.text_area :body
     -if admin?
-      %tr
-        %th Tags
-        %td=f.text_field :pending_tags
-      %tr
-        %th Public
-        %td=f.check_box :public
-      %tr
-        %th Accepts comments
-        %td=f.check_box :accepts_comments
-  %p=f.submit 'Create'
-%p=link_to 'back', forums_path
+      %li
+        =f.label :pending_tags, 'Tags'
+        =f.text_field :pending_tags
+      %li
+        =f.label :public
+        =f.check_box :public
+      %li
+        =f.label :accepts_comments
+        =f.check_box :accepts_comments
+      %li=f.submit
+.links
+  =link_to 'forums index', forums_path
