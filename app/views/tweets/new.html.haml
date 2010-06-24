@@ -7,23 +7,22 @@
       observe_field({ 'kind': 'tweet', 'fieldName': 'body', 'interval': 5, 'url': '#{tweets_path}' });
       setup_preview_link({ 'kind': 'tweet', 'include': ['body'], 'url': '#{tweets_path}' });
     });
-%h1 Create new tweet
+-@page_title = 'New tweet'
+=breadcrumbs link_to('Twitter', tweets_path), @page_title
+%h1.major=@page_title
 =render 'shared/error_messages', :model => @tweet
-=form_for @tweet, :url => tweets_path do |f|
-  %table.main
-    %tr
-      %th
-        Body
-        %br
-        %span.annotation (#{wikitext_cheatsheet})
-      %td=f.text_area :body, :cols => 80, :rows => 5
-    %tr
-      %th Tags
-      %td=f.text_field :pending_tags
-    %tr
-      %th Accepts comments
-      %td=f.check_box :accepts_comments
-  %p=f.submit 'Create'
+=form_for @tweet do |f|
+  %ul
+    %li
+      =f.label :body, annotation('Body', wikitext_cheatsheet)
+      =f.text_area :body, :rows => 5
+    %li
+      =f.label :pending_tags, 'Tags'
+      =f.text_field :pending_tags
+    %li
+      =f.label :accepts_comments
+      =f.check_box :accepts_comments
+    %li=f.submit
 %h2#preview_link Preview
 #ajax-flash
 #preview
