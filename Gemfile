@@ -20,6 +20,6 @@ group :test do
   gem 'launchy'
   gem 'mkdtemp'
   gem 'rr'
-  gem 'rspec-rails',  '>= 2.0.0.beta.12'
+  gem 'rspec-rails',  '>= 2.0.0.beta.13'
   gem 'steak',        :git => 'git://github.com/cavalle/steak.git'
 end
