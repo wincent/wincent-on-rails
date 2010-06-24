@@ -14,7 +14,7 @@
   .prev_next
     =link_to_prev_issue @prev
     =link_to_next_issue @next
-  %table.main
+  %table
     %tr
       %th Kind
       %td(id="issue_#{@issue.id}_kind")=@issue.kind_string
