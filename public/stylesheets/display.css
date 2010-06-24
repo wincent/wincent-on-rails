@@ -117,6 +117,10 @@ div.column { padding-left: 1.5em; padding-right: 1.5em; }
 .pagination .last { padding-right: 18px; background: url(../images/last.png) no-repeat right center; }
 .pagination .last.disabled { background: url(../images/last-disabled.png) no-repeat right center; }
 
+table tbody tr th { text-align: right; }
+
+table thead tr th { text-align: center; }
+
 table.main { width: 95%; }
 table.main input[type=text] { width: 100%; }
 table.main textarea { width: 100%; }

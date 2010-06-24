@@ -15,42 +15,43 @@
     =link_to_prev_issue @prev
     =link_to_next_issue @next
   %table
-    %tr
-      %th Kind
-      %td(id="issue_#{@issue.id}_kind")=@issue.kind_string
-    %tr
-      %th Summary
-      %td(id="issue_#{@issue.id}_summary")=@issue.summary
-    %tr
-      %th Product
-      %td(id="issue_#{@issue.id}_product_id")=link_to_product_issues @issue.product
-    %tr
-      %th When
-      %td=timeinfo @issue
-    %tr
-      %th Status
-      %td(id="issue_#{@issue.id}_status")=@issue.status_string
-    %tr
-      %th Reporter
-      %td=link_to_user @issue.user
-    %tr
-      %th
-        Description
-        -if admin?
-          %br
-          =link_to 'edit', edit_issue_path(@issue)
-      %td
-        -if @issue.description.blank?
-          none
-        -else
-          =@issue.description.w :base_heading_level => 1
-    -if admin?
+    %tbody
       %tr
-        %th Public?
-        %td(id="issue_#{@issue.id}_public")=@issue.public?
-    %tr
-      %th Tags
-      %td(id="issue_#{@issue.id}_pending_tags")=tag_links(@issue)
+        %th Kind
+        %td(id="issue_#{@issue.id}_kind")=@issue.kind_string
+      %tr
+        %th Summary
+        %td(id="issue_#{@issue.id}_summary")=@issue.summary
+      %tr
+        %th Product
+        %td(id="issue_#{@issue.id}_product_id")=link_to_product_issues @issue.product
+      %tr
+        %th When
+        %td=timeinfo @issue
+      %tr
+        %th Status
+        %td(id="issue_#{@issue.id}_status")=@issue.status_string
+      %tr
+        %th Reporter
+        %td=link_to_user @issue.user
+      %tr
+        %th
+          Description
+          -if admin?
+            %br
+            =link_to 'edit', edit_issue_path(@issue)
+        %td
+          -if @issue.description.blank?
+            none
+          -else
+            =@issue.description.w :base_heading_level => 1
+      -if admin?
+        %tr
+          %th Public?
+          %td(id="issue_#{@issue.id}_public")=@issue.public?
+      %tr
+        %th Tags
+        %td(id="issue_#{@issue.id}_pending_tags")=tag_links(@issue)
 %h2.major
   Comments
   =feed_icon issue_path(@issue, :format => :atom)
