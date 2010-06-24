@@ -1,4 +1,8 @@
-%h1 Edit page
+-@page_title = 'Edit page'
+=breadcrumbs link_to('Products', products_path),
+  link_to(@product.name, edit_product_path(@product)),
+  @page.title
+%h1.major Edit page
 %div[@page]
   =render 'shared/error_messages', :model => @page
   -form_for @page, :url => product_page_path(@product, @page) do |f|
