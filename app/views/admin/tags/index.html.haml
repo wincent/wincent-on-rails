@@ -9,19 +9,22 @@
 #ajax-flash
 %h1.major=@page_title
 %table
-  %tr
-    -sortable_header_cell :name, 'Name'
-    -sortable_header_cell :taggings_count, 'Taggings count'
-    %th Actions
-  -for @tag in @tags
-    %tr(class="tag #{cycle('odd', 'even')}" id="tag_#{@tag.id}")
-      %td(id="tag_#{@tag.id}_name")=@tag.name
-      %td=@tag.taggings_count
-      %td.links
-        =link_to 'edit', edit_tag_path(@tag)
-        -# BUG: TagsController doesn't even have a destroy action yet
-        =button_to 'destroy', @tag, :confirm => 'Are you sure?',
-          :method => :delete, :class => 'destructive'
-%p.links
+  %thead
+    %tr
+      -sortable_header_cell :name, 'Name'
+      -sortable_header_cell :taggings_count, 'Taggings count'
+      %th Actions
+  -unless @tags.empty?
+    %tbody
+      -for tag in @tags
+        %tr(class="tag #{cycle('odd', 'even')}" id="tag_#{tag.id}")
+          %td(id="tag_#{tag.id}_name")=tag.name
+          %td=tag.taggings_count
+          %td.links
+            =link_to 'edit', edit_tag_path(tag)
+            -# BUG: TagsController doesn't even have a destroy action yet
+            =button_to 'destroy', tag, :confirm => 'Are you sure?',
+            :method => :delete, :class => 'destructive'
+.links
   =link_to 'new', new_tag_path
   =link_to 'cloud', tags_path
