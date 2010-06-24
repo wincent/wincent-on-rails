@@ -4,7 +4,7 @@
 -atom_link posts_path(:format => :atom)
 =breadcrumbs 'Blog'
 #posts
-  %h1
+  %h1.major
     Blog posts
     =feed_icon posts_path(:format => :atom)
   -if @paginator
