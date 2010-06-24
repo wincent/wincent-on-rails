@@ -8,33 +8,27 @@
     });
 %h1 Create new article
 =render 'shared/error_messages', :model => @article
--form_for @article, :url => articles_path do |f|
-  %table.main
-    %tr
-      %th Title
-      %td=f.text_field :title
-    %tr
-      %th
-        Redirect
-        %br
-        %span.annotation (optional)
-      %td=f.text_field :redirect
-    %tr
-      %th
-        Body
-        %br
-        %span.annotation (#{wikitext_cheatsheet})
-      %td=f.text_area(:body, :cols => 80, :rows => 30)
-    %tr
-      %th Tags
-      %td=f.text_field :pending_tags
-    %tr
-      %th Public
-      %td=f.check_box :public
-    %tr
-      %th Accepts comments
-      %td=f.check_box :accepts_comments
-  %p=f.submit 'Create'
+=form_for @article do |f|
+  %ul
+    %li
+      =f.label :title
+      =f.text_field :title
+    %li
+      =f.label :redirect, annotation('Redirect', 'optional')
+      =f.text_field :redirect
+    %li
+      =f.label :body, annotation('Body', "(#{wikitext_cheatsheet})")
+      =f.text_area :body, :cols => 80, :rows => 30
+    %li
+      =f.label :pending_tags, 'Tags'
+      =f.text_field :pending_tags
+    %li
+      =f.label :public
+      =f.check_box :public
+    %li
+      =f.label :accepts_comments
+      =f.check_box :accepts_comments
+    %li=f.submit 'Create'
 %h2#preview_link Preview
 -# TODO: graceful non-JS fallback
 #ajax-flash
