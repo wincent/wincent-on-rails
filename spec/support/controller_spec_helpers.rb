@@ -1,4 +1,4 @@
-module ControllerHelpers
+module ControllerSpecHelpers
   def login_as user
     controller.instance_eval { @current_user = user }
     controller.stub!(:login_before) # don't let the before filter clear the user again
