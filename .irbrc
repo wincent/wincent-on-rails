@@ -10,7 +10,9 @@ if Object.const_defined? :Rails
   end
 
   if Rails.env != 'production'
-    require "#{Rails.root}/spec/acceptance/support/factory_girl"
+    require 'factory_girl/syntax/sham'
+    require "#{Rails.root}/spec/support/factory_girl"
+    Dir["#{Rails.root}/spec/support/factories/*.rb"].each { |f| require f }
   end
 
   begin
