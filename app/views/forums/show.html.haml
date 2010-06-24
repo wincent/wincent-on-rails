@@ -8,24 +8,27 @@
   -if @paginator
     .pagination=@paginator.pagination_links
   %table
-    %tr
-      %th Topic
-      %th Replies
-      %th Views
-      %th Last post
-    -for topic in @topics
-      %tr{ :class => cycle('even', 'odd') }
-        %td=link_to topic.title, forum_topic_path(@forum, topic)
-        %td=number_with_delimiter topic.comments_count
-        %td=number_with_delimiter topic.view_count
-        %td
-          =link_to_user_for_topic topic
-          =topic.updated_at.distance_in_words
-          -if topic.last_comment_id
-            =link_to raw('view &raquo;'),
-              forum_topic_path(@forum, topic) + "\#comment_#{topic.last_comment_id}"
-          -else
-            =link_to raw('view &raquo;'), forum_topic_path(@forum, topic)
+    %thead
+      %tr
+        %th Topic
+        %th Replies
+        %th Views
+        %th Last post
+    -unless @topics.empty?
+      %tbody
+        -for topic in @topics
+          %tr{ :class => cycle('even', 'odd') }
+            %td=link_to topic.title, forum_topic_path(@forum, topic)
+            %td=number_with_delimiter topic.comments_count
+            %td=number_with_delimiter topic.view_count
+            %td
+              =link_to_user_for_topic topic
+              =topic.updated_at.distance_in_words
+              -if topic.last_comment_id
+                =link_to raw('view &raquo;'),
+                  forum_topic_path(@forum, topic) + "\#comment_#{topic.last_comment_id}"
+              -else
+                =link_to raw('view &raquo;'), forum_topic_path(@forum, topic)
   -if @paginator
     .pagination=@paginator.pagination_links
 .links
