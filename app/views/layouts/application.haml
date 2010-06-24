@@ -76,6 +76,6 @@
         =breadcrumbs params[:action].capitalize
       =yield
     #footer
-      =link_to 'Copyright and legal information', '/misc/legal'
-      &nbsp;&nbsp;|&nbsp;&nbsp;
+      =link_to 'Legal', '/misc/legal'
+      &nbsp;&mdash;&nbsp;
       =mail_to APP_CONFIG['admin_email'], 'Contact', :title => "Email me at #{APP_CONFIG['admin_email']}", :class => 'mailto'
