@@ -4,7 +4,7 @@
   =render 'shared/anonymous'
 -elsif !current_user.verified?
   =render 'shared/unverified'
--form_for :topic, :url => forum_topics_path(@forum), :method => :post do |f|
+=form_for :topic, :url => forum_topics_path(@forum), :method => :post do |f|
   %table.main
     %tr
       %th Title

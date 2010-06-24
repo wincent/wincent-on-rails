@@ -2,7 +2,7 @@
 -# BUG: same as elsewhere, if errors on both we get two divs with same "unique" ID
 =render 'shared/error_messages', :model => @user
 =render 'shared/error_messages', :model => @email
--form_for @user, :url => user_path(@user) do |f|
+=form_for @user, :url => user_path(@user) do |f|
   %table.main
     %tr
       %th
