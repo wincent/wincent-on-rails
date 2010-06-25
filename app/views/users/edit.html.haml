@@ -11,21 +11,18 @@
       =f.label :display_name,
         annotation('Display name', 'what other users will see')
       =f.text_field :display_name
-    %li
-      =f.label :emails,
-        (@emails.length != 1 ? 'Emails' : 'Email')
-      -# BUG: need to get CSS sorted out for multiple rows like this
-      -# may need to display 1 "li" for each email
-      %div(style='display:inline')
-        -# TODO: radio buttons or similar UI here to select default?
-        -for email in @emails
+    -unless @emails.empty?
+      -# TODO: radio buttons or similar UI here to select default?
+      -@emails.each_with_index do |email, n|
+        %li
+          =f.label "delete_email_#{n}",
+            (n == 0 ? 'Email' : "Email #{n + 1}")
           -if admin?
             =link_to email.address, edit_user_email_path(@user, email)
           -else
             =mail_to email.address
-          =check_box_tag "delete_email[#{email.id}]"
-          delete
-          %br
+          -#=check_box_tag "delete_email[#{email.id}]"
+          -#delete
           -# would be nice to offer the user an undo for this deletion on landing on the next page
     %li
       =f.label :email,
