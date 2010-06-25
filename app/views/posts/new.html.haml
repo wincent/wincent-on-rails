@@ -7,7 +7,9 @@
       observe_field({ 'kind': 'post', 'fieldName': 'body', 'include': ['title', 'excerpt'], 'url': '#{posts_path}' });
       setup_preview_link({ 'kind': 'post', 'include': ['body', 'title', 'excerpt'], 'url': '#{posts_path}' });
     });
-%h1 Create new post
+-@page_title = 'New post'
+=breadcrumbs link_to('Blog', posts_path), @page_title
+%h1.major=@page_title
 =render 'shared/error_messages', :model => @post
 =form_for @post do |f|
   %ul
@@ -33,8 +35,8 @@
       =f.label :accepts_comments
       =f.check_box :accepts_comments
     %li
-      =f.submit 'Create'
-%h2#preview_link Preview
+      =f.submit
+%h2#preview_link.major Preview
 -# TODO: graceful non-JS fallback
 #ajax-flash
 #preview=render 'preview'
