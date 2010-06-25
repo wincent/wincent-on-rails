@@ -145,7 +145,7 @@ label { display: inline-block; text-align: right; color: black; font-weight: bol
 
 li input, li textarea { width: 70%; }
 
-form li { display: block; list-style: none; border-bottom: 1px solid silver; padding-bottom: 5px; margin-bottom: 5px; }
+form li { display: block; list-style: none; border-bottom: 1px solid #eeeeee; padding-bottom: 5px; margin-bottom: 5px; }
 
 .cloud { text-align: center; }
 .cloud a { padding: 0.5em; }
