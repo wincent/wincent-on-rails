@@ -1,6 +1,4 @@
 -atom_link @topic
--content_for :css do
-  =stylesheet_link_tag 'topics'
 =breadcrumbs link_to('Forums', forums_path),
   link_to(@forum.name, forum_path(@forum)),
   @topic.title

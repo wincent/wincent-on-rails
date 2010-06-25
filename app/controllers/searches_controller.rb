@@ -13,6 +13,7 @@ class SearchesController < ApplicationController
   # make search form work even from static 404 pages etc
   # (which don't have an authenticity token)
   skip_before_filter :verify_authenticity_token
+  uses_stylesheet_links
 
   def create
     @offset = params[:offset].to_i

@@ -1,5 +1,3 @@
--content_for :css do
-  =stylesheet_link_tag 'search'
 %h1.major Search
 -form_tag searches_path, :method => :post do
   =text_field_tag :query, 'enter your search terms here', :size => 75

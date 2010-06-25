@@ -4,6 +4,7 @@ class TopicsController < ApplicationController
   before_filter :get_topic,       :only => [ :show ]
   caches_page   :show,            :if => Proc.new { |c| c.send(:is_atom?) }
   cache_sweeper :topic_sweeper,   :only => [ :create, :update, :destroy ]
+  uses_stylesheet_links
 
   # Admin only.
   # The admin is allowed to see all unmoderated topics at once, for the purposes of moderation.
