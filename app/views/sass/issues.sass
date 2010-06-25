@@ -19,3 +19,9 @@ table
 .issue.private
   h1
     background: url(../images/lock.png) no-repeat right center
+
+ol.comments
+  .comment.private
+    // could also add a "watermark" style padlock background to the blockquote here
+    cite:after
+      content: url(../images/lock.png)
