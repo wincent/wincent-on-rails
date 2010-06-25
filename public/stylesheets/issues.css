@@ -8,3 +8,7 @@ table { width: 100%; }
 .issue.private h1 { background: url(../images/lock.png) no-repeat right center; }
 
 ol.comments .comment.private cite:after { content: url(../images/lock.png); }
+
+ol.comments.boxed li > blockquote { border-radius: 0px; -moz-border-radius: 0px; -webkit-border-radius: 0px; border-width: 1px; }
+ol.comments.boxed li cite { background-image: none; border: 1px solid #eeeeee; border-top: none; padding: 5px 10px 5px 10px; margin-top: -21px; margin-right: 24px; }
+ol.comments.boxed li cite .when { margin-top: 2px; display: block; float: right; }

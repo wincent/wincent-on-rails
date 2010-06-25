@@ -20,8 +20,29 @@ table
   h1
     background: url(../images/lock.png) no-repeat right center
 
+// this can be merged back into main display.css file because it is general
 ol.comments
   .comment.private
     // could also add a "watermark" style padlock background to the blockquote here
     cite:after
       content: url(../images/lock.png)
+
+// this will eventually be general too (used by topic comments as well)
+ol.comments.boxed li
+  > blockquote
+    border-radius: 0px
+    -moz-border-radius: 0px
+    -webkit-border-radius: 0px
+    border-width: 1px
+  cite
+    background-image: none
+    border: 1px solid #eee
+    border-top: none
+    padding: 5px 10px 5px 10px
+    margin:
+      top: -21px
+      right: 24px
+    .when
+      margin-top: 2px
+      display: block
+      float: right
