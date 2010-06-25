@@ -6,6 +6,12 @@ module ActionController
 
     module ClassMethods
       def uses_dynamic_javascript options = {}
+        unless respond_to? :uses_dynamic_javascript?
+          class_eval <<-END
+            def self.uses_dynamic_javascript?; true; end
+          END
+        end
+
         if options[:only]
           unless respond_to? :included_dynamic_javascript_actions
             class_eval <<-END
@@ -19,6 +25,7 @@ module ActionController
             included_dynamic_javascript_actions << inclusion
           end
         end
+
         if options[:except]
           unless respond_to? :excluded_dynamic_javascript_actions
             class_eval <<-END

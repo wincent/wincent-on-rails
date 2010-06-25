@@ -327,7 +327,8 @@ module ApplicationHelper
     elsif klass.respond_to? :excluded_dynamic_javascript_actions
       return if klass.excluded_dynamic_javascript_actions.include? params[:action].to_sym
     else
-      return
+      return unless klass.respond_to?(:uses_dynamic_javascript?) &&
+                    klass.uses_dynamic_javascript?
     end
 
     # handle namespaces (controllers with superclasses)
