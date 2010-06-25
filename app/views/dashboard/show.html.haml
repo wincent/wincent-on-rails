@@ -3,11 +3,11 @@
 -@page_title = "#{current_user.display_name}'s dashboard"
 =breadcrumbs 'Dashboard'
 %h1.major=@page_title
-%h2 My recent issues
+%h2.major My recent issues
 -if @issues.empty?
   %p None.
 -else
-  %table.main
+  %table
     %thead
       %tr
         %th Issue
@@ -21,11 +21,11 @@
           -# see: https://rails.lighthouseapp.com/projects/8994/tickets/4825
           %td=truncate issue.summary, :length => 60, :safe => true
           %td=timeinfo issue
-%h2 My recent forum topics
+%h2.major My recent forum topics
 -if @topics.empty?
   %p None.
 -else
-  %table.main
+  %table
     %thead
       %tr
         %th Forum
@@ -37,11 +37,11 @@
           %td=link_to topic.forum.name, forum_path(topic.forum)
           %td=link_to topic.title, forum_topic_path(topic.forum, topic)
           %td=timeinfo topic
-%h2 My recent comments
+%h2.major My recent comments
 -if @comments.empty?
   %p None.
 -else
-  %table.main
+  %table
     %thead
       %tr
         %th Comment
