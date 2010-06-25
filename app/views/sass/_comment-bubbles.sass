@@ -1,0 +1,31 @@
+=comment-bubble($background_color, $border_color, $background_image)
+  list-style-type: none
+  cite
+    display: block
+    font-style: normal
+    background-image: $background_image
+    background-repeat: no-repeat
+    background-position-x: 60px
+    background-posiiton-y: 0px
+    padding-top: 20px
+    margin-left: 1em
+    margin-top: -22px
+  >blockquote
+    -webkit-border-radius: 1em
+    -moz-border-radius: 1em
+    border: 2px solid $border_color
+    background: $background_color
+    margin-bottom: 20px
+
+ol.comments li.odd
+  +comment-bubble(#f7f7f7, #ccc, url(../images/comment-bubble-triangle-odd.png))
+
+ol.comments li.even
+  +comment-bubble(#eaeaea, #ccc, url(../images/comment-bubble-triangle-even.png))
+
+ol.comments li.admin
+  +comment-bubble(white, #666, url(../images/comment-bubble-triangle-admin.png))
+
+// lists look crap if they are the last item in the bubble
+ol.comments ol, ol.comments ul
+  margin-bottom: 12px

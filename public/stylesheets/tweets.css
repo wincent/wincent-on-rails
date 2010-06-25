@@ -1,1 +1,15 @@
+ol.comments li.odd { list-style-type: none; }
+ol.comments li.odd cite { display: block; font-style: normal; background-image: url(../images/comment-bubble-triangle-odd.png); background-repeat: no-repeat; background-position-x: 60px; background-posiiton-y: 0px; padding-top: 20px; margin-left: 1em; margin-top: -22px; }
+ol.comments li.odd > blockquote { -webkit-border-radius: 1em; -moz-border-radius: 1em; border: 2px solid #cccccc; background: #f7f7f7; margin-bottom: 20px; }
+
+ol.comments li.even { list-style-type: none; }
+ol.comments li.even cite { display: block; font-style: normal; background-image: url(../images/comment-bubble-triangle-even.png); background-repeat: no-repeat; background-position-x: 60px; background-posiiton-y: 0px; padding-top: 20px; margin-left: 1em; margin-top: -22px; }
+ol.comments li.even > blockquote { -webkit-border-radius: 1em; -moz-border-radius: 1em; border: 2px solid #cccccc; background: #eaeaea; margin-bottom: 20px; }
+
+ol.comments li.admin { list-style-type: none; }
+ol.comments li.admin cite { display: block; font-style: normal; background-image: url(../images/comment-bubble-triangle-admin.png); background-repeat: no-repeat; background-position-x: 60px; background-posiiton-y: 0px; padding-top: 20px; margin-left: 1em; margin-top: -22px; }
+ol.comments li.admin > blockquote { -webkit-border-radius: 1em; -moz-border-radius: 1em; border: 2px solid #666666; background: white; margin-bottom: 20px; }
+
+ol.comments ol, ol.comments ul { margin-bottom: 12px; }
+
 .overlength { background: #f9b8be; }
