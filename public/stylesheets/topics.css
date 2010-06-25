@@ -1,7 +1,7 @@
 table.topic { width: 100%; }
 
 .topic td { padding: 1em; vertical-align: top; background: white; }
-.topic td + td { padding-top: 0em; border: 1px solid #ccc; width: 85%; }
+.topic td + td { padding-top: 0em; border: 1px solid #cccccc; width: 85%; }
 
 .topic .odd td + td { background: #f7f7f7; }
 

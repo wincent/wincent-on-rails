@@ -123,10 +123,6 @@ table tbody tr th { text-align: right; }
 
 table thead tr th { text-align: center; border-bottom: 1px silver solid; border-right: 1px silver solid; }
 
-table.main { width: 95%; }
-table.main input[type=text] { width: 100%; }
-table.main textarea { width: 100%; }
-
 td, th { padding: 0.5em; }
 
 th { background: #f7f7f7; }

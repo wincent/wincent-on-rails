@@ -1,4 +1,5 @@
-.issue table { width: 95%; }
+table { width: 100%; }
+
 .issue table input[type=text] { width: 100%; }
 .issue table textarea { width: 100%; }
 .issue th { padding: 1em; vertical-align: top; background: white; }
