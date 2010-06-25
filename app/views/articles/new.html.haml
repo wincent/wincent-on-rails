@@ -19,8 +19,8 @@
       =f.label :redirect, annotation('Redirect', 'optional')
       =f.text_field :redirect
     %li
-      =f.label :body, annotation('Body', "(#{wikitext_cheatsheet})")
-      =f.text_area :body, :cols => 80, :rows => 30
+      =f.label :body, annotation('Body', wikitext_cheatsheet)
+      =f.text_area :body, :rows => 30
     %li
       =f.label :pending_tags, 'Tags'
       =f.text_field :pending_tags

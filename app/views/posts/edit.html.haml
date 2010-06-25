@@ -20,10 +20,10 @@
       =f.label :permalink, annotation('Permalink', 'optional')
       =f.text_field :permalink
     %li
-      =f.label :excerpt, annotation('Excerpt', "#{wikitext_cheatsheet}")
+      =f.label :excerpt, annotation('Excerpt', wikitext_cheatsheet)
       =f.text_area :excerpt
     %li
-      =f.label :body, annotation('Body', "#{wikitext_cheatsheet}")
+      =f.label :body, annotation('Body', wikitext_cheatsheet)
       =f.text_area :body, :rows => 30
     %li
       =f.label :pending_tags, 'Tags'

@@ -21,7 +21,7 @@
   %li
     =f.label :description, annotation('Description',
       'please be as detailed as possible', wikitext_cheatsheet)
-    =f.text_area(:description)
+    =f.text_area :description
   %li
     -if logged_in?
       =f.label :public, annotation('Public?',
