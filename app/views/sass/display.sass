@@ -574,6 +574,21 @@ form.button_to
   a
     +button
 
+// make buttons look smaller when they are in table cells
+=small-button
+  -webkit-border-radius:    2px
+  -moz-border-radius:       2px
+  border-radius:            2px
+  font-size:                10px
+  font-weight:              normal
+  padding:                  3px 15px 3px 15px
+
+td.links
+  a
+    +small-button
+  form input
+    +small-button
+
 // products
 // NOTE: could potentially split this off into a separate CSS file
 .product
