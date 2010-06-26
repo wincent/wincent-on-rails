@@ -9,20 +9,26 @@ table { width: 100%; }
 
 ol.comments .comment.private cite:after { content: url(../images/lock.png); }
 
-ol.comments.boxed > li.odd { margin-bottom: 10px; padding: 0px; background: #f7f7f7; border: 1px solid #cccccc; list-style: none; }
-ol.comments.boxed > li.odd > blockquote { background-image: none; border-left: 1px solid #cccccc; border-radius: 0px; -moz-border-radius: 0px; -webkit-border-radius: 0px; margin: 0px 0px 0px -2px; vertical-align: top; display: inline-block; width: 80%; }
+ol.comments.boxed > li.odd { margin-bottom: 10px; padding: 0px; background: #f7f7f7; border: 1px solid #cccccc; list-style: none; white-space: nowrap; }
+ol.comments.boxed > li.odd > blockquote { white-space: normal; background-image: none; border-left: 1px solid #cccccc; border-radius: 0px; -moz-border-radius: 0px; -webkit-border-radius: 0px; margin: 0px 0px 0px -2px; vertical-align: top; display: inline-block; width: 80%; }
 ol.comments.boxed > li.odd > blockquote ul, ol.comments.boxed > li.odd > blockquote ol { margin-bottom: 12px; margin-top: 12px; }
 ol.comments.boxed > li.odd > blockquote > p, ol.comments.boxed > li.odd > blockquote li { color: #666666; }
-ol.comments.boxed > li.odd cite { display: inline-block; vertical-align: top; font-style: normal; width: 10%; border-right: 1px solid #cccccc; background-image: none; margin: 0px -3px 0px 0px; padding: 10px; }
+ol.comments.boxed > li.odd cite { white-space: normal; display: inline-block; vertical-align: top; font-style: normal; width: 10%; border-right: 1px solid #cccccc; background-image: none; margin: 0px -3px 0px 0px; padding: 10px; }
 
-ol.comments.boxed > li.even { margin-bottom: 10px; padding: 0px; background: #eaeaea; border: 1px solid #cccccc; list-style: none; }
-ol.comments.boxed > li.even > blockquote { background-image: none; border-left: 1px solid #cccccc; border-radius: 0px; -moz-border-radius: 0px; -webkit-border-radius: 0px; margin: 0px 0px 0px -2px; vertical-align: top; display: inline-block; width: 80%; }
+ol.comments.boxed > li.even { margin-bottom: 10px; padding: 0px; background: #eaeaea; border: 1px solid #cccccc; list-style: none; white-space: nowrap; }
+ol.comments.boxed > li.even > blockquote { white-space: normal; background-image: none; border-left: 1px solid #cccccc; border-radius: 0px; -moz-border-radius: 0px; -webkit-border-radius: 0px; margin: 0px 0px 0px -2px; vertical-align: top; display: inline-block; width: 80%; }
 ol.comments.boxed > li.even > blockquote ul, ol.comments.boxed > li.even > blockquote ol { margin-bottom: 12px; margin-top: 12px; }
 ol.comments.boxed > li.even > blockquote > p, ol.comments.boxed > li.even > blockquote li { color: #666666; }
-ol.comments.boxed > li.even cite { display: inline-block; vertical-align: top; font-style: normal; width: 10%; border-right: 1px solid #cccccc; background-image: none; margin: 0px -3px 0px 0px; padding: 10px; }
+ol.comments.boxed > li.even cite { white-space: normal; display: inline-block; vertical-align: top; font-style: normal; width: 10%; border-right: 1px solid #cccccc; background-image: none; margin: 0px -3px 0px 0px; padding: 10px; }
 
-ol.comments.boxed > li.admin { margin-bottom: 10px; padding: 0px; background: white; border: 1px solid #cccccc; list-style: none; }
-ol.comments.boxed > li.admin > blockquote { background-image: none; border-left: 1px solid #cccccc; border-radius: 0px; -moz-border-radius: 0px; -webkit-border-radius: 0px; margin: 0px 0px 0px -2px; vertical-align: top; display: inline-block; width: 80%; }
+ol.comments.boxed > li.admin { margin-bottom: 10px; padding: 0px; background: white; border: 1px solid #cccccc; list-style: none; white-space: nowrap; }
+ol.comments.boxed > li.admin > blockquote { white-space: normal; background-image: none; border-left: 1px solid #cccccc; border-radius: 0px; -moz-border-radius: 0px; -webkit-border-radius: 0px; margin: 0px 0px 0px -2px; vertical-align: top; display: inline-block; width: 80%; }
 ol.comments.boxed > li.admin > blockquote ul, ol.comments.boxed > li.admin > blockquote ol { margin-bottom: 12px; margin-top: 12px; }
 ol.comments.boxed > li.admin > blockquote > p, ol.comments.boxed > li.admin > blockquote li { color: #666666; }
-ol.comments.boxed > li.admin cite { display: inline-block; vertical-align: top; font-style: normal; width: 10%; border-right: 1px solid #cccccc; background-image: none; margin: 0px -3px 0px 0px; padding: 10px; }
+ol.comments.boxed > li.admin cite { white-space: normal; display: inline-block; vertical-align: top; font-style: normal; width: 10%; border-right: 1px solid #cccccc; background-image: none; margin: 0px -3px 0px 0px; padding: 10px; }
+
+ol.comments.boxed > li.private { margin-bottom: 10px; padding: 0px; background: white; border: 1px solid #cccccc; list-style: none; white-space: nowrap; }
+ol.comments.boxed > li.private > blockquote { white-space: normal; background-image: none; border-left: 1px solid #cccccc; border-radius: 0px; -moz-border-radius: 0px; -webkit-border-radius: 0px; margin: 0px 0px 0px -2px; vertical-align: top; display: inline-block; width: 80%; }
+ol.comments.boxed > li.private > blockquote ul, ol.comments.boxed > li.private > blockquote ol { margin-bottom: 12px; margin-top: 12px; }
+ol.comments.boxed > li.private > blockquote > p, ol.comments.boxed > li.private > blockquote li { color: #666666; }
+ol.comments.boxed > li.private cite { white-space: normal; display: inline-block; vertical-align: top; font-style: normal; width: 10%; border-right: 1px solid #cccccc; background-image: none; margin: 0px -3px 0px 0px; padding: 10px; }

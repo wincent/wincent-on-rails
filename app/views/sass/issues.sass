@@ -34,7 +34,9 @@ ol.comments
   background: $background_color
   border: 1px solid $border_color
   list-style: none
+  white-space: nowrap
   > blockquote
+    white-space: normal
     background-image: none
     border-left: 1px solid $border_color
     border-radius: 0px
@@ -50,6 +52,7 @@ ol.comments
     > p, li
       color: #666
   cite
+    white-space: normal
     display: inline-block
     vertical-align: top
     font-style: normal
@@ -68,5 +71,5 @@ ol.comments.boxed > li.even
 ol.comments.boxed > li.admin
   +comment-box(white, #ccc)
 
-//ol.comments.boxed > li.private
-  //+comment-box(white, #ccc)
+ol.comments.boxed > li.private
+  +comment-box(white, #ccc)
