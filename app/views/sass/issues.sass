@@ -28,21 +28,48 @@ ol.comments
       content: url(../images/lock.png)
 
 // this will eventually be general too (used by topic comments as well)
-ol.comments.boxed li
+=comment-box($background_color, $border_color)
+  margin-bottom: 10px
+  padding: 0px
+  background: blue
+  border: 1px solid gray
+  list-style: none
+  //clear:both
+  //position: relative
   > blockquote
+    background-color: red
+    background-image: none
+    border: none
     border-radius: 0px
     -moz-border-radius: 0px
     -webkit-border-radius: 0px
-    border-width: 1px
+    margin: 0px
+    //clear:both
+    //display:block
+    float: right
+    width: 80%
+    //clear: both
+    //position: absolute
+    //top: 0
+    //right: 0
+    ul, ol
+      margin-bottom: 12px
+      margin-top: 12px
   cite
+    // no effect
+    //display:block
+    // no effect
+    //width: 100%
+    width: 20%
+    //position: absolute
+    //top: 0
+    //left: 0
+    float: left
+    //float:right
+    //clear: both
+    background-color: green
     background-image: none
-    border: 1px solid #eee
-    border-top: none
-    padding: 5px 10px 5px 10px
-    margin:
-      top: -21px
-      right: 24px
-    .when
-      margin-top: 2px
-      display: block
-      float: right
+    margin: 0px
+
+ol.comments.boxed > li
+  +comment-box(1, 2)

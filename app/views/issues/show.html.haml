@@ -63,6 +63,7 @@
         -if admin?
           =link_to 'edit', edit_comment_path(comment)
           -# TODO: add a means of marking individual comments as private
+      .clearboth
 %h2.major Add a comment
 =render 'comments/form'
 .links

@@ -9,6 +9,7 @@ table { width: 100%; }
 
 ol.comments .comment.private cite:after { content: url(../images/lock.png); }
 
-ol.comments.boxed li > blockquote { border-radius: 0px; -moz-border-radius: 0px; -webkit-border-radius: 0px; border-width: 1px; }
-ol.comments.boxed li cite { background-image: none; border: 1px solid #eeeeee; border-top: none; padding: 5px 10px 5px 10px; margin-top: -21px; margin-right: 24px; }
-ol.comments.boxed li cite .when { margin-top: 2px; display: block; float: right; }
+ol.comments.boxed > li { margin-bottom: 10px; padding: 0px; background: blue; border: 1px solid gray; list-style: none; }
+ol.comments.boxed > li > blockquote { background-color: red; background-image: none; border: none; border-radius: 0px; -moz-border-radius: 0px; -webkit-border-radius: 0px; margin: 0px; float: right; width: 80%; }
+ol.comments.boxed > li > blockquote ul, ol.comments.boxed > li > blockquote ol { margin-bottom: 12px; margin-top: 12px; }
+ol.comments.boxed > li cite { width: 20%; float: left; background-color: green; background-image: none; margin: 0px; }
