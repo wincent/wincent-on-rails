@@ -23,12 +23,3 @@ ol.comments.boxed > li.private > blockquote { white-space: normal; background-im
 ol.comments.boxed > li.private > blockquote ul, ol.comments.boxed > li.private > blockquote ol { margin-bottom: 12px; margin-top: 12px; }
 ol.comments.boxed > li.private > blockquote > p, ol.comments.boxed > li.private > blockquote li { color: #666666; }
 ol.comments.boxed > li.private cite { white-space: normal; display: inline-block; vertical-align: top; font-style: normal; width: 15%; background-image: none; margin: 0px; padding: 10px; }
-
-table.topic { width: 100%; }
-
-.topic td { padding: 1em; vertical-align: top; background: white; }
-.topic td + td { padding-top: 0em; border: 1px solid #cccccc; width: 85%; }
-
-.topic .odd td + td { background: #f7f7f7; }
-
-.topic .even td + td { background: #eaeaea; }
