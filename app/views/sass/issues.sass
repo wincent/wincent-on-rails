@@ -1,3 +1,5 @@
+@import 'comment-boxes'
+
 table
   width: 100%
 
@@ -19,57 +21,3 @@ table
 .issue.private
   h1
     background: url(../images/lock.png) no-repeat right center
-
-// this can be merged back into main display.css file because it is general
-ol.comments
-  .comment.private
-    // could also add a "watermark" style padlock background to the blockquote here
-    cite:after
-      content: url(../images/lock.png)
-
-// this will eventually be general too (used by topic comments as well)
-=comment-box($background_color, $border_color)
-  margin-bottom: 10px
-  padding: 0px
-  background: $background_color
-  border: 1px solid $border_color
-  list-style: none
-  white-space: nowrap
-  > blockquote
-    white-space: normal
-    background-image: none
-    border-left: 1px solid $border_color
-    border-radius: 0px
-    -moz-border-radius: 0px
-    -webkit-border-radius: 0px
-    margin: 0px
-    vertical-align: top
-    display: inline-block
-    width: 75%
-    min-height: 80px
-    ul, ol
-      margin-bottom: 12px
-      margin-top: 12px
-    > p, li
-      color: #666
-  cite
-    white-space: normal
-    display: inline-block
-    vertical-align: top
-    font-style: normal
-    width: 15%
-    background-image: none
-    margin: 0px
-    padding: 10px
-
-ol.comments.boxed > li.odd
-  +comment-box(#f7f7f7, #ccc)
-
-ol.comments.boxed > li.even
-  +comment-box(#eaeaea, #ccc)
-
-ol.comments.boxed > li.admin
-  +comment-box(white, #ccc)
-
-ol.comments.boxed > li.private
-  +comment-box(white, #ccc)

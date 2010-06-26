@@ -1,12 +1,3 @@
-table { width: 100%; }
-
-.issue table input[type=text] { width: 100%; }
-.issue table textarea { width: 100%; }
-.issue th { padding: 1em; vertical-align: top; background: white; }
-.issue th + td { padding-top: -0.5em; border-bottom: 1px solid #cccccc; width: 85%; }
-
-.issue.private h1 { background: url(../images/lock.png) no-repeat right center; }
-
 ol.comments .comment.private cite:after { content: url(../images/lock.png); }
 
 ol.comments.boxed > li.odd { margin-bottom: 10px; padding: 0px; background: #f7f7f7; border: 1px solid #cccccc; list-style: none; white-space: nowrap; }
@@ -32,3 +23,12 @@ ol.comments.boxed > li.private > blockquote { white-space: normal; background-im
 ol.comments.boxed > li.private > blockquote ul, ol.comments.boxed > li.private > blockquote ol { margin-bottom: 12px; margin-top: 12px; }
 ol.comments.boxed > li.private > blockquote > p, ol.comments.boxed > li.private > blockquote li { color: #666666; }
 ol.comments.boxed > li.private cite { white-space: normal; display: inline-block; vertical-align: top; font-style: normal; width: 15%; background-image: none; margin: 0px; padding: 10px; }
+
+table { width: 100%; }
+
+.issue table input[type=text] { width: 100%; }
+.issue table textarea { width: 100%; }
+.issue th { padding: 1em; vertical-align: top; background: white; }
+.issue th + td { padding-top: -0.5em; border-bottom: 1px solid #cccccc; width: 85%; }
+
+.issue.private h1 { background: url(../images/lock.png) no-repeat right center; }
