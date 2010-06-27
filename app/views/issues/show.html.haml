@@ -60,6 +60,7 @@
         =link_to_user comment.user
         %br
         %span.when=timeinfo comment, :updated_string => 'edited'
+        =link_to 'permalink', comment_path(comment), :class => 'hoverlink'
         %br
         -if admin?
           %br
