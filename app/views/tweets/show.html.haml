@@ -30,6 +30,7 @@
         %cite
           =link_to_user comment.user
           %span.when=timeinfo comment, :updated_string => 'edited'
+          =link_to 'permalink', comment_path(comment), :class => 'hoverlink'
   %h2.major Add a comment
   -if @comment
     #ajax-flash
