@@ -76,7 +76,6 @@ a.mailto:after { content: url(../images/mailto.png); }
 #posts { float: left; width: 70%; margin: 0; }
 
 #sidebar { margin-left: 73%; margin-top: 1em; margin-right: -1em; padding-left: 1.5em; padding-top: 0.5em; padding-bottom: 1em; padding-right: 1.5em; border-radius: 1em; -moz-border-radius: 1em; -webkit-border-radius: 1em; background: #eeeeee; border: 2px solid silver; }
-#sidebar .when { text-align: right; }
 
 .clearboth { clear: both; }
 
@@ -155,10 +154,12 @@ form li + li { border-top: 1px solid #eeeeee; }
 .when { font-size: x-small; color: #bbbbbb; }
 .when a { color: #bbbbbb; font-weight: normal; }
 
-.permalink { visibility: hidden; font-size: x-small; color: #bbbbbb; border-left: 1px solid silver; padding-left: 6px; }
-.permalink a { color: #bbbbbb; font-weight: normal; }
+.hoverlink { visibility: hidden; font-size: x-small; color: #bbbbbb; border-left: 1px solid silver; padding-left: 6px; }
+.hoverlink a { color: #bbbbbb; font-weight: normal; }
 
-.comment:hover .permalink { visibility: visible; }
+.comment:hover .hoverlink { visibility: visible; }
+
+.tweet:hover .hoverlink { visibility: visible; }
 
 .deleted { color: #bbbbbb; }
 .deleted a { color: #bbbbbb; }
