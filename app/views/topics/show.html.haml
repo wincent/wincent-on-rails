@@ -5,7 +5,7 @@
 -@page_title = @topic.title
 %h1.major
   =@page_title
-  =feed_icon forum_topic_path(@topic.forum, @topic, :format => :atom)
+  =feed_icon forum_topic_path(@forum, @topic, :format => :atom)
 %div[@topic]
   %ol(class='comments boxed')
     %li(class='comment odd')
