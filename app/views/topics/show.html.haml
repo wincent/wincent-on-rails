@@ -14,8 +14,9 @@
         %br
         =pluralizing_count(@topic.user.utterances_count, 'post') if @topic.user
         %br
-        %span.when
-          =timeinfo @topic, :updated_string => false
+        %span.when=timeinfo @topic, :updated_string => false
+        =link_to 'permalink', forum_topic_path(@forum, @topic),
+          :class => 'hoverlink'
         -if admin?
           %br
           =link_to 'edit', edit_forum_topic_path(@forum, @topic)
@@ -27,8 +28,8 @@
           %br
           =pluralizing_count(comment.user.utterances_count, 'post') if comment.user
           %br
-          %span.when
-            =timeinfo comment, :updated_string => 'edited'
+          %span.when=timeinfo comment, :updated_string => 'edited'
+          =link_to 'permalink', comment_path(comment), :class => 'hoverlink'
           -if admin?
             %br
             =link_to 'edit', edit_comment_path(comment)
