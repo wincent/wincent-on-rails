@@ -76,7 +76,8 @@ a.mailto:after { content: url(../images/mailto.png); }
 #posts { float: left; width: 70%; margin: 0; }
 
 #sidebar { margin-left: 73%; margin-top: 1em; margin-right: -1em; padding-left: 1.5em; padding-top: 0.5em; padding-bottom: 1em; padding-right: 1.5em; border-radius: 1em; -moz-border-radius: 1em; -webkit-border-radius: 1em; background: #eeeeee; border: 2px solid silver; }
-#sidebar .hoverlink { visibility: visible; }
+#sidebar .hoverlink { visibility: visible; display: none; }
+#sidebar .tweet:hover .hoverlink { display: inline; }
 #sidebar .info { text-align: right; }
 
 .clearboth { clear: both; }
