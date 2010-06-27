@@ -155,6 +155,11 @@ form li + li { border-top: 1px solid #eeeeee; }
 .when { font-size: x-small; color: #bbbbbb; }
 .when a { color: #bbbbbb; font-weight: normal; }
 
+.permalink { visibility: hidden; font-size: x-small; color: #bbbbbb; border-left: 1px solid silver; padding-left: 6px; }
+.permalink a { color: #bbbbbb; font-weight: normal; }
+
+.comment:hover .permalink { visibility: visible; }
+
 .deleted { color: #bbbbbb; }
 .deleted a { color: #bbbbbb; }
 

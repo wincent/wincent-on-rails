@@ -34,8 +34,8 @@
         %blockquote=comment.body.w :base_heading_level => 2
         %cite
           =link_to_user comment.user
-          %span.when=link_to (timeinfo comment, :updated_string => 'edited'),
-            comment_path(comment)
+          %span.when=timeinfo comment
+          =link_to 'permalink', comment_path(comment), :class => 'permalink'
           -if admin?
             =link_to 'edit', edit_comment_path(comment)
   %h2.major Add a comment
