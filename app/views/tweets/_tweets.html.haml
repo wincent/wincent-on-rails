@@ -1,6 +1,6 @@
 -for tweet in @tweets
   %div[tweet]
     =tweet.body.w :base_heading_level => 2
-    %div
+    %div.info
       %span.when=timeinfo tweet
       =link_to 'permalink', tweet_path(tweet), :class => 'hoverlink'
