@@ -22,8 +22,8 @@ unless Object.const_defined? :Bundler
     HERE
 end
 
-ENV["RAILS_ENV"] ||= 'test'
-require File.dirname(__FILE__) + "/../config/environment" unless defined?(Rails)
+ENV['RAILS_ENV'] = ENV['RSPEC_RAILS_ENV'] || 'test'
+require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
 require 'rspec/autorun'
 require 'factory_girl/syntax/sham'
