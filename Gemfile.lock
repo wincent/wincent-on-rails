@@ -59,16 +59,10 @@ GEM
       rails (>= 3.0.0.beta4)
     ffi (0.6.3)
       rake (>= 0.8.7)
-    ffi (0.6.3-java)
-    ffi (0.6.3-x86-mingw32)
-      rake (>= 0.8.7)
-    ffi (0.6.3-x86-mswin32)
-      rake (>= 0.8.7)
     haml (3.0.12)
     hpricot (0.8.2)
-    hpricot (0.8.2-java)
-    hpricot (0.8.2-x86-mswin32)
     i18n (0.4.1)
+    jruby-openssl (0.7)
     json_pure (1.4.3)
     launchy (0.3.5)
       configuration (>= 0.0.5)
@@ -80,11 +74,7 @@ GEM
     mime-types (1.16)
     mkdtemp (1.1.1)
     mysql (2.8.1)
-    mysql (2.8.1-x86-mingw32)
-    mysql (2.8.1-x86-mswin32)
     nokogiri (1.4.2)
-    nokogiri (1.4.2-java)
-      weakling (>= 0.0.3)
     polyglot (0.3.1)
     rack (1.1.0)
     rack-mount (0.6.6)
@@ -131,6 +121,7 @@ GEM
     wikitext (2.0)
 
 PLATFORMS
+  java
   ruby
 
 DEPENDENCIES
@@ -141,6 +132,7 @@ DEPENDENCIES
   factory_girl_rails
   haml (= 3.0.12)
   hpricot
+  jruby-openssl
   launchy
   mkdtemp
   mysql (= 2.8.1)

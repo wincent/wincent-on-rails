@@ -13,10 +13,11 @@ end
 
 group :test do
   gem 'capybara'
-  gem 'celerity',     :require => nil # don't require, it's JRuby-only
+  gem 'celerity',       :require => nil # don't require, it's JRuby-only
   gem 'culerity'
   gem 'database_cleaner'
   gem 'hpricot'
+  gem 'jruby-openssl',  :require => nil # don't require, JRuby-only
   gem 'launchy'
   gem 'mkdtemp'
   gem 'rr'
