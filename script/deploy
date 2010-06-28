@@ -301,8 +301,7 @@ if [ -n "$DO_DEPLOY" ]; then
                                 rm -f $DEPLOY/latest && \
                                 ln -s $CHECKOUT $DEPLOY/latest && \
                                 cd $CHECKOUT && \
-                                rake --silent gems:clean && \
-                                rake --silent gems:build && \
+                                bundle install && \
                                 rake --silent js:minify:deploy > /dev/null'"
 fi
 
