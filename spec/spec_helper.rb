@@ -44,3 +44,11 @@ RSpec.configure do |config|
   config.include ControllerSpecHelpers, :example_group => { :file_path => %r{\bspec/controllers/} }
   config.include MailerSpecHelpers, :example_group => { :file_path => %r{\bspec/mailers/} }
 end
+
+# here is one kludgey way to make "bundle exec ..." and "rake spec ..." behave
+# like "rspec ..." does (ie. working)
+unless ENV['RUBYOPT'].blank?
+  puts "Clearing RUBYOPT, which is currently: #{ENV['RUBYOPT']}"
+  puts "See https://wincent.com/issues/1590 for more details"
+  ENV['RUBYOPT'] = nil
+end
