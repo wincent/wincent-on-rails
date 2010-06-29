@@ -46,9 +46,9 @@ RSpec.configure do |config|
 end
 
 # make "bundle exec ..." and "rake spec ..." behave like "rspec ..." does
-if ENV['RUBYOPT'] && ENV['RUBYOPT'] =~ %r{-rbundler/setup}
+if ENV['RUBYOPT'] && ENV['RUBYOPT'] =~ %r{-r\s*bundler/setup}
   puts "Pruning RUBYOPT; current value: #{ENV['RUBYOPT']}"
-  ENV['RUBYOPT'] = ENV['RUBYOPT'].gsub(%r{-rbundler/setup}, '')
+  ENV['RUBYOPT'] = ENV['RUBYOPT'].gsub(%r{-r\s*bundler/setup}, '')
   puts "                     new value: #{ENV['RUBYOPT']}"
   puts "See https://wincent.com/issues/1590 for more details"
 end
