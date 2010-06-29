@@ -8,7 +8,7 @@ describe ConfirmationMailer, 'confirmation' do
     @administrator  = 'win@wincent.com'
     @support        = 'support@wincent.com'
     @confirmation   = Confirmation.make!
-    @mail           = ConfirmationMailer.create_confirmation_message @confirmation
+    @mail           = ConfirmationMailer.confirmation_message @confirmation
   end
 
   it 'should set the subject line' do
