@@ -10,15 +10,14 @@ class IssueMailer < ActionMailer::Base
       :subject_header     => "new issue alert from #{APP_CONFIG['host']}",
       :incoming           => false
 
-    headers['Message-Id'] = message.message_id_header
-
     @issue          = issue
     @issue_url      = edit_issue_url(issue)
     @moderation_url = admin_dashboard_url
 
-    mail  :subject  => message.subject_header,
-          :to       => message.to_header,
-          :from     => message.from_header,
-          :date     => Time.now
+    mail  :subject    => message.subject_header,
+          :to         => message.to_header,
+          :from       => message.from_header,
+          :date       => Time.now,
+          :message_id => message.message_id_header
   end
 end
