@@ -46,7 +46,7 @@ RSpec.configure do |config|
 end
 
 # make "bundle exec ..." and "rake spec ..." behave like "rspec ..." does
-if ENV['RUBYOPT'] && ENV['RUBYOPT'] =~ %r{-r\s*bundler/setup}
+if ENV['RUBYOPT']
   puts "Pruning RUBYOPT; current value: #{ENV['RUBYOPT']}"
   ENV['RUBYOPT'] = ENV['RUBYOPT'].gsub(%r{-r\s*bundler/setup}, '')
   puts "                     new value: #{ENV['RUBYOPT']}"
