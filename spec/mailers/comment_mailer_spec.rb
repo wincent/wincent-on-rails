@@ -3,7 +3,7 @@ require File.expand_path('../spec_helper', File.dirname(__FILE__))
 describe CommentMailer, 'comment' do
   before do
     @comment  = Comment.make!
-    @mail     = CommentMailer.create_new_comment_alert @comment
+    @mail     = CommentMailer.new_comment_alert @comment
   end
 
   it 'should set the subject line' do
@@ -22,14 +22,14 @@ describe CommentMailer, 'comment' do
 
   it 'should show "awaiting moderation" where applicable' do
     comment = Comment.make! :awaiting_moderation => true
-    mail    = CommentMailer.create_new_comment_alert comment
+    mail    = CommentMailer.new_comment_alert comment
     mail.body.should match(/awaiting moderation/)
     mail.body.should_not match(/not awaiting moderation/)
   end
 
   it 'should show "not awaiting moderation" where applicable' do
     comment = Comment.make! :awaiting_moderation => false
-    mail    = CommentMailer.create_new_comment_alert comment
+    mail    = CommentMailer.new_comment_alert comment
     mail.body.should match(/not awaiting moderation/)
   end
 
