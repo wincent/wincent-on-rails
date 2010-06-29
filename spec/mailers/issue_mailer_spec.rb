@@ -5,7 +5,7 @@ describe IssueMailer, 'issue' do
   default_url_options[:port] = APP_CONFIG['port'] if APP_CONFIG['port'] != 80 and APP_CONFIG['port'] != 443
 
   before do
-    @issue  = create_issue
+    @issue  = Issue.make!
     @mail   = IssueMailer.create_new_issue_alert @issue
   end
 
@@ -24,14 +24,14 @@ describe IssueMailer, 'issue' do
   end
 
   it 'should show "awaiting moderation" where applicable' do
-    issue = create_issue :awaiting_moderation => true
+    issue = Issue.make! :awaiting_moderation => true
     mail    = IssueMailer.create_new_issue_alert issue
     mail.body.should match(/awaiting moderation/)
     mail.body.should_not match(/not awaiting moderation/)
   end
 
   it 'should show "not awaiting moderation" where applicable' do
-    issue = create_issue :awaiting_moderation => false
+    issue = Issue.make! :awaiting_moderation => false
     mail    = IssueMailer.create_new_issue_alert issue
     mail.body.should match(/not awaiting moderation/)
   end
