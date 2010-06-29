@@ -1,11 +1,9 @@
 class IssueMailer < ActionMailer::Base
   def new_issue_alert issue
     subject(subject_header = "new issue alert from #{APP_CONFIG['host']}")
-    body({
-      :issue          => issue,
-      :issue_url      => edit_issue_url(issue),
-      :moderation_url => admin_dashboard_url
-      })
+    @issue          = issue
+    @issue_url      = edit_issue_url(issue)
+    @moderation_url = admin_dashboard_url
     recipients(to_header = APP_CONFIG['admin_email'])
     from(from_header = APP_CONFIG['support_email'])
     sent_on Time.now
