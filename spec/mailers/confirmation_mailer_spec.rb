@@ -7,7 +7,7 @@ describe ConfirmationMailer, 'confirmation' do
   before do
     @administrator  = 'win@wincent.com'
     @support        = 'support@wincent.com'
-    @confirmation   = create_confirmation
+    @confirmation   = Confirmation.make!
     @mail           = ConfirmationMailer.create_confirmation_message @confirmation
   end
 
