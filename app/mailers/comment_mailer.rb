@@ -1,12 +1,10 @@
 class CommentMailer < ActionMailer::Base
   def new_comment_alert comment
     subject(subject_header = "new comment alert from #{APP_CONFIG['host']}")
-    body({
-      :comment          => comment,
-      :comment_url      => comment_url(comment),
-      :edit_comment_url => edit_comment_url(comment),
-      :moderation_url   => admin_dashboard_url
-      })
+    @comment          = comment
+    @comment_url      = comment_url(comment)
+    @edit_comment_url = edit_comment_url(comment)
+    @moderation_url   = admin_dashboard_url
     recipients(to_header = APP_CONFIG['admin_email'])
     from(from_header = APP_CONFIG['support_email'])
     sent_on     Time.now
