@@ -82,7 +82,7 @@ protected
   def send_new_comment_alert
     begin
       return if self.user && self.user.superuser? # don't inform admin of his own comments
-      CommentMailer.deliver_new_comment_alert self
+      CommentMailer.new_comment_alert(self).deliver
     rescue Exception => e
       logger.error "\nerror: Comment#send_new_comment_alert for comment #{self.id} failed due to exception #{e.class}: #{e}\n\n"
     end
