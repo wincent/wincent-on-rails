@@ -6,7 +6,7 @@ describe IssueMailer, 'issue' do
 
   before do
     @issue  = Issue.make!
-    @mail   = IssueMailer.create_new_issue_alert @issue
+    @mail   = IssueMailer.new_issue_alert @issue
   end
 
   it 'should set the subject line' do
@@ -25,14 +25,14 @@ describe IssueMailer, 'issue' do
 
   it 'should show "awaiting moderation" where applicable' do
     issue = Issue.make! :awaiting_moderation => true
-    mail    = IssueMailer.create_new_issue_alert issue
+    mail    = IssueMailer.new_issue_alert issue
     mail.body.should match(/awaiting moderation/)
     mail.body.should_not match(/not awaiting moderation/)
   end
 
   it 'should show "not awaiting moderation" where applicable' do
     issue = Issue.make! :awaiting_moderation => false
-    mail    = IssueMailer.create_new_issue_alert issue
+    mail    = IssueMailer.new_issue_alert issue
     mail.body.should match(/not awaiting moderation/)
   end
 
