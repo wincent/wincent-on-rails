@@ -1,4 +1,6 @@
 class CommentMailer < ActionMailer::Base
+  default :return_path => APP_CONFIG['support_email']
+
   def new_comment_alert comment
     subject_header    = "new comment alert from #{APP_CONFIG['host']}"
     to_header         = APP_CONFIG['admin_email']
@@ -7,8 +9,7 @@ class CommentMailer < ActionMailer::Base
     @comment_url      = comment_url(comment)
     @edit_comment_url = edit_comment_url(comment)
     @moderation_url   = admin_dashboard_url
-    headers 'Message-ID' => (message_id_header = SupportMailer.new_message_id),
-            'return-path' => from_header
+    headers 'Message-ID' => (message_id_header = SupportMailer.new_message_id)
     Message.create  :related            => comment,
                     :message_id_header  => message_id_header,
                     :to_header          => to_header,
