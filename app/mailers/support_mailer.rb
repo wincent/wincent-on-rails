@@ -68,6 +68,8 @@ class SupportMailer < ActionMailer::Base
     message.save
   end
 
+private
+
   def new_issue_from_message message
     issue = Issue.new :summary => message.subject_header
     issue.description = message.body ? message.body : message.subject_header
