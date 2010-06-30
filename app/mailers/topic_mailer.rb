@@ -1,11 +1,9 @@
 class TopicMailer < ActionMailer::Base
   def new_topic_alert topic
     subject(subject_header = "new topic alert from #{APP_CONFIG['host']}")
-    body({
-      :topic          => topic,
-      :topic_url      => edit_forum_topic_url(topic.forum, topic),
-      :moderation_url => admin_dashboard_url
-      })
+    @topic          = topic
+    @topic_url      = edit_forum_topic_url(topic.forum, topic)
+    @moderation_url = admin_dashboard_url
     recipients(to_header = APP_CONFIG['admin_email'])
     from(from_header = APP_CONFIG['support_email'])
     sent_on Time.now
