@@ -7,11 +7,11 @@ describe ResetMailer, 'reset' do
   before do
     @administrator  = 'win@wincent.com'
     @support        = 'support@wincent.com'
-    user            = create_user
-    @email          = user.emails.create(:address => "#{FR::random_string}@example.com")
-    @recipient      = @email.address
+    user            = User.make!
+    email           = user.emails.first
+    @recipient      = email.address
     @reset          = user.resets.build
-    @reset.email    = @email
+    @reset.email    = email
     @reset.save
     @mail           = ResetMailer.create_reset_message @reset
   end
