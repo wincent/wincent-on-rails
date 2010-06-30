@@ -8,5 +8,5 @@ end
 
 Factory.define :article do |a|
   a.title { Sham.article_title }
-  a.sequence(:body) { |n| "Body #{n}." }
+  a.sequence(:body) { |n| "Body #{n}. " + Sham.lorem_ipsum }
 end
