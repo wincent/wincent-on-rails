@@ -6,12 +6,10 @@ class ExceptionMailer < ActionMailer::Base
     recipients APP_CONFIG['admin_email']
     from(from_header = APP_CONFIG['support_email'])
     headers   'return-path' => from_header
-    body({
-      :controller => controller,
-      :exception  => exception,
-      :backtrace  => pretty_backtrace(exception),
-      :request    => request
-    })
+    @controller = controller
+    @exception  = exception
+    @backtrace  = pretty_backtrace(exception)
+    @request    = request
   end
 
 private

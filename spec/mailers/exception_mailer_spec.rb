@@ -14,7 +14,7 @@ describe ExceptionMailer, 'exception report' do
     @request = Object.new
     @request.stub!(:protocol).and_return('https://')
     @request.stub!(:fullpath).and_return('/cartons/xxl')
-    @mail = ExceptionMailer.create_exception_report @exception, @controller, @request
+    @mail = ExceptionMailer.exception_report @exception, @controller, @request
   end
 
   it 'should set the subject line' do
