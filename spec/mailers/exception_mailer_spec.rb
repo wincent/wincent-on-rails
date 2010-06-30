@@ -5,15 +5,15 @@ describe ExceptionMailer, 'exception report' do
   before do
     @root = Rails.root
     @exception = RuntimeError.new 'Reactor meltdown'
-    @exception.stub!(:backtrace).and_return([@root + 'foo',
-                                             @root + 'bar',
-                                             @root + 'baz'])
+    stub(@exception).backtrace { [@root + 'foo',
+                                  @root + 'bar',
+                                  @root + 'baz'] }
     @controller = Object.new
-    @controller.stub!(:controller_name).and_return('cartons')
-    @controller.stub!(:action_name).and_return('destroy')
+    stub(@controller).controller_name { 'cartons' }
+    stub(@controller).action_name { 'destroy' }
     @request = Object.new
-    @request.stub!(:protocol).and_return('https://')
-    @request.stub!(:fullpath).and_return('/cartons/xxl')
+    stub(@request).protocol { 'https://' }
+    stub(@request).fullpath { '/cartons/xxl' }
     @mail = ExceptionMailer.exception_report @exception, @controller, @request
   end
 
