@@ -1,4 +1,4 @@
-Factory.define (:reset) do |r|
+Factory.define :reset do |r|
   r.association :email
 
   r.after_build do |reset|
