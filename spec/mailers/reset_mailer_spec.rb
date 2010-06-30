@@ -4,12 +4,8 @@ describe ResetMailer, 'reset' do
   before do
     @administrator  = 'win@wincent.com'
     @support        = 'support@wincent.com'
-    user            = User.make!
-    email           = user.emails.first
-    @recipient      = email.address
-    @reset          = user.resets.build
-    @reset.email    = email
-    @reset.save
+    @reset          = Reset.make!
+    @recipient      = @reset.email.address
     @mail           = ResetMailer.reset_message @reset
   end
 
