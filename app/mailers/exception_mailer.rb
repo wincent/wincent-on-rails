@@ -1,15 +1,20 @@
 class ExceptionMailer < ActionMailer::Base
+  default :return_path => APP_CONFIG['support_email']
+
   def exception_report exception, controller, request
-    subject    "[ERROR] #{APP_CONFIG['host']} " +
-               "#{controller.controller_name}\##{controller.action_name} " +
-               "(#{exception.class}: #{exception.message})"
-    recipients APP_CONFIG['admin_email']
-    from(from_header = APP_CONFIG['support_email'])
-    headers   'return-path' => from_header
+    sub = "[ERROR] #{APP_CONFIG['host']} " +
+          "#{controller.controller_name}\##{controller.action_name} " +
+          "(#{exception.class}: #{exception.message})"
+
     @controller = controller
     @exception  = exception
     @backtrace  = pretty_backtrace(exception)
     @request    = request
+
+    mail  :subject  => sub,
+          :to       => APP_CONFIG['admin_email'],
+          :from     => APP_CONFIG['support_email'],
+          :date     => Time.now
   end
 
 private
