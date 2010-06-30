@@ -8,11 +8,9 @@ describe ExceptionMailer, 'exception report' do
     stub(@exception).backtrace { [@root + 'foo',
                                   @root + 'bar',
                                   @root + 'baz'] }
-    @controller = Object.new
-    stub(@controller).controller_name { 'cartons' }
+    @controller = stub!.controller_name { 'cartons' }.subject
     stub(@controller).action_name { 'destroy' }
-    @request = Object.new
-    stub(@request).protocol { 'https://' }
+    @request = stub!.protocol { 'https://' }.subject
     stub(@request).fullpath { '/cartons/xxl' }
     @mail = ExceptionMailer.exception_report @exception, @controller, @request
   end
