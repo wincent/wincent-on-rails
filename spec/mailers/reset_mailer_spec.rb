@@ -10,7 +10,7 @@ describe ResetMailer, 'reset' do
     @reset          = user.resets.build
     @reset.email    = email
     @reset.save
-    @mail           = ResetMailer.create_reset_message @reset
+    @mail           = ResetMailer.reset_message @reset
   end
 
   it 'should set the subject line' do
