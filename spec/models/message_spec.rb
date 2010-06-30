@@ -4,6 +4,12 @@ describe Message do
   it 'should treat all fields as optional' do
     Message.create.should be_valid
   end
+
+  describe 'incoming attribute' do
+    it 'should default to true' do
+      Message.create.incoming.should == true
+    end
+  end
 end
 
 # :related, :message_id_header, :to_header, :from_header, :subject_header,
