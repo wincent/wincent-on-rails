@@ -7,7 +7,7 @@ module RSpec
 
       def matches? model
         @model = model
-        !@model.valid? and !@model.errors.on(@attribute).nil?
+        !@model.valid? and !@model.errors[@attribute].empty?
       end
 
       def failure_message
