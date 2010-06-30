@@ -10,6 +10,39 @@ describe Message do
       Message.create.incoming.should == true
     end
   end
+
+  describe 'message_id_header attribute' do
+    it 'should be auto-populated if needed for outgoing mails' do
+      # no message_id_header supplied
+      message = Message.create :incoming => false
+      message.message_id_header.should match(/\A<.+@.+>\z/)
+
+      # explicit message_id_header supplied
+      message = Message.create :incoming => false, :message_id_header => 'foo'
+      message.message_id_header.should == 'foo'
+    end
+
+    it 'should not be auto-populated for incoming mails' do
+      # no message_id_header supplied
+      message = Message.create :incoming => true
+      message.message_id_header.should be_nil
+
+      # explicit message_id_header supplied
+      message = Message.create :incoming => true, :message_id_header => 'foo'
+      message.message_id_header.should == 'foo'
+    end
+  end
+
+  describe 'message_id class method' do
+    it 'should produce unique message IDs' do
+      ids = Array.new(1000) { Message.message_id }
+      ids.uniq.count.should == 1000
+    end
+
+    it 'should follow the "standard" message ID format' do
+      Message.message_id.should match(/\A<.+@.+>\z/)
+    end
+  end
 end
 
 # :related, :message_id_header, :to_header, :from_header, :subject_header,
