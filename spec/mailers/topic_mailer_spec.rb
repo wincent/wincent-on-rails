@@ -1,9 +1,6 @@
 require File.expand_path('../spec_helper', File.dirname(__FILE__))
 
 describe TopicMailer, 'topic' do
-  default_url_options[:host] = APP_CONFIG['host']
-  default_url_options[:port] = APP_CONFIG['port'] if APP_CONFIG['port'] != 80 and APP_CONFIG['port'] != 443
-
   before do
     @topic  = Topic.make!
     @mail   = TopicMailer.new_topic_alert @topic
