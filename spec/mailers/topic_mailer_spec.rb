@@ -5,7 +5,7 @@ describe TopicMailer, 'topic' do
   default_url_options[:port] = APP_CONFIG['port'] if APP_CONFIG['port'] != 80 and APP_CONFIG['port'] != 443
 
   before do
-    @topic  = create_topic
+    @topic  = Topic.make!
     @mail   = TopicMailer.create_new_topic_alert @topic
   end
 
@@ -24,14 +24,14 @@ describe TopicMailer, 'topic' do
   end
 
   it 'should show "awaiting moderation" where applicable' do
-    topic = create_topic :awaiting_moderation => true
+    topic = Topic.make! :awaiting_moderation => true
     mail    = TopicMailer.create_new_topic_alert topic
     mail.body.should match(/awaiting moderation/)
     mail.body.should_not match(/not awaiting moderation/)
   end
 
   it 'should show "not awaiting moderation" where applicable' do
-    topic = create_topic :awaiting_moderation => false
+    topic = Topic.make! :awaiting_moderation => false
     mail    = TopicMailer.create_new_topic_alert topic
     mail.body.should match(/not awaiting moderation/)
   end
