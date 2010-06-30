@@ -4,7 +4,6 @@ class ResetMailer < ActionMailer::Base
   def reset_message reset
     message = Message.create \
       :related            => reset,
-      :message_id_header  => SupportMailer.new_message_id,
       :to_header          => reset.email.address,
       :from_header        => APP_CONFIG['support_email'],
       :subject_header     => 'wincent.com forgotten passphrase helper',

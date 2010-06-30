@@ -4,7 +4,6 @@ class ConfirmationMailer < ActionMailer::Base
   def confirmation_message confirmation
     message = Message.create \
       :related            => confirmation,
-      :message_id_header  => SupportMailer.new_message_id,
       :to_header          => confirmation.email.address,
       :from_header        => APP_CONFIG['support_email'],
       :subject_header     => 'wincent.com requests that you confirm your email address',

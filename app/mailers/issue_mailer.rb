@@ -4,7 +4,6 @@ class IssueMailer < ActionMailer::Base
   def new_issue_alert issue
     message = Message.create \
       :related            => issue,
-      :message_id_header  => SupportMailer.new_message_id,
       :to_header          => APP_CONFIG['admin_email'],
       :from_header        => APP_CONFIG['support_email'],
       :subject_header     => "new issue alert from #{APP_CONFIG['host']}",

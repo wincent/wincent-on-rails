@@ -4,7 +4,6 @@ class TopicMailer < ActionMailer::Base
   def new_topic_alert topic
     message = Message.create \
       :related            => topic,
-      :message_id_header  => SupportMailer.new_message_id,
       :to_header          => APP_CONFIG['admin_email'],
       :from_header        => APP_CONFIG['support_email'],
       :subject_header     => "new topic alert from #{APP_CONFIG['host']}",
