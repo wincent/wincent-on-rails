@@ -6,7 +6,7 @@ describe TopicMailer, 'topic' do
 
   before do
     @topic  = Topic.make!
-    @mail   = TopicMailer.create_new_topic_alert @topic
+    @mail   = TopicMailer.new_topic_alert @topic
   end
 
   it 'should set the subject line' do
@@ -25,14 +25,14 @@ describe TopicMailer, 'topic' do
 
   it 'should show "awaiting moderation" where applicable' do
     topic = Topic.make! :awaiting_moderation => true
-    mail    = TopicMailer.create_new_topic_alert topic
+    mail    = TopicMailer.new_topic_alert topic
     mail.body.should match(/awaiting moderation/)
     mail.body.should_not match(/not awaiting moderation/)
   end
 
   it 'should show "not awaiting moderation" where applicable' do
     topic = Topic.make! :awaiting_moderation => false
-    mail    = TopicMailer.create_new_topic_alert topic
+    mail    = TopicMailer.new_topic_alert topic
     mail.body.should match(/not awaiting moderation/)
   end
 
