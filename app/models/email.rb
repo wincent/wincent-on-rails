@@ -24,6 +24,8 @@ class Email < ActiveRecord::Base
   end
   alias_method :deleted?, :deleted
 
+  # BUG: we have an overly restrictive format requirement, but we kind of need
+  # it as we are abusing the email address as a parameter
   def to_param
     address
   end
