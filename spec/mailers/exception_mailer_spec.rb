@@ -5,13 +5,15 @@ describe ExceptionMailer, 'exception report' do
   before do
     @root = Rails.root
     @exception = RuntimeError.new 'Reactor meltdown'
-    stub(@exception).backtrace { [@root + 'foo',
-                                  @root + 'bar',
-                                  @root + 'baz'] }
+    backtrace = %w(foo bar baz).map { |frame| (@root + frame).to_s }
+    stub(@exception).backtrace { backtrace }
     @controller = stub!.controller_name { 'cartons' }.subject
     stub(@controller).action_name { 'destroy' }
-    @request = stub!.protocol { 'https://' }.subject
-    stub(@request).fullpath { '/cartons/xxl' }
+    @request = stub!.url { 'https://localhost/cartons/xxl' }.subject
+    stub(@request).remote_ip { '127.0.0.1' }
+    stub(@request).session {{ 'session_id' => 'deadbeef'}}
+    stub(@request).filtered_parameters { "{:a => 'foo'}" }
+    stub(@request).filtered_env {{'a' => 'foo'}}
     @mail = ExceptionMailer.exception_report @exception, @controller, @request
   end
 
@@ -59,6 +61,10 @@ describe ExceptionMailer, 'exception report' do
   end
 
   it 'should show the full expansion of RAILS_ROOT' do
-    @mail.body.should match(/RAILS_ROOT = #{Regexp.escape @root}/)
+    @mail.body.should match(/RAILS_ROOT\s+=\s+#{Regexp.escape @root}/)
+  end
+
+  it 'should show the full expansion of BUNDLE_PATH' do
+    @mail.body.should match(/BUNDLE_PATH\s+=\s+#{Regexp.escape Bundler.bundle_path}/)
   end
 end
