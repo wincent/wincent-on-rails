@@ -6,9 +6,8 @@ describe User, 'generating a passphrase' do
   end
 
   it 'should not generate the same passphrase twice' do
-    passphrases = []
-    1_000.times { passphrases << User.passphrase }
-    passphrases.size.should == passphrases.uniq.size
+    passphrases = Array.new(1_000) { User.passphrase }
+    passphrases.uniq.size.should == 1_000
   end
 
   it 'should not generate passphrases with ambiguous characters (0, O, 1, l, I)' do
