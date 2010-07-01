@@ -108,10 +108,4 @@ protected
     # always leave cookie flash deletion up to the browser
     cookies[:flash] = flash_hash.to_json unless flash_hash.blank?
   end
-
-  # uncomment this method to test what remote users will see
-  # when there are errors (must be in production mode)
-  #def local_request?
-  #  false
-  #end
 end
