@@ -22,8 +22,11 @@ private
 
   def pretty_backtrace exception
     rails_root = Regexp.escape(Rails.root)
+    bundle_path = Regexp.escape(Bundler.bundle_path)
     exception.backtrace.map do |line|
-      "  #{line.sub(/^#{rails_root}/, 'RAILS_ROOT')}"
+      line.sub! /^#{rails_root}/, 'RAILS_ROOT'
+      line.sub! /^#{bundle_path}/, 'BUNDLE_PATH'
+      "  #{line}"
     end.join("\n")
   end
 
