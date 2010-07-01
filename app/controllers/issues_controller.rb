@@ -177,8 +177,7 @@ private
   def current_user_wrapper
     Thread.current[:current_user] = current_user
     yield
-    Thread.current[:current_user] = nil
-  rescue => exception
+  ensure
     Thread.current[:current_user] = nil
   end
 
