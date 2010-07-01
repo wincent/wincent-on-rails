@@ -11,7 +11,7 @@ class Email < ActiveRecord::Base
 
   def deleted= flag
     # If coming from a form, flag will be a String ('0' or '1').
-    bool = (flag == '1')
+    bool = !(flag.nil? or flag == false or flag == '0')
     if bool && !deleted?
       self.deleted_at = Time.now
     elsif !bool
