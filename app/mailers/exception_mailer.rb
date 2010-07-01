@@ -10,6 +10,7 @@ class ExceptionMailer < ActionMailer::Base
     @exception  = exception
     @backtrace  = pretty_backtrace(exception)
     @request    = request
+    @env        = pretty_env(request.filtered_env)
 
     mail  :subject  => sub,
           :to       => APP_CONFIG['admin_email'],
@@ -24,5 +25,11 @@ private
     exception.backtrace.map do |line|
       "  #{line.sub(/^#{rails_root}/, 'RAILS_ROOT')}"
     end.join("\n")
+  end
+
+  def pretty_env env
+    lines = env.to_yaml.split("\n")
+    lines.shift # drop first line "---"
+    lines.map { |line| "  #{line}" }.join("\n")
   end
 end

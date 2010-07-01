@@ -1,10 +1,32 @@
-        Exception: <%= @exception.class %>
-Controller#action: <%= @controller.controller_name %>#<%= @controller.action_name %>
-              URL: <%= @request.protocol %><%= APP_CONFIG['host'] %><%= @request.fullpath %>
-          Message: <%= @exception.message %>
-             Time: <%= Time.now %> (this report generated at)
+OVERVIEW:
+---------
 
-Backtrace:
-  [RAILS_ROOT = <%= Rails.root %>]
+          Exception: <%= @exception.class %>
+            Message: <%= raw @exception.message %>
+  Controller#action: <%= @controller.controller_name %>#<%= @controller.action_name %>
+                URL: <%= raw @request.url %>
+          Remote IP: <%= raw @request.remote_ip %>
+                PID: <%= raw $$ %>
+               Host: <%= raw `hostname`.chomp %>
+               Time: <%= Time.now %> (report generation time)
 
-<%= @backtrace %>
+BACKTRACE:
+----------
+
+  [RAILS_ROOT = <%= raw Rails.root %>]
+
+<%= raw @backtrace %>
+
+SESSION:
+--------
+
+    Session ID: <%= raw @request.session['session_id'].to_s %>
+    Parameters: <%= raw @request.filtered_parameters.inspect %>
+  Session data: <%= raw @request.session.inspect %>
+
+
+ENVIRONMENT:
+------------
+
+<%= raw @env %>
+
