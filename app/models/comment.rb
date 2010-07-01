@@ -84,6 +84,11 @@ protected
       return if self.user && self.user.superuser? # don't inform admin of his own comments
       CommentMailer.new_comment_alert(self).deliver
     rescue Exception => e
+      # BUG: we're contaminating the code being tested here with knowledge
+      # about the testing tools
+      #   http://github.com/btakita/rr/issues/issue/40
+      raise e if e.class.to_s =~ /RR::Errors/
+
       logger.error "\nerror: Comment#send_new_comment_alert for comment #{self.id} failed due to exception #{e.class}: #{e}\n\n"
     end
   end

@@ -42,41 +42,41 @@ describe Comment, '"send_new_comment_alert" method' do
   end
 
   it 'should fire after saving new records' do
-    @comment.should_receive(:send_new_comment_alert)
+    mock(@comment).send_new_comment_alert
     @comment.save
   end
 
   it 'should not fire after saving an existing record' do
     @comment.save
-    @comment.should_not_receive(:send_new_comment_alert)
+    do_not_allow(@comment).send_new_comment_alert
     @comment.save
   end
 
   it 'should deliver a new comment alert for normal user comments' do
-    CommentMailer.should_receive(:deliver_new_comment_alert).with(@comment)
+    mock(CommentMailer).new_comment_alert(@comment)
     @comment.save
   end
 
   it 'should deliver a new comment alert for anonymous comments' do
     comment = Comment.make :user => nil
-    CommentMailer.should_receive(:deliver_new_comment_alert).with(comment)
+    mock(CommentMailer).new_comment_alert(comment)
     comment.save
   end
 
   it 'should not send comment alerts for superuser comments' do
     comment = Comment.make :user => (User.make! :superuser => true)
-    CommentMailer.should_not_receive(:deliver_new_comment_alert)
+    do_not_allow(CommentMailer).new_comment_alert
     comment.save
   end
 
   it 'should rescue exceptions rather than dying' do
-    CommentMailer.should_receive(:deliver_new_comment_alert).and_raise('fatal error!')
+    mock(CommentMailer).new_comment_alert(@comment) { raise 'fatal error!' }
     lambda { @comment.save }.should_not raise_error
   end
 
   it 'should log an error message on failure' do
-    CommentMailer.stub!(:deliver_new_comment_alert).and_raise('fatal error!')
-    @comment.logger.should_receive(:error)
+    stub(CommentMailer).new_comment_alert(@comment) { raise 'fatal error!' }
+    mock(@comment.logger).error(/failed due to exception/)
     @comment.save
   end
 end
