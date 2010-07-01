@@ -6,47 +6,60 @@ class ExceptionReporter
   def call env
     status, headers, body = @app.call env
     [status, headers, body]
-  rescue Exception => e
-    rescue_action_in_public e
+  rescue Exception => exception
+    report_exception(exception) if exception_reportable?(exception)
+    raise exception # handled by ActionDispatch::ShowExceptions middleware
   end
 
 private
 
-  def rescue_action_in_public exception
-    # From vendor/rails/actionpack/lib/action_controller/rescue.rb:
-    #
-    #  'ActionController::RoutingError'             => :not_found,
-    #  'ActionController::UnknownAction'            => :not_found,
-    #  'ActiveRecord::RecordNotFound'               => :not_found,
-    #  'ActiveRecord::StaleObjectError'             => :conflict,
-    #  'ActiveRecord::RecordInvalid'                => :unprocessable_entity,
-    #  'ActiveRecord::RecordNotSaved'               => :unprocessable_entity,
-    #  'ActionController::MethodNotAllowed'         => :method_not_allowed,
-    #  'ActionController::NotImplemented'           => :not_implemented,
-    #  'ActionController::InvalidAuthenticityToken' => :unprocessable_entity
-    #
-    # All other exceptions will result in a 500 (internal server error)
-    case exception
-    when ActionController::RoutingError
-      # requests like /foo (unknown controller, 404)
-    when ActionController::UnknownAction
-      # requests like /misc/foo (known controller, unknown action, 404)
-    when ActiveRecord::RecordNotFound
-      # strictly speaking, should never get here (RecordNotFound is handled
-      # by the record_not_found method above), but if we did the default 404
-      # page would be fine
-    when ActiveRecord::StaleObjectError,
-         ActiveRecord::RecordInvalid,
-         ActiveRecord::RecordNotSaved,
-         ActionController::MethodNotAllowed,
-         ActionController::NotImplemented,
-         ActionController::InvalidAuthenticityToken
-      # default handling is fine for all of these
-    else
-      # Internal Server Error (500): these are the ones we want to know about
-      # TODO: may later want to rate limit these
-      ExceptionMailer.deliver_exception_report exception, self, request
-    end
-    raise exception
+  # Exceptions list taken from:
+  #   actionpack/lib/action_dispatch/middleware/show_exceptions.rb
+  @@exception_actions = {
+    # requests like /foo (unknown controller, 404)
+    'ActionController::RoutingError' => :default,
+
+    # requests like /misc/foo (known controller, unknown action, 404)
+    'AbstractController::ActionNotFound' => :default,
+
+    # strictly speaking, should never get here (RecordNotFound is handled
+    # by the record_not_found method in ApplicationController), but if we did
+    # the default 404 page would be fine
+    'ActiveRecord::RecordNotFound' => :default,
+
+    # thrown when "optimistic locking" detects a conflict
+    'ActiveRecord::StaleObjectError' => :default,
+
+    # raised by save! and create! when validation fails
+    # notify because we generally want to handle validation problems
+    # via flashes and re-rendering forms
+    'ActiveRecord::RecordInvalid' => :notify,
+
+    # raised by save! and create! if a callback returns false
+    # or associated model is not saved yet
+    # again, notify, because we never expect to see this kind of error
+    # in the normal flow of execution
+    'ActiveRecord::RecordNotSaved' => :notify,
+
+    # doesn't seem to be used at all in Rails codebase
+    # seeing it is probably indicative of programmer error
+    'ActionController::MethodNotAllowed' => :notify,
+
+    # most likely a programming error
+    # (hitting codepath which should never be reached)
+    'ActionController::NotImplemented' => :notify,
+
+    # raised when CSRF protection kicks in
+    'ActionController::InvalidAuthenticityToken' => :default
+  }
+
+  def exception_reportable? exception
+    @@exception_actions[exception.class.to_s] != :default
+  end
+
+  # TODO: may later want to rate limit exception notifications
+  def report_exception exception
+    # BUG: don't have "self" (controller) or "request" here
+    ExceptionMailer.deliver_exception_report exception, self, request
   end
 end
