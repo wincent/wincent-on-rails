@@ -146,11 +146,9 @@ end
 
 describe User, 'validating the passphrase' do
   it 'should require it to be present on new records' do
-    # for some reason, FixtureReplacement 3.0 doesn't work here, so create
-    # record manually (specifically, "new_user :passphrase => nil,
-    # :passphrase_confirmation => nil" returns a valid model with a
-    # passphrase set on it)
-    # for full discussion see:
+    # BUG: Factory Girl, just like FixtureReplacement, can't produce a valid
+    # model with these overrides; this may be evidence of code smell in the
+    # model, although it's hard to see how it could be refactored:
     #   http://github.com/smtlaissezfaire/fixturereplacement/issues#issue/10
     user = User.new :display_name => Sham.random, :passphrase => nil, :passphrase_confirmation => nil
     user.should fail_validation_for(:passphrase)
