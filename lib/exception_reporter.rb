@@ -1,3 +1,5 @@
+require 'ostruct'
+
 class ExceptionReporter
   def initialize app, options = {}
     @app, @options = app, options
@@ -7,7 +9,7 @@ class ExceptionReporter
     status, headers, body = @app.call env
     [status, headers, body]
   rescue Exception => exception
-    report_exception(exception) if exception_reportable?(exception)
+    report_exception(exception, env) if exception_reportable?(exception)
     raise exception # handled by ActionDispatch::ShowExceptions middleware
   end
 
@@ -58,8 +60,10 @@ private
   end
 
   # TODO: may later want to rate limit exception notifications
-  def report_exception exception
-    # BUG: don't have "self" (controller) or "request" here
-    ExceptionMailer.deliver_exception_report exception, self, request
+  def report_exception exception, env
+    controller = env['action_controller.instance'] ||
+      OpenStruct.new(:controller_name => 'unknown', :action_name => 'unknown')
+    request = ActionDispatch::Request.new(env)
+    ExceptionMailer.deliver_exception_report exception, controller, request
   end
 end
