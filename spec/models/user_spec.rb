@@ -1,12 +1,5 @@
 require File.expand_path('../spec_helper', File.dirname(__FILE__))
 
-describe User, 'creation' do
-  it 'should not promote the first-created user to superuser' do
-    User.delete_all # strictly speaking not necessary, but just in case
-    create_user.should_not be_superuser
-  end
-end
-
 describe User, 'generating a passphrase' do
   it 'should generate a string 8 characters in length' do
     1_000.times { User.passphrase.size.should == 8 }
