@@ -2,7 +2,7 @@ require File.expand_path('../spec_helper', File.dirname(__FILE__))
 
 describe Tweet do
   it 'should be valid' do
-    new_tweet.should be_valid
+    Tweet.make.should be_valid
   end
 
   # like Twitter, but advisory rather than a strict limit
@@ -11,19 +11,19 @@ describe Tweet do
   end
 
   it 'should default to accepting comments' do
-    new_tweet.accepts_comments.should == true
+    Tweet.make.accepts_comments.should == true
   end
 end
 
 describe Tweet, 'comments association' do
   it 'should respond to the comments message' do
-    create_tweet.comments.should == []
+    Tweet.make!.comments.should == []
   end
 end
 
 describe Tweet, 'acting as commentable' do
   before do
-    @commentable = create_tweet
+    @commentable = Tweet.make!
   end
 
   it_should_behave_like 'Commentable'
@@ -32,8 +32,8 @@ end
 
 describe Tweet, 'acting as taggable' do
   before do
-    @object     = create_tweet
-    @new_object = new_tweet
+    @object     = Tweet.make!
+    @new_object = Tweet.make
   end
 
   it_should_behave_like 'ActiveRecord::Acts::Taggable'
@@ -48,39 +48,39 @@ end
 # :body
 describe Tweet, 'accessible attributes' do
   it 'should allow mass-assignment to the body' do
-    new_tweet.should allow_mass_assignment_of(:body => 'foo')
+    Tweet.make.should allow_mass_assignment_of(:body => 'foo')
   end
 end
 
 # :created_at, :updated_at
 describe Tweet, 'protected attributes' do
   it 'should deny mass-assignment to the created at attribute' do
-    create_tweet.should_not allow_mass_assignment_of(:created_at => 5.months.ago)
+    Tweet.make!.should_not allow_mass_assignment_of(:created_at => 5.months.ago)
   end
 
   it 'should deny mass-assignment to the update at attribute' do
-    create_tweet.should_not allow_mass_assignment_of(:updated_at => 1.week.ago)
+    Tweet.make!.should_not allow_mass_assignment_of(:updated_at => 1.week.ago)
   end
 end
 
 describe Tweet, 'find_recent (class) method (interaction-based approach)' do
   it 'should find no more than 20 tweets' do
-    Tweet.should_receive(:find).with(:all, hash_including(:limit => 20))
+    mock(Tweet).find :all, hash_including(:limit => 20)
     Tweet.find_recent
   end
 
   it 'should sort tweets in reverse creation order' do
-    Tweet.should_receive(:find).with(:all, hash_including(:order => 'created_at DESC'))
+    mock(Tweet).find :all, hash_including(:order => 'created_at DESC')
     Tweet.find_recent
   end
 
   it 'should use custom offset if supplied' do
-    Tweet.should_receive(:find).with(:all, hash_including(:offset => 35))
+    mock(Tweet).find :all, hash_including(:offset => 35)
     Tweet.find_recent :offset => 35
   end
 
   it 'should use custom limit if supplied' do
-    Tweet.should_receive(:find).with(:all, hash_including(:limit => 100))
+    mock(Tweet).find :all, hash_including(:limit => 100)
     Tweet.find_recent :limit => 100
   end
 end
@@ -88,19 +88,19 @@ end
 describe Tweet, 'find_recent (class) method (state-based approach)' do
   def old_tweet days_count
     past = days_count.days.ago
-    tweet = create_tweet
+    tweet = Tweet.make!
     Tweet.update_all ['created_at = ?, updated_at = ?', past, past], ['id = ?', tweet.id]
     tweet
   end
 
   it 'should find no more than 20 tweets' do
-    25.times { create_tweet }
+    25.times { Tweet.make! }
     Tweet.find_recent.length.should <= 20
   end
 
   it 'should sort tweets in reverse creation order' do
     old = old_tweet(3)
-    new = create_tweet
+    new = Tweet.make!
     Tweet.find_recent.should == [new, old]
   end
 
@@ -108,14 +108,14 @@ describe Tweet, 'find_recent (class) method (state-based approach)' do
     first = old_tweet(10)
     second = old_tweet(8)
     third = old_tweet(6)
-    fourth = create_tweet
+    fourth = Tweet.make!
     paginator = RestfulPaginator.new({ :page => 2 }, 4, 'foo', 2)
     Tweet.find_recent(:offset => paginator.offset,
       :limit => paginator.limit).should == [second, first]
   end
 
   it 'should use limit from paginator if supplied' do
-    20.times { create_tweet }
+    20.times { Tweet.make! }
     paginator = RestfulPaginator.new({}, 20, 'foo', 10)
     Tweet.find_recent(:offset => paginator.offset,
       :limit => paginator.limit).length.should == 10
