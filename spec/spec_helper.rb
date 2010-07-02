@@ -44,11 +44,3 @@ RSpec.configure do |config|
   config.include ControllerSpecHelpers, :example_group => { :file_path => %r{\bspec/controllers/} }
   config.include MailerSpecHelpers, :example_group => { :file_path => %r{\bspec/mailers/} }
 end
-
-# make "bundle exec ..." and "rake spec ..." behave like "rspec ..." does
-if ENV['RUBYOPT']
-  puts "Pruning RUBYOPT; current value: #{ENV['RUBYOPT']}"
-  ENV['RUBYOPT'] = ENV['RUBYOPT'].gsub(%r{-r\s*bundler/setup}, '')
-  puts "                     new value: #{ENV['RUBYOPT']}"
-  puts "See https://wincent.com/issues/1590 for more details"
-end
