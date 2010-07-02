@@ -12,9 +12,8 @@ class ResetsController < ApplicationController
       if email.resets.count(:conditions => ['created_at > ?', 3.days.ago]) > 5
         flash[:error] = 'You have exceeded the resets limit for this email address for today; please try again later'
       else
-        reset       = email.resets.build
-        reset.save!
-        error_msg   = "An error occurred while sending the email to #{address}"
+        reset     = email.resets.create!
+        error_msg = "An error occurred while sending the email to #{address}"
         begin
           ResetMailer.deliver_reset_message reset
         rescue Net::SMTPFatalError
