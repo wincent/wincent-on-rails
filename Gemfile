@@ -1,7 +1,5 @@
 source 'http://rubygems.org'
 
-#gem 'ruby-debug'
-
 # List most of the gems under the "ruby_18" platform to prevent Bundler
 # from freaking out when we fire up a JRuby (Celerity) child process in
 # our acceptance specs; see:
@@ -14,6 +12,10 @@ platforms :ruby_18 do
 
   group :development, :test do
     gem 'factory_girl_rails'
+  end
+
+  group :development do
+    gem 'ruby-debug'
   end
 
   group :test do
