@@ -1,27 +1,3 @@
-unless Object.const_defined? :Bundler
-  puts <<-HERE
-
-    * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-    *                                                                       *
-    *  WARNING: Bundler is not loaded                                       *
-    *  ==============================                                       *
-    *                                                                       *
-    *  To ensure that the environment is set-up as defined in the Gemfile   *
-    *  use either Rake:                                                     *
-    *                                                                       *
-    *      rake spec                                                        *
-    *      rake spec:acceptance                                             *
-    *                                                                       *
-    *  or "bundle exec":                                                    *
-    *                                                                       *
-    *      bundle exec rspec spec/mailers                                   *
-    *      bundle exec rspec spec/models                                    *
-    *                                                                       *
-    * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
-    HERE
-end
-
 ENV['RAILS_ENV'] = ENV['RSPEC_RAILS_ENV'] || 'test'
 require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
