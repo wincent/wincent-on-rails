@@ -18,7 +18,7 @@ class Reset < ActiveRecord::Base
   validates_presence_of :email_address, :on => :update
   validates_each        :email_address, :on => :update do |reset, att, value|
     # guard against brute force attacks
-    unless reset.email.address == value
+    unless value == reset.email.address
       reset.errors.add(att, 'must match existing email on record')
     end
   end
