@@ -34,6 +34,10 @@ class ResetsController < ApplicationController
     end
   end
 
+  def show
+    redirect_to :action => 'edit'
+  end
+
   def edit
     if @reset.nil?
       flash[:error] = 'Reset token not found'
