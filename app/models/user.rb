@@ -6,7 +6,6 @@ class User < ActiveRecord::Base
   has_many                  :emails, :dependent => :destroy
   has_many                  :issues
   has_many                  :monitorships, :dependent => :destroy
-  has_many                  :resets, :dependent => :destroy
   has_many                  :topics
 
   attr_reader               :passphrase

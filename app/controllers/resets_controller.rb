@@ -8,11 +8,11 @@ class ResetsController < ApplicationController
   def create
     address = params[:reset][:email_address]
     if email = Email.find_by_address(address, :conditions => { :deleted_at => nil })
-      if email.user.resets.count(:conditions => ['created_at > ?', 3.days.ago]) > 5
+      # TODO: find out how to write this using new syntax
+      if email.resets.count(:conditions => ['created_at > ?', 3.days.ago]) > 5
         flash[:error] = 'You have exceeded the resets limit for this email address for today; please try again later'
       else
-        reset       = email.user.resets.build
-        reset.email = email
+        reset       = email.resets.build
         reset.save!
         error_msg   = "An error occurred while sending the email to #{address}"
         begin
@@ -72,8 +72,7 @@ class ResetsController < ApplicationController
 private
 
   def find_reset_and_user
-    @reset = Reset.find_by_secret params[:id], :include => :user
-    @user = @reset ? @reset.user : nil
+    @reset = Reset.find_by_secret params[:id], :include => :email
+    @user = @reset ? @reset.email.user : nil
   end
-
 end # class ResetsController

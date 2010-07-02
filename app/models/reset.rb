@@ -1,17 +1,24 @@
 require 'digest/sha1'
 
+# Table fields:
+#
+#   string      :secret,       :null => false
+#   datetime    :cutoff,       :null => false
+#   integer     :email_id
+#   datetime    :completed_at
+#   timestamps
+#
+# TODO: add a :null => false constraint to the email_id column
+#
 # TODO: seeing as there is some overlap with the Confirmation model,
 # consider extracting some methods into a common abstract superclass
 class Reset < ActiveRecord::Base
-  belongs_to            :user
   belongs_to            :email
-  validates_presence_of :user
   validates_presence_of :email
   validates_presence_of :email_address, :on => :update
   validates_each        :email_address, :on => :update do |reset, att, value|
-    # guard against brute force attacks by requiring the user to supply an
-    # associated email address
-    unless reset.user.emails.first :conditions => { :address => value }
+    # guard against brute force attacks
+    unless reset.email.address == value
       reset.errors.add(att, 'must match existing email on record')
     end
   end
@@ -35,5 +42,4 @@ private
     self.secret = Reset.secret if self.secret.blank?
     self.cutoff = 3.days.from_now if self.cutoff.nil?
   end
-
 end
