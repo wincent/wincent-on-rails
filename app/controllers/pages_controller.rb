@@ -18,7 +18,7 @@ class PagesController < ApplicationController
   end
 
   def create
-    if @page = @product.pages.create params[:page]
+    if @page = @product.pages.create(params[:page])
       flash[:notice] = 'Successfully created new page'
       redirect_to embedded_product_page_path(@product, @page)
     else
