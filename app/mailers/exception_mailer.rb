@@ -8,9 +8,9 @@ class ExceptionMailer < ActionMailer::Base
 
     @controller = controller
     @exception  = exception
-    @backtrace  = pretty_backtrace(exception)
+    @backtrace  = pretty_backtrace exception
     @request    = request
-    @env        = pretty_env(request.filtered_env)
+    @env        = pretty_env request.filtered_env
 
     mail  :subject  => sub,
           :to       => APP_CONFIG['admin_email'],

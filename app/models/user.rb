@@ -79,7 +79,7 @@ class User < ActiveRecord::Base
   end
 
   def add_email address
-    emails.build(:address => address)
+    emails.build :address => address
   end
 
   # The emails variable should be form input like {"1"=>"1", "408"=>"1"}, meaning "delete emails with ids 1 and 408"
