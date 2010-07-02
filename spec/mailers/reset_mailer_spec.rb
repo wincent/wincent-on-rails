@@ -33,8 +33,12 @@ describe ResetMailer, 'reset' do
     @mail.body.should match(/#{@recipient}/)
   end
 
-  it 'should include the reset link in the body' do
-    @mail.body.should match(/#{edit_reset_url(@reset)}/)
+  it 'includes the (short) reset link in the body' do
+    @mail.body.should match(/#{reset_url(@reset)}/)
+  end
+
+  it 'does not include the (long) edit reset link in the body' do
+    @mail.body.should_not match(/#{edit_reset_url(@reset)}/)
   end
 
   it 'should mention the cutoff date in UTC time' do

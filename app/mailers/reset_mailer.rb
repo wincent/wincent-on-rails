@@ -10,7 +10,7 @@ class ResetMailer < ActionMailer::Base
       :incoming           => false
 
     @address    = message.to_header
-    @reset_url  = edit_reset_url(reset) # shows form to change passphrase
+    @reset_url  = reset_url(reset) # shows form to change passphrase
     @cutoff     = reset.cutoff.utc
 
     mail  :subject    => message.subject_header,
