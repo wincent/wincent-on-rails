@@ -1,3 +1,3 @@
 Factory.define :confirmation do |c|
-  c.association(:email)
+  c.association :email
 end
