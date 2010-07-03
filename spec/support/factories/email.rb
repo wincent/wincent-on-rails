@@ -1,9 +1,5 @@
 Sham.email_address do |n|
-  if Rails.env == 'development'
-    "#{Sham.random_first_name.downcase}#{rand(1000)}@example.com"
-  else
-    "user#{n}@example.com"
-  end
+  "#{Sham.random_first_name.downcase}#{rand(1000)}@example.com"
 end
 
 Factory.define :email do |e|

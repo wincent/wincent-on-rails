@@ -2,11 +2,7 @@
 Sham.passphrase { |n| 'supersecret' }
 
 Sham.user_display_name do |n|
-  if Rails.env == 'development'
-    "#{Sham.random_first_name} #{Sham.random.capitalize} #{Sham.random_last_name}"
-  else
-    "User #{n}"
-  end
+  "#{Sham.random_first_name} #{Sham.random.capitalize} #{Sham.random_last_name}"
 end
 
 Factory.define :user do |u|
