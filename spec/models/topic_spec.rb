@@ -355,17 +355,7 @@ describe Topic, 'send_new_topic_alert callback' do
 
   it 'should deliver a new topic alert for normal user topics' do
     # BUG: stub! doesn't work, our mock is returning nil
-    # Note that the same occurs when we do:
-    #   mock(TopicMailer).new_topic_alert(@topic) { stub!.deliver }
-    # In fact, the block is never evaluated:
-    #   mock(TopicMailer).new_topic_alert(@topic) { exit }
-    # Yet the same pattern works fine in irb:
-    #   extend RR::Adapters::RRMethods
-    #   mock(String).new_topic_alert(1).stub!.deliver
-    #   String.new_topic_alert(1).deliver => nil
-    #   String.new_topic_alert(2).deliver => RR::Errors::DoubleNotFoundError (unexpected method invocation)
-    # Oddly, we don't see the same exception if we send an unexpected method
-    # here; instead we see "Called 0 times. Expected 1 times."
+    # see: http://github.com/btakita/rr/issues/#issue/34
     mock(TopicMailer).new_topic_alert(anything).stub!.deliver
     @topic.save
   end
