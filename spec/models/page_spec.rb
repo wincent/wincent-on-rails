@@ -10,59 +10,62 @@ end
 
 describe Page, 'validation' do
   it 'should require the title to be present' do
-    new_page(:title => '').should fail_validation_for(:title)
+    Page.make(:title => '').should fail_validation_for(:title)
   end
 
   it 'should require the permalink to be present' do
-    new_page(:permalink => '').should fail_validation_for(:permalink)
+    Page.make(:permalink => '').should fail_validation_for(:permalink)
   end
 
   it 'should allow only letters, numbers and hyphens in the permalink' do
-    new_page(:permalink => '%__%').should fail_validation_for(:permalink)
+    Page.make(:permalink => '%__%').should fail_validation_for(:permalink)
   end
 
   it 'should allow only known markup types (HTML and Wikitext)' do
-    new_page(:markup_type => 943).should fail_validation_for(:markup_type)
-    new_page(:markup_type => Page::MarkupType::HTML).should_not fail_validation_for(:markup_type)
-    new_page(:markup_type => Page::MarkupType::WIKITEXT).should_not fail_validation_for(:markup_type)
+    Page.make(:markup_type => 943).should fail_validation_for(:markup_type)
+    Page.make(:markup_type => Page::MarkupType::HTML).should_not fail_validation_for(:markup_type)
+    Page.make(:markup_type => Page::MarkupType::WIKITEXT).should_not fail_validation_for(:markup_type)
   end
 end
 
 describe Page, 'accessible attributes' do
   it 'should allow mass-assignment of the title attribute' do
-    create_page.should allow_mass_assignment_of(:title => 'foo')
+    Page.make!.should allow_mass_assignment_of(:title => 'foo')
   end
 
   it 'should allow mass-assignment of the permalink attribute' do
-    create_page.should allow_mass_assignment_of(:permalink => 'bar')
+    Page.make!.should allow_mass_assignment_of(:permalink => 'bar')
   end
 
   it 'should allow mass-assignment of the body attribute' do
-    create_page.should allow_mass_assignment_of(:body => "<p>baz</p>\n")
+    Page.make!.should allow_mass_assignment_of(:body => "<p>baz</p>\n")
   end
 
   it 'should allow mass-assignment of the markup_type attribute' do
-    create_page.should allow_mass_assignment_of(:markup_type => Page::MarkupType::WIKITEXT)
+    Page.make!.should allow_mass_assignment_of(:markup_type => Page::MarkupType::WIKITEXT)
   end
 
   it 'should allow mass-assignment of the front attribute' do
-    create_page(:front => false).should allow_mass_assignment_of(:front => true)
+    Page.make!(:front => false).should allow_mass_assignment_of(:front => true)
   end
 end
 
 describe Page, 'body_html method' do
   it 'should return raw HTML for HTML markup' do
-    page = create_page(:body => '<em>foo</em>')
+    page = Page.make! :body => '<em>foo</em>'
     page.body_html.should == '<em>foo</em>'
   end
 
   it 'should return transformed HTML for Wikitext markup' do
-    page = create_page(:body => "''foo''", :markup_type => Page::MarkupType::WIKITEXT)
+    page = Page.make! :body => "''foo''",
+      :markup_type => Page::MarkupType::WIKITEXT
     page.body_html.should == "<p><em>foo</em></p>\n"
   end
 
   it 'should complain about unknown markup types' do
-    page = new_page(:markup_type => 351)
-    lambda { page.body_html }.should raise_error(RuntimeError, /Unknown markup type/)
+    page = Page.make :markup_type => 351
+    lambda {
+      page.body_html
+    }.should raise_error(RuntimeError, /Unknown markup type/)
   end
 end
