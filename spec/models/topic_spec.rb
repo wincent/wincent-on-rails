@@ -366,14 +366,14 @@ describe Topic, 'send_new_topic_alert callback' do
     #   String.new_topic_alert(2).deliver => RR::Errors::DoubleNotFoundError (unexpected method invocation)
     # Oddly, we don't see the same exception if we send an unexpected method
     # here; instead we see "Called 0 times. Expected 1 times."
-    mock(TopicMailer).new_topic_alert(@topic).stub!.deliver
+    mock(TopicMailer).new_topic_alert(anything).stub!.deliver
     @topic.save
   end
 
   it 'should deliver a new topic alert for anonymous topics' do
     topic = Topic.make :user => nil
     # BUG: stub! doesn't work, our mock is returning nil
-    mock(TopicMailer).new_topic_alert(topic).stub!.deliver
+    mock(TopicMailer).new_topic_alert(anything).stub!.deliver
     topic.save
   end
 
@@ -385,13 +385,13 @@ describe Topic, 'send_new_topic_alert callback' do
 
   it 'should rescue exceptions rather than dying' do
     # BUG: doesn't raise
-    stub(TopicMailer).new_topic_alert(@topic) { raise 'fatal error!' }
+    stub(TopicMailer).new_topic_alert(anything) { raise 'fatal error!' }
     lambda { @topic.save }.should_not raise_error
   end
 
   it 'should log an error message on failure' do
     # BUG: doesn't raise
-    stub(TopicMailer).new_topic_alert(@topic) { raise 'fatal error!' }
+    stub(TopicMailer).new_topic_alert(anything) { raise 'fatal error!' }
     pending 'requires fix for broken RR stub chains'
     mock(@topic.logger).error(/fatal error/)
     @topic.save
