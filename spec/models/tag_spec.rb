@@ -2,76 +2,76 @@ require File.expand_path('../spec_helper', File.dirname(__FILE__))
 
 describe Tag do
   it 'should be valid' do
-    create_tag.should be_valid
+    Tag.make!.should be_valid
   end
 end
 
 describe Tag, 'name validation' do
   it 'should require a name to be present' do
-    new_tag(:name => nil).should fail_validation_for(:name)
+    Tag.make(:name => nil).should fail_validation_for(:name)
   end
 
   it 'should require name to be unique' do
-    name = FR::random_string
-    create_tag(:name => name)
-    new_tag(:name => name).should fail_validation_for(:name)
+    name = Sham.random
+    Tag.make!(:name => name)
+    Tag.make(:name => name).should fail_validation_for(:name)
   end
 
   it 'should compare names in a case-insensitive manner' do
-    name = FR::random_string
-    create_tag(:name => name.upcase)
-    new_tag(:name => name.downcase).should fail_validation_for(:name)
+    name = Sham.random
+    Tag.make!(:name => name.upcase)
+    Tag.make(:name => name.downcase).should fail_validation_for(:name)
   end
 
   it 'should accept names containing only letters' do
-    create_tag(:name => 'foobar').should be_valid
+    Tag.make!(:name => 'foobar').should be_valid
   end
 
   it 'should accept names consisting of multiple words separated by a period' do
-    create_tag(:name => 'foo.bar').should be_valid
-    create_tag(:name => 'foo.bar.baz').should be_valid
+    Tag.make!(:name => 'foo.bar').should be_valid
+    Tag.make!(:name => 'foo.bar.baz').should be_valid
   end
 
   it 'should accept names containing numbers' do
-    new_tag(:name => 'foo100').should be_valid
+    Tag.make(:name => 'foo100').should be_valid
   end
 
   it 'should reject names containing spaces' do
-    new_tag(:name => 'foo bar').should fail_validation_for(:name)
-    new_tag(:name => 'foo bar baz').should fail_validation_for(:name)
+    Tag.make(:name => 'foo bar').should fail_validation_for(:name)
+    Tag.make(:name => 'foo bar baz').should fail_validation_for(:name)
   end
 
   it 'should reject names starting with leading periods' do
-    new_tag(:name => '.foo').should fail_validation_for(:name)
-    new_tag(:name => '..foo').should fail_validation_for(:name)
+    Tag.make(:name => '.foo').should fail_validation_for(:name)
+    Tag.make(:name => '..foo').should fail_validation_for(:name)
   end
 
   it 'should reject names ending with trailing periods' do
-    new_tag(:name => 'foo.').should fail_validation_for(:name)
-    new_tag(:name => 'foo..').should fail_validation_for(:name)
+    Tag.make(:name => 'foo.').should fail_validation_for(:name)
+    Tag.make(:name => 'foo..').should fail_validation_for(:name)
   end
 
   it 'should reject names containing consecutive periods' do
-    new_tag(:name => 'foo..bar').should fail_validation_for(:name)
-    new_tag(:name => 'foo...bar').should fail_validation_for(:name)
+    Tag.make(:name => 'foo..bar').should fail_validation_for(:name)
+    Tag.make(:name => 'foo...bar').should fail_validation_for(:name)
   end
 
   it 'should reject names containing other punctuation' do
-    new_tag(:name => 'foo,bar').should fail_validation_for(:name)
-    new_tag(:name => 'foo-bar').should fail_validation_for(:name)
+    Tag.make(:name => 'foo,bar').should fail_validation_for(:name)
+    Tag.make(:name => 'foo-bar').should fail_validation_for(:name)
   end
 end
 
 describe Tag, 'name normalization' do
   it 'should normalize names to lowercase upon creation' do
-    name = FR::random_string.upcase
-    tag = new_tag(:name => name)
+    name = Sham.random.upcase
+    tag = Tag.make(:name => name)
     tag.name.should == name.downcase
   end
 
   it 'should normalize names when updating attributes via the accessor' do
-    name = FR::random_string
-    tag = create_tag
+    name = Sham.random
+    tag = Tag.make!
     tag.name = name.upcase
     tag.name.should == name.downcase
   end
@@ -79,24 +79,24 @@ end
 
 describe Tag, 'tags_reachable_from_tag_names method' do
   before do
-    create_article      # no tags
-    create_issue        # no tags
-    create_article.tag  'nginx'
-    create_article.tag  'nginx updates'
-    create_article.tag  'nginx updates'
-    create_article.tag  'nginx security updates'
-    create_article.tag  'nginx'
-    create_article.tag  'nginx security'
-    create_article.tag  'nginx mac.os.x'
-    create_post.tag     'nginx'
-    create_post.tag     'ruby'
-    create_post.tag     'nginx'
-    create_post.tag     'nginx updates'
-    create_post.tag     'nginx ssl'
-    create_post.tag     'nginx'
-    create_issue.tag    'security'
-    create_issue.tag    'crash'
-    create_issue.tag    'security crash'
+    Article.make!      # no tags
+    Issue.make!        # no tags
+    Article.make!.tag  'nginx'
+    Article.make!.tag  'nginx updates'
+    Article.make!.tag  'nginx updates'
+    Article.make!.tag  'nginx security updates'
+    Article.make!.tag  'nginx'
+    Article.make!.tag  'nginx security'
+    Article.make!.tag  'nginx mac.os.x'
+    Post.make!.tag     'nginx'
+    Post.make!.tag     'ruby'
+    Post.make!.tag     'nginx'
+    Post.make!.tag     'nginx updates'
+    Post.make!.tag     'nginx ssl'
+    Post.make!.tag     'nginx'
+    Issue.make!.tag    'security'
+    Issue.make!.tag    'crash'
+    Issue.make!.tag    'security crash'
     @nginx    = Tag.find_by_name 'nginx'
     @updates  = Tag.find_by_name 'updates'
     @security = Tag.find_by_name 'security'
@@ -149,24 +149,24 @@ end
 
 describe Tag, 'tags_reachable_from_tags method' do
   before do
-    create_article      # no tags
-    create_issue        # no tags
-    create_article.tag  'nginx'
-    create_article.tag  'nginx updates'
-    create_article.tag  'nginx updates'
-    create_article.tag  'nginx security updates'
-    create_article.tag  'nginx'
-    create_article.tag  'nginx security'
-    create_article.tag  'nginx mac.os.x'
-    create_post.tag     'nginx'
-    create_post.tag     'ruby'
-    create_post.tag     'nginx'
-    create_post.tag     'nginx updates'
-    create_post.tag     'nginx ssl'
-    create_post.tag     'nginx'
-    create_issue.tag    'security'
-    create_issue.tag    'crash'
-    create_issue.tag    'security crash'
+    Article.make!      # no tags
+    Issue.make!        # no tags
+    Article.make!.tag  'nginx'
+    Article.make!.tag  'nginx updates'
+    Article.make!.tag  'nginx updates'
+    Article.make!.tag  'nginx security updates'
+    Article.make!.tag  'nginx'
+    Article.make!.tag  'nginx security'
+    Article.make!.tag  'nginx mac.os.x'
+    Post.make!.tag     'nginx'
+    Post.make!.tag     'ruby'
+    Post.make!.tag     'nginx'
+    Post.make!.tag     'nginx updates'
+    Post.make!.tag     'nginx ssl'
+    Post.make!.tag     'nginx'
+    Issue.make!.tag    'security'
+    Issue.make!.tag    'crash'
+    Issue.make!.tag    'security crash'
     @nginx    = Tag.find_by_name 'nginx'
     @updates  = Tag.find_by_name 'updates'
     @security = Tag.find_by_name 'security'
@@ -181,11 +181,11 @@ describe Tag, 'tags_reachable_from_tags method' do
   end
 
   it 'should return empty array for more than 5 tags' do
-    Tag.tags_reachable_from_tags(create_tag, create_tag, create_tag, create_tag, create_tag, create_tag).should == []
+    Tag.tags_reachable_from_tags(Tag.make!, Tag.make!, Tag.make!, Tag.make!, Tag.make!, Tag.make!).should == []
   end
 
   it 'should return empty array for non-existent tag (singular)' do
-    fake_tag    = new_tag
+    fake_tag    = Tag.make
     fake_tag.id = 78321
     Tag.tags_reachable_from_tags(fake_tag).should == []
   end
@@ -195,9 +195,9 @@ describe Tag, 'tags_reachable_from_tags method' do
   end
 
   it 'should return empty array for non-existent tags (plural)' do
-    fake1     = new_tag
+    fake1     = Tag.make
     fake1.id  = 98712
-    fake2     = new_tag
+    fake2     = Tag.make
     fake2.id  = 34510
     Tag.tags_reachable_from_tags(fake1, fake2).should == []
   end
