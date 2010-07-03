@@ -8,7 +8,8 @@ end
 
 describe Reset, 'email address validation' do
   it 'should not require an email address for new records' do
-    reset = Reset.make :email_address => nil
+    reset = Reset.make
+    reset.email_address = nil
     reset.should_not fail_validation_for(:email_address)
   end
 
@@ -16,6 +17,9 @@ describe Reset, 'email address validation' do
     reset = Reset.make!
     reset.email_address = nil
     reset.should fail_validation_for(:email_address)
+
+    reset.email_address = reset.email.address
+    reset.should_not fail_validation_for(:email_address)
   end
 
   it "should require the reset's email address to match the user's email address" do
