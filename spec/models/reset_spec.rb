@@ -8,14 +8,11 @@ end
 
 describe Reset, 'email address validation' do
   it 'should not require an email address for new records' do
-    # BUG: due to bad design, our factory works against us here
-    reset = Reset.make(:email_address => nil)
-    reset.email_address = nil
+    reset = Reset.make :email_address => nil
     reset.should_not fail_validation_for(:email_address)
   end
 
   it 'should require an email address for existing records' do
-    # BUG: again, due to bad design, our factory works against us here
     reset = Reset.make!
     reset.email_address = nil
     reset.should fail_validation_for(:email_address)
