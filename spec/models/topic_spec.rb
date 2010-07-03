@@ -337,50 +337,52 @@ describe Topic, '"hit!" method' do
   end
 end
 
-describe Topic, '"after_create_with_send_new_topic_alert" method' do
+describe Topic, 'send_new_topic_alert callback' do
   before do
     @topic = Topic.make :user => (User.make! :superuser => false)
   end
 
   it 'should fire after saving new records' do
-    # note that in this case I can't check for after_create_with_send_new_topic_alert because it gets aliased
-    # and the alias, after_create, isn't itself meaningful enough to bother checking
-    # so he we check for the forwarding call to the original after_create callback
-    @topic.should_receive(:after_create_without_send_new_topic_alert)
+    mock(@topic).send_new_topic_alert
     @topic.save
   end
 
   it 'should not fire after saving an existing record' do
     @topic.save
-    @topic.should_not_receive(:after_create_without_send_new_topic_alert)
+    do_not_allow(@topic).send_new_topic_alert
     @topic.save
   end
 
   it 'should deliver a new topic alert for normal user topics' do
-    TopicMailer.should_receive(:deliver_new_topic_alert).with(@topic)
+    # BUG: stub! doesn't work, our mock is returning nil
+    mock(TopicMailer).new_topic_alert(@topic).stub!.deliver # mock returns nil, deliver method not stubbed on it
     @topic.save
   end
 
   it 'should deliver a new topic alert for anonymous topics' do
     topic = Topic.make :user => nil
-    TopicMailer.should_receive(:deliver_new_topic_alert).with(topic)
+    # BUG: stub! doesn't work, our mock is returning nil
+    mock(TopicMailer).new_topic_alert(topic).stub!.deliver
     topic.save
   end
 
   it 'should not send topic alerts for superuser topics' do
     topic = Topic.make :user => (User.make! :superuser => true)
-    TopicMailer.should_not_receive(:deliver_new_topic_alert)
+    do_not_allow(TopicMailer).new_topic_alert
     topic.save
   end
 
   it 'should rescue exceptions rather than dying' do
-    TopicMailer.should_receive(:deliver_new_topic_alert).and_raise('fatal error!')
+    # BUG: doesn't raise
+    stub(TopicMailer).new_topic_alert(@topic) { raise 'fatal error!' }
     lambda { @topic.save }.should_not raise_error
   end
 
   it 'should log an error message on failure' do
-    TopicMailer.stub!(:deliver_new_topic_alert).and_raise('fatal error!')
-    @topic.logger.should_receive(:error)
+    # BUG: doesn't raise
+    stub(TopicMailer).new_topic_alert(@topic) { raise 'fatal error!' }
+    pending 'requires fix for broken RR stub chains'
+    mock(@topic.logger).error(/fatal error/)
     @topic.save
   end
 end
