@@ -22,7 +22,7 @@ shared_examples_for 'ActiveRecord::Acts::Classifiable "moderate_as_ham!" method'
     count = Needle.where(:model_class => @object.class.to_s,
                          :model_id    => @object.id).count
     count.should == 0
-    @object.should_receive(:update_needles) if @object.class.private_method_defined?(:update_needles)
+    mock(@object).update_needles if @object.class.private_method_defined?(:update_needles)
     @object.moderate_as_ham!
   end
 end
