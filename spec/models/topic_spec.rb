@@ -2,7 +2,7 @@ require File.expand_path('../spec_helper', File.dirname(__FILE__))
 
 describe Topic do
   it 'should be valid' do
-    new_topic.should be_valid
+    Topic.make.should be_valid
   end
 
   it 'should update timestamps for comment changes' do
@@ -14,7 +14,7 @@ describe Topic do
     # make sure the long body survives the round-trip from the db
     length = 128 * 1024
     long_body = 'x' * length
-    topic = create_topic :body => long_body
+    topic = Topic.make! :body => long_body
     topic.body.length.should == length
     topic.reload
     topic.body.length.should == length
@@ -24,12 +24,12 @@ end
 
 describe Topic, 'validating the body' do
   it 'should require it to be present' do
-    new_topic(:body => nil).should fail_validation_for(:body)
+    Topic.make(:body => nil).should fail_validation_for(:body)
   end
 
   it 'should complain if longer than 128k' do
     long_body = 'x' * (128 * 1024 + 100)
-    new_topic(:body => long_body).should fail_validation_for(:body)
+    Topic.make(:body => long_body).should fail_validation_for(:body)
   end
 end
 
@@ -49,12 +49,12 @@ end
 
 describe Topic, 'forum association' do
   before do
-    @forum = create_forum
+    @forum = Forum.make!
     @topic = add_topic
   end
 
   def add_topic
-    @forum.topics.create :title => FR::random_string, :body => FR::random_string
+    @forum.topics.create :title => Sham.random, :body => Sham.random
   end
 
   it 'should belong to a forum' do
@@ -72,8 +72,8 @@ end
 
 describe Topic, 'user association' do
   it 'should belong to a user' do
-    @user   = create_user
-    @topic  = create_topic
+    @user   = User.make!
+    @topic  = Topic.make!
     @user.topics << @topic
     @topic.user.should == @user
   end
@@ -81,12 +81,12 @@ end
 
 describe Topic, '"last commenter" association' do
   before do
-    @topic = create_topic
+    @topic = Topic.make!
   end
 
   it 'should belong to a last commenter' do
-    @user = create_user
-    @comment = @topic.comments.build :body => FR::random_string # can't set user here (protected)
+    @user = User.make!
+    @comment = @topic.comments.build :body => Sham.random # can't set user here (protected)
     @comment.user = @user
     @comment.save
     @comment.moderate_as_ham! # only here does the last commenter actually get set
@@ -100,11 +100,11 @@ end
 
 describe Topic, 'comments association' do
   before do
-    @topic = create_topic
+    @topic = Topic.make!
   end
 
   def add_comment
-    comment = @topic.comments.create :body => FR::random_string
+    comment = @topic.comments.create :body => Sham.random
   end
 
   it 'should have many comments' do
@@ -130,7 +130,7 @@ end
 
 describe Topic, 'acting as classifiable ("moderate_as_ham!" method)' do
   before do
-    @object = create_topic :awaiting_moderation => true
+    @object = Topic.make! :awaiting_moderation => true
   end
 
   it_should_behave_like 'ActiveRecord::Acts::Classifiable "moderate_as_ham!" method'
@@ -138,7 +138,7 @@ end
 
 describe Topic, 'acting as commentable' do
   before do
-    @commentable = create_topic
+    @commentable = Topic.make!
   end
 
   it_should_behave_like 'Commentable'
@@ -147,8 +147,8 @@ end
 
 describe Topic, 'acting as taggable' do
   before do
-    @object     = create_topic
-    @new_object = new_topic
+    @object     = Topic.make!
+    @new_object = Topic.make
   end
 
   it_should_behave_like 'ActiveRecord::Acts::Taggable'
@@ -156,14 +156,14 @@ end
 
 describe Topic, '"find_topics_for_forum" method' do
   before do
-    @display_name = FR::random_string
-    @user         = create_user :display_name => @display_name
-    @topic        = create_topic :awaiting_moderation => false
+    @display_name = Sham.random
+    @user         = User.make! :display_name => @display_name
+    @topic        = Topic.make! :awaiting_moderation => false
     @forum        = @topic.forum
   end
 
   def add_comment overrides = {}
-    comment = @topic.comments.build :body => FR::random_string
+    comment = @topic.comments.build :body => Sham.random
     comment.awaiting_moderation = false
     overrides.each { |k,v| comment.send("#{k.to_s}=", v) }
     comment.save!
@@ -210,7 +210,7 @@ describe Topic, '"find_topics_for_forum" method' do
   end
 
   it 'should select the last active user id (when no comments have been posted)' do
-    topic = create_topic :user => @user, :awaiting_moderation => false
+    topic = Topic.make! :user => @user, :awaiting_moderation => false
     Topic.find_topics_for_forum(topic.forum).first.last_active_user_id.to_i.should == @user.id
   end
 
@@ -220,7 +220,7 @@ describe Topic, '"find_topics_for_forum" method' do
   end
 
   it 'should return nil last active user id for anonymous topic posters (nil)' do
-    topic = create_topic :user => nil, :awaiting_moderation => false
+    topic = Topic.make! :user => nil, :awaiting_moderation => false
     Topic.find_topics_for_forum(topic.forum).first.last_active_user_id.should == nil
   end
 
@@ -230,7 +230,7 @@ describe Topic, '"find_topics_for_forum" method' do
   end
 
   it 'should select the last active user displayname (when no comments have been posted)' do
-    topic = create_topic :user => @user, :awaiting_moderation => false
+    topic = Topic.make! :user => @user, :awaiting_moderation => false
     Topic.find_topics_for_forum(topic.forum).first.last_active_user_display_name.should == @user.display_name
   end
 
@@ -240,7 +240,7 @@ describe Topic, '"find_topics_for_forum" method' do
   end
 
   it 'should return nil last active user displayname for anonymous topic posters' do
-    topic = create_topic :user => nil, :awaiting_moderation => false
+    topic = Topic.make! :user => nil, :awaiting_moderation => false
     Topic.find_topics_for_forum(topic.forum).first.last_active_user_display_name.should == nil
   end
 
@@ -255,9 +255,9 @@ describe Topic, '"find_topics_for_forum" method' do
   end
 
   it 'should order the results by update date in descending order' do
-    forum = create_forum
+    forum = Forum.make!
     10.times do
-      topic = create_topic :forum => forum
+      topic = Topic.make! :forum => forum
       Topic.update_all ['updated_at = ?', topic.id.days.from_now], ['id = ?', topic.id]
     end
     topic_ids = Topic.find_topics_for_forum(forum).collect(&:id)
@@ -270,10 +270,10 @@ describe Topic, '"find_topics_for_forum" method' do
   end
 
   it 'should respect the offset and limit parameters' do
-    forum = create_forum
+    forum = Forum.make!
     topic_ids = []
     100.times do
-      topic = create_topic :forum => forum, :awaiting_moderation => false
+      topic = Topic.make! :forum => forum, :awaiting_moderation => false
       topic_ids << topic.id
       Topic.update_all ['updated_at = ?', topic.id.days.from_now], ['id = ?', topic.id]
     end
@@ -285,8 +285,8 @@ describe Topic, '"find_topics_for_forum" method' do
   end
 
   it 'should default to a limit of 20' do
-    forum = create_forum
-    100.times { create_topic :forum => forum, :awaiting_moderation => false }
+    forum = Forum.make!
+    100.times { Topic.make! :forum => forum, :awaiting_moderation => false }
     Topic.find_topics_for_forum(forum).length.should == 20
   end
 
@@ -301,7 +301,7 @@ end
 # keep the specs in place to confirm that the behaviour is the same
 describe Topic, '"comments.published"' do
   before do
-    @topic    = create_topic    :awaiting_moderation => false
+    @topic    = Topic.make!    :awaiting_moderation => false
     @comment1 = add_comment_with_override :awaiting_moderation, false
     @comment2 = add_comment_with_override :awaiting_moderation, true
     # @comment3 (was a comment with the "spam" attribute set, but that attribute no longer exists)
@@ -310,7 +310,7 @@ describe Topic, '"comments.published"' do
   end
 
   def add_comment_with_override attribute, val
-    comment = @topic.comments.create :body => FR::random_string
+    comment = @topic.comments.create :body => Sham.random
     comment.update_attribute attribute, val
     comment
   end
@@ -329,7 +329,7 @@ end
 describe Topic, '"hit!" method' do
   it 'should increment the view counter' do
     # Rails increment_counter updates the database but not the value in the current instance, so must re-fetch it for comparison
-    topic = create_topic
+    topic = Topic.make!
     start = topic.view_count
     topic.hit!
     stop = topic.reload.view_count
@@ -339,7 +339,7 @@ end
 
 describe Topic, '"after_create_with_send_new_topic_alert" method' do
   before do
-    @topic = new_topic :user => (create_user :superuser => false)
+    @topic = Topic.make :user => (User.make! :superuser => false)
   end
 
   it 'should fire after saving new records' do
@@ -362,13 +362,13 @@ describe Topic, '"after_create_with_send_new_topic_alert" method' do
   end
 
   it 'should deliver a new topic alert for anonymous topics' do
-    topic = new_topic :user => nil
+    topic = Topic.make :user => nil
     TopicMailer.should_receive(:deliver_new_topic_alert).with(topic)
     topic.save
   end
 
   it 'should not send topic alerts for superuser topics' do
-    topic = new_topic :user => (create_user :superuser => true)
+    topic = Topic.make :user => (User.make! :superuser => true)
     TopicMailer.should_not_receive(:deliver_new_topic_alert)
     topic.save
   end
