@@ -1,11 +1,5 @@
 require File.expand_path('../spec_helper', File.dirname(__FILE__))
 
-describe Forum do
-  it 'should be valid' do
-    new_forum.should be_valid
-  end
-end
-
 describe Forum, 'creation' do
   it 'should default to being public' do
     create_forum.public.should == true
