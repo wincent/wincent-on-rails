@@ -1,15 +1,5 @@
 require File.expand_path('../spec_helper', File.dirname(__FILE__))
 
-describe Needle do
-  before(:each) do
-    @needle = Needle.new
-  end
-
-  it "should be valid" do
-    @needle.should be_valid
-  end
-end
-
 describe Needle::NeedleQuery do
   # unfortunately this spec is tied fairly intimately to Rails' specific way of preparing queries
   # (use of backticks, for example; and witness the breakage in Rails 2.1.0_RC1: the change in the output order)
