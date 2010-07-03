@@ -1,8 +1,15 @@
 require File.expand_path('../spec_helper', File.dirname(__FILE__))
 
 describe Tagging do
+  describe 'accessible attibutes' do
+    #subject { Tagging.make }
+    #it { should allow_mass_assignment_of :tag_id => Tag.make!.id }
+    #it { should allow_mass_assignment_of :taggable_id => Post.make!.id }
+    #it { should allow_mass_assignment_of :taggable_type => 'Post' }
+  end
+
   describe 'grouped_taggables_for_tag method' do
-    it 'should return last-updated models first' do
+    it 'returns last-updated models first' do
       @old_post = Post.make!
       @new_post = Post.make!
       @old_post.tag('foo')
@@ -16,7 +23,7 @@ describe Tagging do
   end
 
   describe 'grouped_taggables_for_tag_names method' do
-    it 'should return last-updated models first' do
+    it 'returns last-updated models first' do
       @old_post = Post.make!
       @new_post = Post.make!
       @old_post.tag('foo', 'bar')
