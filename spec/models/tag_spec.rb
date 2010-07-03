@@ -1,11 +1,5 @@
 require File.expand_path('../spec_helper', File.dirname(__FILE__))
 
-describe Tag do
-  it 'should be valid' do
-    Tag.make!.should be_valid
-  end
-end
-
 describe Tag, 'name validation' do
   it 'should require a name to be present' do
     Tag.make(:name => nil).should fail_validation_for(:name)
