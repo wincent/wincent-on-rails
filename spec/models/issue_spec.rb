@@ -5,10 +5,6 @@ describe Issue do
     @issue = create_issue
   end
 
-  it 'should be valid' do
-    @issue.should be_valid
-  end
-
   # we test a value larger than the default MySQL TEXT size (65535)
   it 'should support description content of over 128K' do
     # make sure the long description survives the round-trip from the db
