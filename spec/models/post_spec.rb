@@ -1,11 +1,5 @@
 require File.expand_path('../spec_helper', File.dirname(__FILE__))
 
-describe Post do
-  it 'should be valid' do
-    new_post.should be_valid
-  end
-end
-
 describe Post, 'creation' do
   before do
     @post = create_post
