@@ -2,7 +2,7 @@ require File.expand_path('../spec_helper', File.dirname(__FILE__))
 
 describe Post, 'creation' do
   before do
-    @post = create_post
+    @post = Post.make!
   end
 
   it 'should default to being public' do
@@ -18,7 +18,7 @@ describe Post, 'creation' do
     # make sure the long body survives the round-trip from the db
     length = 128 * 1024
     long_body = 'x' * length
-    post = create_post :body => long_body
+    post = Post.make! :body => long_body
     post.body.length.should == length
     post.reload
     post.body.length.should == length
@@ -27,13 +27,13 @@ end
 
 describe Post, 'comments association' do
   it 'should respond to the comments message' do
-    create_post.comments.should == []
+    Post.make!.comments.should == []
   end
 end
 
 describe Post, 'acting as commentable' do
   before do
-    @commentable = create_post
+    @commentable = Post.make!
   end
 
   it_should_behave_like 'Commentable'
@@ -42,8 +42,8 @@ end
 
 describe Post, 'acting as taggable' do
   before do
-    @object     = create_post
-    @new_object = new_post
+    @object     = Post.make!
+    @new_object = Post.make
   end
 
   it_should_behave_like 'ActiveRecord::Acts::Taggable'
@@ -52,170 +52,171 @@ end
 # :title, :permalink, :excerpt, :body, :public, :accepts_comments, :pending_tags
 describe Post, 'accessible attributes' do
   it 'should allow mass-assignment to the title' do
-    new_post.should allow_mass_assignment_of(:title => FR::random_string)
+    Post.make.should allow_mass_assignment_of(:title => Sham.random)
   end
 
   it 'should allow mass-assignment to the permalink' do
-    new_post.should allow_mass_assignment_of(:permalink => FR::random_string)
+    Post.make.should allow_mass_assignment_of(:permalink => Sham.random)
   end
 
   it 'should allow mass-assignment to the excerpt' do
-    new_post.should allow_mass_assignment_of(:excerpt => FR::random_string)
+    Post.make.should allow_mass_assignment_of(:excerpt => Sham.random)
   end
 
   it 'should allow mass-assignment to the body' do
-    new_post.should allow_mass_assignment_of(:body => FR::random_string)
+    Post.make.should allow_mass_assignment_of(:body => Sham.random)
   end
 
   it 'should allow mass-assignment to the public attribute' do
-    new_post(:public => false).should allow_mass_assignment_of(:public => true)
+    Post.make(:public => false).should allow_mass_assignment_of(:public => true)
   end
 
   it 'should allow mass-assignment to the "accepts comments" attribute' do
-    new_post(:accepts_comments => false).should allow_mass_assignment_of(:accepts_comments => true)
+    Post.make(:accepts_comments => false).should allow_mass_assignment_of(:accepts_comments => true)
   end
 
   it 'should allow mass-assignment to the "pending tags" attribute' do
-    new_post.should allow_mass_assignment_of(:pending_tags => 'foo bar baz')
+    Post.make.should allow_mass_assignment_of(:pending_tags => 'foo bar baz')
   end
 end
 
 describe Post, 'validating the title' do
   it 'should require it to be present' do
-     new_post(:title => nil).should fail_validation_for(:title)
+     Post.make(:title => nil).should fail_validation_for(:title)
   end
 
   it 'should not require it to be unique' do
-    title = FR::random_string
-    create_post(:title => title).should be_valid
-    new_post(:title => title).should_not fail_validation_for(:title)
+    title = Sham.random
+    Post.make!(:title => title).should be_valid
+    Post.make(:title => title).should_not fail_validation_for(:title)
   end
 end
 
 describe Post, 'validating the permalink' do
   it 'should require it to be unique' do
-    permalink = FR::random_string.downcase
-    create_post(:permalink => permalink).should be_valid
-    new_post(:permalink => permalink).should fail_validation_for(:permalink)
+    permalink = Sham.random.downcase
+    Post.make!(:permalink => permalink).should be_valid
+    Post.make(:permalink => permalink).should fail_validation_for(:permalink)
   end
 
   it 'should allow letters, numbers, hyphens and periods' do
-    new_post(:permalink => 'foo-bar-baz-10').should_not fail_validation_for(:permalink)
+    Post.make(:permalink => 'foo-bar-baz-10').should_not fail_validation_for(:permalink)
   end
 
   it 'should disallow spaces' do
-    new_post(:permalink => 'a b c').should fail_validation_for(:permalink)
+    Post.make(:permalink => 'a b c').should fail_validation_for(:permalink)
   end
 
   it 'should disallow non-ASCII characters' do
-    new_post(:permalink => 'formación').should fail_validation_for(:permalink)
+    Post.make(:permalink => 'formación').should fail_validation_for(:permalink)
   end
 end
 
 describe Post, 'validating the excerpt' do
   it 'should require it to be present' do
-    new_post(:excerpt => nil).should fail_validation_for(:excerpt)
+    Post.make(:excerpt => nil).should fail_validation_for(:excerpt)
   end
 end
 
 describe Post, 'validating the body' do
   it 'should consider it optional' do
-    new_post(:body => nil).should_not fail_validation_for(:body)
+    Post.make(:body => nil).should_not fail_validation_for(:body)
   end
 
   it 'should complain if longer than 128k' do
     long_body = 'x' * (128 * 1024 + 100)
-    new_post(:body => long_body).should fail_validation_for(:body)
+    Post.make(:body => long_body).should fail_validation_for(:body)
   end
 end
 
 describe Post, 'autogeneration of permalink' do
   it 'should generate it based on title if not present' do
-    title = FR::random_string
-    post = new_post(:title => title, :permalink => nil)
+    title = Sham.random
+    post = Post.make(:title => title, :permalink => nil)
     post.should_not fail_validation_for(:permalink)
     post.permalink.should == title.downcase
   end
 
   it 'should downcase' do
     title = 'FooBar'
-    post = new_post(:title => title, :permalink => nil)
+    post = Post.make(:title => title, :permalink => nil)
     post.should_not fail_validation_for(:permalink)
     post.permalink.should == 'foobar'
   end
 
   it 'should convert spaces into hyphens' do
     title = 'hello world'
-    post = new_post(:title => title, :permalink => nil)
+    post = Post.make(:title => title, :permalink => nil)
     post.should_not fail_validation_for(:permalink)
     post.permalink.should == 'hello-world'
   end
 
   it 'should convert runs of spaces into a single hyphen' do
     title = 'hello        there       world'
-    post = new_post(:title => title, :permalink => nil)
+    post = Post.make(:title => title, :permalink => nil)
     post.should_not fail_validation_for(:permalink)
     post.permalink.should == 'hello-there-world'
   end
 
   it 'should allow numbers' do
     title = 'area 51'
-    post = new_post(:title => title, :permalink => nil)
+    post = Post.make(:title => title, :permalink => nil)
     post.should_not fail_validation_for(:permalink)
     post.permalink.should == 'area-51'
   end
 
   it 'should allow periods' do
     title = 'upgrading to 10.5.2'
-    post = new_post(:title => title, :permalink => nil)
+    post = Post.make(:title => title, :permalink => nil)
     post.should_not fail_validation_for(:permalink)
     post.permalink.should == 'upgrading-to-10.5.2'
   end
 
   it 'should convert runs of non-ASCII characters into hyphens' do
     title = 'cañon información más €'
-    post = new_post(:title => title, :permalink => nil)
+    post = Post.make(:title => title, :permalink => nil)
     post.should_not fail_validation_for(:permalink)
     post.permalink.should == 'ca-on-informaci-n-m-s'
   end
 
-  it 'should handle the pathological case where the title reduces to a zero length string' do
-    title = 'áéíóú'
-    post = create_post(:title => title)
+  it 'handles the pathological case where the title reduces to a zero length string (saved record)' do
+    post = Post.make!(:title => 'áéíóú')
     post.permalink = nil
     post.should_not fail_validation_for(:permalink)
-    post.permalink.should == post.id.to_s # note that we fall back to the post id here
+    post.permalink.should == post.id.to_s
+  end
 
-    post = new_post(:title => title, :permalink => nil)
+  it 'handles the pathological case where the title reduces to a zero length string (new record)' do
+    post = Post.make(:title => 'áéíóú', :permalink => nil)
     post.should_not fail_validation_for(:permalink)
-    post.permalink.should == 'post' # this case is even worse: we don't even have an id yet
+    post.permalink.should == 'post' # we don't even have an id yet
   end
 
   it 'should generate unique permalinks' do
-    permalink = FR::random_string.downcase
-    create_post(:permalink => permalink)
-    post = create_post(:title => permalink, :permalink => nil)
+    permalink = Sham.random.downcase
+    Post.make!(:permalink => permalink)
+    post = Post.make!(:title => permalink, :permalink => nil)
     post.permalink.should == "#{permalink}-2"
-    post = create_post(:title => permalink, :permalink => nil)
+    post = Post.make!(:title => permalink, :permalink => nil)
     post.permalink.should == "#{permalink}-3"
-    post = create_post(:title => permalink, :permalink => nil)
+    post = Post.make!(:title => permalink, :permalink => nil)
     post.permalink.should == "#{permalink}-4"
   end
 
   it 'should use a non-greedy match when looking for duplicate permalinks' do
     # in other words, given proposed permalink "foo" and existing links "foo-bar", "foo-bar-2" and "foo-bar-3"
     # it should accept "foo" rather than proposing "foo-4" or "foo-bar-4"
-    create_post(:permalink => 'foo-bar')
-    create_post(:permalink => 'foo-bar-2')
-    create_post(:permalink => 'foo-bar-3')
-    post = create_post(:title => 'foo', :permalink => nil)
+    Post.make!(:permalink => 'foo-bar')
+    Post.make!(:permalink => 'foo-bar-2')
+    Post.make!(:permalink => 'foo-bar-3')
+    post = Post.make!(:title => 'foo', :permalink => nil)
     post.permalink.should == 'foo'
   end
 end
 
 describe Post, 'parametrization' do
   it 'should use the permalink as the param' do
-    permalink = FR::random_string.downcase
-    new_post(:permalink => permalink).to_param.should == permalink
+    permalink = Sham.random.downcase
+    Post.make(:permalink => permalink).to_param.should == permalink
   end
 end
