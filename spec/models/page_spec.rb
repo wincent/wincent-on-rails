@@ -1,14 +1,6 @@
 require File.expand_path('../spec_helper', File.dirname(__FILE__))
 
 describe Page do
-  it 'should be valid (new records)' do
-    new_page.should be_valid
-  end
-
-  it 'should be valid (saved records)' do
-    create_page.should be_valid
-  end
-
   describe 'markup type' do
     it 'should default to HTML' do
       Page.new.markup_type.should == Page::MarkupType::HTML
