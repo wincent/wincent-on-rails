@@ -2,27 +2,27 @@ require File.expand_path('../spec_helper', File.dirname(__FILE__))
 
 describe Forum, 'creation' do
   it 'should default to being public' do
-    create_forum.public.should == true
+    Forum.make!.public.should == true
   end
 
   it 'should auto-populate the "position" attribute upon creation' do
-    create_forum(:position => nil).position.should_not be_nil
+    Forum.make!(:position => nil).position.should_not be_nil
   end
 
   it 'should by default appear at the end of the list' do
-    first   = create_forum
-    second  = create_forum
+    first   = Forum.make!
+    second  = Forum.make!
     second.position.should > first.position
   end
 end
 
 describe Forum, 'topics association' do
   before do
-    @forum = create_forum
+    @forum = Forum.make!
   end
 
   def add_topic
-    @forum.topics.create :title => FR::random_string, :body => FR::random_string
+    @forum.topics.create :title => Sham.random, :body => Sham.random
   end
 
   it 'should have many topics' do
@@ -47,110 +47,110 @@ end
 # :name, :description
 describe Forum, 'accessible attributes' do
   it 'should allow mass-assignment of the name' do
-    new_forum.should allow_mass_assignment_of(:name => FR::random_string)
+    Forum.make.should allow_mass_assignment_of(:name => Sham.random)
   end
 
   it 'should allow mass-assignment of the description' do
-    new_forum.should allow_mass_assignment_of(:description => FR::random_string)
+    Forum.make.should allow_mass_assignment_of(:description => Sham.random)
   end
 
   it 'should allow mass-assignment of the permalink' do
-    new_forum.should allow_mass_assignment_of(:permalink => FR::random_string)
+    Forum.make.should allow_mass_assignment_of(:permalink => Sham.random)
   end
 end
 
 # :topics_count, :position, :public
 describe Forum, 'protected attributes' do
   it 'should deny mass-assignment of the topics count' do
-    new_forum(:topics_count => 50).should_not allow_mass_assignment_of(:topics_count => 100)
+    Forum.make(:topics_count => 50).should_not allow_mass_assignment_of(:topics_count => 100)
   end
 
   it 'should deny mass-assignment of the position' do
-    new_forum(:position => 50).should_not allow_mass_assignment_of(:position => 100)
+    Forum.make(:position => 50).should_not allow_mass_assignment_of(:position => 100)
   end
 
   it 'should deny mass-assignment of the "public" attribute' do
-    new_forum(:public => true).should_not allow_mass_assignment_of(:public => false)
+    Forum.make(:public => true).should_not allow_mass_assignment_of(:public => false)
   end
 end
 
 describe Forum, 'validating the name' do
   it 'should require it to be present' do
-     new_forum(:name => nil).should fail_validation_for(:name)
+     Forum.make(:name => nil).should fail_validation_for(:name)
   end
 
   it 'should allow letters and spaces' do
-    words = Array.new(10).collect {|i| FR::random_string }
-    new_forum(:name => words.join(' ')).should_not fail_validation_for(:name)
+    words = Array.new(10).collect {|i| Sham.random }
+    Forum.make(:name => words.join(' ')).should_not fail_validation_for(:name)
   end
 
   it 'should allow numbers' do
-    name = "#{FR::random_string}2"
-    new_forum(:name => name).should_not fail_validation_for(:name)
+    name = "#{Sham.random}2"
+    Forum.make(:name => name).should_not fail_validation_for(:name)
   end
 
   it 'should allow hyphens' do
-    name ="#{FR::random_string}-#{FR::random_string}"
-    new_forum(:name => name).should_not fail_validation_for(:name)
+    name ="#{Sham.random}-#{Sham.random}"
+    Forum.make(:name => name).should_not fail_validation_for(:name)
   end
 
   it 'should disallow other punctuation' do
-    new_forum(:name => 'foo.bar').should fail_validation_for(:name)
+    Forum.make(:name => 'foo.bar').should fail_validation_for(:name)
   end
 
   it 'should require it to be unique' do
     name = 'foo'
-    create_forum :name => name
-    new_forum(:name => name).should fail_validation_for(:name)
+    Forum.make! :name => name
+    Forum.make(:name => name).should fail_validation_for(:name)
   end
 end
 
 describe Forum, 'validating the permalink' do
   it 'should require it to be unique' do
-    permalink = FR::random_string
-    create_forum(:permalink => permalink).should be_valid
-    new_forum(:permalink => permalink).should fail_validation_for(:permalink)
+    permalink = Sham.random
+    Forum.make!(:permalink => permalink).should be_valid
+    Forum.make(:permalink => permalink).should fail_validation_for(:permalink)
   end
 
   it 'should allow letters, numbers and hyphens' do
-    forum = new_forum(:permalink => 'foo-bar-2')
+    forum = Forum.make(:permalink => 'foo-bar-2')
     forum.should_not fail_validation_for(:permalink)
   end
 
   it 'should disallow spaces' do
-    new_forum(:permalink => 'foo bar').should fail_validation_for(:permalink)
+    Forum.make(:permalink => 'foo bar').should fail_validation_for(:permalink)
   end
 
   it 'should disallow other punctuation' do
-    new_forum(:permalink => 'foo.bar').should fail_validation_for(:permalink)
+    Forum.make(:permalink => 'foo.bar').should fail_validation_for(:permalink)
   end
 end
 
 describe Forum, 'autogeneration of permalink' do
   it 'should generate it based on name if not present' do
-    name = FR::random_string
-    forum = new_forum(:name => name, :permalink => nil)
+    name = Sham.random
+    forum = Forum.make(:name => name, :permalink => nil)
     forum.should_not fail_validation_for(:permalink)
     forum.permalink.should == name.downcase
   end
 
   it 'should downcase' do
     name = 'FooBar'
-    forum = new_forum(:name => name, :permalink => nil)
+    forum = Forum.make(:name => name, :permalink => nil)
     forum.should_not fail_validation_for(:permalink)
     forum.permalink.should == 'foobar'
   end
 
   it 'should convert spaces into hyphens' do
     name = 'hello world'
-    forum = new_forum(:name => name, :permalink => nil)
+    forum = Forum.make(:name => name, :permalink => nil)
     forum.should_not fail_validation_for(:permalink)
     forum.permalink.should == 'hello-world'
   end
 
   it 'should allow numbers' do
     name = 'area 51'
-    forum = new_forum(:name => name, :permalink => nil)
+    forum = Forum.make(:name => name, :permalink => nil)
     forum.should_not fail_validation_for(:permalink)
     forum.permalink.should == 'area-51'
   end
@@ -158,19 +158,19 @@ end
 
 describe Forum, 'parametrization' do
   it 'should use the permalink as the param' do
-    permalink = FR::random_string.downcase
-    new_forum(:permalink => permalink).to_param.should == permalink
+    permalink = Sham.random.downcase
+    Forum.make(:permalink => permalink).to_param.should == permalink
   end
 end
 
 describe Forum, 'find_with_param! method' do
   before do
     @name   = 'foo bar'
-    @forum  = create_forum :name => @name
+    @forum  = Forum.make! :name => @name
   end
 
   it 'should find by permalink' do
-    Forum.should_receive(:find_by_permalink!).and_return(@forum)
+    mock(Forum).find_by_permalink!('foo bar', {:conditions=>{}}) { @forum }
     Forum.find_with_param!(@name)
   end
 
@@ -191,7 +191,7 @@ describe Forum, 'find_with_param! method' do
   end
 
   it 'should accept and use optional conditions such as ":public => true" (private forum)' do
-    private_forum = create_forum :name => 'baz', :public => false
+    private_forum = Forum.make! :name => 'baz', :public => false
     Forum.find_with_param!('baz', :public => false).should == private_forum
     lambda { Forum.find_with_param!('baz', :public => true) }.should raise_error(ActiveRecord::RecordNotFound)
   end
@@ -199,11 +199,11 @@ end
 
 describe Forum, 'find_all method' do
   before do
-    @forum = create_forum
+    @forum = Forum.make!
   end
 
   def add_topic
-    create_topic :forum => @forum
+    Topic.make! :forum => @forum
   end
 
   it 'should find forums with topics' do
@@ -242,10 +242,15 @@ describe Forum, 'find_all method' do
     timestamp = 2.days.from_now
     Topic.update_all ['updated_at = ?', timestamp], ['id = ?', topic2.id]
 
-    # there is some weirdness here because the find_all method uses find_by_sql
-    # this means that datetime columns are returned as String objects, hence the need for Time.parse
-    # note also that we lose some precision doing the Time.parse, and must call to_s in order for the comparison to succeed
-    Time.parse(Forum.find_all.first.last_active_at).to_s.should == timestamp.to_s
+    # There is some weirdness here because the find_all method uses
+    # find_by_sql. This means that datetime columns are returned as String
+    # objects, hence the need for Time.parse. Note also that we lose some
+    # precision doing the Time.parse, and must call to_s in order for the
+    # comparison to succeed. Finally, note that we must use Time.zone.parse
+    # rather than Time.parse otherwise the parsed date inexplicably gets
+    # parsed as being +0200 hours, rather than +0000 hours (UTC) as you
+    # would expect from the application config.
+    Time.zone.parse(Forum.find_all.first.last_active_at).to_s.should == timestamp.to_s
   end
 
   it 'should return nil for missing "last active topic date"' do
@@ -266,9 +271,9 @@ describe Forum, 'find_all method' do
 
   it 'should order results by the "position" attribute' do
     @forum.update_attribute :position, 1
-    forum1 = create_forum :position => 15
-    forum2 = create_forum :position => 5
-    forum3 = create_forum :position => 10
+    forum1 = Forum.make! :position => 15
+    forum2 = Forum.make! :position => 5
+    forum3 = Forum.make! :position => 10
     Forum.find_all.collect(&:id).should == [@forum, forum2, forum3, forum1].collect(&:id)
   end
 
@@ -312,22 +317,22 @@ end
 # "last post" info wrong for anonymous comments?
 describe Forum, 'http://rails.wincent.com/issues/671' do
   before do
-    @forum    = create_forum
-    @user     = create_user
-    @replier  = create_user
+    @forum    = Forum.make!
+    @user     = User.make!
+    @replier  = User.make!
   end
 
   # note with all these specs we test after deletion as well as after creation
   it 'should show the correct "last post" for topics with no replies' do
-    @topic = create_topic :forum => @forum, :user => @user
+    @topic = Topic.make! :forum => @forum, :user => @user
     result = Topic.find_topics_for_forum(@forum).first
     result.last_active_user_id.should == @user.id.to_s
     result.last_active_user_display_name.should == @user.display_name
   end
 
   it 'should show the correct "last post" for topics with a reply' do
-    @topic = create_topic :forum => @forum, :user => @user
-    comment = create_comment :commentable => @topic, :user => @replier
+    @topic = Topic.make! :forum => @forum, :user => @user
+    comment = Comment.make! :commentable => @topic, :user => @replier
     result = Topic.find_topics_for_forum(@forum).first
     result.last_active_user_id.should == @replier.id.to_s
     result.last_active_user_display_name.should == @replier.display_name
@@ -340,8 +345,8 @@ describe Forum, 'http://rails.wincent.com/issues/671' do
   end
 
   it 'should show the correct "last post" for topics with an anonymous reply' do
-    @topic = create_topic :forum => @forum, :user => @user
-    comment = create_comment :commentable => @topic, :user => nil
+    @topic = Topic.make! :forum => @forum, :user => @user
+    comment = Comment.make! :commentable => @topic, :user => nil
     result = Topic.find_topics_for_forum(@forum).first
     result.last_active_user_id.should == nil
     result.last_active_user_display_name.should == nil
@@ -354,15 +359,15 @@ describe Forum, 'http://rails.wincent.com/issues/671' do
   end
 
   it 'should show the correct "last post" for anonymous topics with no replies' do
-    @topic = create_topic :forum => @forum, :user => nil
+    @topic = Topic.make! :forum => @forum, :user => nil
     result = Topic.find_topics_for_forum(@forum).first
     result.last_active_user_id.should == nil
     result.last_active_user_display_name.should == nil
   end
 
   it 'should show the correct "last post" for anonymous topics with a reply' do
-    @topic = create_topic :forum => @forum, :user => nil
-    comment = create_comment :commentable => @topic, :user => @replier
+    @topic = Topic.make! :forum => @forum, :user => nil
+    comment = Comment.make! :commentable => @topic, :user => @replier
     result = Topic.find_topics_for_forum(@forum).first
     result.last_active_user_id.should == @replier.id.to_s
     result.last_active_user_display_name.should == @replier.display_name
@@ -375,8 +380,8 @@ describe Forum, 'http://rails.wincent.com/issues/671' do
   end
 
   it 'should show the correct "last post" for anonymous topics with an anonymous reply' do
-    @topic = create_topic :forum => @forum, :user => nil
-    comment = create_comment :commentable => @topic, :user => nil
+    @topic = Topic.make! :forum => @forum, :user => nil
+    comment = Comment.make! :commentable => @topic, :user => nil
     result = Topic.find_topics_for_forum(@forum).first
     result.last_active_user_id.should == nil
     result.last_active_user_display_name.should == nil
