@@ -1,11 +1,18 @@
 GIT
   remote: git://github.com/cavalle/steak.git
-  revision: 77d6391
+  revision: 347880e
   specs:
     steak (0.4.0.beta.1)
       rspec (>= 2.0.0.beta.9)
     steak (0.4.0.beta.1)
       rspec (>= 2.0.0.beta.9)
+
+GIT
+  remote: git://github.com/rspec/rspec-mocks.git
+  revision: e8b3fde
+  specs:
+    rspec-mocks (2.0.0.beta.15)
+    rspec-mocks (2.0.0.beta.15)
 
 GEM
   remote: http://rubygems.org/
@@ -206,26 +213,24 @@ GEM
     rake (0.8.7)
     rr (0.10.11)
     rr (0.10.11)
-    rspec (2.0.0.beta.14)
-      rspec-core (= 2.0.0.beta.14)
-      rspec-expectations (= 2.0.0.beta.14)
-      rspec-mocks (= 2.0.0.beta.14)
-    rspec (2.0.0.beta.14)
-      rspec-core (= 2.0.0.beta.14)
-      rspec-expectations (= 2.0.0.beta.14)
-      rspec-mocks (= 2.0.0.beta.14)
-    rspec-core (2.0.0.beta.14)
-    rspec-core (2.0.0.beta.14)
-    rspec-expectations (2.0.0.beta.14)
+    rspec (2.0.0.beta.15)
+      rspec-core (= 2.0.0.beta.15)
+      rspec-expectations (= 2.0.0.beta.15)
+      rspec-mocks (= 2.0.0.beta.15)
+    rspec (2.0.0.beta.15)
+      rspec-core (= 2.0.0.beta.15)
+      rspec-expectations (= 2.0.0.beta.15)
+      rspec-mocks (= 2.0.0.beta.15)
+    rspec-core (2.0.0.beta.15)
+    rspec-core (2.0.0.beta.15)
+    rspec-expectations (2.0.0.beta.15)
       diff-lcs (>= 1.1.2)
-    rspec-expectations (2.0.0.beta.14)
+    rspec-expectations (2.0.0.beta.15)
       diff-lcs (>= 1.1.2)
-    rspec-mocks (2.0.0.beta.14)
-    rspec-mocks (2.0.0.beta.14)
-    rspec-rails (2.0.0.beta.14.1)
+    rspec-rails (2.0.0.beta.15)
       rspec (>= 2.0.0.beta.14)
       webrat (>= 0.7.0)
-    rspec-rails (2.0.0.beta.14.1)
+    rspec-rails (2.0.0.beta.15)
       rspec (>= 2.0.0.beta.14)
       webrat (>= 0.7.0)
     ruby-debug (0.10.3)
@@ -284,6 +289,7 @@ DEPENDENCIES
   mysql (= 2.8.1)
   rails (= 3.0.0.beta4)
   rr
+  rspec-mocks!
   rspec-rails (>= 2.0.0.beta.13)
   ruby-debug
   steak!
