@@ -1,10 +1,6 @@
 require File.expand_path('../spec_helper', File.dirname(__FILE__))
 
 describe Tagging do
-  it 'should be valid' do
-    Tagging.make.should be_valid
-  end
-
   describe 'grouped_taggables_for_tag method' do
     it 'should return last-updated models first' do
       @old_post = Post.make!
