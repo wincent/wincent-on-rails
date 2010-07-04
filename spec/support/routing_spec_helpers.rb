@@ -20,4 +20,15 @@ module RoutingSpecHelpers
       rescued_exception.message
     end
   end
+
+  RSpec::Matchers.define :map_from do |destination|
+    match_unless_raises Test::Unit::AssertionFailedError do |request|
+      path = request[:path]
+      assert_generates path, destination
+    end
+
+    failure_message_for_should do
+      rescued_exception.message
+    end
+  end
 end

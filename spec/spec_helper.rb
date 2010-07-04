@@ -17,6 +17,12 @@ RSpec.configure do |config|
   config.mock_framework = :rr
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
   config.use_transactional_fixtures = true
-  config.include ControllerSpecHelpers, :example_group => { :file_path => %r{\bspec/controllers/} }
-  config.include MailerSpecHelpers, :example_group => { :file_path => %r{\bspec/mailers/} }
+  config.include ControllerSpecHelpers,
+    :example_group => { :file_path => %r{\bspec/controllers/} }
+  config.include RoutingSpecHelpers,
+    :example_group => { :file_path => %r{\bspec/routing/} }
+
+  # TODO: drop this and the corresponding file with next rspec-rails release (> 2.0.0.beta.15)
+  config.include MailerSpecHelpers,
+    :example_group => { :file_path => %r{\bspec/mailers/} }
 end
