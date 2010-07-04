@@ -2,6 +2,12 @@ require File.expand_path('../spec_helper', File.dirname(__FILE__))
 
 describe ArticlesController do
   describe 'routing' do
+    before do
+      # we use an article with "tricky" id (containing a period, which is
+      # usually a format separator) to test the routes
+      @article = Article.make! :title => 'Rails 3.0 upgrade notes'
+    end
+
     example 'GET /wiki' do
       get('/wiki').should   map_to({ :controller => 'articles', :action => 'index' })
       get('/wiki').should map_from({ :controller => 'articles', :action => 'index' })
@@ -22,28 +28,28 @@ describe ArticlesController do
     example 'GET /wiki/Rails_3.0_upgrade_notes' do
       get('/wiki/Rails_3.0_upgrade_notes').should   map_to({ :controller => 'articles', :action => 'show', :id => 'Rails_3.0_upgrade_notes' })
       get('/wiki/Rails_3.0_upgrade_notes').should map_from({ :controller => 'articles', :action => 'show', :id => 'Rails_3.0_upgrade_notes' })
-
-      article = Article.make! :title => 'Rails 3.0 upgrade notes'
-      article_path(article).should == '/wiki/Rails_3.0_upgrade_notes'
-    end
-  end
-
-  describe 'route generation' do
-
-    it "should map { :controller => 'articles', :action => 'show', :id => 'foo', :protocol => 'https' } to /wiki/foo" do
-      route_for(:controller => "articles", :action => "show", :id => 'foo', :protocol => 'https').should == "/wiki/foo"
+      article_path(@article).should == '/wiki/Rails_3.0_upgrade_notes'
     end
 
-    it "should map { :controller => 'articles', :action => 'edit', :id => 'foo', :protocol => 'https' } to /wiki/foo/edit" do
-      route_for(:controller => "articles", :action => "edit", :id => 'foo', :protocol => 'https').should == "/wiki/foo/edit"
+    example 'GET /wiki/Rails_3.0_upgrade_notes/edit' do
+      get('/wiki/Rails_3.0_upgrade_notes/edit').should   map_to({ :controller => 'articles', :action => 'edit', :id => 'Rails_3.0_upgrade_notes' })
+      get('/wiki/Rails_3.0_upgrade_notes/edit').should map_from({ :controller => 'articles', :action => 'edit', :id => 'Rails_3.0_upgrade_notes' })
+      edit_article_path(@article).should == '/wiki/Rails_3.0_upgrade_notes/edit'
     end
 
-    it "should map { :controller => 'articles', :action => 'update', :id => 'foo', :protocol => 'https' } to /wiki/foo" do
-      route_for(:controller => "articles", :action => "update", :id => 'foo', :protocol => 'https').should == { :path => '/wiki/foo', :method => 'put' }
+    example 'PUT /wiki/Rails_3.0_upgrade_notes' do
+      put('/wiki/Rails_3.0_upgrade_notes').should   map_to({ :controller => 'articles', :action => 'update', :id => 'Rails_3.0_upgrade_notes' })
+      put('/wiki/Rails_3.0_upgrade_notes').should map_from({ :controller => 'articles', :action => 'update', :id => 'Rails_3.0_upgrade_notes' })
     end
 
-    it "should map { :controller => 'articles', :action => 'destroy', :id => 'foo', :protocol => 'https' } to /wiki/foo" do
-      route_for(:controller => "articles", :action => "destroy", :id => 'foo', :protocol => 'https').should == { :path => '/wiki/foo', :method => 'delete' }
+    example 'DELETE /wiki/Rails_3.0_upgrade_notes' do
+      delete('/wiki/Rails_3.0_upgrade_notes').should   map_to({ :controller => 'articles', :action => 'destroy', :id => 'Rails_3.0_upgrade_notes' })
+      delete('/wiki/Rails_3.0_upgrade_notes').should map_from({ :controller => 'articles', :action => 'destroy', :id => 'Rails_3.0_upgrade_notes' })
+    end
+
+    example 'POST /wiki' do
+      post('/wiki').should   map_to({ :controller => 'articles', :action => 'create' })
+      post('/wiki').should map_from({ :controller => 'articles', :action => 'create' })
     end
   end
 
