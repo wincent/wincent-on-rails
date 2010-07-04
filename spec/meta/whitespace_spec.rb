@@ -21,12 +21,12 @@ describe 'Source code files' do
     end
   end
 
-  before(:all) do
+  before :all do
     @pwd = Dir.pwd
     Dir.chdir File.join(File.dirname(__FILE__), '..', '..')
   end
 
-  after(:all) do
+  after :all do
     Dir.chdir @pwd
   end
 
@@ -98,15 +98,15 @@ describe 'Source code files' do
 
   Wincent::SOURCE_FILES.each do |file|
     describe file do
-      it 'should not have trailing whitespace' do
+      it 'contains no trailing whitespace' do
         file.should_not have_trailing_whitespace
       end
 
-      it 'should not contain tabs' do
+      it 'contains no tabs' do
         file.should_not contain_tabs
       end
 
-      it 'should have a newline at the end of the file' do
+      it 'has a newline at the end' do
         file.should have_newline_at_end_of_file
       end
     end
