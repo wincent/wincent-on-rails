@@ -1,6 +1,22 @@
 require File.expand_path('../spec_helper', File.dirname(__FILE__))
 
 describe ArticlesController do
+  describe 'routing' do
+    example 'GET /wiki' do
+      get('/wiki').should \
+        map_to({ :controller => 'articles', :action => 'index' })
+
+      articles_path.should == '/wiki'
+    end
+
+    example 'GET /wiki/page/2' do
+      get('/wiki/page/2').should \
+        map_to(:controller => 'articles', :action => 'index', :page => '2')
+
+      paginated_articles_path(:page => 2).should == '/wiki/page/2'
+    end
+  end
+
   describe 'route generation' do
     it "should map { :controller => 'articles', :action => 'index', :protocol => 'https' } to /wiki" do
       route_for(:controller => "articles", :action => "index", :protocol => 'https').should == "/wiki"
