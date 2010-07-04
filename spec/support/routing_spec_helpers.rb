@@ -1,5 +1,6 @@
 module RoutingSpecHelpers
   extend ActiveSupport::Concern
+  extend RSpec::Matchers::DSL
 
   included do
     include Rails.application.routes.url_helpers
@@ -9,7 +10,7 @@ module RoutingSpecHelpers
     { :method => :get, :path => path }
   end
 
-  RSpec::Matchers.define :map_to do |destination|
+  matcher :map_to do |destination|
     match_unless_raises Test::Unit::AssertionFailedError do |request|
       method = request[:method]
       path = request[:path]
@@ -21,7 +22,7 @@ module RoutingSpecHelpers
     end
   end
 
-  RSpec::Matchers.define :map_from do |destination|
+  matcher :map_from do |destination|
     match_unless_raises Test::Unit::AssertionFailedError do |request|
       path = request[:path]
       assert_generates path, destination
