@@ -12,11 +12,7 @@ describe 'Source code files' do
                      Dir['spec/**/*']
       SOURCE_FILES.reject! do |path|
         case path
-        when 'features/support/env.rb',
-             'features/support/paths.rb',
-             'features/support/version_check.rb',
-             'lib/tasks/cucumber.rake'
-          # whitespace-damaged files from Cucumber, updated every release
+        when 'spec/mailers/support_mailer_spec.rb' # sample email with trailing space
           true
         else
           !path.match(/\.(builder|erb|haml|rake|rb)\Z/)
@@ -44,30 +40,40 @@ describe 'Source code files' do
     bad_lines
   end
 
-  def have_trailing_whitespace
-    simple_matcher('have trailing whitespace') do |given, matcher|
-      bad_lines                         = check_file given, /\s+\n$/
-      matcher.failure_message           = "expected #{given.inspect} to have trailing whitespace but it did not"
-      matcher.negative_failure_message  = "expected #{given.inspect} to not have trailing whitespace " +
-                                          "but trailing whitespace found on line(s) #{bad_lines.join(', ')}"
-      !bad_lines.empty?
+  RSpec::Matchers.define :have_trailing_whitespace do
+    match do |given|
+      @bad_lines = check_file given, /\s+\n$/
+      !@bad_lines.empty?
+    end
+
+    failure_message_for_should do |given|
+      "expected #{given.inspect} to have trailing whitespace but it did not"
+    end
+
+    failure_message_for_should_not do |given|
+      "expected #{given.inspect} to not have trailing whitespace but " +
+        "trailing whitespace found on line(s) #{@bad_lines.join(', ')}"
     end
   end
 
-  def contain_tabs
-    simple_matcher('contain tabs') do |given, matcher|
-      bad_lines                         = check_file given, /[\t\v]/
-      matcher.failure_message           = "expected #{given.inspect} to contain tabs but it did not"
-      matcher.negative_failure_message  = "expected #{given.inspect} to not contain tabs " +
-                                          "but tabs found on line(s) #{bad_lines.join(', ')}"
-      !bad_lines.empty?
+  RSpec::Matchers.define :contain_tabs do
+    match do |given|
+      @bad_lines = check_file given, /[\t\v]/
+      !@bad_lines.empty?
+    end
+
+    failure_message_for_should do |given|
+      "expected #{given.inspect} to contain tabs but it did not"
+    end
+
+    failure_message_for_should_not do |given|
+      "expected #{given.inspect} to not contain tabs but tabs found on " +
+        "line(s) #{@bad_lines.join(', ')}"
     end
   end
 
-  def have_newline_at_end_of_file
-    simple_matcher('have newline at end of file') do |given, matcher|
-      matcher.failure_message           = "expected #{given.inspect} to have a newline at the end of file but it did not"
-      matcher.negative_failure_message  = "expected #{given.inspect} not to have a newline at the end of file but it did"
+  RSpec::Matchers.define :have_newline_at_end_of_file do
+    match do |given|
       begin
         f = File.new(given)
         f.seek(-1, IO::SEEK_END)
@@ -77,6 +83,16 @@ describe 'Source code files' do
         success = true
       end
       success
+    end
+
+    failure_message_for_should do |given|
+      "expected #{given.inspect} to have a newline at the end of file but " +
+        "it did not"
+    end
+
+    failure_message_for_should_not do |given|
+      "expected #{given.inspect} not to have a newline at the end of file " +
+        "but it did"
     end
   end
 
