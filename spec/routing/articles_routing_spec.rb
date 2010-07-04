@@ -3,7 +3,7 @@ require File.expand_path('../spec_helper', File.dirname(__FILE__))
 describe ArticlesController do
   describe 'routing' do
     example 'GET /wiki' do
-      get('/wiki').should map_to({ :controller => 'articles', :action => 'index' })
+      get('/wiki').should   map_to({ :controller => 'articles', :action => 'index' })
       get('/wiki').should map_from({ :controller => 'articles', :action => 'index' })
       articles_path.should == '/wiki'
     end
@@ -12,16 +12,23 @@ describe ArticlesController do
       get('/wiki/page/2').should map_to(:controller => 'articles', :action => 'index', :page => '2')
       paginated_articles_path(:page => 2).should == '/wiki/page/2'
     end
+
+    example 'GET /wiki/new' do
+      get('/wiki/new').should   map_to({ :controller => 'articles', :action => 'new' })
+      get('/wiki/new').should map_from({ :controller => 'articles', :action => 'new' })
+      new_article_path.should == '/wiki/new'
+    end
+
+    example 'GET /wiki/Rails_3.0_upgrade_notes' do
+      get('/wiki/Rails_3.0_upgrade_notes').should   map_to({ :controller => 'articles', :action => 'show', :id => 'Rails_3.0_upgrade_notes' })
+      get('/wiki/Rails_3.0_upgrade_notes').should map_from({ :controller => 'articles', :action => 'show', :id => 'Rails_3.0_upgrade_notes' })
+
+      article = Article.make! :title => 'Rails 3.0 upgrade notes'
+      article_path(article).should == '/wiki/Rails_3.0_upgrade_notes'
+    end
   end
 
   describe 'route generation' do
-    it "should map { :controller => 'articles', :action => 'index', :protocol => 'https' } to /wiki" do
-      route_for(:controller => "articles", :action => "index", :protocol => 'https').should == "/wiki"
-    end
-
-    it "should map { :controller => 'articles', :action => 'new', :protocol => 'https' } to /wiki/new" do
-      route_for(:controller => "articles", :action => "new", :protocol => 'https').should == "/wiki/new"
-    end
 
     it "should map { :controller => 'articles', :action => 'show', :id => 'foo', :protocol => 'https' } to /wiki/foo" do
       route_for(:controller => "articles", :action => "show", :id => 'foo', :protocol => 'https').should == "/wiki/foo"
