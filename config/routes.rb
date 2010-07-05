@@ -4,7 +4,7 @@ Wincent::Application.routes.draw do |map|
   resources :confirmations, :path => 'confirm'
 
   resources :issues do
-    resources :comments
+    resources :comments, :only => [:create, :new]
     collection do
       get :search
       post :search
@@ -102,7 +102,7 @@ Wincent::Application.routes.draw do |map|
   # for some resources
   namespace :admin do
     match 'dashboard' => 'dashboard#show'
-    resources :forums
+    resources :forums, :only => [ :index, :show, :update ]
     resources :issues
     resources :posts
     resources :tags

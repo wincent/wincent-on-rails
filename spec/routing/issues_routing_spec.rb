@@ -23,6 +23,20 @@ describe IssuesController do
       specify { post('/issues/search').should map('issues#search') }
     end
 
+    describe 'comments' do
+      # only #new and #create are implemented while nested
+      # Rails BUG?: only map_to works here; map_from (and therefore also map) do not
+      specify { get('/issues/123/comments/new').should map_to('comments#new', :issue_id => '123') }
+      specify { post('/issues/123/comments').should map_to('comments#create', :issue_id => '123') }
+
+      # all other RESTful actions are no-ops
+      specify { get('/issues/123/comments').should_not be_recognized }
+      specify { get('/issues/123/comments/456').should_not be_recognized }
+      specify { get('/issues/123/comments/456/edit').should_not be_recognized }
+      specify { put('/issues/123/comments/456').should_not be_recognized }
+      specify { delete('/issues/123/comments/456').should_not be_recognized }
+    end
+
     describe 'helpers' do
       before do
         @issue = Issue.stub :id => 123
