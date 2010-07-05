@@ -9,7 +9,7 @@ GIT
 
 GIT
   remote: git://github.com/jarib/celerity.git
-  revision: f7a0796
+  revision: 3857bf0
   specs:
     celerity (0.7.9)
     celerity (0.7.9)
