@@ -1,77 +1,43 @@
 require File.expand_path('../spec_helper', File.dirname(__FILE__))
 
 describe TweetsController do
-  describe 'route generation' do
-    it 'maps #index' do
-      route_for(:controller => 'tweets', :action => 'index', :protocol => 'https').should == '/twitter'
+  describe 'routing' do
+    it { get('/twitter').should map('tweets#index') }
+    it { get('/twitter/new').should map('tweets#new') }
+    it { get('/twitter/123').should map('tweets#show', :id => '123') }
+    it { get('/twitter/123/edit').should map('tweets#edit', :id => '123') }
+    it { put('/twitter/123').should map('tweets#update', :id => '123') }
+    it { delete('/twitter/123').should map('tweets#destroy', :id => '123') }
+    it { post('/twitter').should map('tweets#create') }
+
+    describe 'index pagination' do
+      it { get('/twitter/page/2').should map('tweets#index', :page => '2') }
     end
 
-    it 'maps #new' do
-      route_for(:controller => 'tweets', :action => 'new', :protocol => 'https').should == '/twitter/new'
-    end
+    describe 'helpers' do
+      before do
+        @tweet = Tweet.stub :id => 123
+      end
 
-    it 'maps #show' do
-      route_for(:controller => 'tweets', :action => 'show', :id => '1', :protocol => 'https').should == '/twitter/1'
-    end
+      describe 'tweets_path' do
+        it { tweets_path.should == '/twitter' }
+      end
 
-    it 'maps #edit' do
-      route_for(:controller => 'tweets', :action => 'edit', :id => '1', :protocol => 'https').should == '/twitter/1/edit'
-    end
+      describe 'new_tweet_path' do
+        it { new_tweet_path.should == '/twitter/new' }
+      end
 
-    it 'maps #create' do
-      route_for(:controller => 'tweets', :action => 'create', :protocol => 'https').should == { :path => '/twitter', :method => :post }
-    end
+      describe 'tweet_path' do
+        it { tweet_path(@tweet).should == '/twitter/123' }
+      end
 
-    it 'maps #update' do
-      route_for(:controller => 'tweets', :action => 'update', :id => '1', :protocol => 'https').should == { :path =>'/twitter/1', :method => :put }
-    end
+      describe 'edit_tweet_path' do
+        it { edit_tweet_path(@tweet).should == '/twitter/123/edit' }
+      end
 
-    it 'maps #destroy' do
-      route_for(:controller => 'tweets', :action => 'destroy', :id => '1', :protocol => 'https').should == { :path =>'/twitter/1', :method => :delete }
-    end
-
-    it 'maps #index/page/:page' do
-      pending 'due to RSpec 1.2.9 breakage'
-      # note that corresponding "params_from" spec below still works
-      { :get => '/twitter/page/2' }.should \
-        route_to(:controller => 'tweets',
-                 :action => 'index',
-                 :page => '2',
-                 :protocol => 'https')
-    end
-  end
-
-  describe 'route recognition' do
-    it 'generates params for #index' do
-      params_from(:get, '/twitter').should == { :controller => 'tweets', :action => 'index', :protocol => 'https' }
-    end
-
-    it 'generates params for #new' do
-      params_from(:get, '/twitter/new').should == { :controller => 'tweets', :action => 'new', :protocol => 'https' }
-    end
-
-    it 'generates params for #create' do
-      params_from(:post, '/twitter').should == { :controller => 'tweets', :action => 'create', :protocol => 'https' }
-    end
-
-    it 'generates params for #show' do
-      params_from(:get, '/twitter/1').should == { :controller => 'tweets', :action => 'show', :id => '1', :protocol => 'https' }
-    end
-
-    it 'generates params for #edit' do
-      params_from(:get, '/twitter/1/edit').should == { :controller => 'tweets', :action => 'edit', :id => '1', :protocol => 'https' }
-    end
-
-    it 'generates params for #update' do
-      params_from(:put, '/twitter/1').should == { :controller => 'tweets', :action => 'update', :id => '1', :protocol => 'https' }
-    end
-
-    it 'generates params for #destroy' do
-      params_from(:delete, '/twitter/1').should == { :controller => 'tweets', :action => 'destroy', :id => '1', :protocol => 'https' }
-    end
-
-    it 'generates params for #index/page/:page' do
-      params_from(:get, '/twitter/page/2').should == { :controller => 'tweets', :action => 'index', :page => '2', :protocol => 'https' }
+      describe 'edit_tweet_path' do
+        it { edit_tweet_path(@tweet).should == '/twitter/123/edit' }
+      end
     end
   end
 end

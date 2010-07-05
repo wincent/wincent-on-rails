@@ -22,8 +22,10 @@ Wincent::Application.routes.draw do |map|
 
   resources :tweets, :path => 'twitter' do
     resources :comments
+    collection do
+      get 'page/:page' => 'tweets#index'
+    end
   end
-  match '/twitter/page/:page' => 'tweets#index', :as => 'paginated_tweets'
 
   resources :searches,
             :only => [ :create, :new ],
