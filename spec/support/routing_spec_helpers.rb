@@ -2,6 +2,22 @@ module RoutingSpecHelpers
   extend ActiveSupport::Concern
   extend RSpec::Matchers::DSL
 
+  module DestinationParser
+    def parse_destination destination
+      string_or_hash, options_hash = destination[0], destination[1]
+      case string_or_hash
+      when String
+        controller, action = string_or_hash.split('#')
+        options = options_hash || {}
+        options.merge({ :controller => controller, :action => action })
+      when Hash
+        string_or_hash
+      else
+        raise ArgumentError.new "unexpected argument of class #{destination.class}"
+      end
+    end
+  end
+
   included do
     include Rails.application.routes.url_helpers
   end
@@ -22,8 +38,11 @@ module RoutingSpecHelpers
     { :method => :put, :path => path }
   end
 
-  matcher :map_to do |destination|
+  matcher :map_to do |*destination|
+    extend DestinationParser
+
     match_unless_raises Test::Unit::AssertionFailedError do |request|
+      destination = parse_destination destination
       method = request[:method]
       path = request[:path]
       assert_recognizes(destination, { :method => method, :path => path })
@@ -34,9 +53,12 @@ module RoutingSpecHelpers
     end
   end
 
-  matcher :map_from do |destination|
+  matcher :map_from do |*destination|
+    extend DestinationParser
+
     match_unless_raises Test::Unit::AssertionFailedError do |request|
       path = request[:path]
+      destination = parse_destination destination
       assert_generates path, destination
     end
 
@@ -45,10 +67,13 @@ module RoutingSpecHelpers
     end
   end
 
-  matcher :map do |destination|
+  matcher :map do |*destination|
+    extend DestinationParser
+
     match_unless_raises Test::Unit::AssertionFailedError do |request|
       method = request[:method]
       path = request[:path]
+      destination = parse_destination destination
       assert_routing({ :method => method, :path => path}, destination)
     end
 
