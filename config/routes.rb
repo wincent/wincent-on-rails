@@ -75,14 +75,10 @@ Wincent::Application.routes.draw do |map|
   # otherwise it will be classified as a route separator
   resources :articles, :id => /[^\/]+/ , :path => 'wiki' do
     resources :comments
+    collection do
+      get 'page/:page' => 'articles#index', :page => %r{\d+}
+    end
   end
-
-  # this gives us pagination URLs like: /wiki/page/3
-  # instead of: /wiki?page=3
-  # note that an article called "page" can still be accessed at: /wiki/page
-  match 'wiki/page/:page' => 'articles#index',
-        :as => 'paginated_articles',
-        :page => %r{\d+}
 
   # regular routes
   match 'l/:id'           => 'links#show'

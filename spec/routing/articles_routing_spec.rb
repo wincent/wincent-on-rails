@@ -15,6 +15,10 @@ describe ArticlesController do
 
       # note how we can still have an article titled "Page"
       it { get('/wiki/page').should map('articles#show', :id => 'page') }
+
+      it 'rejects non-numeric :page params' do
+        get('/wiki/page/foo').should_not be_routable
+      end
     end
 
     describe 'regressions' do
