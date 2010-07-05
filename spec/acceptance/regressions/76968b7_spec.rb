@@ -10,7 +10,6 @@ feature 'wiki article comments' do
   end
 
   scenario 'a title with "strange" characters (AJAX)', :js => true do
-    pending 'Celerity BUG: overescapes URL parameters'
     visit @article_path
     page.should_not have_css("form[action='#{@comment_path}']")
     click 'add a comment' # form pulled down via AJAX
