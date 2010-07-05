@@ -8,9 +8,9 @@ Wincent::Application.routes.draw do |map|
     collection do
       get :search
       post :search
+      get 'page/:page' => 'issues#index'
     end
   end
-  match '/issues/page/:page' => 'issues#index', :as => 'paginated_issues'
 
   resources :links
   resources :products do
