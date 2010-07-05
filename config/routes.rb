@@ -8,7 +8,7 @@ Wincent::Application.routes.draw do |map|
     collection do
       get :search
       post :search
-      get 'page/:page' => 'issues#index'
+      get 'page/:page' => 'issues#index', :page => %r{\d+}
     end
   end
 
@@ -23,7 +23,7 @@ Wincent::Application.routes.draw do |map|
   resources :tweets, :path => 'twitter' do
     resources :comments
     collection do
-      get 'page/:page' => 'tweets#index'
+      get 'page/:page' => 'tweets#index', :page => %r{\d+}
     end
   end
 
@@ -43,7 +43,7 @@ Wincent::Application.routes.draw do |map|
   resources :posts, :path => 'blog', :id => /[a-z0-9\-\.]+/ do
     resources :comments
     collection do
-      get 'page/:page' => 'posts#index'
+      get 'page/:page' => 'posts#index', :page => %r{\d+}
     end
   end
 

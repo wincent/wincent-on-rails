@@ -12,6 +12,10 @@ describe IssuesController do
 
     describe 'index pagination' do
       it { get('/issues/page/2').should map('issues#index', :page => '2') }
+
+      it 'rejects non-numeric :page params' do
+        get('/issues/page/foo').should_not be_routable
+      end
     end
 
     describe 'non-RESTful routes' do

@@ -15,6 +15,10 @@ describe PostsController do
 
       # note how we can still have an post titled "Page"
       it { get('/blog/page').should map('posts#show', :id => 'page') }
+
+      it 'rejects non-numeric :page params' do
+        get('/blog/page/foo').should_not be_routable
+      end
     end
 
     describe 'regressions' do

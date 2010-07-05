@@ -12,6 +12,10 @@ describe TweetsController do
 
     describe 'index pagination' do
       it { get('/twitter/page/2').should map('tweets#index', :page => '2') }
+
+      it 'rejects non-numeric :page params' do
+        get('/twitter/page/foo').should_not be_routable
+      end
     end
 
     describe 'helpers' do
