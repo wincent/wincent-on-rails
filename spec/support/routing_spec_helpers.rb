@@ -69,6 +69,7 @@ module RoutingSpecHelpers
 
     match_unless_raises Test::Unit::AssertionFailedError do |request|
       @request = request
+      @method = @request.delete :method # ignored
       @path = @request.delete :path
       @destination = parse_destination destination
       assert_generates @path, @destination
@@ -81,7 +82,7 @@ module RoutingSpecHelpers
     description do
       controller = @destination.delete(:controller)
       action = @destination.delete(:action)
-      result = "map #{@method.to_s.upcase} #{@path} "
+      result = "map #{@path} "
       result << " with #{@request.inspect} " unless @request.empty?
       result << "from #{controller}\##{action}"
       result << " with #{@destination.inspect}" unless @destination.empty?
