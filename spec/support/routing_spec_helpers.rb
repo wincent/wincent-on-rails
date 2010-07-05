@@ -150,5 +150,9 @@ module RoutingSpecHelpers
     failure_message_for_should_not do
       "expected #{@method.to_s.upcase} #{@path} to not be routable, but it is"
     end
+
+    description do
+      "recognize #{@method.to_s.upcase} #{@path}"
+    end
   end
 end
