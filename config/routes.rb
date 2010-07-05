@@ -42,8 +42,10 @@ Wincent::Application.routes.draw do |map|
   # will be classified as a route separator
   resources :posts, :path => 'blog', :id => /[a-z0-9\-\.]+/ do
     resources :comments
+    collection do
+      get 'page/:page' => 'posts#index'
+    end
   end
-  match '/blog/page/:page' => 'posts#index', :as => 'paginated_posts'
 
   resources :forums do
     resources :topics do
