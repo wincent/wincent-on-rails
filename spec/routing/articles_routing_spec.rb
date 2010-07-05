@@ -34,7 +34,7 @@ describe ArticlesController do
       before do
         # we use an article with a "tricky" id (containing a period, which is
         # usually a format separator) to test the routes
-        @article = Article.make! :title => 'Rails 3.0 upgrade notes'
+        @article = Article.stub :title => 'Rails 3.0 upgrade notes'
       end
 
       describe 'articles_path' do
