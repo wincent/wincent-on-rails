@@ -61,11 +61,25 @@ describe ArticlesController do
         @article = Article.make! :title => 'Rails 3.0 upgrade notes'
       end
 
-      it { articles_path.should == '/wiki' }
-      it { new_article_path.should == '/wiki/new' }
-      it { article_path(@article).should == '/wiki/Rails_3.0_upgrade_notes' }
-      it { edit_article_path(@article).should == '/wiki/Rails_3.0_upgrade_notes/edit' }
-      it { paginated_articles_path(:page => 2).should == '/wiki/page/2' }
+      describe 'articles_path' do
+        it { articles_path.should == '/wiki' }
+      end
+
+      describe 'new_article_path' do
+        it { new_article_path.should == '/wiki/new' }
+      end
+
+      describe 'article_path' do
+        it { article_path(@article).should == '/wiki/Rails_3.0_upgrade_notes' }
+      end
+
+      describe 'edit_article_path' do
+        it { edit_article_path(@article).should == '/wiki/Rails_3.0_upgrade_notes/edit' }
+      end
+
+      describe 'paginated_articles_path' do
+        it { paginated_articles_path(:page => 2).should == '/wiki/page/2' }
+      end
     end
   end
 end

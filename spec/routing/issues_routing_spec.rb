@@ -30,6 +30,15 @@ describe IssuesController do
       post('/issues').should map('issues#create')
     end
 
+    # alternative syntax, still not sure if I prefer it
+    it { get('/issues').should map('issues#index') }
+    it { get('/issues/new').should map('issues#new') }
+    it { get('/issues/123').should map('issues#show', :id => '123') }
+    it { get('/issues/123/edit').should map('issues#edit', :id => '123') }
+    it { put('/issues/123').should map('issues#update', :id => '123') }
+    it { delete('/issues/123').should map('issues#destroy', :id => '123') }
+    it { post('/issues').should map('issues#create') }
+
     describe 'index pagination' do
       example 'GET /issues/page/2' do
         get('/issues/page/2').should map_to('issues#index', :page => '2')

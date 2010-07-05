@@ -42,14 +42,25 @@ module RoutingSpecHelpers
     extend DestinationParser
 
     match_unless_raises Test::Unit::AssertionFailedError do |request|
-      destination = parse_destination destination
-      method = request[:method]
-      path = request[:path]
-      assert_recognizes(destination, { :method => method, :path => path })
+      @request = request
+      @method = @request.delete :method
+      @path = @request.delete :path
+      @destination = parse_destination destination
+      assert_recognizes(@destination, { :method => @method, :path => @path })
     end
 
     failure_message_for_should do
       rescued_exception.message
+    end
+
+    description do
+      controller = @destination.delete(:controller)
+      action = @destination.delete(:action)
+      result = "map #{@method.to_s.upcase} #{@path} "
+      result << " with #{@request.inspect} " unless @request.empty?
+      result << "to #{controller}\##{action}"
+      result << " with #{@destination.inspect}" unless @destination.empty?
+      result
     end
   end
 
@@ -57,13 +68,24 @@ module RoutingSpecHelpers
     extend DestinationParser
 
     match_unless_raises Test::Unit::AssertionFailedError do |request|
-      path = request[:path]
-      destination = parse_destination destination
-      assert_generates path, destination
+      @request = request
+      @path = @request.delete :path
+      @destination = parse_destination destination
+      assert_generates @path, @destination
     end
 
     failure_message_for_should do
       rescued_exception.message
+    end
+
+    description do
+      controller = @destination.delete(:controller)
+      action = @destination.delete(:action)
+      result = "map #{@method.to_s.upcase} #{@path} "
+      result << " with #{@request.inspect} " unless @request.empty?
+      result << "from #{controller}\##{action}"
+      result << " with #{@destination.inspect}" unless @destination.empty?
+      result
     end
   end
 
@@ -71,14 +93,25 @@ module RoutingSpecHelpers
     extend DestinationParser
 
     match_unless_raises Test::Unit::AssertionFailedError do |request|
-      method = request[:method]
-      path = request[:path]
-      destination = parse_destination destination
-      assert_routing({ :method => method, :path => path}, destination)
+      @request = request
+      @method = @request.delete :method
+      @path = @request.delete :path
+      @destination = parse_destination destination
+      assert_routing({ :method => @method, :path => @path}, @destination)
     end
 
     failure_message_for_should do
       rescued_exception.message
+    end
+
+    description do
+      controller = @destination.delete(:controller)
+      action = @destination.delete(:action)
+      result = "map #{@method.to_s.upcase} #{@path} "
+      result << " with #{@request.inspect} " unless @request.empty?
+      result << "as #{controller}\##{action}"
+      result << " with #{@destination.inspect}" unless @destination.empty?
+      result
     end
   end
 end
