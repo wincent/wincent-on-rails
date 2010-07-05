@@ -2,19 +2,19 @@ require File.expand_path('../spec_helper', File.dirname(__FILE__))
 
 describe ArticlesController do
   describe 'routing' do
-    it { get('/wiki').should map('articles#index') }
-    it { get('/wiki/new').should map('articles#new') }
-    it { get('/wiki/Rails_3.0_upgrade_notes').should map('articles#show', :id => 'Rails_3.0_upgrade_notes') }
-    it { get('/wiki/Rails_3.0_upgrade_notes/edit').should map('articles#edit', :id => 'Rails_3.0_upgrade_notes') }
-    it { put('/wiki/Rails_3.0_upgrade_notes').should map('articles#update', :id => 'Rails_3.0_upgrade_notes') }
-    it { delete('/wiki/Rails_3.0_upgrade_notes').should map('articles#destroy', :id => 'Rails_3.0_upgrade_notes') }
-    it { post('/wiki').should map('articles#create') }
+    specify { get('/wiki').should map('articles#index') }
+    specify { get('/wiki/new').should map('articles#new') }
+    specify { get('/wiki/Rails_3.0_upgrade_notes').should map('articles#show', :id => 'Rails_3.0_upgrade_notes') }
+    specify { get('/wiki/Rails_3.0_upgrade_notes/edit').should map('articles#edit', :id => 'Rails_3.0_upgrade_notes') }
+    specify { put('/wiki/Rails_3.0_upgrade_notes').should map('articles#update', :id => 'Rails_3.0_upgrade_notes') }
+    specify { delete('/wiki/Rails_3.0_upgrade_notes').should map('articles#destroy', :id => 'Rails_3.0_upgrade_notes') }
+    specify { post('/wiki').should map('articles#create') }
 
     describe 'index pagination' do
-      it { get('/wiki/page/2').should map_to('articles#index', :page => '2') }
+      specify { get('/wiki/page/2').should map_to('articles#index', :page => '2') }
 
       # note how we can still have an article titled "Page"
-      it { get('/wiki/page').should map('articles#show', :id => 'page') }
+      specify { get('/wiki/page').should map('articles#show', :id => 'page') }
 
       it 'rejects non-numeric :page params' do
         get('/wiki/page/foo').should_not be_routable
@@ -42,19 +42,19 @@ describe ArticlesController do
       end
 
       describe 'articles_path' do
-        it { articles_path.should == '/wiki' }
+        specify { articles_path.should == '/wiki' }
       end
 
       describe 'new_article_path' do
-        it { new_article_path.should == '/wiki/new' }
+        specify { new_article_path.should == '/wiki/new' }
       end
 
       describe 'article_path' do
-        it { article_path(@article).should == '/wiki/Rails_3.0_upgrade_notes' }
+        specify { article_path(@article).should == '/wiki/Rails_3.0_upgrade_notes' }
       end
 
       describe 'edit_article_path' do
-        it { edit_article_path(@article).should == '/wiki/Rails_3.0_upgrade_notes/edit' }
+        specify { edit_article_path(@article).should == '/wiki/Rails_3.0_upgrade_notes/edit' }
       end
     end
   end
