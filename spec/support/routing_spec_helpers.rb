@@ -115,4 +115,33 @@ module RoutingSpecHelpers
       result
     end
   end
+
+  # unfortunately this is not as useful as one might hope: recognize_path() can
+  # still recognize paths which aren't actually routable; for example, given:
+  #
+  #   resource :issues, :except => :new
+  #
+  # an spec like:
+  #
+  #   specify { get('issues/new').should_not be_recognized }
+  #
+  # will fail here with:
+  #
+  #   expected GET /issues/new to not be routable, but it routes to
+  #   {:controller=>"issues", :action=>"new"}
+  matcher :be_recognized do
+    match_unless_raises ActionController::RoutingError do |request|
+      @method = request[:method]
+      @path = request[:path]
+      @routing_options = routes.recognize_path @path, @method.to_s
+    end
+
+    failure_message_for_should do
+      rescued_exception.message
+    end
+
+    failure_message_for_should_not do
+      "expected #{@method.to_s.upcase} #{@path} to not be routable, but it routes to #{@routing_options.inspect}"
+    end
+  end
 end
