@@ -1,88 +1,83 @@
 require File.expand_path('../spec_helper', File.dirname(__FILE__))
 
 describe IssuesController do
-  describe 'RESTful route generation' do
-    it "should map { :controller => 'issues', :action => 'index', :protocol => 'https' } to /issues" do
-      route_for(:controller => 'issues', :action => 'index', :protocol => 'https').should == '/issues'
+  describe 'routing' do
+    example 'GET /issues' do
+      get('/issues').should map('issues#index')
     end
 
-    it "should map { :controller => 'issues', :action => 'new', :protocol => 'https' } to /issues/new" do
-      route_for(:controller => 'issues', :action => 'new', :protocol => 'https').should == '/issues/new'
+    example 'GET /issues/new' do
+      get('/issues/new').should map('issues#new')
     end
 
-    it "should map { :controller => 'issues', :action => 'show', :id => '123', :protocol => 'https' } to /issues/123" do
-      route_for(:controller => 'issues', :action => 'show', :id => '123', :protocol => 'https').should == '/issues/123'
+    example 'GET /issues/:id' do
+      get('/issues/123').should map('issues#show', :id => '123')
     end
 
-    it "should map { :controller => 'issues', :action => 'edit', :id => '123', :protocol => 'https' } to /issues/123/edit" do
-      route_for(:controller => 'issues', :action => 'edit', :id => '123', :protocol => 'https').should == '/issues/123/edit'
+    example 'GET /issues/:id/edit' do
+      get('/issues/123/edit').should map('issues#edit', :id => '123')
     end
 
-    it "should map { :controller => 'issues', :action => 'update', :id => '123', :protocol => 'https' } to /issues/123" do
-      route_for(:controller => 'issues', :action => 'update', :id => '123', :protocol => 'https').should == { :path => '/issues/123', :method => 'put' }
+    example 'PUT /issues/:id' do
+      put('/issues/123').should map('issues#update', :id => '123')
     end
 
-    it "should map { :controller => 'issues', :action => 'destroy', :id => '123', :protocol => 'https' } to /issues/123" do
-      route_for(:controller => 'issues', :action => 'destroy', :id => '123', :protocol => 'https').should == { :path => '/issues/123', :method => 'delete' }
+    example 'DELETE /issues/:id' do
+      delete('/issues/123').should map('issues#destroy', :id => '123')
     end
 
-    it 'maps #index/page/:page' do
-      pending 'due to RSpec 1.2.9 breakage'
-      { :get => '/issues/page/2' }.should \
-        route_to(:controller => 'issues',
-                 :action => 'index',
-                 :page => '2',
-                 :protocol => 'https')
-    end
-  end
-
-  describe 'non-RESTful route generation' do
-    it "should map { :controller => 'issues', :action => 'search', :protocol => 'https' } to /issues/search" do
-      route_for(:controller => 'issues', :action => 'search', :protocol => 'https').should == '/issues/search'
-    end
-  end
-
-  describe 'RESTful route recognition' do
-    it "should generate params { :controller => 'issues', action => 'index', :protocol => 'https' } from GET /issues" do
-      params_from(:get, '/issues').should == { :controller => 'issues', :action => 'index', :protocol => 'https' }
+    example 'POST /issues' do
+      post('/issues').should map('issues#create')
     end
 
-    it "should generate params { :controller => 'issues', action => 'new', :protocol => 'https' } from GET /issues/new" do
-      params_from(:get, '/issues/new').should == { :controller => 'issues', :action => 'new', :protocol => 'https' }
+    describe 'index pagination' do
+      example 'GET /issues/page/2' do
+        get('/issues/page/2').should map_to('issues#index', :page => '2')
+      end
     end
 
-    it "should generate params { :controller => 'issues', action => 'create', :protocol => 'https' } from POST /issues" do
-      params_from(:post, '/issues').should == { :controller => 'issues', :action => 'create', :protocol => 'https' }
+    describe 'non-RESTful routes' do
+      example 'GET /issues/search' do
+        get('/issues/search').should map('issues#search')
+      end
+
+      example 'POST /issues/search' do
+        post('/issues/search').should map('issues#search')
+      end
     end
 
-    it "should generate params { :controller => 'issues', action => 'show', id => '123', :protocol => 'https' } from GET /issues/123" do
-      params_from(:get, '/issues/123').should == { :controller => 'issues', :action => 'show', :id => '123', :protocol => 'https' }
-    end
+    describe 'helpers' do
+      before do
+        @issue = Issue.stub :id => 123
+      end
 
-    it "should generate params { :controller => 'issues', action => 'edit', id => '123', :protocol => 'https' } from GET /issues/123;edit" do
-      params_from(:get, '/issues/123/edit').should == { :controller => 'issues', :action => 'edit', :id => '123', :protocol => 'https' }
-    end
+      describe 'issues_path' do
+        it { issues_path.should == '/issues' }
+      end
 
-    it "should generate params { :controller => 'issues', action => 'update', id => '123', :protocol => 'https' } from PUT /issues/123" do
-      params_from(:put, '/issues/123').should == { :controller => 'issues', :action => 'update', :id => '123', :protocol => 'https' }
-    end
+      describe 'new_issue_path' do
+        it { new_issue_path.should == '/issues/new' }
+      end
 
-    it "should generate params { :controller => 'issues', action => 'destroy', id => '123', :protocol => 'https' } from DELETE /issues/123" do
-      params_from(:delete, '/issues/123').should == { :controller => 'issues', :action => 'destroy', :id => '123', :protocol => 'https' }
-    end
+      describe 'issue_path' do
+        it { issue_path(@issue).should == '/issues/123' }
+      end
 
-    it 'generates params for #index/page/:page' do
-      params_from(:get, '/issues/page/2').should == { :controller => 'issues', :action => 'index', :page => '2', :protocol => 'https' }
-    end
-  end
+      describe 'edit_issue_path' do
+        it { edit_issue_path(@issue).should == '/issues/123/edit' }
+      end
 
-  describe 'non-RESTful route recognition' do
-    it "should generate params { :controller => 'issues', action => 'search', :protocol => 'https' } from GET /issues/search" do
-      params_from(:get, '/issues/search').should == { :controller => 'issues', :action => 'search', :protocol => 'https' }
-    end
+      describe 'paginated_issues_path' do
+        it { paginated_issues_path(:page => 2).should == '/issues/page/2' }
+      end
 
-    it "should generate params { :controller => 'issues', action => 'search', :protocol => 'https' } from POST /issues/search" do
-      params_from(:post, '/issues/search').should == { :controller => 'issues', :action => 'search', :protocol => 'https' }
+      describe 'edit_issue_path' do
+        it { edit_issue_path(@issue).should == '/issues/123/edit' }
+      end
+
+      describe 'paginated_issues_path' do
+        it { paginated_issues_path(:page => 2).should == '/issues/page/2' }
+      end
     end
   end
 end
