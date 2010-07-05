@@ -2,43 +2,19 @@ require File.expand_path('../spec_helper', File.dirname(__FILE__))
 
 describe ArticlesController do
   describe 'routing' do
-    example 'GET /wiki' do
-      get('/wiki').should map('articles#index')
-    end
-
-    example 'GET /wiki/new' do
-      get('/wiki/new').should map('articles#new')
-    end
-
-    example 'GET /wiki/:id' do
-      get('/wiki/Rails_3.0_upgrade_notes').should map('articles#show', :id => 'Rails_3.0_upgrade_notes')
-    end
-
-    example 'GET /wiki/:id/edit' do
-      get('/wiki/Rails_3.0_upgrade_notes/edit').should map('articles#edit', :id => 'Rails_3.0_upgrade_notes')
-    end
-
-    example 'PUT /wiki/:id' do
-      put('/wiki/Rails_3.0_upgrade_notes').should map('articles#update', :id => 'Rails_3.0_upgrade_notes')
-    end
-
-    example 'DELETE /wiki/:id' do
-      delete('/wiki/Rails_3.0_upgrade_notes').should map('articles#destroy', :id => 'Rails_3.0_upgrade_notes')
-    end
-
-    example 'POST /wiki' do
-      post('/wiki').should map('articles#create')
-    end
+    it { get('/wiki').should map('articles#index') }
+    it { get('/wiki/new').should map('articles#new') }
+    it { get('/wiki/Rails_3.0_upgrade_notes').should map('articles#show', :id => 'Rails_3.0_upgrade_notes') }
+    it { get('/wiki/Rails_3.0_upgrade_notes/edit').should map('articles#edit', :id => 'Rails_3.0_upgrade_notes') }
+    it { put('/wiki/Rails_3.0_upgrade_notes').should map('articles#update', :id => 'Rails_3.0_upgrade_notes') }
+    it { delete('/wiki/Rails_3.0_upgrade_notes').should map('articles#destroy', :id => 'Rails_3.0_upgrade_notes') }
+    it { post('/wiki').should map('articles#create') }
 
     describe 'index pagination' do
-      example 'GET /wiki/page/2' do
-        get('/wiki/page/2').should map_to('articles#index', :page => '2')
-      end
+      it { get('/wiki/page/2').should map_to('articles#index', :page => '2') }
 
       # note how we can still have an article titled "Page"
-      example 'GET /wiki/page' do
-        get('/wiki/page').should map('articles#show', :id => 'page')
-      end
+      it { get('/wiki/page').should map('articles#show', :id => 'page') }
     end
 
     describe 'regressions' do
@@ -75,10 +51,6 @@ describe ArticlesController do
 
       describe 'edit_article_path' do
         it { edit_article_path(@article).should == '/wiki/Rails_3.0_upgrade_notes/edit' }
-      end
-
-      describe 'paginated_articles_path' do
-        it { paginated_articles_path(:page => 2).should == '/wiki/page/2' }
       end
     end
   end
