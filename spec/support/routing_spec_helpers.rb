@@ -116,32 +116,39 @@ module RoutingSpecHelpers
     end
   end
 
-  # unfortunately this is not as useful as one might hope: recognize_path() can
-  # still recognize paths which aren't actually routable; for example, given:
-  #
-  #   resource :issues, :except => :new
-  #
-  # an spec like:
-  #
-  #   specify { get('issues/new').should_not be_recognized }
-  #
-  # will fail here with:
-  #
-  #   expected GET /issues/new to not be routable, but it routes to
-  #   {:controller=>"issues", :action=>"new"}
   matcher :be_recognized do
-    match_unless_raises ActionController::RoutingError do |request|
+    match do |request|
       @method = request[:method]
       @path = request[:path]
-      @routing_options = routes.recognize_path @path, @method.to_s
+      @result = true
+
+      # we need to do this because recognize_path() can still "recognize"
+      # paths which aren't actually routable:
+      #
+      #  route:
+      #    resource :issues, :except => :index
+      #
+      #  assertion:
+      #    recognize_path('/issues', :method => :get)
+      #
+      #  "routes" to:
+      #    {:controller => 'issues', :action => 'new'}
+      begin
+        assert_recognizes({}, { :method => @method, :path => @path })
+      rescue ActionController::RoutingError => e
+        @result = e.message
+      rescue Test::Unit::AssertionFailedError => e
+        # routable but we didn't supply an expected destination
+      end
+      @result == true
     end
 
     failure_message_for_should do
-      rescued_exception.message
+      @result
     end
 
     failure_message_for_should_not do
-      "expected #{@method.to_s.upcase} #{@path} to not be routable, but it routes to #{@routing_options.inspect}"
+      "expected #{@method.to_s.upcase} #{@path} to not be routable, but it is"
     end
   end
 end

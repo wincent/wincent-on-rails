@@ -8,10 +8,13 @@ describe Admin::ForumsController do
     specify { put('/admin/forums/foo').should map('admin/forums#update', :id => 'foo') }
 
     # the remaining RESTful actions aren't recognized
-    pending { get('/admin/forums/new').should_not be_recognized }
-    pending { get('/admin/forums/foo/edit').should_not be_recognized }
-    pending { delete('/admin/forums/foo').should_not be_recognized }
-    pending { post('/admin/forums').should_not be_recognized }
+    specify { get('/admin/forums/foo/edit').should_not be_recognized }
+    specify { delete('/admin/forums/foo').should_not be_recognized }
+    specify { post('/admin/forums').should_not be_recognized }
+
+    # note how in the absence of a admin/forums#new route,
+    # /admin/forums/new is interpreted as admin/forums#show
+    specify { get('/admin/forums/new').should map('admin/forums#show', :id => 'new') }
 
     describe 'helpers' do
       before do
