@@ -13,7 +13,7 @@ module Wincent
   class Application < Rails::Application
     config.load_paths += %W( #{config.root}/app/sweepers )
     config.time_zone = 'UTC'
-    config.encoding = "utf-8"
+    config.encoding = 'utf-8'
     config.filter_parameters += [ :passphrase ]
 
     url_options = {}
