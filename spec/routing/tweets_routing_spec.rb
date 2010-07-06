@@ -14,7 +14,7 @@ describe TweetsController do
       specify { get('/twitter/page/2').should map('tweets#index', :page => '2') }
 
       it 'rejects non-numeric :page params' do
-        get('/twitter/page/foo').should_not be_routable
+        get('/twitter/page/foo').should_not be_recognized
       end
     end
 

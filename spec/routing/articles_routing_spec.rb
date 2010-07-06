@@ -17,7 +17,7 @@ describe ArticlesController do
       specify { get('/wiki/page').should map('articles#show', :id => 'page') }
 
       it 'rejects non-numeric :page params' do
-        get('/wiki/page/foo').should_not be_routable
+        get('/wiki/page/foo').should_not be_recognized
       end
     end
 

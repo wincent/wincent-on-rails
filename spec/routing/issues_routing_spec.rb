@@ -14,7 +14,7 @@ describe IssuesController do
       specify { get('/issues/page/2').should map('issues#index', :page => '2') }
 
       it 'rejects non-numeric :page params' do
-        get('/issues/page/foo').should_not be_routable
+        get('/issues/page/foo').should_not be_recognized
       end
     end
 

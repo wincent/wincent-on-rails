@@ -17,7 +17,7 @@ describe PostsController do
       specify { get('/blog/page').should map('posts#show', :id => 'page') }
 
       it 'rejects non-numeric :page params' do
-        get('/blog/page/foo').should_not be_routable
+        get('/blog/page/foo').should_not be_recognized
       end
     end
 
