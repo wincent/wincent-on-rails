@@ -39,7 +39,7 @@ module RSpec
     end # module Atom
 
     def can_validate_feeds?
-      Spec::Rails::Matchers::Atom.has_java?
+      RSpec::Matchers::Atom.has_java?
     end
 
     # allows us to do:
@@ -51,10 +51,10 @@ module RSpec
     class BeValidAtom
       def matches? string
         # java -jar jing.jar atom.rng feed.atom
-        java    = Spec::Rails::Matchers::Atom.java_path
-        jing    = Spec::Rails::Matchers::Atom.jing_path
-        schema  = Spec::Rails::Matchers::Atom.schema_path
-        @path   = Spec::Rails::Matchers::Atom.write_to_temp_file string
+        java    = RSpec::Matchers::Atom.java_path
+        jing    = RSpec::Matchers::Atom.jing_path
+        schema  = RSpec::Matchers::Atom.schema_path
+        @path   = RSpec::Matchers::Atom.write_to_temp_file string
         `#{java} -jar #{jing} #{schema} #{@path}`
         $?.exitstatus == 0
       end

@@ -4,9 +4,9 @@ require 'hpricot'
 describe ArticlesController, 'regressions' do
   it 'should handle HTTPS URLs in the url_or_path_for_redirect method' do
     # previously only handled HTTP URLs
-    title = FR::random_string
+    title = Sham.random
     target = 'https://example.com/'
-    create_article :title => title, :redirect => target, :body => ''
+    Article.make! :title => title, :redirect => target, :body => ''
     # BUG: this "get" doesn't do what we want it to do
     # have tried 'show', :id => title, :protocol => 'https'
     #            :contoller => 'wiki', :id => title, :protocol => 'https'
@@ -26,7 +26,7 @@ describe ArticlesController, 'GET /wiki.atom' do
   render_views # so that we can test layouts as well
 
   before do
-    10.times { create_article }
+    10.times { Article.make! }
   end
 
   def do_get
@@ -65,7 +65,7 @@ describe ArticlesController, 'GET /wiki/:title.atom' do
   render_views # so that we can test layouts as well
 
   before do
-    @article = create_article :title => 'foo bar baz'
+    @article = Article.make! :title => 'foo bar baz'
   end
 
   def do_get
@@ -82,7 +82,7 @@ describe ArticlesController, 'GET /wiki/:title.atom' do
 
   it 'should produce valid atom when there are multiple comments' do
     pending unless can_validate_feeds?
-    10.times { create_comment :commentable => @article }
+    10.times { Comment.make! :commentable => @article }
     do_get
     response.body.should be_valid_atom
   end
