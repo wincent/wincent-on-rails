@@ -1,24 +1,16 @@
 require File.expand_path('../spec_helper', File.dirname(__FILE__))
 require 'hpricot'
 
-describe ArticlesController, 'regressions' do
-  it 'should handle HTTPS URLs in the url_or_path_for_redirect method' do
-    # previously only handled HTTP URLs
-    title = Sham.random
-    target = 'https://example.com/'
-    Article.make! :title => title, :redirect => target, :body => ''
-    # BUG: this "get" doesn't do what we want it to do
-    # have tried 'show', :id => title, :protocol => 'https'
-    #            :contoller => 'wiki', :id => title, :protocol => 'https'
-    #            :controller => 'articles', :id => title, :protocol => 'https
-    #            "/wiki/#{title}"
-    # get_via_redirect "/wiki/#{title}" # no such method:
-    pending "don't know what RSpec is doing with my get request"
-    get 'show', :id => 'i hate you', :protocol => 'https'
-    # i have no idea what controller/action are being called
-    # (adding "raises" in articles_controller has no effect)
-    # expected redirect to "https://example.com/", got redirect to "https://test.host:3002/wiki/i%20hate%20you
-    response.should redirect_to(target)
+describe ArticlesController do
+  describe 'regressions' do
+    it 'handles HTTPS URLs in the url_or_path_for_redirect method' do
+      # previously only handled HTTP URLs
+      title = Sham.random
+      target = 'https://example.com/'
+      Article.make! :title => title, :redirect => target, :body => ''
+      get 'show', :id => title
+      response.should redirect_to(target)
+    end
   end
 end
 
