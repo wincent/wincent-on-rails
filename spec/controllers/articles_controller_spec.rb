@@ -80,6 +80,55 @@ describe ArticlesController, 'GET /wiki/:title.atom' do
   end
 end
 
+describe ArticlesController do
+  describe 'GET /wiki' do
+    context 'HTML format' do
+      it 'uses a RESTful paginator' do
+        mock.proxy(RestfulPaginator).new.with_any_args
+        get :index
+      end
+
+      it 'finds recent articles' do
+        mock(Article).find_recent.with_any_args
+        get :index
+      end
+
+      it 'finds top tags' do
+        mock(Article).find_top_tags
+        get :index
+      end
+
+      it 'succeeds' do
+        get :index
+        response.should be_success
+      end
+
+      it 'renders the index template' do
+        get :index
+        response.should render_template('index')
+      end
+    end
+
+    context 'Atom format' do
+      render_views # needed otherwise we'll inappropriately use HTML layout
+
+      it 'finds recent articles, excluding redirects' do
+        mock(Article).find_recent_excluding_redirects { [] }
+        get :index, :format => 'atom'
+      end
+
+      it 'succeeds' do
+        get :index, :format => 'atom'
+      end
+
+      it 'renders the index template' do
+        get :index, :format => 'atom'
+        response.should render_template('index')
+      end
+    end
+  end
+end
+
 =begin
 describe ArticlesController do
   describe 'GET /wiki/new' do
