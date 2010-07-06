@@ -32,17 +32,16 @@ class Article < ActiveRecord::Base
   acts_as_searchable      :attributes => [:title, :body]
   acts_as_taggable
 
+  scope :recent, where(:public => true).order('updated_at DESC').limit(10)
+  # need to figure out how to do "or" composition with Arel
+  #scope   :excluding_redirects, where(:redirect => nil, :redirect => '')
+
   def self.find_with_param! param
     find_by_title!(deparametrize(param))
   end
 
   def self.find_recent options = {}
-    base_options = {
-      :conditions => { :public => true },
-      :order => 'updated_at DESC',
-      :limit => 10
-    }
-    find :all, base_options.merge(options)
+    recent.offset(options[:offset].to_i)
   end
 
   # for the Atom feed
