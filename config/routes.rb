@@ -48,8 +48,8 @@ Wincent::Application.routes.draw do |map|
   end
 
   resources :forums do
-    resources :topics do
-      resources :comments
+    resources :topics, :except => :index do
+      resources :comments, :only => [ :create, :new ]
     end
   end
 
