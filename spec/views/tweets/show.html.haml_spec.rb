@@ -40,7 +40,7 @@ describe 'tweets/show.html.haml' do
   end
 
   it 'renders the "shared/tags" partial' do
-    mock.proxy(view).render(anything, anything) # initial render call
+    stub.proxy(view).render.with_any_args # initial render call
     mock(view).render('shared/tags', anything)
     render
   end
