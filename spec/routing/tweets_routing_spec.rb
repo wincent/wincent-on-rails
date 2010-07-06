@@ -18,6 +18,20 @@ describe TweetsController do
       end
     end
 
+    describe 'comments' do
+      # only #new and #create are implemented while nested
+      # Rails BUG?: only map_to works here; map_from (and therefore also map) do not
+      specify { get('/twitter/123/comments/new').should map_to('comments#new', :tweet_id => '123') }
+      specify { post('/twitter/123/comments').should map_to('comments#create', :tweet_id => '123') }
+
+      # all other RESTful actions are no-ops
+      specify { get('/twitter/123/comments').should_not be_recognized }
+      specify { get('/twitter/123/comments/456').should_not be_recognized }
+      specify { get('/twitter/123/comments/456/edit').should_not be_recognized }
+      specify { put('/twitter/123/comments/456').should_not be_recognized }
+      specify { delete('/twitter/123/comments/456').should_not be_recognized }
+    end
+
     describe 'helpers' do
       before do
         @tweet = Tweet.stub :id => 123

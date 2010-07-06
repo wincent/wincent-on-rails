@@ -21,6 +21,20 @@ describe ArticlesController do
       end
     end
 
+    describe 'comments' do
+      # only #new and #create are implemented while nested
+      # Rails BUG?: only map_to works here; map_from (and therefore also map) do not
+      specify { get('/wiki/Rails_3.0_upgrade_notes/comments/new').should map_to('comments#new', :article_id => 'Rails_3.0_upgrade_notes') }
+      specify { post('/wiki/Rails_3.0_upgrade_notes/comments').should map_to('comments#create', :article_id => 'Rails_3.0_upgrade_notes') }
+
+      # all other RESTful actions are no-ops
+      specify { get('/wiki/Rails_3.0_upgrade_notes/comments').should_not be_recognized }
+      specify { get('/wiki/Rails_3.0_upgrade_notes/comments/456').should_not be_recognized }
+      specify { get('/wiki/Rails_3.0_upgrade_notes/comments/456/edit').should_not be_recognized }
+      specify { put('/wiki/Rails_3.0_upgrade_notes/comments/456').should_not be_recognized }
+      specify { delete('/wiki/Rails_3.0_upgrade_notes/comments/456').should_not be_recognized }
+    end
+
     describe 'regressions' do
       it 'handles trailing slashes on resources declared using ":as"' do
         # bug appeared in Rails 2.3.0 RC1; see:

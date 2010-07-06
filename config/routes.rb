@@ -21,7 +21,7 @@ Wincent::Application.routes.draw do |map|
   resources :resets
 
   resources :tweets, :path => 'twitter' do
-    resources :comments
+    resources :comments, :only => [ :create, :new ]
     collection do
       get 'page/:page' => 'tweets#index', :page => %r{\d+}
     end
@@ -41,7 +41,7 @@ Wincent::Application.routes.draw do |map|
   # must explicitly allow period in the id part of the route otherwise it
   # will be classified as a route separator
   resources :posts, :path => 'blog', :id => /[a-z0-9\-\.]+/ do
-    resources :comments
+    resources :comments, :only => [ :create, :new ]
     collection do
       get 'page/:page' => 'posts#index', :page => %r{\d+}
     end
@@ -74,7 +74,7 @@ Wincent::Application.routes.draw do |map|
   # again, must explicitly allow period in the id part of the route
   # otherwise it will be classified as a route separator
   resources :articles, :id => /[^\/]+/ , :path => 'wiki' do
-    resources :comments
+    resources :comments, :only => [ :create, :new ]
     collection do
       get 'page/:page' => 'articles#index', :page => %r{\d+}
     end
