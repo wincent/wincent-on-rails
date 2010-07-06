@@ -88,14 +88,34 @@ describe ArticlesController do
         get :index
       end
 
+      it 'assigns the paginator' do
+        stub.proxy(RestfulPaginator).new.with_any_args { |double| @paginator = double }
+        get :index
+        assigns[:paginator].should == @paginator
+      end
+
       it 'finds recent articles' do
         mock(Article).find_recent.with_any_args
         get :index
       end
 
+      it 'assigns found articles' do
+        articles = [Article.make!]
+        stub(Article).find_recent.with_any_args { articles }
+        get :index
+        assigns[:articles].should == articles
+      end
+
       it 'finds top tags' do
         mock(Article).find_top_tags
         get :index
+      end
+
+      it 'assigns found tags' do
+        tags = [Tag.make!]
+        stub(Article).find_top_tags { tags }
+        get :index
+        assigns[:tags].should == tags
       end
 
       it 'succeeds' do
@@ -115,6 +135,13 @@ describe ArticlesController do
       it 'finds recent articles, excluding redirects' do
         mock(Article).find_recent_excluding_redirects { [] }
         get :index, :format => 'atom'
+      end
+
+      it 'assigns found articles' do
+        articles = [Article.make!]
+        stub(Article).find_recent_excluding_redirects { articles }
+        get :index, :format => 'atom'
+        assigns[:articles].should == articles
       end
 
       it 'succeeds' do
@@ -175,66 +202,6 @@ end
 
 <<-DISABLED
 describe ArticlesController do
-  describe "handling GET /articles" do
-
-    before(:each) do
-      @article = mock_model(Article)
-      Article.stub!(:find).and_return([@article])
-    end
-
-    def do_get
-      get :index
-    end
-
-    it "should be successful" do
-      do_get
-      response.should be_success
-    end
-
-    it "should render index template" do
-      do_get
-      response.should render_template('index')
-    end
-
-    it "should find all articles" do
-      Article.should_receive(:find).with(:all).and_return([@article])
-      do_get
-    end
-
-    it "should assign the found articles for the view" do
-      do_get
-      assigns[:articles].should == [@article]
-    end
-  end
-
-  describe "handling GET /articles.xml" do
-
-    before(:each) do
-      @article = mock_model(Article, :to_xml => "XML")
-      Article.stub!(:find).and_return(@article)
-    end
-
-    def do_get
-      @request.env["HTTP_ACCEPT"] = "application/xml"
-      get :index
-    end
-
-    it "should be successful" do
-      do_get
-      response.should be_success
-    end
-
-    it "should find all articles" do
-      Article.should_receive(:find).with(:all).and_return([@article])
-      do_get
-    end
-
-    it "should render the found articles as xml" do
-      @article.should_receive(:to_xml).and_return("XML")
-      do_get
-      response.body.should == "XML"
-    end
-  end
 
   describe "handling GET /articles/1" do
 
