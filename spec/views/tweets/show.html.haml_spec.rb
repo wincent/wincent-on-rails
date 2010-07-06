@@ -20,10 +20,7 @@ describe 'tweets/show.html.haml' do
 
   it 'should show the tweet body as HTML' do
     do_render
-    rendered.should match(%r{<em>hello</em>})
-    rendered.should have_selector('em') do |em|
-      em.should contain('hello')
-    end
+    rendered.should have_selector('em', :content => 'hello')
   end
 
   it 'should show the time information for the tweet' do
