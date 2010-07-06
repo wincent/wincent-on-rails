@@ -1,6 +1,8 @@
 require File.expand_path('../../spec_helper', File.dirname(__FILE__))
 
 describe 'tweets/show.html.haml' do
+  helper ApplicationHelper, TweetsHelper
+
   def do_render
     assign :tweet, @tweet
     assign :comments, @tweet.comments.published
@@ -9,8 +11,6 @@ describe 'tweets/show.html.haml' do
 
   before do
     @tweet = Tweet.make! :body => "''hello''"
-    view.extend TweetsHelper
-    view.extend ApplicationHelper
   end
 
   it 'includes "ajax.js"' do
