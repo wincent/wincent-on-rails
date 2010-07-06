@@ -21,6 +21,9 @@ describe 'tweets/show.html.haml' do
   it 'should show the tweet body as HTML' do
     do_render
     rendered.should match(%r{<em>hello</em>})
+    rendered.should have_selector('em') do |em|
+      em.should contain('hello')
+    end
   end
 
   it 'should show the time information for the tweet' do
@@ -28,12 +31,9 @@ describe 'tweets/show.html.haml' do
     do_render
   end
 
-  it 'should have an link to the tweets index' do
-    pending 'need replacement for have_tag matcher' # was a wrapper for assert_select, no longer in RSpec
+  it 'should have a link to the tweets index' do
     do_render
-    rendered.should have_tag('.links') do
-      with_tag 'a[href=?]', tweets_path
-    end
+    rendered.should have_selector('.links a', :href => tweets_path)
   end
 
   it 'should show the tweet number' do
