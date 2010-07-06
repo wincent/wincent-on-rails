@@ -37,9 +37,8 @@ platforms :ruby_18 do
 
     # Bundler BUG: these are only for JRuby, but we must still declare them
     # here too if we want them to remain installed
-    # BUG: until next Celerity release, need latest snapshot to work around HtmlUnit
-    gem 'celerity',       :require => nil,
-                          :git => 'git://github.com/jarib/celerity.git'
+    gem 'celerity',       '>= 0.8.0.beta.1', # :git => 'git://github.com/jarib/celerity.git'
+                          :require => nil
     gem 'jruby-openssl',  :require => nil
   end
 end
@@ -48,8 +47,8 @@ platforms :jruby do
   group :test do
     # Bundler BUG: must ':require => nil' here too, otherwise Bundler will
     # try to require them even when running under MRI
-    gem 'celerity',       :require => nil,
-                          :git => 'git://github.com/jarib/celerity.git'
+    gem 'celerity',       '>= 0.8.0.beta.1', # :git => 'git://github.com/jarib/celerity.git'
+                          :require => nil
     gem 'jruby-openssl',  :require => nil
   end
 end

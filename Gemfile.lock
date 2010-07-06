@@ -8,15 +8,8 @@ GIT
       rspec (>= 2.0.0.beta.9)
 
 GIT
-  remote: git://github.com/jarib/celerity.git
-  revision: 3857bf0
-  specs:
-    celerity (0.7.9)
-    celerity (0.7.9)
-
-GIT
   remote: git://github.com/rspec/rspec-mocks.git
-  revision: 37864c1
+  revision: b599a42
   specs:
     rspec-mocks (2.0.0.beta.15)
     rspec-mocks (2.0.0.beta.15)
@@ -98,6 +91,8 @@ GEM
       rack (>= 1.0.0)
       rack-test (>= 0.5.4)
       selenium-webdriver (>= 0.0.3)
+    celerity (0.8.0.beta.1)
+    celerity (0.8.0.beta.1)
     cgi_multipart_eof_fix (2.5.0)
     cgi_multipart_eof_fix (2.5.0)
     columnize (0.3.1)
@@ -278,8 +273,8 @@ PLATFORMS
 
 DEPENDENCIES
   capybara
-  celerity!
-  celerity!
+  celerity (>= 0.8.0.beta.1)
+  celerity (>= 0.8.0.beta.1)
   culerity
   database_cleaner
   factory_girl_rails
