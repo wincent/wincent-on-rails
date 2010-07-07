@@ -15,8 +15,7 @@
 =render 'shared/tags', :tags => @tweet.tags
 -# Gravatar and user profile link
 -# cf: http://twitter.com/sstephenson/status/1227528821
-.links
-  =link_to 'all tweets', tweets_path
+.links=link_to 'all tweets', tweets_path
 -if @tweet.accepts_comments? || @tweet.comments_count != 0
   =named_anchor 'comments'
   %h2.major
