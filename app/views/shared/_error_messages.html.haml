@@ -1,8 +1,9 @@
+-# TODO: make sure we always have a model, then we can skip the nil check here
 -if model && model.errors.any?
   #validation_errors
     %h2
       =pluralize model.errors.count, 'error'
       prevented this record from being saved
     %ul
-      -model.errors.full_messages.each do |msg|
-        %li=msg
+      -model.errors.each do |attribute, message|
+        %li="#{attribute.to_s.gsub('.', '_').humanize} #{message}"
