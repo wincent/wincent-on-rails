@@ -27,12 +27,7 @@ platforms :ruby_18 do
     gem 'mkdtemp'
     gem 'mongrel',        :require => nil
     gem 'rr'
-
-    # until rspec-mocks > 2.0.0.beta.15 comes out, need this to stop RSpec stomping over
-    # RR's mocking methods
-    gem 'rspec-mocks',    :git => 'git://github.com/rspec/rspec-mocks.git'
-
-    gem 'rspec-rails',    '>= 2.0.0.beta.13'
+    gem 'rspec-rails',    '>= 2.0.0.beta.16'
     gem 'steak',          :git => 'git://github.com/cavalle/steak.git'
 
     # Bundler BUG: these are only for JRuby, but we must still declare them

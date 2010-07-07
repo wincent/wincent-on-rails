@@ -21,8 +21,4 @@ RSpec.configure do |config|
     :example_group => { :file_path => %r{\bspec/controllers/} }
   config.include RoutingSpecHelpers,
     :example_group => { :file_path => %r{\bspec/routing/} }
-
-  # TODO: drop this and the corresponding file with next rspec-rails release (> 2.0.0.beta.15)
-  config.include MailerSpecHelpers,
-    :example_group => { :file_path => %r{\bspec/mailers/} }
 end
