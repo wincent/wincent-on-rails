@@ -12,7 +12,8 @@
     %tr
       %th Title
       %th When
-  -unless @articles.empty?
+  -# Rails BUG: https://rails.lighthouseapp.com/projects/8994/tickets/5060
+  -unless @articles.all.empty?
     %tbody
     -for article in @articles
       %tr
