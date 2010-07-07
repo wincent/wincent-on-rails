@@ -2,13 +2,13 @@ require File.expand_path('../spec_helper', File.dirname(__FILE__))
 
 describe TagsController do
   describe 'routing' do
-    specify { get('/tags').should map('tags#index') }
-    specify { get('/tags/new').should map('tags#new') }
-    specify { get('/tags/foo.bar').should map('tags#show', :id => 'foo.bar') }
-    specify { get('/tags/foo.bar/edit').should map('tags#edit', :id => 'foo.bar') }
-    specify { put('/tags/foo.bar').should map('tags#update', :id => 'foo.bar') }
-    specify { delete('/tags/foo.bar').should map('tags#destroy', :id => 'foo.bar') }
-    specify { post('/tags').should map('tags#create') }
+    specify { get('/tags').should have_routing('tags#index') }
+    specify { get('/tags/new').should have_routing('tags#new') }
+    specify { get('/tags/foo.bar').should have_routing('tags#show', :id => 'foo.bar') }
+    specify { get('/tags/foo.bar/edit').should have_routing('tags#edit', :id => 'foo.bar') }
+    specify { put('/tags/foo.bar').should have_routing('tags#update', :id => 'foo.bar') }
+    specify { delete('/tags/foo.bar').should have_routing('tags#destroy', :id => 'foo.bar') }
+    specify { post('/tags').should have_routing('tags#create') }
 
     it 'rejects invalid tag names' do
       # only letters, numbers and periods allowed
@@ -17,7 +17,7 @@ describe TagsController do
     end
 
     describe 'non-RESTful routes' do
-      specify { get('/tags/search').should map('tags#search') }
+      specify { get('/tags/search').should have_routing('tags#search') }
     end
 
     describe 'helpers' do

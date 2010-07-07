@@ -2,16 +2,16 @@ require File.expand_path('../spec_helper', File.dirname(__FILE__))
 
 describe IssuesController do
   describe 'routing' do
-    specify { get('/issues').should map('issues#index') }
-    specify { get('/issues/new').should map('issues#new') }
-    specify { get('/issues/123').should map('issues#show', :id => '123') }
-    specify { get('/issues/123/edit').should map('issues#edit', :id => '123') }
-    specify { put('/issues/123').should map('issues#update', :id => '123') }
-    specify { delete('/issues/123').should map('issues#destroy', :id => '123') }
-    specify { post('/issues').should map('issues#create') }
+    specify { get('/issues').should have_routing('issues#index') }
+    specify { get('/issues/new').should have_routing('issues#new') }
+    specify { get('/issues/123').should have_routing('issues#show', :id => '123') }
+    specify { get('/issues/123/edit').should have_routing('issues#edit', :id => '123') }
+    specify { put('/issues/123').should have_routing('issues#update', :id => '123') }
+    specify { delete('/issues/123').should have_routing('issues#destroy', :id => '123') }
+    specify { post('/issues').should have_routing('issues#create') }
 
     describe 'index pagination' do
-      specify { get('/issues/page/2').should map('issues#index', :page => '2') }
+      specify { get('/issues/page/2').should have_routing('issues#index', :page => '2') }
 
       it 'rejects non-numeric :page params' do
         get('/issues/page/foo').should_not be_recognized
@@ -19,8 +19,8 @@ describe IssuesController do
     end
 
     describe 'non-RESTful routes' do
-      specify { get('/issues/search').should map('issues#search') }
-      specify { post('/issues/search').should map('issues#search') }
+      specify { get('/issues/search').should have_routing('issues#search') }
+      specify { post('/issues/search').should have_routing('issues#search') }
     end
 
     describe 'comments' do

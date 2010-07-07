@@ -3,9 +3,9 @@ require File.expand_path('../../spec_helper', File.dirname(__FILE__))
 describe Admin::ForumsController do
   describe 'routing' do
     # controller only implements #index, #show and #update
-    specify { get('/admin/forums').should map('admin/forums#index') }
-    specify { get('/admin/forums/foo').should map('admin/forums#show', :id => 'foo') }
-    specify { put('/admin/forums/foo').should map('admin/forums#update', :id => 'foo') }
+    specify { get('/admin/forums').should have_routing('admin/forums#index') }
+    specify { get('/admin/forums/foo').should have_routing('admin/forums#show', :id => 'foo') }
+    specify { put('/admin/forums/foo').should have_routing('admin/forums#update', :id => 'foo') }
 
     # the remaining RESTful actions aren't recognized
     specify { get('/admin/forums/foo/edit').should_not be_recognized }
@@ -14,7 +14,7 @@ describe Admin::ForumsController do
 
     # note how in the absence of a admin/forums#new route,
     # /admin/forums/new is interpreted as admin/forums#show
-    specify { get('/admin/forums/new').should map('admin/forums#show', :id => 'new') }
+    specify { get('/admin/forums/new').should have_routing('admin/forums#show', :id => 'new') }
 
     describe 'helpers' do
       before do

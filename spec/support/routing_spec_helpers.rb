@@ -90,7 +90,7 @@ module RoutingSpecHelpers
     end
   end
 
-  matcher :map do |*destination|
+  matcher :have_routing do |*destination|
     extend DestinationParser
 
     match_unless_raises Test::Unit::AssertionFailedError do |request|
@@ -108,7 +108,7 @@ module RoutingSpecHelpers
     description do
       controller = @destination.delete(:controller)
       action = @destination.delete(:action)
-      result = "map #{@method.to_s.upcase} #{@path} "
+      result = "route #{@method.to_s.upcase} #{@path} "
       result << " with #{@request.inspect} " unless @request.empty?
       result << "as #{controller}\##{action}"
       result << " with #{@destination.inspect}" unless @destination.empty?

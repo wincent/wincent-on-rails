@@ -4,8 +4,8 @@ describe TopicsController do
   # as a nested resource, most of these routes are tested in forums_routing_spec.rb
   describe 'routing' do
     # only #index and #show implemented at this level
-    specify { get('/topics').should map('topics#index') }
-    specify { get('/topics/123').should map('topics#show', :id => '123') }
+    specify { get('/topics').should have_routing('topics#index') }
+    specify { get('/topics/123').should have_routing('topics#show', :id => '123') }
 
     # the other RESTful actions are no-ops here
     specify { get('/topics/123/edit').should_not be_recognized }
@@ -14,7 +14,7 @@ describe TopicsController do
     specify { post('/topics').should_not be_recognized }
 
     # as #new is not implemented, this gets routed to #show
-    specify { get('/topics/new').should map('topics#show', :id => 'new') }
+    specify { get('/topics/new').should have_routing('topics#show', :id => 'new') }
 
     describe 'helpers' do
       before do

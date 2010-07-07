@@ -2,21 +2,21 @@ require File.expand_path('../spec_helper', File.dirname(__FILE__))
 
 describe ForumsController do
   describe 'routing' do
-    specify { get('/forums').should map('forums#index') }
-    specify { get('/forums/new').should map('forums#new') }
-    specify { get('/forums/foo-bar').should map('forums#show', :id => 'foo-bar') }
-    specify { get('/forums/foo-bar/edit').should map('forums#edit', :id => 'foo-bar') }
-    specify { put('/forums/foo-bar').should map('forums#update', :id => 'foo-bar') }
-    specify { delete('/forums/foo-bar').should map('forums#destroy', :id => 'foo-bar') }
-    specify { post('/forums').should map('forums#create') }
+    specify { get('/forums').should have_routing('forums#index') }
+    specify { get('/forums/new').should have_routing('forums#new') }
+    specify { get('/forums/foo-bar').should have_routing('forums#show', :id => 'foo-bar') }
+    specify { get('/forums/foo-bar/edit').should have_routing('forums#edit', :id => 'foo-bar') }
+    specify { put('/forums/foo-bar').should have_routing('forums#update', :id => 'foo-bar') }
+    specify { delete('/forums/foo-bar').should have_routing('forums#destroy', :id => 'foo-bar') }
+    specify { post('/forums').should have_routing('forums#create') }
 
     describe 'topics' do
       # only #new, #show, #edit, #update, #destroy, #create implemented while nested
-      specify { get('/forums/foo-bar/topics/new').should map('topics#new', :forum_id => 'foo-bar') }
-      specify { get('/forums/foo-bar/topics/123').should map('topics#show', :forum_id => 'foo-bar', :id => '123') }
-      specify { get('/forums/foo-bar/topics/123/edit').should map('topics#edit', :forum_id => 'foo-bar', :id => '123') }
-      specify { put('/forums/foo-bar/topics/123').should map('topics#update', :forum_id => 'foo-bar', :id => '123') }
-      specify { delete('/forums/foo-bar/topics/123').should map('topics#destroy', :forum_id => 'foo-bar', :id => '123') }
+      specify { get('/forums/foo-bar/topics/new').should have_routing('topics#new', :forum_id => 'foo-bar') }
+      specify { get('/forums/foo-bar/topics/123').should have_routing('topics#show', :forum_id => 'foo-bar', :id => '123') }
+      specify { get('/forums/foo-bar/topics/123/edit').should have_routing('topics#edit', :forum_id => 'foo-bar', :id => '123') }
+      specify { put('/forums/foo-bar/topics/123').should have_routing('topics#update', :forum_id => 'foo-bar', :id => '123') }
+      specify { delete('/forums/foo-bar/topics/123').should have_routing('topics#destroy', :forum_id => 'foo-bar', :id => '123') }
       specify { post('/forums/foo-bar/topics').should map_to('topics#create', :forum_id => 'foo-bar') }
 
       # topics#index is a no-op here, users go to forums#show to see a list of topics

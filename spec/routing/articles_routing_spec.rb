@@ -2,19 +2,19 @@ require File.expand_path('../spec_helper', File.dirname(__FILE__))
 
 describe ArticlesController do
   describe 'routing' do
-    specify { get('/wiki').should map('articles#index') }
-    specify { get('/wiki/new').should map('articles#new') }
-    specify { get('/wiki/Rails_3.0_upgrade_notes').should map('articles#show', :id => 'Rails_3.0_upgrade_notes') }
-    specify { get('/wiki/Rails_3.0_upgrade_notes/edit').should map('articles#edit', :id => 'Rails_3.0_upgrade_notes') }
-    specify { put('/wiki/Rails_3.0_upgrade_notes').should map('articles#update', :id => 'Rails_3.0_upgrade_notes') }
-    specify { delete('/wiki/Rails_3.0_upgrade_notes').should map('articles#destroy', :id => 'Rails_3.0_upgrade_notes') }
-    specify { post('/wiki').should map('articles#create') }
+    specify { get('/wiki').should have_routing('articles#index') }
+    specify { get('/wiki/new').should have_routing('articles#new') }
+    specify { get('/wiki/Rails_3.0_upgrade_notes').should have_routing('articles#show', :id => 'Rails_3.0_upgrade_notes') }
+    specify { get('/wiki/Rails_3.0_upgrade_notes/edit').should have_routing('articles#edit', :id => 'Rails_3.0_upgrade_notes') }
+    specify { put('/wiki/Rails_3.0_upgrade_notes').should have_routing('articles#update', :id => 'Rails_3.0_upgrade_notes') }
+    specify { delete('/wiki/Rails_3.0_upgrade_notes').should have_routing('articles#destroy', :id => 'Rails_3.0_upgrade_notes') }
+    specify { post('/wiki').should have_routing('articles#create') }
 
     describe 'index pagination' do
       specify { get('/wiki/page/2').should map_to('articles#index', :page => '2') }
 
       # note how we can still have an article titled "Page"
-      specify { get('/wiki/page').should map('articles#show', :id => 'page') }
+      specify { get('/wiki/page').should have_routing('articles#show', :id => 'page') }
 
       it 'rejects non-numeric :page params' do
         get('/wiki/page/foo').should_not be_recognized

@@ -2,19 +2,19 @@ require File.expand_path('../spec_helper', File.dirname(__FILE__))
 
 describe PostsController do
   describe 'routing' do
-    specify { get('/blog').should map('posts#index') }
-    specify { get('/blog/new').should map('posts#new') }
-    specify { get('/blog/synergy-5.0-released').should map('posts#show', :id => 'synergy-5.0-released') }
-    specify { get('/blog/synergy-5.0-released/edit').should map('posts#edit', :id => 'synergy-5.0-released') }
-    specify { put('/blog/synergy-5.0-released').should map('posts#update', :id => 'synergy-5.0-released') }
-    specify { delete('/blog/synergy-5.0-released').should map('posts#destroy', :id => 'synergy-5.0-released') }
-    specify { post('/blog').should map('posts#create') }
+    specify { get('/blog').should have_routing('posts#index') }
+    specify { get('/blog/new').should have_routing('posts#new') }
+    specify { get('/blog/synergy-5.0-released').should have_routing('posts#show', :id => 'synergy-5.0-released') }
+    specify { get('/blog/synergy-5.0-released/edit').should have_routing('posts#edit', :id => 'synergy-5.0-released') }
+    specify { put('/blog/synergy-5.0-released').should have_routing('posts#update', :id => 'synergy-5.0-released') }
+    specify { delete('/blog/synergy-5.0-released').should have_routing('posts#destroy', :id => 'synergy-5.0-released') }
+    specify { post('/blog').should have_routing('posts#create') }
 
     describe 'index pagination' do
       specify { get('/blog/page/2').should map_to('posts#index', :page => '2') }
 
       # note how we can still have an post titled "Page"
-      specify { get('/blog/page').should map('posts#show', :id => 'page') }
+      specify { get('/blog/page').should have_routing('posts#show', :id => 'page') }
 
       it 'rejects non-numeric :page params' do
         get('/blog/page/foo').should_not be_recognized

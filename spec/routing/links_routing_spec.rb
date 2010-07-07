@@ -2,13 +2,13 @@ require File.expand_path('../spec_helper', File.dirname(__FILE__))
 
 describe LinksController do
   describe 'routing' do
-    specify { get('/links').should map('links#index') }
-    specify { get('/links/new').should map('links#new') }
-    specify { get('/links/foo').should map('links#show', :id => 'foo') }
-    specify { get('/links/foo/edit').should map('links#edit', :id => 'foo') }
-    specify { put('/links/foo').should map('links#update', :id => 'foo') }
-    specify { delete('/links/foo').should map('links#destroy', :id => 'foo') }
-    specify { post('/links').should map('links#create') }
+    specify { get('/links').should have_routing('links#index') }
+    specify { get('/links/new').should have_routing('links#new') }
+    specify { get('/links/foo').should have_routing('links#show', :id => 'foo') }
+    specify { get('/links/foo/edit').should have_routing('links#edit', :id => 'foo') }
+    specify { put('/links/foo').should have_routing('links#update', :id => 'foo') }
+    specify { delete('/links/foo').should have_routing('links#destroy', :id => 'foo') }
+    specify { post('/links').should have_routing('links#create') }
 
     # shortcut
     specify { get('l/foo').should map_to('links#show', :id => 'foo') }
