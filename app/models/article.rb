@@ -32,24 +32,25 @@ class Article < ActiveRecord::Base
   acts_as_searchable      :attributes => [:title, :body]
   acts_as_taggable
 
-  scope :public, where(:public => true)
-  scope :recent, public.order('updated_at DESC').limit(10)
-  # need to figure out how to do "or" composition with Arel:
-  # a = Article.arel_table
-  # a.where(a[:redirect].eq(nil).or(a[:redirect].eq('')))
-  #scope   :excluding_redirects, where(:redirect => nil, :redirect => '')
+  scope :published, where(:public => true)
+  scope :recent, published.order('updated_at DESC').limit(10)
+  scope :recent_with_offset, lambda { |offset| recent.offset(offset.to_i) }
+  scope :recent_excluding_redirects, lambda {
+    table = Article.arel_table
+    recent.where(table[:redirect].eq(nil).or(table[:redirect].eq('')))
+  }
 
   def self.find_with_param! param
     find_by_title!(deparametrize(param))
   end
 
   def self.find_recent options = {}
-    recent.offset(options[:offset].to_i)
+    recent_with_offset(options[:offset])
   end
 
   # for the Atom feed
   def self.find_recent_excluding_redirects
-    find :all, :conditions => "public = TRUE AND (redirect IS NULL OR redirect = '')", :order => 'updated_at DESC', :limit => 10
+    recent_excluding_redirects
   end
 
   def check_redirect_and_body
