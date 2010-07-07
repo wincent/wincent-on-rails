@@ -32,8 +32,11 @@ class Article < ActiveRecord::Base
   acts_as_searchable      :attributes => [:title, :body]
   acts_as_taggable
 
-  scope :recent, where(:public => true).order('updated_at DESC').limit(10)
-  # need to figure out how to do "or" composition with Arel
+  scope :public, where(:public => true)
+  scope :recent, public.order('updated_at DESC').limit(10)
+  # need to figure out how to do "or" composition with Arel:
+  # a = Article.arel_table
+  # a.where(a[:redirect].eq(nil).or(a[:redirect].eq('')))
   #scope   :excluding_redirects, where(:redirect => nil, :redirect => '')
 
   def self.find_with_param! param
