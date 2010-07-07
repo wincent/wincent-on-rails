@@ -20,7 +20,7 @@ describe TweetsController do
 
     describe 'comments' do
       # only #new and #create are implemented while nested
-      # Rails BUG?: only map_to works here; map_from (and therefore also map) do not
+      # Rails BUG?: only map_to works here; map_from (and therefore also have_routing) do not
       specify { get('/twitter/123/comments/new').should map_to('comments#new', :tweet_id => '123') }
       specify { post('/twitter/123/comments').should map_to('comments#create', :tweet_id => '123') }
 

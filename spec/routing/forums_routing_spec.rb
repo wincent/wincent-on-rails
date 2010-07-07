@@ -24,7 +24,7 @@ describe ForumsController do
 
       describe 'comments' do
         # only #new and #create are implemented while nested
-        # Rails BUG?: only map_to works here; map_from (and therefore also map) do not
+        # Rails BUG?: only map_to works here; map_from (and therefore also have_routing) do not
         specify { get('/forums/foo-bar/topics/123/comments/new').should map_to('comments#new', :forum_id => 'foo-bar', :topic_id => '123') }
         specify { post('/forums/foo-bar/topics/123/comments').should map_to('comments#create', :forum_id => 'foo-bar', :topic_id => '123') }
 

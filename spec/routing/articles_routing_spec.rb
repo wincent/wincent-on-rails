@@ -23,7 +23,7 @@ describe ArticlesController do
 
     describe 'comments' do
       # only #new and #create are implemented while nested
-      # Rails BUG?: only map_to works here; map_from (and therefore also map) do not
+      # Rails BUG?: only map_to works here; map_from (and therefore also have_routing) do not
       specify { get('/wiki/Rails_3.0_upgrade_notes/comments/new').should map_to('comments#new', :article_id => 'Rails_3.0_upgrade_notes') }
       specify { post('/wiki/Rails_3.0_upgrade_notes/comments').should map_to('comments#create', :article_id => 'Rails_3.0_upgrade_notes') }
 

@@ -23,7 +23,7 @@ describe PostsController do
 
     describe 'comments' do
       # only #new and #create are implemented while nested
-      # Rails BUG?: only map_to works here; map_from (and therefore also map) do not
+      # Rails BUG?: only map_to works here; map_from (and therefore also have_routing) do not
       specify { get('/blog/synergy-5.0-released/comments/new').should map_to('comments#new', :post_id => 'synergy-5.0-released') }
       specify { post('/blog/synergy-5.0-released/comments').should map_to('comments#create', :post_id => 'synergy-5.0-released') }
 
