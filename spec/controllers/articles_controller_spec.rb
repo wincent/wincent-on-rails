@@ -95,13 +95,13 @@ describe ArticlesController do
       end
 
       it 'finds recent articles' do
-        mock(Article).find_recent.with_any_args
+        mock(Article).recent_with_offset.with_any_args
         get :index
       end
 
       it 'assigns found articles' do
         articles = [Article.make!]
-        stub(Article).find_recent.with_any_args { articles }
+        stub(Article).recent_with_offset.with_any_args { articles }
         get :index
         assigns[:articles].should == articles
       end
@@ -133,13 +133,13 @@ describe ArticlesController do
       render_views # needed otherwise we'll inappropriately use HTML layout
 
       it 'finds recent articles, excluding redirects' do
-        mock(Article).find_recent_excluding_redirects { [] }
+        mock(Article).recent_excluding_redirects { [] }
         get :index, :format => 'atom'
       end
 
       it 'assigns found articles' do
         articles = [Article.make!]
-        stub(Article).find_recent_excluding_redirects { articles }
+        stub(Article).recent_excluding_redirects { articles }
         get :index, :format => 'atom'
         assigns[:articles].should == articles
       end

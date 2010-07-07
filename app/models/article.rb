@@ -35,6 +35,8 @@ class Article < ActiveRecord::Base
   scope :published, where(:public => true)
   scope :recent, published.order('updated_at DESC').limit(10)
   scope :recent_with_offset, lambda { |offset| recent.offset(offset.to_i) }
+
+  # for the Atom feed
   scope :recent_excluding_redirects, lambda {
     table = Article.arel_table
     recent.where(table[:redirect].eq(nil).or(table[:redirect].eq('')))
@@ -42,15 +44,6 @@ class Article < ActiveRecord::Base
 
   def self.find_with_param! param
     find_by_title!(deparametrize(param))
-  end
-
-  def self.find_recent options = {}
-    recent_with_offset(options[:offset])
-  end
-
-  # for the Atom feed
-  def self.find_recent_excluding_redirects
-    recent_excluding_redirects
   end
 
   def check_redirect_and_body
