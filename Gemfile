@@ -19,7 +19,7 @@ platforms :ruby_18 do
   end
 
   group :test do
-    gem 'capybara'
+    gem 'capybara',       :path => 'vendor/repos/capybara.git'
     gem 'culerity'
     gem 'database_cleaner'
     gem 'hpricot'
