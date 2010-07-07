@@ -2,86 +2,7 @@ require File.expand_path('../spec_helper', File.dirname(__FILE__))
 require 'hpricot'
 
 describe ArticlesController do
-  describe 'regressions' do
-    it 'handles HTTPS URLs in the url_or_path_for_redirect method' do
-      # previously only handled HTTP URLs
-      title = Sham.random
-      target = 'https://example.com/'
-      Article.make! :title => title, :redirect => target, :body => ''
-      get 'show', :id => title
-      response.should redirect_to(target)
-    end
-  end
-end
-
-describe ArticlesController, 'GET /wiki.atom' do
-  render_views # so that we can test layouts as well
-
-  before do
-    10.times { Article.make! }
-  end
-
-  def do_get
-    get :index, :format => 'atom', :protocol => 'https'
-  end
-
-  # make sure we don't get bitten by bugs like:
-  # https://wincent.com/issues/1227
-  it 'should produce valid atom when there are no articles' do
-    pending unless can_validate_feeds?
-    Article.destroy_all
-    do_get
-    response.body.should be_valid_atom
-  end
-
-  it 'should produce valid atom when there are multiple articles' do
-    pending unless can_validate_feeds?
-    do_get
-    response.body.should be_valid_atom
-  end
-
-  # Rails 2.3.0 RC1 BUG: http://rails.lighthouseapp.com/projects/8994/tickets/2043
-  it 'should produce entry links to HTML-formatted records' do
-    do_get
-    doc = Hpricot.XML(response.body)
-    (doc/:entry).collect do |entry|
-      (entry/:link).first[:href].each do |href|
-        # make sure links are /wiki/foo, not /wiki/foo.atom
-        href.should_not =~ %r{\.html\z}
-      end
-    end
-  end
-end
-
-describe ArticlesController, 'GET /wiki/:title.atom' do
-  render_views # so that we can test layouts as well
-
-  before do
-    @article = Article.make! :title => 'foo bar baz'
-  end
-
-  def do_get
-    get :show, :id => 'foo_bar_baz', :format => 'atom', :protocol => 'https'
-  end
-
-  # guard against bugs like:
-  # https://wincent.com/issues/1227
-  it 'should produce valid atom when there are no comments' do
-    pending unless can_validate_feeds?
-    do_get
-    response.body.should be_valid_atom
-  end
-
-  it 'should produce valid atom when there are multiple comments' do
-    pending unless can_validate_feeds?
-    10.times { Comment.make! :commentable => @article }
-    do_get
-    response.body.should be_valid_atom
-  end
-end
-
-describe ArticlesController do
-  describe 'GET /wiki' do
+  describe '#index' do
     context 'HTML format' do
       it 'uses a RESTful paginator' do
         mock.proxy(RestfulPaginator).new.with_any_args
@@ -151,6 +72,81 @@ describe ArticlesController do
       it 'renders the index template' do
         get :index, :format => 'atom'
         response.should render_template('index')
+      end
+
+      describe 'regressions' do
+        before do
+          10.times { Article.make! }
+        end
+
+        # https://wincent.com/issues/1227
+        it 'should produce valid atom when there are no articles' do
+          pending unless can_validate_feeds?
+          Article.destroy_all
+          get :index, :format => 'atom'
+          response.body.should be_valid_atom
+        end
+
+        it 'should produce valid atom when there are multiple articles' do
+          pending unless can_validate_feeds?
+          get :index, :format => 'atom'
+          response.body.should be_valid_atom
+        end
+
+        # Rails 2.3.0 RC1 BUG: http://rails.lighthouseapp.com/projects/8994/tickets/2043
+        it 'should produce entry links to HTML-formatted records' do
+          get :index, :format => 'atom'
+          doc = Hpricot.XML(response.body)
+          (doc/:entry).collect do |entry|
+            (entry/:link).first[:href].each do |href|
+              # make sure links are /wiki/foo, not /wiki/foo.atom
+              href.should_not =~ %r{\.html\z}
+            end
+          end
+        end
+      end
+    end
+  end
+
+  describe '#show' do
+    context 'HTML format' do
+      describe 'regressions' do
+        it 'handles HTTPS URLs in the url_or_path_for_redirect method' do
+          # previously only handled HTTP URLs
+          title = Sham.random
+          target = 'https://example.com/'
+          Article.make! :title => title, :redirect => target, :body => ''
+          get :show, :id => title
+          response.should redirect_to(target)
+        end
+      end
+    end
+
+    context 'Atom format' do
+      render_views # so that we can test layouts as well
+
+      describe 'regressions' do
+        before do
+          @article = Article.make! :title => 'foo bar baz'
+        end
+
+        def do_get
+          get :show, :id => 'foo_bar_baz', :format => 'atom'
+        end
+
+        # https://wincent.com/issues/1227
+        it 'should produce valid atom when there are no comments' do
+          pending unless can_validate_feeds?
+          do_get
+          response.body.should be_valid_atom
+        end
+
+        it 'should produce valid atom when there are multiple comments' do
+          pending unless can_validate_feeds?
+          10.times { Comment.make! :commentable => @article }
+          do_get
+          response.body.should be_valid_atom
+        end
       end
     end
   end
