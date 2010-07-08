@@ -404,8 +404,71 @@ describe ArticlesController do
     end
 
     context 'non-admin access' do
-      it 'redirects' do
+      it 'redirects to the login page' do
         get :new
+        response.should redirect_to('/login')
+      end
+    end
+  end
+
+  describe '#create' do
+    context 'admin access' do
+      before do
+        login_as_admin
+      end
+
+      context 'AJAX request' do
+      end
+
+      context 'HTML format' do
+        it 'creates a new article' do
+          post :create, :article => { :title => 'foo', :body => 'bar' }
+          article = Article.last
+          article.title.should == 'foo'
+          article.body.should == 'bar'
+        end
+
+        it 'assigns the new article' do
+          post :create, :article => { :title => 'foo', :body => 'bar' }
+          assigns[:article].should == Article.last
+        end
+
+        it 'redirects to the article' do
+          post :create, :article => { :title => 'foo', :body => 'bar' }
+          article = Article.last
+          response.should redirect_to(article_path(article))
+        end
+
+        it 'shows a flash' do
+          post :create, :article => { :title => 'foo', :body => 'bar' }
+          cookie_flash['notice'].should =~ /created new article/
+        end
+
+        context 'article with invalid params' do
+          before do
+            post :create, :article => { :title => 'foo' }
+          end
+
+          it 'assigns the article' do
+            assigns[:article].should be_kind_of(Article)
+            assigns[:article].title.should == 'foo'
+            assigns[:article].should be_new_record
+          end
+
+          it 'shows an error flash' do
+            cookie_flash['error'].should =~ /failed to create/i
+          end
+
+          it 'renders the #new template' do
+            response.should render_template('new')
+          end
+        end
+      end
+    end
+
+    context 'non-admin access' do
+      it 'redirects to the login page' do
+        post :create, :article => { :title => 'foo', :body => 'bar' }
         response.should redirect_to('/login')
       end
     end
