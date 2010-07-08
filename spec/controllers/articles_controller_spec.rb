@@ -517,4 +517,44 @@ describe ArticlesController do
       end
     end
   end
+
+  describe '#edit' do
+    context 'admin access' do
+      before do
+        @article = Article.make! :title => 'foo'
+        login_as_admin
+      end
+
+      it 'assigns the article' do
+        get :edit, :id => 'foo'
+        assigns[:article].should == @article
+      end
+
+      it 'renders the #edit template' do
+        get :edit, :id => 'foo'
+        response.should render_template('edit')
+      end
+
+      context 'non-existent article' do
+        it 'redirects to /wiki/new' do
+          get :edit, :id => 'moot'
+          response.should redirect_to('/wiki/new')
+        end
+
+        it 'shows a flash' do
+          get :edit, :id => 'moot'
+          flash[:notice].should =~ /article not found: create it\?/
+          pending 'after filter is not running, but only in the test environment'
+          cookie_flash['notice'].should =~ /article not found: create it\?/
+        end
+      end
+    end
+
+    context 'non-admin access' do
+      it 'redirects to the login page' do
+        get :edit, :id => 'unimportant'
+        response.should redirect_to('/login')
+      end
+    end
+  end
 end
