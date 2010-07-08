@@ -292,6 +292,38 @@ describe ArticlesController do
         end
       end
 
+      context 'non-existent article' do
+        context 'as a normal user' do
+          it 'redirects to /wiki' do
+            get :show, :id => 'moot'
+            response.should redirect_to('/wiki')
+          end
+
+          it 'shows a flash' do
+            get :show, :id => 'moot'
+            flash[:error].should =~ /not found/
+            pending 'after filter is not running, but only in the test environment'
+            cookie_flash['error'].should =~ /not found/
+          end
+        end
+
+        context 'as an admin user' do
+          before { login_as_admin }
+
+          it 'redirects to /wiki/new' do
+            get :show, :id => 'moot'
+            response.should redirect_to('/wiki/new')
+          end
+
+          it 'shows a flash' do
+            get :show, :id => 'moot'
+            flash[:notice].should =~ /article not found: create it\?/
+            pending 'after filter is not running, but only in the test environment'
+            cookie_flash['notice'].should =~ /article not found: create it\?/
+          end
+        end
+      end
+
       context 'redirect article' do
         before do
           @article = Article.make! :title => 'baz', :redirect => '[[foo]]', :body => ''
