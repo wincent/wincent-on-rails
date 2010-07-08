@@ -6,15 +6,15 @@ describe TweetsController do
   it_should_behave_like 'ApplicationController parameter filtering'
 end
 
-# For an explanation of why I test this method in two ways,
+# For an explanation of why I test this controller in two ways,
 # see: https://wincent.com/blog/testing-inquietitude
 describe TweetsController, 'GET /twitter ("internals" approach)' do
   before do
-    @params = { 'action' => 'index', 'controller' => 'tweets', 'protocol' => 'https' }
+    @params = { 'action' => 'index', 'controller' => 'tweets' }
   end
 
   def do_get
-    get :index, :protocol => 'https'
+    get :index
   end
 
   it 'should be successful' do
@@ -22,33 +22,33 @@ describe TweetsController, 'GET /twitter ("internals" approach)' do
     response.should be_success
   end
 
-  it 'should render the "tweets/index.html.haml" template' do
+  it 'should render the #index template' do
     do_get
-    response.should render_template('tweets/index.html.haml')
+    response.should render_template('index')
   end
 
   it 'should use the restful paginator' do
     paginator = RestfulPaginator.new(@params, Tweet.count, tweets_path, 20)
-    RestfulPaginator.stub!(:new).with(@params, Tweet.count, tweets_path, 20).and_return(paginator)
+    stub(RestfulPaginator).new(@params, Tweet.count, tweets_path, 20) { paginator }
     do_get
     assigns[:paginator].should == paginator
   end
 
   it 'should correctly configure the restful paginator' do
     paginator = RestfulPaginator.new(@params, Tweet.count, tweets_path, 20)
-    RestfulPaginator.should_receive(:new).with(@params, Tweet.count, tweets_path, 20).and_return(paginator)
+    mock(RestfulPaginator).new(@params, Tweet.count, tweets_path, 20) { paginator }
     do_get
   end
 
   it 'should find recent tweets' do
     paginator = RestfulPaginator.new(@params, Tweet.count, tweets_path, 20)
-    RestfulPaginator.stub!(:new).with(@params, Tweet.count, tweets_path, 20).and_return(paginator)
-    Tweet.should_receive(:find_recent).with({ :offset => paginator.offset })
+    stub(RestfulPaginator).new(@params, Tweet.count, tweets_path, 20) { paginator }
+    mock(Tweet).find_recent({ :offset => paginator.offset })
     do_get
   end
 
   it 'should assign the recent tweets to the @tweets instance variable' do
-    Tweet.stub!(:find_recent).and_return([:recent])
+    stub(Tweet).find_recent { [:recent] }
     do_get
     assigns[:tweets].should == [:recent]
   end
@@ -58,7 +58,7 @@ end
 # see: https://wincent.com/blog/testing-inquietitude
 describe TweetsController, 'GET /twitter ("black box" approach)' do
   def do_get
-    get :index, :protocol => 'https'
+    get :index
   end
 
   it 'should be successful' do
@@ -66,9 +66,9 @@ describe TweetsController, 'GET /twitter ("black box" approach)' do
     response.should be_success
   end
 
-  it 'should render the "tweets/index.html.haml" template' do
+  it 'should render the #index template' do
     do_get
-    response.should render_template('tweets/index.html.haml')
+    response.should render_template('index')
   end
 
   it 'should function when there are no tweets in the database' do
@@ -77,22 +77,22 @@ describe TweetsController, 'GET /twitter ("black box" approach)' do
   end
 
   it 'should function when there is one tweet in the database' do
-    tweet = create_tweet
+    tweet = Tweet.make!
     do_get
     assigns[:tweets].should == [tweet]
   end
 
   it 'should fetch no more than 20 tweets at a time' do
-    25.times { create_tweet }
+    25.times { Tweet.make! }
     do_get
     assigns[:tweets].length.should == 20
   end
 
   it 'should fetch tweets in reverse creation order' do
     past = 3.days.ago
-    old = create_tweet
+    old = Tweet.make!
     Tweet.update_all ['created_at = ?, updated_at = ?', past, past], ['id = ?', old.id]
-    new = create_tweet
+    new = Tweet.make!
     do_get
     assigns[:tweets].should == [new, old]
   end
@@ -132,7 +132,7 @@ describe TweetsController, 'GET /twitter ("black box" approach)' do
     pending 'Rails makes it impossible to test "cache_page"'
     # turning on page caching contaminates the production "public" folder
     # but without page caching turned on, it doesn't even set up the filter
-    controller.should_receive(:cache_page)
+    mock(controller).cache_page
     do_get
   end
 end
@@ -141,11 +141,11 @@ describe TweetsController, 'GET /twitter.atom' do
   render_views # so that we can test layouts as well
 
   before do
-    10.times { create_tweet }
+    10.times { Tweet.make! }
   end
 
   def do_get
-    get :index, :format => 'atom', :protocol => 'https'
+    get :index, :format => 'atom'
   end
 
   it 'should be successful' do
@@ -153,18 +153,19 @@ describe TweetsController, 'GET /twitter.atom' do
     response.should be_success
   end
 
-  it 'should render the "tweets/index.atom.builder" template' do
+  it 'should render the #index template' do
     do_get
-    response.should render_template('tweets/index.atom.builder')
+    response.should render_template('index')
   end
 
   it 'should not use a layout' do
     do_get
+    pending "unsure how to do this under Rails 3/RSpec 2"
     controller.active_layout.should be_nil
   end
 
   it 'should find recent tweets' do
-    Tweet.should_receive(:find_recent).and_return([])
+    mock(Tweet).find_recent { [] }
     do_get
   end
 
@@ -178,7 +179,7 @@ describe TweetsController, 'GET /twitter.atom' do
     pending 'Rails makes it impossible to test "cache_page"'
     # turning on page caching contaminates the production "public" folder
     # but without page caching turned on, it doesn't even set up the filter
-    controller.should_receive(:cache_page)
+    mock(controller).cache_page
     do_get
   end
 
@@ -211,7 +212,7 @@ end
 describe TweetsController, 'GET /twitter/new' do
   def do_get admin = true
     login_as_admin if admin == true
-    get :new, :protocol => 'https'
+    get :new
   end
 
   it 'should redirect for non-admins' do
@@ -229,26 +230,26 @@ describe TweetsController, 'GET /twitter/new' do
     assigns[:tweet].should be_kind_of(Tweet)
   end
 
-  it 'should render the "tweets/new.html.haml" template' do
+  it 'should render the #new template' do
     do_get
-    response.should render_template('tweets/new.html.haml')
+    response.should render_template('new')
   end
 end
 
 describe TweetsController, 'POST /twitter' do
   def do_post params = {}, admin = true
     login_as_admin if admin == true
-    post :create, params.merge({ :protocol => 'https' })
+    post :create, params
   end
 
   def do_successful_post
-    Tweet.stub!(:new).and_return(@tweet)
+    stub(Tweet).new { @tweet }
     do_post
   end
 
   def do_failed_post
-    Tweet.stub!(:new).and_return(@tweet)
-    @tweet.stub!(:save).and_return(false)
+    stub(Tweet).new { @tweet }
+    stub(@tweet).save { false }
     do_post
   end
 
@@ -263,19 +264,19 @@ describe TweetsController, 'POST /twitter' do
   end
 
   it 'should create a new tweet record' do
-    Tweet.should_receive(:new).with(@params[:tweet]).and_return(@tweet)
+    mock(Tweet).new(@params[:tweet]) { @tweet }
     do_post @params
   end
 
   it 'should assign to the @tweet instance variable' do
-    Tweet.stub!(:new).and_return(@tweet)
+    stub(Tweet).new { @tweet }
     do_post
     assigns[:tweet].should == @tweet
   end
 
   it 'should save the new record' do
-    Tweet.stub!(:new).and_return(@tweet)
-    @tweet.should_receive(:save)
+    stub(Tweet).new { @tweet }
+    mock(@tweet).save
     do_post
   end
 
@@ -295,14 +296,14 @@ describe TweetsController, 'POST /twitter' do
     cookie_flash['error'].should =~ /Failed/
   end
 
-  it 'should render the "tweets/new.html.haml" template on failure' do
+  it 'should render the #new template on failure' do
     do_failed_post
-    response.should render_template('tweets/new.html.haml')
+    response.should render_template('new')
   end
 
   it 'should trigger the cache sweeper' do
-    TweetSweeper.instance.should_receive(:after_save).with(@tweet)
-    Tweet.stub!(:new).and_return(@tweet)
+    mock(TweetSweeper.instance).after_save(@tweet)
+    stub(Tweet).new { @tweet }
     do_post
   end
 end
@@ -311,18 +312,18 @@ describe TweetsController, 'POST /twitter (via AJAX)' do
   def do_post params = {}, admin = true
     request.env['HTTP_X_REQUESTED_WITH'] = 'XMLHttpRequest'
     login_as_admin if admin == true
-    post :create, params.merge({ :protocol => 'https', :format => 'js' })
+    post :create, params.merge({ :format => 'js' })
   end
 
   it 'should return an error for non-admins' do
     do_post({}, :not_as_admin)
     response.should_not be_success
-    response.status.should == '403 Forbidden'
+    response.status.should == 403
     response.body.should =~ /Forbidden/
   end
 
   it 'should assign to the @tweet instance variable' do
-    Tweet.should_receive(:new).with({ :body => 'foo' })
+    mock(Tweet).new({ :body => 'foo' })
     do_post({ :body => 'foo' })
   end
 
@@ -339,11 +340,11 @@ end
 
 describe TweetsController, 'GET /twitter/:id' do
   def do_get tweet
-    get :show, :id => tweet.id, :protocol => 'https'
+    get :show, :id => tweet.id
   end
 
   before do
-    @tweet = create_tweet
+    @tweet = Tweet.make!
   end
 
   it 'should be successful' do
@@ -356,13 +357,13 @@ describe TweetsController, 'GET /twitter/:id' do
     assigns[:tweet].should == @tweet
   end
 
-  it 'should render the "tweets/show.html.haml" template' do
+  it 'should render the #show template' do
     do_get @tweet
-    response.should render_template('tweets/show.html.haml')
+    response.should render_template('show')
   end
 
   it 'should redirect to the tweets index if not found' do
-    tweet = new_tweet
+    tweet = Tweet.make
     tweet.id = 1_342_103
     do_get tweet
     response.should redirect_to(tweets_path)
@@ -372,7 +373,7 @@ describe TweetsController, 'GET /twitter/:id' do
     pending 'Rails makes it impossible to test "cache_page"'
     # turning on page caching contaminates the production "public" folder
     # but without page caching turned on, it doesn't even set up the filter
-    controller.should_receive(:cache_page)
+    mock(controller).cache_page
     do_get @tweet
   end
 end
@@ -381,11 +382,11 @@ describe TweetsController, 'GET /twitter/:id.atom' do
   render_views # so that we can test layouts as well
 
   before do
-    @tweet = create_tweet
+    @tweet = Tweet.make!
   end
 
   def do_get
-    get :show, :id => @tweet.id.to_s, :format => 'atom', :protocol => 'https'
+    get :show, :id => @tweet.id.to_s, :format => 'atom'
   end
 
   # make sure we don't get bitten by bugs like:
@@ -398,7 +399,7 @@ describe TweetsController, 'GET /twitter/:id.atom' do
 
   it 'should produce valid atom when there are multiple comments' do
     pending unless can_validate_feeds?
-    10.times { create_comment :commentable => @tweet }
+    10.times { Comment.make! :commentable => @tweet }
     do_get
     response.body.should be_valid_atom
   end
@@ -407,11 +408,11 @@ end
 describe TweetsController, 'GET /twitter/:id/edit' do
   def do_get tweet, admin = true
     login_as_admin if admin == true
-    get :edit, :id => tweet.id, :protocol => 'https'
+    get :edit, :id => tweet.id
   end
 
   before do
-    @tweet = create_tweet
+    @tweet = Tweet.make!
   end
 
   it 'should redirect for non-admins' do
@@ -429,13 +430,13 @@ describe TweetsController, 'GET /twitter/:id/edit' do
     assigns[:tweet].should == @tweet
   end
 
-  it 'should render the "tweets/edit.html.haml" template' do
+  it 'should render the #edit template' do
     do_get @tweet
-    response.should render_template('tweets/edit.html.haml')
+    response.should render_template('edit')
   end
 
   it 'should redirect to the tweets index if not found' do
-    tweet = new_tweet
+    tweet = Tweet.make
     tweet.id = 1_342_103
     do_get tweet
     response.should redirect_to(tweets_path)
@@ -445,23 +446,23 @@ end
 describe TweetsController, 'PUT /twitter/:id' do
   def do_put tweet, admin = true, params = {}
     login_as_admin if admin == true
-    put :update, params.merge({:id => tweet.id, :protocol => 'https'})
+    put :update, params.merge({:id => tweet.id})
   end
 
   def do_successful_update
-    Tweet.stub!(:find).and_return(@tweet)
-    @tweet.stub!(:update_attributes).and_return(true)
+    stub(Tweet).find { @tweet }
+    stub(@tweet).update_attributes { true }
     do_put @tweet
   end
 
   def do_failed_update
-    Tweet.stub!(:find).and_return(@tweet)
-    @tweet.stub!(:update_attributes).and_return(false)
+    stub(Tweet).find { @tweet }
+    stub(@tweet).update_attributes { false }
     do_put @tweet
   end
 
   before do
-    @tweet = create_tweet
+    @tweet = Tweet.make!
   end
 
   it 'should redirect for non-admins' do
@@ -476,8 +477,8 @@ describe TweetsController, 'PUT /twitter/:id' do
 
   it 'should update the tweet record' do
     params = { :tweet => { 'body' => 'foo' } }
-    Tweet.stub!(:find).and_return(@tweet)
-    @tweet.should_receive(:update_attributes).with(params[:tweet])
+    stub(Tweet).find { @tweet }
+    mock(@tweet).update_attributes(params[:tweet])
     do_put @tweet, true, params
   end
 
@@ -497,13 +498,13 @@ describe TweetsController, 'PUT /twitter/:id' do
     cookie_flash['error'].should =~ /failed/
   end
 
-  it 'should render the "tweets/edit.html.haml" template on failure' do
+  it 'should render the #edit template on failure' do
     do_failed_update
-    response.should render_template('tweets/edit.html.haml')
+    response.should render_template('edit')
   end
 
   it 'should trigger the cache sweeper' do
-    TweetSweeper.instance.should_receive(:after_save).with(@tweet)
+    mock(TweetSweeper.instance).after_save(@tweet)
     do_put @tweet
   end
 end
@@ -511,11 +512,11 @@ end
 describe TweetsController, 'DELETE /twitter/:id' do
   def do_delete tweet, admin = true
     login_as_admin if admin == true
-    delete :destroy, :id => tweet.id, :protocol => 'https'
+    delete :destroy, :id => tweet.id
   end
 
   before do
-    @tweet = create_tweet
+    @tweet = Tweet.make!
   end
 
   it 'should redirect for non-admins' do
@@ -534,35 +535,14 @@ describe TweetsController, 'DELETE /twitter/:id' do
   end
 
   it 'should redirect to the tweets index if not found' do
-    tweet = new_tweet
+    tweet = Tweet.make
     tweet.id = 1_342_103
     do_delete tweet
     response.should redirect_to(tweets_path)
   end
 
   it 'should trigger the cache sweeper' do
-    TweetSweeper.instance.should_receive(:after_destroy).with(@tweet)
+    mock(TweetSweeper.instance).after_destroy(@tweet)
     do_delete @tweet
-  end
-end
-
-# Testing the CommentsController (use of ActionController::ForbiddenError) and
-# AppController (use of "forbidden" method) here, but using the
-# TweetsController as a concrete example seeing as that's where we first saw
-# this kind of request (see commit 2a897ba).
-describe CommentsController, 'GET /twitter/:id/comments/new' do
-  describe 'when commenting not allowed' do
-    before do
-      tweet = create_tweet :accepts_comments => false
-      get :new, { :tweet_id => tweet.id }, :protocol => 'https'
-    end
-
-    it 'should not be successful' do
-      response.should_not be_success
-    end
-
-    it 'should return a 403 status' do
-      response.status.should == "403 Forbidden"
-    end
   end
 end

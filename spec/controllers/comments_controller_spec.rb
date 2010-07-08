@@ -127,3 +127,27 @@ describe CommentsController, 'PUT /comments/:id logged in as admin' do
     response.should render_template('edit')
   end
 end
+
+# Testing the CommentsController (use of ActionController::ForbiddenError) and
+# AppController (use of "forbidden" method) here, but using the
+# TweetsController as a concrete example seeing as that's where we first saw
+# this kind of request (see commit 2a897ba).
+describe CommentsController, 'GET /twitter/:id/comments/new' do
+  describe 'when commenting not allowed' do
+    before do
+      tweet = Tweet.make! :accepts_comments => false
+
+      # without this "request.fullpath" is empty, so our get_parent method fails
+      request.env['PATH_INFO'] = "/twitter/#{tweet.id}/comments/new"
+      get :new, :tweet_id => tweet.id
+    end
+
+    it 'should not be successful' do
+      response.should_not be_success
+    end
+
+    it 'should return a 403 status' do
+      response.status.should == 403
+    end
+  end
+end
