@@ -10,6 +10,9 @@ class Article < ActiveRecord::Base
   # optional link text
   LINK_REGEX  = /\A\[\[[^_\/]+\]\]\z/
 
+  # make "articles_path" helper available to url_for_redirect method
+  include Rails.application.routes.url_helpers
+
   has_many                :comments,
                           :as         => :commentable,
                           :extend     => Commentable,
@@ -76,8 +79,7 @@ class Article < ActiveRecord::Base
     if redirect.nil?
       nil
     elsif redirect =~ /\A\s*\[\[([^_\/]+)\]\]\s*\z/
-      # hardcoding this path here may be evil
-      '/wiki/' + Article.parametrize($~[1])
+      articles_path + '/' + Article.parametrize($~[1])
     elsif redirect =~ /\A\s*(https?:\/\/.+?)\s*\z/
       $~[1]
     elsif redirect =~ /\A\s*(\/.+?)\s*\z/
