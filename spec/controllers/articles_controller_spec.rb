@@ -418,6 +418,18 @@ describe ArticlesController do
       end
 
       context 'AJAX request' do
+        it 'assigns a new article' do
+          xhr :post, :create, :title => 'foo', :body => 'bar'
+          assigns[:article].should be_kind_of(Article)
+          assigns[:article].title.should == 'foo'
+          assigns[:article].body.should == 'bar'
+          assigns[:article].should be_new_record
+        end
+
+        it 'renders the preview partial' do
+          xhr :post, :create, :title => 'foo', :body => 'bar'
+          response.should render_template(:partial => '_preview')
+        end
       end
 
       context 'HTML format' do
