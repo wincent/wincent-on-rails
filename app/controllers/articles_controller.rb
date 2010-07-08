@@ -30,7 +30,7 @@ class ArticlesController < ApplicationController
           session[:redirection_count] = session[:redirection_count] ? session[:redirection_count] + 1 : 1
           session[:redirected_from] = params[:id]
         end
-        redirect_to @article.url_for_redirect
+        redirect_to @article.redirection_url
       end
     else # not a redirect
       if session[:redirected_from]

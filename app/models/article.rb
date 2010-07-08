@@ -12,7 +12,7 @@ class Article < ActiveRecord::Base
   EXTERNAL_LINK_REGEX = %r{https?://.+?}
   RELATIVE_PATH_REGEX = %r{/.+?}
 
-  # make "articles_path" helper available to url_for_redirect method
+  # make "articles_path" helper available to redirection_url method
   include Rails.application.routes.url_helpers
 
   has_many                :comments,
@@ -78,7 +78,7 @@ class Article < ActiveRecord::Base
   # Returns a redirection URL or path suitable for consumption by
   # redirect_to, with trailing and leading whitespace stripped.
   # Returns nil if there is no such redirect.
-  def url_for_redirect
+  def redirection_url
     # TODO: refactor these regexps for reuse (see validations)
     if redirect.nil?
       nil

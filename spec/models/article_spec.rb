@@ -229,30 +229,30 @@ describe Article do
     end
   end
 
-  describe '#url_for_redirect' do
+  describe '#redirection_url' do
     context 'with no redirect' do
       it 'returns nil' do
-        Article.make!(:redirect => nil).url_for_redirect.should be_nil
+        Article.make!(:redirect => nil).redirection_url.should be_nil
       end
     end
 
     context 'with blank redirect' do
       it 'returns nil' do
-        Article.make!(:redirect => '').url_for_redirect.should be_nil
-        Article.make!(:redirect => '  ').url_for_redirect.should be_nil
+        Article.make!(:redirect => '').redirection_url.should be_nil
+        Article.make!(:redirect => '  ').redirection_url.should be_nil
       end
     end
 
     context 'with internal wiki link' do
       it 'returns a relative path' do
         article = Article.make! :redirect => '[[foo]]', :body => ''
-        article.url_for_redirect.should == '/wiki/foo'
+        article.redirection_url.should == '/wiki/foo'
       end
 
       context 'with excess whitespace' do
         it 'trims the excess' do
           article = Article.make! :redirect => '  [[foo]]  ', :body => ''
-          article.url_for_redirect.should == '/wiki/foo'
+          article.redirection_url.should == '/wiki/foo'
         end
       end
     end
@@ -260,13 +260,13 @@ describe Article do
     context 'with HTTP URL' do
       it 'returns the full URL' do
         article = Article.make! :redirect => 'http://example.com/', :body => ''
-        article.url_for_redirect.should == 'http://example.com/'
+        article.redirection_url.should == 'http://example.com/'
       end
 
       context 'with excess whitespace' do
         it 'trims the excess' do
           article = Article.make! :redirect => '  http://example.com/  ', :body => ''
-          article.url_for_redirect.should == 'http://example.com/'
+          article.redirection_url.should == 'http://example.com/'
         end
       end
     end
@@ -274,13 +274,13 @@ describe Article do
     context 'with HTTPS URL' do
       it 'returns the full URL' do
         article = Article.make! :redirect => 'https://example.com/', :body => ''
-        article.url_for_redirect.should == 'https://example.com/'
+        article.redirection_url.should == 'https://example.com/'
       end
 
       context 'with excess whitespace' do
         it 'trims the excess' do
           article = Article.make! :redirect => '  https://example.com/  ', :body => ''
-          article.url_for_redirect.should == 'https://example.com/'
+          article.redirection_url.should == 'https://example.com/'
         end
       end
     end
@@ -288,13 +288,13 @@ describe Article do
     context 'with relative path' do
       it 'returns a relative path' do
         article = Article.make! :redirect => '/issues/10', :body => ''
-        article.url_for_redirect.should == '/issues/10'
+        article.redirection_url.should == '/issues/10'
       end
 
       context 'with excess whitespace' do
         it 'trims the excess' do
           article = Article.make! :redirect => '  /issues/10  ', :body => ''
-          article.url_for_redirect.should == '/issues/10'
+          article.redirection_url.should == '/issues/10'
         end
       end
     end
@@ -304,7 +304,7 @@ describe Article do
       it 'returns nil' do
         article = Article.make :redirect => '---> fun!', :body => ''
         article.save :validate => false
-        article.url_for_redirect.should be_nil
+        article.redirection_url.should be_nil
       end
     end
   end
