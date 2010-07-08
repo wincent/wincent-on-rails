@@ -37,6 +37,7 @@ module ActionController
     # Intended for use as a before_filter in the ApplicationController for all actions.
     def login_before
       self.current_user = self.login_with_cookie or self.login_with_http_basic
+      true
     end
 
     # Intended for use as a before_filter to protect adminstrator-only
@@ -56,6 +57,7 @@ module ActionController
       unless self.logged_in?
         redirect_to_login 'You must be logged in to access the requested resource'
       end
+      true
     end
 
     # Redirect to the login page showing the supplied msg in the flash
@@ -82,7 +84,6 @@ module ActionController
           end
         end
       end
-      nil
     end
 
     # needed for AJAX
@@ -91,7 +92,6 @@ module ActionController
       authenticate_with_http_basic do |email, passphrase|
          return User.authenticate(email, passphrase)
       end
-      nil
     end
 
     # TODO: allow user to adjust this in their preferences
