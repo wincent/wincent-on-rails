@@ -49,6 +49,8 @@ class Article < ActiveRecord::Base
     recent.where(table[:redirect].eq(nil).or(table[:redirect].eq('')))
   }
 
+  # NOTE: MySQL will do a case-insensitive find here, so "foo" and "FOO" refer
+  # to the same article
   def self.find_with_param! param, user = nil
     article = find_by_title! deparametrize(param)
     if !article.public? && (!user || !user.superuser?)

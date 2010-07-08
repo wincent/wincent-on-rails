@@ -19,7 +19,6 @@ class ArticlesController < ApplicationController
   end
 
   def show
-    # NOTE: MySQL will do a case-insensitive find here, so "foo" and "FOO" refer to the same article
     if @article.redirect?
       if session[:redirection_count] and session[:redirection_count] > 5
         clear_redirection_info
