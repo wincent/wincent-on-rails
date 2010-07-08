@@ -3,12 +3,14 @@
 # enabled by default).
 class Article < ActiveRecord::Base
   # titles may contain anything other than underscores and slashes
-  TITLE_REGEX = /\A[^_\/]+\z/
+  TITLE_REGEX         = %r{\A[^_/]+\z}
 
   # for internal use only (see the links model/controller); does not support
   # the more sophisticated features of the wikitext translator, such as
   # optional link text
-  LINK_REGEX  = /\A\[\[[^_\/]+\]\]\z/
+  LINK_REGEX          = %r{\[\[([^_/]+)\]\]}
+  EXTERNAL_LINK_REGEX = %r{https?://.+?}
+  RELATIVE_PATH_REGEX = %r{/.+?}
 
   # make "articles_path" helper available to url_for_redirect method
   include Rails.application.routes.url_helpers
@@ -26,7 +28,9 @@ class Article < ActiveRecord::Base
                           :with => TITLE_REGEX,
                           :message => 'must not contain underscores or slashes'
   validates_format_of     :redirect,
-                          :with => /\A\s*((\[\[[^_\/]+\]\])|(https?:\/\/.+)|(\/.+))\s*\z/,
+                          :with => /\A\s* ((#{LINK_REGEX})          |
+                                           (#{EXTERNAL_LINK_REGEX}) |
+                                           (#{RELATIVE_PATH_REGEX}) )\s*\z/x,
                           :if => Proc.new { |a| !a.redirect.blank? },
                           :message => 'must be a valid [[wikitext]] link or HTTP/HTTPS URL'
   validates_length_of     :body, :maximum => 128 * 1024, :allow_blank => true
@@ -78,11 +82,11 @@ class Article < ActiveRecord::Base
     # TODO: refactor these regexps for reuse (see validations)
     if redirect.nil?
       nil
-    elsif redirect =~ /\A\s*\[\[([^_\/]+)\]\]\s*\z/
+    elsif redirect =~ /\A\s*#{LINK_REGEX}\s*\z/
       articles_path + '/' + Article.parametrize($~[1])
-    elsif redirect =~ /\A\s*(https?:\/\/.+?)\s*\z/
+    elsif redirect =~ /\A\s*(#{EXTERNAL_LINK_REGEX})\s*\z/
       $~[1]
-    elsif redirect =~ /\A\s*(\/.+?)\s*\z/
+    elsif redirect =~ /\A\s*(#{RELATIVE_PATH_REGEX})\s*\z/
       $~[1]
     else
       nil
