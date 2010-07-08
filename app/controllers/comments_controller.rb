@@ -12,7 +12,7 @@ class CommentsController < ApplicationController
   end
 
   def new
-    @comment = @parent_instance.comments.build
+    @comment = @parent.comments.build
     if request.xhr?
       render :partial => 'form'
     else
@@ -35,7 +35,7 @@ class CommentsController < ApplicationController
   end
 
   def create
-    @comment = @parent_instance.comments.build params[:comment]
+    @comment = @parent.comments.build params[:comment]
     @comment.user = current_user
     @comment.public = params[:comment][:public] if admin? && params[:comment] && params[:comment].key?(:public)
     @comment.awaiting_moderation = !(admin? or logged_in_and_verified?)
@@ -45,7 +45,7 @@ class CommentsController < ApplicationController
       else
         flash[:notice] = 'Successfully added new comment'
       end
-      redirect_to @parent_path
+      redirect_to polymorphic_path([@grandparent, @parent].compact)
     else
       flash[:error] = 'Failed to add new comment'
       render 'new'
@@ -97,57 +97,25 @@ class CommentsController < ApplicationController
 
 private
 
-  # BUG: we can't count on the path being set in our controller specs unless
-  # we manually set it ourselves: eg:
-  #
-  #   request.env['PATH_INFO'] = "/twitter/#{tweet.id}/comments/new"
-  #   get :new, :tweet_id => tweet.id
-  #
-  # This is a pretty awful way to write tests, so lets fix this method. Instead
-  # of inspecting the path, we'll inspect the params only, and infer the parent
-  # from that.
   def get_parent
-    # ugly but a necessary evil of multi-level, nested polymorphic associations
-    uri = request.fullpath
-    raise if uri =~ /\?/
-    components = uri.split '/'
-
-    if (4..5).include? components.length
-      # blog/:id/comments,    blog/:id/comments/new
-      # twitter/:id/comments, twitter/:id/comments/new
-      # issues/:id/comments,  issues/:id/comments/new
-      # wiki/:id/comments,    wiki/:id/comments/new
-      root, parent, parent_id, nested, action = components
-      raise 'unexpected action' if action && action != 'new'
-      case parent
-      when 'blog'
-        @parent_instance = Post.find_by_permalink!(parent_id)
-      when 'issues'
-        @parent_instance = Issue.find(parent_id)
-      when 'twitter'
-        @parent_instance = Tweet.find(parent_id)
-      when 'wiki'
-        parent_id = params[:article_id]
-        @parent_instance = Article.find_with_param!(parent_id), current_user
-      else
-        raise 'unexpected parent'
-      end
-      @parent_path = polymorphic_path @parent_instance
-    elsif (6..7).include? components.length
-      # forums/:id/topics/:id/comments, forums/:id/topics/.id/comments/new
-      root, grandparent, grandparent_id, parent, parent_id, nested, action = components
-      raise 'unexpected action' if action && action != 'new'
-      raise 'unexpected grandparent' unless grandparent == 'forums'
-      raise 'unexpected parent' unless parent == 'topics'
-      grandparent_instance = Forum.find_with_param! grandparent_id
-      @parent_instance = Topic.first :conditions => { :forum_id => grandparent_instance.id, :id => parent_id }
-      raise 'no parent instance' unless @parent_instance
-      @parent_path = forum_topic_path grandparent_instance, @parent_instance
-    else
-      raise 'wrong number of components'
+    if parent = params[:article_id]
+      @parent = Article.find_with_param! parent, current_user
+    elsif parent = params[:issue_id]
+      @parent = Issue.find parent
+    elsif parent = params[:post_id]
+      @parent = Post.find_by_permalink! parent
+    elsif parent = params[:tweet_id]
+      @parent = Tweet.find parent
+    elsif parent = params[:topic_id] and grandparent = params[:forum_id]
+      @grandparent = Forum.find_with_param! grandparent
+      @parent = @grandparent.topics.where(:id => parent).first
     end
-    raise 'non-empty root' if root != ''
-    raise ActionController::ForbiddenError.new('parent does not accept comments') if not @parent_instance.accepts_comments
+    raise ActiveRecord::NotFound.new('no parent instance') unless @parent
+
+    if !@parent.accepts_comments
+      raise ActionController::ForbiddenError.new \
+        'parent does not accept comments'
+    end
   end
 
   def get_comment

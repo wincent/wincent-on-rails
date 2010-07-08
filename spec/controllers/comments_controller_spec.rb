@@ -136,9 +136,6 @@ describe CommentsController, 'GET /twitter/:id/comments/new' do
   describe 'when commenting not allowed' do
     before do
       tweet = Tweet.make! :accepts_comments => false
-
-      # without this "request.fullpath" is empty, so our get_parent method fails
-      request.env['PATH_INFO'] = "/twitter/#{tweet.id}/comments/new"
       get :new, :tweet_id => tweet.id
     end
 
