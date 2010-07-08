@@ -97,6 +97,15 @@ class CommentsController < ApplicationController
 
 private
 
+  # BUG: we can't count on the path being set in our controller specs unless
+  # we manually set it ourselves: eg:
+  #
+  #   request.env['PATH_INFO'] = "/twitter/#{tweet.id}/comments/new"
+  #   get :new, :tweet_id => tweet.id
+  #
+  # This is a pretty awful way to write tests, so lets fix this method. Instead
+  # of inspecting the path, we'll inspect the params only, and infer the parent
+  # from that.
   def get_parent
     # ugly but a necessary evil of multi-level, nested polymorphic associations
     uri = request.fullpath
