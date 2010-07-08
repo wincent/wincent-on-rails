@@ -1,6 +1,39 @@
 require File.expand_path('../spec_helper', File.dirname(__FILE__))
 require 'hpricot'
 
+# A note about Atom format testing:
+#
+# For most resources we can test using requests like:
+#
+#   get :show, :id => 'foo', :format => 'show'
+#
+# But the Article resource is special because it allows periods, which Rails
+# usually considers as format separators, in its permalinks.
+#
+# This means that requests made to the articles controller such as GET
+# /wiki/foo.atom do not actually come with the :format parameter set as one
+# would usually expect. Instead the controller gets passed an :id of
+# "foo.atom" and it is up to the controller to detect that it is actually an
+# Atom request.
+#
+# At test time this means that we must express our requests in the form of:
+#
+#   get :show, :id => 'foo.atom'
+#
+# Only then can we properly test the code path in the controller which handles
+# this kind of request (specifically, the "get_article" method).
+#
+# There is one exception to this rule and that is where we wish to test layouts
+# as well (for example, to confirm that we produce a valid Atom feed we must
+# ensure that we don't end up rendering views inside the HTML application
+# layout). In this case we must do:
+#
+#   get :show, :id => 'foo.atom', :format => 'atom'
+#
+# Otherwise the test machinery will render the template in the default HTML
+# application layout. Note that in practice Rails will never send an explicit
+# Atom :format parameter to this controller, but supplying one here is a
+# necessary evil to force the test machinery to do the right thing.
 describe ArticlesController do
   describe '#index' do
     context 'HTML format' do
@@ -51,7 +84,7 @@ describe ArticlesController do
     end
 
     context 'Atom format' do
-      render_views # needed otherwise we'll inappropriately use HTML layout
+      render_views # needed otherwise test machinery uses HTML layout
 
       it 'finds recent articles, excluding redirects' do
         mock(Article).recent_excluding_redirects { [] }
@@ -217,25 +250,64 @@ describe ArticlesController do
     end
 
     context 'Atom format' do
-      render_views # so that we can test layouts as well
+      context 'public article' do
+        before do
+          @article = Article.make! :title => 'foo'
+          @comments = Array.new(5) { Comment.make! :commentable => @article }
+        end
+
+        it 'assigns the article' do
+          get :show, :id => 'foo.atom'
+          assigns[:article].should == @article
+        end
+
+        it 'assigns existing comments' do
+          get :show, :id => 'foo.atom'
+          assigns[:comments].should =~ @comments
+        end
+
+        it 'succeeds' do
+          get :show, :id => 'foo.atom'
+          response.should be_success
+        end
+
+        it 'renders the show template' do
+          get :show, :id => 'foo.atom'
+          response.should render_template('show')
+        end
+      end
+
+      context 'private article' do
+        before do
+          @article = Article.make! :title => 'bar', :public => false
+        end
+
+        it 'returns 403 forbidden' do
+          get :show, :id => 'bar.atom'
+          response.status.should == 403
+        end
+      end
 
       describe 'regressions' do
+        render_views # needed otherwise test machinery uses HTML layout
+
         before do
           @article = Article.make! :title => 'foo bar baz'
         end
 
         def do_get
-          get :show, :id => 'foo_bar_baz', :format => 'atom'
+          # need :format param here or test machinery will render HTML template
+          get :show, :id => 'foo_bar_baz.atom', :format => 'atom'
         end
 
         # https://wincent.com/issues/1227
-        it 'should produce valid atom when there are no comments' do
+        it 'produces valid atom when there are no comments' do
           pending unless can_validate_feeds?
           do_get
           response.body.should be_valid_atom
         end
 
-        it 'should produce valid atom when there are multiple comments' do
+        it 'produces valid atom when there are multiple comments' do
           pending unless can_validate_feeds?
           10.times { Comment.make! :commentable => @article }
           do_get
