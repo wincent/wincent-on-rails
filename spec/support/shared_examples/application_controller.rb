@@ -34,26 +34,9 @@ end
 
 # not testing ActionController here; just testing that it was set-up correctly
 shared_examples_for 'ApplicationController parameter filtering' do
-  before do
-    @parameters = { 'safe'                    => 'public',
-                    'passphrase'              => 'secret',
-                    'passphrase_confirmation' => 'secret',
-                    'old_passphrase'          => 'secret'}
-  end
-
+  # BUG: this is no longer really a shared example as there is no need to run
+  # it for each controller
   it 'should filter out the "passphrase" parameter' do
-    controller.send(:filter_parameters, @parameters)['passphrase'].should match(/FILTERED/i)
-  end
-
-  it 'should filter out the "passphrase_confirmation" parameter' do
-    controller.send(:filter_parameters, @parameters)['passphrase_confirmation'].should match(/FILTERED/i)
-  end
-
-  it 'should filter out the "old_passphrase" parameter' do
-    controller.send(:filter_parameters, @parameters)['old_passphrase'].should match(/FILTERED/i)
-  end
-
-  it 'should pass everything else through unfiltered' do
-    controller.send(:filter_parameters, @parameters)['safe'].should == 'public'
+    Rails.application.config.filter_parameters.include?(:passphrase).should be_true
   end
 end
