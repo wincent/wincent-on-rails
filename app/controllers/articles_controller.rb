@@ -18,27 +18,6 @@ class ArticlesController < ApplicationController
     end
   end
 
-  def new
-    @article = Article.new session[:new_article_params]
-    session[:new_article_params] = nil
-  end
-
-  def create
-    if request.xhr? # live preview
-      @article = Article.new :title => params[:title], :body => params[:body]
-      render :partial => 'preview'
-    else # normal request
-      @article = Article.new params[:article]
-      if @article.save
-        flash[:notice] = 'Successfully created new article'
-        redirect_to @article
-      else
-        flash[:error] = 'Failed to create new article'
-        render :action => 'new'
-      end
-    end
-  end
-
   def show
     # NOTE: MySQL will do a case-insensitive find here, so "foo" and "FOO" refer to the same article
     if @article.redirect?
@@ -66,6 +45,27 @@ class ArticlesController < ApplicationController
         format.atom
       end
       clear_redirection_info
+    end
+  end
+
+  def new
+    @article = Article.new session[:new_article_params]
+    session[:new_article_params] = nil
+  end
+
+  def create
+    if request.xhr? # live preview
+      @article = Article.new :title => params[:title], :body => params[:body]
+      render :partial => 'preview'
+    else # normal request
+      @article = Article.new params[:article]
+      if @article.save
+        flash[:notice] = 'Successfully created new article'
+        redirect_to @article
+      else
+        flash[:error] = 'Failed to create new article'
+        render :action => 'new'
+      end
     end
   end
 
