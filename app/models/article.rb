@@ -68,6 +68,25 @@ class Article < ActiveRecord::Base
     !!(self.redirect? && self.redirect =~ /\A\s*\[\[.+\]\]\s*\z/)
   end
 
+  # Returns a redirection URL or path suitable for consumption by
+  # redirect_to, with trailing and leading whitespace stripped.
+  # Returns nil if there is no such redirect.
+  def url_for_redirect
+    # TODO: refactor these regexps for reuse (see validations)
+    if redirect.nil?
+      nil
+    elsif redirect =~ /\A\s*\[\[([^_\/]+)\]\]\s*\z/
+      # hardcoding this path here may be evil
+      '/wiki/' + Article.parametrize($~[1])
+    elsif redirect =~ /\A\s*(https?:\/\/.+?)\s*\z/
+      $~[1]
+    elsif redirect =~ /\A\s*(\/.+?)\s*\z/
+      $~[1]
+    else
+      nil
+    end
+  end
+
   # this is a string-to-string transformation, unlike to_param/from_param
   def self.deparametrize string
     string.gsub '_', ' '

@@ -30,7 +30,7 @@ class ArticlesController < ApplicationController
           session[:redirection_count] = session[:redirection_count] ? session[:redirection_count] + 1 : 1
           session[:redirected_from] = params[:id]
         end
-        redirect_to url_for_redirect
+        redirect_to @article.url_for_redirect
       end
     else # not a redirect
       if session[:redirected_from]
@@ -117,16 +117,6 @@ private
       redirect_to new_article_path
     else
       super articles_path
-    end
-  end
-
-  def url_for_redirect
-    if @article.redirect =~ /\A\s*\[\[(.+)\]\]\s*\z/
-      article_path Article.parametrize($~[1])
-    elsif @article.redirect =~ /\A\s*((https?:\/\/.+)|(\/.+))\s*\z/
-      $~[1]
-    else
-      nil
     end
   end
 
