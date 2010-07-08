@@ -54,7 +54,9 @@ class ArticlesController < ApplicationController
         redirect_to url_for_redirect
       end
     else # not a redirect
-      @redirected_from = Article.find_with_param!(session[:redirected_from]) if session[:redirected_from]
+      if session[:redirected_from]
+        @redirected_from = Article.find_with_param! session[:redirected_from], current_user
+      end
       @comments = @article.comments.published
       respond_to do |format|
         format.html {
@@ -94,10 +96,12 @@ private
   end
 
   def get_article
-    # BUG: public/private distinction is ignored here
-    @article = Article.find_with_param! params[:id]
+    @article = Article.find_with_param! params[:id], current_user
+  rescue ActionController::ForbiddenError
+    flash[:error] = forbidden_flash_message
+    redirect_to articles_path
   rescue ActiveRecord::RecordNotFound => e
-    # given title "Foo" a request for "Foo.atom" will most likely wind up here
+    # given title "Foo" a request for "Foo.atom" will wind up here
     if params[:id] =~ /(.+)\.atom\Z/
       params[:format] = 'atom'
       @article = Article.find_with_param! $~[1]
@@ -108,7 +112,7 @@ private
   def record_not_found
     if admin?
       flash[:notice] = 'Requested article not found: create it?'
-      title = Article.deparametrize(params[:id])
+      title = Article.deparametrize params[:id]
       session[:new_article_params] = { :title => Article.smart_capitalize(title) }
       redirect_to new_article_path
     else

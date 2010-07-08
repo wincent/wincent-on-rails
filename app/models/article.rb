@@ -42,8 +42,12 @@ class Article < ActiveRecord::Base
     recent.where(table[:redirect].eq(nil).or(table[:redirect].eq('')))
   }
 
-  def self.find_with_param! param
-    find_by_title!(deparametrize(param))
+  def self.find_with_param! param, user = nil
+    article = find_by_title! deparametrize(param)
+    if !article.public? && (!user || !user.superuser?)
+      raise ActionController::ForbiddenError.new
+    end
+    article
   end
 
   def check_redirect_and_body

@@ -178,3 +178,52 @@ describe Article, 'smart capitalization' do
     Article.smart_capitalize('WOPublic bar').should == 'WOPublic bar'
   end
 end
+
+describe Article, '#find_with_param!' do
+  before do
+    @public = Article.make! :title => 'foo'
+    @private = Article.make! :title => 'bar', :public => false
+  end
+
+  context 'with no user param' do
+    it 'finds public articles' do
+      Article.find_with_param!('foo').should == @public
+    end
+
+    it 'raises ActionController::ForbiddenError for private articles' do
+      lambda {
+        Article.find_with_param! 'bar'
+      }.should raise_error(ActionController::ForbiddenError)
+    end
+  end
+
+  context 'with a normal user' do
+    before do
+      @user = User.make!
+    end
+
+    it 'finds public articles' do
+      Article.find_with_param!('foo', @user).should == @public
+    end
+
+    it 'raises ActionController::ForbiddenError for private articles' do
+      lambda {
+        Article.find_with_param! 'bar', @user
+      }.should raise_error(ActionController::ForbiddenError)
+    end
+  end
+
+  context 'with an admin user' do
+    before do
+      @user = User.make! :superuser => true
+    end
+
+    it 'finds public articles' do
+      Article.find_with_param!('foo', @user).should == @public
+    end
+
+    it 'finds private articles' do
+      Article.find_with_param!('bar', @user).should == @private
+    end
+  end
+end

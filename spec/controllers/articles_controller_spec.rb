@@ -80,20 +80,20 @@ describe ArticlesController do
         end
 
         # https://wincent.com/issues/1227
-        it 'should produce valid atom when there are no articles' do
+        it 'produces valid atom when there are no articles' do
           pending unless can_validate_feeds?
           Article.destroy_all
           get :index, :format => 'atom'
           response.body.should be_valid_atom
         end
 
-        it 'should produce valid atom when there are multiple articles' do
+        it 'produces valid atom when there are multiple articles' do
           pending unless can_validate_feeds?
           get :index, :format => 'atom'
           response.body.should be_valid_atom
         end
 
-        # Rails 2.3.0 RC1 BUG: http://rails.lighthouseapp.com/projects/8994/tickets/2043
+        # http://rails.lighthouseapp.com/projects/8994/tickets/2043
         it 'should produce entry links to HTML-formatted records' do
           get :index, :format => 'atom'
           doc = Hpricot.XML(response.body)
@@ -110,6 +110,100 @@ describe ArticlesController do
 
   describe '#show' do
     context 'HTML format' do
+      context 'public article' do
+        before do
+          @article = Article.make! :title => 'foo'
+          @comments = Array.new(5) { Comment.make! :commentable => @article }
+        end
+
+        it 'assigns the article' do
+          get :show, :id => 'foo'
+          assigns[:article].should == @article
+        end
+
+        it 'assigns existing comments' do
+          get :show, :id => 'foo'
+          assigns[:comments].should =~ @comments
+        end
+
+        context 'comments allowed' do
+          it 'assigns a new comment' do
+            get :show, :id => 'foo'
+            assigns[:comment].should be_kind_of(Comment)
+            assigns[:comment].commentable.should == @article
+            assigns[:comment].should be_new_record
+          end
+        end
+
+        context 'comments not allowed' do
+          it 'does not assign a new comment' do
+            Article.make! :title => 'baz', :accepts_comments => false
+            get :show, :id => 'baz'
+            assigns[:comment].should be_nil
+          end
+        end
+
+        it 'succeeds' do
+          get :show, :id => 'foo'
+          response.should be_success
+        end
+
+        it 'renders the show template' do
+          get :show, :id => 'foo'
+          response.should render_template('show')
+        end
+
+        context 'redirecting' do
+          before do
+            @redirected_from = Article.make! :title => 'bar'
+            session[:redirected_from] = 'bar'
+            get :show, :id => 'foo'
+          end
+
+          it 'assigns redirection info' do
+            assigns[:redirected_from].should == @redirected_from
+          end
+
+          it 'clears redirection info' do
+            session[:redirected_from].should be_nil
+            session[:redirection_count].should == 0
+          end
+        end
+      end
+
+      context 'private article' do
+        before do
+          @article = Article.make! :title => 'bar', :public => false
+        end
+
+        context 'as a normal user' do
+          it 'redirects to /wiki' do
+            get :show, :id => 'bar'
+            response.should redirect_to('/wiki')
+          end
+
+          it 'shows a flash' do
+            get :show, :id => 'bar'
+            cookie_flash['error'].should =~ /forbidden/
+          end
+        end
+
+        context 'as an admin user' do
+          it 'succeeds' do
+            as_admin do
+              get :show, :id => 'bar'
+              response.should be_success
+            end
+          end
+        end
+      end
+
+      context 'redirect article' do
+        before do
+          @article = Article.make! :title => 'baz', :redirect => '[[foo]]', :body => ''
+        end
+      end
+
       describe 'regressions' do
         it 'handles HTTPS URLs in the url_or_path_for_redirect method' do
           # previously only handled HTTP URLs

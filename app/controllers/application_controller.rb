@@ -108,4 +108,19 @@ protected
     # always leave cookie flash deletion up to the browser
     cookies[:flash] = flash_hash.to_json unless flash_hash.blank?
   end
+
+  # Convenient access to helpers from inside controllers. Note that mixing
+  # presentational code (view helpers) with controller code is generally a bad
+  # idea, but there are some exceptions, such as the use of the "link_to"
+  # helper to embed links in flash messages.
+  def helpers
+    self.class.helpers
+  end
+
+  def forbidden_flash_message
+    href = login_path :original_uri => request.fullpath
+    log_in = helpers.link_to('Log in', href)
+    'Access to the requested resource is forbidden. ' +
+      "#{log_in} as an administrator to gain access."
+  end
 end

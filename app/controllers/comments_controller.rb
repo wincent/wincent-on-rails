@@ -119,7 +119,7 @@ private
         @parent_instance = Tweet.find(parent_id)
       when 'wiki'
         parent_id = params[:article_id]
-        @parent_instance = Article.find_with_param!(parent_id)
+        @parent_instance = Article.find_with_param!(parent_id), current_user
       else
         raise 'unexpected parent'
       end
