@@ -303,6 +303,9 @@ describe ArticlesController do
             get :show, :id => 'moot'
             flash[:error].should =~ /not found/
             pending 'after filter is not running, but only in the test environment'
+            # NOTE: it is not just running under the test environment which
+            # does this, because running "RAILS_ENV=test rails s" works fine;
+            # it is evidently something in the testing machinery itself
             cookie_flash['error'].should =~ /not found/
           end
         end
@@ -554,6 +557,65 @@ describe ArticlesController do
       it 'redirects to the login page' do
         get :edit, :id => 'unimportant'
         response.should redirect_to('/login')
+      end
+    end
+  end
+
+  describe '#update' do
+    before do
+      @article = Article.make! :title => 'foo'
+      @params = { :id => 'foo', :article => { :body => 'bar' } }
+    end
+
+    context 'as a normal user' do
+      it 'redirects to /login' do
+        put :update, @params
+        response.should redirect_to('/login')
+      end
+
+      it 'shows a flash' do
+        put :update, @params
+        cookie_flash['notice'].should =~ /requires administrator privileges/
+      end
+    end
+
+    context 'as an admin user' do
+      before do
+        login_as_admin
+      end
+
+      it 'updates the article' do
+        put :update, @params
+        Article.find_by_title!('foo').body.should == 'bar'
+      end
+
+      it 'redirects to #show' do
+        put :update, @params
+        response.should redirect_to('/wiki/foo')
+      end
+
+      it 'shows a flash' do
+        put :update, @params
+        cookie_flash['notice'].should =~ /successfully updated/i
+      end
+
+      context 'with invalid attributes' do
+        before do
+          @params = {
+            :id => 'foo',
+            :article => { :redirect => '--- invalid ---' }
+          }
+        end
+
+        it 'shows an error flash' do
+          put :update, @params
+          cookie_flash['error'].should =~ /update failed/i
+        end
+
+        it 'renders #edit' do
+          put :update, @params
+          response.should render_template('edit')
+        end
       end
     end
   end
