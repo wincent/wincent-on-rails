@@ -4,3 +4,4 @@
     %div.info
       %span.when=timeinfo tweet
       =link_to 'permalink', tweet_path(tweet), :class => 'hoverlink'
+      =link_to 'comment', new_tweet_comment_path(tweet), :class => 'hoverlink' if tweet.accepts_comments
