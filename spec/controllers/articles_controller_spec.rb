@@ -377,4 +377,37 @@ describe ArticlesController do
       end
     end
   end
+
+  describe '#new' do
+    context 'admin access' do
+      before do
+        login_as_admin
+      end
+
+      it 'assigns a new article' do
+        get :new
+        assigns[:article].should be_kind_of(Article)
+        assigns[:article].should be_new_record
+      end
+
+      it 'takes params from the session' do
+        session[:new_article_params] = { :title => 'foo' }
+        get :new
+        assigns[:article].title.should == 'foo'
+      end
+
+      it 'clears the session params' do
+        session[:new_article_params] = { :title => 'foo' }
+        get :new
+        session[:new_article_params].should be_nil
+      end
+    end
+
+    context 'non-admin access' do
+      it 'redirects' do
+        get :new
+        response.should redirect_to('/login')
+      end
+    end
+  end
 end
