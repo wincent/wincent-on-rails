@@ -9,6 +9,11 @@ module ControllerSpecHelpers
     stub(controller).login_before # don't let the before filter clear the user again
   end
 
+  def as_admin &block
+    login_as_admin
+    yield
+  end
+
   def login_as_normal_user
     login_as User.make!
   end
