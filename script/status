@@ -24,12 +24,18 @@ else
   echo "running"
 fi
 
-/bin/echo -n "mysqld: "
-if [ $(ps ax | grep -v grep | grep -c 'mysqld --basedir') -eq 0 ]; then
+/bin/echo -n "mysqld [disk]: "
+if [ $(ps ax | grep -v grep | grep 'mysqld --basedir' | grep -c "pid-file=$PWD/tmp/pids/mysql.pid") -eq 0 ]; then
   echo "stopped"
+  check_stale_pid_file 'tmp/mysql.pid'
+else
+  echo "running"
+fi
 
-  # note that this check will only work when running as root/mysql
-  check_stale_pid_file "/usr/local/mysql/data/$(hostname).pid"
+/bin/echo -n "mysqld [ram]: "
+if [ $(ps ax | grep -v grep | grep 'mysqld --basedir' | grep -c "pid-file=$PWD/tmp/pids/mysql_ram.pid") -eq 0 ]; then
+  echo "stopped"
+  check_stale_pid_file 'tmp/mysql_ram.pid'
 else
   echo "running"
 fi
