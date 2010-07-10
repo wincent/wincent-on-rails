@@ -1,15 +1,65 @@
 #!/bin/sh
 
-if [ $(whoami) != "root" ]; then
-  echo "error:: this script requires root privileges"
-  exit 1
+# to make converting from relative to absolute paths easier make sure that
+# we are always run from the Rails.root as "script/mysqld"
+if [ $0 != 'script/mysqld' ]; then
+  echo "error:: please run from Rails.root as 'script/mysqld'"
 fi
 
-HOSTNAME=$(hostname)
-if [ -f "/usr/local/mysql/data/$HOSTNAME.pid" ]; then
-  echo "mysql running: stopping"
-  mysqladmin shutdown
+# production/development database on disk at tmp/mysql
+if [ -f "tmp/pids/mysql.pid" ]; then
+  echo "mysqld [disk] running: stopping"
+  mysqladmin -u root --socket=$PWD/tmp/sockets/mysql.sock shutdown > /dev/null
 else
-  echo "mysql not running: starting"
-  (cd /usr/local/mysql && sudo -u mysql -b mysqld_safe > /dev/null)
+  echo "mysqld [disk] not running: starting"
+  mkdir -p $PWD/log \
+           $PWD/tmp/mysql \
+           $PWD/tmp/pids \
+           $PWD/tmp/sockets
+  mysqld_safe --datadir=$PWD/tmp/mysql \
+              --log-error=$PWD/log/mysql_err.log \
+              --pid-file=$PWD/tmp/pids/mysql.pid \
+              --skip-networking \
+              --socket=$PWD/tmp/sockets/mysql.sock > /dev/null &
+fi
+
+# test database in ramdisk
+# see: http://kotega.com/blog/2010/apr/12/mysql-ramdisk-osx/
+DISKSIZE=100 # MB
+BLOCKSIZE=512 # KB
+BLOCKCOUNT=`expr 100 '*' 1024 '*' 1024 / $BLOCKSIZE`
+
+if [ -f "tmp/pids/mysql_ram.pid" ]; then
+  echo "mysqld [ramdisk] running: stopping"
+  mysqladmin -u root --socket=$PWD/tmp/sockets/mysql_ram.sock shutdown > /dev/null
+else
+  echo "mysqld [ramdisk] not running: starting"
+
+  if [ ! -d "/Volumes/ramdisk" ]; then
+    DEV=`hdiutil attach -nomount ram://$BLOCKCOUNT`
+    DEV_TRIMMED=`echo $DEV | sed -e 's/[ \t]*//'`
+    if [[ ! $DEV =~ '/dev/disk' ]]; then
+      # don't want to go formatting the wrong device, so be ultra-careful
+      echo "error:: unexpected device returned by 'hdiutil attach' ($DEV_TRIMMED): bailing"
+      exit 1
+    fi
+    diskutil eraseVolume HFS+ ramdisk $DEV > /dev/null
+    /usr/local/mysql/scripts/mysql_install_db --basedir=/usr/local/mysql --datadir=/Volumes/ramdisk > /dev/null
+
+    echo "notice:: created ${DISKSIZE}MB ramdisk at $DEV_TRIMMED; use 'hdiutil detach $DEV_TRIMMED' to dispose of it"
+    CREATE_TEST_DATABASE=1
+  fi
+
+  mysqld_safe --datadir=/Volumes/ramdisk \
+              --log-error=/Volumes/ramdisk/err.log \
+              --pid-file=$PWD/tmp/pids/mysql_ram.pid \
+              --skip-networking \
+              --socket=$PWD/tmp/sockets/mysql_ram.sock > /dev/null &
+
+  if [ "$CREATE_TEST_DATABASE" ]; then
+    echo "notice:: waiting for mysqld to finish launching"
+    sleep 5
+    RAILS_ENV=test rake db:create > /dev/null
+    rake db:test:clone_structure > /dev/null # copy structure from schema.rb
+  fi
 fi
