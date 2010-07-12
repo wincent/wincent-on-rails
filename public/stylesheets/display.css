@@ -10,7 +10,7 @@ h2.major a:hover { text-decoration: none; color: #ee7714; }
 
 p, li { color: #666666; }
 
-pre { color: black; background-color: #ffffb6; border: 1px dotted silver; padding: 1em; padding-top: 0em; padding-bottom: 1px; margin-left: 1em; margin-right: 2em; font-size: 125%; line-height: 1.1em; overflow: auto; }
+pre { font-family: Consolas, Monaco, Courier; color: black; background-color: #ffffb6; border: 1px dotted silver; padding: 1em; padding-top: 0em; padding-bottom: 1px; margin-left: 1em; margin-right: 2em; font-size: 110%; line-height: 18px; overflow: auto; }
 
 pre span.line-number { counter-increment: line-number; text-align: right; float: left; margin-left: -1.5em; margin-right: 0.5em; padding-right: 0.5em; border-right: 1px dotted silver; width: 3em; color: silver; background: #ffeeee; }
 
@@ -29,7 +29,7 @@ pre span.symbol-syntax { color: #fc8a0b; }
 
 table pre { max-width: 640px; }
 
-code, tt { color: #660000; font-size: 125%; border: 1px dotted silver; padding-left: 0.3em; padding-right: 0.3em; }
+code, tt { color: #660000; font-family: Consolas, Monaco, Courier; font-size: 14px; padding-left: 0.1em; padding-right: 0.1em; }
 
 blockquote { padding-left: 24px; padding-right: 24px; min-height: 32px; background: url(../images/blockquote.png) no-repeat left top; margin-left: 1em; margin-right: 2em; }
 blockquote p, blockquote li { color: #999999; }
@@ -69,7 +69,7 @@ a.mailto:after { content: url(../images/mailto.png); }
 
 #breadcrumbs { margin: 10px 10px 0px 10px; font-size: 0.9em; }
 
-#content { clear: both; padding-top: 0.5em; padding-bottom: 1em; padding-left: 2em; padding-right: 3em; margin-top: 1em; margin-left: 1em; margin-right: 1em; -webkit-border-radius: 1em; -moz-border-radius: 1em; background: white; }
+#content { line-height: 18px; clear: both; padding-top: 0.5em; padding-bottom: 1em; padding-left: 2em; padding-right: 3em; margin-top: 1em; margin-left: 1em; margin-right: 1em; -webkit-border-radius: 1em; -moz-border-radius: 1em; background: white; }
 
 #header-shadow + #content { margin-top: -0.5em; }
 
@@ -109,7 +109,7 @@ div.column { padding-left: 1.5em; padding-right: 1.5em; }
 
 .ajax_error { background: #f9b8be; }
 
-.pagination { margin: 1em; font-size: xx-small; text-align: right; }
+.pagination { margin: 1em; font-size: x-small; text-align: right; }
 .pagination .disabled { color: gray; }
 .pagination .first { padding-left: 18px; background: url(../images/first.png) no-repeat left center; }
 .pagination .first.disabled { background: url(../images/first-disabled.png) no-repeat left center; }
@@ -136,7 +136,7 @@ tr.odd { background: #f7f7f7; }
 
 tr.even { background: #eaeaea; }
 
-.annotation { font-size: xx-small; font-weight: normal; color: #666666; }
+.annotation { font-size: x-small; font-weight: normal; color: #666666; }
 
 input.field_with_errors, textarea.field_with_errors { border: 4px solid #f9b8be; }
 
