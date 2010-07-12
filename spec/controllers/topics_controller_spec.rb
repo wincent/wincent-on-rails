@@ -6,7 +6,7 @@ describe TopicsController do
   it_should_behave_like 'ApplicationController parameter filtering'
 end
 
-describe TopicsController, 'GET /forums/:forum_id/topics/:id.atom' do
+describe TopicsController, '#show (Atom)' do
   render_views # so that we can test layouts as well
 
   def do_get topic
@@ -15,14 +15,14 @@ describe TopicsController, 'GET /forums/:forum_id/topics/:id.atom' do
 
   # make sure we don't get bitten by bugs like:
   # https://wincent.com/issues/1227
-  it 'should produce valid atom' do
+  it 'produces valid atom' do
     pending unless can_validate_feeds?
     do_get Topic.make!
     response.body.should be_valid_atom
   end
 
   # Rails 2.3.0 RC1 BUG: http://rails.lighthouseapp.com/projects/8994/tickets/2043
-  it 'should produce entry links to HTML-formatted records' do
+  it 'produces entry links to HTML-formatted records' do
     topic = Topic.make!
     10.times {
       # feed has one entry for topic, and one entry for each comment
@@ -41,11 +41,11 @@ describe TopicsController, 'GET /forums/:forum_id/topics/:id.atom' do
     end
   end
 
-  it 'should redirect to aggregate forum feed (one forum) for non-existent topics' do
+  it 'redirects to aggregate forum feed (one forum) for non-existent topics' do
     pending 'broken because redirects to forum index HTML page'
   end
 
-  it 'should redirect to aggregate forum feed (all forums) for non-existent forums' do
+  it 'redirects to aggregate forum feed (all forums) for non-existent forums' do
     pending 'broken because redirects to all forums index HTML page'
   end
 end
