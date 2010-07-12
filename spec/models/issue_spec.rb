@@ -227,9 +227,7 @@ describe Issue, '"send_new_issue_alert" method' do
   end
 
   it 'should log an error message on failure' do
-    # BUG: stub! et al don't work on ActionMailer subclasses
     stub(IssueMailer).new_issue_alert(@issue) { raise 'fatal error!' }
-    pending 'RR chokes on ActionMailer subclasses'
     mock(@issue.logger).error(/fatal error!/)
     @issue.save
   end

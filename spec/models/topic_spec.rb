@@ -380,9 +380,7 @@ describe Topic, 'send_new_topic_alert callback' do
   end
 
   it 'should log an error message on failure' do
-    # BUG: doesn't raise
     stub(TopicMailer).new_topic_alert(anything) { raise 'fatal error!' }
-    pending 'requires fix for broken RR stub chains'
     mock(@topic.logger).error(/fatal error/)
     @topic.save
   end
