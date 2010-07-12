@@ -11,8 +11,8 @@ end
 
 describe SessionsController, 'logging in with a valid username and passphrase' do
   before do
-    @user = create_user
-    User.should_receive(:authenticate).and_return(@user)
+    @user = User.make!
+    stub(User).authenticate(anything, anything) { @user }
     post 'create', :protocol => 'https'
   end
 
@@ -31,7 +31,7 @@ end
 
 describe SessionsController, 'logging in with an invalid username or passphrase' do
   before do
-    User.should_receive(:authenticate).and_return(nil)
+    stub(User).authenticate(anything, anything) { nil }
     post 'create', :protocol => 'https'
   end
 
@@ -46,7 +46,7 @@ end
 
 describe SessionsController, 'logging out when previously logged in' do
   before do
-    login_as create_user
+    login_as User.make!
     post 'destroy', :protocol => 'https'
   end
 
@@ -79,8 +79,8 @@ end
 
 describe SessionsController, 'redirecting after login' do
   before do
-    @user = create_user
-    User.should_receive(:authenticate).and_return(@user)
+    @user = User.make!
+    stub(User).authenticate(anything, anything) { @user }
   end
 
   it 'should redirect to the user dashboard if no original uri supplied' do
