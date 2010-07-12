@@ -4,37 +4,35 @@ describe HeartbeatController do
   it_should_behave_like 'ApplicationController protected methods'
   it_should_behave_like 'ApplicationController parameter filtering'
 
-  it 'should suppress logging' do
+  it 'suppresses logging' do
     controller.logger.should be_nil
   end
 
   describe 'GET /heartbeat/ping' do
-    before do
-      @tag = mock_model Tag
-      Tag.stub!(:new).and_return(@tag)
-    end
-
-    def do_get
-      get :ping, :protocol => 'https'
-    end
-
-    it 'should succeed' do
-      do_get
+    it 'succeeds' do
+      get :ping
       response.should be_success
     end
 
-    it 'should hit the database' do
-      Tag.should_receive(:find).and_return(@tag)
-      do_get
+    it 'hits the database' do
+      mock(Tag).first
+      get :ping
     end
 
-    it 'should assign the found tag for the view' do
-      do_get
+    it 'assigns the found tag for the view' do
+      @tag = Tag.make!
+      get :ping
       assigns[:tag].should == @tag
     end
 
-    it 'should render the ping template' do
-      do_get
+    it 'creates a new tag if none in database' do
+      get :ping
+      assigns[:tag].should be_kind_of(Tag)
+      assigns[:tag].should be_new_record
+    end
+
+    it 'renders the ping template' do
+      get :ping
       response.should render_template('ping')
     end
   end
