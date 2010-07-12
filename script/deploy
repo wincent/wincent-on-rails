@@ -282,7 +282,7 @@ if [ -n "$DO_DEPLOY" ]; then
     REMOTE_REF=$REF
   fi
   ssh rails@$SERVER "sh -l -c '(test ! -e $TIMESTAMP || (echo \"  failed: $CHECKOUT already exists\" && exit 1)) && \
-                                git clone --quiet $REPO $CHECKOUT && \
+                                git clone --quiet --recursive $REPO $CHECKOUT && \
                                 cd $CHECKOUT && \
                                 git checkout --quiet -b deploy $REMOTE_REF && \
                                 (git rev-parse HEAD > $CHECKOUT/REVISION) && \
