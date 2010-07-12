@@ -8,40 +8,42 @@ end
 
 describe IssuesController, 'GET /issues/search' do
   def do_get
-    get :search, :protocol => 'https'
+    get :search, :issue => { :summary => 'foo' }
   end
 
-  # these tests are fairly weak at the moment because I don't want to start mocking the internal implementation details
-  # too much (I may already have gone too far); I will add fuller specs later which test only the external behaviour
+  # these tests are fairly weak at the moment because I don't want to start
+  # mocking the internal implementation details too much (I may already have
+  # gone too far); I will add fuller specs later which test only the external
+  # behaviour
   it 'should check the default_access_options' do
-    controller.should_receive(:default_access_options)
+    mock(controller).default_access_options
     do_get
   end
 
   it 'should sanitize the search parameters' do
-    Issue.should_receive(:prepare_search_conditions)
+    mock(Issue).prepare_search_conditions(anything, anything)
     do_get
   end
 
   it "should propagate the user's sort options" do
-    controller.should_receive(:sort_options).and_return({})
+    mock(controller).sort_options { {} }
     do_get
   end
 
   it 'should find all applicable issues' do
-    Issue.should_receive(:find)
+    mock(Issue).find(anything, anything)
     do_get
   end
 end
 
 describe IssuesController, 'GET /issues/:id' do
   def do_get issue
-    get :show, :id => issue.id, :protocol => 'https'
+    get :show, :id => issue.id
   end
 
   it 'should run the "find_prev_next" before filter' do
-    controller.should_receive(:find_prev_next)
-    do_get create_issue
+    mock(controller).find_prev_next
+    do_get Issue.make!
   end
 end
 
@@ -49,29 +51,29 @@ describe IssuesController, 'GET /issues/:id.atom' do
   render_views # so that we can test layouts as well
 
   def do_get issue
-    get :show, :id => issue.id, :format => 'atom', :protocol => 'https'
+    get :show, :id => issue.id, :format => 'atom'
   end
 
   it 'should not run the "find_prev_next" before filter' do
-    controller.should_not_receive(:find_prev_next)
-    do_get create_issue
+    do_not_allow(controller).find_prev_next
+    do_get Issue.make!
   end
 
   # make sure we don't get bitten by bugs like:
   # https://wincent.com/issues/1227
   it 'should produce valid atom' do
     pending unless can_validate_feeds?
-    do_get create_issue
+    do_get Issue.make!
     response.body.should be_valid_atom
   end
 
   # Rails 2.3.0 RC1 BUG: http://rails.lighthouseapp.com/projects/8994/tickets/2043
   it 'should produce entry links to HTML-formatted records' do
-    issue = create_issue
+    issue = Issue.make!
     10.times {
       # feed has one entry for issue, and one entry for each comment
       # so to fully catch this bug need some comments on the issue
-      comment = issue.comments.build :body => FR::random_string
+      comment = issue.comments.build :body => Sham.random
       comment.awaiting_moderation = false
       comment.save
     }
@@ -96,26 +98,26 @@ end
 
 describe IssuesController, 'GET /issues/:id/edit' do
   before do
-    @issue = create_issue :awaiting_moderation => false # this is the default example data anyway, but be explicit
+    @issue = Issue.make! :awaiting_moderation => false # this is the default example data anyway, but be explicit
     login_as_admin
   end
 
   def do_get
-    get :edit, :id => @issue.id, :protocol => 'https'
+    get :edit, :id => @issue.id
   end
 
   it 'should require administrator privileges' do
-    controller.should_receive(:require_admin) # before filter
+    mock(controller).require_admin # before filter
     do_get
   end
 
   it 'should find the issue' do
-    controller.should_receive(:find_issue_awaiting_moderation) # before filter
+    mock.proxy(controller).find_issue_awaiting_moderation # before filter
     do_get
   end
 
   it 'should be successful for issues awaiting moderation' do
-    @issue = create_issue :awaiting_moderation => true
+    @issue = Issue.make! :awaiting_moderation => true
     do_get
     response.should be_success
   end
@@ -126,7 +128,7 @@ describe IssuesController, 'GET /issues/:id/edit' do
   end
 
   it 'should render the edit template for issues awaiting modeartion' do
-    @issue = create_issue :awaiting_moderation => true
+    @issue = Issue.make! :awaiting_moderation => true
     do_get
     response.should render_template('edit')
   end
@@ -142,90 +144,91 @@ describe IssuesController, 'POST /issues (html format)' do
     # use a real model instead of a mock or stub here
     # otherwise I have to mock/stub _all_ of the method calls inside the method
     # which seems a bit crazy
-    @issue = new_issue
-    Issue.stub!(:new).and_return(@issue)
+    @issue = Issue.make
+    stub(Issue).new { @issue }
   end
 
   def do_post
-    post :create, :issue => { :pending_tags => 'foo bar baz' }, :protocol => 'https'
+    post :create, :issue => { :pending_tags => 'foo bar baz' }
   end
 
   it 'should set pending tags (if posting as admin)' do
-    @issue.should_receive(:pending_tags=).with('foo bar baz')
+    mock(@issue).pending_tags=('foo bar baz')
     login_as_admin
     do_post
   end
 
   it 'should not set pending tags (if posting as normal or anonymous user)' do
-    @issue.should_not_receive(:pending_tags=)
+    do_not_allow(@issue).pending_tags=
     do_post
   end
 end
 
 describe IssuesController, 'PUT /issues/:id (html format)' do
   before do
-    @issue = create_issue :awaiting_moderation => false # this is the default example data anyway, but be explicit
+    @issue = Issue.make! :awaiting_moderation => true
     login_as_admin
   end
 
   def do_put
-    put :update, :id => @issue.id, :issue => { :pending_tags => 'foo bar baz' }, :protocol => 'https'
+    put :update, :id => @issue.id, :issue => { :pending_tags => 'foo bar baz' }
   end
 
   it 'should require administrator privileges' do
-    controller.should_receive(:require_admin) # before filter
+    mock(controller).require_admin # before filter
     do_put
   end
 
   it 'should find the issue' do
-    controller.should_receive(:find_issue_awaiting_moderation) # before filter
-    do_put rescue nil # by mocking we prevent assignment to the @issue instance variable, so must rescue here
+    mock.proxy(controller).find_issue_awaiting_moderation # before filter
+    do_put
   end
 
   it 'should update the tags' do
-    @issue.should_receive(:pending_tags=)
-    Issue.stub!(:find).and_return(@issue)
+    mock(@issue).pending_tags=
+    stub(Issue).find { @issue }
     do_put
   end
 
   it 'should update the issue' do
-    @issue.should_receive(:update_attributes)
-    Issue.stub!(:find).and_return(@issue)
+    mock(@issue).update_attributes 'pending_tags' => 'foo bar baz'
+    stub(Issue).find() { @issue }
     do_put
   end
 
   it 'should show a notice on success' do
-    @issue.stub!(:save).and_return(true)
-    Issue.stub!(:find).and_return(@issue)
+    stub(@issue).save { true }
+    stub(Issue).find() { @issue }
     do_put
     cookie_flash['notice'].should =~ /Successfully updated/
   end
 
   it 'should redirect to the issue path on success for comments not awaiting moderation' do
-    @issue.stub!(:save).and_return(true)
-    Issue.stub!(:find).and_return(@issue)
+    @issue = Issue.make!
+    stub(@issue).save { true }
+    stub(Issue).find() { @issue }
     do_put
-    response.should redirect_to(issue_url(@issue))
+    response.should redirect_to(issue_url @issue)
   end
 
   it 'should redirect to the list of issues awaiting moderation on success for comments that are awaiting moderation' do
     @issue.awaiting_moderation = true
-    @issue.stub!(:save).and_return(true)
-    Issue.stub!(:find).and_return(@issue)
+    stub(@issue).save { true }
+    stub(Issue).find() { @issue }
     do_put
     response.should redirect_to(admin_issues_path)
   end
 
   it 'should show an error on failure' do
-    @issue.stub!(:save).and_return(false)
-    Issue.stub!(:find).and_return(@issue)
+    stub(@issue).save { false }
+    stub(Issue).find() { @issue }
     do_put
     cookie_flash['error'].should =~ /Update failed/
   end
 
   it 'should render the edit template again on failure' do
-    @issue.stub!(:save).and_return(false)
-    Issue.stub!(:find).and_return(@issue)
+    stub(@issue).save { false }
+    stub(Issue).find() { @issue }
     do_put
     response.should render_template('edit')
   end
@@ -233,32 +236,32 @@ end
 
 describe IssuesController, 'PUT /issues/:id (js format)' do
   before do
-    @issue = create_issue :awaiting_moderation => false # this is the default example data anyway, but be explicit
+    @issue = Issue.make! :awaiting_moderation => true
     login_as_admin
   end
 
   def do_put button = 'ham'
-    put :update, :id => @issue.id, :format => 'js', :button => button, :protocol => 'https'
+    put :update, :id => @issue.id, :format => 'js', :button => button
   end
 
   it 'should require administrator privileges' do
-    controller.should_receive(:require_admin) # before filter
+    mock(controller).require_admin # before filter
     do_put
   end
 
   it 'should find the issue' do
-    controller.should_receive(:find_issue_awaiting_moderation) # before filter
-    do_put rescue nil # by mocking we prevent assignment to the @issue instance variable, so must rescue here
+    mock.proxy(controller).find_issue_awaiting_moderation
+    do_put
   end
 
   it 'should moderate as ham when requested' do
-    @issue.should_receive(:moderate_as_ham!)
-    Issue.stub!(:find).and_return(@issue)
+    mock(@issue).moderate_as_ham!
+    stub(Issue).find() { @issue }
     do_put
   end
 
   it 'should complain about unknown parameters' do
-    Issue.stub!(:find).and_return(@issue)
+    stub(Issue).find() { @issue }
     lambda { do_put 'unknown' }.should raise_error
   end
 
@@ -268,8 +271,8 @@ end
 describe IssuesController, 'regressions' do
   it 'should unset the "current_user" thread-local variable even if an exception is thrown' do
     login_as_admin
-    record_not_found = create_issue.id + 1_000
-    get :edit, :id => record_not_found, :protocol => 'https' # raises RecordNotFound
+    record_not_found = Issue.make!.id + 1_000
+    get :edit, :id => record_not_found # raises RecordNotFound
     Thread.current[:current_user].should be_nil
   end
 end
