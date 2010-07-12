@@ -11,8 +11,8 @@ platforms :ruby_18 do
   gem 'wikitext',         '2.0'
 
   group :development, :test do
-    gem 'factory_girl_rails'
-    gem 'rspec-rails',    '>= 2.0.0.beta.17'
+    gem 'factory_girl_rails'                  # want factories in development console
+    gem 'rspec-rails',    '>= 2.0.0.beta.17'  # needed for generators to work
   end
 
   group :development do
