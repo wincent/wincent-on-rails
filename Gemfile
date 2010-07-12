@@ -12,6 +12,7 @@ platforms :ruby_18 do
 
   group :development, :test do
     gem 'factory_girl_rails'
+    gem 'rspec-rails',    '>= 2.0.0.beta.17'
   end
 
   group :development do
@@ -27,7 +28,6 @@ platforms :ruby_18 do
     gem 'mkdtemp'
     gem 'mongrel',        :require => nil
     gem 'rr'
-    gem 'rspec-rails',    '>= 2.0.0.beta.17'
     gem 'steak',          :git => 'git://github.com/cavalle/steak.git'
 
     # Bundler BUG: these are only for JRuby, but we must still declare them
