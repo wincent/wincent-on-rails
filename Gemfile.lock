@@ -1,4 +1,10 @@
 GIT
+  remote: git://github.com/btakita/rr.git
+  revision: 8f92154
+  specs:
+    rr (0.10.11)
+
+GIT
   remote: git://github.com/cavalle/steak.git
   revision: 006aca4
   specs:
@@ -91,7 +97,7 @@ GEM
     nokogiri (1.4.2)
     polyglot (0.3.1)
     rack (1.1.0)
-    rack-mount (0.6.6)
+    rack-mount (0.6.7)
       rack
     rack-test (0.5.4)
       rack (>= 1.0)
@@ -109,7 +115,6 @@ GEM
       rake (>= 0.8.3)
       thor (~> 0.13.6)
     rake (0.8.7)
-    rr (0.10.11)
     rspec (2.0.0.beta.17)
       rspec-core (= 2.0.0.beta.17)
       rspec-expectations (= 2.0.0.beta.17)
@@ -158,7 +163,7 @@ DEPENDENCIES
   mongrel
   mysql (= 2.8.1)
   rails (= 3.0.0.beta4)
-  rr
+  rr!
   rspec-rails (>= 2.0.0.beta.17)
   ruby-debug
   steak!
