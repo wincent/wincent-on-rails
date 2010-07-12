@@ -17,17 +17,17 @@ describe TopicsController, 'GET /forums/:forum_id/topics/:id.atom' do
   # https://wincent.com/issues/1227
   it 'should produce valid atom' do
     pending unless can_validate_feeds?
-    do_get create_topic
+    do_get Topic.make!
     response.body.should be_valid_atom
   end
 
   # Rails 2.3.0 RC1 BUG: http://rails.lighthouseapp.com/projects/8994/tickets/2043
   it 'should produce entry links to HTML-formatted records' do
-    topic = create_topic
+    topic = Topic.make!
     10.times {
       # feed has one entry for topic, and one entry for each comment
       # so to fully catch this bug need some comments on the topic
-      comment = topic.comments.build :body => FR::random_string
+      comment = topic.comments.build :body => Sham.random
       comment.awaiting_moderation = false
       comment.save
     }
