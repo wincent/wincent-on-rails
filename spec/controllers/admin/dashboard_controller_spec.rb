@@ -11,40 +11,36 @@ describe Admin::DashboardController, 'show action' do
     login_as_admin
   end
 
-  def do_get
-    get 'show', :protocol => 'https'
+  it 'runs the "require_admin" before filter' do
+    mock(controller).require_admin
+    get :show
   end
 
-  it 'should run the "require_admin" before filter' do
-    controller.should_receive(:require_admin)
-    do_get
-  end
-
-  it 'should get the count of comments awaiting moderation' do
-    Comment.should_receive(:count).with({:conditions => @conditions}).and_return(100)
-    do_get
+  it 'gets the count of comments awaiting moderation' do
+    mock(Comment).count({:conditions => @conditions}) { 100 }
+    get :show
     assigns[:comment_count].should == 100
   end
 
-  it 'should get the count of issues awaiting moderation' do
-    Issue.should_receive(:count).with({:conditions => @conditions}).and_return(200)
-    do_get
+  it 'gets the count of issues awaiting moderation' do
+    mock(Issue).count({:conditions => @conditions}) { 200 }
+    get :show
     assigns[:issue_count].should == 200
   end
 
-  it 'should get the count of topics awaiting moderation' do
-    Topic.should_receive(:count).with({:conditions => @conditions}).and_return(300)
-    do_get
+  it 'gets the count of topics awaiting moderation' do
+    mock(Topic).count({:conditions => @conditions}) { 300 }
+    get :show
     assigns[:topic_count].should == 300
   end
 
-  it 'should render the show template' do
-    do_get
+  it 'renders the show template' do
+    get :show
     response.should render_template('show')
   end
 
-  it 'should be successful' do
-    do_get
+  it 'is successful' do
+    get :show
     response.should be_success
   end
 end
