@@ -302,18 +302,18 @@ if [ -n "$DO_DEPLOY" ]; then
                                 rm -f $DEPLOY/latest && \
                                 ln -s $CHECKOUT $DEPLOY/latest && \
                                 cd $CHECKOUT && \
-                                bundle install && \
-                                rake --silent js:minify:deploy > /dev/null'"
+                                bundle install --binstubs && \
+                                bin/rake --silent js:minify:deploy > /dev/null'"
 fi
 
 if [ -n "$DO_MIGRATE_TEST" ]; then
   echo "Processing command: migrate_test"
-  ssh rails@$SERVER "sh -c 'cd $DEPLOY/latest && rake --silent RAILS_ENV=test db:migrate'"
+  ssh rails@$SERVER "sh -c 'cd $DEPLOY/latest && bin/rake --silent RAILS_ENV=test db:migrate'"
 fi
 
 if [ -n "$DO_SPEC" ]; then
   echo "Processing command: spec"
-  ssh rails@$SERVER "sh -c 'cd $DEPLOY/latest && rake --silent RAILS_ENV=test spec'"
+  ssh rails@$SERVER "sh -c 'cd $DEPLOY/latest && bin/rake --silent RAILS_ENV=test spec'"
 fi
 
 if [ -n "$DO_DISABLE" ]; then
@@ -325,9 +325,9 @@ fi
 if [ -n "$DO_MIGRATE" ]; then
   echo "Processing command: migrate"
   ssh rails@$SERVER "sh -c 'cd $DEPLOY/latest && \
-                            rake --silent RAILS_ENV=test         db:migrate && \
-                            rake --silent RAILS_ENV=development  db:migrate && \
-                            rake --silent RAILS_ENV=migrations   db:migrate'"
+                            bin/rake --silent RAILS_ENV=test         db:migrate && \
+                            bin/rake --silent RAILS_ENV=development  db:migrate && \
+                            bin/rake --silent RAILS_ENV=migrations   db:migrate'"
 fi
 
 if [ -n "$DO_SWITCH" ]; then
