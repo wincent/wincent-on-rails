@@ -10,30 +10,26 @@ describe Admin::IssuesController, 'index action' do
     login_as_admin
   end
 
-  def do_get
-    get 'index', :protocol => 'https'
+  it 'runs the "require_admin" before_filter' do
+    mock(controller).require_admin
+    get :index
   end
 
-  it 'should run the "require_admin" before_filter' do
-    controller.should_receive(:require_admin)
-    do_get
-  end
-
-  it 'should render the index template' do
-    do_get
+  it 'renders the index template' do
+    get :index
     response.should render_template('index')
   end
 
-  it 'should be successful' do
-    do_get
+  it 'is successful' do
+    get :index
     response.should be_success
   end
 
   # was a bug: https://wincent.com/issues/1100
-  it 'should paginate in groups of 20' do
+  it 'paginates in groups of 20' do
     paginator = Paginator.new({}, 100, 'foo', 20)
-    Paginator.should_receive(:new).with(anything(), anything(), anything(), 20).and_return(paginator)
-    Issue.should_receive(:find).with(anything(), hash_including(:limit => paginator.limit))
-    do_get
+    mock(Paginator).new(anything, anything, anything, 20) { paginator }
+    mock(Issue).find(anything, hash_including(:limit => paginator.limit))
+    get :index
   end
 end
