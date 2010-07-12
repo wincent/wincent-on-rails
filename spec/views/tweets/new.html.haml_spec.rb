@@ -1,8 +1,6 @@
 require File.expand_path('../../spec_helper', File.dirname(__FILE__))
 
 describe 'tweets/new.html.haml' do
-  helper ApplicationHelper, TweetsHelper
-
   before do
     @tweet = Tweet.new
   end

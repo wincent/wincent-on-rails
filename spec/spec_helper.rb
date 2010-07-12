@@ -11,10 +11,15 @@ RSpec.configure do |config|
   config.mock_framework = :rr
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
   config.use_transactional_fixtures = true
-  config.include ControllerSpecHelpers,
-    :example_group => { :file_path => %r{\bspec/controllers/} }
-  config.include RoutingSpecHelpers,
-    :example_group => { :file_path => %r{\bspec/routing/} }
+  config.include ControllerSpecHelpers, :example_group => {
+    :file_path => %r{\bspec/controllers/}
+  }
+  config.include RoutingSpecHelpers, :example_group => {
+    :file_path => %r{\bspec/routing/}
+  }
+  config.include ViewSpecHelpers, :example_group => {
+    :file_path => %r{\bspec/views/}
+  }
   config.backtrace_clean_patterns = config.backtrace_clean_patterns + [
     %r{/Library/},
     %r{/\.bundle/}
