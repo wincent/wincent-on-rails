@@ -15,4 +15,8 @@ RSpec.configure do |config|
     :example_group => { :file_path => %r{\bspec/controllers/} }
   config.include RoutingSpecHelpers,
     :example_group => { :file_path => %r{\bspec/routing/} }
+  config.backtrace_clean_patterns = config.backtrace_clean_patterns + [
+    %r{/Library/},
+    %r{/\.bundle/}
+  ]
 end
