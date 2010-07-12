@@ -80,8 +80,9 @@ protected
   end
 
   def send_new_comment_alert
+    # don't inform admin of his own comments
+    return if self.user && self.user.superuser?
     begin
-      return if self.user && self.user.superuser? # don't inform admin of his own comments
       CommentMailer.new_comment_alert(self).deliver
     rescue Exception => e
       # BUG: we're contaminating the code being tested here with knowledge

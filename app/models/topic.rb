@@ -19,9 +19,9 @@ class Topic < ActiveRecord::Base
   set_callback          :create, :after, :send_new_topic_alert
 
   def send_new_topic_alert
+    # don't inform admin of his own topics
+    return if self.user && self.user.superuser?
     begin
-      # don't inform admin of his own comments
-      return if self.user && self.user.superuser?
       TopicMailer.new_topic_alert(self).deliver
     rescue Exception => e
       logger.error \

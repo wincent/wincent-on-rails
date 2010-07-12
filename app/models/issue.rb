@@ -60,8 +60,9 @@ class Issue < ActiveRecord::Base
   end
 
   def send_new_issue_alert
+    # don't inform admin of his own issues
+    return if self.user && self.user.superuser?
     begin
-      return if self.user && self.user.superuser? # don't inform admin of his own issues
       IssueMailer.new_issue_alert(self).deliver
     rescue Exception => e
       logger.error "\nerror: Issue#send_new_issue_alert for issue #{self.id} failed due to exception #{e.class}: #{e}\n\n"
