@@ -1,25 +1,19 @@
 require File.expand_path('../../spec_helper', File.dirname(__FILE__))
 
-describe '/posts/index.html.haml' do
-  include PostsHelper
-
+describe 'posts/index' do
   before do
-    assigns[:tweets] = [create_tweet]
-    assigns[:posts]  = [create_post]
-  end
-
-  def do_render
-    render '/posts/index.html.haml'
+    @tweets = [Tweet.make!]
+    @posts  = [Post.make!]
   end
 
   # was a bug
-  it 'should not have nested <p> tags' do
-    do_render
-    response.should_not have_text(/<p>\w*<p>/)
+  it 'does not have nested <p> tags' do
+    render
+    rendered.should_not match(/<p>\w*<p>/)
   end
 
-  it 'should have a link to the tweets Atom feed' do
-    do_render
-    response.should have_tag('a[href=?]', tweets_path(:format => :atom))
+  it 'has a link to the tweets Atom feed' do
+    render
+    rendered.should have_selector('a', :href => tweets_path(:format => :atom))
   end
 end
