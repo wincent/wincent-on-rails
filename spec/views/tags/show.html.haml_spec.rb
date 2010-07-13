@@ -1,26 +1,18 @@
 require File.expand_path('../../spec_helper', File.dirname(__FILE__))
 
-describe '/tags/show' do
+describe 'tags/show' do
   before do
-    assigns[:tag] = @tag = create_tag
-    assigns[:taggables] = @taggables = OpenStruct.new
+    @tag = Tag.make!
+    @taggables = OpenStruct.new
   end
 
-  def do_render
-    render '/tags/show'
+  it 'has an "all tags" link' do
+    render
+    rendered.should have_selector('.links a[href="/tags"]')
   end
 
-  it 'should have an "all tags" link' do
-    do_render
-    response.should have_tag('.links') do
-      with_tag 'a[href=?]', tags_path
-    end
-  end
-
-  it 'should have a "tag search" link' do
-    do_render
-    response.should have_tag('.links') do
-      with_tag 'a[href=?]', search_tags_path
-    end
+  it 'has a "tag search" link' do
+    render
+    rendered.should have_selector('.links a[href="/tags/search"]')
   end
 end
