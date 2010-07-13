@@ -1,27 +1,25 @@
 require File.expand_path('../../spec_helper', File.dirname(__FILE__))
 
-describe '/products/index.html.haml' do
-  include ProductsHelper
-
+describe 'products/index' do
   before do
-    create_product  :name => 'Synergy',
-                    :description => 'An iTunes controller',
-                    :category => 'Consumer',
-                    :hide_from_front_page => false
-    create_product  :name => 'Synergy Advance',
-                    :description => 'An improved iTunes accessory',
-                    :category => 'Consumer',
-                    :hide_from_front_page => false
-    assigns[:products] = Product.categorized
-    render '/products/index.html.haml'
+    Product.make!  :name => 'Synergy',
+                   :description => 'An iTunes controller',
+                   :category => 'Consumer',
+                   :hide_from_front_page => false
+    Product.make!  :name => 'Synergy Advance',
+                   :description => 'An improved iTunes accessory',
+                   :category => 'Consumer',
+                   :hide_from_front_page => false
+    @products = Product.categorized
+    render
   end
 
-  it 'should render list of products' do
-    response.should have_tag('h3', 'Synergy')
-    response.should have_tag('h3', 'Synergy Advance')
+  it 'renders list of products' do
+    rendered.should have_selector('h3', :content => 'Synergy')
+    rendered.should have_selector('h3', :content => 'Synergy Advance')
   end
 
-  it 'should show category headings' do
-    response.should have_tag('h2', 'Consumer products')
+  it 'shows category headings' do
+    rendered.should have_selector('h2', :content => 'Consumer products')
   end
 end
