@@ -173,7 +173,7 @@ form li + li { border-top: 1px solid #eeeeee; }
 .post .when { margin-top: -1em; }
 .post .info { text-align: right; padding: 1em; }
 
-.comments_link { float: left; background: url(../images/comment-bubble.png) no-repeat left center; padding-left: 22px; padding-top: 2px; padding-bottom: 2px; min-height: 22px; }
+.comments_link { float: left; background: url(../images/comment-bubble.png) no-repeat left top; padding-left: 22px; padding-top: 0px; padding-bottom: 0px; min-height: 22px; }
 
 input[type=submit] { position: relative; margin-right: 0.25em; border-top: 0; border-right: 0; border-left: 0; border-bottom: 1px solid rgba(0, 0, 0, 0.25); -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px; -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5); -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5); box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5); text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.25); background: #007d9a; padding-left: 1.5em; padding-right: 1.5em; padding-top: 0.5em; padding-bottom: 0.5em; color: white; font-weight: bold; font-size: 12px; }
 input[type=submit]:hover { background: #77bed2; color: white; text-decoration: none; }
