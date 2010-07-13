@@ -1,53 +1,48 @@
 require File.expand_path('../../spec_helper', File.dirname(__FILE__))
 
-describe '/resets/new' do
-  include ResetsHelper
-
+describe 'resets/new' do
   before do
-    assigns[:reset] = create_reset
-    render '/resets/new'
+    @reset = Reset.make
   end
 
-  it 'should set up a heading' do
-    response.should have_tag('h1', 'Reset your passphrase')
+  it 'sets up breadcrumbs' do
+    mock(view).breadcrumbs('Reset your passphrase')
+    render
   end
 
-  it 'should render new form' do
-    # not really sure what level of detail represents the best compromise between brittle "busy-work" and robust specs
-    response.should have_tag('form[action=?][method=post]', resets_path) do
+  it 'sets up a heading' do
+    render
+    rendered.should have_selector('h1', :content => 'Reset your passphrase')
+  end
+
+  it 'renders new form' do
+    render
+    # not really sure what level of detail represents the best compromise
+    # between brittle "busy-work" and robust specs
+    rendered.should have_selector('form', :action => resets_path, :method => 'post') do |form|
       # email address text field
-      with_tag('input#reset_email_address[name=?]', 'reset[email_address]')
-      with_tag('input#reset_email_address[type=?]', 'text')
+      form.should have_selector('input#reset_email_address', :name =>'reset[email_address]', :type => 'text')
 
       # submit button
-      with_tag('input#reset_submit[name=?]', 'commit')
-      with_tag('input#reset_submit[type=?]', 'submit')
-      with_tag('input#reset_submit[value=?]', 'Reset passphrase')
+      form.should have_selector('input#reset_submit', :name => 'commit', :type => 'submit', :value => 'Reset passphrase')
     end
   end
 
-  it 'should advise the user that an email will be sent' do
-    response.should have_text(/an email will be sent to this address/)
+  it 'advises the user that an email will be sent' do
+    render
+    rendered.should contain('an email will be sent to this address')
   end
 
-  it 'should show a link back to the login form' do
-    response.should have_tag('a[href=?]', login_path)
+  it 'shows a link back to the login form' do
+    render
+    rendered.should have_selector('a', :href => login_path)
   end
 
-  describe 'with an invalid record' do
+  context 'with an invalid record' do
     before do
-      assigns[:reset] = new_reset :user => nil
+      @reset = Reset.make :user => nil
     end
 
-    it 'should highlight errors'
-  end
-end
-
-# this is a separate block because we need to set up a mock before rendering
-describe '/resets/new.html.haml page title' do
-  it 'should set the page title' do
-    assigns[:reset] = create_reset
-    template.should_receive(:page_title).with('Reset your passphrase')
-    render '/resets/new'
+    it 'highlights errors'
   end
 end
