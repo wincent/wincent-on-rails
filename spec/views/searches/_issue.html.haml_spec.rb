@@ -7,7 +7,7 @@ describe 'searches/_issue' do
   end
 
   def do_render
-    render :partial => 'searches/issue', :locals => { :model => @issue, :result_number => @result_number }
+    render 'searches/issue', :model => @issue, :result_number => @result_number
   end
 
   it 'shows the result number' do
