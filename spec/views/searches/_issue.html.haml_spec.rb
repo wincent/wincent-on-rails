@@ -24,6 +24,7 @@ describe 'searches/_issue' do
   it 'escapes HTML special characters in the issue summary' do
     @issue = Issue.make! :summary => '<em>foo</em>'
     do_render
+    rendered.should match('&lt;em&gt;foo&lt;/em&gt')
     rendered.should_not have_selector('em', :content => 'foo')
   end
 
