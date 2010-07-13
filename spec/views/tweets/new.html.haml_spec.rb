@@ -11,7 +11,7 @@ describe 'tweets/new.html.haml' do
   end
 
   it 'displays error messages' do
-    stub.proxy(view).render.with_any_args
+    stub.proxy(view).render
     mock(view).render('shared/error_messages', anything)
     render
   end
@@ -32,7 +32,7 @@ describe 'tweets/new.html.haml' do
   end
 
   it 'renders the preview partial' do
-    stub.proxy(view).render.with_any_args
+    stub.proxy(view).render
     mock(view).render('preview.html.haml')
     render
   end
