@@ -1,17 +1,16 @@
 require File.expand_path('../../spec_helper', File.dirname(__FILE__))
 
-describe '/resets/edit' do
-  include ResetsHelper
-
+describe 'resets/edit' do
   before do
-    assigns[:reset] = @reset = create_reset
-    render '/resets/edit'
+    @reset = Reset.make!
+    render
   end
 
-  it 'should render edit form' do
-    response.should have_tag("form[action=#{reset_path(@reset)}][method=post]") do
-      with_tag('input#reset_email_address[name=?]', 'reset[email_address]')
-      #with_tag('input#reset_passphrase[name=?]', 'reset[passphrase]') # type password
+  it 'renders edit form' do
+    rendered.should have_selector("form[method=post]", :action => reset_path(@reset)) do |form|
+      form.should have_selector('input#reset_email_address', :name => 'reset[email_address]', :type => 'text')
+      form.should have_selector('input#passphrase', :name => 'passphrase', :type => 'password')
+      form.should have_selector('input#passphrase_confirmation', :name => 'passphrase_confirmation', :type => 'password')
     end
   end
 end
