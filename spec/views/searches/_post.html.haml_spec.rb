@@ -1,56 +1,55 @@
 require File.expand_path('../../spec_helper', File.dirname(__FILE__))
 
-describe '/search/_post' do
+describe 'searches/_post' do
   before do
-    @post           = create_post
+    @post           = Post.make!
     @result_number  = 47
   end
 
   def do_render
-    render :partial => '/search/post', :locals => { :model => @post, :result_number => @result_number }
+    render 'searches/post', :model => @post, :result_number => @result_number
   end
 
-  it 'should show the result number' do
+  it 'shows the result number' do
     do_render
-    response.should have_text(/#{@result_number.to_s}/)
+    rendered.should contain(@result_number.to_s)
   end
 
-  it 'should use the post title as link text' do
+  it 'uses the post title as link text' do
     do_render
-    response.should have_tag('a', @post.title)
+    rendered.should have_selector('a', :content => @post.title)
   end
 
   # was a bug
-  it 'should escape HTML special characters in the post title' do
-    @post = create_post :title => '<em>foo</em>'
+  it 'escapes HTML special characters in the post title' do
+    @post = Post.make! :title => '<em>foo</em>'
     do_render
-    response.should_not have_text(%r{<em>foo</em>})
+    rendered.should match('&lt;em&gt;foo&lt;/em&gt;')
+    rendered.should_not have_selector('em', :content => 'foo')
   end
 
-  it 'should link to the post' do
+  it 'links to the post' do
     do_render
-    response.should have_tag('a[href=?]', post_path(@post))
+    rendered.should have_selector('a', :href => post_path(@post))
   end
 
-  it 'should show the timeinfo for the post' do
-    template.should_receive(:timeinfo).with(@post)
-    do_render
-  end
-
-  it 'should get the post excerpt' do
-    @post.should_receive(:excerpt).and_return('foo')
+  it 'shows the timeinfo for the post' do
+    mock(view).timeinfo(@post)
     do_render
   end
 
-  it 'should truncate the post excerpt to 240 characters' do
-    template.should_receive(:truncate).with(@post.excerpt, :length => 240, :safe => true).and_return('foo')
+  it 'gets the post excerpt' do
+    mock(@post).excerpt
     do_render
   end
 
-  it 'should pass the truncated post excerpt through the wikitext translator' do
-    excerpt = 'foo'
-    excerpt.should_receive(:w).and_return('foo')
-    template.stub!(:truncate).and_return(excerpt)
+  it 'truncates the post excerpt to 240 characters' do
+    mock(view).truncate(@post.excerpt, :length => 240, :safe => true)
+    do_render
+  end
+
+  it 'passes the truncated post excerpt through the wikitext translator' do
+    stub(view).truncate { mock('excerpt').w :base_heading_level => 2 }
     do_render
   end
 end
