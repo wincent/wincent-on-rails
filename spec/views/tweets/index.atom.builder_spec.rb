@@ -1,71 +1,65 @@
 require File.expand_path('../../spec_helper', File.dirname(__FILE__))
 require 'hpricot'
 
-describe '/tweets/index.atom.builder' do
-  include TweetsHelper
-
-  def do_render
-    assigns[:tweets] = @tweets
-    render '/tweets/index.atom.builder'
-  end
-
+describe 'tweets/index.atom.builder' do
   before do
     @tweets = [
-      create_tweet(:body => "''foo''"),
-      create_tweet(:body => "'''bar'''")
+      Tweet.make!(:body => "''foo''"),
+      Tweet.make!(:body => "'''bar'''")
     ]
+    assigns[:tweets] = @tweets
   end
 
   # was a bug
-  it 'should handle no tweets' do
+  it 'handles no tweets' do
     @tweets = []
-    lambda { do_render }.should_not raise_error
+    lambda { render }.should_not raise_error
   end
 
-  it 'should handle some tweets' do
-    lambda { do_render }.should_not raise_error
+  it 'handles some tweets' do
+    lambda { render }.should_not raise_error
   end
 
-  it 'should use the custom Atom feed helper' do
-    template.should_receive(:custom_atom_feed)
-    do_render
+  it 'uses the custom Atom feed helper' do
+    mock(view).custom_atom_feed
+    render
   end
 
-  it 'should use the "Rails Epoch" as an update date if there are no tweets' do
+  it 'uses the "Rails Epoch" as an update date if there are no tweets' do
     @tweets = []
-    do_render
-    doc = Hpricot.XML(response.body)
+    render
+    doc = Hpricot.XML(rendered)
     doc.at('feed').at('updated').innerHTML.should == RAILS_EPOCH.xmlschema
   end
 
-  it 'should use the first tweet for the update date if available' do
-    do_render
-    doc = Hpricot.XML(response.body)
+  it 'uses the first tweet for the update date if available' do
+    render
+    doc = Hpricot.XML(rendered)
     doc.at('feed').at('updated').innerHTML.should == @tweets[0].updated_at.xmlschema
   end
 
-  it 'should use the administrator as the feed author' do
-    do_render
-    doc = Hpricot.XML(response.body)
+  it 'uses the administrator as the feed author' do
+    render
+    doc = Hpricot.XML(rendered)
     author = doc.at('feed').at('author')
-    author.at('name').innerHTML.should == 'Wincent Colaiuta'
+    author.at('name').innerHTML.should == APP_CONFIG['admin_name']
     author.at('email').innerHTML.should == APP_CONFIG['admin_email']
   end
 
-  it 'should use the "tweet_title" helper to produce the entry titles' do
-    template.should_receive(:tweet_title).with(@tweets[0]).and_return('atom title 0')
-    template.should_receive(:tweet_title).with(@tweets[1]).and_return('atom title 1')
-    do_render
-    doc = Hpricot.XML(response.body)
+  it 'uses the "tweet_title" helper to produce the entry titles' do
+    mock(view).tweet_title(@tweets[0]) { 'atom title 0' }
+    mock(view).tweet_title(@tweets[1]) { 'atom title 1' }
+    render
+    doc = Hpricot.XML(rendered)
     entry = doc.at('feed').at('entry')
     entry.at('title').innerHTML.should == 'atom title 0'
     entry = entry.next_sibling
     entry.at('title').innerHTML.should == 'atom title 1'
   end
 
-  it 'should include the tweet text as escaped HTML' do
-    do_render
-    doc = Hpricot.XML(response.body)
+  it 'includes the tweet text as escaped HTML' do
+    render
+    doc = Hpricot.XML(rendered)
     entry = doc.at('feed').at('entry')
     entry.at('content').innerHTML.should == "&lt;p&gt;&lt;em&gt;foo&lt;/em&gt;&lt;/p&gt;\n"
     entry = entry.next_sibling
