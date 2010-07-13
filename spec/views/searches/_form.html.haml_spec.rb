@@ -1,36 +1,26 @@
 require File.expand_path('../../spec_helper', File.dirname(__FILE__))
 
-describe '/search/_form' do
+describe 'searches/_form' do
   def do_render
-    render :partial => '/search/form'
+    render
+    #render '/search/form'
   end
 
-  it 'should use the "search" style sheet' do
-    template.should_receive(:stylesheet_link_tag).with('search')
+  it 'has an "issue tracker search" link' do
     do_render
+    rendered.should have_selector('div.links a', :href => search_issues_path)
   end
 
-  it 'should have an "issue tracker search" link' do
+  it 'has an "tag search" link' do
     do_render
-    response.should have_tag('div.links') do
-      with_tag 'a[href=?]', issues_search_path
-    end
+    rendered.should have_selector('div.links a', :href => search_tags_path)
   end
 
-  it 'should have an "tag search" link' do
+  it 'shows the search form' do
     do_render
-    response.should have_tag('div.links') do
-      with_tag 'a[href=?]', search_tags_path
-    end
-  end
-
-  it 'should show the search form' do
-    do_render
-    response.should have_tag('form[action=?]', search_index_path) do
-      with_tag 'input[name=?]', 'query'
-      with_tag 'input[type=?]', 'text'
-      with_tag 'input[value=?]', 'Search'
-      with_tag 'input[type=?]', 'submit'
+    rendered.should have_selector('form', :action => searches_path) do |form|
+      form.should have_selector('input', :name => 'query', :type => 'text')
+      form.should have_selector('input', :value => 'Search', :type => 'submit')
     end
   end
 end
