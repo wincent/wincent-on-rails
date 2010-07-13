@@ -86,8 +86,8 @@ module ActionView
             url_options[:order] = 'desc'
           end
         end
-        haml_tag :th, css_class_options do
-          haml_concat link_to(display_name, url_for(url_options), tooltip)
+        content_tag :th, css_class_options do
+          link_to(display_name, url_for(url_options), tooltip)
         end
       end
     end # module SortableHelper

@@ -12,10 +12,10 @@
 %table
   %thead
     %tr
-      -sortable_header_cell :id, 'Id'
-      -sortable_header_cell :uri, 'URI'
-      -sortable_header_cell :permalink, 'Permalink'
-      -sortable_header_cell :click_count, 'Click count'
+      =sortable_header_cell :id, 'Id'
+      =sortable_header_cell :uri, 'URI'
+      =sortable_header_cell :permalink, 'Permalink'
+      =sortable_header_cell :click_count, 'Click count'
       %th Actions
   -unless @links.empty?
     %tbody
