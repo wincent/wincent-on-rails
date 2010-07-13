@@ -77,9 +77,7 @@ describe 'searches/create' do
 
   context 'with multiple pages of search results' do
     before do
-      models = []
-      60.times { models << Issue.make! }
-      @models = models
+      @models = Array.new(60) { Issue.make! }
       @offset = 20
       # RSpec 2 BUG: undefined local variable or method `params'
       #   http://github.com/rspec/rspec-rails/issues/126
