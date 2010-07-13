@@ -6,7 +6,7 @@ describe 'tweets/index.html.haml' do
     assigns[:paginator] = @paginator
     assigns[:tweets] = [ Tweet.make!, Tweet.make! ]
     stub(view).render('tweets.html.haml')
-    stub.proxy(view).render({:template => 'tweets/index.html.haml'}, {})
+    stub.proxy(view).render
   end
 
   it 'includes an Atom feed link' do
