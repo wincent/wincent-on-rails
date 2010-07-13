@@ -1,57 +1,56 @@
 require File.expand_path('../../spec_helper', File.dirname(__FILE__))
 
-describe '/search/_article' do
+describe 'searches/_article' do
   before do
-    @article        = create_article
+    @article        = Article.make!
     @result_number  = 47
   end
 
   def do_render
-    render :partial => '/search/article', :locals => { :model => @article, :result_number => @result_number }
+    render 'searches/article', :model => @article, :result_number => @result_number
   end
 
-  it 'should show the result number' do
+  it 'shows the result number' do
     do_render
-    response.should have_text(/#{@result_number.to_s}/)
+    rendered.should contain(@result_number.to_s)
   end
 
-  it 'should use the article title as link text' do
+  it 'uses the article title as link text' do
     do_render
-    response.should have_tag('a', @article.title)
+    rendered.should have_selector('a', :content => @article.title)
   end
 
   # was a bug
-  it 'should escape HTML special characters in the article title' do
+  it 'escapes HTML special characters in the article title' do
     # we don't put </em> in the title because slashes are not allowed
-    @article = create_article :title => '<em>foo'
+    @article = Article.make! :title => '<em>foo'
     do_render
-    response.should_not have_text(%r{<em>foo})
+    rendered.should match('&lt;em&gt;foo')
+    rendered.should_not match('<em>foo')
   end
 
-  it 'should link to the article' do
+  it 'links to the article' do
     do_render
-    response.should have_tag('a[href=?]', article_path(@article))
+    rendered.should have_selector('a', :href => article_path(@article))
   end
 
-  it 'should show the timeinfo for the article' do
-    template.should_receive(:timeinfo).with(@article)
-    do_render
-  end
-
-  it 'should get the article body' do
-    @article.should_receive(:body).and_return('foo')
+  it 'shows the timeinfo for the article' do
+    mock(view).timeinfo(@article)
     do_render
   end
 
-  it 'should truncate the article body to 240 characters' do
-    template.should_receive(:truncate).with(@article.body, :length => 240, :safe => true).and_return('foo')
+  it 'gets the article body' do
+    mock(@article).body
     do_render
   end
 
-  it 'should pass the truncated article body through the wikitext translator' do
-    body = 'foo'
-    body.should_receive(:w).and_return('foo')
-    template.stub!(:truncate).and_return(body)
+  it 'truncates the article body to 240 characters' do
+    mock(view).truncate(@article.body, :length => 240, :safe => true)
+    do_render
+  end
+
+  it 'passes the truncated article body through the wikitext translator' do
+    stub(view).truncate { mock('body').w :base_heading_level => 2 }
     do_render
   end
 end
