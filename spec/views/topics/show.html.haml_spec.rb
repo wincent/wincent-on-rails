@@ -1,26 +1,28 @@
 require File.expand_path('../../spec_helper', File.dirname(__FILE__))
 
-describe '/topics/show' do
-  include TopicsHelper
+describe 'topics/show.html.haml' do
 
   before do
-    @title              = FR::random_string
-    assigns[:topic]     = @topic = create_topic({ :title => @title })
-    assigns[:forum]     = @forum = @topic.forum
-    assigns[:comments]  = []
-    assigns[:comment]   = @topic.comments.build
-    render '/topics/show'
+    @title = Sham.random
+    @topic = Topic.make!({ :title => @title })
+    @forum = @topic.forum
+    @comments = []
+    @comment = @topic.comments.build
+
+    # RSpec BUG: helper methods declared with "helper_method" in controllers
+    # are not made available automatically; see:
+    #   http://github.com/rspec/rspec-rails/issues/119
+    stub(view).admin? { false }
+    stub(view).logged_in? { false }
   end
 
-  it 'should show breadcrumbs' do
-    response.should have_tag('div#breadcrumbs', /#{@title}/) do
-      with_tag 'a[href=?]', root_path
-      with_tag 'a[href=?]', forums_path
-      with_tag 'a[href=?]', forum_path(@forum)
-    end
+  it 'shows breadcrumbs' do
+    mock(view).breadcrumbs.with_any_args
+    render
   end
 
-  it 'should show the topic title as a major heading' do
-    response.should have_tag('h1.major', /#{@title}/)
+  it 'shows the topic title as a major heading' do
+    render
+    rendered.should have_selector('h1.major', :content => @title)
   end
 end
