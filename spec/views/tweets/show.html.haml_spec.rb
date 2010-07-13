@@ -1,8 +1,6 @@
 require File.expand_path('../../spec_helper', File.dirname(__FILE__))
 
 describe 'tweets/show.html.haml' do
-  helper ApplicationHelper, TweetsHelper
-
   before do
     @tweet = Tweet.make! :body => "''hello''"
     @comments = @tweet.comments.published
