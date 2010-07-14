@@ -36,7 +36,7 @@ module ActionController
 
     # Intended for use as a before_filter in the ApplicationController for all actions.
     def login_before
-      current_user = login_with_cookie or login_with_http_basic
+      self.current_user = self.login_with_cookie or self.login_with_http_basic
       true
     end
 
@@ -109,7 +109,7 @@ module ActionController
     # this is intended to be called from the SessionsController,
     # whereras the current_user= method is suitable for being called from a before filter
     def set_current_user=(user)
-      current_user = user
+      self.current_user = user
       if user
         user.session_key      = self.class.random_session_key
         user.session_expiry   = DEFAULT_SESSION_EXPIRY.days.from_now
