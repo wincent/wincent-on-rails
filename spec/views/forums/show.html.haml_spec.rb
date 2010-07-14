@@ -1,23 +1,19 @@
 require File.expand_path('../../spec_helper', File.dirname(__FILE__))
 
-describe '/forums/show' do
-  include ForumsHelper
-
+describe 'forums/show' do
   before do
-    @name = FR::random_string
-    assigns[:forum]   = create_forum :name => @name
-    assigns[:topics]  = []
-    render '/forums/show'
+    @name = Sham.random
+    @forum = Forum.make! :name => @name
+    @topics = []
   end
 
-  it 'should show breadcrumbs' do
-    response.should have_tag('div#breadcrumbs', /#{@name}/) do
-      with_tag 'a[href=?]', root_path
-      with_tag 'a[href=?]', forums_path
-    end
+  it 'has breadcrumbs' do
+    mock(view).breadcrumbs.with_any_args
+    render
   end
 
-  it 'should show the forum name as a major heading' do
-    response.should have_tag('h1.major', /#{@name}/)
+  it 'shows the forum name as a major heading' do
+    render
+    rendered.should have_selector('h1.major', :content => @name)
   end
 end
