@@ -1,11 +1,8 @@
 require File.expand_path('../../spec_helper', File.dirname(__FILE__))
 
-describe '/attachments/new' do
-  before do
-    render 'attachments/new'
-  end
-
-  it 'should say "Upload"' do
-    response.should have_text(/Upload/)
+describe 'attachments/new' do
+  it 'says "Upload"' do
+    render
+    rendered.should contain(/Upload/)
   end
 end
