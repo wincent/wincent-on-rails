@@ -32,7 +32,9 @@ platforms :ruby_18 do
 
     # Bundler BUG: these are only for JRuby, but we must still declare them
     # here too if we want them to remain installed
-    gem 'celerity',       '>= 0.8.0.beta.1', # :git => 'git://github.com/jarib/celerity.git'
+    # See: http://github.com/carlhuda/bundler/issues/461
+    gem 'celerity',       # :git => 'git://github.com/jarib/celerity.git',
+                          '>= 0.8.0.beta.1',
                           :require => nil
     gem 'jruby-openssl',  :require => nil
   end
@@ -42,7 +44,9 @@ platforms :jruby do
   group :test do
     # Bundler BUG: must ':require => nil' here too, otherwise Bundler will
     # try to require them even when running under MRI
-    gem 'celerity',       '>= 0.8.0.beta.1', # :git => 'git://github.com/jarib/celerity.git'
+    # See: http://github.com/carlhuda/bundler/issues/461
+    gem 'celerity',       # :git => 'git://github.com/jarib/celerity.git',
+                          '>= 0.8.0.beta.1',
                           :require => nil
     gem 'jruby-openssl',  :require => nil
   end
