@@ -1,22 +1,14 @@
 require File.expand_path('../../spec_helper', File.dirname(__FILE__))
 
-describe '/issues/_issues' do
-  include IssuesHelper
-
+describe 'issues/_issues' do
   before do
-    assigns[:issues] = [create_issue, create_issue, create_issue]
+    stub(view).sortable_header_cell.with_any_args
+    @issues = Array.new(3) { Issue.make! }
   end
 
-  def do_render
-    pending # url_for in lib/sortable.rb raises routing error
-    # :controller => 'issues', :action => 'issues' (doesn't exist)
-    # and suppresses :protocol => 'https'
-    render :partial => '/issues/issues'
-  end
-
-  it 'should show pagination at top and bottom of the page' do
-    do_render
-    response.should have_tag('div.pagination', 2)
+  it 'shows pagination at top and bottom of the page' do
+    render
+    rendered.should have_selector('div.pagination', :count => 2)
   end
 
   it 'should have a sortable header cell for the "kind" column'
