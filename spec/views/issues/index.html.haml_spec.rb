@@ -1,64 +1,50 @@
 require File.expand_path('../../spec_helper', File.dirname(__FILE__))
 
-describe '/issues/index' do
-  include IssuesHelper
-
+describe 'issues/index' do
   before do
-    assigns[:issues] = [create_issue]
+    stub(view).render 'issues/search/form'
+    stub(view).render 'issues/issues'
+    stub.proxy(view).render
+    @issues = [Issue.make!]
   end
 
-  def do_render
-    pending # url_for in lib/sortable.rb raises routing error
-    # :controller => 'issues', :action => 'index'
-    # (ok, but :protocol => 'https' is suppressed, which causes failure)
-    render '/issues/index'
+  it 'has an "all issues" link' do
+    render
+    rendered.should have_selector('div.links a', :href => issues_path)
   end
 
-  it 'should have an "all issues" link' do
-    do_render
-    response.should have_tag('div.links') do
-      with_tag 'a[href=?]', issues_path
-    end
+  it 'has a search link' do
+    render
+    rendered.should have_selector('div.links a', :content => 'search')
   end
 
-  it 'should have a search link' do
-    do_render
-    response.should have_tag('div.links') do
-      with_tag 'a', 'search' # this is a complex JS link, so won't try too hard to test the actual onclick attribute
-    end
+  it 'hides the search div upon initial display' do
+    render
+    rendered.should have_selector('div#issue_search', :style => 'display:none;')
   end
 
-  it 'should hide the search div upon initial display' do
-    do_render
-    response.should have_tag('div#issue_search[style=?]', /display:none;/)
+  it 'has a "new issue" link' do
+    render
+    rendered.should have_selector('div.links a', :href => new_issue_path)
   end
 
-  it 'should have a "new issue" link' do
-    do_render
-    response.should have_tag('div.links') do
-      with_tag 'a[href=?]', new_issue_path
-    end
+  it 'has a "support overview" link' do
+    render
+    rendered.should have_selector('div.links a', :href => support_path)
   end
 
-  it 'should have a "support overview" link' do
-    do_render
-    response.should have_tag('div.links') do
-      with_tag 'a[href=?]', support_path
-    end
+  it 'renders the search form partial' do
+    mock(view).render 'issues/search/form'
+    render
   end
 
-  it 'should render the search form partial' do
-    template.should_receive :render, :partial => 'issues/search'
-    do_render
+  it 'shows the scope info' do
+    mock(view).scope_info
+    render
   end
 
-  it 'should show the scope info' do
-    template.should_receive(:scope_info)
-    do_render
-  end
-
-  it 'should render the issues list partial' do
-    template.should_receive :render, :partial => 'issues/issues'
-    do_render
+  it 'renders the issues list partial' do
+    mock(view).render 'issues/issues'
+    render
   end
 end
