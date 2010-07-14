@@ -1,62 +1,50 @@
 require File.expand_path('../../spec_helper', File.dirname(__FILE__))
 
-describe '/comments/edit' do
-  include CommentsHelper
-
+describe 'comments/edit' do
   before do
-    assigns[:comment] = @comment = create_comment
+    @comment = Comment.make!
   end
 
-  def do_render
-    render '/comments/edit'
+  it 'has a link back to the commentable model' do
+    mock(view).link_to_commentable @comment.commentable
+    render
   end
 
-  it 'should have a link back to the commentable model' do
-    template.should_receive(:link_to_commentable).with(@comment.commentable)
-    do_render
+  it 'has a div for the comment' do
+    render
+    rendered.should have_selector("\#comment_#{@comment.id}")
   end
 
-  it 'should have a div for the comment' do
-    do_render
-    response.should have_tag("\#comment_#{@comment.id}")
+  it 'has a show button' do
+    render
+    rendered.should have_selector('.links a', :href => comment_path(@comment))
   end
 
-  it 'should have a show button' do
-    do_render
-    response.should have_tag('.links') do
-      with_tag 'a[href=?]', comment_path(@comment)
-    end
+  it 'has a destroy button' do
+    mock(view).button_to_destroy_comment @comment
+    render
   end
 
-  it 'should have a destroy button' do
-    template.should_receive(:button_to_destroy_comment).with(@comment)
-    do_render
-  end
-
-  it 'should have a ham button if the comment is awaiting moderation' do
-    assigns[:comment] = @comment = create_comment(:awaiting_moderation => true)
-    template.should_receive(:button_to_moderate_comment_as_ham).with(@comment)
-    do_render
+  it 'has a ham button if the comment is awaiting moderation' do
+    @comment = Comment.make! :awaiting_moderation => true
+    mock(view).button_to_moderate_comment_as_ham @comment
+    render
   end
 
   # was a bug
-  it 'should not have a ham button if the comment is not awaiting moderation' do
-    assigns[:comment] = @comment = create_comment(:awaiting_moderation => false)
-    template.should_not_receive(:button_to_moderate_comment_as_ham)
-    do_render
+  it 'does not have a ham button if the comment is not awaiting moderation' do
+    @comment = Comment.make! :awaiting_moderation => false
+    do_not_allow(view).button_to_moderate_comment_as_ham
+    render
   end
 
-  it 'should have a link back to the list of comments awaiting moderation' do
-    do_render
-    response.should have_tag('.links') do
-      with_tag 'a[href=?]', comments_path
-    end
+  it 'has a link back to the list of comments awaiting moderation' do
+    render
+    rendered.should have_selector('.links a', :href => comments_path)
   end
 
-  it 'should have a link back to the administrator dashboard' do
-    do_render
-    response.should have_tag('.links') do
-      with_tag 'a[href=?]', admin_dashboard_path
-    end
+  it 'has a link back to the administrator dashboard' do
+    render
+    rendered.should have_selector('.links a', :href => admin_dashboard_path)
   end
 end
