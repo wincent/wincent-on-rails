@@ -1,18 +1,14 @@
 require File.expand_path('../../spec_helper', File.dirname(__FILE__))
 
-describe '/forums/index' do
-  include ForumsHelper
-
+describe 'forums/index' do
   before do
     # use Forum.find_all here because it sets up "last_active_at" attributes for us
-    3.times { create_forum }
-    assigns[:forums] = Forum.find_all
-    render '/forums/index'
+    3.times { Forum.make! }
+    @forums = Forum.find_all
   end
 
-  it 'should show breadcrumbs' do
-    response.should have_tag('div#breadcrumbs', /Forums/) do
-      with_tag 'a[href=?]', root_path
-    end
+  it 'has breadcrumbs' do
+    mock(view).breadcrumbs.with_any_args
+    render
   end
 end
