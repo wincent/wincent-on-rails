@@ -36,7 +36,7 @@ module ActionController
 
     # Intended for use as a before_filter in the ApplicationController for all actions.
     def login_before
-      self.current_user = self.login_with_cookie or self.login_with_http_basic
+      current_user = login_with_cookie or login_with_http_basic
       true
     end
 
@@ -45,7 +45,7 @@ module ActionController
     # explicit use within controller actions (the block is only
     # executed if the user is admin).
     def require_admin &block
-      if self.admin?
+      if admin?
         yield if block_given?
       else
         redirect_to_login 'The requested resource requires administrator privileges'
@@ -54,7 +54,7 @@ module ActionController
 
     # before_filter: requires a logged-in user, but doesn't need the user to be verified yet.
     def require_user
-      unless self.logged_in?
+      unless logged_in?
         redirect_to_login 'You must be logged in to access the requested resource'
       end
       true
@@ -109,7 +109,7 @@ module ActionController
     # this is intended to be called from the SessionsController,
     # whereras the current_user= method is suitable for being called from a before filter
     def set_current_user=(user)
-      self.current_user = user
+      current_user = user
       if user
         user.session_key      = self.class.random_session_key
         user.session_expiry   = DEFAULT_SESSION_EXPIRY.days.from_now
@@ -122,13 +122,13 @@ module ActionController
       end
     end
 
-    def current_user=(user)
+    def current_user= user
       if user
         # don't trust Rails' session management; manually manage the relevant cookies here
         # (Rails sets a session key but doesn't tie it to the user id, making session fixation attacks a little easier)
         @current_user = user
       else
-        if user = self.current_user
+        if user = current_user
           user.update_attribute(:session_key, nil)
         end
         @current_user = nil
@@ -142,15 +142,15 @@ module ActionController
     end
 
     def logged_in_and_verified?
-      self.logged_in? && self.current_user.verified?
+      logged_in? && current_user.verified?
     end
 
     def logged_in?
-      not self.current_user.nil?
+      not current_user.nil?
     end
 
     def admin?
-      self.logged_in? && self.current_user.superuser?
+      logged_in? && current_user.superuser?
     end
 
   end # module Authentication
