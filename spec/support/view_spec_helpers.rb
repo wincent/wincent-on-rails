@@ -18,5 +18,15 @@ module ViewSpecHelpers
 
   included do
     helper *_default_helpers
+
+    @@helper_hack_done = false
+    before do
+      if not @@helper_hack_done
+        view.instance_eval do
+          self.class.send(:include, @controller._helpers)
+        end
+        @@helper_hack_done = true
+      end
+    end
   end
 end # module ViewSpecHelpers

@@ -5,13 +5,6 @@ describe 'issues/show' do
     @issue    = Issue.make!
     @comments = []
     @comment  = Comment.new
-    # BUG: http://github.com/rspec/rspec-rails/issues/119
-    # this really is a pretty horrible kludge, getting a fix is a very high
-    # priority
-    stub(view).admin? { false }
-    stub(view).logged_in? { true }
-    user = User.make!
-    stub(view).current_user { user }
   end
 
   it 'should show breadcrumbs' do
