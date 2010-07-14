@@ -1,32 +1,31 @@
 require File.expand_path('../../spec_helper', File.dirname(__FILE__))
 
-describe '/issues/new viewed as anonymous user' do
-  include IssuesHelper
+describe 'issues/new' do
+  context 'viewed as anonymous user' do
+    before do
+      stub(view).logged_in? { false }
+      @issue = Issue.make
+      render
+    end
 
-  before do
-    template.should_receive(:logged_in?).at_least(1).and_return(false)
-    assigns[:issue] = @issue = new_issue
-    render '/issues/new'
+    # was a bug, fixed in 3bfe4d4
+    it 'points out that anonymous tickets must be public' do
+      rendered.should contain(/ticket must be public because you are posting anonymously/)
+    end
   end
 
-  # was a bug, fixed in 3bfe4d4
-  it 'should point out that anonymous tickets must be public' do
-    response.should have_text(/ticket must be public because you are posting anonymously/)
-  end
-end
+  context 'viewed as logged in user' do
+    before do
+      user = User.make!
+      stub(view).current_user { user }
+      stub(view).logged_in? { true }
+      @issue = Issue.make
+      render
+    end
 
-describe '/issues/new viewed as logged in user' do
-  include IssuesHelper
-
-  before do
-    template.should_receive(:logged_in?).at_least(1).and_return(true)
-    template.stub!(:current_user).and_return(create_user)
-    assigns[:issue] = @issue = new_issue
-    render '/issues/new'
-  end
-
-  # was a bug, fixed in 3bfe4d4
-  it 'should not point out that anonymous tickets must be public' do
-    response.should_not have_text(/ticket must be public because you are posting anonymously/)
+    # was a bug, fixed in 3bfe4d4
+    it 'does not point out that anonymous tickets must be public' do
+      rendered.should_not contain(/ticket must be public because you are posting anonymously/)
+    end
   end
 end
