@@ -40,7 +40,7 @@ class User < ActiveRecord::Base
   after_save                :clear_passphrase
 
   # pull in User.digest and User.random_salt from Authentication module
-  extend ActiveRecord::Authentication::ClassMethods
+  include ActiveRecord::Authentication
 
   def self.find_by_email email
     return nil if email.blank?

@@ -1,7 +1,8 @@
 require 'digest/sha2'
 
 module AuthenticationUtilities
-  # Returns a psuedo-random base64-encoded string of length, suitable for storage in a database.
+  # Returns a psuedo-random base64-encoded string of length, suitable for
+  # storage in a database.
   def self.random_base64_string(length)
     blocks              = length / 4          # base64 outputs in blocks of 4 bytes
     source_chars_needed = blocks * 3          # 3 source bytes needed for each output block
@@ -157,6 +158,8 @@ end # module ActionController
 
 module ActiveRecord
   module Authentication
+    extend ActiveSupport::Concern
+
     module ClassMethods
       PASSPHRASE_CHARS        = 'abcdefghjkmnpqrstuvwxyz23456789'.split(//)
       PASSPHRASE_CHARS_LENGTH = PASSPHRASE_CHARS.length
