@@ -2,7 +2,9 @@ require File.expand_path('../../spec_helper', File.dirname(__FILE__))
 
 describe 'issues/_issues' do
   before do
-    stub(view).sortable_header_cell.with_any_args
+    # needed for sortable_header_cell because it calls url_for
+    controller.params[:controller] = 'issues'
+    controller.params[:action] = 'index'
     @issues = Array.new(4) { Issue.make! }
   end
 
@@ -12,33 +14,45 @@ describe 'issues/_issues' do
   end
 
   it 'has a sortable header cell for the "id" column' do
-    mock(view).sortable_header_cell :id, '#'
     render
+    rendered.should have_selector('th a', :content => '#') do |link|
+      link.attribute('href').value.should match('sort=id')
+    end
   end
 
   it 'has a sortable header cell for the "summary" column' do
-    mock(view).sortable_header_cell :summary, 'Summary'
     render
+    rendered.should have_selector('th a', :content => 'Summary') do |link|
+      link.attribute('href').value.should match('sort=summary')
+    end
   end
 
   it 'has a sortable header cell for the "product" column' do
-    mock(view).sortable_header_cell :product_id, 'Product'
     render
+    rendered.should have_selector('th a', :content => 'Product') do |link|
+      link.attribute('href').value.should match('sort=product_id')
+    end
   end
 
   it 'has a sortable header cell for the "status" column' do
-    mock(view).sortable_header_cell :status, 'Status'
     render
+    rendered.should have_selector('th a', :content => 'Status') do |link|
+      link.attribute('href').value.should match('sort=status')
+    end
   end
 
   it 'has a sortable header cell for the "kind" column' do
-    mock(view).sortable_header_cell :kind, 'Kind'
     render
+    rendered.should have_selector('th a', :content => 'Kind') do |link|
+      link.attribute('href').value.should match('sort=kind')
+    end
   end
 
   it 'has a sortable header cell for the "when" column' do
-    mock(view).sortable_header_cell :updated_at, 'When'
     render
+    rendered.should have_selector('th a', :content => 'When') do |link|
+      link.attribute('href').value.should match('sort=updated_at')
+    end
   end
 
   it 'shows the kind string for each issue'
