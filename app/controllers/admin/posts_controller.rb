@@ -8,7 +8,7 @@ class Admin::PostsController < ApplicationController
 
   def index
     # TODO: combine sortability with pagination?
-    @posts = Post.find(:all, sort_options)
+    @posts = Post.scoped.order arel_sort_options
   end
 
   def show
