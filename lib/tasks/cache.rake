@@ -9,7 +9,7 @@ namespace :cache do
 end
 
 def sweepers
-  Dir["#{RAILS_ROOT}/app/sweepers/*.rb"].collect do |model|
+  Dir[Rails.root + 'app/sweepers/*.rb'].collect do |model|
     File.basename(model).sub(/\.rb\z/, '').classify.constantize
   end
 end
