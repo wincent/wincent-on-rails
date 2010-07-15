@@ -1,9 +1,11 @@
 require 'digest/sha2'
 
+# General utility methods intended for use from within both models and
+# controllers.
 module AuthenticationUtilities
-  # Returns a psuedo-random base64-encoded string of length, suitable for
-  # storage in a database.
-  def self.random_base64_string(length)
+  # Return a psuedo-random base64-encoded string of +length+, suitable for
+  # storage in a database or cookie.
+  def self.random_base64_string length
     blocks              = length / 4          # base64 outputs in blocks of 4 bytes
     source_chars_needed = blocks * 3          # 3 source bytes needed for each output block
     overflow            = length % 4          # extra bytes needed after last full block
@@ -23,10 +25,10 @@ module ActionController
       helper_method :current_user
     end
 
-
   protected
 
-    # Intended for use as a before_filter in the ApplicationController for all actions.
+    # Intended for use as a before_filter in the ApplicationController for all
+    # actions.
     def login_before
       self.current_user = self.login_with_cookie or self.login_with_http_basic
       true
