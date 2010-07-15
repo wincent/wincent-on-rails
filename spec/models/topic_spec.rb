@@ -354,15 +354,12 @@ describe Topic, 'send_new_topic_alert callback' do
   end
 
   it 'should deliver a new topic alert for normal user topics' do
-    # BUG: stub! doesn't work, our mock is returning nil
-    # see: http://github.com/btakita/rr/issues/#issue/34
     mock(TopicMailer).new_topic_alert(anything).stub!.deliver
     @topic.save
   end
 
   it 'should deliver a new topic alert for anonymous topics' do
     topic = Topic.make :user => nil
-    # BUG: stub! doesn't work, our mock is returning nil
     mock(TopicMailer).new_topic_alert(anything).stub!.deliver
     topic.save
   end
@@ -374,7 +371,6 @@ describe Topic, 'send_new_topic_alert callback' do
   end
 
   it 'should rescue exceptions rather than dying' do
-    # BUG: doesn't raise
     stub(TopicMailer).new_topic_alert(anything) { raise 'fatal error!' }
     lambda { @topic.save }.should_not raise_error
   end

@@ -202,14 +202,12 @@ describe Issue, '"send_new_issue_alert" method' do
   end
 
   it 'should deliver a new issue alert for normal user issues' do
-    # BUG: stub! et al don't work on ActionMailer subclasses
     mock(IssueMailer).new_issue_alert(@issue).stub!.deliver
     @issue.save
   end
 
   it 'should deliver a new issue alert for anonymous issues' do
     issue = Issue.make :user => nil
-    # BUG: stub! et al don't work on ActionMailer subclasses
     mock(IssueMailer).new_issue_alert(issue).stub!.deliver
     issue.save
   end
@@ -221,7 +219,6 @@ describe Issue, '"send_new_issue_alert" method' do
   end
 
   it 'should rescue exceptions rather than dying' do
-    # BUG: stub! et al don't work on ActionMailer subclasses
     mock(IssueMailer).new_issue_alert(@issue) { raise 'fatal error!' }
     lambda { @issue.save }.should_not raise_error
   end
