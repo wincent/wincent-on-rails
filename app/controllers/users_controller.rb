@@ -7,7 +7,7 @@ class UsersController < ApplicationController
   acts_as_sortable  :by => [:id, :display_name, :login_name, :created_at]
 
   def index
-    @users = User.find :all, :include => :emails
+    @users = User.includes :emails
   end
 
   def new
@@ -90,6 +90,6 @@ private
   end
 
   def get_emails
-    @emails = @user.emails.find(:all, :conditions => 'deleted_at IS NULL')
+    @emails = @user.emails.where(:deleted_at => nil)
   end
 end
