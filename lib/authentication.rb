@@ -23,14 +23,6 @@ module ActionController
       helper_method :current_user
     end
 
-    module ClassMethods
-      SESSION_KEY_LENGTH = 32
-
-      # Generate a random string for use as a session key.
-      def random_session_key
-        AuthenticationUtilities::random_base64_string(SESSION_KEY_LENGTH)
-      end
-    end # module ClassMethods
 
   protected
 
@@ -97,6 +89,13 @@ module ActionController
     # TODO: allow user to adjust this in their preferences
     DEFAULT_SESSION_EXPIRY = 7 # days
 
+    SESSION_KEY_LENGTH = 32
+
+    # Generate a random string for use as a session key.
+    def random_session_key
+      AuthenticationUtilities::random_base64_string(SESSION_KEY_LENGTH)
+    end
+
     LOCALHOST_ADDRESSES = ['127.0.0.1', '::1'].freeze
 
     def local_request?
@@ -111,7 +110,7 @@ module ActionController
     def set_current_user=(user)
       self.current_user = user
       if user
-        user.session_key      = self.class.random_session_key
+        user.session_key      = random_session_key
         user.session_expiry   = DEFAULT_SESSION_EXPIRY.days.from_now
         user.save
         secure_cookies        = !local_request?
