@@ -7,7 +7,7 @@
   =render 'taggings'
 %div(style='clear:both;')
   %h2.major Search
-  -form_tag search_tags_path, :method => 'get' do
+  =form_tag search_tags_path, :method => 'get' do
     %span.annotation Find items which feature <em>all</em> of the specified tags
     %br
     =text_field_tag :q, params[:q], :size => 40
