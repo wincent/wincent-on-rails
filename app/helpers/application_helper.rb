@@ -358,7 +358,7 @@ module ApplicationHelper
     loop do
       c = klass.to_s.gsub(/Controller$/, '')
       break if c == 'Application'
-      controllers.unshift c.tableize
+      controllers.unshift c.underscore
       break unless klass = klass.superclass
     end
     stylesheet_link_tag controllers.join('/')

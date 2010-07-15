@@ -159,3 +159,16 @@ describe ApplicationHelper, '"tweet_title" method' do
     tweet_title(tweet).length.should == 80
   end
 end
+
+describe ApplicationHelper do
+  describe '#stylesheet_link_tags' do
+    describe 'regressions' do
+      it 'does not pluralize the dashboard controller' do
+        stub(helper).controller.stub!.class { DashboardController }
+        tags = helper.stylesheet_link_tags
+        tags.should_not match('dashboards.css')
+        tags.should match('dashboard.css')
+      end
+    end
+  end
+end
