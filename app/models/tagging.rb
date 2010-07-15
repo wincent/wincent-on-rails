@@ -37,7 +37,7 @@ class Tagging < ActiveRecord::Base
     taggables         = nil
     query             = Array.new(tag_names.length, 'name = ?').join ' OR '
     tags              = {}
-    tags[:found]      = Tag.find(:all, :conditions => [query, *tag_names])
+    tags[:found]      = Tag.where(*[query, *tag_names])
     tags[:not_found]  = tag_names - (tags[:found].collect(&:name))
 
     # now get taggings which feature those tags
