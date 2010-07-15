@@ -1,4 +1,4 @@
-require 'ostruct'
+require_dependency 'ostruct'
 
 class Tagging < ActiveRecord::Base
   belongs_to      :tag, :counter_cache => true
