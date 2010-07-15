@@ -32,7 +32,7 @@ describe IssuesController, 'GET /issues/search' do
 
   it 'finds all applicable issues' do
     do_get
-    assigns[:issues].should be_kind_of(ActiveRecord::Relation)
+    assigns[:issues].should be_kind_of(Array)
   end
 end
 
