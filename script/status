@@ -1,0 +1,41 @@
+#!/bin/sh
+
+function check_stale_pid_file()
+{
+  if [ -f "$1" ]; then
+    echo "warning: stale pid file still exists at $1 (removing)"
+    rm "$1"
+  fi
+}
+
+/bin/echo -n "nginx: "
+if [ $(ps x | grep -v grep | grep -c 'nginx: master process') -eq 0 ]; then
+  echo "stopped"
+  check_stale_pid_file 'tmp/nginx.pid'
+else
+  echo "running"
+fi
+
+/bin/echo -n "memcached: "
+if [ $(ps x | grep -v grep | grep -c 'memcached -d') -eq 0 ]; then
+  echo "stopped"
+  check_stale_pid_file 'tmp/memcached.pid'
+else
+  echo "running"
+fi
+
+/bin/echo -n "mysqld [disk]: "
+if [ $(ps ax | grep -v grep | grep 'mysqld --basedir' | grep -c "pid-file=$PWD/tmp/pids/mysql.pid") -eq 0 ]; then
+  echo "stopped"
+  check_stale_pid_file 'tmp/pids/mysql.pid'
+else
+  echo "running"
+fi
+
+/bin/echo -n "mysqld [ram]: "
+if [ $(ps ax | grep -v grep | grep 'mysqld --basedir' | grep -c "pid-file=$PWD/tmp/pids/mysql_ram.pid") -eq 0 ]; then
+  echo "stopped"
+  check_stale_pid_file 'tmp/pids/mysql_ram.pid'
+else
+  echo "running"
+fi
