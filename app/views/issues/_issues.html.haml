@@ -10,7 +10,8 @@
       =sortable_header_cell :updated_at, 'When'
       -if admin?
         =sortable_header_cell :public, 'Public?'
-  -unless @issues.empty?
+  -# Rails BUG: https://rails.lighthouseapp.com/projects/8994/tickets/5060
+  -unless @issues.all.empty?
     %tbody
       -for issue in @issues
         %tr{ :class => cycle('odd', 'even') }
