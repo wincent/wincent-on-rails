@@ -3,7 +3,7 @@ form input[type=submit] { vertical-align: middle; }
 
 .tips { margin-left: auto; margin-right: auto; margin-top: -2em; margin-bottom: 3em; width: 66%; }
 
-.result { border-bottom: 1px solid #ccc; padding: 1em; }
+.result { border-bottom: 1px solid #cccccc; padding: 1em; }
 .result h2 { margin-bottom: 0em; }
 .result .when { margin-left: 2.7em; }
 .result .annotation { margin-left: 3em; }
