@@ -161,4 +161,3 @@ rescue Exception => e
   log_backtrace e
   log_and_abort ''
 end
-
