@@ -18,10 +18,7 @@ class Comment < ActiveRecord::Base
   set_callback :update, :after, :update_caches
   set_callback :destroy, :after, :update_caches
 
-  def self.find_recent options = {}
-    base_options = { :conditions => { :public => true }, :order => 'created_at DESC', :limit => 10 }
-    find :all, base_options.merge(options)
-  end
+  scope :recent, where(:public => true).limit(10).order('created_at DESC')
 
 protected
 

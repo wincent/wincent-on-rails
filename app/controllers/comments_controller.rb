@@ -7,8 +7,9 @@ class CommentsController < ApplicationController
   # Admin only.
   # The admin is allowed to see all unmoderated comments at once, for the purposes of moderation.
   def index
-    @paginator  = Paginator.new params, Comment.count(:conditions => { :awaiting_moderation => true }), comments_path
-    @comments   = Comment.find_recent :offset => @paginator.offset, :conditions => { :awaiting_moderation => true }
+    comments    = Comment.recent.where(:awaiting_moderation => true)
+    @paginator  = Paginator.new params, comments.count, comments_path
+    @comments   = comments.offset(@paginator.offset)
   end
 
   def new
@@ -26,10 +27,13 @@ class CommentsController < ApplicationController
     if admin?
       @comment = Comment.find params[:id]
     elsif logged_in?
-      @comment = Comment.find params[:id],
-        :conditions => ['awaiting_moderation = FALSE AND (public = TRUE OR user_id = ?)', current_user.id]
+      t = Comment.arel_table
+      @comment = Comment.where(:awaiting_moderation => false).
+        where(t[:public].eq(true).or(t[:user_id].eq(current_user.id))).
+        find(params[:id])
     else # anonymous user
-      @comment = Comment.find params[:id], :conditions => { :public => true, :awaiting_moderation => false }
+      @comment = Comment.where(:public => true, :awaiting_moderation => false).
+        find(params[:id])
     end
     redirect_to nested_comment_path(@comment)
   end
@@ -122,7 +126,7 @@ private
     if admin?
       @comment = Comment.find params[:id]
     elsif logged_in?
-      @comment = Comment.find params[:id], :conditions => { :user_id => current_user.id }
+      @comment = Comment.where(:user_id => current_user.id).find(params[:id])
     else
       # should never get here; and in fact, shouldn't even get to the previous case either
       # but leave it in for now, as may eventually allow users to edit their own comments
