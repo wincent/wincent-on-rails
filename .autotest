@@ -7,3 +7,18 @@ Autotest.add_hook :initialize do |a|
     a.files_matching all_specs
   }
 end
+
+Autotest.add_hook :ran_command do |a|
+  output = [a.results].flatten.join("\n")
+  results = output.slice %r{(\d+) examples?, (\d+) failures?(, (\d+) pending)?}
+  if results
+    passed, failed, pending = $~[1], $~[2], $~[4]
+    if failed.to_i > 0
+      system "growlnotify -n autotest --image ./autotest/fail.png -p Emergency -m '#{results}' -t 'Spec failure detected'"
+    elsif pending.to_i > 0
+      system "growlnotify -n autotest --image ./autotest/pending.png -p High -m '#{results}' -t 'Pending spec(s) present'"
+    else
+      system "growlnotify -n autotest --image ./autotest/pass.png -p 'Very Low' -m '#{results}' -t 'All specs passed'"
+    end
+  end
+end
