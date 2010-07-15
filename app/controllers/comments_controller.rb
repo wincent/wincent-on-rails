@@ -7,6 +7,10 @@ class CommentsController < ApplicationController
   # Admin only.
   # The admin is allowed to see all unmoderated comments at once, for the purposes of moderation.
   def index
+    # abuse of ActiveRelation behavior here: "recent" has "limit(10)" on it,
+    # but when we append "count" we get the count of all available rows, not
+    # what we would get if we actually executed a SELECT query
+    # see: https://rails.lighthouseapp.com/projects/8994/tickets/5060
     comments    = Comment.recent.where(:awaiting_moderation => true)
     @paginator  = Paginator.new params, comments.count, comments_path
     @comments   = comments.offset(@paginator.offset)
