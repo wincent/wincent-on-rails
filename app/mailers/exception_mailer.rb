@@ -34,5 +34,7 @@ private
     lines = env.to_yaml.split("\n")
     lines.shift # drop first line "---"
     lines.map { |line| "  #{line}" }.join("\n")
+  rescue Exception => e
+    "  [exception '#{e.message}' raised while trying to prettify env]"
   end
 end
