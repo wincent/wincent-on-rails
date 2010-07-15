@@ -18,6 +18,11 @@ module ActionController
   module Authentication
     extend ActiveSupport::Concern
 
+    # TODO: allow user to adjust DEFAULT_SESSION_EXPIRY in their preferences?
+    DEFAULT_SESSION_EXPIRY  = 7 # days
+    SESSION_KEY_LENGTH      = 32
+    LOCALHOST_ADDRESSES     = ['127.0.0.1', '::1'].freeze
+
     included do
       helper_method :logged_in?
       helper_method :logged_in_and_verified?
@@ -88,17 +93,10 @@ module ActionController
       end
     end
 
-    # TODO: allow user to adjust this in their preferences
-    DEFAULT_SESSION_EXPIRY = 7 # days
-
-    SESSION_KEY_LENGTH = 32
-
     # Generate a random string for use as a session key.
     def random_session_key
       AuthenticationUtilities::random_base64_string(SESSION_KEY_LENGTH)
     end
-
-    LOCALHOST_ADDRESSES = ['127.0.0.1', '::1'].freeze
 
     def local_request?
       ip = request.remote_ip
@@ -162,22 +160,20 @@ module ActiveRecord
     extend ActiveSupport::Concern
 
     module ClassMethods
-      PASSPHRASE_CHARS        = 'abcdefghjkmnpqrstuvwxyz23456789'.split(//)
-      PASSPHRASE_CHARS_LENGTH = PASSPHRASE_CHARS.length
+      PASSPHRASE_CHARS            = 'abcdefghjkmnpqrstuvwxyz23456789'.split(//)
+      PASSPHRASE_CHARS_LENGTH     = PASSPHRASE_CHARS.length
+      GENERATED_PASSPHRASE_LENGTH = 8
+      SALT_BYTES                  = 16
 
       # Returns a psuedo-random string of length letters and digits, excluding potentially ambiguous characters (0, O, 1, l, I).
       def random_string(length)
         Array.new(length) { PASSPHRASE_CHARS[rand(PASSPHRASE_CHARS_LENGTH)] }.join
       end
 
-      GENERATED_PASSPHRASE_LENGTH = 8
-
       # Generates a psuedo-random passphrase string.
       def passphrase
         random_string(GENERATED_PASSPHRASE_LENGTH)
       end
-
-      SALT_BYTES = 16
 
       # Returns a psuedo-random salt string.
       def random_salt
