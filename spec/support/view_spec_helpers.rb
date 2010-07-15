@@ -17,8 +17,9 @@ module ViewSpecHelpers
   end # ClassMethods
 
   def _include_controller_helpers
-    unless view.class.included_modules.include?(controller._helpers)
-      view.class.__send__(:include, controller._helpers)
+    metaclass = class << view; self; end
+    unless metaclass.included_modules.include?(controller._helpers)
+      metaclass.__send__(:include, controller._helpers)
     end
   end
 
