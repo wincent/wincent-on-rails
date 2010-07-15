@@ -13,14 +13,13 @@ end # module AuthenticationUtilities
 
 module ActionController
   module Authentication
-    def self.included base
-      base.class_eval do
-        helper_method :logged_in?
-        helper_method :logged_in_and_verified?
-        helper_method :admin?
-        helper_method :current_user
-      end
-      base.extend(ClassMethods)
+    extend ActiveSupport::Concern
+
+    included do
+      helper_method :logged_in?
+      helper_method :logged_in_and_verified?
+      helper_method :admin?
+      helper_method :current_user
     end
 
     module ClassMethods
@@ -190,6 +189,8 @@ module ActiveRecord
   end # module Authentication
 end # module ActiveRecord
 
-# controller methods are included automatically because we want them to be available to all controllers
-# the model methods must be extended manually in specific models that want them as they are specific to those models only
+# controller methods are included automatically because we want them to be
+# available to all controllers
+# the model methods must be extended manually in specific models that want
+# them as they are specific to those models only
 ActionController::Base.class_eval { include ActionController::Authentication }
