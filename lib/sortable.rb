@@ -10,8 +10,7 @@ module ActionController
           else
             sortable_attributes = []
           end
-          sortable_attributes = sortable_attributes.map { |a| "\"#{a}\""}
-          sortable_attributes = sortable_attributes.join ", "
+          sortable_attributes = sortable_attributes.map { |a| "'#{a}'" }.join(', ')
 
           if options[:default]
             order = (options[:descending] == true) ? 'DESC' : 'ASC'
