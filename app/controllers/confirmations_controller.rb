@@ -14,7 +14,7 @@ class ConfirmationsController < ApplicationController
         error_msg     = "An error occurred while sending the confirmation email to #{e.address}"
         confirmation  = e.confirmations.create
         begin
-          ConfirmationMailer.deliver_confirmation_message confirmation
+          ConfirmationMailer.confirmation_message(confirmation).deliver
         rescue Net::SMTPFatalError
           errors << "#{error_msg} (this looks like a permanent delivery problem; please check the address)"
         rescue Net::SMTPServerBusy, Net::SMTPUnknownError, Net::SMTPSyntaxError, TimeoutError

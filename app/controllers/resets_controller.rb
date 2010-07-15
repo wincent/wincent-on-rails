@@ -15,7 +15,7 @@ class ResetsController < ApplicationController
         reset     = email.resets.create!
         error_msg = "An error occurred while sending the email to #{address}"
         begin
-          ResetMailer.deliver_reset_message reset
+          ResetMailer.reset_message(reset).deliver
         rescue Net::SMTPFatalError
           flash[:error] = "#{error_msg} (this looks like a permanent delivery problem; please check the address)"
         rescue Net::SMTPServerBusy, Net::SMTPUnknownError, Net::SMTPSyntaxError, TimeoutError
