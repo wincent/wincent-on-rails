@@ -75,6 +75,8 @@ protected
     end
   end
 
+  # TODO: replace this with proper relational algebra version
+  # (although this will still work for now as where(default_access_options))
   def default_access_options
     if conditions = default_access_options_including_awaiting_moderation
       'awaiting_moderation = FALSE AND ' + conditions

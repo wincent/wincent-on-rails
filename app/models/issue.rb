@@ -27,18 +27,22 @@ class Issue < ActiveRecord::Base
   set_callback            :save, :before, :prepare_annotation
   set_callback            :save, :after, :annotate
 
-  # Sanitizes an untrusted hash of search parameters and prepares a conditions string suitable for passing to find(:all).
-  # The calling controller should pass in the appropriate access options string to constrain the search depending on whether
-  # the user is an administrator, normal or anonymous user.
-  def self.prepare_search_conditions access_options, params
-    params      = {} if params.nil?
-    conditions  = access_options ? [access_options] : []
-    conditions  << "status = #{params[:status].to_i}" unless params[:status].blank?
-    conditions  << "kind = #{params[:kind].to_i}" unless params[:kind].blank?
-    conditions  << "product_id = #{params[:product_id].to_i}" unless params[:product_id].blank?
-    conditions  << sanitize_sql_for_conditions(["(summary LIKE '%%%s%%' OR description LIKE '%%%s%%')",
-      params[:summary], params[:summary]]) unless params[:summary].blank?
-    conditions.join ' AND '
+  # Takes un untrusted hash of search parameters and constructs an
+  # ActiveRelation query. The calling controller should pass in the appropriate
+  # access options to constrain the search depending on whether the user is an
+  # administrator, normal or anonymous user.
+  def self.search access_options, params = {}
+    finder = Issue.where access_options
+    finder = finder.where(:status => params[:status]) unless params[:status].blank?
+    finder = finder.where(:kind => params[:kind]) unless params[:kind].blank?
+    finder = finder.where(:product_id => params[:product_id]) unless params[:product_id].blank?
+
+    unless params[:summary].blank?
+      t = finder.arel_table
+      like = "%#{params[:summary]}%"
+      finder = finder.where(t[:summary].matches(like).or(t[:description].matches(like)))
+    end
+    finder
   end
 
   # We expose this for use in the controller layer.

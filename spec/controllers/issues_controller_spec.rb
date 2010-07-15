@@ -20,19 +20,19 @@ describe IssuesController, 'GET /issues/search' do
     do_get
   end
 
-  it 'should sanitize the search parameters' do
-    mock(Issue).prepare_search_conditions(anything, anything)
+  it 'calls Issue.search' do
+    mock.proxy(Issue).search(anything, anything)
     do_get
   end
 
-  it "should propagate the user's sort options" do
-    mock(controller).sort_options { {} }
+  it "propagates the user's sort options" do
+    mock(controller).arel_sort_options { '' }
     do_get
   end
 
-  it 'should find all applicable issues' do
-    mock(Issue).find(anything, anything)
+  it 'finds all applicable issues' do
     do_get
+    assigns[:issues].should be_kind_of(ActiveRecord::Relation)
   end
 end
 
