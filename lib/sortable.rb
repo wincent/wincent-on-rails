@@ -1,9 +1,7 @@
 module ActionController
   module Acts
     module Sortable
-      def self.included base
-        base.extend(ClassMethods)
-      end
+      extend ActiveSupport::Concern
 
       module ClassMethods
         def acts_as_sortable options = {}
@@ -32,31 +30,23 @@ module ActionController
                 {#{default_attributes}}
               end
             END
-
-          include ActionController::Acts::Sortable::InstanceMethods
-          extend ActionController::Acts::Sortable::ClassMethods
         end
       end # module ClassMethods
 
-      # no class methods yet: may potentially add some later
-      module ClassMethods; end
-
-      module InstanceMethods
-        def sort_options
-          if self.sortable_attributes.include? params[:sort]
-            @sort_by = params[:sort]  # for use in view
-            if params[:order] and params[:order].downcase == 'desc'
-              @sort_descending = true # for use in view
-              options = { :order => "#{params[:sort]} DESC" }
-            else
-              options = { :order => params[:sort] }
-            end
+      def sort_options
+        if sortable_attributes.include? params[:sort]
+          @sort_by = params[:sort]  # for use in view
+          if params[:order] and params[:order].downcase == 'desc'
+            @sort_descending = true # for use in view
+            options = { :order => "#{params[:sort]} DESC" }
           else
-            options = default_sort_options
+            options = { :order => params[:sort] }
           end
-          options
+        else
+          options = default_sort_options
         end
-      end # module InstanceMethods
+        options
+      end
     end # module Sortable
   end # module Acts
 end # module ActionController
@@ -65,8 +55,9 @@ module ActionView
   module Helpers
     module SortableHelper
 
-      # Note that this is designed to play nicely with the paginator and controllers which might set params,
-      # preserving the custom params in the query string if set
+      # Note that this is designed to play nicely with the paginator and
+      # controllers which might set params, preserving the custom params in the
+      # query string if set
       def sortable_header_cell attribute_name, display_name = nil
         attribute_name          = attribute_name.to_s
         display_name            ||= attribute_name
