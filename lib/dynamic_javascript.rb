@@ -1,8 +1,6 @@
 module ActionController
   module DynamicJavascript
-    def self.included base
-      base.extend(ClassMethods)
-    end
+    extend ActiveSupport::Concern
 
     module ClassMethods
       def uses_dynamic_javascript options = {}
