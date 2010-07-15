@@ -16,17 +16,17 @@ module ViewSpecHelpers
     end
   end # ClassMethods
 
+  def _include_controller_helpers
+    unless view.class.included_modules.include?(controller._helpers)
+      view.class.__send__(:include, controller._helpers)
+    end
+  end
+
   included do
     helper *_default_helpers
 
-    @@helper_hack_done = false
     before do
-      if not @@helper_hack_done
-        view.instance_eval do
-          self.class.send(:include, @controller._helpers)
-        end
-        @@helper_hack_done = true
-      end
+      _include_controller_helpers
     end
   end
 end # module ViewSpecHelpers
