@@ -11,8 +11,8 @@
 %table
   %thead
     %tr
-      -sortable_header_cell :name, 'Name'
-      -sortable_header_cell :taggings_count, 'Taggings count'
+      =sortable_header_cell :name, 'Name'
+      =sortable_header_cell :taggings_count, 'Taggings count'
       %th Actions
   -unless @tags.empty?
     %tbody

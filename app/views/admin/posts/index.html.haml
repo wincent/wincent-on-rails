@@ -12,9 +12,9 @@
 %table
   %thead
     %tr
-      -sortable_header_cell :title, 'Title'
-      -sortable_header_cell :permalink, 'Permalink'
-      -sortable_header_cell :created_at, 'When'
+      =sortable_header_cell :title, 'Title'
+      =sortable_header_cell :permalink, 'Permalink'
+      =sortable_header_cell :created_at, 'When'
       %th Actions
   -unless @posts.empty?
     %tbody

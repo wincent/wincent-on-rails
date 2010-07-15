@@ -2,14 +2,14 @@
 %table
   %thead
     %tr
-      -sortable_header_cell :id, '#'
-      -sortable_header_cell :summary, 'Summary'
-      -sortable_header_cell :product_id, 'Product'
-      -sortable_header_cell :status, 'Status'
-      -sortable_header_cell :kind, 'Kind'
-      -sortable_header_cell :updated_at, 'When'
+      =sortable_header_cell :id, '#'
+      =sortable_header_cell :summary, 'Summary'
+      =sortable_header_cell :product_id, 'Product'
+      =sortable_header_cell :status, 'Status'
+      =sortable_header_cell :kind, 'Kind'
+      =sortable_header_cell :updated_at, 'When'
       -if admin?
-        -sortable_header_cell :public, 'Public?'
+        =sortable_header_cell :public, 'Public?'
   -unless @issues.empty?
     %tbody
       -for issue in @issues
