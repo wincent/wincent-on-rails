@@ -20,6 +20,7 @@ platforms :ruby_18 do
   end
 
   group :test do
+    gem 'autotest',       :require => nil
     gem 'capybara',       :path => 'vendor/repos/capybara'
     gem 'culerity'
     gem 'database_cleaner'

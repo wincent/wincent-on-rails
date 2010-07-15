@@ -54,6 +54,7 @@ GEM
     activesupport (3.0.0.beta4)
     arel (0.4.0)
       activesupport (>= 3.0.0.beta)
+    autotest (4.3.2)
     builder (2.1.2)
     celerity (0.8.0.beta.1)
     cgi_multipart_eof_fix (2.5.0)
@@ -148,6 +149,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  autotest
   capybara!
   celerity (>= 0.8.0.beta.1)
   celerity (>= 0.8.0.beta.1)
