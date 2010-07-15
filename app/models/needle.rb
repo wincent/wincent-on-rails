@@ -23,10 +23,13 @@ class Needle < ActiveRecord::Base
   end
 
   # Options:
-  #   <tt>:user</tt>:: a user model object (if admin finds all records, if nil finds only public records, otherwise finds
-  #                    records visible to that user)
-  #   <tt>:type</tt>:: either <tt>:or</tt> (the default) to find models which feature any of the words in the query string, or
-  #                    <tt>:and</tt> to find models which feature all of the words in the query string.
+  #   <tt>:user</tt>:: a user model object (if admin finds all records, if nil
+  #                    finds only public records, otherwise finds records
+  #                    visible to that user)
+  #   <tt>:type</tt>:: either <tt>:or</tt> (the default) to find models which
+  #                    feature any of the words in the query string, or
+  #                    <tt>:and</tt> to find models which feature all of the
+  #                    words in the query string.
   def self.find_using_query_string query, options = {}
     sql = NeedleQuery.new(query, options).sql
     prefetch_models(sql ? Needle.find_by_sql(sql) : [])
@@ -34,22 +37,25 @@ class Needle < ActiveRecord::Base
 
 private
 
-  # Normally a Needle.find_by_sql query would return an array of Needle objects like this:
+  # Normally a Needle.find_by_sql query would return an array of Needle objects
+  # like this:
   #
   #   [#<Needle model_class: "Post", model_id: 13>]
   #
-  # To actual get any useful information out of this array would requires an additional database query
-  # per result, so it could get quite expensive (the typical "N + 1 SELECT" problem).
+  # To actual get any useful information out of this array would requires
+  # an additional database query per result, so it could get quite expensive
+  # (the typical "N + 1 SELECT" problem).
   #
-  # Here we try to minimize the number of additional queries by "prefetching" the models in groups. Just say we had
-  # 5 articles, 5 issues, 5 posts and 5 topics, we would get all 20 objects using 4 queries (1 per model type) and return
-  # them in an array.
+  # Here we try to minimize the number of additional queries by "prefetching"
+  # the models in groups. Just say we had 5 articles, 5 issues, 5 posts and 5
+  # topics, we would get all 20 objects using 4 queries (1 per model type) and
+  # return them in an array.
   #
   def self.prefetch_models models
     model_cache = Hash.new { |hash, key| hash[key] = {} }
     models.each { |model| model_cache[model.model_class][model.model_id] = nil }
     model_cache.each do |model_class, ids|
-      results = model_class.constantize.find(:all, :conditions => ['id IN (?)', ids.keys]).each do |result|
+      results = model_class.constantize.where(:id => ids.keys).each do |result|
         model_cache[model_class][result.id] = result
       end
       if ids.length > results.length
