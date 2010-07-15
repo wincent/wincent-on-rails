@@ -17,7 +17,7 @@ namespace :search do
 end
 
 def indexable_models
-  Dir["#{RAILS_ROOT}/app/models/*.rb"].collect do |model|
+  Dir[Rails.root + 'app/models/*.rb'].collect do |model|
     klass = File.basename(model).sub(/\.rb\z/, '').classify.constantize
     klass.private_method_defined?(:create_needles) ? klass : nil
   end
