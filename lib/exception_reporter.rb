@@ -64,6 +64,6 @@ private
     controller = env['action_controller.instance'] ||
       OpenStruct.new(:controller_name => 'unknown', :action_name => 'unknown')
     request = ActionDispatch::Request.new(env)
-    ExceptionMailer.deliver_exception_report exception, controller, request
+    ExceptionMailer.exception_report(exception, controller, request).deliver
   end
 end
