@@ -8,53 +8,6 @@ describe 'issues/_issues' do
     @issues = Array.new(4) { Issue.make! }
   end
 
-  it 'shows pagination at top and bottom of the page' do
-    render
-    rendered.should have_selector('div.pagination', :count => 2)
-  end
-
-  it 'has a sortable header cell for the "id" column' do
-    render
-    rendered.should have_selector('th a', :content => '#') do |link|
-      link.attribute('href').value.should match('sort=id')
-    end
-  end
-
-  it 'has a sortable header cell for the "summary" column' do
-    render
-    rendered.should have_selector('th a', :content => 'Summary') do |link|
-      link.attribute('href').value.should match('sort=summary')
-    end
-  end
-
-  it 'has a sortable header cell for the "product" column' do
-    render
-    rendered.should have_selector('th a', :content => 'Product') do |link|
-      link.attribute('href').value.should match('sort=product_id')
-    end
-  end
-
-  it 'has a sortable header cell for the "status" column' do
-    render
-    rendered.should have_selector('th a', :content => 'Status') do |link|
-      link.attribute('href').value.should match('sort=status')
-    end
-  end
-
-  it 'has a sortable header cell for the "kind" column' do
-    render
-    rendered.should have_selector('th a', :content => 'Kind') do |link|
-      link.attribute('href').value.should match('sort=kind')
-    end
-  end
-
-  it 'has a sortable header cell for the "when" column' do
-    render
-    rendered.should have_selector('th a', :content => 'When') do |link|
-      link.attribute('href').value.should match('sort=updated_at')
-    end
-  end
-
   it 'shows the kind string for each issue'
   it 'links to a kind-scoped search from the kind string'
   it 'shows the id number for each issue'
@@ -70,5 +23,54 @@ describe 'issues/_issues' do
     render
     rendered.should have_selector('tr.odd', :count => 2)
     rendered.should have_selector('tr.even', :count => 2)
+  end
+
+  it 'shows pagination at top and bottom of the page' do
+    render
+    rendered.should have_selector('div.pagination', :count => 2)
+  end
+
+  describe 'regressions' do
+    it 'has a sortable header cell for the "id" column' do
+      render
+      rendered.should have_selector('th a', :content => '#') do |link|
+        link.attribute('href').value.should match('sort=id')
+      end
+    end
+
+    it 'has a sortable header cell for the "summary" column' do
+      render
+      rendered.should have_selector('th a', :content => 'Summary') do |link|
+        link.attribute('href').value.should match('sort=summary')
+      end
+    end
+
+    it 'has a sortable header cell for the "product" column' do
+      render
+      rendered.should have_selector('th a', :content => 'Product') do |link|
+        link.attribute('href').value.should match('sort=product_id')
+      end
+    end
+
+    it 'has a sortable header cell for the "status" column' do
+      render
+      rendered.should have_selector('th a', :content => 'Status') do |link|
+        link.attribute('href').value.should match('sort=status')
+      end
+    end
+
+    it 'has a sortable header cell for the "kind" column' do
+      render
+      rendered.should have_selector('th a', :content => 'Kind') do |link|
+        link.attribute('href').value.should match('sort=kind')
+      end
+    end
+
+    it 'has a sortable header cell for the "when" column' do
+      render
+      rendered.should have_selector('th a', :content => 'When') do |link|
+        link.attribute('href').value.should match('sort=updated_at')
+      end
+    end
   end
 end
