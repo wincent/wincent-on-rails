@@ -118,7 +118,7 @@ private
       @grandparent = Forum.find_with_param! grandparent
       @parent = @grandparent.topics.where(:id => parent).first
     end
-    raise ActiveRecord::NotFound.new('no parent instance') unless @parent
+    raise ActiveRecord::RecordNotFound.new('no parent instance') unless @parent
 
     if !@parent.accepts_comments
       raise ActionController::ForbiddenError.new \
