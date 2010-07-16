@@ -5,14 +5,14 @@ require 'pathname'
 # record, or attached to a "parent" record such as an issue, a blog post, a
 # product release, or a wiki article.
 #
-# To avoid tying up a Mongrel process we let the nginx upload module handle
+# To avoid tying up a Unicorn worker we let the nginx upload module handle
 # uploads, and when creating a new Attachment instance merely move the uploaded
 # file into place once nginx hands it over. This is handled when setting the
 # "temp_path" virtual attribute.
 #
 # Likewise, when downloading attachments we use the "X-Accel-Redirect" feature
 # to delegate to nginx the work of actually serving the data. This is a "best
-# both worlds" scenario because it allows us to use Rails for access control
+# of both worlds" scenario because it allows us to use Rails for access control
 # and hit-counting, while leaving the heavy lifting to nginx.
 #
 # Table fields:
