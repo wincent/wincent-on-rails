@@ -1,7 +1,7 @@
 OVERALL GOAL
 
 The overall goal for the application is to replace the disparate, disconnected
-stack of applications that I am currently using:
+stack of applications that I was previously using:
 
   Weblog:                 Movable Type (Perl)
   Wiki:                   MediaWiki (PHP)
@@ -13,10 +13,10 @@ stack of applications that I am currently using:
   Contact form:           Custom PHP
   Static content:         Hand-coded PHP/HTML
 
-With a single, unified application which handles all of those
-responsibilities. This will not only provide a better user experience (no need
+with a single, unified application which handles all of those
+responsibilities. This not only provides a better user experience (no need
 to maintain separate accounts for the forums, bug tracker, mailing list etc),
-but will also make site-wide customization easier and replace multiple
+but also makes site-wide customization easier and replaces multiple
 dependency groups with a single dependency: Rails.
 
 
@@ -39,6 +39,3 @@ assumes that the superuser can do everything and everybody else has limited
 privileges. For example, a user can see or edit his own bug report while other
 users can see it but not edit; there is no system for granting additional
 privileges.
-
-Likewise we don't bother implementing infrastructure for deleting anything
-(this is similar to Bugzilla); rather we just hide stuff.
