@@ -1,7 +1,6 @@
 require File.expand_path('../acceptance_helper', File.dirname(__FILE__))
 
 feature 'annotations for changes to issue metadata' do
-  include Rails.application.routes.url_helpers
   scenario 'changing an issue summary' do
     issue = Issue.make! :summary => 'foo'
     log_in_as_admin
