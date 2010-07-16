@@ -1,7 +1,7 @@
 class TagsController < ApplicationController
   def index
     # BUG: information leak here (should really exclude tags which apply to items we can't access)
-    @tags = Tag.find :all, :order => 'name', :conditions => 'taggings_count > 0'
+    @tags = Tag.where('taggings_count > 0').order('name')
   end
 
   def show
