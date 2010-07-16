@@ -1,3 +1,6 @@
+-# BUG: atom_link call here causes a redundant query:
+-# SELECT `forums`.* FROM `forums` WHERE (`forums`.`id` = 1) LIMIT 1
+-# (previously found the forum via permalink in controller)
 -atom_link @topic
 =breadcrumbs link_to('Forums', forums_path),
   link_to(@forum.name, forum_path(@forum)),
@@ -10,6 +13,8 @@
   %ol(class='comments boxed')
     %li(class='comment odd')
       %cite
+        -# BUG: redundant(?) query here:
+        -# SELECT `users`.* FROM `users` WHERE (`users`.`id` = 1) LIMIT 1
         =link_to_user @topic.user
         %br
         =pluralizing_count(@topic.user.utterances_count, 'post') if @topic.user
@@ -36,6 +41,9 @@
         %blockquote=comment.body.w :base_heading_level => 1
 %h2.major Reply
 -if @topic.accepts_comments
+  -# BUG: redundant queries when form rendered:
+  -# SELECT `topics`.* FROM `topics` WHERE (`topics`.`id` = 1) LIMIT 1
+  -# SELECT `forums`.* FROM `forums` WHERE (`forums`.`id` = 1) LIMIT 1
   =render 'comments/form'
 -else
   %p This topic is now closed.
