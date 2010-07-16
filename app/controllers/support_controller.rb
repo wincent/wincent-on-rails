@@ -4,12 +4,9 @@ class SupportController < ApplicationController
                     :descending => true
 
   def index
-    options     = default_access_options # defined in ApplicationController
-    @paginator  = RestfulPaginator.new params,
-      Issue.count(:conditions => options), issues_path
-    @issues     = Issue.find :all, sort_options.merge({
-      :offset => @paginator.offset, :limit => @paginator.limit,
-      :conditions => options
-    })
+    issues = Issue.where(default_access_options) # in ApplicationController
+    @paginator = RestfulPaginator.new params, issues.count, issues_path
+    @issues = issues.order(arel_sort_options).offset(@paginator.offset).
+      limit(@paginator.limit)
   end
 end
