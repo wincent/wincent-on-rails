@@ -9,7 +9,7 @@ class TopicsController < ApplicationController
   # Admin only.
   # The admin is allowed to see all unmoderated topics at once, for the purposes of moderation.
   def index
-    @topics = Topic.find :all, :conditions => { :awaiting_moderation => true }
+    @topics = Topic.where :awaiting_moderation => true
   end
 
   def new
@@ -109,16 +109,18 @@ private
         @forum = Forum.find_with_param! params[:forum_id]
       end
     else # special case for topic links without forum in params (helps us avoid some "N + 1 SELECT" problems)
-      topic = Topic.find params[:id], :include => :forum
+      topic = Topic.includes(:forum).find params[:id]
       redirect_to forum_topic_path(topic.forum, topic)
     end
   end
 
   def get_topic
     if public_only?
-      @topic = @forum.topics.find params[:id], :conditions => { :public => true, :awaiting_moderation => false }
+      @topic = @forum.topics.
+        where(:public => true, :awaiting_moderation => false).find params[:id]
     else
-      @topic = @forum.topics.find params[:id], :conditions => { :awaiting_moderation => false }
+      @topic = @forum.topics.
+        where(:awaiting_moderation => false).find params[:id]
     end
   end
 
