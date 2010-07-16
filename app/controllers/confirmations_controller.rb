@@ -6,7 +6,7 @@ class ConfirmationsController < ApplicationController
   end
 
   def create
-    emails  = current_user.emails.find_all_by_verified :false
+    emails  = current_user.emails.where(:verified => false)
     errors  = []
     notices = []
     emails.each do |e|
