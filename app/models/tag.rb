@@ -40,8 +40,7 @@ class Tag < ActiveRecord::Base
     count = tag_names.length
     return [] if count < 1 or count > 5 # sanity limit: no more than 5 joins
     raise ArgumentError if tag_names.include?(nil)
-    query = Array.new(count, 'name = ?').join ' OR '
-    tags = where(query, *tag_names)
+    tags = find_with_tag_names *tag_names
     tags_reachable_from_tags *tags
   end
 

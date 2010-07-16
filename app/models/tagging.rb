@@ -35,9 +35,8 @@ class Tagging < ActiveRecord::Base
   def self.grouped_taggables_for_tag_names tag_names, user, type = nil
     # first get the tags
     taggables         = nil
-    query             = Array.new(tag_names.length, 'name = ?').join ' OR '
     tags              = {}
-    tags[:found]      = Tag.where(query, *tag_names)
+    tags[:found]      = Tag.find_with_tag_names *tag_names
     tags[:not_found]  = tag_names - (tags[:found].collect(&:name))
 
     # now get taggings which feature those tags
