@@ -115,13 +115,11 @@ private
   end
 
   def get_topic
-    if public_only?
-      @topic = @forum.topics.
-        where(:public => true, :awaiting_moderation => false).find params[:id]
+    @topic = if public_only?
+      @forum.topics.where(:public => true, :awaiting_moderation => false)
     else
-      @topic = @forum.topics.
-        where(:awaiting_moderation => false).find params[:id]
-    end
+      @forum.topics.where(:awaiting_moderation => false)
+    end.find params[:id]
   end
 
   def record_not_found
