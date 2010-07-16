@@ -3,7 +3,7 @@ class Admin::ForumsController < ApplicationController
   before_filter           :find_forum, :only => [:show, :update]
 
   def index
-    @forums = Forum.find :all
+    @forums = Forum.all
   end
 
   def show
