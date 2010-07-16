@@ -163,37 +163,39 @@ describe Forum, 'parametrization' do
   end
 end
 
-describe Forum, 'find_with_param! method' do
-  before do
-    @name   = 'foo bar'
-    @forum  = Forum.make! :name => @name
-  end
+describe Forum do
+  describe '#find_with_param! method' do
+    before do
+      @name   = 'foo bar'
+      @forum  = Forum.make! :name => @name
+    end
 
-  it 'should find by permalink' do
-    mock(Forum).find_by_permalink!('foo bar', {:conditions=>{}}) { @forum }
-    Forum.find_with_param!(@name)
-  end
+    it 'finds by permalink' do
+      mock(Forum).find_by_permalink!('foo bar') { @forum }
+      Forum.find_with_param! @name
+    end
 
-  it 'should handle hyphens in the name' do
-    Forum.find_with_param!('foo-bar').should == @forum
-  end
+    it 'should handle hyphens in the name' do
+      Forum.find_with_param!('foo-bar').should == @forum
+    end
 
-  it 'should by case agnostic' do
-    Forum.find_with_param!('FoO-baR').should == @forum
-  end
+    it 'should by case agnostic' do
+      Forum.find_with_param!('FoO-baR').should == @forum
+    end
 
-  it 'should complain if not found' do
-    lambda { Forum.find_with_param!('non-existent') }.should raise_error(ActiveRecord::RecordNotFound)
-  end
+    it 'should complain if not found' do
+      lambda { Forum.find_with_param!('non-existent') }.should raise_error(ActiveRecord::RecordNotFound)
+    end
 
-  it 'should accept and use optional conditions such as ":public => true" (public forum)' do
-    Forum.find_with_param!('foo-bar', :public => true).should == @forum
-  end
+    it 'should accept and use optional conditions such as ":public => true" (public forum)' do
+      Forum.find_with_param!('foo-bar', :public => true).should == @forum
+    end
 
-  it 'should accept and use optional conditions such as ":public => true" (private forum)' do
-    private_forum = Forum.make! :name => 'baz', :public => false
-    Forum.find_with_param!('baz', :public => false).should == private_forum
-    lambda { Forum.find_with_param!('baz', :public => true) }.should raise_error(ActiveRecord::RecordNotFound)
+    it 'should accept and use optional conditions such as ":public => true" (private forum)' do
+      private_forum = Forum.make! :name => 'baz', :public => false
+      Forum.find_with_param!('baz', :public => false).should == private_forum
+      lambda { Forum.find_with_param!('baz', :public => true) }.should raise_error(ActiveRecord::RecordNotFound)
+    end
   end
 end
 

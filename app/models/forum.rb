@@ -16,10 +16,15 @@ class Forum < ActiveRecord::Base
   before_create           :set_position
   before_validation       :set_permalink
 
+  # conditions will be {} or { :public => true/false }
   def self.find_with_param! param, conditions = {}
     # forum name will be downcased in the URL, but MySQL will do a
     # case-insensitive search for us anyway
-    find_by_permalink! param, :conditions => conditions
+    if conditions.empty?
+      self
+    else
+      where(conditions)
+    end.find_by_permalink! param
   end
 
   def self.find_all
