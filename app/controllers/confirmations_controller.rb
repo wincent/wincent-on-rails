@@ -32,7 +32,7 @@ class ConfirmationsController < ApplicationController
   end
 
   def show
-    @confirmation = Confirmation.find_by_secret params[:id], :include => :email
+    @confirmation = Confirmation.includes(:email).find_by_secret params[:id]
     if @confirmation.nil?
       flash[:error] = 'Confirmation not found'
       redirect_to root_path
