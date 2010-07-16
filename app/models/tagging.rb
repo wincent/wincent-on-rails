@@ -15,7 +15,7 @@ class Tagging < ActiveRecord::Base
   def self.grouped_taggables_for_tag tag, user, type = nil
     taggings = {}
     # not really "grouped" in the SQL sense (GROUP BY); rather, ordered
-    find_all_by_tag_id(tag.id, :order => 'taggable_type').each do |t|
+    where(:tag_id => tag.id).order('taggable_type').each do |t|
       if taggings[t.taggable_type].nil?
         taggings[t.taggable_type] = [t]
       else
@@ -80,7 +80,9 @@ private
     taggings.each_key do |key|
       group = OpenStruct.new
       group.name = key.to_s.downcase
-      group.taggables = key.constantize.find_all_by_id(taggings[key].collect(&:taggable_id).uniq, :order => 'updated_at DESC').select do |taggable|
+      group.taggables = key.constantize.
+        where(:id => taggings[key].collect(&:taggable_id).uniq).
+        order('updated_at DESC').select do |taggable|
         # filter out tagged items which user shouldn't have access to
         accessible taggable, user
       end
