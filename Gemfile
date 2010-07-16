@@ -28,6 +28,7 @@ platforms :ruby_18 do
     gem 'launchy'
     gem 'mkdtemp'
     gem 'mongrel',        :require => nil
+    gem 'rcov'
     gem 'rr',             :git => 'git://github.com/btakita/rr.git'
     gem 'steak',          :git => 'git://github.com/cavalle/steak.git'
 
