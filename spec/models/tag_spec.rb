@@ -222,3 +222,30 @@ describe Tag, 'tags_reachable_from_tags method' do
   end
 end
 
+describe Tag do
+  describe '#find_with_tag_names' do
+    before do
+      @foo = Tag.make! :name => 'foo'
+      @bar = Tag.make! :name => 'bar'
+      @baz = Tag.make! :name => 'baz'
+    end
+
+    it 'finds single tags' do
+      Tag.find_with_tag_names('foo').should == [@foo]
+    end
+
+    it 'finds multiple tags' do
+      Tag.find_with_tag_names('foo', 'bar', 'baz').should =~ [@foo, @bar, @baz]
+    end
+
+    it 'returns an empty array when no matching tags' do
+      Tag.find_with_tag_names('roy').should == []
+    end
+
+    it 'ignores blank parameters' do
+      Tag.find_with_tag_names('foo', nil, ' ').should == [@foo]
+      Tag.find_with_tag_names(nil).should == []
+      Tag.find_with_tag_names().should == []
+    end
+  end
+end

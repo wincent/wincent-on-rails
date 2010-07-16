@@ -27,6 +27,13 @@ class Tag < ActiveRecord::Base
     name
   end
 
+  def self.find_with_tag_names *tag_names
+    tag_names.reject! { |t| t.blank? }
+    return [] if tag_names.empty?
+    query = Array.new(tag_names.length, 'name = ?').join ' OR '
+    where(query, *tag_names).to_a
+  end
+
   # Given tag_names "foo", "bar" etc, find all items tagged with those
   # tags and identify what other tags could be used to narrow the search.
   def self.tags_reachable_from_tag_names *tag_names
