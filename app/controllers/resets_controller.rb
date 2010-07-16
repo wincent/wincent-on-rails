@@ -75,7 +75,7 @@ class ResetsController < ApplicationController
 private
 
   def find_reset_and_user
-    @reset = Reset.find_by_secret params[:id], :include => :email
+    @reset = Reset.includes(:email).find_by_secret params[:id]
     @user = @reset ? @reset.email.user : nil
   end
 end # class ResetsController
