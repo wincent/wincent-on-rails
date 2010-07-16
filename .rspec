@@ -1,1 +1,3 @@
 --colour
+-r spec/support/growl_formatter.rb
+-f RSpec::Core::Formatters::GrowlFormatter
