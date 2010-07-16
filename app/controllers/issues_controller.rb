@@ -47,15 +47,18 @@ class IssuesController < ApplicationController
     add_status_scope_condition options
     add_product_scope_condition options
 
+    # TODO: lots of string concatenation here; replace with relational algebra
+    issues = Issue.where(options)
+
     # NOTE: have an N + 1 issue here (for each product we get the product info)
     # can't just :include => :product here because that will introduce an ambiguous "updated_at" column
     # thanks to acts_as_sortable (will need to update acts as sortable)
-    @paginator = RestfulPaginator.new params,
-      Issue.count(:conditions => options), issues_path
-    @issues = Issue.find :all, sort_options.merge({
-      :offset => @paginator.offset, :limit => @paginator.limit,
-      :conditions => options
-    })
+    @paginator = RestfulPaginator.new params, issues.count, issues_path
+
+    # Rails BUG #5060: must call to_a here so that empty? will work as expected
+    @issues = issues.order(arel_sort_options).limit(@paginator.limit).
+      offset(@paginator.offset).to_a
+
   end
 
   def show
@@ -64,10 +67,10 @@ class IssuesController < ApplicationController
         if @issue.awaiting_moderation?
           render :action => 'awaiting_moderation'
         else
-          if admin?
-            @comments = @issue.comments.find :all, :conditions => { :awaiting_moderation => false }
+          @comments = if admin?
+            @issue.comments.where(:awaiting_moderation => false)
           else
-            @comments = @issue.comments.published # public, not awaiting moderation
+            @issue.comments.published # public, not awaiting moderation
           end
           @comment = @issue.comments.build
         end
@@ -160,7 +163,7 @@ private
   end
 
   def find_issue
-    @issue = Issue.find params[:id], :conditions => default_access_options
+    @issue = Issue.where(default_access_options).find params[:id]
   end
 
   # This simplifies our search form, and allows it to "remember" search params
@@ -185,7 +188,7 @@ private
 
   def find_issue_awaiting_moderation
     if conditions = default_access_options_including_awaiting_moderation
-      @issue = Issue.find params[:id], :conditions => conditions
+      @issue = Issue.where(conditions).find params[:id]
     else
       @issue = Issue.find params[:id]
     end
