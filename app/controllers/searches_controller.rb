@@ -18,8 +18,8 @@ class SearchesController < ApplicationController
   def create
     @offset = params[:offset].to_i
     @query   = params[:query] || ''
-    @models = Needle.find_using_query_string @query,
-                                             :offset => @offset,
-                                             :user => current_user
+    @models = Needle.find_with_query_string @query,
+                                            :offset => @offset,
+                                            :user => current_user
   end
 end

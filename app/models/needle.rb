@@ -30,7 +30,7 @@ class Needle < ActiveRecord::Base
   #                    feature any of the words in the query string, or
   #                    <tt>:and</tt> to find models which feature all of the
   #                    words in the query string.
-  def self.find_using_query_string query, options = {}
+  def self.find_with_query_string query, options = {}
     sql = NeedleQuery.new(query, options).sql
     prefetch_models(sql ? Needle.find_by_sql(sql) : [])
   end
