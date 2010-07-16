@@ -4,7 +4,7 @@ class SupportController < ApplicationController
                     :descending => true
 
   def index
-    issues = Issue.where(default_access_options) # in ApplicationController
+    issues = Issue.where default_access_options # in ApplicationController
     @paginator = RestfulPaginator.new params, issues.count, issues_path
     @issues = issues.order(arel_sort_options).offset(@paginator.offset).
       limit(@paginator.limit)
