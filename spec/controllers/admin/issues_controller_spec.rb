@@ -29,7 +29,7 @@ describe Admin::IssuesController, 'index action' do
   it 'paginates in groups of 20' do
     paginator = Paginator.new({}, 100, 'foo', 20)
     mock(Paginator).new(anything, anything, anything, 20) { paginator }
-    mock(Issue).find(anything, hash_including(:limit => paginator.limit))
+    mock(paginator).limit
     get :index
   end
 end
