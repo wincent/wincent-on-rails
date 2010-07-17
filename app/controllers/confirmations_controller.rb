@@ -47,7 +47,7 @@ class ConfirmationsController < ApplicationController
       @confirmation.email.update_attribute :verified, true
       @confirmation.email.user.update_attribute :verified, true
       flash[:notice] = 'Successfully confirmed email address'
-      redirect_to (logged_in? ? root_path : login_path) # don't autologin in case this is a brute force attack
+      redirect_to dashboard_path
     end
   end
 end # class ConfirmationsController
