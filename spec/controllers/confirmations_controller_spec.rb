@@ -57,7 +57,8 @@ describe ConfirmationsController do
         end
 
         it 'sends a confirmation message' do
-          mock(ConfirmationMailer).confirmation_message(is_a Confirmation).mock!.deliver
+          mock.proxy(ConfirmationMailer).confirmation_message(is_a Confirmation)
+          mock(controller).deliver(is_a Mail::Message)
           do_post
         end
 
@@ -67,7 +68,7 @@ describe ConfirmationsController do
         end
 
         it 'shows a flash on failure' do
-          stub(ConfirmationMailer).confirmation_message(anything).stub!.deliver { raise }
+          stub.instance_of(Mail::Message).deliver { raise }
           do_post
           cookie_flash['error'].should =~ /an error occurred/i
         end

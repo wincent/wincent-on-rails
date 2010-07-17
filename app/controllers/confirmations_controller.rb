@@ -7,27 +7,11 @@ class ConfirmationsController < ApplicationController
 
   def create
     emails  = current_user.emails.where(:verified => false)
-    errors  = []
-    notices = []
     emails.each do |e|
       if params[:emails][e.id.to_s] == '1'
-        error_msg     = "An error occurred while sending the confirmation email to #{e.address}"
-        confirmation  = e.confirmations.create
-        begin
-          ConfirmationMailer.confirmation_message(confirmation).deliver
-        rescue Net::SMTPFatalError
-          errors << "#{error_msg} (this looks like a permanent delivery problem; please check the address)"
-        rescue Net::SMTPServerBusy, Net::SMTPUnknownError, Net::SMTPSyntaxError, TimeoutError
-          errors << "#{error_msg} (this looks like a temporary delivery problem; you may want to try again later)"
-        rescue Exception
-          errors << "#{error_msg} (the cause of the error was unknown)"
-        else
-          notices << "A confirmation email has been sent to #{e.address}"
-        end
+        deliver ConfirmationMailer.confirmation_message(e.confirmations.create)
       end
     end
-    flash[:error] = errors.join('; ') if !errors.empty?
-    flash[:notice]  = notices.join('; ') if !notices.empty?
     redirect_to current_user
   end
 
@@ -48,6 +32,26 @@ class ConfirmationsController < ApplicationController
       @confirmation.email.user.update_attribute :verified, true
       flash[:notice] = 'Successfully confirmed email address'
       redirect_to dashboard_path
+    end
+  end
+
+protected
+
+  def deliver mail
+    begin
+      flash[:error] = [] if flash[:error].blank?
+      flash[:notice] = [] if flash[:notice].blank?
+      recipient = mail.to.first
+      error_msg = "An error occurred while sending the confirmation email to #{recipient}"
+      mail.deliver
+    rescue Net::SMTPFatalError
+      flash[:error] << "#{error_msg} (this looks like a permanent delivery problem; please check the address)"
+    rescue Net::SMTPServerBusy, Net::SMTPUnknownError, Net::SMTPSyntaxError, TimeoutError
+      flash[:error] << "#{error_msg} (this looks like a temporary delivery problem; you may want to try again later)"
+    rescue Exception
+      flash[:error] << "#{error_msg} (the cause of the error was unknown)"
+    else
+      flash[:notice] << "A confirmation email has been sent to #{recipient}"
     end
   end
 end # class ConfirmationsController
