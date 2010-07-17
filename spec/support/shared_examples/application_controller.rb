@@ -65,6 +65,11 @@ shared_examples_for 'ApplicationController protected methods' do
       lambda { controller.admin? }.
         should raise_error(NoMethodError, /protected/)
     end
+
+    it 'restricts access to #deliver' do
+      lambda { controller.deliver }.
+        should raise_error(NoMethodError, /protected/)
+    end
   end
 end
 

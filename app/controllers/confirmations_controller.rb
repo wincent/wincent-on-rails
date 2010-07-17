@@ -34,26 +34,4 @@ class ConfirmationsController < ApplicationController
       redirect_to dashboard_path
     end
   end
-
-protected
-
-  def deliver mail
-    begin
-      flash[:error] = [] if flash[:error].blank?
-      flash[:notice] = [] if flash[:notice].blank?
-      recipient = mail.to.first
-      error_msg = "An error occurred sending to #{recipient}"
-      mail.deliver
-    rescue Net::SMTPFatalError
-      flash[:error] << error_msg +
-        ' (this looks like a permanent error; please check the address)'
-    rescue Net::SMTPServerBusy, Net::SMTPUnknownError, Net::SMTPSyntaxError, TimeoutError
-      flash[:error] << error_msg +
-        ' (this looks like a temporary error; you may want to try again later)'
-    rescue Exception
-      flash[:error] << error_msg + ' (the cause of the error was unknown)'
-    else
-      flash[:notice] << "An email has been sent to #{recipient}"
-    end
-  end
 end # class ConfirmationsController
