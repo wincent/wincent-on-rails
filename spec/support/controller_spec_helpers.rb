@@ -1,21 +1,21 @@
 module ControllerSpecHelpers
-  def login_as user
+  def log_in_as user
     controller.instance_eval { @current_user = user }
-    stub(controller).login_before # don't let the before filter clear the user again
+    stub(controller).log_in_before # don't let the before filter clear the user again
   end
 
-  def login_as_admin
+  def log_in_as_admin
     controller.instance_eval { @current_user = User.make! :superuser => true }
-    stub(controller).login_before # don't let the before filter clear the user again
+    stub(controller).log_in_before # don't let the before filter clear the user again
   end
 
   def as_admin &block
-    login_as_admin
+    log_in_as_admin
     yield
   end
 
-  def login_as_normal_user
-    login_as User.make!
+  def log_in_as_normal_user
+    log_in_as User.make!
   end
 
   def cookie_flash

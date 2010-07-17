@@ -7,7 +7,7 @@ end
 
 describe Admin::IssuesController, 'index action' do
   before do
-    login_as_admin
+    log_in_as_admin
   end
 
   it 'runs the "require_admin" before_filter' do

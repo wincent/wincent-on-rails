@@ -46,7 +46,7 @@ end
 
 describe SessionsController, 'logging out when previously logged in' do
   before do
-    login_as User.make!
+    log_in_as User.make!
     post 'destroy', :protocol => 'https'
   end
 

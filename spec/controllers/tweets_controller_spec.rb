@@ -211,7 +211,7 @@ end
 
 describe TweetsController, 'GET /twitter/new' do
   def do_get admin = true
-    login_as_admin if admin == true
+    log_in_as_admin if admin == true
     get :new
   end
 
@@ -238,7 +238,7 @@ end
 
 describe TweetsController, 'POST /twitter' do
   def do_post params = {}, admin = true
-    login_as_admin if admin == true
+    log_in_as_admin if admin == true
     post :create, params
   end
 
@@ -311,7 +311,7 @@ end
 describe TweetsController, 'POST /twitter (via AJAX)' do
   def do_post params = {}, admin = true
     request.env['HTTP_X_REQUESTED_WITH'] = 'XMLHttpRequest'
-    login_as_admin if admin == true
+    log_in_as_admin if admin == true
     post :create, params.merge({ :format => 'js' })
   end
 
@@ -407,7 +407,7 @@ end
 
 describe TweetsController, 'GET /twitter/:id/edit' do
   def do_get tweet, admin = true
-    login_as_admin if admin == true
+    log_in_as_admin if admin == true
     get :edit, :id => tweet.id
   end
 
@@ -445,7 +445,7 @@ end
 
 describe TweetsController, 'PUT /twitter/:id' do
   def do_put tweet, admin = true, params = {}
-    login_as_admin if admin == true
+    log_in_as_admin if admin == true
     put :update, params.merge({:id => tweet.id})
   end
 
@@ -511,7 +511,7 @@ end
 
 describe TweetsController, 'DELETE /twitter/:id' do
   def do_delete tweet, admin = true
-    login_as_admin if admin == true
+    log_in_as_admin if admin == true
     delete :destroy, :id => tweet.id
   end
 

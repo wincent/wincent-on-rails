@@ -1,5 +1,5 @@
 class ApplicationController < ActionController::Base
-  before_filter             :login_before
+  before_filter             :log_in_before
   after_filter              :cache_flash
   protect_from_forgery
   rescue_from               ActionController::ForbiddenError, :with => :forbidden

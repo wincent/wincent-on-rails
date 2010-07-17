@@ -8,7 +8,7 @@ end
 describe Admin::DashboardController, 'show action' do
   before do
     @conditions = 'awaiting_moderation = TRUE'
-    login_as_admin
+    log_in_as_admin
   end
 
   it 'runs the "require_admin" before filter' do

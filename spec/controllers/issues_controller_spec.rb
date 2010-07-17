@@ -99,7 +99,7 @@ end
 describe IssuesController, 'GET /issues/:id/edit' do
   before do
     @issue = Issue.make! :awaiting_moderation => false # this is the default example data anyway, but be explicit
-    login_as_admin
+    log_in_as_admin
   end
 
   def do_get
@@ -154,7 +154,7 @@ describe IssuesController, 'POST /issues (html format)' do
 
   it 'should set pending tags (if posting as admin)' do
     mock(@issue).pending_tags=('foo bar baz')
-    login_as_admin
+    log_in_as_admin
     do_post
   end
 
@@ -167,7 +167,7 @@ end
 describe IssuesController, 'PUT /issues/:id (html format)' do
   before do
     @issue = Issue.make! :awaiting_moderation => true
-    login_as_admin
+    log_in_as_admin
   end
 
   def do_put
@@ -237,7 +237,7 @@ end
 describe IssuesController, 'PUT /issues/:id (js format)' do
   before do
     @issue = Issue.make! :awaiting_moderation => true
-    login_as_admin
+    log_in_as_admin
   end
 
   def do_put button = 'ham'
@@ -270,7 +270,7 @@ end
 
 describe IssuesController, 'regressions' do
   it 'should unset the "current_user" thread-local variable even if an exception is thrown' do
-    login_as_admin
+    log_in_as_admin
     record_not_found = Issue.make!.id + 1_000
     get :edit, :id => record_not_found # raises RecordNotFound
     Thread.current[:current_user].should be_nil

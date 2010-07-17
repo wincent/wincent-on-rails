@@ -311,7 +311,7 @@ describe ArticlesController do
         end
 
         context 'as an admin user' do
-          before { login_as_admin }
+          before { log_in_as_admin }
 
           it 'redirects to /wiki/new' do
             get :show, :id => 'moot'
@@ -416,7 +416,7 @@ describe ArticlesController do
   describe '#new' do
     context 'admin access' do
       before do
-        login_as_admin
+        log_in_as_admin
       end
 
       it 'assigns a new article' do
@@ -449,7 +449,7 @@ describe ArticlesController do
   describe '#create' do
     context 'admin access' do
       before do
-        login_as_admin
+        log_in_as_admin
       end
 
       context 'AJAX request' do
@@ -525,7 +525,7 @@ describe ArticlesController do
     context 'admin access' do
       before do
         @article = Article.make! :title => 'foo'
-        login_as_admin
+        log_in_as_admin
       end
 
       it 'assigns the article' do
@@ -581,7 +581,7 @@ describe ArticlesController do
 
     context 'as an admin user' do
       before do
-        login_as_admin
+        log_in_as_admin
       end
 
       it 'updates the article' do

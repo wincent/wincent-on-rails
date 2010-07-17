@@ -34,8 +34,8 @@ module ActionController
 
     # Intended for use as a before_filter in the ApplicationController for all
     # actions.
-    def login_before
-      self.current_user = login_with_cookie or login_with_http_basic
+    def log_in_before
+      self.current_user = log_in_with_cookie or log_in_with_http_basic
       true
     end
 
@@ -131,7 +131,7 @@ module ActionController
   private
 
     # only secure over SSL (due to cookie capture attacks)
-    def login_with_cookie
+    def log_in_with_cookie
       if cookies[:user_id] and cookies[:session_key]
         user = User.find_by_id_and_session_key(cookies[:user_id], cookies[:session_key])
         if user
@@ -145,7 +145,7 @@ module ActionController
 
     # needed for AJAX
     # only secure over SSL
-    def login_with_http_basic
+    def log_in_with_http_basic
       authenticate_with_http_basic do |email, passphrase|
          return User.authenticate(email, passphrase)
       end

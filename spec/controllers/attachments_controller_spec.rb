@@ -3,7 +3,7 @@ require File.expand_path('../spec_helper', File.dirname(__FILE__))
 describe AttachmentsController do
   describe "GET 'new'" do
     def do_get admin = false
-      login_as_admin if admin
+      log_in_as_admin if admin
       get 'new', :protocol => 'https'
     end
 

@@ -1,12 +1,12 @@
 shared_examples_for 'ApplicationController protected methods' do
   context 'private methods' do
-    it 'restricts access to #login_with_cookie' do
-      lambda { controller.login_with_cookie }.
+    it 'restricts access to #log_in_with_cookie' do
+      lambda { controller.log_in_with_cookie }.
         should raise_error(NoMethodError, /private/)
     end
 
-    it 'restricts access to #login_with_http_basic' do
-      lambda { controller.login_with_http_basic }.
+    it 'restricts access to #log_in_with_http_basic' do
+      lambda { controller.log_in_with_http_basic }.
         should raise_error(NoMethodError, /private/)
     end
 
@@ -17,8 +17,8 @@ shared_examples_for 'ApplicationController protected methods' do
   end
 
   context 'protected methods' do
-    it 'restricts access to #login_before' do
-      lambda { controller.login_before }.
+    it 'restricts access to #log_in_before' do
+      lambda { controller.log_in_before }.
         should raise_error(NoMethodError, /protected/)
     end
     it 'restricts access to #require_admin' do
