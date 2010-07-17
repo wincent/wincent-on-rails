@@ -89,7 +89,7 @@ protected
   def listify_flash flashes
     return flashes unless flashes.kind_of?(Array)
     if flashes.empty?
-      ''
+      nil
     elsif flashes.length == 1
       flashes.first
     else
@@ -101,7 +101,8 @@ protected
   def cache_flash
     flash_hash = {}
     flash.each do |key, value|
-      flash_hash[key.to_sym] = listify_flash(value)
+      list = listify_flash(value)
+      flash_hash[key.to_sym] = list unless list.nil?
     end
 
     # without this we'll get double-flashes for "render" followed by another page view
