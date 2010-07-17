@@ -44,7 +44,7 @@ describe CommentsController, 'GET /comments/:id/edit logged in as normal user' d
   # strictly speaking this is re-testing the require_admin method
   # but the effort is minimal, so it doesn't hurt to err on the safe side
   it 'denies access to the "edit" action' do
-    log_in_as_normal_user
+    log_in
     get :edit, :id => @comment.id
     response.should redirect_to(login_path)
     cookie_flash['notice'].should =~ /requires administrator privileges/

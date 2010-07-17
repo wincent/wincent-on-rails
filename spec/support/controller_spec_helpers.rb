@@ -14,7 +14,7 @@ module ControllerSpecHelpers
     yield
   end
 
-  def log_in_as_normal_user
+  def log_in
     log_in_as User.make!
   end
 
