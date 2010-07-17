@@ -42,7 +42,7 @@ protected
       flash[:error] = [] if flash[:error].blank?
       flash[:notice] = [] if flash[:notice].blank?
       recipient = mail.to.first
-      error_msg = "An error occurred while sending the confirmation email to #{recipient}"
+      error_msg = "An error occurred sending to #{recipient}"
       mail.deliver
     rescue Net::SMTPFatalError
       flash[:error] << "#{error_msg} (this looks like a permanent delivery problem; please check the address)"
@@ -51,7 +51,7 @@ protected
     rescue Exception
       flash[:error] << "#{error_msg} (the cause of the error was unknown)"
     else
-      flash[:notice] << "A confirmation email has been sent to #{recipient}"
+      flash[:notice] << "An email has been sent to #{recipient}"
     end
   end
 end # class ConfirmationsController
