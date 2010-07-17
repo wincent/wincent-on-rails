@@ -8,8 +8,7 @@ class ResetsController < ApplicationController
   def create
     address = params[:reset][:email_address]
     if email = Email.where(:deleted_at => nil).find_by_address(address)
-      # TODO: find out how to write this using new syntax
-      if email.resets.count(:conditions => ['created_at > ?', 3.days.ago]) > 5
+      if email.resets.where('created_at > ?', 3.days.ago).count > 5
         flash[:error] = 'You have exceeded the resets limit for this email address for today; please try again later'
       else
         reset     = email.resets.create!
