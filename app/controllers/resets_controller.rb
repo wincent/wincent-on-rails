@@ -11,19 +11,7 @@ class ResetsController < ApplicationController
       if email.resets.where('created_at > ?', 3.days.ago).count > 5
         flash[:error] = 'You have exceeded the resets limit for this email address for today; please try again later'
       else
-        reset     = email.resets.create!
-        error_msg = "An error occurred while sending the email to #{address}"
-        begin
-          ResetMailer.reset_message(reset).deliver
-        rescue Net::SMTPFatalError
-          flash[:error] = "#{error_msg} (this looks like a permanent delivery problem; please check the address)"
-        rescue Net::SMTPServerBusy, Net::SMTPUnknownError, Net::SMTPSyntaxError, TimeoutError
-          flash[:error] = "#{error_msg} (this looks like a temporary delivery problem; you may want to try again later)"
-        rescue Exception
-          flash[:error] = "#{error_msg} (the cause of the error was unknown)"
-        else
-          flash[:notice] = "Please check your mail: an email has been sent to #{address}"
-        end
+        deliver ResetMailer.reset_message(email.resets.create!)
       end
       redirect_to login_path
     else
