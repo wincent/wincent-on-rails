@@ -1,5 +1,6 @@
 require 'rspec/core/formatters/base_formatter'
 require 'rspec/core/formatters/base_text_formatter'
+require 'rspec/core/formatters/progress_formatter'
 
 # Use this custom formatter like this:
 #   bin/rspec -r spec/support/growl_formatter.rb -f RSpec::Core::Formatters::GrowlFormatter spec
@@ -9,7 +10,7 @@ require 'rspec/core/formatters/base_text_formatter'
 module RSpec
   module Core
     module Formatters
-      class GrowlFormatter < BaseTextFormatter
+      class GrowlFormatter < ProgressFormatter
         def close
           super
           summary = summary_line example_count, failure_count, pending_count
