@@ -3,7 +3,6 @@ require 'hpricot'
 
 describe TopicsController do
   it_should_behave_like 'ApplicationController protected methods'
-  it_should_behave_like 'ApplicationController parameter filtering'
 end
 
 describe TopicsController, '#show (Atom)' do

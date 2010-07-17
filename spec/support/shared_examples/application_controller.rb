@@ -72,12 +72,3 @@ shared_examples_for 'ApplicationController protected methods' do
     end
   end
 end
-
-# not testing ActionController here; just testing that it was set-up correctly
-shared_examples_for 'ApplicationController parameter filtering' do
-  # BUG: this is no longer really a shared example as there is no need to run
-  # it for each controller
-  it 'filters out the "passphrase" parameter' do
-    Rails.application.config.filter_parameters.include?(:passphrase).should be_true
-  end
-end

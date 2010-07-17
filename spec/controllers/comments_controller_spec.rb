@@ -2,7 +2,6 @@ require File.expand_path('../spec_helper', File.dirname(__FILE__))
 
 describe CommentsController do
   it_should_behave_like 'ApplicationController protected methods'
-  it_should_behave_like 'ApplicationController parameter filtering'
 end
 
 describe CommentsController, 'GET /comments/:id/edit logged in as admin' do

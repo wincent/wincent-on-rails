@@ -2,7 +2,6 @@ require File.expand_path('../spec_helper', File.dirname(__FILE__))
 
 describe ConfirmationsController do
   it_should_behave_like 'ApplicationController protected methods'
-  it_should_behave_like 'ApplicationController parameter filtering'
 
   describe '#new' do
     context 'as a logged in user' do
