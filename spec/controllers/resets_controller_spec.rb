@@ -153,4 +153,127 @@ describe ResetsController do
       end
     end
   end
+
+  describe '#update' do
+    let(:reset) { Reset.make! }
+
+    def do_put
+      put :update,
+          :id => reset.secret,
+          :reset => { :email_address => reset.email.address },
+          :passphrase => 'helloworld',
+          :passphrase_confirmation => 'helloworld'
+      reset.reload
+    end
+
+    it 'finds and assigns reset' do
+      do_put
+      assigns[:reset].should == reset
+    end
+
+    it 'finds and assigns user' do
+      do_put
+      assigns[:user].should == reset.email.user
+    end
+
+    it 'sets the new passphrase' do
+      do_put
+      User.authenticate(reset.email.address, 'helloworld').
+        should == reset.email.user
+    end
+
+    it 'sets completed_at' do
+      do_put
+      (reset.completed_at - Time.now).should < 1.second
+    end
+
+    it 'shows a flash' do
+      do_put
+      cookie_flash['notice'].should =~ /updated passphrase/
+    end
+
+    it 'logs in' do
+      do_put
+      controller.send(:current_user).should == reset.email.user
+    end
+
+    it 'redirects to the user dashboard' do
+      do_put
+      response.should redirect_to('/dashboard')
+    end
+
+    context 'reset invalid (incorrect email address)' do
+      def do_put
+        put :update,
+            :id => reset.secret,
+            :reset => { :email_address => 'nobody@example.com' },
+            :passphrase => 'helloworld',
+            :passphrase_confirmation => 'helloworld'
+        reset.reload
+      end
+
+      it 'does not set completed_at' do
+        do_put
+        reset.completed_at.should be_nil
+      end
+
+      it 'does not reset the passphrase' do
+        do_put
+        User.authenticate(reset.email.address, 'helloworld').
+          should_not == reset.email.user
+      end
+
+      it 'renders resets/edit' do
+        do_put
+        response.should render_template('resets/edit')
+      end
+    end
+
+    context 'user invalid (incorrect passphrase confirmation)' do
+      def do_put
+        put :update,
+            :id => reset.secret,
+            :reset => { :email_address => reset.email.address },
+            :passphrase => 'one thing',
+            :passphrase_confirmation => 'another thing'
+        reset.reload
+      end
+
+      it 'does not set completed_at' do
+        do_put
+        reset.completed_at.should be_nil
+      end
+
+      it 'does not reset the passphrase' do
+        do_put
+        User.authenticate(reset.email.address, 'one thing').
+          should_not == reset.email.user
+      end
+
+      it 'render resets/edit' do
+        do_put
+        response.should render_template('resets/edit')
+      end
+    end
+
+    context 'reset not found' do
+      # potentially should be a shared behavior this one, as it
+      # is the standard record_not_found method from ApplicationController
+      def do_put
+        put :update, :id => 'non-existent'
+      end
+
+      it 'shows a flash' do
+        do_put
+        # BUG: in test environment, any flash set in the record_not_found
+        # method will not hit the cookie flash
+        flash[:error].should =~ /not found/
+      end
+
+      it 'redirects to /' do
+        do_put
+        response.should redirect_to('/')
+      end
+    end
+  end
 end
