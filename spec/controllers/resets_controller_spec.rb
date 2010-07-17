@@ -76,4 +76,11 @@ describe ResetsController do
       end
     end
   end
+
+  describe '#show' do
+    it 'redirects to #edit' do
+      get :show, :id => 'foobar'
+      response.should redirect_to('/resets/foobar/edit')
+    end
+  end
 end
