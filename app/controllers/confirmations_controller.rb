@@ -45,11 +45,13 @@ protected
       error_msg = "An error occurred sending to #{recipient}"
       mail.deliver
     rescue Net::SMTPFatalError
-      flash[:error] << "#{error_msg} (this looks like a permanent delivery problem; please check the address)"
+      flash[:error] << error_msg +
+        ' (this looks like a permanent error; please check the address)'
     rescue Net::SMTPServerBusy, Net::SMTPUnknownError, Net::SMTPSyntaxError, TimeoutError
-      flash[:error] << "#{error_msg} (this looks like a temporary delivery problem; you may want to try again later)"
+      flash[:error] << error_msg +
+        ' (this looks like a temporary error; you may want to try again later)'
     rescue Exception
-      flash[:error] << "#{error_msg} (the cause of the error was unknown)"
+      flash[:error] << error_msg + ' (the cause of the error was unknown)'
     else
       flash[:notice] << "An email has been sent to #{recipient}"
     end
