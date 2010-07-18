@@ -1,3 +1,6 @@
+Autotest.options[:no_full_after_start] = true
+Autotest.options[:no_full_after_failed] = true
+
 Autotest.add_hook :initialize do |a|
   all_specs = %r%^spec/.+_spec\.rb$%
   a.add_mapping(%r%^db/example_data\.rb$%) {
