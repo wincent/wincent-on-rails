@@ -9,7 +9,7 @@ feature 'resetting my passphrase' do
     visit '/resets/new'
     fill_in 'Email address', :with => 'joe@example.com'
     click_button 'Reset passphrase'
-    page.should have_content('an email has been sent to joe@example.com')
+    page.should have_content('email has been sent to joe@example.com')
   end
 
   scenario 'hitting the reset limit', :js => true do
