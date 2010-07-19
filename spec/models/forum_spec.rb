@@ -57,6 +57,10 @@ describe Forum, 'accessible attributes' do
   it 'should allow mass-assignment of the permalink' do
     Forum.make.should allow_mass_assignment_of(:permalink => Sham.random)
   end
+
+  it 'allows mass-assignment of the position' do
+    Forum.make.should allow_mass_assignment_of(:position => 10)
+  end
 end
 
 # :topics_count, :position, :public
@@ -65,10 +69,8 @@ describe Forum, 'protected attributes' do
     Forum.make(:topics_count => 50).should_not allow_mass_assignment_of(:topics_count => 100)
   end
 
-  it 'should deny mass-assignment of the position' do
-    Forum.make(:position => 50).should_not allow_mass_assignment_of(:position => 100)
-  end
-
+  # TODO: should probably make this mass-assignable; only admins will be able
+  # to update this anyway
   it 'should deny mass-assignment of the "public" attribute' do
     Forum.make(:public => true).should_not allow_mass_assignment_of(:public => false)
   end
