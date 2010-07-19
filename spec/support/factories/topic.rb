@@ -1,3 +1,5 @@
+require File.expand_path('../factory_girl.rb', File.dirname(__FILE__))
+
 Factory.define :topic do |t|
   t.association :forum
   t.title { Sham.random }

@@ -1,3 +1,5 @@
+require File.expand_path('../factory_girl.rb', File.dirname(__FILE__))
+
 Factory.define :page do |p|
   p.title { Sham.random }
   p.permalink { Sham.random }

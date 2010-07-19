@@ -1,3 +1,5 @@
+require File.expand_path('../factory_girl.rb', File.dirname(__FILE__))
+
 # always return the same passphrase
 Sham.passphrase { |n| 'supersecret' }
 

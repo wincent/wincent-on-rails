@@ -1,3 +1,5 @@
+require File.expand_path('../factory_girl.rb', File.dirname(__FILE__))
+
 Factory.define :needle do |n|
   # needles don't use real ActiveRecord associations, so don't even bother
   # creating a real model object for the model fields here

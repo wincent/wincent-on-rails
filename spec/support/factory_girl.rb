@@ -32,6 +32,10 @@ Sham.lorem_ipsum do |n|
   text.gsub(/\s+/, ' ').strip
 end
 
+Sham.email_address do |n|
+  "#{Sham.random_first_name.downcase}#{rand(1000)}@example.com"
+end
+
 # Convenience methods added to invoke Factory Girl factories by sending
 # messages directly to ActiveRecord classes.
 #

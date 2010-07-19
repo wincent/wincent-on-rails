@@ -1,3 +1,5 @@
+require File.expand_path('../factory_girl.rb', File.dirname(__FILE__))
+
 Factory.define :comment do |c|
   c.association :user
   c.body { Sham.lorem_ipsum }

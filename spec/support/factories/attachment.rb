@@ -1,3 +1,5 @@
+require File.expand_path('../factory_girl.rb', File.dirname(__FILE__))
+
 Factory.define :attachment do |a|
   a.mime_type 'image/png'
   a.original_filename { Sham.random + '.png' }
