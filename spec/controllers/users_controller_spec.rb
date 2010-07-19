@@ -124,4 +124,29 @@ describe UsersController do
       end
     end
   end
+
+  describe '#show' do
+    before do
+      @user = User.make! :display_name => 'Henry Krinkle'
+    end
+
+    def do_get
+      get :show, :id => 'henry-krinkle'
+    end
+
+    it 'finds and assigns the user' do
+      do_get
+      assigns[:user].should == @user
+    end
+
+    it 'renders users/show' do
+      do_get
+      response.should render_template('users/show')
+    end
+
+    it 'succeeds' do
+      do_get
+      response.should be_success
+    end
+  end
 end
