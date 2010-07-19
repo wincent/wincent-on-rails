@@ -115,7 +115,7 @@ describe Admin::ForumsController do
 
       context 'with invalid attributes' do
         before do
-          stub(Forum).find(@forum.id).mock(@forum).update_attributes(anything) { false }
+          stub(Forum).find(@forum.id).stub(@forum).update_attributes(anything) { false }
           do_request
         end
 
