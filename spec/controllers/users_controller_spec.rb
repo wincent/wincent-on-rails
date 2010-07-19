@@ -147,4 +147,14 @@ describe UsersController do
       response.should be_success
     end
   end
+
+  describe '#edit' do
+    let(:user) { User.make! }
+
+    def do_request
+      get :edit, :id => user.to_param
+    end
+
+    it_should_behave_like 'require_user'
+  end
 end
