@@ -13,6 +13,10 @@ Factory.define :user do |u|
   u.passphrase_confirmation { Sham.passphrase }
   u.verified true
 
+  # as a convenience we also set the email pseudo attribute
+  # (makes valid_attributes hash more useful in controller tests)
+  u.email Sham.email_address
+
   # an associated email is not "required" (for validation) but it
   # is still necessary in practice if the record is to be usable
   u.after_create { |user| Email.make! :user => user  }
