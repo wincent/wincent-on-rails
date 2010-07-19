@@ -6,10 +6,10 @@ GIT
 
 GIT
   remote: git://github.com/cavalle/steak.git
-  revision: 006aca4
+  revision: 1c5e882
   specs:
     steak (0.4.0.beta.1)
-      rspec (>= 2.0.0.beta.9)
+      rspec-core (>= 2.0.0.beta.9)
 
 PATH
   remote: vendor/repos/capybara

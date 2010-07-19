@@ -8,6 +8,4 @@ module HelperMethods
   end
 end
 
-RSpec.configuration.include HelperMethods, :example_group => {
-  :file_path => %r{\bspec/acceptance/}
-}
+RSpec.configuration.include HelperMethods, :type => :acceptance
