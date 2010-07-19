@@ -66,7 +66,7 @@ describe Admin::ForumsController do
 
   describe '#show.js' do
     before do
-      @forum = Forum.make! :permalink => 'foo'
+      @forum = Forum.make!
     end
 
     def do_request
