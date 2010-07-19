@@ -1,11 +1,12 @@
 require File.expand_path('../spec_helper', File.dirname(__FILE__))
 
 describe PagesHelper do
-
-  #Delete this example and add some real ones or delete this file
-  it "is included in the helper object" do
-    included_modules = (class << helper; self; end).send :included_modules
-    included_modules.should include(PagesHelper)
+  describe '#button_to_destroy_page' do
+    it 'delegates to #button_to_destroy_model' do
+      product = Product.make! :permalink => 'foo'
+      page = Page.make! :product => product, :permalink => 'bar'
+      mock(helper).button_to_destroy_model page, '/products/foo/pages/bar'
+      helper.button_to_destroy_page page
+    end
   end
-
 end
