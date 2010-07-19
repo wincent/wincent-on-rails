@@ -106,4 +106,57 @@ describe Admin::ForumsController do
       end
     end
   end
+
+  describe '#update.js' do
+    before do
+      @forum = Forum.make!
+    end
+
+    def do_request
+      put :update, :id => @forum.id, :forum => { :description => 'foo' }, :format => :js
+    end
+
+    it_should_behave_like 'require_admin (non-HTML)'
+
+    context 'as admin' do
+      before do
+        log_in_as_admin
+      end
+
+      it 'finds the forum' do
+        mock.proxy(Forum).find(@forum.id)
+        do_request
+      end
+
+      it 'assigns found forum' do
+        do_request
+        assigns[:forum].should == @forum
+      end
+
+      it 'updates the forum attributes' do
+        do_request
+        @forum.reload.description.should == 'foo'
+      end
+
+      it 'redirects to /admin/forums#show' do
+        do_request
+        response.should redirect_to("/admin/forums/#{@forum.id}")
+      end
+
+      context 'with invalid attributes' do
+        before do
+          stub(Forum).find(@forum.id).mock(@forum).update_attributes(anything) { false }
+          do_request
+        end
+
+        it 'returns status 422' do
+          response.status.should == 422
+        end
+
+        it 'renders failure text' do
+          response.body.should match(/update failed/i)
+        end
+      end
+    end
+  end
 end
