@@ -35,7 +35,8 @@ class UsersController < ApplicationController
   end
 
   def update
-    # NOTE: no constraints yet to prevent user "deleting" all their emails
+    # BUG: no constraints yet to prevent user "deleting" all their emails
+    # will have a race but still better than no check at all
     @email = @user.update_emails :add => params[:user][:email], :delete => params[:delete_email]
     if @user.update_attributes params[:user]
       base_msg = 'Successfully updated'
@@ -57,19 +58,8 @@ class UsersController < ApplicationController
 private
 
   def confirm_email_and_redirect base_msg
-    error_msg     = "but an error occurred while sending the confirmation email to #{@email.address}"
     confirmation  = @email.confirmations.create
-    begin
-      ConfirmationMailer.confirmation_message(confirmation).deliver
-    rescue Net::SMTPFatalError
-      flash[:error] = "#{base_msg} #{error_msg} (this looks like a permanent delivery problem; please check the address)"
-    rescue Net::SMTPServerBusy, Net::SMTPUnknownError, Net::SMTPSyntaxError, TimeoutError
-      flash[:error] = "#{base_msg} #{error_msg} (this looks like a temporary delivery problem; you may want to try again later)"
-    rescue Exception
-      flash[:error] = "#{base_msg} #{error_msg} (the cause of the error was unknown)"
-    else
-      flash[:notice] = "#{base_msg}: a confirmation email has been sent to #{@email.address}"
-    end
+    deliver ConfirmationMailer.confirmation_message(confirmation)
     self.current_user = @user if !admin? or !logged_in? # auto-log in
     redirect_to @user
   end
