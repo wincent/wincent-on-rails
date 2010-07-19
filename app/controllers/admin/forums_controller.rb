@@ -18,8 +18,6 @@ class Admin::ForumsController < ApplicationController
   def update
     respond_to do |format|
       format.js { # an AJAX update
-        @forum.position = params[:forum][:position] if
-          params[:forum].key?(:position)
         if @forum.update_attributes params[:forum]
           # don't use admin_forum_path here because we want to force the use of a
           # numeric id; url_for will keep us in admin namespace here
