@@ -27,3 +27,21 @@ shared_examples_for 'require_admin (non-HTML)' do
     response.body.should match(/forbidden/i)
   end
 end
+
+shared_examples_for 'require_user' do
+  it 'stores the original URI in the session' do
+    do_request
+    session[:original_uri].should_not be_blank
+    session[:original_uri].should == response.request.fullpath
+  end
+
+  it 'redirects to /login' do
+    do_request
+    response.should redirect_to('/login')
+  end
+
+  it 'shows a flash' do
+    do_request
+    cookie_flash['notice'].should =~ /must be logged in to access/
+  end
+end

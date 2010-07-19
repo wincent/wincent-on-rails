@@ -59,19 +59,6 @@ module ActionController
       true
     end
 
-    # Redirect to the login page showing the supplied msg in the flash
-    # For non-HTML formats (XML, Atom, JavaScript), return a 403 error instead of redirecting
-    def redirect_to_login msg
-      # in practice for HTML requests, format is always blank, but program defensively
-      if params[:format].blank? or params[:format] =~ /html/i
-        flash[:notice] = msg
-        session[:original_uri] = request.fullpath
-        redirect_to login_path
-      else # XML, Atom, JavaScript etc
-        render :text => Rack::Utils::HTTP_STATUS_CODES[403], :status => 403 # Forbidden
-      end
-    end
-
     def local_request?
       ip = request.remote_ip
       LOCALHOST_ADDRESSES.any? { |l| l == ip }
@@ -154,6 +141,19 @@ module ActionController
     # Generate a random string for use as a session key.
     def random_session_key
       AuthenticationUtilities::random_base64_string(SESSION_KEY_LENGTH)
+    end
+
+    # Redirect to the login page showing the supplied msg in the flash
+    # For non-HTML formats (XML, Atom, JavaScript), return a 403 error instead of redirecting
+    def redirect_to_login msg
+      # in practice for HTML requests, format is always blank, but program defensively
+      if params[:format].blank? or params[:format] =~ /html/i
+        flash[:notice] = msg
+        session[:original_uri] = request.fullpath
+        redirect_to login_path
+      else # XML, Atom, JavaScript etc
+        render :text => Rack::Utils::HTTP_STATUS_CODES[403], :status => 403 # Forbidden
+      end
     end
   end # module Authentication
 end # module ActionController
