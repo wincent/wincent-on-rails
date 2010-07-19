@@ -59,4 +59,49 @@ describe UsersController do
       response.should be_success
     end
   end
+
+  describe '#create' do
+    before do
+      # must use string keys because that's what Rails will pass to controller
+      # (otherwise our mock expectations won't match)
+      @params = { 'user' => User.valid_attributes.stringify_keys }
+    end
+
+    def do_post
+      post :create, @params
+    end
+
+    it 'makes a new user' do
+      mock.proxy(User).new @params['user']
+      do_post
+    end
+
+    it 'assigns the new user' do
+      do_post
+      assigns[:user].should be_kind_of(User)
+    end
+
+    context 'successful creation' do
+      # TODO: refactor this to use deliver method
+      it 'calls confirm_email_and_redirect' do
+        mock.proxy(controller).confirm_email_and_redirect is_a(String)
+        do_post
+      end
+    end
+
+    context 'failed creation' do
+      before do
+        stub.instance_of(User).save { false }
+        do_post
+      end
+
+      it 'shows a flash' do
+        cookie_flash['error'].should =~ /failed to create/i
+      end
+
+      it 'renders users/new' do
+        response.should render_template('users/new')
+      end
+    end
+  end
 end
