@@ -1,4 +1,4 @@
-shared_examples_for 'require_admin' do
+shared_examples_for 'redirect_to_login' do
   it 'stores the original URI in the session' do
     do_request
     session[:original_uri].should_not be_blank
@@ -9,6 +9,10 @@ shared_examples_for 'require_admin' do
     do_request
     response.should redirect_to('/login')
   end
+end
+
+shared_examples_for 'require_admin' do
+  it_should_behave_like 'redirect_to_login'
 
   it 'shows a flash' do
     do_request
@@ -29,16 +33,7 @@ shared_examples_for 'require_admin (non-HTML)' do
 end
 
 shared_examples_for 'require_user' do
-  it 'stores the original URI in the session' do
-    do_request
-    session[:original_uri].should_not be_blank
-    session[:original_uri].should == response.request.fullpath
-  end
-
-  it 'redirects to /login' do
-    do_request
-    response.should redirect_to('/login')
-  end
+  it_should_behave_like 'redirect_to_login'
 
   it 'shows a flash' do
     do_request
