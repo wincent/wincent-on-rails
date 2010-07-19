@@ -82,10 +82,30 @@ describe UsersController do
     end
 
     context 'successful creation' do
-      # TODO: refactor this to use deliver method
-      it 'calls confirm_email_and_redirect' do
-        mock.proxy(controller).confirm_email_and_redirect is_a(String)
+      it 'creates a confirmation' do
         do_post
+        assigns[:user].emails.first.confirmations.size.should == 1
+      end
+
+      it 'creates a confirmation message' do
+        mock.proxy(ConfirmationMailer).confirmation_message(is_a Confirmation)
+        do_post
+      end
+
+      it 'delivers the confirmation message' do
+        mock(controller).deliver is_a(Mail::Message)
+        do_post
+      end
+
+      it 'redirects to /dashboard' do
+        do_post
+        response.should redirect_to('/dashboard')
+      end
+
+      it 'logs in automatically' do
+        do_post
+        user = assigns[:user].reload
+        user.session_expiry.should > Time.now
       end
     end
 
