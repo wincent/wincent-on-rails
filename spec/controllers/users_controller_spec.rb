@@ -126,17 +126,15 @@ describe UsersController do
   end
 
   describe '#show' do
-    before do
-      @user = User.make! :display_name => 'Henry Krinkle'
-    end
+    let(:user) { User.make! }
 
     def do_get
-      get :show, :id => 'henry-krinkle'
+      get :show, :id => user.to_param
     end
 
     it 'finds and assigns the user' do
       do_get
-      assigns[:user].should == @user
+      assigns[:user].should == user
     end
 
     it 'renders users/show' do
