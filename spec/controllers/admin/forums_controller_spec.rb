@@ -91,8 +91,7 @@ describe Admin::ForumsController do
       end
 
       it 'renders as JSON' do
-        stub(Forum).find(@forum.id) { @forum }
-        mock(@forum).to_json(anything)
+        stub(Forum).find(@forum.id).mock(@forum).to_json(anything)
         do_request
       end
 
