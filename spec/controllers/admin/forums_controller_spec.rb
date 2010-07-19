@@ -61,7 +61,7 @@ describe Admin::ForumsController do
       end
 
       it 'renders as JSON' do
-        stub(Forum).find(@forum.id).mock(@forum).to_json(anything)
+        stub(Forum).find.mock(@forum).to_json(anything)
         do_request
       end
 
@@ -115,7 +115,7 @@ describe Admin::ForumsController do
 
       context 'with invalid attributes' do
         before do
-          stub(Forum).find(@forum.id).stub(@forum).update_attributes(anything) { false }
+          stub(Forum).find.stub(@forum).update_attributes(anything) { false }
           do_request
         end
 
