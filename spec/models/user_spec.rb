@@ -177,6 +177,29 @@ describe User, 'validating the passphrase' do
 end
 
 describe User do
+  describe '#to_param' do
+    context 'new record' do
+      it 'returns nil' do
+        User.new.to_param.should be_nil
+      end
+
+      context 'with display name set' do
+        it 'uses the display name as param' do
+          user = User.new :display_name => 'David Foo'
+          user.to_param.should == 'david-foo'
+        end
+      end
+    end
+
+    context 'dirty record' do
+      it 'uses the old (stored on database) display name as param' do
+        user = User.make! :display_name => 'John Smith'
+        user.display_name = 'Jane Smith'
+        user.to_param.should == 'john-smith'
+      end
+    end
+  end
+
   describe 'emails association' do
     let(:user) { User.make! }
 

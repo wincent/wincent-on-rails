@@ -96,7 +96,14 @@ class User < ActiveRecord::Base
   end
 
   def to_param
-    User.parametrize display_name
+    if (display_name_changes = changes['display_name']) &&
+      !display_name_changes.first.nil?
+      User.parametrize display_name_changes.first
+    elsif display_name.nil?
+      nil
+    else
+      User.parametrize display_name
+    end
   end
 
 private
