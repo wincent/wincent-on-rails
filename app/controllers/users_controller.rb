@@ -35,9 +35,7 @@ class UsersController < ApplicationController
   end
 
   def update
-    # BUG: no constraints yet to prevent user "deleting" all their emails
-    # will have a race but still better than no check at all
-    @email = @user.update_emails :add => params[:user][:email], :delete => params[:delete_email]
+    @email = @user.update_emails :add => params[:user][:email], :delete => {}
     if @user.update_attributes params[:user]
       base_msg = 'Successfully updated'
       if @email
@@ -47,9 +45,6 @@ class UsersController < ApplicationController
         redirect_to @user
       end
     else
-      # if user deletes emails but also has validation errors,
-      # they will still see the emails when the form is reloaded, so get emails again
-      get_emails
       flash[:error] = 'Update failed'
       render :action => 'edit'
     end
