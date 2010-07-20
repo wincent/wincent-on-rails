@@ -1,12 +1,10 @@
 module ControllerSpecHelpers
   def log_in_as user
-    controller.instance_eval { @current_user = user }
-    stub(controller).log_in_before # don't let the before filter clear the user again
+    controller.instance_eval { self.set_current_user = user }
   end
 
   def log_in_as_admin
-    controller.instance_eval { @current_user = User.make! :superuser => true }
-    stub(controller).log_in_before # don't let the before filter clear the user again
+    log_in_as User.make!(:superuser => true)
   end
 
   def as_admin &block
