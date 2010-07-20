@@ -156,5 +156,58 @@ describe UsersController do
     end
 
     it_should_behave_like 'require_user'
+
+    context 'as a normal user' do
+      before do
+        log_in_as user
+      end
+
+      it 'finds and assigns the user' do
+        do_request
+        assigns[:user].should == user
+      end
+
+      it 'finds and assigns user emails' do
+        do_request
+        assigns[:emails].to_a.should == user.emails
+      end
+
+      it 'renders users/edit' do
+        do_request
+        response.should render_template('users/edit')
+      end
+
+      it 'succeeds' do
+        do_request
+        response.should be_success
+      end
+    end
+
+    context 'as an admin user' do
+      before do
+        log_in_as_admin
+      end
+
+      it 'succeeds' do
+        do_request
+        response.should be_success
+      end
+    end
+
+    context 'as a different user' do
+      before do
+        log_in_as User.make!
+      end
+
+      it 'shows a flash' do
+        do_request
+        cookie_flash['notice'].should =~ /not allowed to edit this user/
+      end
+
+      it 'redirects to user#show' do
+        do_request
+        response.should redirect_to(user)
+      end
+    end
   end
 end
