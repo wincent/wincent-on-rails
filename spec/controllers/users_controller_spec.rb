@@ -106,6 +106,8 @@ describe UsersController do
         do_post
         user = assigns[:user].reload
         user.session_expiry.should > Time.now
+        cookies['user_id'].should == user.id.to_s
+        cookies['session_key'].should == user.session_key
       end
     end
 
@@ -207,6 +209,106 @@ describe UsersController do
       it 'redirects to user#show' do
         do_request
         response.should redirect_to(user)
+      end
+    end
+  end
+
+  describe '#update' do
+    let(:user) { User.make! }
+
+    before do
+      @params = {
+          'display_name'  => 'Henry Krinkle',
+          'email'         => Sham.email_address
+        }
+    end
+
+    def do_request
+      put :update, {
+        :id     => user.to_param,
+        'user'  => @params
+      }
+    end
+
+    it_should_behave_like 'require_user'
+
+    context 'as a normal user' do
+      before do
+        log_in_as user
+      end
+
+      it 'updates emails' do
+        stub(User).find_with_param!(user.to_param) { user }
+        mock(user).update_emails is_a(Hash)
+        do_request
+      end
+
+      it 'updates attributes' do
+        stub(User).find_with_param!(user.to_param) { user }
+        mock(user).update_attributes @params
+        do_request
+      end
+
+      context 'new email address added' do
+        it 'creates a confirmation' do
+          do_request
+          user.emails.last.confirmations.size.should == 1
+        end
+
+        it 'creates a confirmation message' do
+          mock.proxy(ConfirmationMailer).confirmation_message(is_a Confirmation)
+          do_request
+        end
+
+        it 'delivers the confirmation message' do
+          mock(controller).deliver is_a(Mail::Message)
+          do_request
+        end
+
+        it 'redirects to /dashboard' do
+          do_request
+          response.should redirect_to('/dashboard')
+        end
+
+        it 'remains logged-in' do
+          do_request
+          user.reload.session_expiry.should > Time.now
+          cookies['user_id'].should == user.id.to_s
+          cookies['session_key'].should == user.session_key
+        end
+      end
+
+      context 'no new email address added' do
+        before do
+          @params.delete 'email'
+        end
+
+        it 'shows a flash' do
+          do_request
+          cookie_flash['notice'].should =~ /successfully updated/i
+        end
+
+        it 'redirects to #show' do
+          do_request
+          response.should redirect_to(user.reload)
+        end
+      end
+
+      context 'failed update' do
+        before do
+          stub(User).find_with_param!(user.to_param) { user }
+          stub(user).update_attributes { false }
+        end
+
+        it 'shows a flash' do
+          do_request
+          cookie_flash['error'].should =~ /update failed/i
+        end
+
+        it 'renders users/edit' do
+          do_request
+          response.should render_template('users/edit')
+        end
       end
     end
   end
