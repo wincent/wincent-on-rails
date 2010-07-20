@@ -76,18 +76,11 @@ class User < ActiveRecord::Base
   end
 
   def update_emails options = {}
-    remove_emails(options[:delete]) unless options[:delete].blank?
     add_email(options[:add]) unless options[:add].blank?
   end
 
   def add_email address
     emails.build :address => address
-  end
-
-  # The emails variable should be form input like {"1"=>"1", "408"=>"1"}, meaning "delete emails with ids 1 and 408"
-  def remove_emails emails
-    emails = emails.collect { |k, v| v == '1' ? k.to_i : nil }.select {|a| !a.nil? }
-    Email.update_all(['deleted_at = ?', Time.now], ['user_id = ? AND id IN (?)', self.id, emails]) if emails.length > 0
   end
 
   def self.find_with_param! param
