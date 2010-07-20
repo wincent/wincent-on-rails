@@ -104,7 +104,7 @@ describe UsersController do
 
       it 'logs in automatically' do
         do_post
-        user = assigns[:user].reload
+        user = assigns[:user]
         user.session_expiry.should > Time.now
         cookies['user_id'].should == user.id.to_s
         cookies['session_key'].should == user.session_key
