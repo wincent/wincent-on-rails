@@ -117,6 +117,11 @@ describe UsersController do
         do_post
       end
 
+      it 'finds and assigns emails' do
+        do_post
+        assigns[:emails].should == user.emails
+      end
+
       it 'shows a flash' do
         cookie_flash['error'].should =~ /failed to create/i
       end

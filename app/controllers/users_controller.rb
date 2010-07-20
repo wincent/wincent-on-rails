@@ -45,6 +45,7 @@ class UsersController < ApplicationController
         redirect_to @user
       end
     else
+      get_emails # going to render @emails
       flash[:error] = 'Update failed'
       render :action => 'edit'
     end
