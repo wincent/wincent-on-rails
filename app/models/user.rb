@@ -37,7 +37,9 @@ class User < ActiveRecord::Base
       model.errors.add att, 'must match existing passphrase on record'
     end
   end
-  after_save                :clear_passphrase
+
+  set_callback  :save,      :after, :clear_passphrase
+  set_callback  :validate,  :after, :check_association_errors
 
   # pull in User.digest and User.random_salt from Authentication module
   include ActiveRecord::Authentication
@@ -148,4 +150,11 @@ private
     @passphrase = nil
   end
 
+  def check_association_errors
+    unless errors[:emails].blank?
+      # want error to read "Email is invalid", not "Emails is invalid"
+      errors[:emails].each { |e| errors.add :email, e }
+      errors.delete :emails
+    end
+  end
 end

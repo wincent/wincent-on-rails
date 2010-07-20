@@ -175,3 +175,16 @@ describe User, 'validating the passphrase' do
     u.should fail_validation_for(:old_passphrase)
   end
 end
+
+describe User do
+  describe 'emails association' do
+    let(:user) { User.make! }
+
+    it 'reports validation errors as "Email ..."' do
+      user.emails.build :address => 'faulty'
+      user.should_not be_valid
+      user.errors[:emails].should be_empty          # would be: "Emails is invalid"
+      user.errors[:email].should == ['is invalid']  #  instead: "Email is invalid"
+    end
+  end
+end
