@@ -5,7 +5,7 @@
       -if m && m.errors.any?
         %h2
           =pluralize m.errors.count, 'error'
-          prevented this record from being saved
+          prevented this #{m.class.to_s.humanize} from being saved
         %ul
           -m.errors.each do |attribute, message|
             %li="#{attribute.to_s.gsub('.', '_').humanize} #{message}"
