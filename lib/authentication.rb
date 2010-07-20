@@ -36,7 +36,6 @@ module ActionController
     # actions.
     def log_in_before
       self.current_user = log_in_with_cookie or log_in_with_http_basic
-      true
     end
 
     # Intended for use as a before_filter to protect adminstrator-only
@@ -56,7 +55,6 @@ module ActionController
       unless logged_in?
         redirect_to_login 'You must be logged in to access the requested resource'
       end
-      true
     end
 
     def local_request?
