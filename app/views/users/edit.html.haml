@@ -21,9 +21,9 @@
             =link_to email.address, edit_user_email_path(@user, email)
           -else
             =mail_to email.address
-          -#=check_box_tag "delete_email[#{email.id}]"
-          -#delete
-          -# would be nice to offer the user an undo for this deletion on landing on the next page
+          -# TODO: add more info here and possibly a confirmation button
+          -# this could allow us to dump the confirmation#new action entirely
+          -#email.verified ? '(verified)' : '(unverified)'
     %li
       =f.label :email,
         annotation('Add a new email', 'a confirmation email will be sent to this address')
@@ -42,7 +42,6 @@
     -if admin?
       -# admins can manipulate some additional attributes at creation time
     %li=f.submit
-  -# TODO: consider adding an "undelete emails" button here
 .links
   =link_to 'user profile', user_path(@user)
   -if admin?
