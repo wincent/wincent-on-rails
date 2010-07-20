@@ -117,11 +117,6 @@ describe UsersController do
         do_post
       end
 
-      it 'finds and assigns emails' do
-        do_post
-        assigns[:emails].should == user.emails
-      end
-
       it 'shows a flash' do
         cookie_flash['error'].should =~ /failed to create/i
       end
@@ -303,6 +298,12 @@ describe UsersController do
         before do
           stub(User).find_with_param!(user.to_param) { user }
           stub(user).update_attributes { false }
+          @params.delete 'email'
+        end
+
+        it 'finds and assigns emails' do
+          do_request
+          assigns[:emails].to_a.should == user.emails
         end
 
         it 'shows a flash' do
