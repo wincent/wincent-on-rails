@@ -2,9 +2,7 @@
 =breadcrumbs link_to(@user.display_name, user_path(@path)),
   @page_title
 %h1.major=@page_title
--# BUG: same as elsewhere, if errors on both we get two divs with same "unique" ID
-=render 'shared/error_messages', :model => @user
-=render 'shared/error_messages', :model => @email
+=render 'shared/error_messages', :model => [@user, @email]
 =form_for @user do |f|
   %ul
     %li

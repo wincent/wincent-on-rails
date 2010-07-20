@@ -1,9 +1,11 @@
--# TODO: make sure we always have a model, then we can skip the nil check here
--if model && model.errors.any?
+-# TODO: have to make sure that model is never nil
+-if [model].flatten.any? {|m| m && m.errors.any? }
   #validation_errors
-    %h2
-      =pluralize model.errors.count, 'error'
-      prevented this record from being saved
-    %ul
-      -model.errors.each do |attribute, message|
-        %li="#{attribute.to_s.gsub('.', '_').humanize} #{message}"
+    -[model].flatten.each do |m|
+      -if m && m.errors.any?
+        %h2
+          =pluralize m.errors.count, 'error'
+          prevented this record from being saved
+        %ul
+          -m.errors.each do |attribute, message|
+            %li="#{attribute.to_s.gsub('.', '_').humanize} #{message}"

@@ -1,9 +1,7 @@
 -@page_title = 'Reset passphrase'
 =breadcrumbs @page_title
 %h1.major=@page_title
--# BUG: if there are errors for both user and reset well get two divs with same ID
-=render 'shared/error_messages', :model => @reset
-=render 'shared/error_messages', :model => @user
+=render 'shared/error_messages', :model => [@reset, @user]
 =form_for @reset do |f|
   %ul
     %li
