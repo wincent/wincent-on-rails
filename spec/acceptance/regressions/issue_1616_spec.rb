@@ -13,7 +13,6 @@ feature 'validation errors combined with permalink modifications' do
 
     fill_in 'Display name', :with => 'Longer Name'
     click_button 'Update User'
-    page.should_not have_content('Edit user')
-    page.should have_content('Public profile')
+    page.should have_content('Longer Name Public profile')
   end
 end
