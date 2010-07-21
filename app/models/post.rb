@@ -62,7 +62,7 @@ class Post < ActiveRecord::Base
   end
 
   def to_param
-    permalink
+    (changes['permalink'] && changes['permalink'].first) || permalink
   end
 
 private

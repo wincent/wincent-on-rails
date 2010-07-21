@@ -214,9 +214,19 @@ describe Post, 'autogeneration of permalink' do
   end
 end
 
-describe Post, 'parametrization' do
-  it 'should use the permalink as the param' do
-    permalink = Sham.random.downcase
-    Post.make(:permalink => permalink).to_param.should == permalink
+describe Post do
+  describe '#to_param' do
+    it 'uses the permalink as the param' do
+      permalink = Sham.random.downcase
+      Post.make(:permalink => permalink).to_param.should == permalink
+    end
+
+    context 'dirty record' do
+      it 'uses the old (stored on database) permalink as param' do
+        post = Post.make! :permalink => 'foo'
+        post.permalink = 'bar'
+        post.to_param.should == 'foo'
+      end
+    end
   end
 end
