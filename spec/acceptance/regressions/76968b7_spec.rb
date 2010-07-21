@@ -1,7 +1,7 @@
 require File.expand_path('../acceptance_helper', File.dirname(__FILE__))
 
-# Bug fixed in commit 76968b7.
-feature 'wiki article comments' do
+# bug fixed in commit 76968b7
+feature 'commenting on a wiki article with "strange" characters' do
   background do
     Article.make! :title => 'has <strange> stuff'
     @article_path     = '/wiki/has_%3Cstrange%3E_stuff'
