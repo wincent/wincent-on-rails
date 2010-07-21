@@ -31,25 +31,13 @@ platforms :ruby_18 do
     gem 'rcov'
     gem 'rr',             :git => 'git://github.com/btakita/rr.git'
     gem 'steak',          :git => 'git://github.com/cavalle/steak.git'
-
-    # Bundler BUG: these are only for JRuby, but we must still declare them
-    # here too if we want them to remain installed
-    # See: http://github.com/carlhuda/bundler/issues/461
-    gem 'celerity',       # :git => 'git://github.com/jarib/celerity.git',
-                          '>= 0.8.0.beta.1',
-                          :require => nil
-    gem 'jruby-openssl',  :require => nil
   end
 end
 
 platforms :jruby do
   group :test do
-    # Bundler BUG: must ':require => nil' here too, otherwise Bundler will
-    # try to require them even when running under MRI
-    # See: http://github.com/carlhuda/bundler/issues/461
     gem 'celerity',       # :git => 'git://github.com/jarib/celerity.git',
-                          '>= 0.8.0.beta.1',
-                          :require => nil
-    gem 'jruby-openssl',  :require => nil
+                          '>= 0.8.0.beta.1'
+    gem 'jruby-openssl'
   end
 end
