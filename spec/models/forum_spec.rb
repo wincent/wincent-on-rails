@@ -158,13 +158,6 @@ describe Forum, 'autogeneration of permalink' do
   end
 end
 
-describe Forum, 'parametrization' do
-  it 'should use the permalink as the param' do
-    permalink = Sham.random.downcase
-    Forum.make(:permalink => permalink).to_param.should == permalink
-  end
-end
-
 describe Forum do
   describe '#find_with_param! method' do
     before do
@@ -197,6 +190,27 @@ describe Forum do
       private_forum = Forum.make! :name => 'baz', :public => false
       Forum.find_with_param!('baz', :public => false).should == private_forum
       lambda { Forum.find_with_param!('baz', :public => true) }.should raise_error(ActiveRecord::RecordNotFound)
+    end
+  end
+
+  describe '#to_param' do
+    it 'uses the permalink as the param' do
+      permalink = Sham.random.downcase
+      Forum.make(:permalink => permalink).to_param.should == permalink
+    end
+
+    context 'new record' do
+      it 'returns nil' do
+        Forum.new.to_param.should be_nil
+      end
+    end
+
+    context 'dirty record' do
+      it 'returns the old permalink' do
+        forum = Forum.make! :permalink => 'foo'
+        forum.permalink = 'bar'
+        forum.to_param.should == 'foo'
+      end
     end
   end
 end

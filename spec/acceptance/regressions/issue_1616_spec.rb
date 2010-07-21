@@ -57,7 +57,14 @@ feature 'validation errors combined with permalink modifications' do
     page.should have_content('Public profile') # NOTE: this will change
   end
 
-  scenario 'editing a forum'
+  scenario 'editing a forum' do
+    visit edit_forum_path(Forum.make!)
+    fill_in 'Name', :with => '' # invalid!
+    click_button 'Update Forum'
+    pending 'implementation of #edit action'
+    page.should have_content("Name can't be blank")
+  end
+
   scenario 'editing a page'
   scenario 'editing a product'
   scenario 'editing a tag'
