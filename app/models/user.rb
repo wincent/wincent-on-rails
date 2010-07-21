@@ -92,18 +92,12 @@ class User < ActiveRecord::Base
   end
 
   def self.parametrize string
-    string.downcase.gsub ' ', '-'
+    string and string.downcase.gsub(' ', '-')
   end
 
   def to_param
-    if (display_name_changes = changes['display_name']) &&
-      !display_name_changes.first.nil?
-      User.parametrize display_name_changes.first
-    elsif display_name.nil?
-      nil
-    else
-      User.parametrize display_name
-    end
+    param = (changes['display_name'] && changes['display_name'].first)
+    User.parametrize(param || display_name)
   end
 
 private
