@@ -153,18 +153,6 @@ describe Article, 'validating the body' do
   end
 end
 
-describe Article, 'parametrization' do
-  it 'should use the title as the param' do
-    title = Sham.random
-    Article.make(:title => title).to_param.should == title
-  end
-
-  it 'should convert spaces into underscores' do
-    title = 'foo bar'
-    Article.make(:title => title).to_param.should == title.gsub(' ', '_')
-  end
-end
-
 describe Article, 'smart capitalization' do
   it 'should capitalize the first word only' do
     Article.smart_capitalize('foo bar').should == 'Foo bar'
@@ -305,6 +293,26 @@ describe Article do
         article = Article.make :redirect => '---> fun!', :body => ''
         article.save :validate => false
         article.redirection_url.should be_nil
+      end
+    end
+  end
+
+  describe '#to_param' do
+    it 'uses the title as the param' do
+      title = Sham.random
+      Article.make(:title => title).to_param.should == title
+    end
+
+    it 'converts spaces into underscores' do
+      title = 'foo bar'
+      Article.make(:title => title).to_param.should == title.gsub(' ', '_')
+    end
+
+    context 'dirty record' do
+      it 'uses the old title as param' do
+        article = Article.make! :title => 'foo'
+        article.title = 'bar'
+        article.to_param.should == 'foo'
       end
     end
   end

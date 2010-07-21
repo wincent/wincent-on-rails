@@ -20,8 +20,7 @@ feature 'validation errors combined with permalink modifications' do
   end
 
   scenario 'editing a post' do
-    post = Post.make!
-    visit edit_post_path(post)
+    visit edit_post_path(Post.make!)
     fill_in 'Title', :with => '' # invalid!
     fill_in 'Permalink', :with => 'new-permalink'
     click_button 'Update Post'
@@ -32,7 +31,17 @@ feature 'validation errors combined with permalink modifications' do
     page.should have_content('Valid title')
   end
 
-  scenario 'editing an article'
+  scenario 'editing an article' do
+    visit edit_article_path(Article.make!)
+    fill_in 'Title', :with => '' # invalid!
+    click_button 'Update Article'
+    page.should have_content("Title can't be blank")
+
+    fill_in 'Title', :with => 'Valid title'
+    click_button 'Update Article'
+    page.should have_content('Valid title')
+  end
+
   scenario 'editing a link'
   scenario 'editing an email'
   scenario 'editing a forum'

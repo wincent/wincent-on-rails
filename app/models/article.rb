@@ -114,6 +114,7 @@ class Article < ActiveRecord::Base
   end
 
   def to_param
-    Article.parametrize title
+    param = (changes['title'] && changes['title'].first) || title
+    Article.parametrize param
   end
 end
