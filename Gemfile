@@ -21,7 +21,7 @@ platforms :ruby_18 do
 
   group :test do
     gem 'autotest',       :require => nil
-    gem 'capybara',       :path => 'vendor/repos/capybara'
+    gem 'capybara',       :git => 'git://github.com/jnicklas/capybara.git'
     gem 'culerity'
     gem 'database_cleaner'
     gem 'hpricot'
