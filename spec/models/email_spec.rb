@@ -11,8 +11,16 @@ describe Email do
 
   describe 'parametrization' do
     it 'uses the email address as parameter' do
-      @email.address = 'nigel@example.com'
-      @email.to_param.should == 'nigel@example.com'
+      email = Email.make! :address => 'nigel@example.com'
+      email.to_param.should == 'nigel@example.com'
+    end
+
+    context 'dirty record' do
+      it 'uses the old address as param' do
+        email = Email.make! :address => 'old@example.com'
+        email.address = 'new@example.com'
+        email.to_param.should == 'old@example.com'
+      end
     end
   end
 

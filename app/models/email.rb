@@ -27,6 +27,6 @@ class Email < ActiveRecord::Base
   # BUG: we have an overly restrictive format requirement, but we kind of need
   # it as we are abusing the email address as a parameter
   def to_param
-    address
+    (changes['address'] && changes['address'].first) || address
   end
 end

@@ -10,6 +10,8 @@ class EmailsController < ApplicationController
     if @email.update_attributes params[:email]
       flash[:notice] = 'Successfully updated'
       redirect_to @user
+      # TODO: implement the #show action so we can do this instead:
+      #redirect_to [@email, @user]
     else
       flash[:error] = 'Update failed'
       render :action => :edit

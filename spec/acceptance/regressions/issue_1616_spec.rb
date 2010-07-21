@@ -42,8 +42,21 @@ feature 'validation errors combined with permalink modifications' do
     page.should have_content('Valid title')
   end
 
-  scenario 'editing a link'
-  scenario 'editing an email'
+  scenario 'editing a link' do
+    pending 'creation of links#edit template and controller action support'
+  end
+
+  scenario 'editing an email' do
+    visit edit_user_email_path(@user, @user.emails.first)
+    fill_in 'Address', :with => '' # invalid!
+    click_button 'Update Email'
+    page.should have_content("Address can't be blank")
+
+    fill_in 'Address', :with => 'valid@example.com'
+    click_button 'Update Email'
+    page.should have_content('Public profile') # NOTE: this will change
+  end
+
   scenario 'editing a forum'
   scenario 'editing a page'
   scenario 'editing a product'
