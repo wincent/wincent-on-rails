@@ -147,19 +147,18 @@ GEM
     wikitext (2.0)
 
 PLATFORMS
+  java
   ruby
 
 DEPENDENCIES
   autotest
   capybara!
   celerity (>= 0.8.0.beta.1)
-  celerity (>= 0.8.0.beta.1)
   culerity
   database_cleaner
   factory_girl_rails
   haml (= 3.0.12)
   hpricot
-  jruby-openssl
   jruby-openssl
   launchy
   mkdtemp
