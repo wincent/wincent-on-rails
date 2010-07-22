@@ -100,3 +100,25 @@ end
 describe Product, 'front_page scope' do
   pending
 end
+
+describe Product do
+  describe '#to_param' do
+    it 'returns the permalink' do
+      Product.make!(:permalink => 'foo').to_param.should == 'foo'
+    end
+
+    context 'new record' do
+      it 'returns nil' do
+        Product.new.to_param.should be_nil
+      end
+    end
+
+    context 'dirty record' do
+      it 'returns the old (in the database) permalink' do
+        product = Product.make! :permalink => 'foo'
+        product.permalink = 'bar'
+        product.to_param.should == 'foo'
+      end
+    end
+  end
+end

@@ -6,6 +6,27 @@ describe Page do
       Page.new.markup_type.should == Page::MarkupType::HTML
     end
   end
+
+  describe '#to_param' do
+    it 'returns permalink' do
+      page = Page.make! :permalink => 'foo'
+      page.to_param.should == 'foo'
+    end
+
+    context 'new record' do
+      it 'returns nil' do
+        Page.new.to_param.should == nil
+      end
+    end
+
+    context 'dirty record' do
+      it 'returns the old permalink' do
+        page = Page.make! :permalink => 'foo'
+        page.permalink = 'bar'
+        page.to_param.should == 'foo'
+      end
+    end
+  end
 end
 
 describe Page, 'validation' do

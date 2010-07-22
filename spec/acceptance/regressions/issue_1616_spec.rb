@@ -58,14 +58,35 @@ feature 'validation errors combined with permalink modifications' do
   end
 
   scenario 'editing a forum' do
+    pending 'implementation of #edit action'
     visit edit_forum_path(Forum.make!)
     fill_in 'Name', :with => '' # invalid!
     click_button 'Update Forum'
-    pending 'implementation of #edit action'
     page.should have_content("Name can't be blank")
   end
 
-  scenario 'editing a page'
-  scenario 'editing a product'
+  scenario 'editing a page', :js => true do
+    product = Product.make!
+    visit edit_product_page_path(product, Page.make!(:product => product))
+    fill_in 'Permalink', :with => '' # invalid!
+    click_button 'Update Page'
+    page.should have_content("Permalink can't be blank")
+
+    fill_in 'Permalink', :with => 'foo'
+    click_button 'Update Page'
+    page.should have_content('Successfully updated')
+  end
+
+  scenario 'editing a product', :js => true do
+    visit edit_product_path(Product.make!)
+    fill_in 'Permalink', :with => '' # invalid!
+    click_button 'Update Product'
+    page.should have_content ("Permalink can't be blank")
+
+    fill_in 'Permalink', :with => 'foo'
+    click_button 'Update Product'
+    page.should have_content('Successfully updated')
+  end
+
   scenario 'editing a tag'
 end

@@ -20,7 +20,7 @@ class Product < ActiveRecord::Base
   end
 
   def to_param
-    self.permalink
+    (changes['permalink'] && changes['permalink'].first) || permalink
   end
 
 private

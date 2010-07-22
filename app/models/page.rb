@@ -17,7 +17,7 @@ class Page < ActiveRecord::Base
   # TODO: acts_as_searchable :attributes => [:body, :title] (will require HTML tokenization)
 
   def to_param
-    self.permalink
+    (changes['permalink'] && changes['permalink'].first) || permalink
   end
 
   def body_html
