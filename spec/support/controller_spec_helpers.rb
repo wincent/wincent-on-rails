@@ -18,6 +18,7 @@ module ControllerSpecHelpers
 
   def cookie_flash
     return {} unless cookies['flash']
-    ActiveSupport::JSON.decode(CGI::unescape(cookies['flash']))
+    HashWithIndifferentAccess.new \
+      ActiveSupport::JSON.decode(CGI::unescape(cookies['flash']))
   end
 end
