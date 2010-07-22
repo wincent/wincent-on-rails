@@ -1,13 +1,20 @@
 class TagsController < ApplicationController
+  before_filter :require_admin, :only => [:edit, :update]
+  before_filter :get_tag, :only => [:show, :edit]
+
   def index
     # BUG: information leak here (should really exclude tags which apply to items we can't access)
     @tags = Tag.where('taggings_count > 0').order('name')
   end
 
   def show
-    @tag            = Tag.find_by_name! params[:id]
     @taggables      = Tagging.grouped_taggables_for_tag @tag, current_user, params[:type]
     @reachable_tags = Tag.tags_reachable_from_tags @tag
+  end
+
+  # admin only
+  def edit
+    render
   end
 
   # NOTE/BUG: can never have a tag named "search"
@@ -34,4 +41,7 @@ private
     super tags_path
   end
 
+  def get_tag
+    @tag = Tag.find_by_name! params[:id]
+  end
 end
