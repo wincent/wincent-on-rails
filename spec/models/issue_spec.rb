@@ -15,30 +15,21 @@ describe Issue do
     issue.reload
     issue.description.length.should == length
   end
+
+  let(:commentable) { Issue.make! }
+  it_has_behavior 'commentable'
+  it_has_behavior 'commentable (updating timestamps for comment changes)'
+
+  it_has_behavior 'taggable' do
+    let(:model) { Issue.make! }
+    let(:new_model) { Issue.make }
+  end
 end
 
 describe Issue, 'creation' do
   it 'should default to accepting comments' do
     Issue.make.accepts_comments.should == true
   end
-end
-
-describe Issue, 'acting as commentable' do
-  before do
-    @commentable = Issue.make!
-  end
-
-  it_should_behave_like 'Commentable'
-  it_should_behave_like 'Commentable updating timestamps for comment changes'
-end
-
-describe Issue, 'acting as taggable' do
-  before do
-    @object     = Issue.make!
-    @new_object = Issue.make
-  end
-
-  it_should_behave_like 'ActiveRecord::Acts::Taggable'
 end
 
 # :summary, :description, :public, :product_id, :kind

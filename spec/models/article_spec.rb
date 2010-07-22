@@ -33,24 +33,6 @@ describe Article, 'comments association' do
   end
 end
 
-describe Article, 'acting as commentable' do
-  before do
-    @commentable = Article.make!
-  end
-
-  it_should_behave_like 'Commentable'
-  it_should_behave_like 'Commentable not updating timestamps for comment changes'
-end
-
-describe Article, 'acting as taggable' do
-  before do
-    @object     = Article.make!
-    @new_object = Article.make
-  end
-
-  it_should_behave_like 'ActiveRecord::Acts::Taggable'
-end
-
 # :title, :redirect, :body, :public, :accepts_comments, :pending_tags
 describe Article, 'accessible attributes' do
   it 'should allow mass-assignment to the title' do
@@ -168,6 +150,15 @@ describe Article, 'smart capitalization' do
 end
 
 describe Article do
+  let(:commentable) { Article.make! }
+  it_has_behavior 'commentable'
+  it_has_behavior 'commentable (not updating timestamps for comment changes)'
+
+  it_has_behavior 'taggable' do
+    let(:model) { Article.make! }
+    let(:new_model) { Article.make }
+  end
+
   describe '#find_with_param!' do
     before do
       @public = Article.make! :title => 'foo'

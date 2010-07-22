@@ -1,7 +1,7 @@
 require File.expand_path('../spec_helper', File.dirname(__FILE__))
 
 describe ResetsController do
-  it_should_behave_like 'ApplicationController protected methods'
+  it_has_behavior 'ApplicationController protected methods'
 
   describe '#new' do
     it 'assigns a new reset' do

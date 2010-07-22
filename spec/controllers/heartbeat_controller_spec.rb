@@ -1,7 +1,7 @@
 require File.expand_path('../spec_helper', File.dirname(__FILE__))
 
 describe HeartbeatController do
-  it_should_behave_like 'ApplicationController protected methods'
+  it_has_behavior 'ApplicationController protected methods'
 
   it 'suppresses logging' do
     controller.logger.should be_nil

@@ -20,6 +20,18 @@ describe Topic do
     topic.body.length.should == length
   end
 
+  it_has_behavior '#moderate_as_ham!' do
+    let(:model) { Topic.make! :awaiting_moderation => true }
+  end
+
+  let(:commentable) { Topic.make! }
+  it_has_behavior 'commentable'
+  it_has_behavior 'commentable (updating timestamps for comment changes)'
+
+  it_has_behavior 'taggable' do
+    let(:model) { Topic.make! }
+    let(:new_model) { Topic.make }
+  end
 end
 
 describe Topic, 'validating the body' do
@@ -126,32 +138,6 @@ describe Topic, 'comments association' do
     10.times { add_comment }
     lambda { @topic.destroy }.should change(Comment, :count).by(-10)
   end
-end
-
-describe Topic, 'acting as classifiable ("moderate_as_ham!" method)' do
-  before do
-    @object = Topic.make! :awaiting_moderation => true
-  end
-
-  it_should_behave_like 'ActiveRecord::Acts::Classifiable "moderate_as_ham!" method'
-end
-
-describe Topic, 'acting as commentable' do
-  before do
-    @commentable = Topic.make!
-  end
-
-  it_should_behave_like 'Commentable'
-  it_should_behave_like 'Commentable updating timestamps for comment changes'
-end
-
-describe Topic, 'acting as taggable' do
-  before do
-    @object     = Topic.make!
-    @new_object = Topic.make
-  end
-
-  it_should_behave_like 'ActiveRecord::Acts::Taggable'
 end
 
 describe Topic, '"find_topics_for_forum" method' do

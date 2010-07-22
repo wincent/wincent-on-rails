@@ -2,7 +2,7 @@ require File.expand_path('../spec_helper', File.dirname(__FILE__))
 require 'hpricot'
 
 describe TweetsController do
-  it_should_behave_like 'ApplicationController protected methods'
+  it_has_behavior 'ApplicationController protected methods'
 end
 
 # For an explanation of why I test this controller in two ways,

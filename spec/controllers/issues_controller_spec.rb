@@ -2,7 +2,7 @@ require File.expand_path('../spec_helper', File.dirname(__FILE__))
 require 'hpricot'
 
 describe IssuesController do
-  it_should_behave_like 'ApplicationController protected methods'
+  it_has_behavior 'ApplicationController protected methods'
 end
 
 describe IssuesController, 'GET /issues/search' do

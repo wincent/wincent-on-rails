@@ -13,30 +13,21 @@ describe Tweet do
   it 'should default to accepting comments' do
     Tweet.make.accepts_comments.should == true
   end
+
+  let(:commentable) { Tweet.make! }
+  it_has_behavior 'commentable'
+  it_has_behavior 'commentable (not updating timestamps for comment changes)'
+
+  it_has_behavior 'taggable' do
+    let(:model) { Tweet.make! }
+    let(:new_model) { Tweet.make }
+  end
 end
 
 describe Tweet, 'comments association' do
   it 'should respond to the comments message' do
     Tweet.make!.comments.should == []
   end
-end
-
-describe Tweet, 'acting as commentable' do
-  before do
-    @commentable = Tweet.make!
-  end
-
-  it_should_behave_like 'Commentable'
-  it_should_behave_like 'Commentable not updating timestamps for comment changes'
-end
-
-describe Tweet, 'acting as taggable' do
-  before do
-    @object     = Tweet.make!
-    @new_object = Tweet.make
-  end
-
-  it_should_behave_like 'ActiveRecord::Acts::Taggable'
 end
 
 describe Tweet, 'validation' do

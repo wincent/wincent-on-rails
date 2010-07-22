@@ -31,24 +31,6 @@ describe Post, 'comments association' do
   end
 end
 
-describe Post, 'acting as commentable' do
-  before do
-    @commentable = Post.make!
-  end
-
-  it_should_behave_like 'Commentable'
-  it_should_behave_like 'Commentable not updating timestamps for comment changes'
-end
-
-describe Post, 'acting as taggable' do
-  before do
-    @object     = Post.make!
-    @new_object = Post.make
-  end
-
-  it_should_behave_like 'ActiveRecord::Acts::Taggable'
-end
-
 # :title, :permalink, :excerpt, :body, :public, :accepts_comments, :pending_tags
 describe Post, 'accessible attributes' do
   it 'should allow mass-assignment to the title' do
@@ -215,6 +197,15 @@ describe Post, 'autogeneration of permalink' do
 end
 
 describe Post do
+  let(:commentable) { Post.make! }
+  it_has_behavior 'commentable'
+  it_has_behavior 'commentable (not updating timestamps for comment changes)'
+
+  it_has_behavior 'taggable' do
+    let(:model) { Post.make! }
+    let(:new_model) { Post.make }
+  end
+
   describe '#to_param' do
     it 'uses the permalink as the param' do
       permalink = Sham.random.downcase

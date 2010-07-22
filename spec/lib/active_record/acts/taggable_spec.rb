@@ -25,17 +25,15 @@ describe ActiveRecord::Acts::Taggable, 'shared' do
     setup_db
   end
 
-  before do
-    @object     = ActsAsTaggableTestModel.create
-    @new_object = ActsAsTaggableTestModel.new
-  end
-
   after(:all) do
     ActsAsTaggableTestModel.destroy_all
     teardown_db
   end
 
-  it_should_behave_like 'ActiveRecord::Acts::Taggable'
+  it_has_behavior 'taggable' do
+    let(:model) { ActsAsTaggableTestModel.create }
+    let(:new_model) { ActsAsTaggableTestModel.new }
+  end
 end
 
 describe ActiveRecord::Acts::Taggable, 'adding tag(s)' do

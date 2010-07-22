@@ -12,7 +12,7 @@ shared_examples_for 'redirect_to_login' do
 end
 
 shared_examples_for 'require_admin' do
-  it_should_behave_like 'redirect_to_login'
+  it_has_behavior 'redirect_to_login'
 
   it 'shows a flash' do
     do_request
@@ -33,7 +33,7 @@ shared_examples_for 'require_admin (non-HTML)' do
 end
 
 shared_examples_for 'require_user' do
-  it_should_behave_like 'redirect_to_login'
+  it_has_behavior 'redirect_to_login'
 
   it 'shows a flash' do
     do_request

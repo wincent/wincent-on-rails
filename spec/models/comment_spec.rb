@@ -15,14 +15,10 @@ describe Comment do
     comment.reload
     comment.body.length.should == length
   end
-end
 
-describe Comment, 'acting as classifiable ("moderate_as_ham!" method)' do
-  before do
-    @object = Comment.make! :awaiting_moderation => true
+  it_has_behavior '#moderate_as_ham!' do
+    let(:model) { Comment.make! :awaiting_moderation => true }
   end
-
-  it_should_behave_like 'ActiveRecord::Acts::Classifiable "moderate_as_ham!" method'
 end
 
 describe Comment, 'validating the body' do

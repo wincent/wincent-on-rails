@@ -6,14 +6,7 @@ describe Admin::ForumsController do
       get :index
     end
 
-    it_should_behave_like 'require_admin'
-    # TODO: after RSpec 2.0.0.beta.18 comes out, this will become,
-    # either with or without the block:
-    #   it_has_behavior 'require_admin' do
-    #     def do_request
-    #       get :index
-    #     end
-    #   end
+    it_has_behavior 'require_admin'
 
     context 'as admin' do
       before do
@@ -43,7 +36,7 @@ describe Admin::ForumsController do
       get :show, :id => @forum.id, :format => :js
     end
 
-    it_should_behave_like 'require_admin (non-HTML)'
+    it_has_behavior 'require_admin (non-HTML)'
 
     context 'as admin' do
       before do
@@ -86,7 +79,7 @@ describe Admin::ForumsController do
       put :update, :id => @forum.id, :forum => { :description => 'foo' }, :format => :js
     end
 
-    it_should_behave_like 'require_admin (non-HTML)'
+    it_has_behavior 'require_admin (non-HTML)'
 
     context 'as admin' do
       before do

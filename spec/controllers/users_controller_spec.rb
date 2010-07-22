@@ -6,7 +6,7 @@ describe UsersController do
       get :index
     end
 
-    it_should_behave_like 'require_admin'
+    it_has_behavior 'require_admin'
 
     context 'as admin' do
       before do
@@ -157,7 +157,7 @@ describe UsersController do
       get :edit, :id => user.to_param
     end
 
-    it_should_behave_like 'require_user'
+    it_has_behavior 'require_user'
 
     context 'as a normal user' do
       before do
@@ -230,7 +230,7 @@ describe UsersController do
       }
     end
 
-    it_should_behave_like 'require_user'
+    it_has_behavior 'require_user'
 
     context 'as a normal user' do
       before do
