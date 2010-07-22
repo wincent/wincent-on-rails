@@ -89,6 +89,13 @@ feature 'validation errors combined with permalink modifications' do
   end
 
   scenario 'editing a tag' do
-    pending 'implementation of tags#edit action'
+    visit edit_tag_path(Tag.make!)
+    fill_in 'Name', :with => '' # invalid!
+    click_button 'Update Tag'
+    page.should have_content("Name can't be blank")
+
+    fill_in 'Name', :with => 'foobar'
+    click_button 'Update Tag'
+    page.should have_content('foobar')
   end
 end
