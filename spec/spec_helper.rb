@@ -11,6 +11,7 @@ RSpec.configure do |config|
   config.mock_framework = :rr
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
   config.use_transactional_fixtures = true
+  config.alias_it_should_behave_like_to :it_has_behavior, 'has behavior:'
   config.include ControllerSpecHelpers, :example_group => {
     :file_path => %r{\bspec/controllers/}
   }
