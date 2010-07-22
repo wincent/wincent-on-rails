@@ -248,4 +248,24 @@ describe Tag do
       Tag.find_with_tag_names().should == []
     end
   end
+
+  describe '#to_param' do
+    it 'returns the name' do
+      Tag.make!(:name => 'foo').to_param.should == 'foo'
+    end
+
+    context 'new record' do
+      it 'returns nil' do
+        Tag.new.to_param.should be_nil
+      end
+    end
+
+    context 'dirty record' do
+      it 'returns the old (in the database) name' do
+        tag = Tag.make! :name => 'foo'
+        tag.name = 'bar'
+        tag.to_param.should == 'foo'
+      end
+    end
+  end
 end

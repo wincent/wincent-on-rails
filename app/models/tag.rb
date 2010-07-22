@@ -24,7 +24,7 @@ class Tag < ActiveRecord::Base
   end
 
   def to_param
-    name
+    (changes['name'] && changes['name'].first) || name
   end
 
   def self.find_with_tag_names *tag_names

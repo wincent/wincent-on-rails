@@ -88,5 +88,7 @@ feature 'validation errors combined with permalink modifications' do
     page.should have_content('Successfully updated')
   end
 
-  scenario 'editing a tag'
+  scenario 'editing a tag' do
+    pending 'implementation of tags#edit action'
+  end
 end
