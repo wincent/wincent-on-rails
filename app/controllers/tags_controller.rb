@@ -1,6 +1,6 @@
 class TagsController < ApplicationController
   before_filter :require_admin, :only => [:edit, :update]
-  before_filter :get_tag, :only => [:show, :edit]
+  before_filter :get_tag, :only => [:show, :edit, :update]
 
   def index
     # BUG: information leak here (should really exclude tags which apply to items we can't access)
@@ -15,6 +15,17 @@ class TagsController < ApplicationController
   # admin only
   def edit
     render
+  end
+
+  # admin only
+  def update
+    if @tag.update_attributes params[:tag]
+      flash[:notice] = 'Successfully updated'
+      redirect_to @tag
+    else
+      flash[:error] = 'Update failed'
+      render :action => :edit
+    end
   end
 
   # NOTE/BUG: can never have a tag named "search"

@@ -56,6 +56,93 @@ describe TagsController do
     end
   end
 
+  describe '#edit' do
+    let(:tag) { Tag.make! }
+
+    def do_request
+      get :edit, :id => tag.to_param
+    end
+
+    it_has_behavior 'require_admin'
+
+    context 'as an admin user' do
+      before do
+        log_in_as_admin
+      end
+
+      it 'finds and assigns the tag' do
+        do_request
+        assigns[:tag].should == tag
+      end
+
+      it 'renders tags/edit' do
+        do_request
+        response.should render_template('tags/edit')
+      end
+
+      it 'succeeds' do
+        do_request
+        response.should be_success
+      end
+    end
+  end
+
+  describe '#update' do
+    let(:tag) { Tag.make! }
+
+    before do
+      @params = { 'name' => 'foo' }
+    end
+
+    def do_request
+      put :update, :id => tag.to_param, :tag => @params
+    end
+
+    it_has_behavior 'require_admin'
+
+    context 'admin user' do
+      before do
+        log_in_as_admin
+      end
+
+      it 'finds and assigns the tag' do
+        do_request
+        assigns[:tag].should == tag
+      end
+
+      it 'updates the attributes' do
+        do_request
+        assigns[:tag].name.should == 'foo'
+      end
+
+      it 'shows a flash' do
+        do_request
+        cookie_flash[:notice].should =~ /successfully updated/i
+      end
+
+      it 'redirects to #show' do
+        do_request
+        response.should redirect_to('/tags/foo')
+      end
+
+      context 'failed update' do
+        before do
+          stub(Tag).find_by_name!(tag.name).stub!.update_attributes { false }
+        end
+
+        it 'shows a flash' do
+          do_request
+          cookie_flash[:error].should =~ /update failed/i
+        end
+
+        it 'renders #edit' do
+          do_request
+          response.should render_template('tags/edit')
+        end
+      end
+    end
+  end
+
   describe '#search' do
     before do
       Article.make!.tag 'foo'
