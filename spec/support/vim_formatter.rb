@@ -23,7 +23,7 @@ module RSpec
           end
         end
 
-        def dump_summary; end
+        def dump_summary *args; end
 
         def dump_pending; end
 
