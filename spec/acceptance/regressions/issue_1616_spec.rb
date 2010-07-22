@@ -81,7 +81,7 @@ feature 'validation errors combined with permalink modifications' do
     visit edit_product_path(Product.make!)
     fill_in 'Permalink', :with => '' # invalid!
     click_button 'Update Product'
-    page.should have_content ("Permalink can't be blank")
+    page.should have_content("Permalink can't be blank")
 
     fill_in 'Permalink', :with => 'foo'
     click_button 'Update Product'
