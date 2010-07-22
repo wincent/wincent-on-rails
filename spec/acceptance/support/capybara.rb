@@ -7,5 +7,5 @@ Capybara.javascript_driver = :culerity
 Capybara.default_selector = :css
 
 RSpec.configure do |config|
-  config.include Capybara
+  config.include Capybara, :type => :acceptance
 end
