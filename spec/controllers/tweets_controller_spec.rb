@@ -292,7 +292,7 @@ describe TweetsController, 'POST /twitter' do
 
   it 'should flash an error on failure' do
     do_failed_post
-    cookie_flash['error'].should =~ /Failed/
+    cookie_flash[:error].should =~ /Failed/
   end
 
   it 'should render the #new template on failure' do
@@ -494,7 +494,7 @@ describe TweetsController, 'PUT /twitter/:id' do
 
   it 'should flash an error on failure' do
     do_failed_update
-    cookie_flash['error'].should =~ /failed/
+    cookie_flash[:error].should =~ /failed/
   end
 
   it 'should render the #edit template on failure' do

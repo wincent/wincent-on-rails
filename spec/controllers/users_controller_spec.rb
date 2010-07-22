@@ -118,7 +118,7 @@ describe UsersController do
       end
 
       it 'shows a flash' do
-        cookie_flash['error'].should =~ /failed to create/i
+        cookie_flash[:error].should =~ /failed to create/i
       end
 
       it 'renders users/new' do
@@ -203,7 +203,7 @@ describe UsersController do
 
       it 'shows a flash' do
         do_request
-        cookie_flash['notice'].should =~ /not allowed to edit this user/
+        cookie_flash[:notice].should =~ /not allowed to edit this user/
       end
 
       it 'redirects to user#show' do
@@ -285,7 +285,7 @@ describe UsersController do
 
         it 'shows a flash' do
           do_request
-          cookie_flash['notice'].should =~ /successfully updated/i
+          cookie_flash[:notice].should =~ /successfully updated/i
         end
 
         it 'redirects to #show' do
@@ -308,7 +308,7 @@ describe UsersController do
 
         it 'shows a flash' do
           do_request
-          cookie_flash['error'].should =~ /update failed/i
+          cookie_flash[:error].should =~ /update failed/i
         end
 
         it 'renders users/edit' do

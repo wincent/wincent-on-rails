@@ -199,7 +199,7 @@ describe IssuesController, 'PUT /issues/:id (html format)' do
     stub(@issue).save { true }
     stub(Issue).find() { @issue }
     do_put
-    cookie_flash['notice'].should =~ /Successfully updated/
+    cookie_flash[:notice].should =~ /Successfully updated/
   end
 
   it 'should redirect to the issue path on success for comments not awaiting moderation' do
@@ -222,7 +222,7 @@ describe IssuesController, 'PUT /issues/:id (html format)' do
     stub(@issue).save { false }
     stub(Issue).find() { @issue }
     do_put
-    cookie_flash['error'].should =~ /Update failed/
+    cookie_flash[:error].should =~ /Update failed/
   end
 
   it 'should render the edit template again on failure' do

@@ -64,12 +64,12 @@ describe TagsController do
 
     it 'trims excess tags (more than 10)' do
       get :search, :q => '1 2 3 4 5 6 7 8 9 10 11'
-      cookie_flash['notice'].should =~ /excess tags stripped/i
+      cookie_flash[:notice].should =~ /excess tags stripped/i
     end
 
     it 'excludes non-existent tags' do
       get :search, :q => 'foo bar'
-      cookie_flash['notice'].should =~ /non-existent tags excluded/i
+      cookie_flash[:notice].should =~ /non-existent tags excluded/i
     end
 
     it 'finds and assigns tags' do

@@ -46,7 +46,7 @@ describe CommentsController, 'GET /comments/:id/edit logged in as normal user' d
     log_in
     get :edit, :id => @comment.id
     response.should redirect_to(login_path)
-    cookie_flash['notice'].should =~ /requires administrator privileges/
+    cookie_flash[:notice].should =~ /requires administrator privileges/
   end
 end
 
@@ -60,7 +60,7 @@ describe CommentsController, 'GET /comments/:id/edit as an anonymous visitor' do
   it 'denies access to the "edit" action' do
     get :edit, :id => @comment.id
     response.should redirect_to(login_path)
-    cookie_flash['notice'].should =~ /requires administrator privileges/
+    cookie_flash[:notice].should =~ /requires administrator privileges/
   end
 end
 
@@ -94,7 +94,7 @@ describe CommentsController, 'PUT /comments/:id logged in as admin' do
     stub(@comment).save { true }
     stub(Comment).find() { @comment }
     do_put
-    cookie_flash['notice'].should =~ /Successfully updated/
+    cookie_flash[:notice].should =~ /Successfully updated/
   end
 
   it 'redirects to the comment path on success for comments not awaiting moderation' do
@@ -116,7 +116,7 @@ describe CommentsController, 'PUT /comments/:id logged in as admin' do
     stub(@comment).save { false }
     stub(Comment).find() { @comment }
     do_put
-    cookie_flash['error'].should =~ /Update failed/
+    cookie_flash[:error].should =~ /Update failed/
   end
 
   it 'renders the edit template again on failure' do
