@@ -58,7 +58,7 @@ describe 'tweets/edit.html.haml' do
     end
   end
 
-  it 'has an link to the tweets index' do
+  it 'has a link to the tweets index' do
     render
     rendered.should have_selector(".links a[href='/twitter']")
   end
