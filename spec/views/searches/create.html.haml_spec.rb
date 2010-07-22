@@ -79,9 +79,7 @@ describe 'searches/create' do
     before do
       @models = Array.new(60) { Issue.make! }
       @offset = 20
-      # RSpec 2 BUG: undefined local variable or method `params'
-      #   http://github.com/rspec/rspec-rails/issues/126
-      #params[:query] = 'foo'
+      @query = 'foo'
     end
 
     it 'displays a "more results" form button' do
@@ -89,7 +87,6 @@ describe 'searches/create' do
       rendered.should have_selector('form', :action => '/search') do |form|
         form.should have_selector('input[type=hidden][name=offset]', :value => (@offset + 20).to_s)
         form.should have_selector('input[type=submit]', :value => 'more results...')
-        pending 'rspec-rails issue #126'
         form.should have_selector('input[type=hidden][name=query]', :value => 'foo')
       end
     end
