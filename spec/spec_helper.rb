@@ -25,3 +25,9 @@ RSpec.configure do |config|
     %r{/\.bundle/}
   ]
 end
+
+# Bundler regression: http://github.com/carlhuda/bundler/issues/issue/478
+# beta 1.0.0.beta.9 breaks acceptance tests involving Celerity
+if ENV['RUBYOPT']
+  ENV['RUBYOPT'] = ENV['RUBYOPT'].gsub(%r{-r\s*bundler/setup}, '')
+end
