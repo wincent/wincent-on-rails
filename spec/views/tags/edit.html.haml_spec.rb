@@ -31,6 +31,7 @@ describe 'tags/edit' do
   end
 
   it 'has a "destroy" link' do
+    # NOTE: this is a bit silly as #destroy action isn't implemented yet
     render
     rendered.should have_selector('.links form', :action=> tag_path(@tag)) do |form|
       form.should have_selector('input[name=_method][value=delete]')
@@ -40,6 +41,6 @@ describe 'tags/edit' do
 
   it 'has an "all tags" link' do
     render
-    rendered.should have_selector('.links a', :href => tags_path, :content => 'all tags')
+    rendered.should have_selector('.links a', :href => '/tags', :content => 'all tags')
   end
 end
