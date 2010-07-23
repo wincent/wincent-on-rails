@@ -1,0 +1,27 @@
+-@page_title = 'Edit forum'
+=breadcrumbs link_to('Forums', forums_path),
+  link_to(@forum.name, @forum),
+  @page_title
+%h1.major=@page_title
+=render 'shared/error_messages', :model => @forum
+=form_for @forum do |f|
+  %ul
+    %li
+      =f.label :name
+      =f.text_field :name
+    %li
+      =f.label :permalink
+      =f.text_field :permalink
+    %li
+      =f.label :description
+      =f.text_field :description
+    %li
+      =f.label :position
+      =f.text_field :position
+    %li
+      =f.label :public, 'Public?'
+      =f.check_box :public
+    %li=f.submit
+.links
+  =link_to 'show', @forum
+  =link_to 'all forums', forums_path

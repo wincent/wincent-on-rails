@@ -57,12 +57,15 @@ feature 'validation errors combined with permalink modifications' do
     page.should have_content('Public profile') # NOTE: this will change
   end
 
-  scenario 'editing a forum' do
-    pending 'implementation of #edit action'
+  scenario 'editing a forum', :js => true do
     visit edit_forum_path(Forum.make!)
-    fill_in 'Name', :with => '' # invalid!
+    fill_in 'Permalink', :with => '_' # invalid!
     click_button 'Update Forum'
-    page.should have_content("Name can't be blank")
+    page.should have_content('Permalink must contain')
+
+    fill_in 'Permalink', :with => 'foo'
+    click_button 'Update Forum'
+    page.should have_content('Successfully updated')
   end
 
   scenario 'editing a page', :js => true do

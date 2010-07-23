@@ -12,7 +12,7 @@ class Forum < ActiveRecord::Base
                           :with => /\A[a-z0-9\-]+\z/,
                           :message => 'must contain only lowercase letters, numbers and hyphens'
   validates_uniqueness_of :permalink
-  attr_accessible         :name, :description, :permalink, :position
+  attr_accessible         :name, :description, :permalink, :position, :public
   before_create           :set_position
   before_validation       :set_permalink
 
