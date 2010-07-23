@@ -1,4 +1,4 @@
-module RoutingSpecHelpers
+module RoutingExampleGroupHelpers
   extend ActiveSupport::Concern
   extend RSpec::Matchers::DSL
 

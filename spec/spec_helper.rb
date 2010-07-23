@@ -12,13 +12,13 @@ RSpec.configure do |config|
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
   config.use_transactional_fixtures = true
   config.alias_it_should_behave_like_to :it_has_behavior, 'has behavior:'
-  config.include ControllerSpecHelpers, :example_group => {
+  config.include ControllerExampleGroupHelpers, :example_group => {
     :file_path => %r{\bspec/controllers/}
   }
-  config.include RoutingSpecHelpers, :example_group => {
+  config.include RoutingExampleGroupHelpers, :example_group => {
     :file_path => %r{\bspec/routing/}
   }
-  config.include ViewSpecHelpers, :example_group => {
+  config.include ViewExampleGroupHelpers, :example_group => {
     :file_path => %r{\bspec/views/}
   }
   config.backtrace_clean_patterns = config.backtrace_clean_patterns + [

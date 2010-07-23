@@ -1,4 +1,4 @@
-module ViewSpecHelpers
+module ViewExampleGroupHelpers
   extend ActiveSupport::Concern
 
   module ClassMethods
