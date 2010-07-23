@@ -27,4 +27,89 @@ describe LinksController do
       get :show, :id => @link.id
     end
   end
+
+  describe '#edit' do
+    let(:link) { Link.make! }
+
+    def do_request
+      get :edit, :id => link.to_param
+    end
+
+    it_has_behavior 'require_admin'
+
+    context 'admin user' do
+      before do
+        log_in_as_admin
+      end
+
+      it 'finds and assigns the link' do
+        do_request
+        assigns[:link].should == link
+      end
+
+      it 'renders links/edit' do
+        do_request
+        response.should render_template('links/edit')
+      end
+
+      it 'succeeds' do
+        do_request
+        response.should be_success
+      end
+    end
+  end
+
+  describe '#update (HTML format)' do
+    let(:link) { Link.make! }
+    let(:attributes) { { 'uri' => 'http://example.com/', 'permalink' => 'foo' } }
+
+    def do_request
+      put :update, :id => link.to_param, :link => attributes
+    end
+
+    it_has_behavior 'require_admin'
+
+    context 'admin user' do
+      before do
+        log_in_as_admin
+      end
+
+      it 'finds and assigns the link' do
+        do_request
+        assigns[:link].should == link
+      end
+
+      it 'updates the attributes' do
+        do_request
+        assigns[:link].uri.should == 'http://example.com/'
+        assigns[:link].permalink.should == 'foo'
+      end
+
+      it 'shows a flash' do
+        do_request
+        cookie_flash[:notice].should =~ /successfully updated/i
+      end
+
+      it 'redirects to /links' do
+        do_request
+        response.should redirect_to('/links')
+      end
+
+      context 'failed updated' do
+        before do
+          stub(Link).find_by_permalink(link.to_param).stub!.update_attributes { false }
+        end
+
+        it 'shows a flash' do
+          do_request
+          cookie_flash[:error].should =~ /update failed/i
+        end
+
+        it 'renders links/edit' do
+          do_request
+          response.should render_template('links/edit')
+        end
+      end
+    end
+  end
 end

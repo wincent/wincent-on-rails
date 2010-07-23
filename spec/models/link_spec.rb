@@ -53,15 +53,31 @@ describe Link, 'protected attributes' do
   end
 end
 
-describe Link, 'parametrization' do
-  it 'should use permalink as param if available' do
-    link = Link.make!
-    link.to_param.should == link.permalink
-  end
+describe Link  do
+  describe '#to_param' do
+    it 'uses permalink as param if available' do
+      link = Link.make!
+      link.to_param.should == link.permalink
+    end
 
-  it 'should use id as param if permalink not available' do
-    link = Link.make! :permalink => nil
-    link.to_param.should == link.id
+    it 'uses id as param if permalink not available' do
+      link = Link.make! :permalink => nil
+      link.to_param.should == link.id
+    end
+
+    context 'new record' do
+      it 'returns nil' do
+        Link.new.to_param.should be_nil
+      end
+    end
+
+    context 'dirty record' do
+      it 'returns the old (on database) permalink' do
+        link = Link.make! :permalink => 'foo'
+        link.permalink = 'bar'
+        link.to_param.should == 'foo'
+      end
+    end
   end
 end
 

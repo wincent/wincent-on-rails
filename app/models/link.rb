@@ -21,6 +21,6 @@ class Link < ActiveRecord::Base
 
   def to_param
     # pretty permalinks if available, otherwise fall back to id
-    self.permalink || self.id
+    (changes['permalink'] && changes['permalink'].first) || self.permalink || self.id
   end
 end

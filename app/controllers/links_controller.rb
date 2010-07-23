@@ -48,6 +48,15 @@ class LinksController < ApplicationController
 
   def update
     respond_to do |format|
+      format.html {
+        if @link.update_attributes params[:link]
+          flash[:notice] = 'Successfully updated'
+          redirect_to links_path # can't redirect to #show
+        else
+          flash[:error] = 'Update failed'
+          render :action => :edit
+        end
+      }
       format.js { # an AJAX update
         if @link.update_attributes params[:link]
           render :json => @link.to_json(:only => [:uri, :permalink])

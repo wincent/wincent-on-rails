@@ -42,8 +42,15 @@ feature 'validation errors combined with permalink modifications' do
     page.should have_content('Valid title')
   end
 
-  scenario 'editing a link' do
-    pending 'creation of links#edit template and controller action support'
+  scenario 'editing a link', :js => true do
+    visit edit_link_path(Link.make!)
+    fill_in 'Permalink', :with => '_'
+    click_button 'Update Link'
+    page.should have_content('Permalink may only contain')
+
+    fill_in 'Permalink', :with => 'foo'
+    click_button 'Update Link'
+    page.should have_content('Successfully updated')
   end
 
   scenario 'editing an email' do
