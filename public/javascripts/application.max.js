@@ -225,16 +225,17 @@ $.fn.syntaxHighlight = function()
   }
 
   this.find("pre[class$=syntax][class!=highlighted]").each(function(i) {
-    // guard against repeated highlighting
-    $(this).addClass('highlighted');
-
     // do the syntax-highlighting
-    var content = highlightText(this.innerHTML, styles[$(this).attr('class')]);
+    var rules = styles[$(this).attr('class')];
+    var content = highlightText(this.innerHTML, rules);
 
     // line-numbering
     var span = '<span class="line-number"></span>';
     var lines = content.split('\n');
     this.innerHTML = span + lines.join('\n' + span);
+
+    // guard against repeated highlighting
+    $(this).addClass('highlighted');
   });
 
   return this;
