@@ -78,7 +78,7 @@
       =yield
     #footer
       %ul
-        %li=mail_to APP_CONFIG['admin_email'], 'Contact',
+        %li=mail_to APP_CONFIG['admin_email'], 'contact',
           :title => "Email me at #{APP_CONFIG['admin_email']}",
           :class => 'mailto'
-        %li=link_to 'Legal', '/misc/legal'
+        %li=link_to 'legal', '/misc/legal'
