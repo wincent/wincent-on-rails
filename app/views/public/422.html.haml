@@ -1,0 +1,112 @@
+!!! XML
+!!!
+%html{ "xml:lang" => "en-US", :lang => "en-US", :xmlns => "http://www.w3.org/1999/xhtml" }
+  %head
+    %meta{ :content => "text/html;charset=UTF-8", "http-equiv" => "Content-Type" }
+    %title
+      wincent.com: 422 rejected
+    %link{ :href => "/stylesheets/display.css", :rel => "stylesheet", :type => "text/css", :media => "screen" }
+  %body
+    %a#top{ :name => "top" }
+    #header
+      #meta
+        %h1
+          %a#logo{ :href => "/", :title => "Wincent front page" }
+            %img{ :src => "/images/logo.png", :alt => "Logo" }
+          %a{ :href => "/" }
+            Wincent &mdash; Software for your Mac
+      %ul#navbar
+        %li
+          %a{ :href => "/products" }
+            Products
+          %ul
+            %li
+              Desktop products
+              %ul
+                %li
+                  %a{ :href => "/products/synergy", :title => "Simple and effective iTunes controller" }
+                    Synergy
+                %li
+                  %a{ :href => "http://wincent.com/a/products/synergy-advance/", :title => "The multipurpose audio companion" }
+                    Synergy Advance
+                %li
+                  %a{ :href => "http://wincent.com/a/products/winswitch/", :title => "Enhanced replacement for Apple's Fast User Switching menu" }
+                    WinSwitch
+            %li
+              Developer products
+              %ul
+                %li
+                  %a{ :href => "http://wincent.com/a/products/atosym/", :title => "Address-to-symbol conversion for the DWARF format" }
+                    atosym
+                %li
+                  %a{ :href => "/products/command-t/", :title => "Fast file navigation for Vim" }
+                    Command-T
+                %li
+                  %a{ :href => "http://wincent.com/a/products/hextrapolate/", :title => "Convenient number conversion tool" }
+                    Hextrapolate
+                %li
+                  %a{ :href => "http://wincent.com/a/products/install/", :title => "Simple and powerful deployment solution" }
+                    Install
+                %li
+                  %a{ :href => "http://wincent.com/a/products/walrus/", :title => "Object-oriented templating system" }
+                    Walrus
+                %li
+                  %a{ :href => "http://wincent.com/a/products/wincent-strings-util/", :title => "Localization tool" }
+                    Wincent Strings Utility
+                %li
+                  %a{ :href => "http://git.wincent.com/WOPublic.git", :title => "BSD-licensed Objective-C source code" }
+                    WOPublic
+                %li
+                  %a{ :href => "http://wincent.com/a/products/wotest/", :title => "Objective-C Unit Testing framework" }
+                    WOTest
+            %li
+              Server products
+              %ul
+                %li
+                  %a{ :href => "http://wincent.com/a/products/bansshee/", :title => "Defense against SSH dictionary attacks" }
+                    Bansshee
+                %li
+                  %a{ :href => "/products/wikitext", :title => "Fast wikitext-to-HTML translator" }
+                    Wikitext
+        %li
+          %a{ :href => "/blog" }
+            Blog
+        %li
+          %a{ :href => "/wiki" }
+            Wiki
+        %li
+          %a{ :href => "/forums" }
+            Forums
+        %li
+          %a{ :href => "/support" }
+            Support
+        %li
+          %a{ :href => "/about" }
+            About
+        %li
+          %a{ :href => "/search" }
+            Search
+    #header-shadow
+    #content
+      /
+        This is HTTP status code 422 in the "Rails" sense, not in the RFC 4918 (WebDAV) sense.
+      %h1
+        The change you wanted was rejected
+      %p
+        The most likely cause is that your session expired due to inactivity.
+      %p
+        Try going back,
+        %em
+          then refreshing the page
+        (this will create a new session), and then resubmitting.
+      %p
+        Please
+        %a.mailto{ :href => "mailto:win@wincent.com" }
+          contact me
+        if you need assistance.
+    #footer
+      %a{ :href => "/misc/legal" }
+        Copyright and legal information
+      \&nbsp;&nbsp;|&nbsp;&nbsp;
+      %a.mailto{ :href => "mailto:win@wincent.com", :title => "Email me at win@wincent.com" }
+        Contact
