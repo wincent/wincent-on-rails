@@ -25,13 +25,17 @@ class View
       @@sections
     end
   end
+
+  def render &block
+    self.engine.render self, &block
+  end
 end
 
 template = View.new ARGV[1]
-template.output = template.engine.render(template)
+template.output = template.render
 
 layout = View.new 'app/views/layouts/static.haml'
-layout.output = layout.engine.render(layout) do |yielded|
+layout.output = layout.render do |yielded|
   case yielded
   when :title
     template.content_for[:title]
