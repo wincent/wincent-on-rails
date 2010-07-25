@@ -39,8 +39,8 @@ template = View.new ARGV[0]
 template.output = template.render
 
 layout = View.new 'app/views/layouts/static.haml'
-layout.output = layout.render do |yielded|
-  case yielded
+layout.output = layout.render do |*yielded|
+  case yielded.first
   when :title
     template.content_for[:title]
   else
