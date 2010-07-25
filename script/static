@@ -9,6 +9,10 @@ Bundler.setup
 require 'haml'
 require 'ostruct'
 
+if ARGV.length != 2 or ARGV.any? { |a| a.nil? }
+  raise ArgumentError.new("bad args: #{ARGV.inspect}")
+end
+
 class View
   attr_accessor :source, :engine, :output
 
