@@ -39,7 +39,7 @@ layout.output = layout.render do |yielded|
   case yielded
   when :title
     template.content_for[:title]
-  when :content
+  else
     template.output
   end
 end
