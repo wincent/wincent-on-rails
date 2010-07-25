@@ -1,0 +1,32 @@
+#!/usr/bin/env ruby
+
+# Usage: script/static [page title] [input template] [output file]
+#        script/static forbidden app/views/public/404.html.haml public/404.html
+
+require 'rubygems'
+require 'bundler'
+Bundler.setup
+require 'haml'
+require 'ostruct'
+
+options = { :format => :html5 }
+layout = OpenStruct.new
+layout.template = File.read('app/views/layouts/static.haml')
+layout.engine = Haml::Engine.new(layout.template, options)
+layout.scope = OpenStruct.new
+
+output = layout.engine.render(layout.scope) do |yielded|
+  case yielded
+  when :title
+    ARGV[0]
+  else :content
+    template = OpenStruct.new
+    template.template = File.read ARGV[1]
+    template.engine = Haml::Engine.new(template.template, options)
+    template.output = template.engine.render
+  end
+end
+
+File.open(ARGV[2], 'w') do |f|
+  f.puts output
+end
