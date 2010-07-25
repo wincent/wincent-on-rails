@@ -16,17 +16,26 @@ class View
     self.source = File.read path
     self.engine = Haml::Engine.new(self.source, :format => :html5)
   end
+
+  @@sections = {}
+  def content_for section = nil, &block
+    if block_given? # capturing content
+      @@sections[section] = capture_haml &block
+    else            # returning content
+      @@sections
+    end
+  end
 end
 
 template = View.new ARGV[1]
-template.output = template.engine.render
+template.output = template.engine.render(template)
 
 layout = View.new 'app/views/layouts/static.haml'
-layout.output = layout.engine.render do |yielded|
+layout.output = layout.engine.render(layout) do |yielded|
   case yielded
   when :title
-    ARGV[0]
-  else :content
+    template.content_for[:title]
+  when :content
     template.output
   end
 end
