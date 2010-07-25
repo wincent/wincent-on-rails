@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
-# Usage: script/static [page title] [input template] [output file]
-#        script/static forbidden app/views/public/404.html.haml public/404.html
+# Usage: script/static [input template] [output file]
+#        script/static app/views/public/404.html.haml public/404.html
 
 require 'rubygems'
 require 'bundler'
@@ -31,7 +31,7 @@ class View
   end
 end
 
-template = View.new ARGV[1]
+template = View.new ARGV[0]
 template.output = template.render
 
 layout = View.new 'app/views/layouts/static.haml'
@@ -44,6 +44,6 @@ layout.output = layout.render do |yielded|
   end
 end
 
-File.open(ARGV[2], 'w') do |f|
+File.open(ARGV[1], 'w') do |f|
   f.puts layout.output
 end
