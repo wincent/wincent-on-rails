@@ -15,14 +15,14 @@ class View
   def initialize path
     self.source = File.read path
     self.engine = Haml::Engine.new(self.source, :format => :html5)
+    @sections = {}
   end
 
-  @@sections = {}
   def content_for section = nil, &block
     if block_given? # capturing content
-      @@sections[section] = capture_haml &block
+      @sections[section] = capture_haml &block
     else            # returning content
-      @@sections
+      @sections
     end
   end
 
