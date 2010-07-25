@@ -5,7 +5,7 @@ static_products = static_templates.map do |template|
 end
 
 static_templates.each_with_index do |template, idx|
-  file static_products[idx] => template do |t|
+  file static_products[idx] => [template, 'app/views/layouts/static.haml'] do |t|
     sh "script/static #{template} #{t.name}"
   end
 end
