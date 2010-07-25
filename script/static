@@ -9,17 +9,20 @@ Bundler.setup
 require 'haml'
 require 'ostruct'
 
-options = { :format => :html5 }
-template = OpenStruct.new
-template.template = File.read ARGV[1]
-template.engine = Haml::Engine.new(template.template, options)
+class View
+  attr_accessor :source, :engine, :output
+
+  def initialize path
+    self.source = File.read path
+    self.engine = Haml::Engine.new(self.source, :format => :html5)
+  end
+end
+
+template = View.new ARGV[1]
 template.output = template.engine.render
 
-layout = OpenStruct.new
-layout.template = File.read('app/views/layouts/static.haml')
-layout.engine = Haml::Engine.new(layout.template, options)
-layout.scope = OpenStruct.new
-layout.output = layout.engine.render(layout.scope) do |yielded|
+layout = View.new 'app/views/layouts/static.haml'
+layout.output = layout.engine.render do |yielded|
   case yielded
   when :title
     ARGV[0]
