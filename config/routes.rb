@@ -18,6 +18,7 @@ Wincent::Application.routes.draw do |map|
   end
   resources :sessions
   resources :taggings
+  resources :repos
   resources :resets
 
   resources :tweets, :path => 'twitter' do
