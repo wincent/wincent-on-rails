@@ -1,3 +1,5 @@
+require 'rspec/core/rake_task'
+
 namespace :spec do
   desc 'Run all low-level code examples (not acceptance specs)'
   task :unit => [:requests, :models, :controllers, :views, :helpers,
