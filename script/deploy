@@ -157,7 +157,7 @@ while test $# != 0; do
     enable)
       DO_ENABLE=true
       ;;
-    lockdown)
+    lock|lockdown)
       DO_LOCKDOWN=true
       ;;
     upload)
