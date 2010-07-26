@@ -250,6 +250,15 @@ if [ -n "$DO_CHECK" ]; then
     java -jar $COMPRESSOR --js=$TMPDIR/max.js --js_output_file=$TMPDIR/out.js
     diff -q $TMPDIR/min.js $TMPDIR/out.js > /dev/null || bail "$JS is not minimized in $LOCAL_REF"
   done
+  echo "  checking: generated static HTML files up-to-date"
+  for HAML in $(ls app/views/public/*.html.haml); do
+    git show $LOCAL_REF:$HAML > $TMPDIR/src.html.haml
+    STATIC=${HAML%.haml}        # trim extension
+    STATIC=${STATIC#app/views/} # trim leading directories
+    git show $LOCAL_REF:$STATIC > $TMPDIR/static.html
+    script/static $TMPDIR/src.html.haml $TMPDIR/out.html
+    diff -q $TMPDIR/out.html $TMPDIR/static.html > /dev/null || bail "static version of $HAML not up-to-date in $LOCAL_REF"
+  done
   echo "  checking: directories exist and are writable"
   ssh rails@$SERVER "sh -c '(test -d $DEPLOY          || (echo \"  failed -d: $DEPLOY\" && exit 1)) && \
                             (test -d $DEPLOY/shared   || (echo \"  failed -d: $DEPLOY/shared\" && exit 1)) && \
