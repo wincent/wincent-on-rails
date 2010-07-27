@@ -23,12 +23,6 @@ GIT
       rack-test (>= 0.5.4)
       selenium-webdriver (>= 0.0.3)
 
-GIT
-  remote: git://github.com/nex3/haml.git
-  revision: 708fca2
-  specs:
-    haml (3.1.0)
-
 GEM
   remote: http://rubygems.org/
   specs:
@@ -81,6 +75,7 @@ GEM
     ffi (0.6.3)
       rake (>= 0.8.7)
     gem_plugin (0.2.3)
+    haml (3.0.14)
     hpricot (0.8.2)
     i18n (0.4.1)
     jruby-openssl (0.7)
@@ -165,7 +160,7 @@ DEPENDENCIES
   culerity
   database_cleaner
   factory_girl_rails
-  haml!
+  haml (>= 3.0.14)
   hpricot
   jruby-openssl
   launchy
