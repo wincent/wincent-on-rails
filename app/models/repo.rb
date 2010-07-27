@@ -7,4 +7,5 @@
 #   datetime "created_at"
 #   datetime "updated_at"
 class Repo < ActiveRecord::Base
+  validates_presence_of :name, :path, :permalink
 end
