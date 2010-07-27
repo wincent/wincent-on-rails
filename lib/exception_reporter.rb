@@ -1,4 +1,4 @@
-require 'ostruct'
+require_dependency 'ostruct'
 
 class ExceptionReporter
   def initialize app, options = {}
