@@ -11,7 +11,7 @@ APP_CONFIG = YAML.load_file File.join(File.dirname(__FILE__), 'app_config.yml')
 
 module Wincent
   class Application < Rails::Application
-    config.load_paths += %W( #{config.root}/app/sweepers )
+    config.autoload_paths += %W( #{config.root}/app/sweepers )
     config.time_zone = 'UTC'
     config.encoding = 'utf-8'
     config.filter_parameters += [ :passphrase ]
