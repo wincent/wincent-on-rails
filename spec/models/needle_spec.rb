@@ -224,13 +224,8 @@ describe Needle, 'searching' do
   it 'should log a warning for missing records' do
     issue = Issue.make! :summary => 'foo'
     Issue.delete issue.id # no callbacks fire here, so the search index gets out of date
-    logger = Needle.logger
-    begin
-      Needle.logger = mock!.warn(/search index out of date/i).subject
-      Needle.find_with_query_string('foo')
-    ensure
-      Needle.logger = logger
-    end
+    mock(Needle.logger).warn /search index out of date/i
+    Needle.find_with_query_string('foo')
   end
 end
 
