@@ -42,7 +42,9 @@ Wincent::Application.routes.draw do |map|
   # must explicitly allow period in the id part of the route otherwise it
   # will be classified as a route separator
   resources :posts, :path => 'blog', :id => /[a-z0-9\-\.]+/ do
-    resources :comments, :only => [ :create, :new ]
+    # BUG: https://rails.lighthouseapp.com/projects/8994/tickets/5208
+    # (have to repeat the requirements here again, like under the old DSL)
+    resources :comments, :post_id => /[a-z0-9\-\.]+/, :only => [ :create, :new ]
     collection do
       get 'page/:page' => 'posts#index', :page => %r{\d+}
     end
@@ -75,7 +77,9 @@ Wincent::Application.routes.draw do |map|
   # again, must explicitly allow period in the id part of the route
   # otherwise it will be classified as a route separator
   resources :articles, :id => /[^\/]+/ , :path => 'wiki' do
-    resources :comments, :only => [ :create, :new ]
+    # BUG: https://rails.lighthouseapp.com/projects/8994/tickets/5208
+    # (have to repeat the requirements here again, like under the old DSL)
+    resources :comments, :article_id => /[^\/]+/, :only => [ :create, :new ]
     collection do
       get 'page/:page' => 'articles#index', :page => %r{\d+}
     end
