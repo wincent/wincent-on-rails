@@ -36,4 +36,18 @@ describe Repo do
       end
     end
   end
+
+  describe 'associations' do
+    describe 'product' do
+      it 'belongs to a product' do
+        product = Product.make!
+        repo = Repo.make!(:product => product)
+        repo.product.should == product
+      end
+
+      it 'does not complain if the product is not present' do
+        Repo.make!(:product => nil).should be_valid
+      end
+    end
+  end
 end

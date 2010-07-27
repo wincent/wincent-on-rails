@@ -7,7 +7,8 @@
 #   datetime "created_at"
 #   datetime "updated_at"
 class Repo < ActiveRecord::Base
+  belongs_to :product
   validates_presence_of :name, :path, :permalink
-  validates_format_of :path, :with => %r{\A(/([a-z0-9_-]+))+\z}i,
+  validates_format_of :path, :with => %r{\A(/([a-z0-9._-]+))+\z}i,
     :message => 'must have format "/foo/bar/baz"'
 end
