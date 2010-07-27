@@ -5,4 +5,5 @@ Wincent::Application.configure do
   config.action_dispatch.x_sendfile_header  = 'X-Accel-Redirect'
   config.serve_static_assets                = false
   config.action_mailer.delivery_method      = :sendmail
+  config.active_support.deprecation         = :notify
 end
