@@ -2,9 +2,43 @@ require File.expand_path('../spec_helper', File.dirname(__FILE__))
 
 describe Repo do
   describe 'attributes' do
+    describe 'name' do
+      it 'is accessible' do
+        Repo.make.should allow_mass_assignment_of(:name => 'hello')
+      end
+    end
+
+    describe 'permalink' do
+      it 'is accessible' do
+        Repo.make.should allow_mass_assignment_of(:permalink => 'world')
+      end
+    end
+
+    describe 'path' do
+      it 'is accessible' do
+        Repo.make.should allow_mass_assignment_of(:path => '/new/path')
+      end
+    end
+
+    describe 'description' do
+      it 'is accessible' do
+        Repo.make.should allow_mass_assignment_of(:description => 'a repo')
+      end
+    end
+
+    describe 'product' do
+      it 'is accessible' do
+        Repo.make.should allow_mass_assignment_of(:product => Product.make!)
+      end
+    end
+
     describe 'public' do
       it 'defaults to false' do
         Repo.new.public.should be_false
+      end
+
+      it 'is accessible' do
+        Repo.make(:public => false).should allow_mass_assignment_of(:public => true)
       end
     end
   end
