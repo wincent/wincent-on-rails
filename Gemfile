@@ -5,7 +5,7 @@ source 'http://rubygems.org'
 # our acceptance specs; see:
 #   http://github.com/carlhuda/bundler/issues/issue/407
 platforms :ruby_18 do
-  gem 'haml',             '>= 3.0.14'
+  gem 'haml',             '>= 3.0.15'
   gem 'mysql',            '2.8.1'
   gem 'rails',            '3.0.0.rc'
   gem 'wikitext',         '2.0'
