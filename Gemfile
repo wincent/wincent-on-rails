@@ -37,8 +37,7 @@ end
 
 platforms :jruby do
   group :test do
-    gem 'celerity',       # :git => 'git://github.com/jarib/celerity.git',
-                          '>= 0.8.0.beta.1'
+    gem 'celerity',       '>= 0.8.0.beta.1'
     gem 'jruby-openssl'
   end
 end
