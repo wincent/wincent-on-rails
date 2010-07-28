@@ -13,6 +13,9 @@ RSpec.configure do |config|
   config.include ControllerExampleGroupHelpers, :type => :controller
   config.include RoutingExampleGroupHelpers, :type => :routing
   config.include ViewExampleGroupHelpers, :type => :view
+  config.include GitSpecHelpers, :example_group => {
+    :file_path => %r{\bspec/lib/git/}
+  }
   config.backtrace_clean_patterns = config.backtrace_clean_patterns + [
     %r{/Library/},
     %r{/\.bundle/}
