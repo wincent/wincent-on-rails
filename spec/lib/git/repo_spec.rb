@@ -1,4 +1,5 @@
 require File.expand_path('../../spec_helper', File.dirname(__FILE__))
+require 'mkdtemp'
 
 describe Git::Repo do
   describe '#initialize' do
@@ -22,7 +23,7 @@ describe Git::Repo do
 
     it 'complains if path is not a Git repository' do
       expect do
-        Git::Repo.new '/'
+        Git::Repo.new Dir.mkdtemp
       end.to raise_error(Git::NoRepositoryError)
     end
   end
