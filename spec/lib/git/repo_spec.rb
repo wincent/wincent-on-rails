@@ -39,4 +39,11 @@ describe Git::Repo do
       end
     end
   end
+
+  describe 'git method' do
+    it 'allows other objects to run "git" commands in the repo' do
+      repo = Git::Repo.new scratch_repo
+      repo.git('log').stdout.should =~ /Initial import/i
+    end
+  end
 end

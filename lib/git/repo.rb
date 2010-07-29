@@ -11,13 +11,13 @@ module Git
       validate_path
     end
 
-  private
-
     def git *params
       Dir.chdir @path do
         return Wopen3.system 'git', *params
       end
     end
+
+  private
 
     def validate_path
       result = git 'rev-parse', '--git-dir'
