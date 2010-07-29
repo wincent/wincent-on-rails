@@ -148,7 +148,7 @@ GEM
       rack (>= 1.0)
       rack-test (>= 0.5.3)
     wikitext (2.0)
-    wopen3 (0.2)
+    wopen3 (0.3)
 
 PLATFORMS
   java
@@ -175,4 +175,4 @@ DEPENDENCIES
   ruby-debug
   steak!
   wikitext (= 2.0)
-  wopen3 (>= 0.2)
+  wopen3 (>= 0.3)
