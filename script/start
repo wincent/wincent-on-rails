@@ -1,0 +1,33 @@
+#!/bin/sh
+
+while test $# != 0; do
+  case "$1" in
+    nginx)
+      START_NGINX=1
+      ;;
+    memcached)
+      START_MEMCACHED=1
+      ;;
+    mysql|mysqld)
+      START_MYSQLD=1
+      ;;
+    all)
+      START_NGINX=1
+      START_MEMCACHED=1
+      START_MYSQLD=1
+      ;;
+  esac
+  shift
+done
+
+if [ -n "$START_NGINX" ]; then
+  script/nginx
+fi
+
+if [ -n "$START_MEMCACHED" ]; then
+  script/memcached
+fi
+
+if [ -n "$START_MYSQLD" ]; then
+  script/mysqld
+fi
