@@ -1,4 +1,4 @@
-Wincent::Application.routes.draw do |map|
+Wincent::Application.routes.draw do
   resources :attachments
   resources :comments
   resources :confirmations, :path => 'confirm'
