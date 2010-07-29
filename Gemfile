@@ -27,7 +27,7 @@ platforms :ruby_18 do
     gem 'database_cleaner'
     gem 'hpricot'
     gem 'launchy'
-    gem 'mkdtemp'
+    gem 'mkdtemp',        '>= 1.2'
     gem 'mongrel',        :require => nil
     gem 'rcov'
     gem 'rr',             :git => 'git://github.com/btakita/rr.git'
