@@ -26,5 +26,17 @@ describe Git::Repo do
         Git::Repo.new Dir.mkdtemp
       end.to raise_error(Git::NoRepositoryError)
     end
+
+    context 'with a valid Git repository' do
+      before do
+        @repo_path = scratch_repo
+      end
+
+      it 'succeeds' do
+        expect do
+          Git::Repo.new @repo_path
+        end.to_not raise_error
+      end
+    end
   end
 end
