@@ -41,6 +41,18 @@ describe Repo do
         Repo.make(:public => false).should allow_mass_assignment_of(:public => true)
       end
     end
+
+    describe 'clone_url' do
+      it 'is accessible' do
+        Repo.make.should allow_mass_assignment_of(:clone_url => 'git://git.example.com/new.git')
+      end
+    end
+
+    describe 'rw_clone_url' do
+      it 'is accessible' do
+        Repo.make.should allow_mass_assignment_of(:rw_clone_url => 'git://git.example.com/new.git')
+      end
+    end
   end
 
   describe 'validation' do
