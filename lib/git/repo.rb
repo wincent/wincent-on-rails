@@ -26,9 +26,22 @@ module Git
       @git_dir
     end
 
-    def refs
-      result = git 'show-ref'
+    def branches
+      @branches ||= Branch.all self
+    end
+
+    def tags
+      @tags ||= Tag.all self
+    end
+
+    # This method invokes the {#git} method and raises a {Git::CommandError}
+    # if it returns a non-zero exit status.
+    #
+    # Mnemonic: "raise git"
+    def r_git *params
+      result = git *params
       raise Git::CommandError.new_with_result(result) unless result.success?
+      result
     end
   end # class Repo
 end # module Git

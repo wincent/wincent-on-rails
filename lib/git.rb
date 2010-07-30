@@ -26,5 +26,8 @@ module Git
   # non-zero exit status.
   class CommandError < ChildProcessError; end
 
+  autoload :Branch, 'git/branch'
+  autoload :Ref, 'git/ref'
   autoload :Repo, 'git/repo'
+  autoload :Tag, 'git/tag'
 end # module Git

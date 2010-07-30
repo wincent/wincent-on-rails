@@ -87,4 +87,40 @@ describe Git::Repo do
       end
     end
   end
+
+  describe '#branches' do
+    before do
+      path = scratch_repo do
+        `git branch baz`
+        `git branch bing`
+      end
+      @repo = Git::Repo.new(path)
+      @branches = @repo.branches
+    end
+
+    it 'returns an array of Branch objects' do
+      @branches.should be_kind_of(Array)
+      @branches.should_not be_empty
+      @branches.all? { |branch| branch.kind_of?(Git::Branch) }.should be_true
+    end
+  end
+
+  describe '#tags' do
+    before do
+      path = scratch_repo do
+        `git tag 0.1 -m "1.0 release"`
+        `echo "bar" > file`
+        `git commit -m "tweak" -- file`
+        `git tag 0.2 -m "2.0 release"`
+      end
+      @repo = Git::Repo.new(path)
+      @tags = @repo.tags
+    end
+
+    it 'returns an array of Tag objects' do
+      @tags.should be_kind_of(Array)
+      @tags.should_not be_empty
+      @tags.all? { |tag| tag.kind_of?(Git::Tag) }.should be_true
+    end
+  end
 end
