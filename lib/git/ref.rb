@@ -20,6 +20,20 @@ module Git
       end
     end
 
+    # Return a Ref object which represents the HEAD of the repository.
+    # This may actually be the same as an existing branch, or it may be
+    # be a "detached head" with no corresponding ref.
+    def self.head repo
+      result = repo.r_git 'show-ref', '--head'
+      head = result.stdout.lines.find do |line| # usually (always?) the first line
+        line.chomp.split[1] == 'HEAD'
+      end
+      if head
+        sha1, name = head.chomp.split
+        self.new repo, name, sha1
+      end
+    end
+
     def initialize repo, name, sha1
       @repo = repo # Git::Repo instance
       @name = name # eg. refs/heads/*, refs/tags/*

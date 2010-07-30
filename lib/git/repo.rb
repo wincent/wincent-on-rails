@@ -26,6 +26,10 @@ module Git
       @git_dir
     end
 
+    def head
+      @head ||= Ref.head self
+    end
+
     def branches
       @branches ||= Branch.all self
     end

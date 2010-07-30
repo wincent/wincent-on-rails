@@ -88,6 +88,20 @@ describe Git::Repo do
     end
   end
 
+  describe '#head' do
+    before do
+      @repo = Git::Repo.new scratch_repo
+    end
+
+    it 'returns a Ref object' do
+      @repo.head.should be_kind_of(Git::Ref)
+    end
+
+    specify 'the returned object matches the current HEAD' do
+      @repo.head.name.should == 'HEAD'
+    end
+  end
+
   describe '#branches' do
     before do
       path = scratch_repo do
