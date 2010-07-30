@@ -6,6 +6,13 @@ module Git
   # Raised when no repository found at a specified path.
   class NoRepositoryError < Exception; end
 
+  # Raised when unexpected format encountered while parsing a raw commit object.
+  class MalformedCommitError < Exception
+    def self.new_with_line line
+      self.new "#{self}: malformed commit object with line: #{line}"
+    end
+  end
+
   class ChildProcessError < Exception
     # Wopen3::Result instance which can be queried for status, stdout and
     # stderr.
@@ -27,6 +34,7 @@ module Git
   class CommandError < ChildProcessError; end
 
   autoload :Branch, 'git/branch'
+  autoload :Commit, 'git/commit'
   autoload :Ref, 'git/ref'
   autoload :Repo, 'git/repo'
   autoload :Tag, 'git/tag'
