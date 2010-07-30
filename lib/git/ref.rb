@@ -1,7 +1,10 @@
 require 'git'
 
 module Git
+  # Abstract superclass for concrete subclasses, Branch and Tag.
   class Ref
+    attr_reader :name, :repo, :sha1
+
     # Takes a string containing output from "git show-ref", such as:
     #
     #   0785b65f3ebfb14498acd84f4d0b9e4ee7419006 refs/tags/0.3.1
