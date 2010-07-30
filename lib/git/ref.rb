@@ -39,5 +39,10 @@ module Git
       @name = name # eg. refs/heads/*, refs/tags/*
       @sha1 = sha1 # 40-character SHA-1 hash string
     end
+
+    # Returns up to 20 commits starting at the Ref.
+    def commits # options = {} # forthcoming
+      @repo.r_git 'log', '--format=raw', '-n', '20', @name
+    end
   end # class Ref
 end # module Git

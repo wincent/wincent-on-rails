@@ -18,13 +18,8 @@ module Git
 
       # see commit.c in git.git for details of the raw format
       while line = lines.shift.chomp do
-        line.match(/\Acommit ([a-f0-9]{40})\z/) or
-          raise Git::MalformedCommitError.new_with_line(line)
-        commit = $~[1]
-        line = lines.shift.chomp
-        line.match(/\Atree ([a-f0-9]{40})\z/) or
-          raise Git::MalformedCommitError.new_with_line(line)
-        tree = $~[1]
+        commit  = parse_commit line
+        tree    = parse_tree lines.shift.chomp
         parents = []
         while line = lines.shift.chomp and line.match(/\Aparent ([a-f0-9]{40})\z/)
           parents << $~[1]
@@ -42,8 +37,10 @@ module Git
         committer_time = time_from_timestamp_and_offset $~[3], $~[4]
         line = lines.shift.chomp
         line.match(/\Aencoding (.+)\z/) # optional
-        encoding = $~[1] if $~
-        line = lines.shift.chomp
+        if $~
+          encoding = $~[1]
+          line = lines.shift.chomp
+        end
         raise Git::MalformedCommitError.new_with_line(line) unless line == ''
         message = []
         while line = lines.shift and line.match(/\A {4}(.+)\n\z/)
@@ -86,6 +83,20 @@ module Git
 
     def initialize attributes
       
+    end
+
+  private
+
+    def parse_commit line
+      line.match(/\Acommit ([a-f0-9]{40})\z/) or
+        raise Git::MalformedCommitError.new_with_line(line)
+      $~[1]
+    end
+
+    def parse_tree line
+      line.match(/\Atree ([a-f0-9]{40})\z/) or
+        raise Git::MalformedCommitError.new_with_line(line)
+      $~[1]
     end
   end # class Commit
 end # module Git
