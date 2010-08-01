@@ -24,7 +24,8 @@ module Git
         encoding  = parse_encoding lines
         parse_separator lines.shift.chomp
         message   = parse_message lines
-        commits << self.new(:commit     => commit,
+        commits << self.new(ref,
+                            :commit     => commit,
                             :tree       => tree,
                             :parents    => parents,
                             :author     => author,
@@ -37,8 +38,15 @@ module Git
       commits
     end
 
-    def initialize attributes
-      
+    def initialize ref, attributes
+      @ref        = ref
+      @commit     = attributes[:commit]
+      @tree       = attributes[:tree]
+      @parents    = attributes[:parents]
+      @author     = attributes[:author]
+      @committer  = attributes[:committer]
+      @encoding   = attributes[:encoding]
+      @message    = attributes[:message]
     end
 
     class << self
@@ -83,7 +91,7 @@ module Git
 
       def parse_message lines
         message = []
-        while line = lines.first and line.match(/\A {4}(.+)\n\z/)
+        while line = lines.first and line.match(/\A {4}(.*)\n\z/)
           message << $~[1]
           lines.shift
         end
