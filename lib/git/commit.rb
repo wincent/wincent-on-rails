@@ -15,7 +15,7 @@ module Git
       commits = []
 
       # see commit.c in git.git for details of the raw format
-      while line = lines.shift.chomp do
+      while line = lines.shift.chomp
         commit    = parse_commit line
         tree      = parse_tree lines.shift.chomp
         parents   = parse_parents lines
@@ -42,7 +42,7 @@ module Git
       result = repo.git 'name-rev', '--no-undefined', sha1
       raise UnreachableCommitError.new_with_sha1(sha1) unless result.success?
       result = repo.git 'cat-file', 'commit', sha1
-      raise NonExistentCommit.new_with_sha1(sha1) if unless result.success?
+      raise NonExistentCommit.new_with_sha1(sha1) unless result.success?
       lines   = result.stdout.lines
       commit  = parse_commit lines.shift.chomp
       tree    = parse_tree lines.shift.chomp
@@ -52,14 +52,14 @@ module Git
       encoding  = parse_encoding lines
       parse_separator lines.shift.chomp
       message = lines.join
-      new(:repo => repo,
+      new :repo       => repo,
           :commit     => sha1,
           :tree       => tree,
           :parents    => parents,
           :author     => author,
           :committer  => committer,
           :encoding   => encoding,
-          :message    => message)
+          :message    => message
     end
 
     def initialize attributes
@@ -76,8 +76,8 @@ module Git
 
     def diff
       unless @diff
-        result = @repo.git_r 'diff-tree', '-p', '--word-diff=porcelain'
-        @diff = result.stdout
+        result = @repo.git_r 'diff-tree', '--numstat', '-p', '--word-diff=porcelain'
+        @diff = parse_diff result.stdout
       end
       @diff
     end
@@ -131,5 +131,39 @@ module Git
         message.join("\n")
       end
     end # class << self
+
+  private
+
+    def parse_diff diff
+      lines = diff.lines
+      raise 'malformed diff' unless lines.shift.chomp.match(/\A[a-f0-9]{40}\z/)
+      changes = parse_numstat lines
+      raise 'malformed diff' unless lines.shift.chomp == ''
+    end
+
+    def parse_numstat lines
+      changes = []
+      while line = lines.first.chomp and line.match(/\A(\d+|-)\t(\d+|-)\t(.+)\z/)
+        $~[1] # added; for binary files will be -
+        $~[2] # deleted; for binary files will be -
+        $~[3] # path
+        line.shift
+      end
+      changes
+    end
+
+    def parse_diff_header lines
+      /old mode (.+)/
+      /new mode (.+)/
+      /deleted file mode (.+)/
+      /new file mode (.+)/
+      /copy from (.+)/
+      /copy to (.+)/
+      /rename from (.+)/
+      /rename to (.+)/
+      /similarity index (.+)/
+      /dissimilarity index (.+)/
+      /index (.+)..(.+) (.+)/
+    end
   end # class Commit
 end # module Git
