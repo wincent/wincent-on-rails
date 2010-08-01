@@ -33,8 +33,11 @@ module Git
   # non-zero exit status.
   class CommandError < ChildProcessError; end
 
+  autoload :Author, 'git/author'
   autoload :Branch, 'git/branch'
   autoload :Commit, 'git/commit'
+  autoload :Committer, 'git/committer'
+  autoload :Ident, 'git/ident'
   autoload :Ref, 'git/ref'
   autoload :Repo, 'git/repo'
   autoload :Tag, 'git/tag'

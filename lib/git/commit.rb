@@ -1,10 +1,8 @@
 module Git
   class Commit
     # attributes, in the order that they appear in "git log --format=raw"
-    attr_reader :sha1, :tree, :parents, :author, :committer, :message
-
-    # "other" headers
-    attr_reader :headers
+    attr_reader :commit, :tree, :parents, :author, :committer, :encoding,
+      :message
 
     # Returns up to 20 commits starting at Ref.
     #
@@ -18,85 +16,79 @@ module Git
 
       # see commit.c in git.git for details of the raw format
       while line = lines.shift.chomp do
-        commit  = parse_commit line
-        tree    = parse_tree lines.shift.chomp
-        parents = []
-        while line = lines.shift.chomp and line.match(/\Aparent ([a-f0-9]{40})\z/)
-          parents << $~[1]
-        end
-        line.match(/\Aauthor (.+) <(.+)> (\d+) ([+-]\d{4})\z/) or
-          raise Git::MalformedCommitError.new_with_line(line)
-        author_name = $~[1]
-        author_email = $~[2]
-        author_time = time_from_timestamp_and_offset $~[3], $~[4]
-        line = lines.shift.chomp
-        line.match(/\Acommitter (.+) <(.+)> (\d+) ([+-]\d{4})\z/) or
-          raise Git::MalformedCommitError.new_with_line(line)
-        committer_name = $~[1]
-        committer_email = $~[2]
-        committer_time = time_from_timestamp_and_offset $~[3], $~[4]
-        line = lines.shift.chomp
-        line.match(/\Aencoding (.+)\z/) # optional
-        if $~
-          encoding = $~[1]
-          line = lines.shift.chomp
-        end
-        raise Git::MalformedCommitError.new_with_line(line) unless line == ''
-        message = []
-        while line = lines.shift and line.match(/\A {4}(.+)\n\z/)
-          message = $~[1]
-        end
-        commits << self.new :commit           => commit,
-                            :tree             => tree,
-                            :parents          => parents,
-                            :author_name      => author_name,
-                            :author_email     => author_email,
-                            :author_time      => author_time,
-                            :committer_name   => committer_name,
-                            :committer_email  => committer_email,
-                            :committer_time   => committer_time,
-                            :encoding         => encoding,
-                            :message          => message.join("\n")
-        if line
-          raise Git::MalformedCommitError.new_with_line(line) unless line == ''
-        else
-          break
-        end
+        commit    = parse_commit line
+        tree      = parse_tree lines.shift.chomp
+        parents   = parse_parents lines
+        author    = Author.parse_author lines.shift.chomp
+        committer = Committer.parse_committer lines.shift.chomp
+        encoding  = parse_encoding lines
+        parse_separator lines.shift.chomp
+        message   = parse_message lines
+        commits << self.new(:commit     => commit,
+                            :tree       => tree,
+                            :parents    => parents,
+                            :author     => author,
+                            :committer  => committer,
+                            :encoding   => encoding,
+                            :message    => message.join("\n"))
+        break if lines.empty?
+        parse_separator lines.shift.chomp
       end
-    end
-
-    # Takes a UNIX epoch timestamp in seconds and a time zone offset and
-    # produces the corresponding Time object.
-    #
-    # The offset is expected to be a string of the form "+xxyy" or "-xxyy",
-    # where "xx" is a number of hours and "yy" is a number of minutes.
-    def self.time_from_timestamp_and_offset timestamp, offset
-      timestamp = timestamp.to_i
-      offset = offset.to_i
-      hours = offset / 100
-      minutes = offset.abs % 100 # for consistency, never do modulo on -ve num
-      minutes *= -1 if hours < 0 # but restore signedness afterwards
-      Time.at timestamp.to_i +
-        (hours * 3600) +
-        (minutes * 60)
+      commits
     end
 
     def initialize attributes
       
     end
 
-  private
+    class << self
 
-    def parse_commit line
-      line.match(/\Acommit ([a-f0-9]{40})\z/) or
-        raise Git::MalformedCommitError.new_with_line(line)
-      $~[1]
-    end
+    private
 
-    def parse_tree line
-      line.match(/\Atree ([a-f0-9]{40})\z/) or
-        raise Git::MalformedCommitError.new_with_line(line)
-      $~[1]
-    end
+      def parse_commit line
+        line.match(/\Acommit ([a-f0-9]{40})\z/) or
+          raise Git::MalformedCommitError.new_with_line(line)
+        $~[1]
+      end
+
+      def parse_tree line
+        line.match(/\Atree ([a-f0-9]{40})\z/) or
+          raise Git::MalformedCommitError.new_with_line(line)
+        $~[1]
+      end
+
+      # Returns an array of SHA-1 commit ids representing the parent of the
+      # commit. For root commits the returned array is empty.
+      def parse_parents lines
+        parents = []
+        while line = lines.first.chomp and line.match(/\Aparent ([a-f0-9]{40})\z/)
+          parents << $~[1]
+          lines.shift
+        end
+        parents
+      end
+
+      def parse_encoding lines
+        encoding = nil
+        if lines.first.chomp.match(/\Aencoding (.+)\z/)
+          encoding = $~[1]
+          lines.shift
+        end
+        encoding
+      end
+
+      def parse_separator line
+        raise Git::MalformedCommitError.new_with_line(line) unless line == ''
+      end
+
+      def parse_message lines
+        message = []
+        while line = lines.first and line.match(/\A {4}(.+)\n\z/)
+          message << $~[1]
+          lines.shift
+        end
+        message
+      end
+    end # class << self
   end # class Commit
 end # module Git

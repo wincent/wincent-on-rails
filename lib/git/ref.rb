@@ -42,7 +42,7 @@ module Git
 
     # Returns up to 20 commits starting at the Ref.
     def commits # options = {} # forthcoming
-      @repo.r_git 'log', '--format=raw', '-n', '20', @name
+      Commit.log self
     end
   end # class Ref
 end # module Git
