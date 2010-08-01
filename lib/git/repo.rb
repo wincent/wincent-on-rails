@@ -38,6 +38,10 @@ module Git
       @tags ||= Tag.all self
     end
 
+    def commit sha1
+      Commit.commit_with_hash sha1, repo
+    end
+
     # This method invokes the {#git} method and raises a {Git::CommandError}
     # if it returns a non-zero exit status.
     #

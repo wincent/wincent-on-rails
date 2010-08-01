@@ -24,22 +24,47 @@ module Git
         encoding  = parse_encoding lines
         parse_separator lines.shift.chomp
         message   = parse_message lines
-        commits << self.new(ref,
+        commits << self.new(:ref        => ref,
                             :commit     => commit,
                             :tree       => tree,
                             :parents    => parents,
                             :author     => author,
                             :committer  => committer,
                             :encoding   => encoding,
-                            :message    => message.join("\n"))
+                            :message    => message)
         break if lines.empty?
         parse_separator lines.shift.chomp
       end
       commits
     end
 
-    def initialize ref, attributes
-      @ref        = ref
+    def self.commit_with_hash sha1, repo
+      result = repo.git 'name-rev', '--no-undefined', sha1
+      raise UnreachableCommitError.new_with_sha1(sha1) unless result.success?
+      result = repo.git 'cat-file', 'commit', sha1
+      raise NonExistentCommit.new_with_sha1(sha1) if unless result.success?
+      lines   = result.stdout.lines
+      commit  = parse_commit lines.shift.chomp
+      tree    = parse_tree lines.shift.chomp
+      parents = parse_parents lines
+      author  = Author.parse_author lines.shift.chomp
+      committer = Committer.parse_committer lines.shift.chomp
+      encoding  = parse_encoding lines
+      parse_separator lines.shift.chomp
+      message = lines.join
+      new(:repo => repo,
+          :commit     => sha1,
+          :tree       => tree,
+          :parents    => parents,
+          :author     => author,
+          :committer  => committer,
+          :encoding   => encoding,
+          :message    => message)
+    end
+
+    def initialize attributes
+      @ref        = attributes[:ref]
+      @repo       = attributes[:repo] || @ref.repo
       @commit     = attributes[:commit]
       @tree       = attributes[:tree]
       @parents    = attributes[:parents]
@@ -47,6 +72,14 @@ module Git
       @committer  = attributes[:committer]
       @encoding   = attributes[:encoding]
       @message    = attributes[:message]
+    end
+
+    def diff
+      unless @diff
+        result = @repo.git_r 'diff-tree', '-p', '--word-diff=porcelain'
+        @diff = result.stdout
+      end
+      @diff
     end
 
     class << self
@@ -95,7 +128,7 @@ module Git
           message << $~[1]
           lines.shift
         end
-        message
+        message.join("\n")
       end
     end # class << self
   end # class Commit
