@@ -13,7 +13,7 @@ module Git
     end
 
     # Takes a UNIX epoch timestamp in seconds and a time zone offset and
-    # produces the corresponding Time object.
+    # produces the corresponding Time object in the local time zone.
     #
     # The offset is expected to be a string of the form "+xxyy" or "-xxyy",
     # where "xx" is a number of hours and "yy" is a number of minutes.
@@ -23,11 +23,9 @@ module Git
       hours = offset / 100
       minutes = offset.abs % 100 # for consistency, never do modulo on -ve num
       minutes *= -1 if hours < 0 # but restore signedness afterwards
-
-      # TODO: suspect I'm doing this offset thing wrong, so review it
-      Time.at timestamp.to_i +
-        (hours * 3600) +
-        (minutes * 60)
+      time = Time.at timestamp.to_i -
+        (hours * 3600 + minutes * 60)
+      time += time.utc_offset
     end
 
     def initialize name, email, time
