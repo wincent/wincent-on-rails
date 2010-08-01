@@ -1,5 +1,26 @@
 module Git
   class Commit
+    # Raised when unexpected format encountered while parsing a raw commit object.
+    class MalformedCommitError < Exception
+      def self.new_with_line line
+        self.new "#{self}: malformed commit object with line: #{line}"
+      end
+    end
+
+    # Raised when a commit is not reachable from any ref.
+    class UnreachableCommitError < Exception
+      def self.new_with_sha1 sha1
+        self.new "#{self}: unreachable commit: #{sha1}"
+      end
+    end
+
+    # Raised when commit does not exist.
+    class NoCommitError < Exception
+      def self.new_with_sha1 sha1
+        self.new "#{self}: no commit found: #{sha1}"
+      end
+    end
+
     # attributes, in the order that they appear in "git log --format=raw"
     attr_reader :commit, :tree, :parents, :author, :committer, :encoding,
       :message
@@ -42,7 +63,7 @@ module Git
       result = repo.git 'name-rev', '--no-undefined', sha1
       raise UnreachableCommitError.new_with_sha1(sha1) unless result.success?
       result = repo.git 'cat-file', 'commit', sha1
-      raise NonExistentCommit.new_with_sha1(sha1) unless result.success?
+      raise NoCommitError.new_with_sha1(sha1) unless result.success?
       lines   = result.stdout.lines
       commit  = parse_commit lines.shift.chomp
       tree    = parse_tree lines.shift.chomp
@@ -88,13 +109,13 @@ module Git
 
       def parse_commit line
         line.match(/\Acommit ([a-f0-9]{40})\z/) or
-          raise Git::MalformedCommitError.new_with_line(line)
+          raise MalformedCommitError.new_with_line(line)
         $~[1]
       end
 
       def parse_tree line
         line.match(/\Atree ([a-f0-9]{40})\z/) or
-          raise Git::MalformedCommitError.new_with_line(line)
+          raise MalformedCommitError.new_with_line(line)
         $~[1]
       end
 
@@ -119,7 +140,7 @@ module Git
       end
 
       def parse_separator line
-        raise Git::MalformedCommitError.new_with_line(line) unless line == ''
+        raise MalformedCommitError.new_with_line(line) unless line == ''
       end
 
       def parse_message lines

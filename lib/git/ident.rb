@@ -5,7 +5,7 @@ module Git
     # @param ident should be either 'committer' or 'author'
     def self.parse_ident line, ident
       line.match(/\A#{ident} (.+) <(.+)> (\d+) ([+-]\d{4})\z/) or
-        raise Git::MalformedCommitError.new_with_line(line)
+        raise Git::Commit::MalformedCommitError.new_with_line(line)
       name  = $~[1]
       email = $~[2]
       time  = time_from_timestamp_and_offset $~[3], $~[4]
