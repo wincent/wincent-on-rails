@@ -86,10 +86,14 @@ module Git
     def self.process_hunk lines
       hunk = []
       line = lines.shift.chomp
-      line.match(/\A@@ -(\d+),(\d+) \+(\d+),(\d+) @@.*\z/) or
+
+      # length may be omitted if it is 1
+      line.match(/\A@@ -(\d+)(?:,(\d+))? \+(\d+)(?:,(\d+))? @@.*\z/) or
         raise Commit::MalformedDiffError.new_with_line(line)
-      preimage_start, preimage_length   = $~[1].to_i, $~[2].to_i
-      postimage_start, postimage_length = $~[3].to_i, $~[4].to_i
+      preimage_start = $~[1].to_i
+      preimage_length = $~[2] ? $~[2].to_i : 1
+      postimage_start = $~[3].to_i
+      postimage_length = $~[4] ? $~[4].to_i : 1
       preimage_cursor = preimage_start
       postimage_cursor = postimage_start
 

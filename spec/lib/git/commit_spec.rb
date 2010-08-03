@@ -224,4 +224,12 @@ describe Git::Commit do
       end
     end
   end
+
+  describe '#diff' do
+    let(:diff) { repo.head.commits.first.diff }
+
+    it 'returns an array of changes' do
+      diff.should be_kind_of(Array)
+    end
+  end
 end
