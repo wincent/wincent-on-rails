@@ -226,10 +226,122 @@ describe Git::Commit do
   end
 
   describe '#diff' do
+    before do
+      Dir.chdir repo.path do
+        `echo "stuff" >> file`
+        `git add file`
+        `git commit -m "new stuff"`
+      end
+    end
+
     let(:diff) { repo.head.commits.first.diff }
 
     it 'returns an array of changes' do
       diff.should be_kind_of(Array)
     end
+
+    describe 'changes array' do
+      it 'contains one hash per changed file' do
+        diff.length.should == 1
+        diff.first.should be_kind_of(Hash)
+      end
+
+      describe 'changed file hash' do
+        let(:hash) { diff.first }
+
+        specify 'added attribute indicates number of added lines' do
+          hash[:added].should == 1
+        end
+
+        specify 'deleted attribute indicates number of deleted lines' do
+          hash[:deleted].should == 0
+        end
+
+        specify 'path attribute indicates changed path' do
+          hash[:path].should == 'file'
+        end
+
+        specify 'hunks attribute is an array of changed hunks' do
+          hash[:hunks].should be_kind_of(Array)
+        end
+
+        describe 'hunks array' do
+          let(:hunks) { hash[:hunks] }
+
+          it 'contains one hunk object per changed hunk' do
+            hunks.length.should == 1
+            hunks.first.should be_kind_of(Git::Hunk)
+          end
+
+          describe 'hunk' do
+            let(:hunk) { hunks.first }
+
+            it 'records the preimage start' do
+              hunk.preimage_start.should == 1
+            end
+
+            it 'records the preimage length' do
+              hunk.preimage_length.should == 1
+            end
+
+            it 'records the postimage start' do
+              hunk.postimage_start.should == 1
+            end
+
+            it 'records the postimage length' do
+              hunk.postimage_length.should == 2
+            end
+
+            it 'records an array of lines' do
+              hunk.lines.should be_kind_of(Array)
+            end
+
+            describe 'lines array' do
+              let(:lines) { hunk.lines }
+
+              it 'contains a context line' do
+                lines.first.should be_kind_of(Git::Hunk::Line)
+                lines.first.kind.should == :context
+              end
+
+              describe 'context line' do
+                let(:line) { lines.first }
+
+                it 'records its line number' do
+                  line.line_number.should == 1
+                end
+
+                it 'records an array of line segments' do
+                  line.segments.should == [[:context, 'foo']]
+                end
+              end
+
+              it 'contains an addition line' do
+                lines[1].should be_kind_of(Git::Hunk::Line)
+                lines[1].kind.should == :added
+              end
+
+              describe 'addition line' do
+                let(:line) { lines[1] }
+
+                it 'records its line number' do
+                  line.line_number.should == 2
+                end
+
+                it 'records an array of line segments' do
+                  line.segments.should == [[:added, 'stuff']]
+                end
+              end
+            end
+          end
+        end
+      end
+    end
+
+    # TODO: test root commit, merge commit etc
+    # file creation, file deletion
+    # removal within a line
+    # addition within a line
+    # change within a line
   end
 end
