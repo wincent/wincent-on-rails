@@ -30,6 +30,7 @@ module Git
   autoload :Branch, 'git/branch'
   autoload :Commit, 'git/commit'
   autoload :Committer, 'git/committer'
+  autoload :Hunk, 'git/hunk'
   autoload :Ident, 'git/ident'
   autoload :Ref, 'git/ref'
   autoload :Repo, 'git/repo'

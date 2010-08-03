@@ -1,8 +1,8 @@
 module Git
   class Hunk
     class Line
-      # "type" is either :added, :deleted, :context
-      attr_reader :type
+      # "kind" is either :added, :deleted, :context
+      attr_reader :kind
       attr_reader :line_number, :segments
 
       def self.addition_line_from_segments line_number, segments
@@ -15,23 +15,36 @@ module Git
 
       class << self
       private
-        def self.line_from_segments line_number, segments, options
-          line = Line.new line_number
-          segments.each do |segment|
-            line << segment if segment.first != options[:excluded]
-          end
-          line
+        def line_from_segments line_number, segments, options
+          Line.new line_number, segments, options
         end
       end
 
-      def initialize line_number, line = nil
+      # @param [Fixnum] line_number
+      # @param [String, Array] line_or_segments
+      # @param [Hash] options
+      def initialize line_number, line_or_segments = nil, options = {}
         @line_number = line_number
         @segments = []
-        self.line = line if line
+        line_or_segments.to_a.each do |line|
+          self.add_segment line, options
+        end
+
+        # implicit kind-setting in the << method won't work for lines which
+        # contain only context; such as the deletion line here:
+        #
+        #   -var = 1
+        #   +var = 1 # new comment
+        case options[:excluded]
+        when :deleted
+          @kind = :added
+        when :added
+          @kind = :deleted
+        end
       end
 
       def << segment
-        @type = segment.first if @type == :context or @type.nil?
+        @kind = segment.first if @kind == :context or @kind.nil?
         @segments << segment
       end
 
@@ -47,12 +60,12 @@ module Git
 
     protected
 
-      def line= line
-        case line
+      def add_segment segment, options = {}
+        case segment
         when /\A\+(.*)/
-          self << [:added, $~[1]]
-        when /\A\-(.*)/
-          self << [:deleted, $~[1]]
+          self << [:added, $~[1]] unless options[:excluded] == :added
+        when /\A-(.*)/
+          self << [:deleted, $~[1]] unless options[:excluded] == :deleted
         when /\A (.*)/
           self << [:context, $~[1]]
         end
@@ -64,29 +77,32 @@ module Git
 
     def self.hunks_from_diff lines
       hunks = []
-      while line = lines.first and lines.match /\A@@/
-        hunks << process_hunk lines
+      while line = lines.first and line.match /\A@@/
+        hunks << process_hunk(lines)
       end
       hunks
     end
 
     def self.process_hunk lines
-      line = lines.shift.chomp
       hunk = []
-      while line = lines.first.chomp and
-        line.match(/\A@@ -(\d+),(\d+) \+(\d+),(\d+)@@.*\z/)
-        preimage_start, preimage_length   = $~[1], $~[2]
-        postimage_start, postimage_length = $~[3], $~[4]
-        preimage_cursor = preimage_start
-        postimage_cursor = postimage_start
-        lines.shift
+      line = lines.shift.chomp
+      line.match(/\A@@ -(\d+),(\d+) \+(\d+),(\d+) @@.*\z/) or
+        raise Commit::MalformedDiffError.new_with_line(line)
+      preimage_start, preimage_length   = $~[1].to_i, $~[2].to_i
+      postimage_start, postimage_length = $~[3].to_i, $~[4].to_i
+      preimage_cursor = preimage_start
+      postimage_cursor = postimage_start
+
+      while line = lines.first and line.match(/\A[ ~+-]/)
         segments = []
-        while segment = lines.first and line.match(/\A[ +-]/)
+        while segment = lines.first and segment.match(/\A[ +-]/)
           segments << lines.shift.chomp
         end
         case segments.length
         when 0
-          raise MalformedDiffError.new
+          raise Commit::MalformedDiffError.new_with_line(line) unless
+            line.chomp == '~'
+          lines.shift
         when 1  # "pure" addition, deletion or context
           hunk << Line.new(preimage_cursor, line)
           preimage_cursor += 1
@@ -97,6 +113,7 @@ module Git
           postimage_cursor += 1
         end
       end
+
       new preimage_start, preimage_length,
         postimage_start, postimage_length, hunk
     end

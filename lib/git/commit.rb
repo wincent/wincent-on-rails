@@ -41,7 +41,7 @@ module Git
     # commits one ref at a time.
     def self.log ref # options = {} # forthcoming
       result  = ref.repo.r_git 'log', '--format=raw', '-n', '20', ref.name
-      lines   = result.stdout.lines
+      lines   = result.stdout.lines.entries
       commits = []
 
       # see commit.c in git.git for details of the raw format
@@ -73,7 +73,7 @@ module Git
       raise UnreachableCommitError.new_with_sha1(sha1) unless result.success?
       result = repo.git 'cat-file', 'commit', sha1
       raise NoCommitError.new_with_sha1(sha1) unless result.success?
-      lines   = result.stdout.lines
+      lines   = result.stdout.lines.entries
       commit  = parse_commit lines.shift.chomp
       tree    = parse_tree lines.shift.chomp
       parents = parse_parents lines
@@ -106,9 +106,9 @@ module Git
 
     def diff
       unless @diff
-        result = @repo.git_r 'diff-tree', '--numstat', '-p',
+        result = @repo.r_git 'diff-tree', '--numstat', '-p',
           '--word-diff=porcelain', '--root', @commit
-        @diff = parse_diff result.stdout
+        @diff = parse_diff result.stdout.lines.entries
       end
       @diff
     end
@@ -165,8 +165,7 @@ module Git
 
   private
 
-    def parse_diff diff
-      lines = diff.lines
+    def parse_diff lines
       line = lines.shift.chomp
       raise MalformedDiffError.new_with_line(line) unless line == @commit
       changes = parse_numstat lines
@@ -180,11 +179,11 @@ module Git
       changes = []
       while line = lines.first.chomp and line.match(/\A(\d+|-)\t(\d+|-)\t(.+)\z/)
         changes << {
-          :added    => $~[1], # for binary files will be -
-          :deleted  => $~[2], # for binary files will be -
+          :added    => $~[1] == '-' ? nil : $~[1].to_i, # binary file: - (nil)
+          :deleted  => $~[2] == '-' ? nil : $~[2].to_i, # binary file: - (nil)
           :path     => $~[3]
         }
-        line.shift
+        lines.shift
       end
       changes
     end
@@ -214,7 +213,7 @@ module Git
         /\Arename to (.+)\z/,
         /\Asimilarity index (.+)\z/,
         /\Adissimilarity index (.+)\z/,
-        /\Aindex (.+)..(.+) (.+)\z/
+        /\Aindex ([a-f0-9]+)\.\.([a-f0-9]+)( [0-7]+)?\z/
       ]
       while line = lines.first.chomp
         if header_patterns.any? { |pattern| line.match pattern }
@@ -228,10 +227,10 @@ module Git
     def parse_from_to_header lines
       # again, not really parsed, just skipped over
       line = lines.shift.chomp
-      line.match(%r{\A--- ("a/.+"|a/.+)\z}) or
+      line.match(%r{\A--- ("a/.+"|a/.+|/dev/null)\z}) or
         raise MalformedDiffError.new_with_line(line)
       line = lines.shift.chomp
-      line.match(%r{\A\+\+\+ ("b/.+"|b/.+)\z}) or
+      line.match(%r{\A\+\+\+ ("b/.+"|b/.+|/dev/null)\z}) or
         raise MalformedDiffError.new_with_line(line)
     end
 
