@@ -1,9 +1,18 @@
 module Git
   class Commit
-    # Raised when unexpected format encountered while parsing a raw commit object.
+    # Raised when unexpected format encountered while parsing a raw commit
+    # object.
     class MalformedCommitError < Exception
       def self.new_with_line line
         self.new "#{self}: malformed commit object with line: #{line}"
+      end
+    end
+
+    # Raised when unexpected format encountered while parsing output of "git
+    # diff-tree".
+    class MalformedDiffError < Exception
+      def self.new_with_line line
+        self.new "#{self}: malformed diff output for line: #{line}"
       end
     end
 
@@ -97,7 +106,8 @@ module Git
 
     def diff
       unless @diff
-        result = @repo.git_r 'diff-tree', '--numstat', '-p', '--word-diff=porcelain'
+        result = @repo.git_r 'diff-tree', '--numstat', '-p',
+          '--word-diff=porcelain', '--root', @commit
         @diff = parse_diff result.stdout
       end
       @diff
@@ -157,34 +167,76 @@ module Git
 
     def parse_diff diff
       lines = diff.lines
-      raise 'malformed diff' unless lines.shift.chomp.match(/\A[a-f0-9]{40}\z/)
+      line = lines.shift.chomp
+      raise MalformedDiffError.new_with_line(line) unless line == @commit
       changes = parse_numstat lines
-      raise 'malformed diff' unless lines.shift.chomp == ''
+      line = lines.shift.chomp
+      raise MalformedDiffError.new_with_line(line) unless line == ''
+      changes.each { |change| parse_file_diff change, lines }
+      changes
     end
 
     def parse_numstat lines
       changes = []
       while line = lines.first.chomp and line.match(/\A(\d+|-)\t(\d+|-)\t(.+)\z/)
-        $~[1] # added; for binary files will be -
-        $~[2] # deleted; for binary files will be -
-        $~[3] # path
+        changes << {
+          :added    => $~[1], # for binary files will be -
+          :deleted  => $~[2], # for binary files will be -
+          :path     => $~[3]
+        }
         line.shift
       end
       changes
     end
 
-    def parse_diff_header lines
-      /old mode (.+)/
-      /new mode (.+)/
-      /deleted file mode (.+)/
-      /new file mode (.+)/
-      /copy from (.+)/
-      /copy to (.+)/
-      /rename from (.+)/
-      /rename to (.+)/
-      /similarity index (.+)/
-      /dissimilarity index (.+)/
-      /index (.+)..(.+) (.+)/
+    def parse_file_diff change, lines
+      parse_git_diff_header lines.shift.chomp
+      parse_extended_headers lines
+      parse_from_to_header lines
+      change[:hunks] = parse_hunks lines
+    end
+
+    def parse_git_diff_header line
+      raise MalformedDiffError.new_with_line(line) unless
+        line.match(%r{\Adiff --git ("a/.+"|a/.+) ("b/.+"|b/.+)\z})
+    end
+
+    def parse_extended_headers lines
+      # not really "parsing" these at all for now, just skipping over them
+      header_patterns = [
+        /\Aold mode (.+)\z/,
+        /\Anew mode (.+)\z/,
+        /\Adeleted file mode (.+)\z/,
+        /\Anew file mode (.+)\z/,
+        /\Acopy from (.+)\z/,
+        /\Acopy to (.+)\z/,
+        /\Arename from (.+)\z/,
+        /\Arename to (.+)\z/,
+        /\Asimilarity index (.+)\z/,
+        /\Adissimilarity index (.+)\z/,
+        /\Aindex (.+)..(.+) (.+)\z/
+      ]
+      while line = lines.first.chomp
+        if header_patterns.any? { |pattern| line.match pattern }
+          lines.shift
+        else
+          break
+        end
+      end
+    end
+
+    def parse_from_to_header lines
+      # again, not really parsed, just skipped over
+      line = lines.shift.chomp
+      line.match(%r{\A--- ("a/.+"|a/.+)\z}) or
+        raise MalformedDiffError.new_with_line(line)
+      line = lines.shift.chomp
+      line.match(%r{\A\+\+\+ ("b/.+"|b/.+)\z}) or
+        raise MalformedDiffError.new_with_line(line)
+    end
+
+    def parse_hunks lines
+      Hunk.hunks_from_diff lines
     end
   end # class Commit
 end # module Git
