@@ -204,5 +204,24 @@ describe Git::Commit do
         end
       end
     end
+
+    describe '#ref' do
+      it 'returns the associated reference' do
+        commit.ref.should == ref
+      end
+
+      context 'no associated reference' do
+        it 'returns nil' do
+          commit = Git::Commit.commit_with_hash repo.head.sha1, repo
+          commit.ref.should be_nil
+        end
+      end
+    end
+
+    describe '#repo' do
+      it 'returns the associated repo' do
+        commit.repo.should == repo
+      end
+    end
   end
 end
