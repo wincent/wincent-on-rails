@@ -34,6 +34,9 @@ module Git
     attr_reader :commit, :tree, :parents, :author, :committer, :encoding,
       :message
 
+    # other attributes
+    attr_reader :ref, :repo
+
     # Returns up to 20 commits starting at Ref.
     #
     # This is an efficient means of retrieving commits because it does so with
@@ -74,7 +77,6 @@ module Git
       result = repo.git 'cat-file', 'commit', sha1
       raise NoCommitError.new_with_sha1(sha1) unless result.success?
       lines   = result.stdout.lines.entries
-      commit  = parse_commit lines.shift.chomp
       tree    = parse_tree lines.shift.chomp
       parents = parse_parents lines
       author  = Author.parse_author lines.shift.chomp

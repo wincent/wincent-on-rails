@@ -22,6 +22,51 @@ describe Git::Commit do
     end
   end
 
+  describe '::commit_with_hash' do
+    before do
+      @repo = Git::Repo.new scratch_repo
+      Dir.chdir @repo.path do
+        @head = `git rev-parse HEAD`.chomp
+      end
+      @commit = Git::Commit.commit_with_hash @head, @repo
+    end
+
+    it 'returns a commit object' do
+      @commit.should be_kind_of(Git::Commit)
+    end
+
+    specify 'returned commit matches requested SHA-1' do
+      @commit.commit.should == @head
+    end
+
+    specify 'returned commit has a reference to its repo' do
+      @commit.repo.should == @repo
+    end
+
+    specify 'returned commit specifies no associted ref' do
+      @commit.ref.should == nil
+    end
+
+    context 'unreachable commit' do
+      it 'complains' do
+        Dir.chdir @repo.path do
+          `git commit --amend -m "new head, old head now unreachable"`
+        end
+        expect do
+          Git::Commit.commit_with_hash @head, @repo
+        end.to raise_error(Git::Commit::UnreachableCommitError)
+      end
+    end
+
+    context 'non-existent commit' do
+      it 'complains' do
+        expect do
+          Git::Commit.commit_with_hash '0' * 40, @repo
+        end.to raise_error(Git::Commit::NoCommitError)
+      end
+    end
+  end
+
   describe 'attributes' do
     let(:commit) { Git::Commit.log(ref).first }
 
