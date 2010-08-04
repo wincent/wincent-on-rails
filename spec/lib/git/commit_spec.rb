@@ -307,8 +307,12 @@ describe Git::Commit do
               describe 'context line' do
                 let(:line) { lines.first }
 
-                it 'records its line number' do
-                  line.line_number.should == 1
+                it 'records its preimage line number' do
+                  line.preimage_line_number.should == 1
+                end
+
+                it 'records its postimage line number' do
+                  line.postimage_line_number.should == 1
                 end
 
                 it 'records an array of line segments' do
@@ -324,8 +328,12 @@ describe Git::Commit do
               describe 'addition line' do
                 let(:line) { lines[1] }
 
-                it 'records its line number' do
-                  line.line_number.should == 2
+                it 'has a nil preimage line number' do
+                  line.preimage_line_number.should be_nil
+                end
+
+                it 'records its postimage line number' do
+                  line.postimage_line_number.should == 2
                 end
 
                 it 'records an array of line segments' do

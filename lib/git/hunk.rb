@@ -3,28 +3,30 @@ module Git
     class Line
       # "kind" is either :added, :deleted, :context
       attr_reader :kind
-      attr_reader :line_number, :segments
+
+      attr_reader :preimage_line_number, :postimage_line_number, :segments
 
       def self.addition_line_from_segments line_number, segments
-        line_from_segments line_number, segments, :excluded => :deleted
+        line_from_segments preimage_line_number, nil, segments, :excluded => :deleted
       end
 
       def self.deletion_line_from_segments line_number, segments
-        line_from_segments line_number, segments, :excluded => :added
+        line_from_segments nil, postimage_line_number, segments, :excluded => :added
       end
 
       class << self
       private
-        def line_from_segments line_number, segments, options
-          Line.new line_number, segments, options
+        def line_from_segments preimage_line_number, postimage_line_number, segments, options
+          Line.new preimage_line_number, postimage_line_number, segments, options
         end
       end
 
       # @param [Fixnum] line_number
       # @param [String, Array] line_or_segments
       # @param [Hash] options
-      def initialize line_number, line_or_segments = nil, options = {}
-        @line_number = line_number
+      def initialize preimage_line_number, postimage_line_number, line_or_segments = nil, options = {}
+        @preimage_line_number = preimage_line_number
+        @postimage_line_number = postimage_line_number
         @segments = []
         line_or_segments.to_a.each do |line|
           self.add_segment line, options
@@ -40,6 +42,14 @@ module Git
           @kind = :added
         when :added
           @kind = :deleted
+        end
+
+        # for pure lines, may need to set to nil one of the line numbers
+        case @kind
+        when :deleted
+          @postimage_line_number = nil
+        when :added
+          @preimage_line_number = nil
         end
       end
 
@@ -108,8 +118,15 @@ module Git
             line.chomp == '~'
           lines.shift
         when 1  # "pure" addition, deletion or context
-          hunk << Line.new(preimage_cursor, line)
-          preimage_cursor += 1
+          hunk << (line = Line.new(preimage_cursor, postimage_cursor, line))
+          if line.kind == :added
+            postimage_cursor +=1
+          elsif line.kind == :deleted
+            preimage_cursor +=1
+          else
+            preimage_cursor += 1
+            postimage_cursor += 1
+          end
         else    # mixed; will require a deletion line and an addition line
           hunk << Line.deletion_line_from_segments(preimage_cursor, segments)
           hunk << Line.addition_line_from_segments(postimage_cursor, segments)
