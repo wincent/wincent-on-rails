@@ -28,7 +28,7 @@ describe Repo do
 
     describe 'product' do
       it 'is accessible' do
-        Repo.make.should allow_mass_assignment_of(:product => Product.make!)
+        Repo.make.should allow_mass_assignment_of(:product_id => Product.make!.id)
       end
     end
 

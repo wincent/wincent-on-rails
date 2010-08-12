@@ -41,8 +41,8 @@ class Repo < ActiveRecord::Base
   validates_presence_of :name, :path, :permalink
   validates_format_of :path, :with => %r{\A(/([a-z0-9._-]+))+\z}i,
     :message => 'must have format "/foo/bar/baz"'
-  attr_accessible :clone_url, :description, :name, :path, :permalink, :product,
-    :public, :rw_clone_url
+  attr_accessible :clone_url, :description, :name, :path, :permalink,
+    :product_id, :public, :rw_clone_url
 
   def to_param
     (changes['permalink'] && changes['permalink'].first) || permalink
