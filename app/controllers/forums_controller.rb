@@ -8,7 +8,7 @@ class ForumsController < ApplicationController
   end
 
   def create
-    @forum = Forum.new(params[:forum])
+    @forum = Forum.new params[:forum]
     if @forum.save
       flash[:notice] = 'Successfully created new forum'
       redirect_to @forum
