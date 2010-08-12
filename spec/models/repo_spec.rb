@@ -96,4 +96,21 @@ describe Repo do
       end
     end
   end
+
+  describe '#to_param' do
+    context 'new record' do
+      it 'returns the permalink' do
+        repo = Repo.make :permalink => 'foo'
+        repo.to_param.should == 'foo'
+      end
+    end
+
+    context 'dirty record' do
+      it 'returns the old permalink' do
+        repo = Repo.make! :permalink => 'foo'
+        repo.permalink = 'bar'
+        repo.to_param.should == 'foo'
+      end
+    end
+  end
 end

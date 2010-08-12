@@ -43,4 +43,8 @@ class Repo < ActiveRecord::Base
     :message => 'must have format "/foo/bar/baz"'
   attr_accessible :clone_url, :description, :name, :path, :permalink, :product,
     :public, :rw_clone_url
+
+  def to_param
+    (changes['permalink'] && changes['permalink'].first) || permalink
+  end
 end
