@@ -7,8 +7,7 @@
       =label_tag 'issue_product_id', 'Product'
       %select#issue_product_id(name='issue[product_id]')
         %option(value='')
-        -# Rails BUG: https://rails.lighthouseapp.com/projects/8994/tickets/4879
-        =raw option_groups_from_collection_for_select Product.categorized,
+        =option_groups_from_collection_for_select Product.categorized,
           :last, :first, :id, :name, (@issue.product ? @issue.product.id : nil)
     %li
       =label_tag 'issue_kind', 'Kind'
