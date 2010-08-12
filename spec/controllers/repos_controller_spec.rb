@@ -99,4 +99,30 @@ describe ReposController do
       end
     end
   end
+
+  describe '#show' do
+    let(:repo) { Repo.make! }
+
+    it 'finds and assigns the repo' do
+      get :show, :id => repo.to_param
+      assigns[:repo].should == repo
+    end
+
+    it 'renders "repos/show"' do
+      get :show, :id => repo.to_param
+      response.should render_template('repos/show')
+    end
+
+    it 'succeeds' do
+      get :show, :id => repo.to_param
+      response.should be_success
+    end
+
+    context 'non-existent repo' do
+      it 'redirects to #index' do
+        get :show, :id => 50_000
+        response.should redirect_to('/repos')
+      end
+    end
+  end
 end
