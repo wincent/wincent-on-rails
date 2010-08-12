@@ -1,4 +1,5 @@
 require File.expand_path('../spec_helper', File.dirname(__FILE__))
+require 'pathname'
 
 describe Repo do
   describe 'attributes' do
@@ -131,21 +132,38 @@ describe Repo do
       end
 
       it 'must be unique' do
-        Repo.make! :path => '/foo'
-        Repo.make(:path => '/foo').should fail_validation_for(:path)
+        repo = Repo.make!
+        Repo.make(:path => repo.path).should fail_validation_for(:path)
+      end
+
+      it 'must exist on disk' do
+        Repo.make(:path => '/unlikely/to/exist').
+          should fail_validation_for(:path)
+      end
+
+      it 'must be readable' do
+        path = Pathname.new Dir.mkdtemp
+        path.chmod 0000
+        Repo.make(:path => path).
+          should fail_validation_for(:path)
+      end
+
+      it 'must be a Git repository' do
+        Repo.make(:path => Dir.mkdtemp).
+          should fail_validation_for(:path)
       end
 
       it 'has a database-level constraint to guard against race conditions' do
-        Repo.make! :path => '/foo'
+        repo1 = Repo.make!
         expect do
-          repo = Repo.make!
-          repo.path = '/foo'
-          repo.save :validate => false
+          repo2 = Repo.make!
+          repo2.path = repo1.path
+          repo2.save :validate => false
         end.should raise_error(ActiveRecord::RecordNotUnique)
       end
 
-      specify '"/foo/bar/baz" is valid' do
-        Repo.make(:path => '/foo/bar/baz').should_not fail_validation_for(:path)
+      specify 'RAILS_ROOT is valid' do
+        Repo.make(:path => Rails.root).should_not fail_validation_for(:path)
       end
 
       specify '"non-pathy string!" is not valid' do

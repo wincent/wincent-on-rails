@@ -44,10 +44,22 @@ class Repo < ActiveRecord::Base
   validates_uniqueness_of :name, :path, :permalink
   validates_format_of :path, :with => %r{\A(/([a-z0-9._-]+))+\z}i,
     :message => 'must have format "/foo/bar/baz"'
+  validate :check_path_is_valid_git_repo
   attr_accessible :clone_url, :description, :name, :path, :permalink,
     :product_id, :public, :rw_clone_url
 
   def to_param
     (changes['permalink'] && changes['permalink'].first) || permalink
+  end
+
+private
+  def check_path_is_valid_git_repo
+    Git::Repo.new path unless path.blank?
+  rescue Errno::ENOENT
+    errors.add :path, 'does not exist'
+  rescue Errno::EACCES
+    errors.add :path, 'is not readable'
+  rescue Git::NoRepositoryError
+    errors.add :path, 'is not a valid Git repository'
   end
 end
