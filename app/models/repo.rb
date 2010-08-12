@@ -39,6 +39,9 @@
 class Repo < ActiveRecord::Base
   belongs_to :product
   validates_presence_of :name, :path, :permalink
+  validates_uniqueness_of :clone_url, :product_id, :rw_clone_url,
+    :allow_blank => true
+  validates_uniqueness_of :name, :path, :permalink
   validates_format_of :path, :with => %r{\A(/([a-z0-9._-]+))+\z}i,
     :message => 'must have format "/foo/bar/baz"'
   attr_accessible :clone_url, :description, :name, :path, :permalink,

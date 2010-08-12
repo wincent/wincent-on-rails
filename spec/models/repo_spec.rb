@@ -56,15 +56,45 @@ describe Repo do
   end
 
   describe 'validation' do
+    describe 'clone_url attribute' do
+      it 'must be unique' do
+        Repo.make! :clone_url => 'git.example.com:/foo.git'
+        Repo.make(:clone_url => 'git.example.com:/foo.git').
+          should fail_validation_for(:clone_url)
+      end
+
+      it 'does not fail uniqueness validation for nil values' do
+        Repo.make! :clone_url => nil
+        Repo.make(:clone_url => nil).
+          should_not fail_validation_for(:clone_url)
+      end
+
+      it 'does not fail uniqueness validation for blank values' do
+        Repo.make! :clone_url => nil
+        Repo.make(:clone_url => nil).
+          should_not fail_validation_for(:clone_url)
+      end
+    end
+
     describe 'name attribute' do
       it 'must be present' do
         Repo.make(:name => nil).should fail_validation_for(:name)
+      end
+
+      it 'must be unique' do
+        Repo.make! :name => 'foo'
+        Repo.make(:name => 'foo').should fail_validation_for(:name)
       end
     end
 
     describe 'permalink attribute' do
       it 'must be present' do
         Repo.make(:permalink => nil).should fail_validation_for(:permalink)
+      end
+
+      it 'must be unique' do
+        Repo.make! :permalink => 'foo'
+        Repo.make(:permalink => 'foo').should fail_validation_for(:permalink)
       end
     end
 
@@ -73,12 +103,52 @@ describe Repo do
         Repo.make(:path => nil).should fail_validation_for(:path)
       end
 
+      it 'must be unique' do
+        Repo.make! :path => '/foo'
+        Repo.make(:path => '/foo').should fail_validation_for(:path)
+      end
+
       specify '"/foo/bar/baz" is valid' do
         Repo.make(:path => '/foo/bar/baz').should_not fail_validation_for(:path)
       end
 
       specify '"non-pathy string!" is not valid' do
         Repo.make(:path => 'non-pathy string!').should fail_validation_for(:path)
+      end
+    end
+
+    describe 'product_id attribute' do
+      it 'must be unique' do
+        product = Product.make!
+        Repo.make! :product_id => product.id
+        Repo.make(:product_id => product.id).
+          should fail_validation_for(:product_id)
+      end
+
+      it 'does not fail uniqueness validation for nil values' do
+        Repo.make! :product_id => nil
+        Repo.make(:product_id => nil).
+          should_not fail_validation_for(:product_id)
+      end
+    end
+
+    describe 'rw_clone_url attribute' do
+      it 'must be unique' do
+        Repo.make! :rw_clone_url => 'git.example.com:/foo.git'
+        Repo.make(:rw_clone_url => 'git.example.com:/foo.git').
+          should fail_validation_for(:rw_clone_url)
+      end
+
+      it 'does not fail uniqueness validation for nil values' do
+        Repo.make! :rw_clone_url => nil
+        Repo.make(:rw_clone_url => nil).
+          should_not fail_validation_for(:rw_clone_url)
+      end
+
+      it 'does not fail uniqueness validation for blank values' do
+        Repo.make! :rw_clone_url => nil
+        Repo.make(:rw_clone_url => nil).
+          should_not fail_validation_for(:rw_clone_url)
       end
     end
   end
