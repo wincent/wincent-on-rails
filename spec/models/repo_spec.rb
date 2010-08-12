@@ -74,6 +74,15 @@ describe Repo do
         Repo.make(:clone_url => nil).
           should_not fail_validation_for(:clone_url)
       end
+
+      it 'has a database-level constraint to guard against race conditions' do
+        Repo.make! :clone_url => 'git.example.com:/foo.git'
+        expect do
+          repo = Repo.make!
+          repo.clone_url = 'git.example.com:/foo.git'
+          repo.save :validate => false
+        end.should raise_error(ActiveRecord::RecordNotUnique)
+      end
     end
 
     describe 'name attribute' do
@@ -84,6 +93,15 @@ describe Repo do
       it 'must be unique' do
         Repo.make! :name => 'foo'
         Repo.make(:name => 'foo').should fail_validation_for(:name)
+      end
+
+      it 'has a database-level constraint to guard against race conditions' do
+        Repo.make! :name => 'foo'
+        expect do
+          repo = Repo.make!
+          repo.name = 'foo'
+          repo.save :validate => false
+        end.should raise_error(ActiveRecord::RecordNotUnique)
       end
     end
 
@@ -96,6 +114,15 @@ describe Repo do
         Repo.make! :permalink => 'foo'
         Repo.make(:permalink => 'foo').should fail_validation_for(:permalink)
       end
+
+      it 'has a database-level constraint to guard against race conditions' do
+        Repo.make! :permalink => 'foo'
+        expect do
+          repo = Repo.make!
+          repo.permalink = 'foo'
+          repo.save :validate => false
+        end.should raise_error(ActiveRecord::RecordNotUnique)
+      end
     end
 
     describe 'path attribute' do
@@ -106,6 +133,15 @@ describe Repo do
       it 'must be unique' do
         Repo.make! :path => '/foo'
         Repo.make(:path => '/foo').should fail_validation_for(:path)
+      end
+
+      it 'has a database-level constraint to guard against race conditions' do
+        Repo.make! :path => '/foo'
+        expect do
+          repo = Repo.make!
+          repo.path = '/foo'
+          repo.save :validate => false
+        end.should raise_error(ActiveRecord::RecordNotUnique)
       end
 
       specify '"/foo/bar/baz" is valid' do
@@ -130,6 +166,16 @@ describe Repo do
         Repo.make(:product_id => nil).
           should_not fail_validation_for(:product_id)
       end
+
+      it 'has a database-level constraint to guard against race conditions' do
+        product = Product.make!
+        Repo.make! :product_id => product.id
+        expect do
+          repo = Repo.make!
+          repo.product_id = product.id
+          repo.save :validate => false
+        end.should raise_error(ActiveRecord::RecordNotUnique)
+      end
     end
 
     describe 'rw_clone_url attribute' do
@@ -149,6 +195,16 @@ describe Repo do
         Repo.make! :rw_clone_url => nil
         Repo.make(:rw_clone_url => nil).
           should_not fail_validation_for(:rw_clone_url)
+      end
+
+      it 'has a database-level constraint to guard against race conditions' do
+        product = Product.make!
+        Repo.make! :rw_clone_url => 'git.example.com:/foo.git'
+        expect do
+          repo = Repo.make!
+          repo.rw_clone_url = 'git.example.com:/foo.git'
+          repo.save :validate => false
+        end.should raise_error(ActiveRecord::RecordNotUnique)
       end
     end
   end
