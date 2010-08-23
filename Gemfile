@@ -30,7 +30,7 @@ platforms :ruby_18 do
     gem 'mkdtemp',        '>= 1.2'
     gem 'mongrel',        :require => nil
     gem 'rcov'
-    gem 'rr',             :git => 'git://github.com/btakita/rr.git'
+    gem 'rr',             '>= 1.0'
     gem 'steak',          :git => 'git://github.com/cavalle/steak.git'
   end
 end
