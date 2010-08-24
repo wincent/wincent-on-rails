@@ -9,6 +9,8 @@ shared_examples_for '#moderate_as_ham!' do
   end
 
   it 'does not alter the comment "updated at" timestamp' do
+    # Rails BUG: new regression in 3.0.0.rc2
+    # https://rails.lighthouseapp.com/projects/8994/tickets/5440
     lambda { model.moderate_as_ham! }.should_not change(model, :updated_at)
   end
 
