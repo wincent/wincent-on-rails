@@ -259,7 +259,7 @@ describe Forum, 'find_all method' do
     Topic.update_all ['updated_at = ?', timestamp], ['id = ?', topic2.id]
 
     # we lose some precision here, so can't use an equality comparison
-    (Forum.find_all.first.last_active_at - timestamp).abs.should < 1.second
+    (Forum.find_all.first.last_active_at - timestamp).abs.should <= 1.second
   end
 
   it 'should return nil for missing "last active topic date"' do
