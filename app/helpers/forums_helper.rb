@@ -15,6 +15,6 @@ module ForumsHelper
   end
 
   def timeinfo_for_forum forum
-    forum.last_active_at ? Time.parse(forum.last_active_at).distance_in_words : 'no activity'
+    forum.last_active_at ? forum.last_active_at.distance_in_words : 'no activity'
   end
 end
