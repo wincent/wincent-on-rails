@@ -258,15 +258,8 @@ describe Forum, 'find_all method' do
     timestamp = 2.days.from_now
     Topic.update_all ['updated_at = ?', timestamp], ['id = ?', topic2.id]
 
-    # There is some weirdness here because the find_all method uses
-    # find_by_sql. This means that datetime columns are returned as String
-    # objects, hence the need for Time.parse. Note also that we lose some
-    # precision doing the Time.parse, and must call to_s in order for the
-    # comparison to succeed. Finally, note that we must use Time.zone.parse
-    # rather than Time.parse otherwise the parsed date inexplicably gets
-    # parsed as being +0200 hours, rather than +0000 hours (UTC) as you
-    # would expect from the application config.
-    Time.zone.parse(Forum.find_all.first.last_active_at).to_s.should == timestamp.to_s
+    # we lose some precision here, so can't use an equality comparison
+    (Forum.find_all.first.last_active_at - timestamp).abs.should < 1.second
   end
 
   it 'should return nil for missing "last active topic date"' do
@@ -278,7 +271,7 @@ describe Forum, 'find_all method' do
     topic2 = add_topic
     topic3 = add_topic
     Topic.update_all ['updated_at = ?', 2.days.from_now], ['id = ?', topic2.id]
-    Forum.find_all.first.last_topic_id.should == topic2.id.to_s
+    Forum.find_all.first.last_topic_id.should == topic2.id
   end
 
   it 'should return nil for missing "last active topic id"' do
@@ -342,7 +335,7 @@ describe Forum, 'http://rails.wincent.com/issues/671' do
   it 'should show the correct "last post" for topics with no replies' do
     @topic = Topic.make! :forum => @forum, :user => @user
     result = Topic.find_topics_for_forum(@forum).first
-    result.last_active_user_id.should == @user.id.to_s
+    result.last_active_user_id.should == @user.id
     result.last_active_user_display_name.should == @user.display_name
   end
 
@@ -350,13 +343,13 @@ describe Forum, 'http://rails.wincent.com/issues/671' do
     @topic = Topic.make! :forum => @forum, :user => @user
     comment = Comment.make! :commentable => @topic, :user => @replier
     result = Topic.find_topics_for_forum(@forum).first
-    result.last_active_user_id.should == @replier.id.to_s
+    result.last_active_user_id.should == @replier.id
     result.last_active_user_display_name.should == @replier.display_name
 
     # now delete
     comment.destroy
     result = Topic.find_topics_for_forum(@forum).first
-    result.last_active_user_id.should == @user.id.to_s
+    result.last_active_user_id.should == @user.id
     result.last_active_user_display_name.should == @user.display_name
   end
 
@@ -370,7 +363,7 @@ describe Forum, 'http://rails.wincent.com/issues/671' do
     # now delete
     comment.destroy
     result = Topic.find_topics_for_forum(@forum).first
-    result.last_active_user_id.should == @user.id.to_s
+    result.last_active_user_id.should == @user.id
     result.last_active_user_display_name.should == @user.display_name
   end
 
@@ -385,7 +378,7 @@ describe Forum, 'http://rails.wincent.com/issues/671' do
     @topic = Topic.make! :forum => @forum, :user => nil
     comment = Comment.make! :commentable => @topic, :user => @replier
     result = Topic.find_topics_for_forum(@forum).first
-    result.last_active_user_id.should == @replier.id.to_s
+    result.last_active_user_id.should == @replier.id
     result.last_active_user_display_name.should == @replier.display_name
 
     # now delete
