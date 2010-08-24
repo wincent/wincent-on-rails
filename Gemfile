@@ -6,7 +6,7 @@ source 'http://rubygems.org'
 #   http://github.com/carlhuda/bundler/issues/issue/407
 platforms :ruby_18 do
   gem 'haml',             '>= 3.0.15'
-  gem 'mysql',            '2.8.1'
+  gem 'mysql2'
   gem 'rails',            '3.0.0.rc2'
   gem 'wikitext',         '2.0'
   gem 'wopen3',           '>= 0.3'
@@ -24,7 +24,7 @@ platforms :ruby_18 do
     gem 'autotest',       :require => nil
     gem 'capybara',       :git => 'git://github.com/jnicklas/capybara.git'
     gem 'culerity'
-    gem 'database_cleaner'
+    gem 'database_cleaner', '>= 0.6.0.rc.2'
     gem 'hpricot'
     gem 'launchy'
     gem 'mkdtemp',        '>= 1.2'
