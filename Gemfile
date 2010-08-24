@@ -7,13 +7,13 @@ source 'http://rubygems.org'
 platforms :ruby_18 do
   gem 'haml',             '>= 3.0.15'
   gem 'mysql',            '2.8.1'
-  gem 'rails',            '3.0.0.rc'
+  gem 'rails',            '3.0.0.rc2'
   gem 'wikitext',         '2.0'
   gem 'wopen3',           '>= 0.3'
 
   group :development, :test do
-    gem 'factory_girl_rails'                  # want factories in development console
-    gem 'rspec-rails',    '>= 2.0.0.beta.17'  # needed for generators to work
+    gem 'factory_girl_rails'              # factories in development console
+    gem 'rspec-rails',    '2.0.0.beta.19' # needed for generators to work
   end
 
   group :development do
