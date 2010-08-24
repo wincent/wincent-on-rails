@@ -19,7 +19,7 @@ module ActiveRecord
           # this hack will work as long as we run single-threaded
           record = self.class.record_timestamps
           self.class.record_timestamps = false
-          self.awaiting_moderation  = false
+          self.awaiting_moderation = false
           self.save
         ensure
           self.class.record_timestamps = record
