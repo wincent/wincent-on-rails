@@ -6,11 +6,12 @@ class ExceptionMailer < ActionMailer::Base
           "#{controller.controller_name}\##{controller.action_name} " +
           "(#{exception.class}: #{exception.message})"
 
-    @controller = controller
-    @exception  = exception
-    @backtrace  = pretty_backtrace exception
-    @request    = request
-    @env        = pretty_env request.filtered_env
+    @controller_name    = controller.controller_name
+    @controller_action  = controller.action_name
+    @exception          = exception
+    @backtrace          = pretty_backtrace exception
+    @request            = request
+    @env                = pretty_env request.filtered_env
 
     mail  :subject  => sub,
           :to       => APP_CONFIG['admin_email'],
