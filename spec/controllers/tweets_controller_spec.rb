@@ -4,89 +4,39 @@ require 'hpricot'
 describe TweetsController do
   it_has_behavior 'ApplicationController protected methods'
 
-  # For an explanation of why I test this controller in two ways,
-  # see: https://wincent.com/blog/testing-inquietitude
-  describe '#index ("internals" approach)' do
-    before do
-      @params = { 'action' => 'index', 'controller' => 'tweets' }
-    end
-
+  describe '#index' do
     def do_get
       get :index
     end
 
-    it 'should be successful' do
+    it 'succeeds' do
       do_get
       response.should be_success
     end
 
-    it 'should render the #index template' do
+    it 'renders the #index template' do
       do_get
       response.should render_template('index')
     end
 
-    it 'should use the restful paginator' do
-      paginator = RestfulPaginator.new(@params, Tweet.count, tweets_path, 20)
-      stub(RestfulPaginator).new(@params, Tweet.count, tweets_path, 20) { paginator }
-      do_get
-      assigns[:paginator].should == paginator
-    end
-
-    it 'should correctly configure the restful paginator' do
-      paginator = RestfulPaginator.new(@params, Tweet.count, tweets_path, 20)
-      mock(RestfulPaginator).new(@params, Tweet.count, tweets_path, 20) { paginator }
-      do_get
-    end
-
-    it 'should find recent tweets' do
-      paginator = RestfulPaginator.new(@params, Tweet.count, tweets_path, 20)
-      stub(RestfulPaginator).new(@params, Tweet.count, tweets_path, 20) { paginator }
-      mock(Tweet).find_recent({ :offset => paginator.offset })
-      do_get
-    end
-
-    it 'should assign the recent tweets to the @tweets instance variable' do
-      stub(Tweet).find_recent { [:recent] }
-      do_get
-      assigns[:tweets].should == [:recent]
-    end
-  end
-
-  # For an explanation of why I test this method in two ways,
-  # see: https://wincent.com/blog/testing-inquietitude
-  describe  '#index ("black box" approach)' do
-    def do_get
-      get :index
-    end
-
-    it 'should be successful' do
-      do_get
-      response.should be_success
-    end
-
-    it 'should render the #index template' do
-      do_get
-      response.should render_template('index')
-    end
-
-    it 'should function when there are no tweets in the database' do
+    it 'works when there are no tweets in the database' do
       do_get
       assigns[:tweets].should == []
     end
 
-    it 'should function when there is one tweet in the database' do
+    it 'works when there is one tweet in the database' do
       tweet = Tweet.make!
       do_get
       assigns[:tweets].should == [tweet]
     end
 
-    it 'should fetch no more than 20 tweets at a time' do
+    it 'fetchs no more than 20 tweets at a time' do
       25.times { Tweet.make! }
       do_get
       assigns[:tweets].length.should == 20
     end
 
-    it 'should fetch tweets in reverse creation order' do
+    it 'fetches tweets in reverse creation order' do
       past = 3.days.ago
       old = Tweet.make!
       Tweet.update_all ['created_at = ?, updated_at = ?', past, past], ['id = ?', old.id]
@@ -95,33 +45,27 @@ describe TweetsController do
       assigns[:tweets].should == [new, old]
     end
 
-    it 'should assign to the @paginator instance variable' do
+    it 'assigns to the @paginator instance variable' do
       do_get
       assigns[:paginator].should be_kind_of(RestfulPaginator)
     end
 
-    # this may look like we're overly concerned with internals here
-    # but we simply can't test that the paginator is properly set up anywhere else
-    # we care about the external behaviour of the paginator
-    # is the limit right? is the offset right? is the count right? are the URLs right?
-    # we don't test the params because that is an implementation detail for this controller
-    # (there are no "interesting" params, like sorting or whatever)
-    it 'should inform the paginator of the total number of records' do
+    it 'informs the paginator of the total number of records' do
       do_get
       assigns[:paginator].count.should == Tweet.count
     end
 
-    it 'should tell the paginator to use the /twitter URL for link generation' do
+    it 'tells the paginator to use the /twitter URL for link generation' do
       do_get
       assigns[:paginator].path_or_url.should == tweets_path
     end
 
-    it 'should configure the paginator to paginate in groups of 20' do
+    it 'configures the paginator to paginate in groups of 20' do
       do_get
       assigns[:paginator].limit.should == 20
     end
 
-    it 'should show the first page by default' do
+    it 'shows the first page by default' do
       do_get
       assigns[:paginator].offset.should == 0
     end
