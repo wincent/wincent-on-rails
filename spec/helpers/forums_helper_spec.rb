@@ -22,6 +22,9 @@ describe ForumsHelper do
 
         # the last_active_at column isn't a real attribute
         # but is set up inside the Forum.find_all method
+        #
+        # BUG: that's actually a code smell, and should be updated
+        # in a callback
         Forum.find_all.first
       end
 
