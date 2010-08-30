@@ -4,7 +4,7 @@
 -page_title 'Products'
 -@products.each do |category, products|
   -unless category.blank?
-    %h2="#{category} products"
+    %h2.major="#{category} products"
   -products.each do |product|
     %div[product]
       %h3=link_to product.name, product_path(product)
