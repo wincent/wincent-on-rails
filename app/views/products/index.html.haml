@@ -6,4 +6,4 @@
   -products.each do |product|
     %div[product]
       %h3=link_to product.name, product_path(product)
-      =product.description.w if product.description
+      =raw product.description
