@@ -7,7 +7,7 @@ source 'http://rubygems.org'
 platforms :ruby_18 do
   gem 'haml',             '>= 3.0.15'
   gem 'mysql2'
-  gem 'rails',            '3.0.0.rc2'
+  gem 'rails',            '3.0.0'
   gem 'wikitext',         '2.0'
   gem 'wopen3',           '>= 0.3'
 
