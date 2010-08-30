@@ -322,7 +322,7 @@ fi
 
 if [ -n "$DO_SPEC" ]; then
   echo "Processing command: spec"
-  ssh rails@$SERVER "sh -c 'cd $DEPLOY/latest && bin/rspec spec'"
+  ssh rails@$SERVER "sh -c 'cd $DEPLOY/latest && bin/rspec -f progress spec'"
 fi
 
 if [ -n "$DO_DISABLE" ]; then
