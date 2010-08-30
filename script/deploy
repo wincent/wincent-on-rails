@@ -311,7 +311,7 @@ if [ -n "$DO_DEPLOY" ]; then
                                 rm -f $DEPLOY/latest && \
                                 ln -s $CHECKOUT $DEPLOY/latest && \
                                 cd $CHECKOUT && \
-                                bundle install --binstubs && \
+                                bundle install --deployment --binstubs && \
                                 bin/rake --silent js:minify:deploy > /dev/null'"
 fi
 
