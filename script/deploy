@@ -294,7 +294,8 @@ if [ -n "$DO_DEPLOY" ]; then
                                 git clone --quiet $REPO $CHECKOUT && \
                                 cd $CHECKOUT && \
                                 git checkout --quiet -b deploy $REMOTE_REF && \
-                                git submodule update && \
+                                git submodule --quiet init && \
+                                git submodule --quiet update && \
                                 (git rev-parse HEAD > $CHECKOUT/REVISION) && \
                                 rm -rf $CHECKOUT/log \
                                        $CHECKOUT/public/system \
