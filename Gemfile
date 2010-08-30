@@ -13,7 +13,7 @@ platforms :ruby_18 do
 
   group :development, :test do
     gem 'factory_girl_rails'              # factories in development console
-    gem 'rspec-rails',    '2.0.0.beta.19' # needed for generators to work
+    gem 'rspec-rails',    '2.0.0.beta.20' # needed for generators to work
   end
 
   group :development do
@@ -32,6 +32,7 @@ platforms :ruby_18 do
     gem 'rcov'
     gem 'rr',             '>= 1.0'
     gem 'steak',          :git => 'git://github.com/cavalle/steak.git'
+    gem 'webrat'
   end
 end
 
