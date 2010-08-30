@@ -82,6 +82,14 @@ a.mailto:after { content: url(../images/mailto.png); }
 
 .clearboth { clear: both; }
 
+.clearleft { clear: left; }
+
+.clearright { clear: right; }
+
+.left { float: left; }
+
+.right { float: right; }
+
 #footer { clear: both; text-align: center; font-size: x-small; margin: 1em; }
 #footer ul li { list-style-type: none; display: inline; padding: 5px 10px 5px 10px; }
 #footer ul li + li { border-left: 1px solid silver; }
