@@ -6,6 +6,9 @@ dd { margin-left: 0px; margin-bottom: 15px; min-height: 64px; color: gray; }
 
 dt img { position: absolute; top: -10px; left: -96px; }
 
+.product { margin: 0px auto; min-height: 128px; width: 960px; }
+.product .description { border-bottom: 1px solid silver; float: left; margin: 0px 32px 10px 10px; width: 540px; }
+.product .icon { float: left; height: 128px; margin: 0px 36px 0px 0px; width: 128px; }
 
 #product-container { margin: 15px -15px 0px -15px; width: 100%; }
 
@@ -39,12 +42,9 @@ dt img { position: absolute; top: -10px; left: -96px; }
 
 #product-purchase:hover { background: url(../assets/purchase-5-highlighted.png) no-repeat left top; }
 
-
-
-
 .centered-column { margin-left: 150px; margin-right: 150px; }
 
-#lightbox-image-frame { position: absolute; margin: 0 auto; z-index: 100; padding: 20px 20px 35px 20px; background: black; -webkit-border-radius: 15px; -moz-border-radius: 15px; -webkit-box-shadow: 4px 4px 4px #888; -moz-box-shadow: 4px 4px 4px #888; box-shadow: 4px 4px 4px #888; display: none; z-index: 5000; }
+#lightbox-image-frame { position: absolute; margin: 0 auto; z-index: 100; padding: 20px 20px 35px 20px; background: black; -webkit-border-radius: 15px; -moz-border-radius: 15px; -webkit-box-shadow: 4px 4px 4px #888888; -moz-box-shadow: 4px 4px 4px #888888; box-shadow: 4px 4px 4px #888888; display: none; z-index: 5000; }
 
 #lightbox-caption { margin-top: 10px; margin-bottom: -10px; text-align: center; color: white; }
 #lightbox-caption img { margin-top: 10px; }
@@ -53,11 +53,11 @@ dt img { position: absolute; top: -10px; left: -96px; }
 
 #lightbox-spinner { position: absolute; top: 9px; left: 9px; }
 
-#lightbox-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: #000; opacity: 0.25; -webkit-opacity: 0.25; -moz-opacity: 0.25; filter: alpha(opacity=25); z-index: 4000; }
+#lightbox-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: black; opacity: 0.25; -webkit-opacity: 0.25; -moz-opacity: 0.25; filter: alpha(opacity=25); z-index: 4000; }
 
 .lightbox-wrapper { position: relative; display: inline; }
 
-.lightbox { margin: 12px; padding: 8px; background: white; border: 1px solid gray; -webkit-box-shadow: 2px 2px 2px #888; -moz-box-shadow: 2px 2px 2px #888; box-shadow: 2px 2px 2px #888; }
+.lightbox { margin: 12px; padding: 8px; background: white; border: 1px solid gray; -webkit-box-shadow: 2px 2px 2px #888888; -moz-box-shadow: 2px 2px 2px #888888; box-shadow: 2px 2px 2px #888888; }
 
 .widget { position: absolute; top: -10px; left: -10px; }
 
