@@ -11,6 +11,72 @@ describe Article do
     article.reload
     article.body.length.should == length
   end
+
+  describe '#title' do
+    it 'defaults to nil' do
+      Article.new.title.should be_nil
+    end
+  end
+
+  describe '#redirect' do
+    it 'defaults to nil' do
+      Article.new.redirect.should be_nil
+    end
+  end
+
+  describe '#body' do
+    it 'defaults to nil' do
+      Article.new.body.should be_nil
+    end
+  end
+
+  describe '#public' do
+    it 'defaults to true' do
+      Article.new.public.should == true
+    end
+  end
+
+  describe '#accepts_comments' do
+    it 'defaults to true' do
+      Article.new.accepts_comments.should == true
+    end
+  end
+
+  describe '#comments_count' do
+    it 'defaults to 0' do
+      Article.new.comments_count.should == 0
+    end
+  end
+
+  describe '#created_at' do
+    it 'defaults to nil' do
+      Article.new.created_at.should be_nil
+    end
+  end
+
+  describe '#updated_at' do
+    it 'defaults to nil' do
+      Article.new.updated_at.should be_nil
+    end
+  end
+
+  describe '#last_commenter_id' do
+    it 'defaults to nil' do
+      Article.new.last_commenter_id.should be_nil
+    end
+  end
+
+  describe '#last_comment_id' do
+    it 'defaults to nil' do
+      Article.new.last_comment_id.should be_nil
+    end
+  end
+
+  describe '#last_commented_at' do
+    it 'defaults to nil' do
+      Article.new.last_commented_at.should be_nil
+    end
+  end
 end
 
 describe Article, 'creation' do
