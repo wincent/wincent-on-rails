@@ -185,6 +185,78 @@ describe User do
     subject { User }
   end
 
+  describe '#display_name' do
+    it 'defaults to nil' do
+      User.new.display_name.should be_nil
+    end
+  end
+
+  describe '#passphrase_hash' do
+    it 'defaults to nil' do
+      User.new.passphrase_hash.should be_nil
+    end
+  end
+
+  describe '#passphrase_salt' do
+    it 'defaults to nil' do
+      User.new.passphrase_salt.should be_nil
+    end
+  end
+
+  describe '#superuser' do
+    it 'defaults to false' do
+      User.new.superuser.should == false
+    end
+  end
+
+  describe '#verified' do
+    it 'defaults to false' do
+      User.new.verified.should == false
+    end
+  end
+
+  describe '#suspended' do
+    it 'defaults to false' do
+      User.new.suspended.should == false
+    end
+  end
+
+  describe '#session_key' do
+    it 'defaults to nil' do
+      User.new.session_key.should be_nil
+    end
+  end
+
+  describe '#session_expiry' do
+    it 'defaults to nil' do
+      User.new.session_expiry.should be_nil
+    end
+  end
+
+  describe '#deleted_at' do
+    it 'defaults to nil' do
+      User.new.deleted_at.should be_nil
+    end
+  end
+
+  describe '#created_at' do
+    it 'defaults to nil' do
+      User.new.created_at.should be_nil
+    end
+  end
+
+  describe '#comments_count' do
+    it 'defaults to 0' do
+      User.new.comments_count.should == 0
+    end
+  end
+
+  describe '#topics_count' do
+    it 'defaults to 0' do
+      User.new.topics_count.should == 0
+    end
+  end
+
   describe '#to_param' do
     context 'new record' do
       it 'returns nil' do
