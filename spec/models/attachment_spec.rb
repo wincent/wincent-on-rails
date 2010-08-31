@@ -2,6 +2,78 @@ require File.expand_path('../spec_helper', File.dirname(__FILE__))
 require 'pathname'
 
 describe Attachment do
+  describe '#digest' do
+    it 'defaults to nil' do
+      Attachment.new.digest.should be_nil
+    end
+  end
+
+  describe '#path' do
+    it 'defaults to nil' do
+      Attachment.new.path.should be_nil
+    end
+  end
+
+  describe '#mime_type' do
+    it 'defaults to nil' do
+      Attachment.new.mime_type.should be_nil
+    end
+  end
+
+  describe '#user_id' do
+    it 'defaults to nil' do
+      Attachment.new.user_id.should be_nil
+    end
+  end
+
+  describe '#original_filename' do
+    it 'defaults to nil' do
+      Attachment.new.original_filename.should be_nil
+    end
+  end
+
+  describe '#filesize' do
+    it 'defaults to nil' do
+      Attachment.new.filesize.should be_nil
+    end
+  end
+
+  describe '#attachable_id' do
+    it 'defaults to nil' do
+      Attachment.new.attachable_id.should be_nil
+    end
+  end
+
+  describe '#attachable_type' do
+    it 'defaults to nil' do
+      Attachment.new.attachable_type.should be_nil
+    end
+  end
+
+  describe '#awaiting_moderation' do
+    it 'defaults to true' do
+      Attachment.new.awaiting_moderation.should be_true
+    end
+  end
+
+  describe '#public' do
+    it 'defaults to true' do
+      Attachment.new.public.should be_true
+    end
+  end
+
+  describe '#created_at' do
+    it 'defaults to nil' do
+      Attachment.new.created_at.should be_nil
+    end
+  end
+
+  describe '#updated_at' do
+    it 'defaults to nil' do
+      Attachment.new.updated_at.should be_nil
+    end
+  end
+
   it 'should be valid' do
     pending
     create_attachment.should be_valid
