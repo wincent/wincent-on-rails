@@ -210,6 +210,78 @@ describe Post do
     let(:new_model) { Post.make }
   end
 
+  describe '#title' do
+    it 'defaults to nil' do
+      Post.new.title.should be_nil
+    end
+  end
+
+  describe '#permalink' do
+    it 'defaults to nil' do
+      Post.new.permalink.should be_nil
+    end
+  end
+
+  describe '#excerpt' do
+    it 'defaults to nil' do
+      Post.new.excerpt.should be_nil
+    end
+  end
+
+  describe '#body' do
+    it 'defaults to nil' do
+      Post.new.body.should be_nil
+    end
+  end
+
+  describe '#public' do
+    it 'defaults to true' do
+      Post.new.public.should be_true
+    end
+  end
+
+  describe '#accepts_comments' do
+    it 'defaults to true' do
+      Post.new.accepts_comments.should be_true
+    end
+  end
+
+  describe '#comments_count' do
+    it 'defaults to 0' do
+      Post.new.comments_count.should be_zero
+    end
+  end
+
+  describe '#created_at' do
+    it 'defaults to nil' do
+      Post.new.created_at.should be_nil
+    end
+  end
+
+  describe '#updated_at' do
+    it 'defaults to nil' do
+      Post.new.updated_at.should be_nil
+    end
+  end
+
+  describe '#last_commenter_id' do
+    it 'defaults to nil' do
+      Post.new.last_commenter_id.should be_nil
+    end
+  end
+
+  describe '#last_comment_id' do
+    it 'defaults to nil' do
+      Post.new.last_comment_id.should be_nil
+    end
+  end
+
+  describe '#last_commented_at' do
+    it 'defaults to nil' do
+      Post.new.last_commented_at.should be_nil
+    end
+  end
+
   describe '#to_param' do
     it 'uses the permalink as the param' do
       permalink = Sham.random.downcase
