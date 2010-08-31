@@ -167,7 +167,7 @@ DEPENDENCIES
   hpricot
   jruby-openssl
   launchy
-  memcache
+  memcache (= 1.2.12)
   mkdtemp (>= 1.2)
   mongrel
   mysql2
