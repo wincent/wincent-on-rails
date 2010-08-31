@@ -283,9 +283,17 @@ describe Post do
   end
 
   describe '#to_param' do
-    it 'uses the permalink as the param' do
-      permalink = Sham.random.downcase
-      Post.make(:permalink => permalink).to_param.should == permalink
+    context 'new record' do
+      context 'no permalink set' do
+        Post.new.to_param.should == nil
+      end
+
+      context 'permalink set' do
+        it 'returns the permalink' do
+          permalink = Sham.random.downcase
+          Post.new(:permalink => permalink).to_param.should == permalink
+        end
+      end
     end
 
     context 'dirty record' do
