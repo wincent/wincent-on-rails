@@ -1,6 +1,54 @@
 require File.expand_path('../spec_helper', File.dirname(__FILE__))
 
 describe Comment do
+  describe '#body' do
+    it 'defaults to nil' do
+      Comment.new.body.should be_nil
+    end
+  end
+
+  describe '#user_id' do
+    it 'defaults to nil' do
+      Comment.new.user_id.should be_nil
+    end
+  end
+
+  describe '#commentable_id' do
+    it 'defaults to nil' do
+      Comment.new.commentable_id.should be_nil
+    end
+  end
+
+  describe '#commentable_type' do
+    it 'defaults to nil' do
+      Comment.new.commentable_type.should be_nil
+    end
+  end
+
+  describe '#awaiting_moderation' do
+    it 'defaults to true' do
+      Comment.new.awaiting_moderation.should be_true
+    end
+  end
+
+  describe '#public' do
+    it 'defaults to true' do
+      Comment.new.public.should be_true
+    end
+  end
+
+  describe '#created_at' do
+    it 'defaults to nil' do
+      Comment.new.created_at.should be_nil
+    end
+  end
+
+  describe '#updated_at' do
+    it 'defaults to nil' do
+      Comment.new.updated_at.should be_nil
+    end
+  end
+
   it 'should be valid' do
     Comment.make!.should be_valid
   end
