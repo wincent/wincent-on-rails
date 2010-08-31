@@ -184,6 +184,8 @@ module ActiveRecord
       # Returns a digest based on passphrase and salt.
       # Note that this method must be called "digest" rather than "hash" to avoid overriding the built-in hash method.
       def digest(passphrase, salt)
+        raise ArgumentError, 'nil passphrase' if passphrase.nil?
+        raise ArgumentError, 'nil salt' if salt.nil?
         Digest::SHA256.hexdigest(passphrase + salt)
       end
     end # module ClassMethods

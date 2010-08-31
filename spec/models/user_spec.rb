@@ -181,6 +181,10 @@ describe User, 'validating the passphrase' do
 end
 
 describe User do
+  it_has_behavior 'ActiveRecord::Authentication' do
+    subject { User }
+  end
+
   describe '#to_param' do
     context 'new record' do
       it 'returns nil' do
