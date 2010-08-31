@@ -14,6 +14,7 @@ class User < ActiveRecord::Base
 
   # NOTE: validates_uniqueness_of causes an extra SELECT every time you save, one for each attribute whose uniqueness you validate
 
+  validates_presence_of     :display_name
   validates_uniqueness_of   :display_name,  :case_sensitive => false
   validates_length_of       :display_name,  :minimum => MINIMUM_DISPLAY_NAME_LENGTH
   validates_format_of       :display_name,  :with => /\A[a-z]{2}( ?[a-z0-9]+)+\z/i, :allow_nil => true, :message =>

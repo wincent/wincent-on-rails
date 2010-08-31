@@ -110,6 +110,10 @@ describe User, 'protected attributes' do
 end
 
 describe User, 'validating the display name' do
+  it 'must be present' do
+    User.make(:display_name => nil).should fail_validation_for(:display_name)
+  end
+
   it 'should require it to be unique' do
     name = Sham.random
     User.make!(:display_name => name).should be_valid
