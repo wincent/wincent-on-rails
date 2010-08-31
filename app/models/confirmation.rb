@@ -7,6 +7,7 @@ class Confirmation < ActiveRecord::Base
   attr_accessor   :nothing
   attr_accessible :nothing
 
+  # TODO: move this into configuration file and out of SCM
   SECRET_SALT = '96218e6ec4622f8aae7248c003154997bcace26e'
   def self.secret
     Digest::SHA1.hexdigest(Time.now.to_s + rand.to_s + SECRET_SALT)
