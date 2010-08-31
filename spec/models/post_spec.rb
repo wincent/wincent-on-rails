@@ -197,9 +197,13 @@ describe Post, 'autogeneration of permalink' do
 end
 
 describe Post do
-  let(:commentable) { Post.make! }
-  it_has_behavior 'commentable'
-  it_has_behavior 'commentable (not updating timestamps for comment changes)'
+  it_has_behavior 'commentable' do
+    let(:commentable) { Post.make! }
+  end
+
+  it_has_behavior 'commentable (not updating timestamps for comment changes)' do
+    let(:commentable) { Post.make! }
+  end
 
   it_has_behavior 'taggable' do
     let(:model) { Post.make! }
