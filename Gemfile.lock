@@ -86,6 +86,7 @@ GEM
       activesupport (>= 2.3.6)
       mime-types
       treetop (>= 1.4.5)
+    memcache (1.2.12)
     mime-types (1.16)
     mkdtemp (1.2)
     mongrel (1.1.5)
@@ -166,6 +167,7 @@ DEPENDENCIES
   hpricot
   jruby-openssl
   launchy
+  memcache
   mkdtemp (>= 1.2)
   mongrel
   mysql2

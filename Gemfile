@@ -8,6 +8,7 @@ platforms :ruby_18 do
   gem 'haml',             '~> 3.0.18'
   gem 'mysql2'
   gem 'rails',            '3.0.0'
+  gem 'memcache'
   gem 'unicorn',          '~> 1.1.3'
   gem 'wikitext',         '2.0'
   gem 'wopen3',           '>= 0.3'
