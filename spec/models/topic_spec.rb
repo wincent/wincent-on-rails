@@ -1,6 +1,92 @@
 require File.expand_path('../spec_helper', File.dirname(__FILE__))
 
 describe Topic do
+  describe 'attributes' do
+    describe '#title' do
+      it 'defaults to nil' do
+        Topic.new.title.should be_nil
+      end
+    end
+
+    describe '#body' do
+      it 'defaults to nil' do
+        Topic.new.body.should be_nil
+      end
+    end
+
+    describe '#forum_id' do
+      it 'defaults to nil' do
+        Topic.new.forum_id.should be_nil
+      end
+    end
+
+    describe '#user_id' do
+      it 'defaults to nil' do
+        Topic.new.user_id.should be_nil
+      end
+    end
+
+    describe '#public' do
+      it 'defaults to true' do
+        Topic.new.public.should be_true
+      end
+    end
+
+    describe '#accepts_comments' do
+      it 'defaults to true' do
+        Topic.new.accepts_comments.should be_true
+      end
+    end
+
+    describe '#awaiting_moderation' do
+      it 'defaults to true' do
+        Topic.new.awaiting_moderation.should be_true
+      end
+    end
+
+    describe '#comments_count' do
+      it 'defaults to zero' do
+        Topic.new.comments_count.should be_zero
+      end
+    end
+
+    describe '#view_count' do
+      it 'defaults to zero' do
+        Topic.new.view_count.should be_zero
+      end
+    end
+
+    describe '#created_at' do
+      it 'defaults to nil' do
+        Topic.new.created_at.should be_nil
+      end
+    end
+
+    describe '#updated_at' do
+      it 'defaults to nil' do
+        Topic.new.updated_at.should be_nil
+      end
+    end
+
+    describe '#last_commenter_id' do
+      it 'defaults to nil' do
+        Topic.new.last_commenter_id.should be_nil
+      end
+    end
+
+    describe '#last_comment_id' do
+      it 'defaults to nil' do
+        Topic.new.last_comment_id.should be_nil
+      end
+    end
+
+    describe '#last_commented_at' do
+      it 'defaults to nil' do
+        Topic.new.last_commented_at.should be_nil
+      end
+    end
+  end
+
   it 'should be valid' do
     Topic.make.should be_valid
   end
