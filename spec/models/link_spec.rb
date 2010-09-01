@@ -54,6 +54,36 @@ describe Link, 'protected attributes' do
 end
 
 describe Link  do
+  describe '#uri' do
+    it 'defaults to nil' do
+      Link.new.uri.should be_nil
+    end
+  end
+
+  describe '#permalink' do
+    it 'defaults to nil' do
+      Link.new.permalink.should be_nil
+    end
+  end
+
+  describe '#click_count' do
+    it 'defaults to zero' do
+      Link.new.click_count.should be_zero
+    end
+  end
+
+  describe '#created_at' do
+    it 'defaults to nil' do
+      Link.new.created_at.should be_nil
+    end
+  end
+
+  describe '#updated_at' do
+    it 'defaults to nil' do
+      Link.new.updated_at.should be_nil
+    end
+  end
+
   describe '#to_param' do
     it 'uses permalink as param if available' do
       link = Link.make!
