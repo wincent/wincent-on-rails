@@ -1,9 +1,53 @@
 require File.expand_path('../spec_helper', File.dirname(__FILE__))
 
 describe Page do
-  describe 'markup type' do
-    it 'should default to HTML' do
-      Page.new.markup_type.should == Page::MarkupType::HTML
+  describe 'attributes' do
+    describe '#title' do
+      it 'defaults to nil' do
+        Page.new.title.should be_nil
+      end
+    end
+
+    describe '#permalink' do
+      it 'defaults to nil' do
+        Page.new.permalink.should be_nil
+      end
+    end
+
+    describe '#body' do
+      it 'defaults to nil' do
+        Page.new.body.should be_nil
+      end
+    end
+
+    describe '#front' do
+      it 'defaults to false' do
+        Page.new.front.should be_false
+      end
+    end
+
+    describe '#created_at' do
+      it 'defaults to nil' do
+        Page.new.created_at.should be_nil
+      end
+    end
+
+    describe '#updated_at' do
+      it 'defaults to nil' do
+        Page.new.updated_at.should be_nil
+      end
+    end
+
+    describe '#product_id' do
+      it 'defaults to nil' do
+        Page.new.product_id.should be_nil
+      end
+    end
+
+    describe '#markup_type' do
+      it 'defaults to HTML' do
+        Page.new.markup_type.should == Page::MarkupType::HTML
+      end
     end
   end
 
