@@ -4,6 +4,44 @@ describe Reset do
   it 'should be valid' do
     Reset.make.should be_valid
   end
+
+  describe 'attributes' do
+    describe '#secret' do
+      it 'defaults to nil' do
+        Reset.new.secret.should be_nil
+      end
+    end
+
+    describe '#cutoff' do
+      it 'defaults to nil' do
+        Reset.new.cutoff.should be_nil
+      end
+    end
+
+    describe '#completed_at' do
+      it 'defaults to nil' do
+        Reset.new.completed_at.should be_nil
+      end
+    end
+
+    describe '#created_at' do
+      it 'defaults to nil' do
+        Reset.new.created_at.should be_nil
+      end
+    end
+
+    describe '#updated_at' do
+      it 'defaults to nil' do
+        Reset.new.updated_at.should be_nil
+      end
+    end
+
+    describe '#email_id' do
+      it 'defaults to nil' do
+        Reset.new.email_id.should be_nil
+      end
+    end
+  end
 end
 
 describe Reset, 'email address validation' do
