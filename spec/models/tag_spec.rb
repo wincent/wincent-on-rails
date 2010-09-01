@@ -223,6 +223,32 @@ describe Tag, 'tags_reachable_from_tags method' do
 end
 
 describe Tag do
+  describe 'attributes' do
+    describe '#name' do
+      it 'defaults to nil' do
+        Tag.new.name.should be_nil
+      end
+    end
+
+    describe '#taggings_count' do
+      it 'defaults to zero' do
+        Tag.new.taggings_count.should be_zero
+      end
+    end
+
+    describe '#created_at' do
+      it 'defaults to nil' do
+        Tag.new.created_at.should be_nil
+      end
+    end
+
+    describe '#updated_at' do
+      it 'defaults to nil' do
+        Tag.new.updated_at.should be_nil
+      end
+    end
+  end
+
   describe '#find_with_tag_names' do
     before do
       @foo = Tag.make! :name => 'foo'

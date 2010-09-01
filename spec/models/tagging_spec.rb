@@ -1,6 +1,38 @@
 require File.expand_path('../spec_helper', File.dirname(__FILE__))
 
 describe Tagging do
+  describe 'attributes' do
+    describe '#tag_id' do
+      it 'defaults to nil' do
+        Tagging.new.tag_id.should be_nil
+      end
+    end
+
+    describe '#taggable_id' do
+      it 'defaults to nil' do
+        Tagging.new.taggable_id.should be_nil
+      end
+    end
+
+    describe '#taggable_type' do
+      it 'defaults to nil' do
+        Tagging.new.taggable_type.should be_nil
+      end
+    end
+
+    describe '#created_at' do
+      it 'defaults to nil' do
+        Tagging.new.created_at.should be_nil
+      end
+    end
+
+    describe '#updated_at' do
+      it 'defaults to nil' do
+        Tagging.new.updated_at.should be_nil
+      end
+    end
+  end
+
   describe 'accessible attibutes' do
     #subject { Tagging.make }
     #it { should allow_mass_assignment_of :tag_id => Tag.make!.id }
