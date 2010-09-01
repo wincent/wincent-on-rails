@@ -157,6 +157,54 @@ describe Forum, 'autogeneration of permalink' do
 end
 
 describe Forum do
+  describe '#name' do
+    it 'defaults to nil' do
+      Forum.new.name.should be_nil
+    end
+  end
+
+  describe '#description' do
+    it 'defaults to nil' do
+      Forum.new.description.should be_nil
+    end
+  end
+
+  describe '#topics_count' do
+    it 'defaults to zero' do
+      Forum.new.topics_count.should be_zero
+    end
+  end
+
+  describe '#created_at' do
+    it 'defaults to nil' do
+      Forum.new.created_at.should be_nil
+    end
+  end
+
+  describe '#updated_at' do
+    it 'defaults to nil' do
+      Forum.new.updated_at.should be_nil
+    end
+  end
+
+  describe '#position' do
+    it 'defaults to nil' do
+      Forum.new.position.should be_nil
+    end
+  end
+
+  describe '#public' do
+    it 'defaults to true' do
+      Forum.new.public.should be_true
+    end
+  end
+
+  describe '#permalink' do
+    it 'defaults to nil' do
+      Forum.new.permalink.should be_nil
+    end
+  end
+
   describe '#find_with_param! method' do
     before do
       @name   = 'foo bar'

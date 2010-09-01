@@ -24,6 +24,96 @@ describe Issue do
     let(:model) { Issue.make! }
     let(:new_model) { Issue.make }
   end
+
+  describe '#kind' do
+    it 'defaults to zero' do
+      Issue.new.kind.should be_zero
+    end
+  end
+
+  describe '#summary' do
+    it 'defaults to nil' do
+      Issue.new.summary.should be_nil
+    end
+  end
+
+  describe '#public' do
+    it 'defaults to true' do
+      Issue.new.public.should be_true
+    end
+  end
+
+  describe '#user_id' do
+    it 'defaults to nil' do
+      Issue.new.user_id.should be_nil
+    end
+  end
+
+  describe '#status' do
+    it 'defaults to zero' do
+      Issue.new.status.should be_zero
+    end
+  end
+
+  describe '#description' do
+    it 'defaults to nil' do
+      Issue.new.description.should be_nil
+    end
+  end
+
+  describe '#awaiting_moderation' do
+    it 'defaults to true' do
+      Issue.new.awaiting_moderation.should be_true
+    end
+  end
+
+  describe '#comments_count' do
+    it 'defaults to zero' do
+      Issue.new.comments_count.should be_zero
+    end
+  end
+
+  describe '#created_at' do
+    it 'defaults to nil' do
+      Issue.new.created_at.should be_nil
+    end
+  end
+
+  describe '#updated_at' do
+    it 'defaults to nil' do
+      Issue.new.updated_at.should be_nil
+    end
+  end
+
+  describe '#last_commenter_id' do
+    it 'defaults to nil' do
+      Issue.new.last_commenter_id.should be_nil
+    end
+  end
+
+  describe '#last_comment_id' do
+    it 'defaults to nil' do
+      Issue.new.last_comment_id.should be_nil
+    end
+  end
+
+  describe '#last_commented_at' do
+    it 'defaults to nil' do
+      Issue.new.last_commented_at.should be_nil
+    end
+  end
+
+  describe '#product_id' do
+    it 'defaults to nil' do
+      Issue.new.product_id.should be_nil
+    end
+  end
+
+  describe '#accepts_comments' do
+    it 'defaults to true' do
+      Issue.new.accepts_comments.should be_true
+    end
+  end
 end
 
 describe Issue, 'creation' do
