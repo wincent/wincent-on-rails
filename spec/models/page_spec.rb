@@ -30,19 +30,23 @@ describe Page do
 end
 
 describe Page, 'validation' do
-  it 'should require the title to be present' do
+  it 'requires the title to be present' do
     Page.make(:title => '').should fail_validation_for(:title)
   end
 
-  it 'should require the permalink to be present' do
+  it 'requires the permalink to be present' do
     Page.make(:permalink => '').should fail_validation_for(:permalink)
   end
 
-  it 'should allow only letters, numbers and hyphens in the permalink' do
+  it 'allows only letters, numbers and hyphens in the permalink' do
     Page.make(:permalink => '%__%').should fail_validation_for(:permalink)
   end
 
-  it 'should allow only known markup types (HTML and Wikitext)' do
+  it 'requires the body to be present' do
+    Page.make(:body => nil).should fail_validation_for(:body)
+  end
+
+  it 'allows only known markup types (HTML and Wikitext)' do
     Page.make(:markup_type => 943).should fail_validation_for(:markup_type)
     Page.make(:markup_type => Page::MarkupType::HTML).should_not fail_validation_for(:markup_type)
     Page.make(:markup_type => Page::MarkupType::WIKITEXT).should_not fail_validation_for(:markup_type)

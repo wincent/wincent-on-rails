@@ -10,6 +10,7 @@ class Page < ActiveRecord::Base
   validates_presence_of   :permalink
   validates_format_of     :permalink, :with => /\A[a-zA-Z0-9\-]+\z/,
                           :message => 'must only contain letters, numbers and hyphens'
+  validates_presence_of   :body
   validates_inclusion_of  :markup_type,
                           :in => [ MarkupType::HTML, MarkupType::WIKITEXT ],
                           :message => 'not a valid markup type'
