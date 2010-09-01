@@ -1,6 +1,72 @@
 require File.expand_path('../spec_helper', File.dirname(__FILE__))
 
 describe Message do
+  describe '#related_id' do
+    it 'defaults to nil' do
+      Message.new.related_id.should be_nil
+    end
+  end
+
+  describe '#related_type' do
+    it 'defaults to nil' do
+      Message.new.related_type.should be_nil
+    end
+  end
+
+  describe '#message_id_header' do
+    it 'defaults to nil' do
+      Message.new.message_id_header.should be_nil
+    end
+  end
+
+  describe '#to_header' do
+    it 'defaults to nil' do
+      Message.new.to_header.should be_nil
+    end
+  end
+
+  describe '#from_header' do
+    it 'defaults to nil' do
+      Message.new.from_header.should be_nil
+    end
+  end
+
+  describe '#subject_header' do
+    it 'defaults to nil' do
+      Message.new.subject_header.should be_nil
+    end
+  end
+
+  describe '#in_reply_to_header' do
+    it 'defaults to nil' do
+      Message.new.in_reply_to_header.should be_nil
+    end
+  end
+
+  describe '#body' do
+    it 'defaults to nil' do
+      Message.new.body.should be_nil
+    end
+  end
+
+  describe '#incoming' do
+    it 'defaults to true' do
+      Message.new.incoming.should be_true
+    end
+  end
+
+  describe '#created_at' do
+    it 'defaults to nil' do
+      Message.new.created_at.should be_nil
+    end
+  end
+
+  describe '#updated_at' do
+    it 'defaults to nil' do
+      Message.new.updated_at.should be_nil
+    end
+  end
+
   it 'should treat all fields as optional' do
     Message.create.should be_valid
   end
