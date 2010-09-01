@@ -338,7 +338,10 @@ if [ -n "$DO_MIGRATE" ]; then
   ssh rails@$SERVER "sh -c 'cd $DEPLOY/latest && \
                             bin/rake --silent RAILS_ENV=test         db:migrate && \
                             bin/rake --silent RAILS_ENV=development  db:migrate && \
-                            bin/rake --silent RAILS_ENV=migrations   db:migrate'"
+                            bin/rake --silent RAILS_ENV=migrations   db:migrate && \
+                            bin/rake --silent RAILS_ENV=production   db:schema:dump && \
+                            (git diff --quiet -- db/schema.rb || \
+                            (echo \"  failed: db/schema.rb out of sync with checked-in version\" && exit 1))'"
 fi
 
 if [ -n "$DO_SWITCH" ]; then
