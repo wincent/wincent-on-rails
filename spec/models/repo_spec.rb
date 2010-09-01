@@ -3,37 +3,57 @@ require 'pathname'
 
 describe Repo do
   describe 'attributes' do
-    describe 'name' do
+    describe '#name' do
+      it 'defaults to nil' do
+        Repo.new.name.should be_nil
+      end
+
       it 'is accessible' do
         Repo.make.should allow_mass_assignment_of(:name => 'hello')
       end
     end
 
-    describe 'permalink' do
+    describe '#permalink' do
+      it 'defaults to nil' do
+        Repo.new.permalink.should be_nil
+      end
+
       it 'is accessible' do
         Repo.make.should allow_mass_assignment_of(:permalink => 'world')
       end
     end
 
-    describe 'path' do
+    describe '#path' do
+      it 'defaults to nil' do
+        Repo.new.path.should be_nil
+      end
+
       it 'is accessible' do
         Repo.make.should allow_mass_assignment_of(:path => '/new/path')
       end
     end
 
-    describe 'description' do
+    describe '#description' do
+      it 'defaults to nil' do
+        Repo.new.description.should be_nil
+      end
+
       it 'is accessible' do
         Repo.make.should allow_mass_assignment_of(:description => 'a repo')
       end
     end
 
-    describe 'product' do
+    describe '#product_id' do
+      it 'defaults to nil' do
+        Repo.new.product_id.should be_nil
+      end
+
       it 'is accessible' do
         Repo.make.should allow_mass_assignment_of(:product_id => Product.make!.id)
       end
     end
 
-    describe 'public' do
+    describe '#public' do
       it 'defaults to false' do
         Repo.new.public.should be_false
       end
@@ -43,13 +63,33 @@ describe Repo do
       end
     end
 
-    describe 'clone_url' do
+    describe '#created_at' do
+      it 'defaults to nil' do
+        Repo.new.created_at.should be_nil
+      end
+    end
+
+    describe '#updated_at' do
+      it 'defaults to nil' do
+        Repo.new.updated_at.should be_nil
+      end
+    end
+
+    describe '#clone_url' do
+      it 'defaults to nil' do
+        Repo.new.clone_url.should be_nil
+      end
+
       it 'is accessible' do
         Repo.make.should allow_mass_assignment_of(:clone_url => 'git://git.example.com/new.git')
       end
     end
 
-    describe 'rw_clone_url' do
+    describe '#rw_clone_url' do
+      it 'defaults to nil' do
+        Repo.new.rw_clone_url.should be_nil
+      end
+
       it 'is accessible' do
         Repo.make.should allow_mass_assignment_of(:rw_clone_url => 'git://git.example.com/new.git')
       end
