@@ -42,7 +42,7 @@ private
   #
   #   [#<Needle model_class: "Post", model_id: 13>]
   #
-  # To actual get any useful information out of this array would requires
+  # To actual get any useful information out of this array would require
   # an additional database query per result, so it could get quite expensive
   # (the typical "N + 1 SELECT" problem).
   #
