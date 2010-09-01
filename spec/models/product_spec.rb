@@ -102,6 +102,74 @@ describe Product, 'front_page scope' do
 end
 
 describe Product do
+  describe 'attributes' do
+    describe '#name' do
+      it 'defaults to nil' do
+        Product.new.name.should be_nil
+      end
+    end
+
+    describe '#permalink' do
+      it 'defaults to nil' do
+        Product.new.permalink.should be_nil
+      end
+    end
+
+    describe '#description' do
+      it 'defaults to nil' do
+        Product.new.description.should be_nil
+      end
+    end
+
+    describe '#created_at' do
+      it 'defaults to nil' do
+        Product.new.created_at.should be_nil
+      end
+    end
+
+    describe '#updated_at' do
+      it 'defaults to nil' do
+        Product.new.updated_at.should be_nil
+      end
+    end
+
+    describe '#bundle_identifier' do
+      it 'defaults to nil' do
+        Product.new.bundle_identifier.should be_nil
+      end
+    end
+
+    describe '#header' do
+      it 'defaults to nil' do
+        Product.new.header.should be_nil
+      end
+    end
+
+    describe '#footer' do
+      it 'defaults to nil' do
+        Product.new.footer.should be_nil
+      end
+    end
+
+    describe '#position' do
+      it 'defaults to nil' do
+        Product.new.position.should be_nil
+      end
+    end
+
+    describe '#category' do
+      it 'defaults to nil' do
+        Product.new.category.should be_nil
+      end
+    end
+
+    describe '#hide_from_front_page' do
+      it 'defaults to true' do
+        Product.new.hide_from_front_page.should be_true
+      end
+    end
+  end
+
   describe '#to_param' do
     it 'returns the permalink' do
       Product.make!(:permalink => 'foo').to_param.should == 'foo'
