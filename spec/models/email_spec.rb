@@ -86,4 +86,46 @@ describe Email do
       @email.deleted?.should_not be_true
     end
   end
+
+  describe '#user_id' do
+    it 'defaults to nil' do
+      Email.new.user_id.should be_nil
+    end
+  end
+
+  describe '#address' do
+    it 'defaults to nil' do
+      Email.new.address.should be_nil
+    end
+  end
+
+  describe '#default' do
+    it 'defaults to true' do
+      Email.new.default.should be_true
+    end
+  end
+
+  describe '#verified' do
+    it 'defaults to false' do
+      Email.new.verified.should be_false
+    end
+  end
+
+  describe '#created_at' do
+    it 'defaults to nil' do
+      Email.new.created_at.should be_nil
+    end
+  end
+
+  describe '#updated_at' do
+    it 'defaults to nil' do
+      Email.new.updated_at.should be_nil
+    end
+  end
+
+  describe '#deleted_at' do
+    it 'defaults to nil' do
+      Email.new.deleted_at.should be_nil
+    end
+  end
 end
