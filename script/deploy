@@ -277,6 +277,11 @@ if [ -n "$DO_CHECK" ]; then
   CURRENT_BRANCH=${CURRENT_BRANCH#refs/heads/}
   test "$CURRENT_BRANCH" = "$BRANCH" || \
     warn "currently on branch $CURRENT_BRANCH (expected $BRANCH) -- sure you're working on the right branch?"
+  echo "  checking: schema is up-to-date"
+  env SCHEMA=$TMPDIR/schema.HEAD.rb bin/rake --silent db:schema:dump
+  git show $LOCAL_REF:db/schema.rb > $TMPDIR/schema.REF.rb
+  diff -q -b $TMPDIR/schema.REF.rb $TMPDIR/schema.HEAD.rb > /dev/null || \
+    warn "current schema does not match $LOCAL_REF:db/schema.rb -- did you remember to run rake 'db:schema:dump' and check in the result?"
 fi
 
 if [ -n "$DO_DEPLOY" ]; then
