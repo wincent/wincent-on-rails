@@ -340,7 +340,7 @@ if [ -n "$DO_MIGRATE" ]; then
                             bin/rake --silent RAILS_ENV=development  db:migrate && \
                             bin/rake --silent RAILS_ENV=migrations   db:migrate && \
                             bin/rake --silent RAILS_ENV=production   db:schema:dump && \
-                            (git diff --quiet -- db/schema.rb || \
+                            (git diff --quiet --ignore-space-change -- db/schema.rb || \
                             (echo \"  failed: db/schema.rb out of sync with checked-in version\" && exit 1))'"
 fi
 
