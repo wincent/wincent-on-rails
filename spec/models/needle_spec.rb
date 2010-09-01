@@ -22,6 +22,46 @@ describe Needle::NeedleQuery do
   end
 end
 
+describe Needle do
+  describe '#model_class' do
+    it 'defaults to nil' do
+      Needle.new.model_class.should be_nil
+    end
+  end
+
+  describe '#model_id' do
+    it 'defaults to nil' do
+      Needle.new.model_id.should be_nil
+    end
+  end
+
+  describe '#attribute_name' do
+    it 'defaults to nil' do
+      Needle.new.attribute_name.should be_nil
+    end
+  end
+
+  describe '#content' do
+    it 'defaults to nil' do
+      Needle.new.content.should be_nil
+    end
+  end
+
+  describe '#user_id' do
+    it 'defaults to nil' do
+      Needle.new.user_id.should be_nil
+    end
+  end
+
+  describe '#public' do
+    it 'defaults to nil' do
+      # possible values are true, false and nil
+      # (where nil stands for "not applicable")
+      Needle.new.public.should be_nil
+    end
+  end
+end
+
 # :model_class, :model_id, :attribute_name, :content, :user_id, :public
 describe Needle, 'accessible attributes' do
   it 'should allow mass-assignment to the model class' do
