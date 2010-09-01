@@ -80,8 +80,8 @@ describe Product, 'categorized method' do
     m2 = Product.make! :position => 1, :hide_from_front_page => false  # nil/no category
     m3 = Product.make! :position => 2, :hide_from_front_page => false  # nil/no category
     products = Product.categorized
-    products.keys.should == ['', 'consumer', 'developer', 'server']
-    products[''].should == [m2, m3, m1]
+    products.keys.should == [nil, 'consumer', 'developer', 'server']
+    products[nil].should == [m2, m3, m1]
     products['consumer'].should == [c3, c1, c2]
     products['developer'].should == [d3, d1, d2]
     products['server'].should == [s2, s1, s3]

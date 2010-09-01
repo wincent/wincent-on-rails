@@ -75,7 +75,7 @@ describe ApplicationHelper, 'product_options method' do
     Product.delete_all
     product1 = Product.make! :name => 'foo'
     product2 = Product.make! :name => 'bar'
-    product_options.should == [['', [["foo", product1.id], ["bar", product2.id]]]]
+    product_options.should == [[nil, [["foo", product1.id], ["bar", product2.id]]]]
   end
 end
 
