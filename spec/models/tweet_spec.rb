@@ -1,6 +1,56 @@
 require File.expand_path('../spec_helper', File.dirname(__FILE__))
 
 describe Tweet do
+  describe 'attributes' do
+    describe '#body' do
+      it 'defaults to nil' do
+        Tweet.new.body.should be_nil
+      end
+    end
+
+    describe '#created_at' do
+      it 'defaults to nil' do
+        Tweet.new.created_at.should be_nil
+      end
+    end
+
+    describe '#updated_at' do
+      it 'defaults to nil' do
+        Tweet.new.updated_at.should be_nil
+      end
+    end
+
+    describe '#accepts_comments' do
+      it 'defaults to true' do
+        Tweet.new.accepts_comments.should be_true
+      end
+    end
+
+    describe '#comments_count' do
+      it 'defaults to zero' do
+        Tweet.new.comments_count.should be_zero
+      end
+    end
+
+    describe '#last_commenter_id' do
+      it 'defaults to nil' do
+        Tweet.new.last_commenter_id.should be_nil
+      end
+    end
+
+    describe '#last_comment_id' do
+      it 'defaults to nil' do
+        Tweet.new.last_comment_id.should be_nil
+      end
+    end
+
+    describe '#last_commented_at' do
+      it 'defaults to nil' do
+        Tweet.new.last_commented_at.should be_nil
+      end
+    end
+  end
+
   it 'should be valid' do
     Tweet.make.should be_valid
   end
