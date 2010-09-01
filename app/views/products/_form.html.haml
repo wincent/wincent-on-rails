@@ -9,7 +9,8 @@
       =f.text_field :permalink
     %li
       -# TODO: AJAX outcomplete?
-      =f.label :category, annotation('Category', 'Consumer, Developer, Server')
+      =f.label :category,
+        annotation('Category', 'Desktop, Developer, Other, Server')
       =f.text_field :category
     %li
       =f.label :hide_from_front_page, 'Hide from front page?'
@@ -18,7 +19,7 @@
       =f.label :position, annotation('Position', 'integer')
       =f.text_field :position
     %li
-      =f.label :description, annotation('Description', wikitext_cheatsheet)
+      =f.label :description, annotation('Description', 'optional, HTML')
       =f.text_area :description
     %li
       =f.label :header, annotation('Header', 'optional, HTML')
