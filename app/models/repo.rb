@@ -25,9 +25,9 @@
 #
 # Table fields:
 #
-#   string   "name",                           :null => false
-#   string   "permalink",                      :null => false
-#   string   "path",                           :null => false
+#   string   "name"
+#   string   "permalink"
+#   string   "path"
 #   string   "description"
 #   string   "clone_url"
 #   string   "rw_clone_url"
