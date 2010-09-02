@@ -5,11 +5,10 @@ class SessionsController < ApplicationController
 
   # TODO: OpenID support
   def create
-    unless session.blank?
-      old_session = session.to_hash
-      reset_session
-      old_session.each { |key, value| session[key.to_sym] = value }
-    end
+    old_session = session.to_hash
+    reset_session
+    old_session.each { |key, value| session[key.to_sym] = value }
+
     if self.set_current_user = User.authenticate(params[:email], params[:passphrase])
       flash[:notice] = 'Successfully logged in'
       original_uri = session[:original_uri] || params[:original_uri]
@@ -27,7 +26,7 @@ class SessionsController < ApplicationController
 
   def destroy
     if self.logged_in?
-      reset_session unless session.blank?
+      reset_session
       self.current_user = nil # delete some info from the cookies, invalidate the session key in the database
       flash[:notice] = 'You have logged out successfully'
     else
