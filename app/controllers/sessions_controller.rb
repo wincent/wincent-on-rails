@@ -5,6 +5,11 @@ class SessionsController < ApplicationController
 
   # TODO: OpenID support
   def create
+    unless session.blank?
+      old_session = session.to_hash
+      reset_session
+      old_session.each { |key, value| session[key.to_sym] = value }
+    end
     if self.set_current_user = User.authenticate(params[:email], params[:passphrase])
       flash[:notice] = 'Successfully logged in'
       original_uri = session[:original_uri] || params[:original_uri]
