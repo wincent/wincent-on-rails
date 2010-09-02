@@ -7,8 +7,7 @@ class SessionsController < ApplicationController
   def create
     if self.set_current_user = User.authenticate(params[:email], params[:passphrase])
       flash[:notice] = 'Successfully logged in'
-      original_uri = session[:original_uri]
-      original_uri = params[:original_uri] if original_uri.blank?
+      original_uri = session[:original_uri] || params[:original_uri]
       if original_uri.blank?
         redirect_to dashboard_path
       else
