@@ -2,8 +2,8 @@ require 'digest/sha1'
 
 # Table fields:
 #
-#   string      :secret,       :null => false
-#   datetime    :cutoff,       :null => false
+#   string      :secret
+#   datetime    :cutoff
 #   integer     :email_id
 #   datetime    :completed_at
 #   timestamps
