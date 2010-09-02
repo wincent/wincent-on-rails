@@ -437,27 +437,24 @@ tr.even
 
 // forms
 
-input.field_with_errors, textarea.field_with_errors
-  border:           4px solid #f9b8be
-
-label
-  display:          inline-block
-  text-align:       right
-  color:            black
-  font-weight:      bold
-  vertical-align:   top
-  padding-right:    1em
-  width:            20%
-
-li input, li textarea
-  width:            70%
-
 form
+  input.field_with_errors, textarea.field_with_errors
+    border:           4px solid #f9b8be
   li
     display:          block
     list-style:       none
     padding-top:      5px
     padding-bottom:   5px
+    input[type=password], input[type=text], textarea
+      width:          70%
+    label
+      display:          inline-block
+      text-align:       right
+      color:            black
+      font-weight:      bold
+      vertical-align:   top
+      padding-right:    1em
+      width:            20%
   li + li
     border-top:       1px solid #eeeeee
 
