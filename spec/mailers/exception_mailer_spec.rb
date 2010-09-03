@@ -50,7 +50,7 @@ describe ExceptionMailer do
     end
 
     it 'contains the request URL' do
-      @mail.body.should match(%r{URL: https://#{APP_CONFIG['host']}/cartons/xxl})
+      @mail.body.should match(%r{URL: https://localhost/cartons/xxl})
     end
 
     it 'contains the exception message' do
