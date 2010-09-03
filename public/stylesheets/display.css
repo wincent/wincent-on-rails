@@ -16,9 +16,12 @@ pre span.line-number { counter-increment: line-number; text-align: right; float:
 
 pre span.line-number:before { content: counter(line-number); }
 
+pre span.added-syntax { color: #008800; }
 pre span.boolean-syntax { color: #cd0000; }
 pre span.comment-syntax { color: #0000ee; }
 pre span.constant-syntax { color: #1a8b0a; }
+pre span.deleted-syntax { color: #cc0000; }
+pre span.hunk-header-syntax { color: #009c9c; }
 pre span.identifier-syntax { color: #458b73; }
 pre span.keyword-syntax { color: #1673cc; }
 pre span.numeric-literal-syntax { color: #fc8a0b; }

@@ -156,6 +156,14 @@ $.fn.syntaxHighlight = function()
     'numeric-literal':  /\b(0[xX][a-fA-F0-9]+|\d+(\.\d+f?)?)\b/
   };
 
+  // for Git diffs and patches
+  styles['diff-syntax'] = {
+    'skip-header':  /^(---|\+\+\+) .*/m,
+    'deleted':      /^-.*/m,
+    'added':        /^\+.*/m,
+    'hunk-header':  /^@@ -\d+(,\d+) \+\d+(,\d+) @@.*/m
+  };
+
   // Objective-C is based on C with some overrides
   styles['objc-syntax'] = $.extend({}, styles['c-syntax'], {
     'keyword': /\b(_Bool|BOOL|bool|char|const|int|long|short|struct|typedef|unsigned|void)\b/,
