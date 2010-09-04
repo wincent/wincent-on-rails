@@ -6,9 +6,9 @@ Edit/moderate this issue:
 Edit/moderate all issues:
   <%= @moderation_url %>
 
-Summary: <%= @issue.summary %>
+Summary: <%= raw @issue.summary %>
 <% unless @issue.description.blank? %>
 ---- Start issue description ----
-<%= @issue.description %>
+<%= raw @issue.description %>
 ---- End issue description ----
 <% end %>

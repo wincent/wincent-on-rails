@@ -6,8 +6,8 @@ Edit/moderate this topic:
 Edit/moderate all topics:
   <%= @moderation_url %>
 
-Title: <%= @topic.title %>
+Title: <%= raw @topic.title %>
 
 ---- Start topic body ----
-<%= @topic.body %>
+<%= raw @topic.body %>
 ---- End topic body ----
