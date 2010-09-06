@@ -107,8 +107,11 @@ module ActiveRecord
           end.uniq
         end
 
-        # Adds the specified tag to the receiver, where tag is a String specifying the tag name.
-        # Database level constraints are used to ensure that the same tag is not applied more than once to a given model.
+        # Adds the specified tag to the receiver, where tag is a String
+        # specifying the tag name.
+        #
+        # Database level constraints are relied upon to ensure that the same
+        # tag is not applied more than once to a given model.
         def add_tag tag
           t = Tag.find_or_create_by_name tag
           if t.id == nil
@@ -117,9 +120,8 @@ module ActiveRecord
           else
             self.tags << t
           end
-        rescue ActiveRecord::ActiveRecordError => e
+        rescue ActiveRecord::RecordNotUnique
           # silently ignore duplicate entry errors
-          raise e unless e.to_s.match(/Duplicate entry/i)
         end
 
         # Remove the specified tag from the receiver, where tag is a String specifying the tag name.
