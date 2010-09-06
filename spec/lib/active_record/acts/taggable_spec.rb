@@ -47,6 +47,13 @@ describe ActiveRecord::Acts::Taggable do
           model.tag 'foo'
         end.to change { model.tags.size }.by(1)
       end
+
+      it 'increments the counter cache' do
+        Tag.make! :name => 'foo'
+        expect do
+          model.tag 'foo'
+        end.to change { Tag.find_by_name('foo').taggings_count }.by(1)
+      end
     end
 
     context 'multiple, space-delimited tags' do
@@ -117,6 +124,13 @@ describe ActiveRecord::Acts::Taggable do
         expect do
           model.untag 'foo'
         end.to change { model.tags.size }.by(-1)
+      end
+
+      it 'decrements the counter cache' do
+        model.tag 'foo'
+        expect do
+          model.untag 'foo'
+        end.to change { Tag.find_by_name('foo').taggings_count }.by(-1)
       end
     end
 
