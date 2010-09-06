@@ -89,18 +89,22 @@ module ActiveRecord
 
       private
 
-        # Returned a normalized list of tags (tag names are lower-cased and duplicates are removed) based on the input.
-        # Expects an array of strings containing whitespace-delimited tag names.
-        # Because whitespace is a delimiter you must use some other character to separate words within a single tag, for example:
+        # Return a normalized list of tags (tag names are lower-cased and
+        # duplicates are removed) based on the input.
+        #
+        # Expects an array of strings containing whitespace-delimited tag
+        # names.
+        #
+        # Because whitespace is a delimiter you must use some other character
+        # to separate words within a single tag, for example:
+        #
         #   los.angeles
+        #
         # The input array may contain nested arrays.
         def parse_tag_list args
-          tags = []
-          args.flatten.each do |arg|
-            # without the strip leading whitespace will cause an extra, empty element to be returned
-            tags += arg.downcase.strip.split(/\s+/)
-          end
-          tags.uniq
+          args.flatten.inject([]) do |list, tags|
+            list + tags.downcase.strip.split(/\s+/)
+          end.uniq
         end
 
         # Adds the specified tag to the receiver, where tag is a String specifying the tag name.
