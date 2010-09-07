@@ -1,4 +1,4 @@
-require File.expand_path('../../spec_helper', File.dirname(__FILE__))
+require 'spec_helper'
 
 # TODO: add some worthwhile specs here, these don't even confirm that the
 # template even renders anything (had to add a "p" statement to check it)

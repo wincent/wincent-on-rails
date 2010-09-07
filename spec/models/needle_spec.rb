@@ -1,4 +1,4 @@
-require File.expand_path('../spec_helper', File.dirname(__FILE__))
+require 'spec_helper'
 
 describe Needle::NeedleQuery do
   # unfortunately this spec is tied fairly intimately to Rails' specific way of preparing queries

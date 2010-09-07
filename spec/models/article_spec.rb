@@ -1,4 +1,4 @@
-require File.expand_path('../spec_helper', File.dirname(__FILE__))
+require 'spec_helper'
 
 describe Article do
   # we test a value larger than the default MySQL TEXT size (65535)

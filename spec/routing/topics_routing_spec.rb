@@ -1,4 +1,4 @@
-require File.expand_path('../spec_helper', File.dirname(__FILE__))
+require 'spec_helper'
 
 describe TopicsController do
   # as a nested resource, most of these routes are tested in forums_routing_spec.rb

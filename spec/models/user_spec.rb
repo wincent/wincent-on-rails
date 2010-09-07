@@ -1,4 +1,4 @@
-require File.expand_path('../spec_helper', File.dirname(__FILE__))
+require 'spec_helper'
 
 describe User, 'generating a passphrase' do
   it 'should generate a string 8 characters in length' do

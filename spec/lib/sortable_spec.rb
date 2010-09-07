@@ -1,4 +1,4 @@
-require File.expand_path('../spec_helper', File.dirname(__FILE__))
+require 'spec_helper'
 
 describe ActionView::Helpers::SortableHelper do
   describe '#sortable_header_cell' do

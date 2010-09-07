@@ -1,4 +1,4 @@
- require File.expand_path('../../spec_helper', File.dirname(__FILE__))
+ require 'spec_helper'
 
 describe 'misc/legal' do
   # use spec suite as a reminder to update copyright year in static page

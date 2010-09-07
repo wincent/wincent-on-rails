@@ -1,4 +1,4 @@
-require File.expand_path('../../spec_helper', File.dirname(__FILE__))
+require 'spec_helper'
 
 describe 'searches/new' do
   it 'renders the "form" partial' do

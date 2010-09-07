@@ -1,4 +1,4 @@
-require File.expand_path('../../../spec_helper', File.dirname(__FILE__))
+require 'spec_helper'
 
 describe ActiveRecord::Acts::Taggable do
   # Create a model purely for testing purposes so as to avoid depending on a

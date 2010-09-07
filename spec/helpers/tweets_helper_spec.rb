@@ -1,4 +1,4 @@
-require File.expand_path('../spec_helper', File.dirname(__FILE__))
+require 'spec_helper'
 
 describe TweetsHelper, '"character_count" method' do
   # character_count calls pluralizing_count, defined in ApplicationHelper
