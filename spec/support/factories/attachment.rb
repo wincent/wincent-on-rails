@@ -1,4 +1,4 @@
-require File.expand_path('../factory_girl.rb', File.dirname(__FILE__))
+require File.expand_path('../factory_girl', File.dirname(__FILE__))
 
 Factory.define :attachment do |a|
   a.mime_type 'image/png'

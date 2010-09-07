@@ -1,4 +1,5 @@
-require File.expand_path('../factory_girl.rb', File.dirname(__FILE__))
+require File.expand_path('../factory_girl', File.dirname(__FILE__))
+require File.expand_path('../git_spec_helpers', File.dirname(__FILE__))
 require 'spec_helper'
 
 Factory.define :repo do |r|

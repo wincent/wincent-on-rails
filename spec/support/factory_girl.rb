@@ -1,3 +1,5 @@
+require 'factory_girl/syntax/sham'
+
 # Generate a string of 10 random lowercase letters
 Sham.random do |n|
   chars = ('a'..'z').to_a
