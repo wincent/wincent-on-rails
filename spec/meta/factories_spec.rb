@@ -17,6 +17,7 @@ describe 'Factories' do
     Product,
     Repo,
     Reset,
+    Snippet,
     Tag,
     Tagging,
     Topic,
