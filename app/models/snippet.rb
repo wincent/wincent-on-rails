@@ -1,7 +1,7 @@
 # Schema:
 #
 #   string   "description"
-#   integer  "markup",         :default => 0
+#   integer  "markup_type",    :default => 0
 #   text     "body"
 #   datetime "created_at"
 #   datetime "updated_at"
