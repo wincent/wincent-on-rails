@@ -1,7 +1,11 @@
 require 'spec_helper'
 
 describe Snippet do
-  describe MARKUP_TYPES do
+
+  # must use string here rather than literal constant or RSpec will try to
+  # decorate the hash with metadata, causing a "can't modify frozen hash"
+  # exception
+  describe 'MARKUP_TYPES' do
     it 'does not allow modification of values' do
       expect do
         Snippet::MARKUP_TYPES['Wikitext'] = 'new'
