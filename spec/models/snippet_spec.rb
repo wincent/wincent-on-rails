@@ -108,7 +108,7 @@ describe Snippet do
     context 'wikitext markup' do
       let(:snippet) do
         Snippet.make :markup_type => Snippet::MarkupType::WIKITEXT,
-          :body => "''hey''"
+          :body => "= hey ="
       end
 
       it 'returns an HTML safe string' do
@@ -116,7 +116,14 @@ describe Snippet do
       end
 
       it 'transforms the body from wikitext into HTML' do
-        snippet.body_html.should == "<p><em>hey</em></p>\n"
+        snippet.body_html.should == "<h1>hey</h1>\n"
+      end
+
+      context 'with options' do
+        it 'passes options through to the wikitext translator' do
+          snippet.body_html(:base_heading_level => 2).
+            should == "<h3>hey</h3>\n"
+        end
       end
     end
 

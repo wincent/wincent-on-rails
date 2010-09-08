@@ -38,10 +38,10 @@ class Snippet < ActiveRecord::Base
     :message => 'not a valid markup type'
   attr_accessible :body, :description, :markup_type, :public
 
-  def body_html
+  def body_html options = {}
     case markup_type
     when MarkupType::WIKITEXT
-      body.w
+      body.w options
     when MarkupType::PLAINTEXT
       escape_and_wrap_body
     when MarkupType::C
