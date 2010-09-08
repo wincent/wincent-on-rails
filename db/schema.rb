@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100908145213) do
+ActiveRecord::Schema.define(:version => 20100908184629) do
 
   create_table "articles", :force => true do |t|
     t.string   "title"
@@ -228,12 +228,13 @@ ActiveRecord::Schema.define(:version => 20100908145213) do
 
   create_table "snippets", :force => true do |t|
     t.string   "description"
-    t.integer  "markup_type",    :default => 0
+    t.integer  "markup_type",      :default => 0
     t.text     "body"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "public",         :default => true
-    t.integer  "comments_count", :default => 0
+    t.boolean  "public",           :default => true
+    t.integer  "comments_count",   :default => 0
+    t.boolean  "accepts_comments", :default => true
   end
 
   create_table "taggings", :force => true do |t|

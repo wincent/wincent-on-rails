@@ -1,12 +1,13 @@
 # Schema:
 #
 #   string   "description"
-#   integer  "markup_type",    :default => 0
+#   integer  "markup_type",       :default => 0
 #   text     "body"
 #   datetime "created_at"
 #   datetime "updated_at"
-#   boolean  "public",         :default => true
-#   integer  "comments_count", :default => 0
+#   boolean  "public",            :default => true
+#   integer  "comments_count",    :default => 0
+#   boolean  "accepts_comments",  :default => true
 class Snippet < ActiveRecord::Base
   module MarkupType
     # base types

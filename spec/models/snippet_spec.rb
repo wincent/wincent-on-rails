@@ -92,6 +92,12 @@ describe Snippet do
         Snippet.new.comments_count.should be_zero
       end
     end
+
+    describe '#accepts_comments' do
+      it 'defaults to true' do
+        Snippet.new.accepts_comments.should be_true
+      end
+    end
   end
 
   describe '#body_html' do
