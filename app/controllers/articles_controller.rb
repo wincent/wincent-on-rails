@@ -9,7 +9,7 @@ class ArticlesController < ApplicationController
     respond_to do |format|
       format.html {
         @paginator  = RestfulPaginator.new params, Article.published.count, articles_path
-        @articles   = Article.recent_with_offset @paginator.offset
+        @articles   = Article.recent.offset @paginator.offset
         @tags       = Article.find_top_tags
       }
       format.atom {

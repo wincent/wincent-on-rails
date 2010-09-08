@@ -49,13 +49,12 @@ describe ArticlesController do
       end
 
       it 'finds recent articles' do
-        mock(Article).recent_with_offset.with_any_args
+        mock.proxy(Article).recent.with_any_args
         get :index
       end
 
       it 'assigns found articles' do
         articles = [Article.make!]
-        stub(Article).recent_with_offset.with_any_args { articles }
         get :index
         assigns[:articles].should == articles
       end

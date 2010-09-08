@@ -41,7 +41,6 @@ class Article < ActiveRecord::Base
 
   scope :published, where(:public => true)
   scope :recent, published.order('updated_at DESC').limit(10)
-  scope :recent_with_offset, lambda { |offset| recent.offset(offset.to_i) }
 
   # for the Atom feed
   scope :recent_excluding_redirects, lambda {
