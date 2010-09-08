@@ -20,6 +20,12 @@ Wincent::Application.routes.draw do
   resources :taggings
   resources :repos
   resources :resets
+  resources :snippets do
+    resources :comments, :only => [:create, :new ]
+    collection do
+      get 'page/:page' => 'snippets#index', :page => %r{\d+}
+    end
+  end
 
   resources :tweets, :path => 'twitter' do
     resources :comments, :only => [ :create, :new ]
