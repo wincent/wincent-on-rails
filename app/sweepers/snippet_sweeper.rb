@@ -21,9 +21,7 @@ class SnippetSweeper < ActionController::Caching::Sweeper
     # now snippet/page/1.html, snippet/page/2.html etc
     page_dir = ActionController::Base.send(:page_cache_directory) +
       snippets_path + '/page'
-    if File.exist? page_dir
-      File.delete(*Dir["#{page_dir}/*.html"])
-    end
+    FileUtils.rm_rf(page_dir)
   end
 
   # on-demand cache expiration from rake (rake cache:clear)
