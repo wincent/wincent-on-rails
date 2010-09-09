@@ -5,7 +5,8 @@ class CommentsController < ApplicationController
   cache_sweeper :comment_sweeper, :only => [ :create, :update, :destroy ]
 
   # Admin only.
-  # The admin is allowed to see all unmoderated comments at once, for the purposes of moderation.
+  # The admin is allowed to see all unmoderated comments at once, for the
+  # purposes of moderation.
   def index
     # abuse of ActiveRelation behavior here: "recent" has "limit(10)" on it,
     # but when we append "count" we get the count of all available rows, not
@@ -112,6 +113,8 @@ private
       @parent = Issue.find parent
     elsif parent = params[:post_id]
       @parent = Post.find_by_permalink! parent
+    elsif parent = params[:snippet_id]
+      @parent = Snippet.find parent
     elsif parent = params[:tweet_id]
       @parent = Tweet.find parent
     elsif parent = params[:topic_id] and grandparent = params[:forum_id]
