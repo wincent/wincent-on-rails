@@ -6,4 +6,4 @@
 %span.annotation Issue tracker ticket (#{model.status_string.downcase}, #{model.kind_string.downcase})
 -unless model.description.blank?
   .excerpt
-    =truncate(model.description, :length => 240, :safe => true).w :base_heading_level => 2
+    =truncate(model.description, :length => 240).w :base_heading_level => 2

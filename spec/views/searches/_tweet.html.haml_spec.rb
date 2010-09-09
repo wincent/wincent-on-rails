@@ -36,7 +36,7 @@ describe 'searches/_tweet' do
   end
 
   it 'truncates the tweet body to 240 characters' do
-    mock(view).truncate(@tweet.body, :length => 240, :safe => true) # { 'foo' }
+    mock(view).truncate(@tweet.body, :length => 240)
     do_render
   end
 

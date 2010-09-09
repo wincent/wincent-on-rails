@@ -138,8 +138,7 @@ module ApplicationHelper
     stripped    = strip_tags tweet.body.w
     compressed  = stripped.gsub /\s+/, ' '
     compressed.strip!
-    # Rails BUG: https://rails.lighthouseapp.com/projects/8994/tickets/4825
-    truncate compressed, :length => 80, :safe => true
+    truncate compressed, :length => 80
   end
 
   def scaled_tag tag, type = nil

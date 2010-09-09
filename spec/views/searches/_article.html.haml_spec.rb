@@ -45,7 +45,7 @@ describe 'searches/_article' do
   end
 
   it 'truncates the article body to 240 characters' do
-    mock(view).truncate(@article.body, :length => 240, :safe => true)
+    mock(view).truncate(@article.body, :length => 240)
     do_render
   end
 

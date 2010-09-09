@@ -44,7 +44,7 @@ describe 'searches/_post' do
   end
 
   it 'truncates the post excerpt to 240 characters' do
-    mock(view).truncate(@post.excerpt, :length => 240, :safe => true)
+    mock(view).truncate(@post.excerpt, :length => 240)
     do_render
   end
 

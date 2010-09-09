@@ -44,7 +44,7 @@ describe 'searches/_topic' do
   end
 
   it 'truncates the topic body to 240 characters' do
-    mock(view).truncate @topic.body, :length => 240, :safe => true
+    mock(view).truncate @topic.body, :length => 240
     do_render
   end
 

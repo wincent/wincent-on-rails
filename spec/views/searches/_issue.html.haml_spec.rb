@@ -56,7 +56,7 @@ describe 'searches/_issue' do
   end
 
   it 'truncates the issue description to 240 characters' do
-    mock(view).truncate(@issue.description, :length => 240, :safe => true)
+    mock(view).truncate(@issue.description, :length => 240)
     do_render
   end
 
