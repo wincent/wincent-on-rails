@@ -171,4 +171,43 @@ describe ApplicationHelper do
       end
     end
   end
+
+  describe '#wikitext_truncate_and_strip' do
+    it 'strips out wikitext markup' do
+      wikitext_truncate_and_strip("''fun''").should == 'fun' # quotes are gone
+    end
+
+    it 'truncates long output' do
+      wikitext_truncate_and_strip('long long long', :length => 10).
+        should == 'long lo...'
+    end
+
+    it 'marks output as HTML-safe' do
+      output = wikitext_truncate_and_strip 'foo & bar'
+      output.should be_html_safe        # it is marked as safe
+      output.should == 'foo &amp; bar'  # and it really is safe
+    end
+
+    it 'applies any custom "omission" option' do
+      output = wikitext_truncate_and_strip 'foo, bar, baz, bing, bong',
+        :length => 18, :omission => '[snip]'
+      output.should == 'foo, bar, ba[snip]'
+    end
+
+    context 'truncation which cuts an entity in half' do
+      it 'removes the mangled entity' do
+        output = wikitext_truncate_and_strip 'foo, bar & baz', :length => 14
+        output.should == 'foo, bar ...' # safe output
+        output.should be_html_safe      # and marked as such
+      end
+    end
+
+    context 'truncation which leaves entities intact' do
+      it 'marks the output as HTML safe' do
+        output = wikitext_truncate_and_strip 'foo & bar etc', :length => 15
+        output.should == 'foo &amp; ba...'  # safe output
+        output.should be_html_safe          # and marked as such
+      end
+    end
+  end
 end

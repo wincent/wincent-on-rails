@@ -47,7 +47,7 @@
     %tbody
       -for comment in @comments
         %tr(class="#{cycle 'odd', 'even'} comment" id="comment_#{comment.id}")
-          %td=truncate(strip_tags(comment.body.w), :length => 60)
+          %td=wikitext_truncate_and_strip comment.body, :length => 60
           -# BUG: N + 1 select problem here, and can't do eager loading on a polymorphic association
           %td=link_to_commentable comment.commentable
           %td=comment.commentable_type

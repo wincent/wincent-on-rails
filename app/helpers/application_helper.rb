@@ -133,12 +133,37 @@ module ApplicationHelper
     pluralizing_count number, 'comment'
   end
 
+  # There are 3 possible approaches to wikitext truncation and stripping:
+  #
+  #   - translate -> strip -> truncate: HTML entities can appear in the
+  #     view because "truncate" marks strings as not HTML-safe
+  #   - translate -> truncate -> strip: we risk chopping entities and other
+  #     markup in half, which will then appear in the view
+  #   - truncate -> translate -> strip: we risk mangling the wikitext, and
+  #     our actual length may be way off the desired length
+  #
+  # This method takes the first approach, but explicitly checks for truncated
+  # entities before returning the output. If there is no truncated entity,
+  # the output is marked HTML-safe; if there is a truncated entity, it is
+  # deleted.
+  #
+  # See: https://wincent.com/issues/1684
+  def wikitext_truncate_and_strip markup, options = {}
+    stripped    = strip_tags markup.w # may have entities, eg. &quot; etc
+    compressed  = stripped.gsub(/\s+/, ' ').strip
+    truncated   = truncate compressed, options
+    if truncated.html_safe? # string wasn't changed
+      truncated
+    else # string was chopped!
+      omission = options[:omission] || '...'
+      truncated.gsub! /&[^;]+?#{Regexp.escape omission}\z/, omission
+      truncated.html_safe
+    end
+  end
+
   # used in tweet#index, tags#show etc
   def tweet_title tweet
-    stripped    = strip_tags tweet.body.w
-    compressed  = stripped.gsub /\s+/, ' '
-    compressed.strip!
-    truncate compressed, :length => 80
+    wikitext_truncate_and_strip tweet.body, :length => 80
   end
 
   # used in snippet#index, tags#show etc
