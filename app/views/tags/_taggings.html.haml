@@ -6,7 +6,7 @@
         %th Item
         %th When
     %tbody
-      -for taggable in group.taggables
+      -group.taggables.each do |taggable|
         %tr
           %td=taggable_link taggable
           %td=timeinfo taggable
