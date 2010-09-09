@@ -15,7 +15,7 @@ class Page < ActiveRecord::Base
                           :message => 'must only contain letters, numbers and hyphens'
   validates_presence_of   :body
   validates_inclusion_of  :markup_type,
-                          :in => [ MarkupType::HTML, MarkupType::WIKITEXT ],
+                          :in => MARKUP_TYPES.values,
                           :message => 'not a valid markup type'
   attr_accessible         :title, :permalink, :body, :markup_type, :front
   # TODO: acts_as_searchable :attributes => [:body, :title] (will require HTML tokenization)
