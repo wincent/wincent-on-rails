@@ -20,6 +20,12 @@ describe Snippet do
   end
 
   describe 'attributes' do
+    describe '#accepts_comments' do
+      it 'defaults to true' do
+        Snippet.new.accepts_comments.should be_true
+      end
+    end
+
     describe '#description' do
       it 'defaults to nil' do
         Snippet.new.description.should be_nil
@@ -100,6 +106,24 @@ describe Snippet do
     describe '#accepts_comments' do
       it 'defaults to true' do
         Snippet.new.accepts_comments.should be_true
+      end
+    end
+
+    describe '#last_commenter_id' do
+      it 'defaults to nil' do
+        Snippet.new.last_commenter_id.should be_nil
+      end
+    end
+
+    describe '#last_comment_id' do
+      it 'defaults to nil' do
+        Snippet.new.last_comment_id.should be_nil
+      end
+    end
+
+    describe '#last_commented_at' do
+      it 'defaults to nil' do
+        Snippet.new.last_commented_at.should be_nil
       end
     end
   end

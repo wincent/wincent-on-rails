@@ -1,0 +1,8 @@
+-atom_link snippets_path(:format => :atom)
+=breadcrumbs 'Snippets'
+%h1.major
+  Snippets
+  =feed_icon snippets_path(:format => :atom)
+.pagination=@paginator.pagination_links
+=render 'snippets.html.haml'
+.pagination=@paginator.pagination_links

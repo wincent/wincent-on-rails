@@ -1,0 +1,10 @@
+-@page_title = 'Edit snippet'
+=breadcrumbs link_to('Snippets', snippets_path),
+  link_to(snippet_title(@snippet), @snippet),
+  @page_title
+=render 'form'
+.links
+  =link_to 'show', @snippet
+  =button_to 'destroy', @snippet, :confirm => 'Are you sure?',
+    :method => :delete, :class => 'destructive'
+  =link_to 'all snippets', snippets_path

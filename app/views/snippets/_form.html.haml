@@ -1,0 +1,46 @@
+-content_for :javascript do
+  =javascript_include_tag 'ajax'
+  :javascript
+    $(function() {
+      observe_field({ 'kind':       'snippet',
+                      'fieldName':  'body',
+                      'include':    ['description', 'markup_type'],
+                      'url':        '#{snippets_path}' });
+      observe_field({ 'kind':       'snippet',
+                      'fieldName':  'description',
+                      'include':    ['body', 'markup_type'],
+                      'url':        '#{snippets_path}' });
+      observe_field({ 'kind':       'snippet',
+                      'fieldName':  'markup_type',
+                      'include':    ['body', 'description'],
+                      'url':        '#{snippets_path}' });
+      setup_preview_link({'kind':     'snippet',
+                          'include':  ['body', 'description', 'markup_type'],
+                          'url':      '#{snippets_path}' });
+    });
+%h1.major=@page_title
+=render 'shared/error_messages', :model => @snippet
+=form_for @snippet do |f|
+  %ul
+    %li
+      =f.label :description, annotation('Description', 'optional')
+      =f.text_field :description
+    %li
+      =f.label :body
+      =f.text_area :body, :rows => 30
+    %li
+      =f.label :markup_type, 'Markup'
+      =f.select :markup_type, Snippet::MARKUP_TYPES
+    %li
+      =f.label :pending_tags, 'Tags'
+      =f.text_field :pending_tags
+    %li
+      =f.label :public
+      =f.check_box :public
+    %li
+      =f.label :accepts_comments
+      =f.check_box :accepts_comments
+    %li=f.submit
+%h2#preview_link.major Preview
+#ajax-flash
+#preview=render 'preview'

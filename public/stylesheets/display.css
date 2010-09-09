@@ -170,6 +170,8 @@ form li + li { border-top: 1px solid #eeeeee; }
 
 .comment:hover .hoverlink { visibility: visible; }
 
+.snippet:hover .hoverlink { visibility: visible; }
+
 .tweet:hover .hoverlink { visibility: visible; }
 
 .deleted { color: #bbbbbb; }

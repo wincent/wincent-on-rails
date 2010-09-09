@@ -32,11 +32,27 @@ class Snippet < ActiveRecord::Base
     'Shell'       => MarkupType::SHELL
   }).freeze
 
+  acts_as_taggable
+
+  attr_accessible :accepts_comments, :body, :description, :markup_type,
+    :pending_tags, :public
+
+  belongs_to :last_commenter, :class_name => 'User'
+
+  has_many  :comments,
+            :as => :commentable,
+            :extend => Commentable,
+            :order => 'comments.created_at',
+            :include => :user,
+            :dependent => :destroy
+
+  scope :published, where(:public => true)
+  scope :recent, published.order('updated_at DESC').limit(10)
+
   validates_presence_of :body
   validates_inclusion_of :markup_type,
     :in => MARKUP_TYPES.values,
     :message => 'not a valid markup type'
-  attr_accessible :body, :description, :markup_type, :public
 
   def body_html options = {}
     case markup_type

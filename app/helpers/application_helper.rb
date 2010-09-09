@@ -254,6 +254,8 @@ module ApplicationHelper
       link_to commentable.summary, issue_path(commentable)
     when Post
       link_to commentable.title, post_path(commentable)
+    when Snippet
+      link_to snippet_title(commentable), snippet_path(commentable)
     when Topic
       link_to commentable.title, forum_topic_path(commentable.forum, commentable)
     when Tweet
@@ -270,7 +272,7 @@ module ApplicationHelper
   def polymorphic_comments_path comment
     commentable = comment.commentable
     case commentable
-    when Article, Issue, Post, Tweet
+    when Article, Issue, Post, Snippet, Tweet
       send "#{commentable.class.to_s.downcase}_comments_path", commentable
     when Topic
       forum_topic_comments_path commentable.forum, commentable
