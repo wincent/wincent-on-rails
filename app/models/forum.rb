@@ -66,5 +66,4 @@ private
       self.permalink = name.to_s.downcase.gsub ' ', '-'
     end
   end
-
 end
