@@ -141,6 +141,15 @@ module ApplicationHelper
     truncate compressed, :length => 80
   end
 
+  # used in snippet#index, tags#show etc
+  def snippet_title snippet
+    if snippet.description.blank?
+      "Snippet \##{snippet.id}"
+    else
+      snippet.description
+    end
+  end
+
   def scaled_tag tag, type = nil
     # NOTE: that we report the full taggings count here: may want to exclude taggables to which the user doesn't have access
     path = type ? tag_path(tag, :type => type) : tag_path(tag)
