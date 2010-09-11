@@ -61,9 +61,9 @@ usage() {
   echo "       disable    display a maintenance page"
   echo "       migrate    migrate all databases"
   echo "        switch    update the symlink to point to the latest deployment"
-  echo "       summary    print Git commits since the last deployment"
   echo "       restart    restart cluster (changes go live)"
   echo "        enable    remove maintenance page"
+  echo "       summary    print Git commits since the last deployment"
   echo "      lockdown    tighten permissions after deployment"
   echo ""
   echo "Other commands:"
@@ -80,11 +80,11 @@ usage() {
   echo ""
   echo "     # note how commands can be chained together:"
   echo "     $0 staging unlock check deploy migrate_test spec"
-  echo "     $0 staging disable migrate switch summary restart enable lockdown"
+  echo "     $0 staging disable migrate switch restart enable summary lockdown"
   echo ""
   echo "     # now we repeat in the production environment:"
   echo "     $0 unlock check deploy migrate_test spec"
-  echo "     $0 disable migrate switch summary restart enable lockdown"
+  echo "     $0 disable migrate switch restart enable summary lockdown"
   echo ""
   echo "     # the \"prep/finalize\" shorthand encapsulates the above patterns:"
   echo "     $0 staging prep"
@@ -146,9 +146,6 @@ while test $# != 0; do
     switch)
       DO_SWITCH=true
       ;;
-    summary)
-      DO_SUMMARY=true
-      ;;
     stop)  # not advertised in usage
       DO_STOP=true
       ;;
@@ -160,6 +157,9 @@ while test $# != 0; do
       ;;
     enable)
       DO_ENABLE=true
+      ;;
+    summary)
+      DO_SUMMARY=true
       ;;
     lock|lockdown)
       DO_LOCKDOWN=true
@@ -179,9 +179,9 @@ while test $# != 0; do
       DO_DISABLE=true
       DO_MIGRATE=true
       DO_SWITCH=true
-      DO_SUMMARY=true
       DO_RESTART=true
       DO_ENABLE=true
+      DO_SUMMARY=true
       DO_LOCKDOWN=true
       ;;
     all)
@@ -194,9 +194,9 @@ while test $# != 0; do
       DO_DISABLE=true
       DO_MIGRATE=true
       DO_SWITCH=true
-      DO_SUMMARY=true
       DO_RESTART=true
       DO_ENABLE=true
+      DO_SUMMARY=true
       DO_LOCKDOWN=true
       ;;
     *)
@@ -216,11 +216,11 @@ test -n "$DO_UNLOCK" \
   -o -n "$DO_DISABLE" \
   -o -n "$DO_MIGRATE" \
   -o -n "$DO_SWITCH" \
-  -o -n "$DO_SUMMARY" \
   -o -n "$DO_STOP" \
   -o -n "$DO_START" \
   -o -n "$DO_RESTART" \
   -o -n "$DO_ENABLE" \
+  -o -n "$DO_SUMMARY" \
   -o -n "$DO_UPLOAD" \
   -o -n "$DO_LOCKDOWN" || usage
 
@@ -376,22 +376,6 @@ if [ -n "$DO_SWITCH" ]; then
   fi
 fi
 
-if [ -n "$DO_SUMMARY" ]; then
-  echo "Processing command: summary"
-  REVISION=$(ssh rails@$SERVER cat $DEPLOY/latest/REVISION)
-  if [ $(git describe --exact-match $REVISION 2> /dev/null) ]; then
-    # common case: latest deployed revision is tagged
-    LAST_TAG=$(git describe $(git rev-list --tags --max-count=2) | tail -1)
-  else
-    # rare case (probably only staging): latest deployed revision is not tagged
-    LAST_TAG=$(git describe $(git rev-list --tags --max-count=1))
-  fi
-  CURRENT_TAG=$(git describe $REVISION)
-  echo "----- start: changes from $LAST_TAG..$CURRENT_TAG -----"
-  git log --oneline --no-decorate --reverse $LAST_TAG..$REVISION
-  echo "-----   end: changes from $LAST_TAG..$CURRENT_TAG -----"
-fi
-
 if [ -n "$DO_STOP" ]; then
   echo "Processing command: stop"
   ssh root@$SERVER monit stop unicorn
@@ -410,6 +394,22 @@ fi
 if [ -n "$DO_ENABLE" ]; then
   echo "Processing command: enable"
   ssh rails@$SERVER rm -f $DEPLOY/shared/system/maintenance.html
+fi
+
+if [ -n "$DO_SUMMARY" ]; then
+  echo "Processing command: summary"
+  REVISION=$(ssh rails@$SERVER cat $DEPLOY/latest/REVISION)
+  if [ $(git describe --exact-match $REVISION 2> /dev/null) ]; then
+    # common case: latest deployed revision is tagged
+    LAST_TAG=$(git describe $(git rev-list --tags --max-count=2) | tail -1)
+  else
+    # rare case (probably only staging): latest deployed revision is not tagged
+    LAST_TAG=$(git describe $(git rev-list --tags --max-count=1))
+  fi
+  CURRENT_TAG=$(git describe $REVISION)
+  echo "----- start: changes from $LAST_TAG..$CURRENT_TAG -----"
+  git log --oneline --no-decorate --reverse $LAST_TAG..$REVISION
+  echo "-----   end: changes from $LAST_TAG..$CURRENT_TAG -----"
 fi
 
 if [ -n "$DO_UPLOAD" ]; then
