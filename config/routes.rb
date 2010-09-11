@@ -71,6 +71,7 @@ Wincent::Application.routes.draw do
   resources :tags, :id => /[a-z0-9\.]+/ do
     collection do
       get :search
+      post :search
     end
   end
 

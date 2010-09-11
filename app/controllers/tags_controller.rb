@@ -1,6 +1,7 @@
 class TagsController < ApplicationController
   before_filter :require_admin, :only => [:edit, :update]
   before_filter :get_tag, :only => [:show, :edit, :update]
+  skip_before_filter :verify_authenticity_token, :only => :search
 
   def index
     # BUG: information leak here (should really exclude tags which apply to items we can't access)

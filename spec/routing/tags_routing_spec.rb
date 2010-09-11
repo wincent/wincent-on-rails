@@ -17,7 +17,8 @@ describe TagsController do
     end
 
     describe 'non-RESTful routes' do
-      specify { get('/tags/search').should have_routing('tags#search') }
+      specify { get('/tags/search').should map_to('tags#search') }
+      specify { post('/tags/search').should map_to('tags#search') }
     end
 
     describe 'helpers' do
@@ -41,6 +42,10 @@ describe TagsController do
 
       describe 'edit_tag_path' do
         specify { edit_tag_path(@tag).should == '/tags/foo.bar/edit' }
+      end
+
+      describe 'search_tags_path' do
+        specify { search_tags_path.should == '/tags/search' }
       end
     end
   end
