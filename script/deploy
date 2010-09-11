@@ -230,7 +230,7 @@ echo "Environment for this session: $ENVIRONMENT"
 
 if [ -n "$DO_UNLOCK" ]; then
    echo "Processing command: unlock"
-   ssh root@$SERVER chsh -s /bin/sh rails
+   ssh root@$SERVER chsh -s /bin/sh rails > /dev/null
 fi
 
 # useful because remote system sometimes won't notice "unlock" immediately
@@ -428,7 +428,7 @@ fi
 
 if [ -n "$DO_LOCKDOWN" ]; then
   echo "Processing command: lockdown"
-  ssh root@$SERVER chsh -s /sbin/nologin rails
+  ssh root@$SERVER chsh -s /sbin/nologin rails > /dev/null
 fi
 
 SUCCESS=true
