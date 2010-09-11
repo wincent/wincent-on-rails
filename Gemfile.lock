@@ -82,7 +82,7 @@ GEM
       configuration (>= 0.0.5)
       rake (>= 0.8.1)
     linecache (0.43)
-    mail (2.2.5)
+    mail (2.2.6)
       activesupport (>= 2.3.6)
       mime-types
       treetop (>= 1.4.5)
