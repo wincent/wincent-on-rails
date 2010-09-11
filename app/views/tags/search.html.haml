@@ -7,11 +7,10 @@
   =render 'taggings'
 %div(style='clear:both;')
   %h2.major Search
-  %form{'accept-charset' => 'UTF-8', :action => search_tags_path, :method => 'post'}
+  %form{'accept-charset' => 'UTF-8', :action => search_tags_path, :method => 'get'}
     %span.annotation Find items which feature <em>all</em> of the specified tags
     %br
     =text_field_tag :q, params[:q], :size => 40
-    =tag :input, :type => "hidden", :name => "utf8", :value => "&#x2713;".html_safe
-    =submit_tag 'Search'
+    %input(type='submit' value='Search')
   .links
     =link_to 'all tags', tags_path

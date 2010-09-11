@@ -1,13 +1,13 @@
 require 'spec_helper'
 
-describe 'searches/_article' do
+describe 'search/_article' do
   before do
     @article        = Article.make!
     @result_number  = 47
   end
 
   def do_render
-    render 'searches/article', :model => @article, :result_number => @result_number
+    render 'search/article', :model => @article, :result_number => @result_number
   end
 
   it 'shows the result number' do

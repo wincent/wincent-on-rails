@@ -1,44 +1,39 @@
 require 'spec_helper'
 
-describe 'searches/create' do
+describe 'search/_results' do
   context 'with one page of search results' do
     before do
       @models = [@article = Article.make!, @issue = Issue.make!, @post = Post.make!, @topic = Topic.make!]
       @offset = 15
     end
 
-    it 'includes breadcrumbs' do
-      mock(view).breadcrumbs 'Search'
-      render
-    end
-
     it 'renders the article partial for article results' do
       stub.proxy(view).render
-      mock(view).render 'searches/article', :model => @article, :result_number => @offset + 1
+      mock(view).render 'search/article', :model => @article, :result_number => @offset + 1
       render
     end
 
     it 'renders the issue partial for issue results' do
       stub.proxy(view).render
-      mock(view).render 'searches/issue', :model => @issue, :result_number => @offset + 2
+      mock(view).render 'search/issue', :model => @issue, :result_number => @offset + 2
       render
     end
 
     it 'renders the post partial for post results' do
       stub.proxy(view).render
-      mock(view).render 'searches/post', :model => @post, :result_number => @offset + 3
+      mock(view).render 'search/post', :model => @post, :result_number => @offset + 3
       render
     end
 
     it 'renders the topic partial for topic results' do
       stub.proxy(view).render
-      mock(view).render 'searches/topic', :model => @topic, :result_number => @offset + 4
+      mock(view).render 'search/topic', :model => @topic, :result_number => @offset + 4
       render
     end
 
     it 'has a "search again" link' do
       render
-      rendered.should have_selector('.links a', :href=> '/search/new')
+      rendered.should have_selector('.links a', :href=> '/search')
     end
   end
 
@@ -54,7 +49,7 @@ describe 'searches/create' do
 
     it 'renders the partial for existing results' do
       stub.proxy(view).render
-      mock(view).render 'searches/issue', :model => @issue, :result_number => 1
+      mock(view).render 'search/issue', :model => @issue, :result_number => 1
       render
     end
 
@@ -87,7 +82,7 @@ describe 'searches/create' do
       rendered.should have_selector('form', :action => '/search') do |form|
         form.should have_selector('input[type=hidden][name=offset]', :value => (@offset + 20).to_s)
         form.should have_selector('input[type=submit]', :value => 'more results...')
-        form.should have_selector('input[type=hidden][name=query]', :value => 'foo')
+        form.should have_selector('input[type=hidden][name=q]', :value => 'foo')
       end
     end
   end

@@ -7,7 +7,6 @@ Wincent::Application.routes.draw do
     resources :comments, :only => [:create, :new]
     collection do
       get :search
-      post :search
       get 'page/:page' => 'issues#index', :page => %r{\d+}
     end
   end
@@ -34,10 +33,7 @@ Wincent::Application.routes.draw do
     end
   end
 
-  resources :searches,
-            :only => [ :create, :new ],
-            :path => 'search'
-  get '/search' => 'searches#new' # anticipate users who might guess this URL
+  get '/search' => 'search#search'
 
   # mapping to "product_page" would overwrite the nested RESTful route above
   match '/products/:id/:page_id' => 'products#show',
@@ -71,7 +67,6 @@ Wincent::Application.routes.draw do
   resources :tags, :id => /[a-z0-9\.]+/ do
     collection do
       get :search
-      post :search
     end
   end
 

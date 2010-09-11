@@ -23,7 +23,7 @@ describe 'issues/search/new' do
 
   it 'has a "site search" link' do
     render
-    rendered.should have_selector('div.links a', :href => new_search_path)
+    rendered.should have_selector('div.links a', :href => search_path)
   end
 
   it 'renders the search form partial' do

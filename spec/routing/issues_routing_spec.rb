@@ -20,7 +20,6 @@ describe IssuesController do
 
     describe 'non-RESTful routes' do
       specify { get('/issues/search').should have_routing('issues#search') }
-      specify { post('/issues/search').should have_routing('issues#search') }
     end
 
     describe 'comments' do

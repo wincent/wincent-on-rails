@@ -1,7 +1,7 @@
 -# NOTE: this adds a few hundred bytes and a db query to each page load, may consider loading this via AJAX
 %h2.major Search
 %span.annotation all fields are optional
-=form_for @issue, :url => search_issues_path do |f|
+%form{ 'accept-charset' => 'UTF-8', :action => search_issues_path, :method => :get }
   %ul
     %li
       =label_tag 'issue_product_id', 'Product'
@@ -11,11 +11,12 @@
           :last, :first, :id, :name, (@issue.product ? @issue.product.id : nil)
     %li
       =label_tag 'issue_kind', 'Kind'
-      =f.select :kind, kind_options_for_select, :include_blank => true
+      =select_tag 'issue[kind]', kind_options_for_select, :include_blank => true
     %li
       =label_tag 'issue_status', 'Status'
-      =f.select :status, status_options_for_select, :include_blank => true
+      =select_tag 'issue[status]', status_options_for_select, :include_blank => true
     %li
       =label_tag 'issue_summary', 'Search for'
-      =f.text_field :summary
-    %li=f.submit 'Search'
+      =text_field_tag 'issue[summary]'
+    %li
+      %input(type='submit' value='Search')

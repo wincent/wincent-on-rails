@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'searches/_form' do
+describe 'search/_form' do
   def do_render
     render
     #render '/search/form'
@@ -18,8 +18,8 @@ describe 'searches/_form' do
 
   it 'shows the search form' do
     do_render
-    rendered.should have_selector('form', :action => searches_path) do |form|
-      form.should have_selector('input', :name => 'query', :type => 'text')
+    rendered.should have_selector('form', :action => search_path) do |form|
+      form.should have_selector('input', :name => 'q', :type => 'text')
       form.should have_selector('input', :value => 'Search', :type => 'submit')
     end
   end

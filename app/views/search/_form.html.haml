@@ -1,7 +1,7 @@
 %h1.major Search
-=form_tag searches_path, :method => :post do
-  =text_field_tag :query, 'enter your search terms here', :size => 75
-  =submit_tag 'Search'
+%form{ 'accept-charset' => 'UTF-8', :action => search_path, :method => :get }
+  =text_field_tag :q, 'enter your search terms here', :size => 75
+  %input(type='submit' value='Search')
 .tips
   %h4 Search tips
   %ul

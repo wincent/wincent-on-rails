@@ -1,13 +1,13 @@
 require 'spec_helper'
 
-describe 'searches/_topic' do
+describe 'search/_topic' do
   before do
     @topic          = Topic.make!
     @result_number  = 47
   end
 
   def do_render
-    render 'searches/topic', :model => @topic, :result_number => @result_number
+    render 'search/topic', :model => @topic, :result_number => @result_number
   end
 
   it 'shows the result number' do

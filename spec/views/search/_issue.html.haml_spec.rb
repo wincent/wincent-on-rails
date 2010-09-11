@@ -1,13 +1,13 @@
 require 'spec_helper'
 
-describe 'searches/_issue' do
+describe 'search/_issue' do
   before do
     @issue          = Issue.make! :description => "can't print"
     @result_number  = 47
   end
 
   def do_render
-    render 'searches/issue', :model => @issue, :result_number => @result_number
+    render 'search/issue', :model => @issue, :result_number => @result_number
   end
 
   it 'shows the result number' do

@@ -18,7 +18,6 @@ describe TagsController do
 
     describe 'non-RESTful routes' do
       specify { get('/tags/search').should map_to('tags#search') }
-      specify { post('/tags/search').should map_to('tags#search') }
     end
 
     describe 'helpers' do

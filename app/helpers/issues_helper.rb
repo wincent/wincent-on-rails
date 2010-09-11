@@ -52,10 +52,10 @@ module IssuesHelper
   end
 
   def kind_options_for_select
-    underscores_to_spaces(Issue::KIND).sort
+    options_for_select underscores_to_spaces(Issue::KIND).sort
   end
 
   def status_options_for_select
-    underscores_to_spaces(Issue::STATUS).sort
+    options_for_select underscores_to_spaces(Issue::STATUS).sort
   end
 end

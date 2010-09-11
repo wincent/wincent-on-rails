@@ -1,13 +1,13 @@
 require 'spec_helper'
 
-describe 'searches/_tweet' do
+describe 'search/_tweet' do
   before do
     @tweet          = Tweet.make!
     @result_number  = 47
   end
 
   def do_render
-    render 'searches/tweet', :model => @tweet, :result_number => @result_number
+    render 'search/tweet', :model => @tweet, :result_number => @result_number
   end
 
   it 'shows the result number' do

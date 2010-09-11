@@ -90,7 +90,7 @@ private
       see the <a href="#{articles_path}">wiki</a> index, the
       <a href="#{tags_path}">tag cloud</a>, the
       <a href="#{search_tags_path}">tag search</a>,
-      or the <a href="#{new_search_path}">search</a> page)</em>
+      or the <a href="#{search_path}">search</a> page)</em>
     NOTICE
   end
 
