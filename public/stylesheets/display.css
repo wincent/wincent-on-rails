@@ -67,7 +67,7 @@ a.mailto:after { content: url(../images/mailto.png); }
 #navbar > li > a { padding: 1em; color: black; font-weight: bold; }
 #navbar > li > a:hover { background: url(../images/navbar-hover.png) center center repeat-x; color: white; }
 
-#navbar form { position: relative; top: -15px; left: 60px; width: 200px; display: inline; margin: 0em; padding: 0em; }
+#navbar form { position: relative; top: -2px; left: 10px; width: 200px; display: inline; margin: 0em; padding: 0em; }
 #navbar form input { margin: 0px; padding: 0px; font-size: 1em; }
 
 #breadcrumbs { margin: 10px 10px 0px 10px; font-size: 0.9em; }
