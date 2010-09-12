@@ -16,7 +16,7 @@ module Git
       # TODO: handle --dereference (useful for tags)
       str.lines.map do |line|
         sha1, name = line.chomp.split
-        self.new repo, name, sha1
+        new repo, name, sha1
       end
     end
 
@@ -30,7 +30,7 @@ module Git
       end
       if head
         sha1, name = head.chomp.split
-        self.new repo, name, sha1
+        new repo, name, sha1
       end
     end
 
