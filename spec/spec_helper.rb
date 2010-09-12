@@ -26,3 +26,18 @@ end
 if ENV['RUBYOPT']
   ENV['RUBYOPT'] = ENV['RUBYOPT'].gsub(%r{-r\s*bundler/setup}, '')
 end
+
+# temporary hack: ssh sessions have an emaciated path
+# (/usr/local/bin:/bin:/usr/bin) and I am not sure how to modify it
+# at runtime
+#
+# note that we could inject into the path from script/deploy but that
+# would only work for full spec runs, not isolated runs when logged
+# in locally to the server:
+#
+#   ssh rails@$SERVER "sh -c 'cd $DEPLOY/latest && \
+#                             env PATH=/usr/local/jruby/bin:\$PATH bin/rspec -f progress spec'"
+#
+unless ENV['PATH'].to_s =~ /jruby/
+  ENV['PATH'] = ['/usr/local/jruby/bin', ENV['PATH']].join(':')
+end
