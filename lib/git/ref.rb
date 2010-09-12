@@ -3,20 +3,32 @@ require 'git'
 module Git
   # Abstract superclass for concrete subclasses, Branch and Tag.
   class Ref
+    # Raised when the output of "git for-each-ref" contained unexpected
+    # input.
+    class RefParseError < Exception
+      def self.new_with_line line
+        new "#{self}: ref parse error for line: #{line}"
+      end
+    end
+
     attr_reader :name, :repo, :sha1
 
-    # Takes a string containing output from "git show-ref", such as:
-    #
-    #   0785b65f3ebfb14498acd84f4d0b9e4ee7419006 refs/tags/0.3.1
-    #   d2656c2f8aa70657aa3bd80a474069293338fab1 refs/tags/0.4.0
-    #
+    # Takes a string containing output from "git for-each-ref",
     # and returns an array of Ref objects, each encapsulating one line
     # from the string.
     def self.refs_array_from_string str, repo
-      # TODO: handle --dereference (useful for tags)
       str.lines.map do |line|
-        sha1, name = line.chomp.split
-        new repo, name, sha1
+        sha1, type, name = line.chomp.split
+        case type
+        when 'commit'
+          if name =~ %r{\Arefs/tags/.+} # lightweight tag
+            Tag.new repo, name, sha1, :lightweight => true
+          else name =~ %r{\Arefs/heads/.+} # branch head
+            Branch.new repo, name, sha1
+          end
+        when 'tag' # annotated tag object
+          Tag.new repo, name, sha1
+        end or raise RefParseError.new_with_line(line)
       end
     end
 
@@ -34,10 +46,12 @@ module Git
       end
     end
 
-    def initialize repo, name, sha1
-      @repo = repo # Git::Repo instance
-      @name = name # eg. refs/heads/*, refs/tags/*
-      @sha1 = sha1 # 40-character SHA-1 hash string
+    # options is currently ignored by the Ref class but may be
+    # used by subclasses (see the Tag class for an example).
+    def initialize repo, name, sha1, options = {}
+      @repo         = repo # Git::Repo instance
+      @name         = name # eg. refs/heads/*, refs/tags/*
+      @sha1         = sha1 # 40-character SHA-1 hash string
     end
 
     # Returns up to 20 commits starting at the Ref.

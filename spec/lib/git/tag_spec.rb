@@ -6,7 +6,12 @@ describe Git::Tag do
       `git tag 0.1 -m "1.0 release"`  # annotated tag
       `echo "bar" > file`
       `git commit -m "tweak" -- file`
-      `git tag 0.2 -m "2.0 release"`  # annotated tag
+
+      # we'll be testing the chronological order of tags, so make sure they
+      # don't happen within the same second
+      `GIT_COMMITTER_DATE='#{Time.now.year + 1}-01-01T12:00:00' \
+       git tag 0.2 -m "2.0 release"`  # annotated tag
+
       `echo "baz" > file`
       `git commit -m "WIP" -- file`
       `git tag crazy-idea-WIP`        # lightweight tag
@@ -15,11 +20,23 @@ describe Git::Tag do
   end
 
   describe '::all' do
+    let(:tags) { Git::Tag.all @repo }
+
     it 'returns an Array of Tag objects' do
-      tags = Git::Tag.all @repo
       tags.should be_kind_of(Array)
       tags.should_not be_empty
       tags.all? { |tag| tag.kind_of?(Git::Tag) }.should be_true
+    end
+
+    it 'returns lightweight tags last' do
+      tags.last.name.should == 'refs/tags/crazy-idea-WIP'
+      tags.last.lightweight.should be_true
+    end
+
+    it 'returns annotated tags in reverse chronological order' do
+      tags.pop # remove the lightweight tag
+      tags.map(&:name).should == %w(refs/tags/0.2 refs/tags/0.1)
+      tags.all? { |t| t.lightweight == false }.should be_true
     end
   end
 
