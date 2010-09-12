@@ -3,7 +3,10 @@ class ReposController < ApplicationController
   before_filter :get_repo, :only => [:destroy, :edit, :show, :update]
 
   def index
-    render
+    # for now only show public repos; may later want to add admin-only
+    # viewing of private repos, but possibly under the admin namespace
+    # to allow page-caching here
+    @repos = Repo.published
   end
 
   def new
@@ -25,6 +28,18 @@ class ReposController < ApplicationController
     render
   end
 
+  def edit
+    raise "not yet imp"
+  end
+
+  def update
+    raise "not yet imp"
+  end
+
+  def destroy
+    raise "not yet imp"
+  end
+
 private
 
   def record_not_found
@@ -32,6 +47,7 @@ private
   end
 
   def get_repo
-    @repo = Repo.find_by_permalink! params[:id]
+    # TODO: let admin see private repos
+    @repo = Repo.published.find_by_permalink! params[:id]
   end
 end

@@ -48,8 +48,15 @@ class Repo < ActiveRecord::Base
   attr_accessible :clone_url, :description, :name, :path, :permalink,
     :product_id, :public, :rw_clone_url
 
+  scope :published, where(:public => true)
+
   def to_param
     (changes['permalink'] && changes['permalink'].first) || permalink
+  end
+
+  # Provides access to underlying Git::Repo instance.
+  def repo
+    @repo ||= Git::Repo.new path
   end
 
 private

@@ -33,5 +33,26 @@ module Git
       @email  = email
       @time   = time
     end
+
+    # Provides a generic Ident instance of the receiver.
+    #
+    # This is useful for comparing a Committer and an Author to see
+    # if they refer to the same person:
+    #
+    #     author.to_ident == committer.to_ident # => true
+    def to_ident
+      if self.class == Ident
+        self
+      else
+        Ident.new @name, @email, @time
+      end
+    end
+
+    def == other
+      other.class == self.class &&
+        other.name == @name &&
+        other.email == @email &&
+        other.time == @time
+    end
   end # class Ident
 end # module Git

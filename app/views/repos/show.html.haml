@@ -1,1 +1,36 @@
-%h1 Repo
+%h1.major=@repo.name
+%h2=@repo.description unless @repo.description.blank?
+-unless @repo.clone_url.blank?
+  Clone URL: #{@repo.clone_url}
+-if admin? && !@repo.rw_clone_url.blank?
+  R/W Clone URL: #{@repo.rw_clone_url}
+%h3 Head
+%ul
+  %li=@repo.repo.head.name
+  %li=@repo.repo.head.sha1
+%h3 Commits
+%ul
+  -@repo.repo.head.commits.each do |commit|
+    %li
+      %ul{:title => commit.commit}
+        %li{:title => commit.subject}=truncate commit.subject, :length => 80
+        %li=commit_abbrev commit.commit
+        %li{:title => "#{commit.author.name} <#{commit.author.email}>"}
+          Author:
+          =commit.author.name
+          =commit_author_time commit
+        -if commit.committer.to_ident != commit.author.to_ident
+          %li{:title => "#{commit.committer.name} <#{commit.committer.email}>"}
+            Committer:
+            =commit.committer.name
+            =commit_committer_time commit
+%h3 Branches
+-@repo.repo.branches.each do |branch|
+  %ul
+    %li=branch.name
+    %li=branch.sha1
+%h3 Tags
+-@repo.repo.tags.each do |t|
+  %ul
+    %li=t.name
+    %li=t.sha1
