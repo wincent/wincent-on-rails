@@ -115,6 +115,11 @@ module Git
       @diff
     end
 
+    # Returns the first line of the message.
+    def subject
+      @subject ||= @message.match(/\A.*$/)[0]
+    end
+
     class << self
 
     private

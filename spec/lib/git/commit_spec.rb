@@ -188,7 +188,7 @@ describe Git::Commit do
 
     describe '#message' do
       it 'returns the commit log message' do
-        commit.message.should == "initial import"
+        commit.message.should == 'initial import'
       end
 
       context 'with Signed-off-by: line' do
@@ -201,6 +201,25 @@ describe Git::Commit do
           message = Git::Commit.log(ref).first.message
           message.should =~ /more foo\n\n/
           message.should =~ /Signed-off-by: .+\.+/
+        end
+      end
+    end
+
+    describe '#subject' do
+      context 'a single-line commit log message' do
+        it 'returns the entire commit log message' do
+          commit.subject.should == 'initial import'
+        end
+      end
+
+      context 'a multi-line commit log message' do
+        it 'returns the first line of the commit log message' do
+          Dir.chdir repo.path do
+            `echo "foo" >> file`
+            `git add file`
+            `git commit -m "invasive changes\n\nbut necessary ones"`
+          end
+          commit.subject.should == 'invasive changes'
         end
       end
     end
