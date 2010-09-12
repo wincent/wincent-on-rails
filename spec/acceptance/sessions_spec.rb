@@ -43,6 +43,7 @@ feature "Logging in to the site:" do
   end
 
   scenario 'dynamic "log in"/"log out" links (when logged out)', :js => true do
+    visit '/logout'
     visit '/'
     page.should have_content('log in')
     page.should_not have_content('log out')
