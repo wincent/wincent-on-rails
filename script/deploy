@@ -401,7 +401,7 @@ if [ -n "$DO_SUMMARY" ]; then
   REVISION=$(ssh rails@$SERVER cat $DEPLOY/latest/REVISION)
   if [ $(git describe --exact-match $REVISION 2> /dev/null) ]; then
     # common case: latest deployed revision is tagged
-    LAST_TAG=$(git describe $(git rev-list --tags --max-count=2) | tail -1)
+    LAST_TAG=$(git for-each-ref --sort=-taggerdate --format='%(refname:short)' --count=2 refs/tags | tail -1)
   else
     # rare case (probably only staging): latest deployed revision is not tagged
     LAST_TAG=$(git describe $(git rev-list --tags --max-count=1))
