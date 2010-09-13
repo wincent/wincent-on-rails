@@ -1,13 +1,13 @@
 GIT
   remote: git://github.com/cavalle/steak.git
-  revision: 894084d
+  revision: 4956708bfe57c48991c3600a6dd6cf4dcc80fb25
   specs:
-    steak (0.4.0.beta.1)
-      rspec-core (>= 2.0.0.beta.19)
+    steak (1.0.0.beta.1)
+      rspec
 
 GIT
   remote: git://github.com/jnicklas/capybara.git
-  revision: a4ed172
+  revision: 7065a66503b6aea909f5bea91eb61cacd3a4aa7c
   specs:
     capybara (0.3.9)
       celerity (>= 0.7.9)
@@ -49,12 +49,14 @@ GEM
       activemodel (= 3.0.0)
       activesupport (= 3.0.0)
     activesupport (3.0.0)
+    akephalos (0.2.3)
+      capybara (~> 0.3.8)
+      jruby-jars
     arel (1.0.1)
       activesupport (~> 3.0.0)
     autotest (4.3.2)
-    bouncy-castle-java (1.5.0145.2)
     builder (2.1.2)
-    celerity (0.8.0)
+    celerity (0.8.1)
     cgi_multipart_eof_fix (2.5.0)
     columnize (0.3.1)
     configuration (1.1.0)
@@ -75,14 +77,13 @@ GEM
     haml (3.0.18)
     hpricot (0.8.2)
     i18n (0.4.1)
-    jruby-openssl (0.7.1)
-      bouncy-castle-java
+    jruby-jars (1.5.2)
     json_pure (1.4.6)
     launchy (0.3.7)
       configuration (>= 0.0.5)
       rake (>= 0.8.1)
     linecache (0.43)
-    mail (2.2.6)
+    mail (2.2.6.1)
       activesupport (>= 2.3.6)
       mime-types
       treetop (>= 1.4.5)
@@ -98,7 +99,7 @@ GEM
     nokogiri (1.4.3.1)
     polyglot (0.3.1)
     rack (1.2.1)
-    rack-mount (0.6.12)
+    rack-mount (0.6.13)
       rack (>= 1.0.0)
     rack-test (0.5.4)
       rack (>= 1.0)
@@ -155,19 +156,16 @@ GEM
     xpath (0.1.0)
 
 PLATFORMS
-  java
   ruby
 
 DEPENDENCIES
+  akephalos
   autotest
   capybara!
-  celerity (>= 0.8.0.beta.1)
-  culerity
   database_cleaner (>= 0.6.0.rc.2)
   factory_girl_rails
   haml (~> 3.0.18)
   hpricot
-  jruby-openssl
   launchy
   memcache-client
   mkdtemp (>= 1.2)
