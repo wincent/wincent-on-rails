@@ -15,7 +15,7 @@ platforms :ruby_18 do
 
   group :development, :test do
     gem 'factory_girl_rails'              # factories in development console
-    gem 'rspec-rails',    '2.0.0.beta.20' # needed for generators to work
+    gem 'rspec-rails',    '2.0.0.beta.22' # needed for generators to work
   end
 
   group :development do
