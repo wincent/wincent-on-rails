@@ -87,7 +87,7 @@ describe ActiveRecord::Acts::Taggable do
         end.to change { model.tags.size }.by(1)
         expect do
           model.tag 'foo'
-        end.to change { model.tags.size }.by(0)
+        end.to_not change { model.tags.size }
       end
     end
 
