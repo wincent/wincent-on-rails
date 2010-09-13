@@ -21,23 +21,10 @@ RSpec.configure do |config|
   ]
 end
 
-# Bundler regression: http://github.com/carlhuda/bundler/issues/issue/478
-# beta 1.0.0.beta.9 breaks acceptance tests involving Celerity
+# Bundler BUG: http://github.com/carlhuda/bundler/issues/issue/478
+# mongrel child process in acceptance specs gets gimped by Bundler
+# we either stop Bundler from meddling with RUBYOPT, or watch our
+# specs hang indefinitely
 if ENV['RUBYOPT']
   ENV['RUBYOPT'] = ENV['RUBYOPT'].gsub(%r{-r\s*bundler/setup}, '')
-end
-
-# temporary hack: ssh sessions have an emaciated path
-# (/usr/local/bin:/bin:/usr/bin) and I am not sure how to modify it
-# at runtime
-#
-# note that we could inject into the path from script/deploy but that
-# would only work for full spec runs, not isolated runs when logged
-# in locally to the server:
-#
-#   ssh rails@$SERVER "sh -c 'cd $DEPLOY/latest && \
-#                             env PATH=/usr/local/jruby/bin:\$PATH bin/rspec -f progress spec'"
-#
-unless ENV['PATH'].to_s =~ /jruby/
-  ENV['PATH'] = ['/usr/local/jruby/bin', ENV['PATH']].join(':')
 end
