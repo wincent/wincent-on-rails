@@ -4,13 +4,5 @@
   Snippets
   =feed_icon snippets_path(:format => :atom)
 .pagination=@paginator.pagination_links
--@snippets.each do |snippet|
-  %div[snippet]
-    %h2=link_to snippet_title(snippet), snippet_path(snippet)
-    %div.info
-      %span.when=timeinfo snippet
-      =link_to 'permalink', snippet_path(snippet), :class => 'hoverlink'
-      =link_to 'comment', new_snippet_comment_path(snippet),
-        :class => 'hoverlink' if snippet.accepts_comments
-    =snippet.body_html :base_heading_level => 3
+=render @snippets
 .pagination=@paginator.pagination_links
