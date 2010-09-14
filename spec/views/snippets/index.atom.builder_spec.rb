@@ -16,7 +16,7 @@ describe 'snippets/index.atom' do
 
   it 'uses the first snippet update date as update date' do
     render
-    doc.at('feed').at('updated').innerHTML.
+    doc.at('feed/updated').innerHTML.
       should == @snippets.first.updated_at.xmlschema
   end
 
@@ -24,19 +24,19 @@ describe 'snippets/index.atom' do
     it 'uses the "Rails Epoch" as update date' do
       @snippets = []
       render
-      doc.at('feed').at('updated').innerHTML.should == RAILS_EPOCH.xmlschema
+      doc.at('feed/updated').innerHTML.should == RAILS_EPOCH.xmlschema
     end
   end
 
   it 'uses the administrator as the feed author' do
     render
-    author = doc.at('feed').at('author')
+    author = doc.at('feed/author')
     author.at('name').innerHTML.should == APP_CONFIG['admin_name']
     author.at('email').innerHTML.should == APP_CONFIG['admin_email']
   end
 
   describe 'entry' do
-    let(:entry) { doc.at('feed').at('entry') }
+    let(:entry) { doc.at('feed/entry') }
 
     it 'uses the snippet title as title' do
       render

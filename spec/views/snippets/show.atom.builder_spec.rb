@@ -22,13 +22,13 @@ describe 'snippets/show.atom' do
 
   it 'uses the administrator as the feed author' do
     render
-    author = doc.at('feed').at('author')
+    author = doc.at('feed/author')
     author.at('name').innerHTML.should == APP_CONFIG['admin_name']
     author.at('email').innerHTML.should == APP_CONFIG['admin_email']
   end
 
   describe 'entry' do
-    let(:entry) { doc.at('feed').at('entry') }
+    let(:entry) { doc.at('feed/entry') }
 
     it 'uses the snippet title as title' do
       render
@@ -64,7 +64,7 @@ describe 'snippets/show.atom' do
 
     it 'uses the comment author' do
       render
-      comment.at('author').at('name').innerHTML.
+      comment.at('author/name').innerHTML.
         should == @comments.first.user.display_name
     end
   end
