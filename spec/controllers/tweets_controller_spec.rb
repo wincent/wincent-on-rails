@@ -1,5 +1,4 @@
 require 'spec_helper'
-require 'hpricot'
 
 describe TweetsController do
   it_has_behavior 'ApplicationController protected methods'
@@ -141,12 +140,10 @@ describe TweetsController do
     # Rails 2.3.0 RC1 BUG: http://rails.lighthouseapp.com/projects/8994/tickets/2043
     it 'should produce entry links to HTML-formatted records' do
       do_get
-      doc = Hpricot.XML(response.body)
-      (doc/:entry).collect do |entry|
-        (entry/:link).first[:href].each do |href|
-          # make sure links are /twitter/1234, not /twitter/1234.atom
-          href.should =~ %r{/twitter/\d+\z}
-        end
+      doc = Nokogiri::XML(response.body)
+      doc.xpath('/atom:feed/atom:entry/atom:link', ATOM_XMLNS).each do |link|
+        # make sure links are /twitter/1234, not /twitter/1234.atom
+        link['href'].should_not =~ %r{\.atom}
       end
     end
   end

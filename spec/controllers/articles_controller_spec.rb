@@ -1,5 +1,4 @@
 require 'spec_helper'
-require 'hpricot'
 
 # A note about Atom format testing:
 #
@@ -126,14 +125,12 @@ describe ArticlesController do
         end
 
         # http://rails.lighthouseapp.com/projects/8994/tickets/2043
-        it 'should produce entry links to HTML-formatted records' do
+        it 'produces entry links to HTML-formatted records' do
           get :index, :format => 'atom'
-          doc = Hpricot.XML(response.body)
-          (doc/:entry).collect do |entry|
-            (entry/:link).first[:href].each do |href|
-              # make sure links are /wiki/foo, not /wiki/foo.atom
-              href.should_not =~ %r{\.html\z}
-            end
+          doc = Nokogiri::XML(response.body)
+          doc.xpath('/atom:feed/atom:entry/atom:link',
+            ATOM_XMLNS).each do |link|
+            link['href'].should_not =~ %r{\.atom}
           end
         end
       end

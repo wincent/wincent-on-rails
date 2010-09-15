@@ -22,7 +22,6 @@ group :test do
   gem 'autotest',       :require => nil
   gem 'capybara',       :git => 'git://github.com/jnicklas/capybara.git'
   gem 'database_cleaner', '>= 0.6.0.rc.2'
-  gem 'hpricot'
   gem 'launchy'
   gem 'mongrel',        :require => nil
   gem 'mkdtemp',        '>= 1.2'

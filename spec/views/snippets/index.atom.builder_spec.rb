@@ -1,8 +1,7 @@
 require 'spec_helper'
-require 'hpricot'
 
 describe 'snippets/index.atom' do
-  let(:doc) { Hpricot.XML(rendered) }
+  let(:doc) { Nokogiri::XML(rendered) }
 
   before do
     @snippets = [Snippet.make! :description => 'foo', :body => 'a > b',
@@ -16,7 +15,7 @@ describe 'snippets/index.atom' do
 
   it 'uses the first snippet update date as update date' do
     render
-    doc.at('feed/updated').innerHTML.
+    doc.at_xpath('/atom:feed/atom:updated', ATOM_XMLNS).content.
       should == @snippets.first.updated_at.xmlschema
   end
 
@@ -24,29 +23,30 @@ describe 'snippets/index.atom' do
     it 'uses the "Rails Epoch" as update date' do
       @snippets = []
       render
-      doc.at('feed/updated').innerHTML.should == RAILS_EPOCH.xmlschema
+      doc.at_xpath('/atom:feed/atom:updated', ATOM_XMLNS).content.
+        should == RAILS_EPOCH.xmlschema
     end
   end
 
   it 'uses the administrator as the feed author' do
     render
-    author = doc.at('feed/author')
-    author.at('name').innerHTML.should == APP_CONFIG['admin_name']
-    author.at('email').innerHTML.should == APP_CONFIG['admin_email']
+    author = doc.at_xpath('/atom:feed/atom:author', ATOM_XMLNS)
+    author.at_xpath('atom:name', ATOM_XMLNS).content.should == APP_CONFIG['admin_name']
+    author.at_xpath('atom:email', ATOM_XMLNS).content.should == APP_CONFIG['admin_email']
   end
 
   describe 'entry' do
-    let(:entry) { doc.at('feed/entry') }
+    let(:entry) { doc.at_xpath('/atom:feed/atom:entry', ATOM_XMLNS) }
 
     it 'uses the snippet title as title' do
       render
-      entry.at('title').innerHTML.should == 'foo'
+      entry.at_xpath('atom:title', ATOM_XMLNS).content.should == 'foo'
     end
 
-    it 'includes the snippet body as escaped HTML' do
+    it 'includes the snippet body as HTML' do
       render
-      entry.at('content').innerHTML.
-        should == "&lt;p&gt;a &amp;gt; b&lt;/p&gt;\n"
+      entry.at_xpath('atom:content', ATOM_XMLNS).content.
+        should == "<p>a &gt; b</p>\n"
     end
   end
 end

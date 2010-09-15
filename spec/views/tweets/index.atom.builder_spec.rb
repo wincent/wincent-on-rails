@@ -1,7 +1,8 @@
 require 'spec_helper'
-require 'hpricot'
 
 describe 'tweets/index.atom.builder' do
+  let(:doc) { Nokogiri::XML(rendered) }
+
   before do
     @tweets = [
       Tweet.make!(:body => "''foo''"),
@@ -28,41 +29,38 @@ describe 'tweets/index.atom.builder' do
   it 'uses the "Rails Epoch" as an update date if there are no tweets' do
     @tweets = []
     render
-    doc = Hpricot.XML(rendered)
-    doc.at('feed').at('updated').innerHTML.should == RAILS_EPOCH.xmlschema
+    doc.at_xpath('/atom:feed/atom:updated', ATOM_XMLNS).content.
+      should == RAILS_EPOCH.xmlschema
   end
 
   it 'uses the first tweet for the update date if available' do
     render
-    doc = Hpricot.XML(rendered)
-    doc.at('feed').at('updated').innerHTML.should == @tweets[0].updated_at.xmlschema
+    doc.at_xpath('/atom:feed/atom:updated', ATOM_XMLNS).content.
+      should == @tweets[0].updated_at.xmlschema
   end
 
   it 'uses the administrator as the feed author' do
     render
-    doc = Hpricot.XML(rendered)
-    author = doc.at('feed').at('author')
-    author.at('name').innerHTML.should == APP_CONFIG['admin_name']
-    author.at('email').innerHTML.should == APP_CONFIG['admin_email']
+    author = doc.at_xpath('/atom:feed/atom:author', ATOM_XMLNS)
+    author.at_xpath('atom:name', ATOM_XMLNS).content.
+      should == APP_CONFIG['admin_name']
+    author.at_xpath('atom:email', ATOM_XMLNS).content.
+      should == APP_CONFIG['admin_email']
   end
 
   it 'uses the "tweet_title" helper to produce the entry titles' do
     mock(view).tweet_title(@tweets[0]) { 'atom title 0' }
     mock(view).tweet_title(@tweets[1]) { 'atom title 1' }
     render
-    doc = Hpricot.XML(rendered)
-    entry = doc.at('feed').at('entry')
-    entry.at('title').innerHTML.should == 'atom title 0'
-    entry = entry.next_sibling
-    entry.at('title').innerHTML.should == 'atom title 1'
+    doc.xpath('/atom:feed/atom:entry', ATOM_XMLNS).map do |entry|
+      entry.at_xpath('atom:title', ATOM_XMLNS).content
+    end.should == ['atom title 0', 'atom title 1']
   end
 
-  it 'includes the tweet text as escaped HTML' do
+  it 'includes the tweet text as HTML' do
     render
-    doc = Hpricot.XML(rendered)
-    entry = doc.at('feed').at('entry')
-    entry.at('content').innerHTML.should == "&lt;p&gt;&lt;em&gt;foo&lt;/em&gt;&lt;/p&gt;\n"
-    entry = entry.next_sibling
-    entry.at('content').innerHTML.should == "&lt;p&gt;&lt;strong&gt;bar&lt;/strong&gt;&lt;/p&gt;\n"
+    doc.xpath('/atom:feed/atom:entry', ATOM_XMLNS).map do |entry|
+      entry.at_xpath('atom:content', ATOM_XMLNS).content
+    end.should == ["<p><em>foo</em></p>\n", "<p><strong>bar</strong></p>\n"]
   end
 end

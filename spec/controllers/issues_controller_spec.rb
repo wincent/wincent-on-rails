@@ -1,5 +1,4 @@
 require 'spec_helper'
-require 'hpricot'
 
 describe IssuesController do
   it_has_behavior 'ApplicationController protected methods'
@@ -76,12 +75,11 @@ describe IssuesController do
         comment.save
       }
       do_get issue
-      doc = Hpricot.XML(response.body)
-      (doc/:entry).collect do |entry|
-        (entry/:link).first[:href].each do |href|
-          # make sure links are /issues/1234#comment_3000, not /issues/1234.atom#comment_3000
-          href.should_not =~ %r{\.atom}
-        end
+      doc = Nokogiri::XML(response.body)
+      doc.xpath('/atom:feed/atom:entry/atom:link', ATOM_XMLNS).each do |link|
+        # make sure links are /issues/1234#comment_3000,
+        # not /issues/1234.atom#comment_3000
+        link['href'].should_not =~ %r{\.atom}
       end
     end
 
