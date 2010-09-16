@@ -109,29 +109,49 @@ module Git
 
       while line = lines.first and line.match(/\A[ ~+-]/)
         segments = []
+        kind = nil
         while segment = lines.first and segment.match(/\A[ +-]/)
+          if $~[0] == '+'
+            kind = kind == :deleted || kind == :mixed ? :mixed : :added
+          elsif $~[0] == '-'
+            kind = kind == :added || kind == :mixed ? :mixed : :deleted
+          end
           segments << lines.shift.chomp
         end
-        case segments.length
-        when 0
+        if segments.length == 0
           raise Commit::MalformedDiffError.new_with_line(line) unless
             line.chomp == '~'
+          hunk << Line.new(preimage_cursor, postimage_cursor, ' ') # empty line
+          preimage_cursor += 1
+          postimage_cursor += 1
           lines.shift
-        when 1  # "pure" addition, deletion or context
-          hunk << (line = Line.new(preimage_cursor, postimage_cursor, line))
-          if line.kind == :added
-            postimage_cursor +=1
-          elsif line.kind == :deleted
+        else
+          if kind == :deleted || kind == :mixed
+            hunk << Line.deletion_line_from_segments(preimage_cursor, segments)
             preimage_cursor +=1
-          else
+          end
+
+          if kind == :added || kind == :mixed
+            hunk << Line.addition_line_from_segments(postimage_cursor, segments)
+            postimage_cursor +=1
+          end
+
+          if kind.nil? # context
+            hunk << Line.new(preimage_cursor, postimage_cursor, line)
             preimage_cursor += 1
             postimage_cursor += 1
           end
-        else    # mixed; will require a deletion line and an addition line
-          hunk << Line.deletion_line_from_segments(preimage_cursor, segments)
-          hunk << Line.addition_line_from_segments(postimage_cursor, segments)
-          preimage_cursor += 1
-          postimage_cursor += 1
+
+          # a trailing newline indicator (~) must follow always, even for diffs
+          # with no trailing newline in the actual patch; ie. you'll get:
+          #
+          #     ~
+          #     \ No newline at end of file
+          #     ~
+          #
+          line = lines.shift
+          raise Commit::MalformedDiffError.new_with_line(line) unless
+            line.chomp == '~'
         end
       end
 
