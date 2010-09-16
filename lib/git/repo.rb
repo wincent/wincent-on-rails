@@ -39,7 +39,7 @@ module Git
     end
 
     def commit sha1
-      Commit.commit_with_hash sha1, repo
+      Commit.commit_with_hash sha1, self
     end
 
     # This method invokes the {#git} method and raises a {Git::CommandError}
