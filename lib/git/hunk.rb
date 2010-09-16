@@ -82,7 +82,7 @@ module Git
       end
     end # class Line
 
-    attr_reader :preimage_start, :preimage_length,
+    attr_reader :header, :preimage_start, :preimage_length,
       :postimage_start, :postimage_length, :lines
 
     def self.hunks_from_diff lines
@@ -95,11 +95,11 @@ module Git
 
     def self.process_hunk lines
       hunk = []
-      line = lines.shift.chomp
+      header = lines.shift.chomp
 
       # length may be omitted if it is 1
-      line.match(/\A@@ -(\d+)(?:,(\d+))? \+(\d+)(?:,(\d+))? @@.*\z/) or
-        raise Commit::MalformedDiffError.new_with_line(line)
+      header.match(/\A@@ -(\d+)(?:,(\d+))? \+(\d+)(?:,(\d+))? @@.*\z/) or
+        raise Commit::MalformedDiffError.new_with_line(header)
       preimage_start = $~[1].to_i
       preimage_length = $~[2] ? $~[2].to_i : 1
       postimage_start = $~[3].to_i
@@ -136,16 +136,17 @@ module Git
       end
 
       new preimage_start, preimage_length,
-        postimage_start, postimage_length, hunk
+        postimage_start, postimage_length, hunk, header
     end
 
     def initialize preimage_start, preimage_length,
-        postimage_start, postimage_length, hunk
+        postimage_start, postimage_length, hunk, header
       @preimage_start = preimage_start
       @preimage_length = preimage_length
       @postimage_start = postimage_start
       @postimage_length = postimage_length
       @lines = hunk
+      @header = header
     end
   end # class Hunk
 end # module Git
