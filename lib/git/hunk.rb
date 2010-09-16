@@ -112,9 +112,11 @@ module Git
         kind = nil
         while segment = lines.first and segment.match(/\A[ +-]/)
           if $~[0] == '+'
-            kind = kind == :deleted || kind == :mixed ? :mixed : :added
+            kind = kind.nil? || kind == :added ? :added : :mixed
           elsif $~[0] == '-'
-            kind = kind == :added || kind == :mixed ? :mixed : :deleted
+            kind = kind.nil? || kind == :deleted ? :deleted : :mixed
+          else
+            kind = :mixed if kind
           end
           segments << lines.shift.chomp
         end
