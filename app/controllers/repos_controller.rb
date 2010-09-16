@@ -1,5 +1,6 @@
 class ReposController < ApplicationController
-  before_filter :require_admin, :except => [:index, :show]
+  # during initial testing, require admin for everything
+  before_filter :require_admin#, :except => [:index, :show]
   before_filter :get_repo, :only => [:destroy, :edit, :show, :update]
 
   def index

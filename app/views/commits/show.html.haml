@@ -1,0 +1,20 @@
+=breadcrumbs link_to(@repo.name, @repo), commit_abbrev(@commit.commit)
+.commit
+  %pre.message
+    =@commit.message
+  -@commit.diff.each_with_index do |change, idx|
+    %table.diff
+      %caption
+        %div=change[:path]
+        %div=change[:deleted]
+        %div=change[:added]
+      -change[:hunks].each do |hunk|
+        %tr.hunk-header
+          %td.line-number ...
+          %td.line-number ...
+          %td=hunk.header
+        -hunk.lines.each do |line|
+          %tr.hunk-line
+            %td.line-number=preimage_line_number_anchor line, idx
+            %td.line-number=postimage_line_number_anchor line, idx
+            %td{:class => line.kind}=td_contents_for_line line

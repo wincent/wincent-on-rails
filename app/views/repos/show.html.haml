@@ -14,7 +14,8 @@
     %li
       %ul{:title => commit.commit}
         %li{:title => commit.subject}=truncate commit.subject, :length => 80
-        %li=commit_abbrev commit.commit
+        %li=link_to commit_abbrev(commit.commit),
+          repo_commit_path(@repo, :id => commit.commit)
         %li{:title => "#{commit.author.name} <#{commit.author.email}>"}
           Author:
           =commit.author.name

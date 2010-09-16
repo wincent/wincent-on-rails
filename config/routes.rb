@@ -17,7 +17,9 @@ Wincent::Application.routes.draw do
   end
   resources :sessions
   resources :taggings
-  resources :repos
+  resources :repos do
+    resources :commits, :commit_id => /[a-f0-9]{7,40}/
+  end
   resources :resets
   resources :snippets do
     resources :comments, :only => [:create, :new ]

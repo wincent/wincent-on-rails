@@ -1,0 +1,53 @@
+.commit pre.message
+  background: white
+  border: 0px
+
+// TODO: centre table in window
+table.diff
+  border: 1px solid silver
+  border-collapse: collapse
+  margin: 0
+  padding: 0
+  caption
+    //background: silver
+    //border: 1px silver solid
+  td.context
+    width: 100%
+  td.added
+    width: 100%
+    pre
+      background: #dfd
+  td.deleted
+    width: 100%
+    pre
+      background: #fdd
+  td.line-number
+    background: #eef
+    padding: 0 8px
+  td
+    height: 16px
+    line-height: 16px
+    margin: 0
+    padding: 0
+    pre
+      background: #fefefe
+      border: 0px
+      display: block
+      height: 16px
+      line-height: 16px
+      margin: 0
+      max-width: 100%
+      padding: 0px 0px
+      width: 100%
+    span.added
+      background: #afa
+    span.deleted
+      background: #faa
+      color: black
+  tr
+    height: 16px
+    line-height: 16px
+    margin: 0
+    padding: 0
+  tr.hunk-header
+    background: #eee

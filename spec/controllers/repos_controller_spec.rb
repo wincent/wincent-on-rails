@@ -11,6 +11,13 @@ describe ReposController do
       get :index
       response.should be_success
     end
+
+    it 'finds and assigns public repos' do
+      repo  = Repo.make! :public => true
+      other = Repo.make! :public => false
+      get :index
+      assigns[:repos].should == [repo]
+    end
   end
 
   describe '#new' do
@@ -122,6 +129,25 @@ describe ReposController do
       it 'redirects to #index' do
         get :show, :id => 50_000
         response.should redirect_to('/repos')
+      end
+
+      it 'shows a flash' do
+        get :show, :id => 50_000
+        flash[:error].should =~ /not found/i
+      end
+    end
+
+    context 'private repo' do
+      let(:repo) { Repo.make! :public => false }
+
+      it 'redirects to #index' do
+        get :show, :id => repo.to_param
+        response.should redirect_to('/repos')
+      end
+
+      it 'shows a flash' do
+        get :show, :id => repo.to_param
+        flash[:error].should =~ /not found/i
       end
     end
   end

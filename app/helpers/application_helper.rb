@@ -3,6 +3,11 @@ require 'additions/time'
 module ApplicationHelper
   include CustomAtomFeedHelper
 
+  # Returns the first 16 characters of a commit hash.
+  def commit_abbrev sha1
+    sha1[0..15]
+  end
+
   # Returns an appropriate CSS class to indicate whether the passed item
   # should be drawn as selected.
   def navbar_selected? item

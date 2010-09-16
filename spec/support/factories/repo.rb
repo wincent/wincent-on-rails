@@ -8,4 +8,5 @@ Factory.define :repo do |r|
   r.name { Sham.random }
   r.permalink { Sham.random }
   r.path { scratch_repo }
+  r.public { true } # defaults to false, but true is more useful for testing
 end

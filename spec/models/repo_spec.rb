@@ -281,6 +281,14 @@ describe Repo do
     end
   end
 
+  describe '#published' do
+    it 'returns public repos' do
+      repo  = Repo.make! :public => true
+      other = Repo.make! :public => false
+      Repo.published.all.should == [repo]
+    end
+  end
+
   describe '#to_param' do
     context 'new record' do
       it 'returns the permalink' do
