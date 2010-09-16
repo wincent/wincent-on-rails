@@ -7,11 +7,11 @@ module Git
       attr_reader :preimage_line_number, :postimage_line_number, :segments
 
       def self.addition_line_from_segments line_number, segments
-        line_from_segments preimage_line_number, nil, segments, :excluded => :deleted
+        line_from_segments nil, line_number, segments, :excluded => :deleted
       end
 
       def self.deletion_line_from_segments line_number, segments
-        line_from_segments nil, postimage_line_number, segments, :excluded => :added
+        line_from_segments line_number, nil, segments, :excluded => :added
       end
 
       class << self
