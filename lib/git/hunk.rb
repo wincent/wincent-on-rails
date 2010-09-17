@@ -28,6 +28,8 @@ module Git
         @preimage_line_number = preimage_line_number
         @postimage_line_number = postimage_line_number
         @segments = []
+
+        # BUG: "to_a" here won't work on Ruby 1.9.2
         line_or_segments.to_a.each do |line|
           self.add_segment line, options
         end
@@ -110,14 +112,22 @@ module Git
       # TODO: handle: \ No newline at end of file
       while line = lines.first and line.match(/\A[ +-]/)
         prefix = $~[0]
-        segments = [lines.shift.chomp]
+        line = lines.shift.chomp
         case prefix
         when '-'
-          hunk << Line.deletion_line_from_segments(preimage_cursor, segments)
-          preimage_cursor +=1
+          if lines.first and lines.first.match(/\A\+/)
+            # next line is "+" line, must markup inter-line changes
+            pre, post = segments_for_line_pair line, lines.shift.chomp
+            hunk << Line.deletion_line_from_segments(preimage_cursor, pre)
+            hunk << Line.addition_line_from_segments(postimage_cursor, post)
+            postimage_cursor += 1
+          else
+            hunk << Line.deletion_line_from_segments(preimage_cursor, line)
+          end
+          preimage_cursor += 1
         when '+'
-          hunk << Line.addition_line_from_segments(postimage_cursor, segments)
-          postimage_cursor +=1
+          hunk << Line.addition_line_from_segments(postimage_cursor, line)
+          postimage_cursor += 1
         when ' '
           hunk << Line.new(preimage_cursor, postimage_cursor, line)
           preimage_cursor += 1
@@ -137,6 +147,67 @@ module Git
       @postimage_length = postimage_length
       @lines = hunk
       @header = header
+    end
+
+    class << self
+    private
+
+      # Divides the lines into segments of "context", "added or deleted portion"
+      # and "context".
+      #
+      # For example, given the following line pair:
+      #
+      #     -foo a, b, c, d
+      #     +foo b, a, c, d
+      #
+      # The leading common prefix is "foo ", which is the "context" on the left,
+      # and the trailing common suffix is ", c, d", which is "context" on the
+      # right. The changed content in between these substrings is the "added or
+      # deleted portion. The segments would therefore be returned as:
+      #
+      #     [' foo ', '-a, b', ' , c, d'], # deleted line
+      #     [' foo ', '+b, a', ' , c, d']  # added line
+      #
+      # It is possible that the leading or trailing "context" may be zero width,
+      # in which case it is omitted.
+      def segments_for_line_pair deletion_line, addition_line
+        # find common prefix, skipping over first character ("+" or "-")
+        start_idx = 1
+        limit = [deletion_line.length, addition_line.length].min
+        while start_idx < limit and
+          deletion_line[start_idx, 1] == addition_line[start_idx, 1]
+          start_idx += 1
+        end
+
+        # find common suffix
+        end_idx = -1
+        limit = -(limit - start_idx)
+        while end_idx >= limit and
+          deletion_line[end_idx, 1] == addition_line[end_idx, 1]
+          end_idx -= 1
+        end
+
+        deletion_segments = []
+        addition_segments = []
+        if start_idx > 1 # we have context on the left
+          context = ' ' + deletion_line[1, start_idx - 1]
+          deletion_segments << context
+          addition_segments << context
+        end
+
+        deleted = '-' + deletion_line[start_idx..end_idx]
+        deletion_segments << deleted if deleted.length > 1
+        addition = '+' + addition_line[start_idx..end_idx]
+        addition_segments << addition if addition.length > 1
+
+        if end_idx < -1 # we have context on the right
+          context = ' ' + deletion_line[end_idx + 1, -end_idx + 1]
+          deletion_segments << context
+          addition_segments << context
+        end
+
+        [deletion_segments, addition_segments]
+      end
     end
   end # class Hunk
 end # module Git
