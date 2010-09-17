@@ -109,7 +109,7 @@ module Git
     def diff
       unless @diff
         result = @repo.r_git 'diff-tree', '--numstat', '-p',
-          '--word-diff=porcelain', '--root', @commit
+          '--root', @commit
         @diff = parse_diff result.stdout.lines.entries
       end
       @diff
