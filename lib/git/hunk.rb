@@ -161,7 +161,7 @@ module Git
       # The leading common prefix is "foo ", which is the "context" on the left,
       # and the trailing common suffix is ", c, d", which is "context" on the
       # right. The changed content in between these substrings is the "added or
-      # deleted portion. The segments would therefore be returned as:
+      # deleted" portion. The segments would therefore be returned as:
       #
       #     [' foo ', '-a, b', ' , c, d'], # deleted line
       #     [' foo ', '+b, a', ' , c, d']  # added line
