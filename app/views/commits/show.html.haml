@@ -1,4 +1,5 @@
-=breadcrumbs link_to(@repo.name, @repo), commit_abbrev(@commit.commit)
+=breadcrumbs link_to('Repos', repos_path), link_to(@repo.name, @repo),
+  commit_abbrev(@commit.commit)
 .commit
   %h1.major Commit #{commit_abbrev @commit.commit}
   %pre.message
