@@ -16,7 +16,7 @@ private
 
   def get_commit
     @commit = @repo.repo.commit params[:id]
-  rescue Git::Commit::NoCommitError
+  rescue Git::Commit::NoCommitError, Git::Commit::UnreachableCommitError
     raise ActiveRecord::RecordNotFound
   end
 end # class CommitsController
