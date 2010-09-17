@@ -11,7 +11,7 @@ class CommitsController < ApplicationController
 private
 
   def get_repo
-    @repo = Repo.published.find_by_permalink!(params[:repo_id])
+    @repo = Repo.published.find_by_permalink! params[:repo_id]
   end
 
   def get_commit
