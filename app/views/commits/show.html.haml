@@ -1,13 +1,35 @@
 =breadcrumbs link_to(@repo.name, @repo), commit_abbrev(@commit.commit)
 .commit
+  %h1.major Commit #{commit_abbrev @commit.commit}
   %pre.message
     =@commit.message
+  %table.meta
+    %tr.author
+      %th author
+      %td
+        %span{:title => "#{@commit.author.name} <#{@commit.author.email}>"}
+          =link_to @commit.author.name, "mailto:#{@commit.author.email}"
+        =commit_author_time @commit
+    -if @commit.committer.to_ident != @commit.author.to_ident
+      %tr.committer
+        %th committer
+        %td
+          %span{:title => "#{@commit.committer.name} <#{@commit.committer.email}>"}
+            =link_to @commit.committer.name, "mailto:#{@commit.committer.email}"
+          =commit_committer_time @commit
+    -@commit.parents.each do |parent|
+      %tr.parent
+        %th parent
+        %td
+          =link_to commit_abbrev(parent), repo_commit_path(@repo, :id => parent),
+            :title => parent
   -@commit.diff.each_with_index do |change, idx|
     %table.diff
       %caption
-        %div=change[:path]
-        %div=change[:deleted]
-        %div=change[:added]
+        =change[:path]
+        %span.stat
+          #{change[:added]} insertions(+),
+          #{change[:deleted]} deletions(-)
       -change[:hunks].each do |hunk|
         %tr.hunk-header
           %td.line-number ...

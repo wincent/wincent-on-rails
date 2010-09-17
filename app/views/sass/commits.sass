@@ -1,16 +1,31 @@
-.commit pre.message
-  background: white
-  border: 0px
+.commit
+  pre.message
+    padding: 12px
+  table.meta
+    margin: 0px
+    padding: 10px
+    td, th
+      background: white
+      font-weight: normal
+      padding: 0px 10px
 
 // TODO: centre table in window
 table.diff
   border: 1px solid silver
   border-collapse: collapse
-  margin: 0
+  margin: 12px 0px
   padding: 0
   caption
-    //background: silver
-    //border: 1px silver solid
+    background: #eee
+    border-left: 1px silver solid
+    border-right: 1px silver solid
+    border-top: 1px silver solid
+    font-weight: bold
+    margin: 0
+    padding: 5px 10px
+    text-align: left
+    .stat
+      float: right
   td.context
     width: 100%
   td.added
