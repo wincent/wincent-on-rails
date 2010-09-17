@@ -1,5 +1,4 @@
 class CommitsController < ApplicationController
-  before_filter :require_admin # during initial testing only
   before_filter :get_repo, :only => :show
   before_filter :get_commit, :only => :show
 
