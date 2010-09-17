@@ -234,7 +234,7 @@ module Git
     def parse_from_to_header lines
       # again, not really parsed, just skipped over
       line = lines.shift.chomp
-      return if line.match(%r{\ABinary files a/.+ and .+ differ\z})
+      return if line.match(%r{\ABinary files .+ and .+ differ\z})
       line.match(%r{\A--- ("a/.+"|a/.+|/dev/null)\z}) or
         raise MalformedDiffError.new_with_line(line)
       line = lines.shift.chomp
