@@ -1,10 +1,14 @@
 module Git
   class Hunk
     class Line
-      # "kind" is either :added, :deleted, :context
+      # "kind" is either :added, :deleted, :context or :annotation
       attr_reader :kind
 
       attr_reader :preimage_line_number, :postimage_line_number, :segments
+
+      def self.annotation line
+        new nil, nil, line
+      end
 
       def self.addition_line_from_segments line_number, segments
         line_from_segments nil, line_number, segments, :excluded => :deleted
@@ -78,6 +82,8 @@ module Git
           self << [:deleted, $~[1]] unless options[:excluded] == :deleted
         when /\A (.*)/
           self << [:context, $~[1]]
+        when /\A\\(.*)/
+          self << [:annotation, $~[1]]
         end
       end
     end # class Line
@@ -107,11 +113,12 @@ module Git
       preimage_cursor = preimage_start
       postimage_cursor = postimage_start
 
-      # TODO: handle: \ No newline at end of file
-      while line = lines.first and line.match(/\A[ +-]/)
+      while line = lines.first and line.match(/\A[ +-\\]/)
         prefix = $~[0]
         line = lines.shift.chomp
         case prefix
+        when '\\' # "\ No newline at end of file"
+          hunk << Line.annotation(line)
         when '-'
           if lines.first and lines.first.match(/\A\+/)
             # next line is "+" line, must markup inter-line changes

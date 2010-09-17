@@ -1,9 +1,11 @@
 module CommitsHelper
   def preimage_line_number_anchor line, file_number
+    return '...' if line.kind == :annotation
     line_number_anchor file_number, line.preimage_line_number, 'pre'
   end
 
   def postimage_line_number_anchor line, file_number
+    return '...' if line.kind == :annotation
     line_number_anchor file_number, line.postimage_line_number, 'post'
   end
 
@@ -39,6 +41,8 @@ module CommitsHelper
       '+'
     when :deleted
       '-'
+    when :annotation
+      '\\'
     end
   end
 end # module CommitsHelper
