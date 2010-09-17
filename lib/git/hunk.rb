@@ -152,8 +152,8 @@ module Git
     class << self
     private
 
-      # Divides the lines into segments of "context", "added or deleted portion"
-      # and "context".
+      # Divides a pair of adjacent deletion/addition lines into segments of
+      # "context", "added or deleted portion" and "context".
       #
       # For example, given the following line pair:
       #
