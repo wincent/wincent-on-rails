@@ -147,7 +147,7 @@ tr.odd { background: #f7f7f7; }
 
 tr.even { background: #eaeaea; }
 
-.annotation { font-size: x-small; font-weight: normal; color: #666666; }
+form .annotation { font-size: x-small; font-weight: normal; color: #666666; }
 
 form input.field_with_errors, form textarea.field_with_errors { border: 4px solid #f9b8be; }
 form li { display: block; list-style: none; padding-top: 5px; padding-bottom: 5px; }
