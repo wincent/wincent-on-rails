@@ -35,8 +35,7 @@
       -if change[:binary]
         %tr.binary-diff
           %td.context
-            %pre
-              =change[:binary]
+            %pre=change[:binary]
       -else
         -change[:hunks].each do |hunk|
           %tr.hunk-header
