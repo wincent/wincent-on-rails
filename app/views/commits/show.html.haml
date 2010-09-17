@@ -28,16 +28,23 @@
     %table.diff
       %caption
         =change[:path]
-        %span.stat
-          #{change[:added]} insertions(+),
-          #{change[:deleted]} deletions(-)
-      -change[:hunks].each do |hunk|
-        %tr.hunk-header
-          %td.line-number ...
-          %td.line-number ...
-          %td=hunk.header
-        -hunk.lines.each do |line|
-          %tr.hunk-line
-            %td.line-number=preimage_line_number_anchor line, idx
-            %td.line-number=postimage_line_number_anchor line, idx
-            %td{:class => line.kind}=td_contents_for_line line
+        -unless change[:binary]
+          %span.stat
+            #{change[:added]} insertions(+),
+            #{change[:deleted]} deletions(-)
+      -if change[:binary]
+        %tr.binary-diff
+          %td.context
+            %pre
+              =change[:binary]
+      -else
+        -change[:hunks].each do |hunk|
+          %tr.hunk-header
+            %td.line-number ...
+            %td.line-number ...
+            %td=hunk.header
+          -hunk.lines.each do |line|
+            %tr.hunk-line
+              %td.line-number=preimage_line_number_anchor line, idx
+              %td.line-number=postimage_line_number_anchor line, idx
+              %td{:class => line.kind}=td_contents_for_line line

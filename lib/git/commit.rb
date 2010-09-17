@@ -208,8 +208,9 @@ module Git
     def parse_file_diff change, lines
       parse_git_diff_header lines.shift.chomp
       parse_extended_headers lines
-      parse_from_to_header lines
-      change[:hunks] = parse_hunks lines
+      unless change[:binary] = parse_from_to_header(lines)
+        change[:hunks] = parse_hunks lines
+      end
     end
 
     def parse_git_diff_header line
@@ -244,12 +245,15 @@ module Git
     def parse_from_to_header lines
       # again, not really parsed, just skipped over
       line = lines.shift.chomp
-      return if line.match(%r{\ABinary files .+ and .+ differ\z})
+      if line.match(%r{\ABinary files .+ and .+ differ\z})
+        return $~[0]
+      end
       line.match(%r{\A--- ("a/.+"|a/.+|/dev/null)\z}) or
         raise MalformedDiffError.new_with_line(line)
       line = lines.shift.chomp
       line.match(%r{\A\+\+\+ ("b/.+"|b/.+|/dev/null)\z}) or
         raise MalformedDiffError.new_with_line(line)
+      nil # returning nil lets caller know this is not a binary difference
     end
 
     def parse_hunks lines
