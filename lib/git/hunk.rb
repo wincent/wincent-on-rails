@@ -28,9 +28,7 @@ module Git
         @preimage_line_number = preimage_line_number
         @postimage_line_number = postimage_line_number
         @segments = []
-
-        # BUG: "to_a" here won't work on Ruby 1.9.2
-        line_or_segments.to_a.each do |line|
+        [line_or_segments].flatten.each do |line|
           self.add_segment line, options
         end
 
