@@ -23,7 +23,13 @@ table.diff
       background: #fdd
   td.line-number
     background: #eef
-    padding: 0 8px
+    border-right: 1px silver solid
+    padding: 0 10px
+    text-align: right
+    a
+      color: gray
+      font-family: Courier
+      font-weight: normal
   td
     height: 16px
     line-height: 16px
@@ -51,3 +57,6 @@ table.diff
     padding: 0
   tr.hunk-header
     background: #eee
+    color: silver
+    &:hover
+      color: black
