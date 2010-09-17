@@ -65,6 +65,27 @@ describe Git::Commit do
         end.to raise_error(Git::Commit::NoCommitError)
       end
     end
+
+    context 'abbreviated commit hash' do
+      let(:abbrev) { @head[0, 8] }
+      let(:commit) { Git::Commit.commit_with_hash abbrev, @repo }
+
+      it 'stores the full 40-character hash' do
+        abbrev.length.should == 8
+        commit.commit.length.should == 40
+        commit.commit.should == @head
+      end
+    end
+
+    context 'mixed case commit hash' do
+      let(:sha1) { @head.upcase }
+      let(:commit) { Git::Commit.commit_with_hash sha1, @repo }
+
+      it 'stores a downcased hash' do
+        sha1.should =~ /[A-F]/ # sanity check first
+        commit.commit.should == commit.commit.downcase
+      end
+    end
   end
 
   describe 'attributes' do

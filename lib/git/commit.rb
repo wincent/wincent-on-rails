@@ -84,8 +84,18 @@ module Git
       encoding  = parse_encoding lines
       parse_separator lines.shift.chomp
       message = lines.join
+
+      # user may have passed in an abbreviated commit hash
+      # but we always want to store the full 40-character SHA-1
+      if sha1 =~ /\A[a-f0-9]{40}\z/
+        commit = sha1
+      else
+        result = repo.r_git 'rev-parse', sha1
+        commit = result.stdout.chomp
+      end
+
       new :repo       => repo,
-          :commit     => sha1,
+          :commit     => commit,
           :tree       => tree,
           :parents    => parents,
           :author     => author,
