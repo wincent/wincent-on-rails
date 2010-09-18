@@ -17,6 +17,7 @@ Wincent::Application.routes.draw do
   end
   resources :sessions
   resources :taggings
+
   resources :repos do
     # Rails BUG:
     #   https://rails.lighthouseapp.com/projects/8994/tickets/5513
@@ -25,7 +26,21 @@ Wincent::Application.routes.draw do
     # until 3.0.1 is released, need to work around this with an explicit
     # "nested" block:
     nested do
-      resources :commits, :id => /[a-f0-9]{7,40}/
+      # Git branch names can include pretty much anything, including slashes
+      # and crazy stuff like leading dashes, but we adopt a more restrictive
+      # model here: we insist that the branch name begin with a letter, a
+      # number or an underscore, and the remainder of the branch name may be
+      # any number of letters, numbers, underscores, hyphens, slashes or
+      # periods.
+      #
+      # Note that this is way more liberal than most Rails resources, so it
+      # means we can't do stuff like edit branches, but that's fine as they
+      # are effectively a read-only resource.
+      resources :branches, :id => %r{[a-z0-9_][a-z0-9./_-]*}i,
+        :only => [:index, :show]
+
+      resources :commits, :id => /[a-f0-9]{7,40}/,
+        :only => [:index, :show]
     end
   end
   resources :resets
