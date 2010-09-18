@@ -22,6 +22,16 @@ describe Git::Repo do
       end.to raise_error(Errno::ENOENT)
     end
 
+    it 'complains if path is not a directory' do
+      dir = Dir.mkdtemp do
+        FileUtils.touch 'file'
+      end
+      file = Pathname.new(dir) + 'file'
+      expect do
+        Git::Repo.new file
+      end.to raise_error(Errno::ENOTDIR)
+    end
+
     it 'complains if path is not a Git repository' do
       expect do
         Git::Repo.new Dir.mkdtemp
