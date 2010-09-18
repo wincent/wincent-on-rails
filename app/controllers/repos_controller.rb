@@ -9,10 +9,12 @@ class ReposController < ApplicationController
     @repos = Repo.published
   end
 
+  # Admin only.
   def new
     @repo = Repo.new
   end
 
+  # Admin only.
   def create
     @repo = Repo.new params[:repo]
     if @repo.save
@@ -28,16 +30,27 @@ class ReposController < ApplicationController
     render
   end
 
+  # Admin only.
   def edit
-    raise "not yet imp"
+    render
   end
 
+  # Admin only.
   def update
-    raise "not yet imp"
+    if @repo.update_attributes params[:repo]
+      flash[:notice] = 'Successfully updated'
+      redirect_to @repo
+    else
+      flash[:error] = 'Update failed'
+      render :action => :edit
+    end
   end
 
+  # Admin only.
   def destroy
-    raise "not yet imp"
+    @repo.destroy
+    flash[:notice] = 'Successfully destroyed'
+    redirect_to repos_path
   end
 
 private

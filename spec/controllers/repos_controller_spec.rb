@@ -151,4 +151,176 @@ describe ReposController do
       end
     end
   end
+
+  describe '#edit' do
+    let(:repo) { Repo.make! }
+
+    it_has_behavior 'require_admin'
+
+    def do_request
+      get :edit, :id => repo.to_param
+    end
+
+    context 'admin user' do
+      before do
+        log_in_as_admin
+      end
+
+      it 'finds and assigns the repo' do
+        get :edit, :id => repo.to_param
+        assigns[:repo].should == repo
+      end
+
+      it 'renders "repos/edit"' do
+        get :edit, :id => repo.to_param
+        response.should render_template('repos/edit')
+      end
+
+      it 'succeeds' do
+        get :edit, :id => repo.to_param
+        response.should be_success
+      end
+
+      context 'non-existent repo' do
+        it 'redirects to #index' do
+          get :edit, :id => 50_000
+          response.should redirect_to('/repos')
+        end
+
+        it 'edits a flash' do
+          get :edit, :id => 50_000
+          flash[:error].should =~ /not found/i
+        end
+      end
+
+      context 'private repo' do
+        let(:repo) { Repo.make! :public => false }
+
+        it 'redirects to #index' do
+          get :edit, :id => repo.to_param
+          response.should redirect_to('/repos')
+        end
+
+        it 'shows a flash' do
+          get :edit, :id => repo.to_param
+          flash[:error].should =~ /not found/i
+        end
+      end
+    end
+  end
+
+  describe '#update' do
+    it_has_behavior 'require_admin'
+
+    let(:repo) { Repo.make! }
+
+    before do
+      @params = {
+        :id => repo.to_param,
+        :repo => { 'name' => 'new and improved' }
+      }
+    end
+
+    def do_request
+      put :update, @params
+    end
+
+    context 'admin user' do
+      before do
+        log_in_as_admin
+      end
+
+      it 'finds and assigns the repo' do
+        do_request
+        assigns[:repo].should == repo.reload
+      end
+
+      context 'successful update' do
+        it 'shows a flash' do
+          do_request
+          cookie_flash[:notice].should =~ /successfully updated/i
+        end
+
+        it 'redirects to #show' do
+          do_request
+          response.should redirect_to(repo_path(repo))
+        end
+
+        it 'updates the instance' do
+          do_request
+          repo.reload.name.should == 'new and improved'
+        end
+      end
+
+      context 'failed update' do
+        before do
+          stub.instance_of(Repo).update_attributes { false }
+        end
+
+        it 'shows a flash' do
+          do_request
+          cookie_flash[:error].should =~ /update failed/i
+        end
+
+        it 'renders #edit' do
+          do_request
+          response.should render_template('repos/edit')
+        end
+      end
+    end
+  end
+
+  describe '#destroy' do
+    it_has_behavior 'require_admin'
+
+    let (:repo) { Repo.make! }
+
+    def do_request
+      delete :destroy, :id => repo.to_param
+    end
+
+    context 'admin user' do
+      before do
+        log_in_as_admin
+      end
+
+      it 'destroys the repo' do
+        do_request
+        expect do
+          Repo.find repo.id
+        end.to raise_error(ActiveRecord::RecordNotFound)
+      end
+
+      it 'redirects to #index' do
+        do_request
+        response.should redirect_to(repos_path)
+      end
+
+      it 'shows a flash' do
+        do_request
+        cookie_flash[:notice].should =~ /successfully destroyed/i
+      end
+
+      context 'non-existent repo' do
+        def do_request
+          delete :destroy, :id => 'bloomwang'
+        end
+
+        it 'redirects to #index' do
+          do_request
+          response.should redirect_to(repos_path)
+        end
+
+        it 'shows a flash' do
+          do_request
+          flash[:error].should =~ /not found/i
+
+          pending "cookie_flash broken"
+          # this is how I'd like to do it (see ArticlesController specs for
+          # more detailed notes on this breakage):
+          cookie_flash[:error].should =~ /not found/i
+        end
+      end
+    end
+  end
 end
