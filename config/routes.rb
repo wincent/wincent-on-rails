@@ -18,7 +18,15 @@ Wincent::Application.routes.draw do
   resources :sessions
   resources :taggings
   resources :repos do
-    resources :commits, :commit_id => /[a-f0-9]{7,40}/
+    # Rails BUG:
+    #   https://rails.lighthouseapp.com/projects/8994/tickets/5513
+    # fixed in this commit (post-3.0):
+    #   http://github.com/rails/rails/commit/02480a897be25c24f59180513d37649a31ad3835
+    # until 3.0.1 is released, need to work around this with an explicit
+    # "nested" block:
+    nested do
+      resources :commits, :id => /[a-f0-9]{7,40}/
+    end
   end
   resources :resets
   resources :snippets do
