@@ -9,5 +9,12 @@ module Git
       result = repo.r_git 'for-each-ref', '--sort=-committerdate', 'refs/heads'
       refs_array_from_string result.stdout, repo
     end
+
+    # Returns a Branch instance for the branch described by refs/heads/name
+    def self.branch name, repo
+      result = repo.r_git 'for-each-ref', "refs/heads/#{name}"
+      (refs_array_from_string result.stdout, repo).first or
+        raise NonExistentRefError, "refs/heads/#{name} does not exist"
+    end
   end # class Branch
 end # module Git

@@ -34,6 +34,10 @@ module Git
       @branches ||= Branch.all self
     end
 
+    def branch name
+      Branch.branch name, self
+    end
+
     def tags
       @tags ||= Tag.all self
     end

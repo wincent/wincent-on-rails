@@ -11,6 +11,9 @@ module Git
       end
     end
 
+    # Raised when the requested ref is not found.
+    class NonExistentRefError < Exception; end
+
     attr_reader :name, :repo, :sha1
 
     # Takes a string containing output from "git for-each-ref",
