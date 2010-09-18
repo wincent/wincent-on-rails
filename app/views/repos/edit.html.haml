@@ -1,0 +1,10 @@
+-@page_title = 'Edit repo'
+=breadcrumbs link_to('Repos', repos_path),
+  link_to(@repo.name, @repo),
+  @page_title
+=render 'form'
+.links
+  =link_to 'show', @repo
+  =button_to 'destroy', @repo, :confirm => 'Are you sure?',
+    :method => :delete, :class => 'destructive'
+  =link_to 'all repos', repos_path

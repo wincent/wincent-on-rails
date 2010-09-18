@@ -1,35 +1,4 @@
 -@page_title = 'New repo'
 =breadcrumbs link_to('Repos', repos_path), @page_title
-%h1.major=@page_title
-=render 'shared/error_messages', :model => @repo
-=form_for @repo do |f|
-  %ul
-    %li
-      =f.label :name
-      =f.text_field :name
-    %li
-      =f.label :permalink
-      =f.text_field :permalink
-    %li
-      =f.label :path
-      =f.text_field :path
-    %li
-      =f.label :description, annotation('Description', 'optional')
-      =f.text_field :description
-    %li
-      =f.label :clone_url, annotation('Clone URL', 'optional')
-      =f.text_field :clone_url
-    %li
-      =f.label :rw_clone_url, annotation('R/W Clone URL', 'optional')
-      =f.text_field :rw_clone_url
-    %li
-      =f.label :product_id, annotation('Product', 'optional')
-      %select.repo_product_id(name='repo[product_id]')
-        %option(value='')
-          =option_groups_from_collection_for_select Product.categorized,
-            :last, :first, :id, :name, (@repo.product ? @repo.product.id : nil)
-    %li
-      =f.label :public
-      =f.check_box :public
-    %li=f.submit
+=render 'form'
 .links=link_to 'index', repos_path
