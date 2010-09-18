@@ -11,7 +11,23 @@ describe ReposController do
     specify { delete('/repos/command-t').should have_routing('repos#destroy', :id => 'command-t') }
 
     describe 'helpers' do
-      pending 'model and factory'
+      let(:repo) { Repo.make! :permalink => 'foo' }
+
+      describe 'repos_path' do
+        specify { repos_path.should == '/repos' }
+      end
+
+      describe 'new_repo_path' do
+        specify { new_repo_path.should == '/repos/new' }
+      end
+
+      describe 'repo_path' do
+        specify { repo_path(repo).should == '/repos/foo' }
+      end
+
+      describe 'edit_repo_path' do
+        specify { edit_repo_path(repo).should == '/repos/foo/edit' }
+      end
     end
   end
 end
