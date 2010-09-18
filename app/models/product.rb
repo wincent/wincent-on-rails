@@ -8,7 +8,7 @@ class Product < ActiveRecord::Base
   validates_format_of     :permalink, :with => /\A[a-z0-9\-]+\z/i,
     :message => 'may only contain lowercase letters, numbers and hypens'
   validates_uniqueness_of :bundle_identifier, :allow_blank => true
-  before_save             :set_bundle_identifier
+  before_save             :check_optional_attributes
   attr_accessible         :category, :name, :permalink, :position,
     :bundle_identifier, :description, :footer, :header,
     :hide_from_front_page
@@ -25,8 +25,9 @@ class Product < ActiveRecord::Base
 
 private
 
-  def set_bundle_identifier
-    # empty strings might falsely trigger database-level uniqueness constraint
+  def check_optional_attributes
+    # empty strings for optional attributes will falsely trigger database-level
+    # uniqueness constraints, so replace empty strings with nil
     self.bundle_identifier = nil if self.bundle_identifier.blank?
   end
 end
