@@ -1,29 +1,45 @@
 require 'spec_helper'
 
 describe Git::Branch do
-  before do
+  let :repo do
     path = scratch_repo do
       `git branch baz`
       `git branch bing`
     end
-    @repo = Git::Repo.new(path)
+    Git::Repo.new(path)
   end
 
   describe '::all' do
     it 'returns an Array of Branch objects' do
-      branches = Git::Branch.all @repo
+      branches = Git::Branch.all repo
       branches.should be_kind_of(Array)
       branches.should_not be_empty
       branches.all? { |branch| branch.kind_of?(Git::Branch) }.should be_true
     end
   end
 
+  describe '::branch' do
+    it 'returns a single Branch object' do
+      branch = Git::Branch.branch 'master', repo
+      branch.should be_kind_of(Git::Branch)
+      branch.name.should == 'refs/heads/master'
+    end
+
+    context 'non-existent branch' do
+      it 'complains' do
+        expect do
+          Git::Branch.branch 'foobar', repo
+        end.to raise_error(Git::Ref::NonExistentRefError)
+      end
+    end
+  end
+
   describe 'attributes' do
-    let(:branch) { @repo.branches.first }
+    let(:branch) { repo.branches.first }
 
     describe '#repo' do
       it 'returns a reference to the containing repository' do
-        branch.repo.should == @repo
+        branch.repo.should == repo
       end
     end
 
