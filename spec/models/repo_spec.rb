@@ -106,13 +106,13 @@ describe Repo do
 
       it 'does not fail uniqueness validation for nil values' do
         Repo.make! :clone_url => nil
-        Repo.make(:clone_url => nil).
+        Repo.make!(:clone_url => nil).
           should_not fail_validation_for(:clone_url)
       end
 
       it 'does not fail uniqueness validation for blank values' do
-        Repo.make! :clone_url => nil
-        Repo.make(:clone_url => nil).
+        Repo.make! :clone_url => ''
+        Repo.make!(:clone_url => '').
           should_not fail_validation_for(:clone_url)
       end
 
@@ -245,13 +245,13 @@ describe Repo do
 
       it 'does not fail uniqueness validation for nil values' do
         Repo.make! :rw_clone_url => nil
-        Repo.make(:rw_clone_url => nil).
+        Repo.make!(:rw_clone_url => nil).
           should_not fail_validation_for(:rw_clone_url)
       end
 
       it 'does not fail uniqueness validation for blank values' do
-        Repo.make! :rw_clone_url => nil
-        Repo.make(:rw_clone_url => nil).
+        Repo.make! :rw_clone_url => ''
+        Repo.make!(:rw_clone_url => '').
           should_not fail_validation_for(:rw_clone_url)
       end
 

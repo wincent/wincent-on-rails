@@ -37,6 +37,8 @@
 #   datetime "updated_at"
 #
 class Repo < ActiveRecord::Base
+  before_save :check_optional_attributes
+
   belongs_to :product
   validates_presence_of :name, :path, :permalink
   validates_uniqueness_of :clone_url, :product_id, :rw_clone_url,
@@ -60,6 +62,7 @@ class Repo < ActiveRecord::Base
   end
 
 private
+
   def check_path_is_valid_git_repo
     Git::Repo.new path unless path.blank?
   rescue Errno::ENOENT
@@ -68,5 +71,12 @@ private
     errors.add :path, 'is not readable'
   rescue Git::NoRepositoryError
     errors.add :path, 'is not a valid Git repository'
+  end
+
+  def check_optional_attributes
+    # empty strings for optional attributes will falsely trigger database-level
+    # uniqueness constraints, so replace empty strings with nil
+    self.clone_url = nil if self.clone_url.blank?
+    self.rw_clone_url = nil if self.rw_clone_url.blank?
   end
 end
