@@ -14,10 +14,8 @@
 %ul
   =render :partial => 'commits/commit', :collection => @repo.repo.head.commits
 %h3#branches Branches
--@repo.repo.branches.each do |branch|
-  %ul
-    %li=branch.name
-    %li=branch.sha1
+%ul
+  =render :partial => 'branches/branch', :collection => @repo.repo.branches
 %h3#tags Tags
 -@repo.repo.tags.each do |t|
   %ul
