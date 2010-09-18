@@ -183,7 +183,8 @@ module Git
   private
 
     def parse_diff lines
-      line = lines.shift.chomp
+      return [] unless line = lines.shift # merge commits have empty diffs
+      line.chomp!
       raise MalformedDiffError.new_with_line(line) unless line == @commit
       changes = parse_numstat lines
       line = lines.shift.chomp
