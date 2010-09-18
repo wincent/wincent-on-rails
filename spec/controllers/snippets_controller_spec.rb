@@ -480,7 +480,7 @@ describe SnippetsController do
       it 'destroys the snippet' do
         do_request
         expect do
-          Tweet.find snippet.id
+          Snippet.find snippet.id
         end.to raise_error(ActiveRecord::RecordNotFound)
       end
 
