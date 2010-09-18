@@ -1,0 +1,24 @@
+ul.commits
+  list-style-type: none
+li.commit
+  margin: 10px 0px
+  span.sha1
+    float: left
+    padding-right: 10px
+    text-align: right
+    width: 160px
+  span.subject
+    display: block
+    font-weight: bold
+    a
+      color: gray
+      &:hover
+        text-decoration: none
+  span.author, span.committer
+    color: silver
+    display: block
+    font-style: italic
+    margin-left: 170px
+li.commit + li.commit
+  border-top: 1px solid #eee
+  padding-top: 10px

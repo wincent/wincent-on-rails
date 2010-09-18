@@ -3,7 +3,7 @@
   link_to(@repo.name, @repo), branch_name(@branch)
 %h1.major=@page_title
 %h2 Commits
-%ul
+%ul.commits
   =render :partial => 'commits/commit', :collection => @commits
 .links
   =link_to 'all repos', repos_path

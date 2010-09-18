@@ -1,14 +1,16 @@
-%li
-  %ul{:title => commit.commit}
-    %li{:title => commit.subject}=truncate commit.subject, :length => 80
-    %li=link_to commit_abbrev(commit.commit),
+%li.commit
+  %span.sha1=link_to commit_abbrev(commit.commit),
+    repo_commit_path(@repo, :id => commit.commit),
+    :title => commit.commit
+  %span.subject{:title => commit.subject}
+    =link_to truncate(commit.subject, :length => 80),
       repo_commit_path(@repo, :id => commit.commit)
-    %li{:title => "#{commit.author.name} <#{commit.author.email}>"}
-      Author:
-      =commit.author.name
-      =commit_author_time commit
-    -if commit.committer.to_ident != commit.author.to_ident
-      %li{:title => "#{commit.committer.name} <#{commit.committer.email}>"}
-        Committer:
-        =commit.committer.name
-        =commit_committer_time commit
+  %span.author{:title => "#{commit.author.name} <#{commit.author.email}>"}
+    Author:
+    =commit.author.name
+    =commit_author_time commit
+  -if commit.committer.to_ident != commit.author.to_ident
+    %span.committer{:title => "#{commit.committer.name} <#{commit.committer.email}>"}
+      Committer:
+      =commit.committer.name
+      =commit_committer_time commit

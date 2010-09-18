@@ -2,6 +2,8 @@ class BranchesController < ApplicationController
   before_filter :get_repo
   before_filter :get_branch, :only => :show
 
+  uses_stylesheet_links
+
   def index
     # we'll never route people here intentionally, but they may get here by
     # creative URL editing

@@ -6,12 +6,9 @@
   Clone URL: #{@repo.clone_url}
 -if admin? && !@repo.rw_clone_url.blank?
   R/W Clone URL: #{@repo.rw_clone_url}
-%h3 Head
-%ul
-  %li=@repo.repo.head.name
-  %li=@repo.repo.head.sha1
-%h3#commits Commits
-%ul
+%h3#commits
+  Commits (#{@repo.repo.head.name})
+%ul.commits
   =render :partial => 'commits/commit', :collection => @repo.repo.head.commits
 %h3#branches Branches
 %ul
