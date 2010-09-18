@@ -1,7 +1,15 @@
 require 'spec_helper'
 
 describe 'repos/show' do
-  it 'has breadcrumbs'
+  before do
+    @repo = Repo.make!
+  end
+
+  it 'has breadcrumbs' do
+    mock(view).breadcrumbs.with_any_args
+    render
+  end
+
   it 'shows the repo name'
   it 'shows the description'
   it 'shows the repo clone URL'
