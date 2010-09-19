@@ -136,5 +136,10 @@ describe BranchesController do
         c.kind_of? Git::Commit
       end.should be_true
     end
+
+    it 'renders "branches/show"' do
+      do_request
+      response.should render_template('branches/show')
+    end
   end
 end
