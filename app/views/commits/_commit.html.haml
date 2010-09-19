@@ -5,6 +5,8 @@
   %span.subject{:title => commit.subject}
     =link_to truncate(commit.subject, :length => 80),
       repo_commit_path(@repo, :id => commit.commit)
+  %pre.message
+    =commit.message
   %span.author{:title => "#{commit.author.name} <#{commit.author.email}>"}
     Author:
     =commit.author.name
