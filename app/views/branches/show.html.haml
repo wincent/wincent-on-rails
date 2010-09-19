@@ -1,21 +1,5 @@
 -content_for :javascript do
-  :javascript
-    // TODO: extract into separate file
-    $(document).ready(function() {
-      // clicking on the abbreviated subject shows the entire commit message
-      $('.commit .subject').
-        attr('title', 'click to view full commit message').
-        click(function() {
-          $(this).toggle().next().toggle();
-          return false;
-        });
-
-      // clicking on the full commit message toggles back to the abbreviated
-      $('pre.message').click(function() {
-        $(this).toggle().prev().toggle();
-        return false;
-      });
-    });
+  =javascript_include_tag 'git'
 -@page_title = "#{@repo.name} (#{branch_name @branch} branch)"
 =breadcrumbs link_to('Repos', repos_path),
   link_to(@repo.name, @repo), branch_name(@branch)
