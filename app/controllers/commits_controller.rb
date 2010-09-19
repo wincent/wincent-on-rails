@@ -5,12 +5,13 @@ class CommitsController < ApplicationController
   uses_stylesheet_links
 
   def index
-    # we'll never route peole here intentionally, but they may get here by
+    # we'll never route people here intentionally, but they may get here by
     # creative URL editing
     redirect_to repo_path(@repo) + '#commits'
   end
 
   def show
+    # TODO: pagination
     render
   end
 
