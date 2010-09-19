@@ -10,7 +10,7 @@ module Git
       refs_array_from_string result.stdout, repo
     end
 
-    # Returns a Branch instance for the branch described by refs/heads/name
+    # Returns a Branch instance for the branch referenced by refs/heads/name
     def self.branch name, repo
       result = repo.r_git 'for-each-ref', "refs/heads/#{name}"
       (refs_array_from_string result.stdout, repo).first or
