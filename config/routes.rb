@@ -39,7 +39,7 @@ Wincent::Application.routes.draw do
       resources :branches, :id => %r{[a-z0-9_][a-z0-9./_-]*}i,
         :only => [:index, :show]
 
-      resources :commits, :id => /[a-f0-9]{7,40}/,
+      resources :commits, :id => /[a-f0-9]{4,40}/,
         :only => [:index, :show]
 
       # can't use "resources :tags", as we already have a TagsController
