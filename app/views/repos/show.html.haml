@@ -6,6 +6,10 @@
   Clone URL: #{@repo.clone_url}
 -if admin? && !@repo.rw_clone_url.blank?
   R/W Clone URL: #{@repo.rw_clone_url}
+.links
+  =link_to 'commits', '#commits'
+  =link_to 'branches', '#branches'
+  =link_to 'tags', '#tags'
 %h3#commits
   Commits (#{@repo.repo.head.name})
 %ul.commits
