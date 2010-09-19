@@ -26,4 +26,8 @@ private
   rescue Git::Ref::NonExistentRefError
     raise ActiveRecord::RecordNotFound
   end
+
+  def record_not_found
+    super @repo ? repo_path(@repo) : repos_path
+  end
 end # class BranchesController
