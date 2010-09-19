@@ -23,7 +23,11 @@ private
   def get_tag
     @tag = @repo.repo.tag params[:id]
   rescue Git::Ref::NonExistentRefError
-    # BUG: shows "requested git_tag not found"
-    raise ActiveRecord::RecordNotFound
+    # can't just raise ActiveRecord::RecordNotFound here as default
+    # handler would print "requested git_tag not found" in the flash
+    handle_http_status_code 404 do
+      flash[:error] = 'Requested tag not found'
+      redirect_to @repo
+    end
   end
 end # class GitTagsController
