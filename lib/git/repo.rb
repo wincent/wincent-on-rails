@@ -42,6 +42,10 @@ module Git
       @tags ||= Tag.all self
     end
 
+    def tag name
+      Tag.tag name, self
+    end
+
     def commit sha1
       Commit.commit_with_hash sha1, self
     end

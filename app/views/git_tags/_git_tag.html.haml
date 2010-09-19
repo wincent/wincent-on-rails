@@ -1,0 +1,3 @@
+%li=link_to tag_name(git_tag),
+  repo_git_tag_path(@repo, :id => tag_name(git_tag)),
+  :title => git_tag.sha1

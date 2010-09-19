@@ -41,6 +41,10 @@ Wincent::Application.routes.draw do
 
       resources :commits, :id => /[a-f0-9]{7,40}/,
         :only => [:index, :show]
+
+      # can't use "resources :tags", as we already have a TagsController
+      resources :git_tags, :path => 'tags', :id => %r{[a-z0-9_][a-z0-9./_-]*}i,
+       :only => [:index, :show]
     end
   end
   resources :resets

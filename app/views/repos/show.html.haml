@@ -14,8 +14,6 @@
 %ul
   =render :partial => 'branches/branch', :collection => @repo.repo.branches
 %h3#tags Tags
--@repo.repo.tags.each do |t|
-  %ul
-    %li=t.name
-    %li=t.sha1
+%ul
+  =render :partial => 'git_tags/git_tag', :collection => @repo.repo.tags
 .links=link_to 'all repos', repos_path
