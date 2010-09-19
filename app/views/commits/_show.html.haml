@@ -1,0 +1,45 @@
+%pre.message
+  =@commit.message
+%table.meta
+  %tr.author
+    %th author
+    %td
+      %span{:title => "#{@commit.author.name} <#{@commit.author.email}>"}
+        =link_to @commit.author.name, "mailto:#{@commit.author.email}"
+      =commit_author_time @commit
+  -if @commit.committer.to_ident != @commit.author.to_ident
+    %tr.committer
+      %th committer
+      %td
+        %span{:title => "#{@commit.committer.name} <#{@commit.committer.email}>"}
+          =link_to @commit.committer.name, "mailto:#{@commit.committer.email}"
+        =commit_committer_time @commit
+  -@commit.parents.each do |parent|
+    %tr.parent
+      %th parent
+      %td
+        =link_to commit_abbrev(parent), repo_commit_path(@repo, :id => parent),
+          :title => parent
+-@commit.diff.each_with_index do |change, idx|
+  %table.diff
+    %caption
+      =change[:path]
+      -unless change[:binary]
+        %span.stat
+          #{change[:added]} insertions(+),
+          #{change[:deleted]} deletions(-)
+    -if change[:binary]
+      %tr.binary-diff
+        %td.context
+          %pre=change[:binary]
+    -else
+      -change[:hunks].each do |hunk|
+        %tr.hunk-header
+          %td.line-number ...
+          %td.line-number ...
+          %td=hunk.header
+        -hunk.lines.each do |line|
+          %tr.hunk-line
+            %td.line-number=preimage_line_number_anchor line, idx
+            %td.line-number=postimage_line_number_anchor line, idx
+            %td{:class => line.kind}=td_contents_for_line line
