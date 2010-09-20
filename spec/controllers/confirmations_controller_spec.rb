@@ -63,13 +63,13 @@ describe ConfirmationsController do
 
         it 'shows a flash on success' do
           do_post
-          cookie_flash[:notice].should =~ /sent to #{@unverified.address}/
+          flash[:notice].first.should =~ /sent to #{@unverified.address}/
         end
 
         it 'shows a flash on failure' do
           stub.instance_of(Mail::Message).deliver { raise }
           do_post
-          cookie_flash[:error].should =~ /an error occurred/i
+          flash[:error].first.should =~ /an error occurred/i
         end
       end
 
@@ -125,7 +125,7 @@ describe ConfirmationsController do
 
       it 'shows a flash' do
         do_get
-        cookie_flash[:error].should =~ /not found/
+        flash[:error].should =~ /not found/
       end
     end
 
@@ -139,7 +139,7 @@ describe ConfirmationsController do
 
       it 'shows a flash' do
         do_get
-        cookie_flash[:notice].should =~ /already confirmed/
+        flash[:notice].should =~ /already confirmed/
       end
     end
 
@@ -153,7 +153,7 @@ describe ConfirmationsController do
 
       it 'shows a flash' do
         do_get
-        cookie_flash[:error].should =~ /expiry date has already passed/
+        flash[:error].should =~ /expiry date has already passed/
       end
     end
 
@@ -178,7 +178,7 @@ describe ConfirmationsController do
       end
 
       it 'shows a flash' do
-        cookie_flash[:notice].should =~ /successfully confirmed email/i
+        flash[:notice].should =~ /successfully confirmed email/i
       end
 
       it 'redirects to /dashboard' do

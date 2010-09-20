@@ -87,7 +87,7 @@ describe LinksController do
 
       it 'shows a flash' do
         do_request
-        cookie_flash[:notice].should =~ /successfully updated/i
+        flash[:notice].should =~ /successfully updated/i
       end
 
       it 'redirects to /links' do
@@ -102,7 +102,7 @@ describe LinksController do
 
         it 'shows a flash' do
           do_request
-          cookie_flash[:error].should =~ /update failed/i
+          flash[:error].should =~ /update failed/i
         end
 
         it 'renders links/edit' do

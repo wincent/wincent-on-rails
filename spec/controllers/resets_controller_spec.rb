@@ -49,7 +49,7 @@ describe ResetsController do
 
         it 'shows a flash' do
           do_post
-          cookie_flash[:error].should =~ /exceeded the resets limit/
+          flash[:error].should =~ /exceeded the resets limit/
         end
       end
     end
@@ -67,7 +67,7 @@ describe ResetsController do
 
       it 'shows a flash' do
         do_post
-        cookie_flash[:error].should =~ /invalid email address/i
+        flash[:error].should =~ /invalid email address/i
       end
 
       it 'renders resets/new' do
@@ -116,7 +116,7 @@ describe ResetsController do
 
       it 'shows a flash' do
         do_get
-        cookie_flash[:error].should =~ /token not found/
+        flash[:error].should =~ /token not found/
       end
 
       it 'redirects to /' do
@@ -130,7 +130,7 @@ describe ResetsController do
 
       it 'shows a flash' do
         do_get
-        cookie_flash[:notice].should =~ /token already used/
+        flash[:notice].should =~ /token already used/
       end
 
       it 'redirects to /login' do
@@ -144,7 +144,7 @@ describe ResetsController do
 
       it 'shows a flash' do
         do_get
-        cookie_flash[:error].should =~ /expiry date has already passed/
+        flash[:error].should =~ /expiry date has already passed/
       end
 
       it 'redirects to /' do
@@ -189,7 +189,7 @@ describe ResetsController do
 
     it 'shows a flash' do
       do_put
-      cookie_flash[:notice].should =~ /updated passphrase/
+      flash[:notice].should =~ /updated passphrase/
     end
 
     it 'logs in' do

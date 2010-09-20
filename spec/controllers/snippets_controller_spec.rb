@@ -179,7 +179,7 @@ describe SnippetsController do
           end
 
           it 'shows a flash' do
-            cookie_flash[:notice].should =~ /successfully created/i
+            flash[:notice].should =~ /successfully created/i
           end
 
           it 'redirects to #show' do
@@ -199,7 +199,7 @@ describe SnippetsController do
           end
 
           it 'shows a flash' do
-            cookie_flash[:error].should =~ /failed to create/i
+            flash[:error].should =~ /failed to create/i
           end
 
           it 'renders #new' do
@@ -426,7 +426,7 @@ describe SnippetsController do
       context 'successful update' do
         it 'shows a flash' do
           do_request
-          cookie_flash[:notice].should =~ /successfully updated/i
+          flash[:notice].should =~ /successfully updated/i
         end
 
         it 'redirects to #show' do
@@ -452,7 +452,7 @@ describe SnippetsController do
 
         it 'shows a flash' do
           do_request
-          cookie_flash[:error].should =~ /update failed/i
+          flash[:error].should =~ /update failed/i
         end
 
         it 'renders #edit' do
@@ -496,7 +496,7 @@ describe SnippetsController do
 
       it 'shows a flash' do
         do_request
-        cookie_flash[:notice].should =~ /successfully destroyed/i
+        flash[:notice].should =~ /successfully destroyed/i
       end
 
       context 'non-existent snippet' do
@@ -512,11 +512,6 @@ describe SnippetsController do
         it 'shows a flash' do
           do_request
           flash[:error].should =~ /not found/i
-
-          pending "cookie_flash broken"
-          # this is how I'd like to do it (see ArticlesController specs for
-          # more detailed notes on this breakage):
-          cookie_flash[:error].should =~ /not found/i
         end
       end
     end

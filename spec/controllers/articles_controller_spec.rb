@@ -250,7 +250,7 @@ describe ArticlesController do
 
             it 'shows a flash' do
               get :show, :id => 'bar'
-              cookie_flash[:error].should =~ /too many redirections/i
+              flash[:error].should =~ /too many redirections/i
             end
 
             it 'redirects to #index' do
@@ -274,7 +274,7 @@ describe ArticlesController do
 
           it 'shows a flash' do
             get :show, :id => 'bar'
-            cookie_flash[:error].should =~ /forbidden/
+            flash[:error].should =~ /forbidden/
           end
         end
 
@@ -298,11 +298,6 @@ describe ArticlesController do
           it 'shows a flash' do
             get :show, :id => 'moot'
             flash[:error].should =~ /not found/
-            pending 'after filter is not running, but only in the test environment'
-            # NOTE: it is not just running under the test environment which
-            # does this, because running "RAILS_ENV=test rails s" works fine;
-            # it is evidently something in the testing machinery itself
-            cookie_flash[:error].should =~ /not found/
           end
         end
 
@@ -317,8 +312,6 @@ describe ArticlesController do
           it 'shows a flash' do
             get :show, :id => 'moot'
             flash[:notice].should =~ /article not found: create it\?/
-            pending 'after filter is not running, but only in the test environment'
-            cookie_flash[:notice].should =~ /article not found: create it\?/
           end
         end
       end
@@ -484,7 +477,7 @@ describe ArticlesController do
 
         it 'shows a flash' do
           post :create, :article => { :title => 'foo', :body => 'bar' }
-          cookie_flash[:notice].should =~ /created new article/
+          flash[:notice].should =~ /created new article/
         end
 
         context 'article with invalid params' do
@@ -499,7 +492,7 @@ describe ArticlesController do
           end
 
           it 'shows an error flash' do
-            cookie_flash[:error].should =~ /failed to create/i
+            flash[:error].should =~ /failed to create/i
           end
 
           it 'renders the #new template' do
@@ -543,8 +536,6 @@ describe ArticlesController do
         it 'shows a flash' do
           get :edit, :id => 'moot'
           flash[:notice].should =~ /article not found: create it\?/
-          pending 'after filter is not running, but only in the test environment'
-          cookie_flash[:notice].should =~ /article not found: create it\?/
         end
       end
     end
@@ -571,7 +562,7 @@ describe ArticlesController do
 
       it 'shows a flash' do
         put :update, @params
-        cookie_flash[:notice].should =~ /requires administrator privileges/
+        flash[:notice].should =~ /requires administrator privileges/
       end
     end
 
@@ -592,7 +583,7 @@ describe ArticlesController do
 
       it 'shows a flash' do
         put :update, @params
-        cookie_flash[:notice].should =~ /successfully updated/i
+        flash[:notice].should =~ /successfully updated/i
       end
 
       context 'with invalid attributes' do
@@ -605,7 +596,7 @@ describe ArticlesController do
 
         it 'shows an error flash' do
           put :update, @params
-          cookie_flash[:error].should =~ /update failed/i
+          flash[:error].should =~ /update failed/i
         end
 
         it 'renders #edit' do

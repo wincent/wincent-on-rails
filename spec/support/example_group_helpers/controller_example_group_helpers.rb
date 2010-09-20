@@ -15,10 +15,4 @@ module ControllerExampleGroupHelpers
   def log_in
     log_in_as User.make!
   end
-
-  def cookie_flash
-    return {} unless cookies['flash']
-    HashWithIndifferentAccess.new \
-      ActiveSupport::JSON.decode(CGI::unescape(cookies['flash']))
-  end
 end

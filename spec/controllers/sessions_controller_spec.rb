@@ -15,7 +15,7 @@ describe SessionsController do
     end
 
     it 'should flash a success notice' do
-      cookie_flash[:notice].should match(/logged in/i)
+      flash[:notice].should match(/logged in/i)
     end
 
     it 'should set the current user' do
@@ -34,7 +34,7 @@ describe SessionsController do
     end
 
     it 'should flash an error' do
-      cookie_flash[:error].should match(/invalid/i)
+      flash[:error].should match(/invalid/i)
     end
 
     it 'should render the new session (login) form again' do
@@ -49,7 +49,7 @@ describe SessionsController do
     end
 
     it 'should flash a success notice' do
-      cookie_flash[:notice].should match(/logged out/i)
+      flash[:notice].should match(/logged out/i)
     end
 
     it 'should set the current user to nil' do
@@ -67,7 +67,7 @@ describe SessionsController do
     end
 
     it 'should flash an error' do
-      cookie_flash[:error].should match(/Can't log out/i)
+      flash[:error].should match(/Can't log out/i)
     end
 
     it 'should redirect to the home path' do

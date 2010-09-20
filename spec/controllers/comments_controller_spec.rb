@@ -46,7 +46,7 @@ describe CommentsController do
         log_in
         get :edit, :id => @comment.id
         response.should redirect_to(login_path)
-        cookie_flash[:notice].should =~ /requires administrator privileges/
+        flash[:notice].should =~ /requires administrator privileges/
       end
     end
 
@@ -60,7 +60,7 @@ describe CommentsController do
       it 'denies access to the "edit" action' do
         get :edit, :id => @comment.id
         response.should redirect_to(login_path)
-        cookie_flash[:notice].should =~ /requires administrator privileges/
+        flash[:notice].should =~ /requires administrator privileges/
       end
     end
   end
@@ -96,7 +96,7 @@ describe CommentsController do
         stub(@comment).save { true }
         stub(Comment).find() { @comment }
         do_put
-        cookie_flash[:notice].should =~ /Successfully updated/
+        flash[:notice].should =~ /Successfully updated/
       end
 
       it 'redirects to the comment path on success for comments not awaiting moderation' do
@@ -118,7 +118,7 @@ describe CommentsController do
         stub(@comment).save { false }
         stub(Comment).find() { @comment }
         do_put
-        cookie_flash[:error].should =~ /Update failed/
+        flash[:error].should =~ /Update failed/
       end
 
       it 'renders the edit template again on failure' do

@@ -219,10 +219,9 @@ describe TweetsController do
       do_post
     end
 
-    it 'should not flash a notice on success' do
-      # flashes would pollute the page cache
+    it 'shows a flash' do
       do_successful_post
-      flash[:notice].should be_nil
+      flash[:notice].should =~ /successfully created new tweet/i
     end
 
     it 'should redirect to the tweet "show" page on success' do
@@ -232,7 +231,7 @@ describe TweetsController do
 
     it 'should flash an error on failure' do
       do_failed_post
-      cookie_flash[:error].should =~ /Failed/
+      flash[:error].should =~ /Failed/
     end
 
     it 'should render the #new template on failure' do
@@ -421,10 +420,9 @@ describe TweetsController do
       do_put @tweet, true, params
     end
 
-    it 'should not flash a notice on success' do
-      # flashes would pollute the page cache
+    it 'shows a flash' do
       do_successful_update
-      flash[:notice].should be_nil
+      flash[:notice].should =~ /successfully updated/i
     end
 
     it 'should redirect to the tweet "show" page on success' do
@@ -434,7 +432,7 @@ describe TweetsController do
 
     it 'should flash an error on failure' do
       do_failed_update
-      cookie_flash[:error].should =~ /failed/
+      flash[:error].should =~ /failed/
     end
 
     it 'should render the #edit template on failure' do

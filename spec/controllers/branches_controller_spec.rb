@@ -23,12 +23,6 @@ describe BranchesController do
       it 'shows a flash' do
         do_request
         flash[:error].should =~ /not found/
-
-        # would prefer to write this as follows
-        pending 'after filters not running in test suite'
-        cookie_flash[:error].should =~ /not found/i
-        # TODO: investigate this further and possibly post
-        # to RSpec mailing list
       end
 
       it 'redirects to repos#index' do
@@ -43,8 +37,6 @@ describe BranchesController do
       it 'shows a flash' do
         do_request
         flash[:error].should =~ /not found/
-        pending 'after filters not running in test suite'
-        cookie_flash[:error].should =~ /not found/
       end
 
       it 'redirects to repos#index' do
@@ -79,8 +71,6 @@ describe BranchesController do
       it 'shows a flash' do
         do_request
         flash[:error].should =~ /not found/
-        pending 'after filters not running in test suite'
-        cookie_flash[:error].should =~ /not found/
       end
 
       it 'redirects to repos#index' do
@@ -95,8 +85,6 @@ describe BranchesController do
       it 'shows a flash' do
         do_request
         flash[:error].should =~ /not found/
-        pending 'after filters not running in test suite'
-        cookie_flash[:error].should =~ /not found/
       end
 
       it 'redirects to repos#index' do
@@ -119,8 +107,6 @@ describe BranchesController do
       it 'shows a flash' do
         do_request
         flash[:error].should =~ /not found/
-        pending 'after filters not running in test suite'
-        cookie_flash[:error].should =~ /not found/
       end
 
       it 'redirects to repos#show' do

@@ -117,7 +117,7 @@ describe TagsController do
 
       it 'shows a flash' do
         do_request
-        cookie_flash[:notice].should =~ /successfully updated/i
+        flash[:notice].should =~ /successfully updated/i
       end
 
       it 'redirects to #show' do
@@ -132,7 +132,7 @@ describe TagsController do
 
         it 'shows a flash' do
           do_request
-          cookie_flash[:error].should =~ /update failed/i
+          flash[:error].should =~ /update failed/i
         end
 
         it 'renders #edit' do
@@ -151,12 +151,16 @@ describe TagsController do
 
     it 'trims excess tags (more than 10)' do
       get :search, :q => '1 2 3 4 5 6 7 8 9 10 11'
-      cookie_flash[:notice].should =~ /excess tags stripped/i
+      flash[:notice].any? do |notice|
+        notice =~ /excess tags stripped/i
+      end.should be_true
     end
 
     it 'excludes non-existent tags' do
       get :search, :q => 'foo bar'
-      cookie_flash[:notice].should =~ /non-existent tags excluded/i
+      flash[:notice].any? do |notice|
+        notice =~ /non-existent tags excluded/i
+      end.should be_true
     end
 
     it 'finds and assigns tags' do

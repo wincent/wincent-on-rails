@@ -16,7 +16,7 @@ shared_examples_for 'require_admin' do
 
   it 'shows a flash' do
     do_request
-    cookie_flash[:notice].should =~ /requires administrator privileges/
+    flash[:notice].should =~ /requires administrator privileges/
   end
 end
 
@@ -37,7 +37,7 @@ shared_examples_for 'require_user' do
 
   it 'shows a flash' do
     do_request
-    cookie_flash[:notice].should =~ /must be logged in to access/
+    flash[:notice].should =~ /must be logged in to access/
   end
 end
 

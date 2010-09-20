@@ -1,6 +1,5 @@
 class ApplicationController < ActionController::Base
   before_filter             :log_in_before
-  after_filter              :cache_flash
   protect_from_forgery
   rescue_from               ActionController::ForbiddenError, :with => :forbidden
   rescue_from               ActiveRecord::RecordNotFound, :with => :record_not_found
@@ -83,33 +82,6 @@ protected
     else
       'awaiting_moderation = FALSE'
     end
-  end
-
-  # if the flash contains multiple items, turns it into an unordered list
-  def listify_flash flashes
-    return flashes unless flashes.kind_of?(Array)
-    if flashes.empty?
-      nil
-    elsif flashes.length == 1
-      flashes.first
-    else
-      items = flashes.map { |i| "<li>#{i}</li>" }
-      "<ul>#{items.join}</ul>"
-    end
-  end
-
-  def cache_flash
-    flash_hash = {}
-    flash.each do |key, value|
-      list = listify_flash(value)
-      flash_hash[key.to_sym] = list unless list.nil?
-    end
-
-    # without this we'll get double-flashes for "render" followed by another page view
-    flash.clear
-
-    # always leave cookie flash deletion up to the browser
-    cookies[:flash] = flash_hash.to_json unless flash_hash.blank?
   end
 
   # Convenient access to helpers from inside controllers. Note that mixing
