@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/jnicklas/capybara.git
-  revision: 7065a66503b6aea909f5bea91eb61cacd3a4aa7c
+  revision: d584bb34e9782101aabe1c68a7dd68ed2aafb02a
   specs:
     capybara (0.3.9)
       celerity (>= 0.7.9)
@@ -42,14 +42,14 @@ GEM
       activemodel (= 3.0.0)
       activesupport (= 3.0.0)
     activesupport (3.0.0)
-    akephalos (0.2.3)
+    akephalos (0.2.4)
       capybara (~> 0.3.8)
       jruby-jars
     arel (1.0.1)
       activesupport (~> 3.0.0)
     autotest (4.3.2)
     builder (2.1.2)
-    celerity (0.8.1)
+    celerity (0.8.2)
     cgi_multipart_eof_fix (2.5.0)
     columnize (0.3.1)
     configuration (1.1.0)
@@ -93,7 +93,7 @@ GEM
     rack (1.2.1)
     rack-mount (0.6.13)
       rack (>= 1.0.0)
-    rack-test (0.5.4)
+    rack-test (0.5.5)
       rack (>= 1.0)
     rails (3.0.0)
       actionmailer (= 3.0.0)

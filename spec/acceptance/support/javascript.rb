@@ -1,3 +1,5 @@
+require 'akephalos'
+
 # Switch Capybara drivers on a per-scenario basis like this:
 #
 #  scenario 'this is an AJAX thing', :js => true do
@@ -10,7 +12,7 @@
 RSpec.configure do |config|
   config.before :each do
     if example.options[:js]
-      Capybara.current_driver = :culerity
+      Capybara.current_driver = :akephalos
     end
   end
 
