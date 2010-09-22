@@ -27,6 +27,6 @@ group :test do
   gem 'mkdtemp',        '>= 1.2'
   gem 'rcov'
   gem 'rr',             '>= 1.0'
-  gem 'steak',          :git => 'git://github.com/cavalle/steak.git'
+  gem 'steak',          '>= 1.0.0.beta.2'
   gem 'webrat'
 end

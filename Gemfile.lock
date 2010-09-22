@@ -1,11 +1,4 @@
 GIT
-  remote: git://github.com/cavalle/steak.git
-  revision: 4956708bfe57c48991c3600a6dd6cf4dcc80fb25
-  specs:
-    steak (1.0.0.beta.1)
-      rspec
-
-GIT
   remote: git://github.com/jnicklas/capybara.git
   revision: 7065a66503b6aea909f5bea91eb61cacd3a4aa7c
   specs:
@@ -140,6 +133,8 @@ GEM
       ffi (>= 0.6.1)
       json_pure
       rubyzip
+    steak (1.0.0.beta.2)
+      rspec
     thor (0.14.1)
     treetop (1.4.8)
       polyglot (>= 0.3.1)
@@ -174,7 +169,7 @@ DEPENDENCIES
   rr (>= 1.0)
   rspec-rails (= 2.0.0.beta.22)
   ruby-debug
-  steak!
+  steak (>= 1.0.0.beta.2)
   unicorn (~> 1.1.3)
   webrat
   wikitext (= 2.0)
