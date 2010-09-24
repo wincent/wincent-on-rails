@@ -1,9 +1,9 @@
 GIT
   remote: git://github.com/bernerdschaefer/akephalos.git
-  revision: 43af5866c7a138431b075a2321e6e09f6a47972a
+  revision: a10ad5dd735faf579d357b5022fb69766ed393be
+  branch: capybara-head
   specs:
     akephalos (0.2.4)
-      capybara (~> 0.3.8)
       jruby-jars
 
 GIT
