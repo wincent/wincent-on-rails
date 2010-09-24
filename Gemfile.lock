@@ -1,4 +1,12 @@
 GIT
+  remote: git://github.com/bernerdschaefer/akephalos.git
+  revision: 43af5866c7a138431b075a2321e6e09f6a47972a
+  specs:
+    akephalos (0.2.4)
+      capybara (~> 0.3.8)
+      jruby-jars
+
+GIT
   remote: git://github.com/jnicklas/capybara.git
   revision: d584bb34e9782101aabe1c68a7dd68ed2aafb02a
   specs:
@@ -42,9 +50,6 @@ GEM
       activemodel (= 3.0.0)
       activesupport (= 3.0.0)
     activesupport (3.0.0)
-    akephalos (0.2.4)
-      capybara (~> 0.3.8)
-      jruby-jars
     arel (1.0.1)
       activesupport (~> 3.0.0)
     autotest (4.3.2)
@@ -153,7 +158,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  akephalos
+  akephalos!
   autotest
   capybara!
   database_cleaner (>= 0.6.0.rc.2)

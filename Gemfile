@@ -18,7 +18,7 @@ group :development do
 end
 
 group :test do
-  gem 'akephalos'
+  gem 'akephalos',      :git => 'git://github.com/bernerdschaefer/akephalos.git'
   gem 'autotest',       :require => nil
   gem 'capybara',       :git => 'git://github.com/jnicklas/capybara.git'
   gem 'database_cleaner', '>= 0.6.0.rc.2'
