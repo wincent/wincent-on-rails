@@ -9,8 +9,9 @@ gem 'wikitext',         '2.0'
 gem 'wopen3',           '>= 0.3'
 
 group :development, :test do
-  gem 'factory_girl_rails'              # factories in development console
-  gem 'rspec-rails',    '2.0.0.beta.22' # needed for generators to work
+  gem 'factory_girl_rails'                # factories in development console
+  gem 'rspec-rails',    '2.0.0.beta.22'   # needed for generators to work
+  gem 'steak',          '>= 1.0.0.beta.2' # again, for generators
 end
 
 group :development do
@@ -28,6 +29,5 @@ group :test do
   gem 'mkdtemp',        '>= 1.2'
   gem 'rcov'
   gem 'rr',             '>= 1.0'
-  gem 'steak',          '>= 1.0.0.beta.2'
   gem 'webrat'
 end
