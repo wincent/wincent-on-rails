@@ -41,15 +41,23 @@ ol.comments
     margin: 0px
     padding: 10px
 
-ol.comments.boxed > li.odd
-  +comment-box(#f7f7f7, #ccc)
-
-ol.comments.boxed > li.even
-  +comment-box(#eaeaea, #ccc)
-
-// BUG: not used yet
-ol.comments.boxed > li.admin
-  +comment-box(white, #ccc)
-
-ol.comments.boxed > li.private
-  +comment-box(white, #ccc)
+ol.comments.boxed
+  > li.odd
+    +comment-box(#f7f7f7, #ccc)
+  li.odd.active-fragment
+    background: #f2ffff
+    box-shadow: 5px 5px 5px #999
+    -moz-box-shadow: 5px 5px 5px #999
+    -webkit-box-shadow: 5px 5px 5px #999
+  > li.even
+    +comment-box(#eaeaea, #ccc)
+  > li.even.active-fragment
+    background: #f2ffff
+    box-shadow: 5px 5px 5px #999
+    -moz-box-shadow: 5px 5px 5px #999
+    -webkit-box-shadow: 5px 5px 5px #999
+  > li.admin
+    // BUG: not used yet
+    +comment-box(white, #ccc)
+  > li.private
+    +comment-box(white, #ccc)

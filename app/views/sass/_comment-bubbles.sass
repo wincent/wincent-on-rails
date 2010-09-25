@@ -17,17 +17,30 @@
     background: $background_color
     margin-bottom: 20px
 
-ol.comments li.odd
-  +comment-bubble(#f7f7f7, #ccc, url(../images/comment-bubble-triangle-odd.png))
-
-ol.comments li.even
-  +comment-bubble(#eaeaea, #ccc, url(../images/comment-bubble-triangle-even.png))
-
-ol.comments li.admin
-  +comment-bubble(white, #666, url(../images/comment-bubble-triangle-admin.png))
-
-// lists look crap if they are the first or last item in the bubble
-ol.comments blockquote
-  > ol, > ul
-    margin-bottom: 12px
-    margin-top: 12px
+ol.comments
+  li.odd
+    +comment-bubble(#f7f7f7, #ccc, url(../images/comment-bubble-triangle-odd.png))
+  li.odd.active-fragment > blockquote
+    background: #f2ffff
+    box-shadow: 5px 5px 5px #999
+    -moz-box-shadow: 5px 5px 5px #999
+    -webkit-box-shadow: 5px 5px 5px #999
+  li.even
+    +comment-bubble(#eaeaea, #ccc, url(../images/comment-bubble-triangle-even.png))
+  li.even.active-fragment > blockquote
+    background: #f2ffff
+    box-shadow: 5px 5px 5px #999
+    -moz-box-shadow: 5px 5px 5px #999
+    -webkit-box-shadow: 5px 5px 5px #999
+  li.admin
+    +comment-bubble(white, #666, url(../images/comment-bubble-triangle-admin.png))
+  li.admin.active-fragment > blockquote
+    background: #f2ffff
+    box-shadow: 5px 5px 5px #999
+    -moz-box-shadow: 5px 5px 5px #999
+    -webkit-box-shadow: 5px 5px 5px #999
+  blockquote
+    > ol, > ul
+      // lists look crap if they are the first or last item in the bubble
+      margin-bottom: 12px
+      margin-top: 12px

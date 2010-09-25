@@ -256,11 +256,20 @@ function setUpSearchLink() {
   });
 }
 
+// if the URL includes a fragment identifier (ie. #foo)
+// then add the "active-fragment" class to the corresponding element
+function highlightActiveFragment() {
+  var frag = window.location.hash;
+  if (frag.length >= 2)
+    $(frag).addClass('active-fragment');
+}
+
 $(document).ready(function() {
   setUpLoginLogoutLinks();
   setUpSearchLink();
   displayCacheableFlash();
   relativizeDates();
+  highlightActiveFragment();
 
   // syntax highlight for pre blocks
   $('body').syntaxHighlight();
