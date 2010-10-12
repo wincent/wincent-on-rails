@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/bernerdschaefer/akephalos.git
-  revision: a10ad5dd735faf579d357b5022fb69766ed393be
+  revision: 4877761d3b049f40211bfe758f75d733dac06d7f
   branch: capybara-head
   specs:
     akephalos (0.2.4)
@@ -8,7 +8,7 @@ GIT
 
 GIT
   remote: git://github.com/jnicklas/capybara.git
-  revision: d584bb34e9782101aabe1c68a7dd68ed2aafb02a
+  revision: 89d00c4f0801a1d00f57c4bedb81c23b888e18df
   specs:
     capybara (0.3.9)
       celerity (>= 0.7.9)
@@ -18,7 +18,7 @@ GIT
       rack (>= 1.0.0)
       rack-test (>= 0.5.4)
       selenium-webdriver (>= 0.0.27)
-      xpath (>= 0.1.0)
+      xpath (~> 0.1.2)
 
 GEM
   remote: http://rubygems.org/
@@ -52,15 +52,17 @@ GEM
     activesupport (3.0.0)
     arel (1.0.1)
       activesupport (~> 3.0.0)
-    autotest (4.3.2)
+    autotest (4.4.1)
     builder (2.1.2)
     celerity (0.8.2)
     cgi_multipart_eof_fix (2.5.0)
+    childprocess (0.0.7)
+      ffi (~> 0.6.3)
     columnize (0.3.1)
     configuration (1.1.0)
     culerity (0.2.12)
     daemons (1.1.0)
-    database_cleaner (0.6.0.rc.2)
+    database_cleaner (0.6.0.rc.3)
     diff-lcs (1.1.2)
     erubis (2.6.6)
       abstract (>= 1.0.0)
@@ -74,13 +76,13 @@ GEM
     gem_plugin (0.2.3)
     haml (3.0.21)
     i18n (0.4.1)
-    jruby-jars (1.5.2)
+    jruby-jars (1.5.3)
     json_pure (1.4.6)
     launchy (0.3.7)
       configuration (>= 0.0.5)
       rake (>= 0.8.1)
     linecache (0.43)
-    mail (2.2.6.1)
+    mail (2.2.7)
       activesupport (>= 2.3.6)
       mime-types
       treetop (>= 1.4.5)
@@ -92,13 +94,13 @@ GEM
       daemons (>= 1.0.3)
       fastthread (>= 1.0.1)
       gem_plugin (>= 0.2.3)
-    mysql2 (0.2.3)
+    mysql2 (0.2.4)
     nokogiri (1.4.3.1)
     polyglot (0.3.1)
     rack (1.2.1)
     rack-mount (0.6.13)
       rack (>= 1.0.0)
-    rack-test (0.5.5)
+    rack-test (0.5.6)
       rack (>= 1.0)
     rails (3.0.0)
       actionmailer (= 3.0.0)
@@ -114,37 +116,38 @@ GEM
       rake (>= 0.8.4)
       thor (~> 0.14.0)
     rake (0.8.7)
-    rcov (0.9.8)
+    rcov (0.9.9)
     rr (1.0.0)
-    rspec (2.0.0.rc)
-      rspec-core (= 2.0.0.rc)
-      rspec-expectations (= 2.0.0.rc)
-      rspec-mocks (= 2.0.0.rc)
-    rspec-core (2.0.0.rc)
-    rspec-expectations (2.0.0.rc)
+    rspec (2.0.0)
+      rspec-core (= 2.0.0)
+      rspec-expectations (= 2.0.0)
+      rspec-mocks (= 2.0.0)
+    rspec-core (2.0.0)
+    rspec-expectations (2.0.0)
       diff-lcs (>= 1.1.2)
-    rspec-mocks (2.0.0.rc)
-      rspec-core (= 2.0.0.rc)
-      rspec-expectations (= 2.0.0.rc)
-    rspec-rails (2.0.0.rc)
-      rspec (= 2.0.0.rc)
+    rspec-mocks (2.0.0)
+      rspec-core (= 2.0.0)
+      rspec-expectations (= 2.0.0)
+    rspec-rails (2.0.0)
+      rspec (= 2.0.0)
     ruby-debug (0.10.3)
       columnize (>= 0.1)
       ruby-debug-base (~> 0.10.3.0)
     ruby-debug-base (0.10.3)
       linecache (>= 0.3)
     rubyzip (0.9.4)
-    selenium-webdriver (0.0.28)
-      ffi (>= 0.6.1)
+    selenium-webdriver (0.0.29)
+      childprocess (>= 0.0.7)
+      ffi (~> 0.6.3)
       json_pure
       rubyzip
     steak (1.0.0.beta.2)
       rspec
-    thor (0.14.1)
+    thor (0.14.3)
     treetop (1.4.8)
       polyglot (>= 0.3.1)
     tzinfo (0.3.23)
-    unicorn (1.1.3)
+    unicorn (1.1.4)
       rack
     webrat (0.7.1)
       nokogiri (>= 1.2.0)
@@ -152,7 +155,8 @@ GEM
       rack-test (>= 0.5.3)
     wikitext (2.0)
     wopen3 (0.3)
-    xpath (0.1.0)
+    xpath (0.1.2)
+      nokogiri (~> 1.3)
 
 PLATFORMS
   ruby
@@ -172,7 +176,7 @@ DEPENDENCIES
   rails (= 3.0.0)
   rcov
   rr (>= 1.0)
-  rspec-rails (= 2.0.0.rc)
+  rspec-rails (~> 2.0.0)
   ruby-debug
   steak (>= 1.0.0.beta.2)
   unicorn (~> 1.1.3)
