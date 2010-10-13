@@ -136,7 +136,7 @@ GEM
       ffi (~> 0.6.3)
       json_pure
       rubyzip
-    steak (1.0.0.beta.2)
+    steak (1.0.0.rc.1)
       rspec
     thor (0.14.3)
     treetop (1.4.8)
