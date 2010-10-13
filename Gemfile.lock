@@ -159,6 +159,7 @@ PLATFORMS
 DEPENDENCIES
   akephalos!
   autotest
+  bundler (~> 1.0.2)
   capybara (>= 0.4.0.rc)
   database_cleaner (>= 0.6.0.rc.2)
   factory_girl_rails
