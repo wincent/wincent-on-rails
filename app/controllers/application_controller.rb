@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
 
   # fix feed breakage caused by Rails 2.3.0 RC1
   # see: https://wincent.com/issues/1227
-  layout Proc.new { |controller| controller.send(:is_atom?) ? false : 'application' }
+  layout Proc.new { |c| c.request.format.atom? ? false : 'application' }
 
 protected
 
@@ -26,7 +26,7 @@ protected
   def handle_http_status_code code, &block
     if request.xhr?
       render :text => Rack::Utils::HTTP_STATUS_CODES[code], :status => code
-    elsif is_atom?
+    elsif request.format.atom?
       render :text => '', :status => code
     else # HTML requests
       if block_given?
@@ -53,10 +53,6 @@ protected
       flash[:error] = 'Requested %s not found' % controller_name.singularize
       redirect_to uri
     end
-  end
-
-  def is_atom?
-    params[:format] == 'atom'
   end
 
   # Just like the default_access_options method but this time we don't exclude items awaiting moderation.

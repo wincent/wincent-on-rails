@@ -1,7 +1,7 @@
 class PostsController < ApplicationController
   before_filter :require_admin, :except => [ :index, :show ]
   before_filter :get_post,      :except => [ :index, :new, :create ]
-  caches_page   :index, :show,  :if => Proc.new { |c| c.send(:is_atom?) }
+  caches_page   :index, :show,  :if => Proc.new { |c| c.request.format.atom? }
   cache_sweeper :post_sweeper,  :only => [ :create, :update, :destroy ]
   uses_stylesheet_links
 
@@ -79,7 +79,7 @@ private
   rescue ActiveRecord::RecordNotFound => e
     # given permalink "foo" a request for "foo.atom" will most likely wind up here
     if params[:id] =~ /(.+)\.atom\Z/
-      params[:format] = 'atom'
+      request.format = :atom
       @post = Post.find_by_permalink_and_public($~[1], true)
     end
     raise e unless @post

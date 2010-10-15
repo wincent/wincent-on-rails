@@ -2,7 +2,7 @@ class TopicsController < ApplicationController
   before_filter :require_admin,   :except => [ :create, :new, :show ]
   before_filter :get_forum,       :except => [ :index ]
   before_filter :get_topic,       :only => [ :show ]
-  caches_page   :show,            :if => Proc.new { |c| c.send(:is_atom?) }
+  caches_page   :show,            :if => Proc.new { |c| c.request.format.atom? }
   cache_sweeper :topic_sweeper,   :only => [ :create, :update, :destroy ]
   uses_stylesheet_links
 
@@ -98,7 +98,7 @@ class TopicsController < ApplicationController
 private
 
   def public_only?
-    is_atom? || !admin?
+    request.format.atom? || !admin?
   end
 
   def get_forum

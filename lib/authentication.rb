@@ -144,8 +144,7 @@ module ActionController
     # Redirect to the login page showing the supplied msg in the flash
     # For non-HTML formats (XML, Atom, JavaScript), return a 403 error instead of redirecting
     def redirect_to_login msg
-      # in practice for HTML requests, format is always blank, but program defensively
-      if params[:format].blank? or params[:format] =~ /html/i
+      if request.format.html?
         flash[:notice] = msg
         session[:original_uri] = request.fullpath
         redirect_to login_path
