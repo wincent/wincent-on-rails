@@ -44,7 +44,9 @@ describe PostsController do
     end
 
     def do_get
-      get :show, :id => 'hello', :format => 'atom'
+      # see detailed notes in articles_controller_spec.rb for why we pass in
+      # the id like this rather than using :format => 'atom'
+      get :show, :id => 'hello.atom'
     end
 
     # make sure we don't get bitten by bugs like:

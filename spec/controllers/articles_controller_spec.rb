@@ -4,7 +4,10 @@ require 'spec_helper'
 #
 # For most resources we can test using requests like:
 #
-#   get :show, :id => 'foo', :format => 'show'
+#   get :index                                  # HTML index
+#   get :index, :format => 'atom'               # Atom index
+#   get :show, :id => 'foo'                     # HTML show
+#   get :show, :id => 'foo', :format => 'atom'  # Atom show (comments feed)
 #
 # But the Article resource is special because it allows periods, which Rails
 # usually considers as format separators, in its permalinks.
@@ -21,18 +24,6 @@ require 'spec_helper'
 #
 # Only then can we properly test the code path in the controller which handles
 # this kind of request (specifically, the "get_article" method).
-#
-# There is one exception to this rule and that is where we wish to test layouts
-# as well (for example, to confirm that we produce a valid Atom feed we must
-# ensure that we don't end up rendering views inside the HTML application
-# layout). In this case we must do:
-#
-#   get :show, :id => 'foo.atom', :format => 'atom'
-#
-# Otherwise the test machinery will render the template in the default HTML
-# application layout. Note that in practice Rails will never send an explicit
-# Atom :format parameter to this controller, but supplying one here is a
-# necessary evil to force the test machinery to do the right thing.
 describe ArticlesController do
   describe '#index' do
     context 'HTML format' do
@@ -381,8 +372,7 @@ describe ArticlesController do
         end
 
         def do_get
-          # need :format param here or test machinery will render HTML template
-          get :show, :id => 'foo_bar_baz.atom', :format => 'atom'
+          get :show, :id => 'foo_bar_baz.atom'
         end
 
         # https://wincent.com/issues/1227
