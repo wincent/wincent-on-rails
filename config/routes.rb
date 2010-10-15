@@ -23,7 +23,7 @@ Wincent::Application.routes.draw do
     #   https://rails.lighthouseapp.com/projects/8994/tickets/5513
     # fixed in this commit (post-3.0):
     #   http://github.com/rails/rails/commit/02480a897be25c24f59180513d37649a31ad3835
-    # until 3.0.1 is released, need to work around this with an explicit
+    # until 3.0.2 is released, need to work around this with an explicit
     # "nested" block:
     nested do
       # Git branch names can include pretty much anything, including slashes
