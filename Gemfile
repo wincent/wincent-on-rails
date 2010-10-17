@@ -6,7 +6,7 @@ gem 'mysql2'
 gem 'rails',            '3.0.1'
 gem 'memcache-client'
 gem 'unicorn',          '~> 1.1.3'
-gem 'wikitext',         '2.0'
+gem 'wikitext',         '>= 2.1'
 gem 'wopen3',           '>= 0.3'
 
 group :development, :test do
