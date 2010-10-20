@@ -69,7 +69,7 @@ GEM
     ffi (0.6.3)
       rake (>= 0.8.7)
     gem_plugin (0.2.3)
-    haml (3.0.21)
+    haml (3.0.22)
     i18n (0.4.1)
     jruby-jars (1.5.3)
     json_pure (1.4.6)
