@@ -20,15 +20,15 @@ group :development do
 end
 
 group :test do
-  gem 'akephalos',      :git => 'git://github.com/bernerdschaefer/akephalos.git',
-                        :branch => 'capybara-head'
-  gem 'autotest',       :require => nil
-  gem 'capybara',         '>= 0.4.0.rc'
+  gem 'akephalos',        :git => 'git://github.com/bernerdschaefer/akephalos.git',
+                          :branch => 'capybara-head'
+  gem 'autotest',         :require => nil
+  gem 'capybara',         '~> 0.4.0'
   gem 'database_cleaner', '>= 0.6.0.rc.2'
   gem 'launchy'
-  gem 'mongrel',        :require => nil
-  gem 'mkdtemp',        '>= 1.2'
+  gem 'mongrel',          :require => nil
+  gem 'mkdtemp',          '>= 1.2'
   gem 'rcov'
-  gem 'rr',             '>= 1.0'
+  gem 'rr',               '>= 1.0'
   gem 'webrat'
 end
