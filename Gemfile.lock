@@ -148,7 +148,7 @@ GEM
       nokogiri (>= 1.2.0)
       rack (>= 1.0)
       rack-test (>= 0.5.3)
-    wikitext (2.1)
+    wikitext (2.1.1)
     wopen3 (0.3)
     xpath (0.1.2)
       nokogiri (~> 1.3)
