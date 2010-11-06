@@ -27,6 +27,7 @@ module Git
   class CommandError < ChildProcessError; end
 
   autoload :Author, 'git/author'
+  autoload :Blob, 'git/blob'
   autoload :Branch, 'git/branch'
   autoload :Commit, 'git/commit'
   autoload :Committer, 'git/committer'
@@ -35,4 +36,5 @@ module Git
   autoload :Ref, 'git/ref'
   autoload :Repo, 'git/repo'
   autoload :Tag, 'git/tag'
+  autoload :Tree, 'git/tree'
 end # module Git
