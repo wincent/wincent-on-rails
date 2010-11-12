@@ -142,7 +142,7 @@ GEM
     treetop (1.4.8)
       polyglot (>= 0.3.1)
     tzinfo (0.3.23)
-    unicorn (1.1.4)
+    unicorn (1.1.5)
       rack
     webrat (0.7.1)
       nokogiri (>= 1.2.0)
