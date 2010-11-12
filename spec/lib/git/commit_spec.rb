@@ -386,6 +386,40 @@ describe Git::Commit do
       end
     end
 
+    describe 'regressions' do
+      it 'handles commits which only change mode (1 file)' do
+        Dir.chdir repo.path do
+          `chmod +x file`
+          `git add file`
+          `git commit -m "mode change"`
+        end
+
+        expect do
+          # was causing:
+          #   NoMethodError: private method `chomp' called for nil:NilClass
+          diff
+        end.to_not raise_error
+      end
+
+      it 'handles commits which only change mode (2 files)' do
+        Dir.chdir repo.path do
+          `echo foo > file2`
+          `git add file2`
+          `git commit -m "adding another"`
+          `chmod +x file file2`
+          `git add file file2`
+          `git commit -m "mode change"`
+        end
+
+        expect do
+          # was causing:
+          #   Git::Commit::MalformedDiffError: malformed diff output for line:
+          #   diff --git a/file2 b/file2
+          diff
+        end.to_not raise_error
+      end
+    end
+
     # TODO: test root commit, merge commit etc
     # file creation, file deletion
     # removal within a line

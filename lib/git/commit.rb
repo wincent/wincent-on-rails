@@ -209,6 +209,10 @@ module Git
     def parse_file_diff change, lines
       parse_git_diff_header lines.shift.chomp
       parse_extended_headers lines
+      if change[:added] == 0 and change[:deleted] == 0 # mode-only change
+        change[:hunks] = []
+        return
+      end
       unless change[:binary] = parse_from_to_header(lines)
         change[:hunks] = parse_hunks lines
       end
@@ -234,7 +238,8 @@ module Git
         /\Adissimilarity index (.+)\z/,
         /\Aindex ([a-f0-9]+)\.\.([a-f0-9]+)( [0-7]+)?\z/
       ]
-      while line = lines.first.chomp
+      while line = lines.first
+        line = line.chomp
         if header_patterns.any? { |pattern| line.match pattern }
           lines.shift
         else
