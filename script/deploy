@@ -56,8 +56,8 @@ usage() {
   echo "        unlock    loosen permissions to enable deployment"
   echo "         check    check dependencies and prerequisites"
   echo "        deploy    clone repo and deploy"
-  echo "  migrate_test    migrate test database only"
-  echo "          spec    run specs"
+  echo "  migrate_test    migrate test database only (staging environment only)"
+  echo "          spec    run specs (staging environment only)"
   echo "       disable    display a maintenance page"
   echo "       migrate    migrate all databases"
   echo "        switch    update the symlink to point to the latest deployment"
@@ -83,7 +83,7 @@ usage() {
   echo "     $0 staging disable migrate switch restart enable summary lockdown"
   echo ""
   echo "     # now we repeat in the production environment:"
-  echo "     $0 unlock check deploy migrate_test spec"
+  echo "     $0 unlock check deploy"
   echo "     $0 disable migrate switch restart enable summary lockdown"
   echo ""
   echo "     # the \"prep/finalize\" shorthand encapsulates the above patterns:"
@@ -330,13 +330,21 @@ if [ -n "$DO_DEPLOY" ]; then
 fi
 
 if [ -n "$DO_MIGRATE_TEST" ]; then
-  echo "Processing command: migrate_test"
-  ssh rails@$SERVER "sh -c 'cd $DEPLOY/latest && bin/rake --silent RAILS_ENV=test db:migrate'"
+  if [ $ENVIRONMENT = staging ]; then
+    echo "Processing command: migrate_test"
+    ssh rails@$SERVER "sh -c 'cd $DEPLOY/latest && bin/rake --silent RAILS_ENV=test db:migrate'"
+  else
+    echo "Skipping command: migrate_test (only runs in staging environment)"
+  fi
 fi
 
 if [ -n "$DO_SPEC" ]; then
-  echo "Processing command: spec"
-  ssh rails@$SERVER "sh -c 'cd $DEPLOY/latest && bin/rspec -f progress spec'"
+  if [ $ENVIRONMENT = staging ]; then
+    echo "Processing command: spec"
+    ssh rails@$SERVER "sh -c 'cd $DEPLOY/latest && bin/rspec -f progress spec'"
+  else
+    echo "Skipping command: spec (only runs in staging environment)"
+  fi
 fi
 
 if [ -n "$DO_DISABLE" ]; then
