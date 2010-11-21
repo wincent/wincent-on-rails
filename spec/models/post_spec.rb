@@ -285,7 +285,9 @@ describe Post do
   describe '#to_param' do
     context 'new record' do
       context 'no permalink set' do
-        Post.new.to_param.should == nil
+        it 'returns nil' do
+          Post.new.to_param.should == nil
+        end
       end
 
       context 'permalink set' do
