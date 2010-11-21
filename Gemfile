@@ -12,7 +12,7 @@ gem 'wopen3',           '>= 0.3'
 group :development, :test do
   gem 'factory_girl_rails'                # factories in development console
   gem 'rspec-rails',    '~> 2.0.1'        # needed for generators to work
-  gem 'steak',          '>= 1.0.0.beta.2' # again, for generators
+  gem 'steak',          '>= 1.0.0.rc.3'   # again, for generators
 end
 
 group :development do
