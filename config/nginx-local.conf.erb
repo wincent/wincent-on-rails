@@ -45,50 +45,73 @@ http {
     ssl_certificate_key <%= ENV['RAILS_ROOT'] %>/config/local/ssl.key;
     server_name rails.wincent.local;
     root <%= ENV['RAILS_ROOT'] %>/public;
+
+    set $static_root <%= ENV['RAILS_ROOT'] %>/public;
+
     client_body_temp_path <%= ENV['RAILS_ROOT'] %>/tmp/client_body_temp;
     fastcgi_temp_path <%= ENV['RAILS_ROOT'] %>/tmp/fast_cgi_temp;
     proxy_temp_path <%= ENV['RAILS_ROOT'] %>/tmp/proxy_temp;
     access_log <%= ENV['RAILS_ROOT'] %>/log/access_log;
-    error_page 500 502 503 504 /500.html;
+    error_page 500 502 504 /500.html;
+    error_page 503 /maintenance.html;
 
-    # show maintenance page (added by Capistrano) if present
-    if (-f $document_root/system/maintenance.html) {
-      rewrite ^(.*)$ /system/maintenance.html last;
-      break;
-     }
+    # serve static content without hitting Rails
+    # this also bypasses our maintenance page check
+    location ~ /(images|javascripts|stylesheets)/ {
+      expires 72h;
+    }
+
+    location /system/maintenance.html {
+      # always allow access to this file; explained here:
+      # http://www.ruby-forum.com/topic/141251
+    }
 
     location / {
-
-      index index.html;
-
-      # forward client info otherwise Rails won't see it
-      proxy_set_header X-Real-IP $remote_addr;
-      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-      proxy_set_header Host $http_host;
-      proxy_set_header X_FORWARDED_PROTO https;
-      proxy_max_temp_file_size 0;
-
-      # serve static content without hitting Rails
-      location ~ ^/(images|javascripts|stylesheets)/ {
-        expires 10y;
-      }
-      if (-f $request_filename) {
-        break;
+      if (-f $document_root/system/maintenance.html) {
+        error_page 503 /system/maintenance.html;
+        return 503;
       }
 
-      # cached pages
+      # cached pages: only for GET requests
       set $cache_extension '';
       if ($request_method = GET) {
         set $cache_extension '.html';
       }
 
-      # the above is a hack because nginx doesn't allow nested or ANDed ifs
+      if (-f $request_filename) {
+        break;
+      }
+
       if (-f $request_filename$cache_extension) {
         rewrite (.*) $1.html break;
       }
 
-      # everything else goes to the mongrel cluster
-      proxy_pass http://mongrels;
+      if (-f $static_root$uri) {
+        root $static_root;
+        break;
+      }
+
+      if (-f $static_root${uri}index.html) {
+        # URI has trailing slash
+        set $index_filename 'index.html';
+        root $static_root;
+        rewrite (.*) $1$index_filename break;
+      }
+
+      if (-f $static_root$uri/index.html) {
+        # URI has no trailing slash
+        rewrite (.*) $1/ permanent;
+      }
+
+      proxy_set_header X-Real-IP $remote_addr;
+      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+      proxy_set_header Host $http_host;
+      proxy_set_header X_FORWARDED_PROTO https;
+      proxy_max_temp_file_size 0;
+      if (!-f $request_filename) {
+        proxy_pass http://mongrels;
+        break;
+      }
 
     } # end: location
   } # end: server
