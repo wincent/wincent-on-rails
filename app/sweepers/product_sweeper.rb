@@ -16,6 +16,7 @@ class ProductSweeper < ActionController::Caching::Sweeper
   def expire_cache product
     expire_page(product_path(product) + '.html')  # products/foo.html
     #expire_page(product_path(product) + '.atom')  # products/foo.atom
+    expire_page('/index.html')                    # / routes to products#index
     expire_page(products_path + '.html')          # products.html
     #expire_page(products_path + '.atom')          # products.atom
 
@@ -29,12 +30,13 @@ class ProductSweeper < ActionController::Caching::Sweeper
   # on-demand cache expiration from rake (rake cache:clear)
   def self.expire_all
     # see the notes in the IssueSweeper for full explanation of why we do it this way
-    relative_path   = instance.send :products_path
-    index_path      = ActionController::Base.send(:page_cache_directory) + relative_path
+    base_path     = ActionController::Base.send(:page_cache_directory)
+    relative_path = instance.send :products_path
 
     # products.atom, products.html
     # products/foo.atom, products/foo.html etc
     # products/foo/about.html, products/foo/buy.html etc
-    FileUtils.rm_rf(Dir["#{index_path}*"])
+    FileUtils.rm_rf(Dir["#{base_path + relative_path}*"])
+    FileUtils.rm_f(base_path + '/index.html')
   end
 end
