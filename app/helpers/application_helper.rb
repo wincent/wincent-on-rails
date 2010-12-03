@@ -235,7 +235,7 @@ module ApplicationHelper
     content_tag :div, :id => 'breadcrumbs' do
       [link_to('Home', root_path), *crumbs].map do |crumb|
         crumb.html_safe? ? crumb : h(crumb)
-      end.join(' &raquo; ')
+      end.join(' &raquo; ').html_safe
     end
   end
 
