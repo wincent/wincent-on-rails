@@ -4,8 +4,9 @@
     $(function() {
       ajax_comment_form('#{new_tweet_comment_path @tweet.id}');
     });
-=breadcrumbs link_to('Twitter', tweets_path), "Tweet \##{@tweet.id}"
-%h1.major Tweet ##{@tweet.id}
+-@page_title = "Tweet \##{@tweet.id}"
+=breadcrumbs link_to('Twitter', tweets_path), @page_title
+%h1.major=@page_title
 %div[@tweet]
   =@tweet.body.w
   .when
