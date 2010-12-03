@@ -166,6 +166,10 @@ describe ApplicationHelper do
       breadcrumbs('foo').should be_html_safe
     end
 
+    it 'escapes non-HTML-safe strings' do
+      breadcrumbs('"foo"').should match(/&quot;foo&quot;/)
+    end
+
     # was a regression, introduced in the move from Rails 3.0.1 to 3.0.3
     it 'does not escape links' do
       # link_to returns HTML-safe strings, so mimic it
