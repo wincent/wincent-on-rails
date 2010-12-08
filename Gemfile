@@ -24,7 +24,7 @@ group :test do
                           :branch => 'capybara-head'
   gem 'autotest',         :require => nil
   gem 'capybara',         '~> 0.4.0'
-  gem 'database_cleaner', '>= 0.6.0.rc.2'
+  gem 'database_cleaner', '~> 0.6.0'
   gem 'launchy'
   gem 'mongrel',          :require => nil
   gem 'mkdtemp',          '>= 1.2'
