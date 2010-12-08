@@ -39,9 +39,9 @@ module CustomAtomFeedHelper
     # Optional entry elements:    category, contributor, published, source, rights
     def entry model, options = {}, &block
       @xml.entry do
-        # on generating unique tag URIs:  http://diveintomark.org/archives/2004/05/28/howto-atom-id
-        # see also:                       http://www.taguri.org/
-        # =>                              http://www.faqs.org/rfcs/rfc4151.html
+        # on generating unique tag URIs:
+        #   http://diveintomark.org/archives/2004/05/28/howto-atom-id
+        #   http://www.faqs.org/rfcs/rfc4151.html
         @xml.id "tag:#{@view.request.host},2008:#{model.class.to_s.tableize}/#{model.id}"
         @xml.published model.created_at.xmlschema
         @xml.updated model.updated_at.xmlschema
