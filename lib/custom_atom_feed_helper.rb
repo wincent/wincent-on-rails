@@ -17,7 +17,7 @@ module CustomAtomFeedHelper
     # Recommended feed elements:  author, link
     # Optional feed elements:     category, contributor, generator, icon, logo, rights, subtitle
     xml.feed 'xml:lang' => 'en-US', 'xmlns' => 'http://www.w3.org/2005/Atom' do
-      xml.id "tag:#{request.host},2008:#{request.fullpath.split('.')[0]}"
+      xml.id "tag:#{APP_CONFIG['host']},2008:#{request.fullpath.split('.')[0]}"
       xml.link :rel => 'alternate', :type => 'text/html', :href => request.url.gsub(/\.atom$/, '')
       xml.link :rel => 'self', :type => 'application/atom+xml', :href => request.url
       yield CustomAtomFeedBuilder.new(xml, self)
@@ -42,7 +42,7 @@ module CustomAtomFeedHelper
         # on generating unique tag URIs:
         #   http://diveintomark.org/archives/2004/05/28/howto-atom-id
         #   http://www.faqs.org/rfcs/rfc4151.html
-        @xml.id "tag:#{@view.request.host},2008:#{model.class.to_s.tableize}/#{model.id}"
+        @xml.id "tag:#{APP_CONFIG['host']},2008:#{model.class.to_s.tableize}/#{model.id}"
         @xml.published model.created_at.xmlschema
         @xml.updated model.updated_at.xmlschema
         @xml.link :rel => 'alternate', :type => 'text/html', :href => options[:url] || @view.polymorphic_url(model)
