@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe SessionsController do
-  it_has_behavior 'ApplicationController protected methods'
+  it_should_behave_like 'ApplicationController subclass'
 
   def current_user
     controller.send :current_user

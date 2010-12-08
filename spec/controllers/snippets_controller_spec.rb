@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe SnippetsController do
-  it_has_behavior 'ApplicationController protected methods'
+  it_should_behave_like 'ApplicationController subclass'
 
   describe '#index' do
     describe 'HTML format' do

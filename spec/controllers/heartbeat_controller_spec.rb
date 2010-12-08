@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe HeartbeatController do
-  it_has_behavior 'ApplicationController protected methods'
+  it_should_behave_like 'ApplicationController subclass'
 
   it 'suppresses logging' do
     controller.logger.should be_nil

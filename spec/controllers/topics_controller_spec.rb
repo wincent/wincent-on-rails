@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe TopicsController do
-  it_has_behavior 'ApplicationController protected methods'
+  it_should_behave_like 'ApplicationController subclass'
 
   describe '#show (Atom)' do
     render_views # so that we can test layouts as well

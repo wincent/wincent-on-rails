@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe TweetsController do
-  it_has_behavior 'ApplicationController protected methods'
+  it_should_behave_like 'ApplicationController subclass'
 
   describe '#index' do
     def do_get

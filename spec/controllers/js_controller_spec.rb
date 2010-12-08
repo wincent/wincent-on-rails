@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe JsController do
-  it_has_behavior 'ApplicationController protected methods'
+  it_should_behave_like 'ApplicationController subclass'
 
   describe '#show' do
     before do

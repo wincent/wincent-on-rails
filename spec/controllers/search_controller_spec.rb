@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe SearchController do
-  it_has_behavior 'ApplicationController protected methods'
+  it_should_behave_like 'ApplicationController subclass'
 
   describe '#search' do
     it 'assigns the offset for use by the view' do

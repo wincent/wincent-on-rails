@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe CommentsController do
-  it_has_behavior 'ApplicationController protected methods'
+  it_should_behave_like 'ApplicationController subclass'
 
   describe '#edit' do
     context 'logged in as admin' do

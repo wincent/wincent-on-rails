@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe ResetsController do
-  it_has_behavior 'ApplicationController protected methods'
+  it_should_behave_like 'ApplicationController subclass'
 
   describe '#new' do
     it 'assigns a new reset' do

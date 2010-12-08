@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe ConfirmationsController do
-  it_has_behavior 'ApplicationController protected methods'
+  it_should_behave_like 'ApplicationController subclass'
 
   describe '#new' do
     context 'as a logged in user' do

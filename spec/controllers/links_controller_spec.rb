@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe LinksController do
-  it_has_behavior 'ApplicationController protected methods'
+  it_should_behave_like 'ApplicationController subclass'
 
   describe 'show action with permalink' do
     before do

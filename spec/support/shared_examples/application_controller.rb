@@ -1,4 +1,4 @@
-shared_examples_for 'ApplicationController protected methods' do
+shared_examples_for 'ApplicationController subclass' do
   context 'private methods' do
     it 'restricts access to #log_in_with_cookie' do
       expect do
