@@ -106,8 +106,8 @@ describe UsersController do
         do_post
         user = assigns[:user]
         user.session_expiry.should > Time.now
-        cookies['user_id'].should == user.id.to_s
-        cookies['session_key'].should == user.session_key
+        request.env['action_dispatch.cookies']['user_id'].should == user.id.to_s
+        request.env['action_dispatch.cookies']['session_key'].should == user.session_key
       end
     end
 
@@ -273,8 +273,8 @@ describe UsersController do
         it 'remains logged-in' do
           do_request
           user.reload.session_expiry.should > Time.now
-          cookies['user_id'].should == user.id.to_s
-          cookies['session_key'].should == user.session_key
+          request.env['action_dispatch.cookies']['user_id'].should == user.id.to_s
+          request.env['action_dispatch.cookies']['session_key'].should == user.session_key
         end
       end
 
