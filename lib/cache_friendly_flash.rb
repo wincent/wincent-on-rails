@@ -18,7 +18,7 @@
 # our test assertions by just querying the flash.
 #
 # In addition, whether or not an after_filter should always run is currently
-# under discussion on the Rails tracker, and make change in the future; see:
+# under discussion on the Rails tracker, and may change in the future; see:
 #
 #   https://rails.lighthouseapp.com/projects/8994/tickets/5648
 class CacheFriendlyFlash
