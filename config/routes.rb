@@ -30,9 +30,23 @@ Wincent::Application.routes.draw do
   end
 
   resources :links
+
+  # must explicitly allow period in the id part of the route otherwise it
+  # will be classified as a route separator
+  resources :posts, :path => 'blog', :id => /[a-z0-9\-\.]+/ do
+    resources :comments, :only => [ :create, :new ]
+    collection do
+      get '(page/:page)' => 'posts#index', :page => %r{\d+}
+    end
+  end
+
   resources :products do
     resources :pages
   end
+
+  # mapping to "product_page" would overwrite the nested RESTful route above
+  get '/products/:id/:page_id' => 'products#show',
+      :as => 'embedded_product_page'
 
   resources :repos do
     # Git branch names can include pretty much anything, including slashes
@@ -67,24 +81,12 @@ Wincent::Application.routes.draw do
   end
 
   resources :taggings
-  resources :tweets, :path => 'twitter' do
-    resources :comments, :only => [ :create, :new ]
+
+  # must explicitly allow period in the id part of the route otherwise
+  # it will be classified as a route separator
+  resources :tags, :id => /[a-z0-9\.]+/ do
     collection do
-      get '(page/:page)' => 'tweets#index', :page => %r{\d+}
-    end
-  end
-
-  # mapping to "product_page" would overwrite the nested RESTful route above
-  get '/products/:id/:page_id' => 'products#show',
-      :as => 'embedded_product_page'
-
-
-  # must explicitly allow period in the id part of the route otherwise it
-  # will be classified as a route separator
-  resources :posts, :path => 'blog', :id => /[a-z0-9\-\.]+/ do
-    resources :comments, :only => [ :create, :new ]
-    collection do
-      get '(page/:page)' => 'posts#index', :page => %r{\d+}
+      get :search
     end
   end
 
@@ -94,11 +96,10 @@ Wincent::Application.routes.draw do
   # /forum/foo/topic/12/ only if the user clicks on link
   resources :topics, :only => [ :index, :show ]
 
-  # must explicitly allow period in the id part of the route otherwise
-  # it will be classified as a route separator
-  resources :tags, :id => /[a-z0-9\.]+/ do
+  resources :tweets, :path => 'twitter' do
+    resources :comments, :only => [ :create, :new ]
     collection do
-      get :search
+      get '(page/:page)' => 'tweets#index', :page => %r{\d+}
     end
   end
 
