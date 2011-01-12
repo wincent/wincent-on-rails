@@ -308,9 +308,9 @@ if [ -n "$DO_DEPLOY" ]; then
   ssh rails@$SERVER "sh -l -c '(test ! -e $TIMESTAMP || (echo \"  failed: $CHECKOUT already exists\" && exit 1)) && \
                                 git clone --quiet $REPO $CHECKOUT && \
                                 cd $CHECKOUT && \
-                                git checkout --quiet -b deploy $REMOTE_REF && \
+                                git checkout --quiet -b deploy $REMOTE_REF > /dev/null && \
                                 git submodule --quiet init && \
-                                git submodule --quiet update && \
+                                git submodule --quiet update > /dev/null && \
                                 (git rev-parse HEAD > $CHECKOUT/REVISION) && \
                                 rm -rf $CHECKOUT/log \
                                        $CHECKOUT/public/system \
