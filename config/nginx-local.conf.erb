@@ -82,6 +82,17 @@ http {
         break;
       }
 
+      set $index_filename 'index';
+      if (-f $request_filename$index_filename$cache_extension) {
+        # URI has trailing slash
+        rewrite (.*) $1$index_filename$cache_extension break;
+      }
+
+      if (-f $request_filename/$index_filename$cache_extension) {
+        # URI has no trailing slash
+        rewrite (.*) $1/ permanent;
+      }
+
       if (-f $request_filename$cache_extension) {
         rewrite (.*) $1.html break;
       }
@@ -93,9 +104,8 @@ http {
 
       if (-f $static_root${uri}index.html) {
         # URI has trailing slash
-        set $index_filename 'index.html';
         root $static_root;
-        rewrite (.*) $1$index_filename break;
+        rewrite (.*) $1$index_filename$cache_extension break;
       }
 
       if (-f $static_root$uri/index.html) {
