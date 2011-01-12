@@ -116,10 +116,6 @@ Wincent::Application.routes.draw do
     resources :posts
     resources :tags
     get 'dashboard' => 'dashboard#show'
-    # without this url_for() is broken in app/views/layouts in the admin
-    # namespace
-    # TODO: check that this is still the case in Rails 3
-    get 'misc/:action' => 'misc'
   end
 
   get 'about'           => 'misc#about'
