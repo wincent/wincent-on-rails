@@ -1,5 +1,5 @@
 #!/bin/sh -e
-# Copyright 2009-2010 Wincent Colaiuta. All rights reserved.
+# Copyright 2009-2011 Wincent Colaiuta. All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
@@ -289,6 +289,9 @@ if [ -n "$DO_CHECK" ]; then
   git show $LOCAL_REF:db/schema.rb > $TMPDIR/schema.REF.rb
   diff -q -b $TMPDIR/schema.REF.rb $TMPDIR/schema.HEAD.rb > /dev/null || \
     warn "current schema does not match $LOCAL_REF:db/schema.rb -- did you remember to run rake 'db:schema:dump' and check in the result?"
+  echo "  checking: worktree is clean"
+  git diff --quiet || \
+    warn "worktree has uncommitted changes -- did the specs really pass against what you're going to deploy?"
 fi
 
 if [ -n "$DO_DEPLOY" ]; then
