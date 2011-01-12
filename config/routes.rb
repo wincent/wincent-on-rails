@@ -22,33 +22,25 @@ Wincent::Application.routes.draw do
   resources :taggings
 
   resources :repos do
-    # Rails BUG:
-    #   https://rails.lighthouseapp.com/projects/8994/tickets/5513
-    # fixed in this commit (post-3.0):
-    #   http://github.com/rails/rails/commit/02480a897be25c24f59180513d37649a31ad3835
-    # until 3.0.2 is released, need to work around this with an explicit
-    # "nested" block:
-    nested do
-      # Git branch names can include pretty much anything, including slashes
-      # and crazy stuff like leading dashes, but we adopt a more restrictive
-      # model here: we insist that the branch name begin with a letter, a
-      # number or an underscore, and the remainder of the branch name may be
-      # any number of letters, numbers, underscores, hyphens, slashes or
-      # periods.
-      #
-      # Note that this is way more liberal than most Rails resources, so it
-      # means we can't do stuff like edit branches, but that's fine as they
-      # are effectively a read-only resource.
-      resources :branches, :id => %r{[a-z0-9_][a-z0-9./_-]*}i,
-        :only => [:index, :show]
+    # Git branch names can include pretty much anything, including slashes
+    # and crazy stuff like leading dashes, but we adopt a more restrictive
+    # model here: we insist that the branch name begin with a letter, a
+    # number or an underscore, and the remainder of the branch name may be
+    # any number of letters, numbers, underscores, hyphens, slashes or
+    # periods.
+    #
+    # Note that this is way more liberal than most Rails resources, so it
+    # means we can't do stuff like edit branches, but that's fine as they
+    # are effectively a read-only resource.
+    resources :branches, :id => %r{[a-z0-9_][a-z0-9./_-]*}i,
+      :only => [:index, :show]
 
-      resources :commits, :id => /[a-f0-9]{4,40}/,
-        :only => [:index, :show]
+    resources :commits, :id => /[a-f0-9]{4,40}/,
+      :only => [:index, :show]
 
-      # can't use "resources :tags", as we already have a TagsController
-      resources :git_tags, :path => 'tags', :id => %r{[a-z0-9_][a-z0-9./_-]*}i,
-       :only => [:index, :show]
-    end
+    # can't use "resources :tags", as we already have a TagsController
+    resources :git_tags, :path => 'tags', :id => %r{[a-z0-9_][a-z0-9./_-]*}i,
+      :only => [:index, :show]
   end
   resources :resets
   resources :snippets do
