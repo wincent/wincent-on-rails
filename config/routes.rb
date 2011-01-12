@@ -118,7 +118,6 @@ Wincent::Application.routes.draw do
     get 'dashboard' => 'dashboard#show'
   end
 
-  get 'about'           => 'misc#about'
   get 'dashboard'       => 'dashboard#show'
   get 'heartbeat/ping'
 

@@ -67,7 +67,7 @@
         %li{ :class => navbar_selected?('wiki') }=link_to 'Wiki', articles_path
         %li{ :class => navbar_selected?('forums') }=link_to 'Forums', forums_path
         %li{ :class => navbar_selected?('support') }=link_to 'Support', support_path
-        %li{ :class => navbar_selected?('about') }=link_to 'About', about_path
+        %li{ :class => navbar_selected?('about') }=link_to 'About', '/misc/about'
         %li{ :class => navbar_selected?('search') }
           =link_to 'Search', search_path, :id => 'search-link'
           %form{:id => 'search', 'accept-charset' => 'UTF-8', :action => search_path, :method => 'get' }
