@@ -41,7 +41,7 @@ Wincent::Application.routes.draw do
   end
 
   resources :products do
-    resources :pages
+    resources :pages, :except => [ :index, :show ]
   end
 
   # mapping to "product_page" would overwrite the nested RESTful route above
