@@ -45,7 +45,7 @@ Wincent::Application.routes.draw do
   end
 
   # mapping to "product_page" would overwrite the nested RESTful route above
-  get '/products/:id/:page_id' => 'products#show',
+  get 'products/:id/:page_id' => 'products#show',
       :as => 'embedded_product_page'
 
   resources :repos do
