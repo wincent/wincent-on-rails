@@ -129,7 +129,7 @@ Wincent::Application.routes.draw do
   get 'login'           => 'sessions#new'
   get 'logout'          => 'sessions#destroy'
   get 'misc/:action'    => 'misc'
-  get '/search'         => 'search#search'
+  get 'search'          => 'search#search'
   get 'support'         => 'support#index'
 
   root :to => 'products#index'
