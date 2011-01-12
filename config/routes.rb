@@ -1,15 +1,30 @@
 Wincent::Application.routes.draw do
+  # must explicitly allow period in the id part of the route
+  # otherwise it will be classified as a route separator
+  resources :articles, :id => /[^\/]+/ , :path => 'wiki' do
+    resources :comments, :only => [ :create, :new ]
+    collection do
+      # this and other RESTful pagination routes were broken by Rails 3.0.3
+      # see Rails BUG: https://rails.lighthouseapp.com/projects/8994/tickets/6028
+      # the workaround for now is to make the page parameter appear as optional
+      get '(page/:page)' => 'articles#index', :page => %r{\d+}
+    end
+  end
+
   resources :attachments
   resources :comments
   resources :confirmations, :path => 'confirm'
+
+  resources :forums do
+    resources :topics, :except => :index do
+      resources :comments, :only => [ :create, :new ]
+    end
+  end
 
   resources :issues do
     resources :comments, :only => [:create, :new]
     collection do
       get :search
-      # this and other RESTful pagination routes were broken by Rails 3.0.3
-      # see Rails BUG: https://rails.lighthouseapp.com/projects/8994/tickets/6028
-      # the workaround for now is to make the page parameter appear as optional
       get '(page/:page)' => 'issues#index', :page => %r{\d+}
     end
   end
@@ -18,8 +33,6 @@ Wincent::Application.routes.draw do
   resources :products do
     resources :pages
   end
-  resources :sessions
-  resources :taggings
 
   resources :repos do
     # Git branch names can include pretty much anything, including slashes
@@ -42,7 +55,10 @@ Wincent::Application.routes.draw do
     resources :git_tags, :path => 'tags', :id => %r{[a-z0-9_][a-z0-9./_-]*}i,
       :only => [:index, :show]
   end
+
   resources :resets
+  resources :sessions
+
   resources :snippets do
     resources :comments, :only => [:create, :new ]
     collection do
@@ -50,6 +66,7 @@ Wincent::Application.routes.draw do
     end
   end
 
+  resources :taggings
   resources :tweets, :path => 'twitter' do
     resources :comments, :only => [ :create, :new ]
     collection do
@@ -57,12 +74,9 @@ Wincent::Application.routes.draw do
     end
   end
 
-  get '/search' => 'search#search'
-
   # mapping to "product_page" would overwrite the nested RESTful route above
-  match '/products/:id/:page_id' => 'products#show',
-        :via => :get,
-        :as => 'embedded_product_page'
+  get '/products/:id/:page_id' => 'products#show',
+      :as => 'embedded_product_page'
 
 
   # must explicitly allow period in the id part of the route otherwise it
@@ -71,12 +85,6 @@ Wincent::Application.routes.draw do
     resources :comments, :only => [ :create, :new ]
     collection do
       get '(page/:page)' => 'posts#index', :page => %r{\d+}
-    end
-  end
-
-  resources :forums do
-    resources :topics, :except => :index do
-      resources :comments, :only => [ :create, :new ]
     end
   end
 
@@ -98,47 +106,36 @@ Wincent::Application.routes.draw do
     resources :emails, :id => /[^\/]+/
   end
 
-  # again, must explicitly allow period in the id part of the route
-  # otherwise it will be classified as a route separator
-  resources :articles, :id => /[^\/]+/ , :path => 'wiki' do
-    resources :comments, :only => [ :create, :new ]
-    collection do
-      get '(page/:page)' => 'articles#index', :page => %r{\d+}
-    end
-  end
-
-  # regular routes
-  match 'l/:id'           => 'links#show'
-  match 'misc/:action'    => 'misc'
-  match 'heartbeat/ping'
-
-  # explicit extension here to help nginx send correct Content-Type
-  match 'js/:delegated'   => 'js#show',
-        :delegated        => %r{([a-z_]+/)+[a-z_]+\.js}
-
-  # named routes
-  match 'about'           => 'misc#about'
-  match 'dashboard'       => 'dashboard#show'
-  match 'login'           => 'sessions#new'
-  match 'logout'          => 'sessions#destroy'
-  match 'support'         => 'support#index'
-
   # although conditionally inlining admin functionality in the standard
   # resources is elegant it makes page caching difficult because the page
   # looks different for admin users so we provide a separate admin interface
   # for some resources
   namespace :admin do
-    match 'dashboard' => 'dashboard#show'
     resources :forums, :only => [ :index, :show, :update ]
     resources :issues
     resources :posts
     resources :tags
-
+    get 'dashboard' => 'dashboard#show'
     # without this url_for() is broken in app/views/layouts in the admin
     # namespace
     # TODO: check that this is still the case in Rails 3
-    match 'misc/:action' => 'misc'
+    get 'misc/:action' => 'misc'
   end
+
+  get 'about'           => 'misc#about'
+  get 'dashboard'       => 'dashboard#show'
+  get 'heartbeat/ping'
+
+  # explicit extension here to help nginx send correct Content-Type
+  get 'js/:delegated'   => 'js#show',
+      :delegated        => %r{([a-z_]+/)+[a-z_]+\.js}
+
+  get 'l/:id'           => 'links#show'
+  get 'login'           => 'sessions#new'
+  get 'logout'          => 'sessions#destroy'
+  get 'misc/:action'    => 'misc'
+  get '/search'         => 'search#search'
+  get 'support'         => 'support#index'
 
   root :to => 'products#index'
 end
