@@ -22,8 +22,8 @@
 #
 #   https://rails.lighthouseapp.com/projects/8994/tickets/5648
 class CacheFriendlyFlash
-  def initialize app, options = {}
-    @app, @options = app, options
+  def initialize app
+    @app = app
   end
 
   def call env
