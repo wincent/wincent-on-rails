@@ -27,8 +27,7 @@ class CacheFriendlyFlash
   end
 
   def call env
-    status, headers, body = @app.call env
-    [status, headers, body]
+    @app.call env
   ensure
     request   = ActionDispatch::Request.new env
     cookies   = request.cookies
