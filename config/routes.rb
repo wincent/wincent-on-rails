@@ -126,7 +126,7 @@ Wincent::Application.routes.draw do
   get 'dashboard'       => 'dashboard#show'
   get 'heartbeat/ping'
 
-  # explicit extension here to help nginx send correct Content-Type
+  # explicit extension here helps nginx send correct Content-Type
   get 'js/:delegated'   => 'js#show',
       :delegated        => %r{([a-z_]+/)+[a-z_]+\.js}
 
