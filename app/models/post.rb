@@ -9,7 +9,7 @@ class Post < ActiveRecord::Base
   validates_presence_of   :title
   validates_format_of     :permalink,
                           :with => /\A[a-z0-9\.\-]+\z/,
-                          :message => 'must contain only lowercase letters, numbers, periods and hypens'
+                          :message => 'must contain only lowercase letters, numbers, periods and hyphens'
   validates_presence_of   :permalink
   validates_uniqueness_of :permalink
   validates_presence_of   :excerpt

@@ -6,7 +6,7 @@ class Product < ActiveRecord::Base
   validates_presence_of   :name, :permalink
   validates_uniqueness_of :name, :permalink
   validates_format_of     :permalink, :with => /\A[a-z0-9\-]+\z/i,
-    :message => 'may only contain lowercase letters, numbers and hypens'
+    :message => 'may only contain lowercase letters, numbers and hyphens'
   validates_uniqueness_of :bundle_identifier, :allow_blank => true
   before_save             :check_optional_attributes
   attr_accessible         :category, :name, :permalink, :position,
