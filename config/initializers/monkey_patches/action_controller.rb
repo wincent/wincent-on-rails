@@ -4,4 +4,4 @@ end
 
 module ActionController
   class ForbiddenError < ActionControllerError; end
-end # module HTTPStatusCodes
+end # module ActionController
