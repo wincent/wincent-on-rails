@@ -279,34 +279,6 @@ $(document).ready(function() {
     return confirm($(this).attr('data-confirm'));
   });
 
-  // set up "delete" button forms
-  $('a[data-method=delete]').live('click', function(event) {
-    var csrf_token = $('meta[name=csrf-token]').attr('content'),
-        csrf_param = $('meta[name=csrf-param]').attr('content'),
-        link = $(this),
-        href = link.attr('href'),
-        method = link.attr('data-method'), // delete
-        form = $('<form/>', {
-          'method': 'post',
-          'action': href,
-          'type': 'hidden'
-          }).append($('<input/>', {
-              'name': '_method',
-              'value': method, // delete
-              'type': 'hidden'
-          }));
-    if (csrf_token && csrf_param) {
-      form.append($('<input/>', {
-        'name': csrf_param,
-        'value': csrf_token,
-        'type': 'hidden'
-        }));
-    }
-    form.hide().appendTo('body');
-    form.submit();
-    event.preventDefault();
-  });
-
   // set up "popup" links
   $('a[data-popup]').live('click', function() {
     window.open(this.href, null, $(this).attr('data-popup'));
