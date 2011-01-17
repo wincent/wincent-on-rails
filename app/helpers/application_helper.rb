@@ -317,29 +317,9 @@ module ApplicationHelper
     js.gsub(/\s+/, ' ').strip
   end
 
-  def button_to_destroy_model model, url
-    model_id = "#{model.class.to_s.downcase}_#{model.id}"
-    form_id = "#{model_id}_destroy_form"
-    haml_tag :form, { :id => form_id, :style => 'display:inline;' } do
-      onclick = inline_js <<-JS
-          if (confirm('Really delete?')) {
-            $.ajax({
-              'url': '#{url}',
-              'type': 'post',
-              'dataType': 'json',
-              'data': '_method=delete',
-              'success': function() {
-                $('\##{model_id}').fadeOut('slow');
-              },
-              'error': function() {
-                alert('Failed to delete');
-              }
-            });
-          };
-        JS
-      haml_tag :input, { :name => 'button', :onclick => onclick,
-        :type => 'button', :value => 'destroy', :class => 'destructive' }
-    end
+  def button_to_destroy_model model, url = nil
+    button_to 'destroy', model, :confirm => 'Are you sure?',
+      :method => :delete, :class => 'destructive', :remote => true
   end
 
   def button_to_moderate_model_as_ham model, url
@@ -366,7 +346,7 @@ module ApplicationHelper
 
   # the issue helpers must go here in the application helper because they are used in both Admin::Issues and Issues namespaces
   def button_to_destroy_issue issue
-    button_to_destroy_model issue, issue_path(issue)
+    button_to_destroy_model issue
   end
 
   def button_to_moderate_issue_as_ham issue

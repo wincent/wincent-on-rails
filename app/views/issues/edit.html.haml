@@ -5,7 +5,7 @@
     =render 'issues/form', :f => f
   .links
     =link_to 'show issue', issue_path(@issue)
-    -button_to_destroy_issue @issue
+    =button_to_destroy_issue @issue
     -button_to_moderate_issue_as_ham @issue if @issue.awaiting_moderation?
 .links
   =link_to 'public issues index', issues_path
