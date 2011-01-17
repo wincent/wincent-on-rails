@@ -4,9 +4,7 @@
 #
 # In the future if the need arises to create independent pages which
 # aren't associated with any specific product then this controller can be
-# modified to handle that. (And if that does happen, the Page model itself
-# will probably be modified to serve as a container for both HTML and
-# wikitext markup.)
+# modified to handle that.
 class PagesController < ApplicationController
   before_filter :require_admin
   before_filter :get_product
