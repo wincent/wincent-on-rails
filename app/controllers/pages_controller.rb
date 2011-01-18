@@ -43,6 +43,10 @@ class PagesController < ApplicationController
      # TODO: make this undoable
      @page.destroy
      respond_to do |format|
+       format.html {
+         flash[:notice] = 'Page deleted'
+         redirect_to @product
+       }
        format.js { render :json => {}.to_json }
      end
    end
