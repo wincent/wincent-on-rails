@@ -279,6 +279,7 @@ $(document).ready(function() {
     return confirm($(this).attr('data-confirm'));
   });
 
+  // set up "remote" (AJAX) forms (only delete for now)
   $('form[data-remote]').live('submit', function(event) {
     var form = $(this);
     $.ajax({
