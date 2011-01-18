@@ -5,7 +5,7 @@
   =render 'form'
   .links
     =link_to 'show', comment_path(@comment)
-    -button_to_destroy_comment @comment
+    =button_to_destroy_comment @comment
     -button_to_moderate_comment_as_ham @comment if @comment.awaiting_moderation?
 .links
   =link_to 'all comments awaiting moderation', comments_path
