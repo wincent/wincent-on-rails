@@ -320,8 +320,7 @@ module ApplicationHelper
   def button_to_destroy_model model
     url = polymorphic_path model, :format => :js
     button_to 'destroy', url, :confirm => 'Are you sure?',
-      :method => :delete, :class => 'destructive', :remote => true,
-      'data-model' => "#{model.class.to_s.downcase}_#{model.id}"
+      :method => :delete, :class => 'destructive', :remote => true
   end
 
   def button_to_moderate_model_as_ham model, url

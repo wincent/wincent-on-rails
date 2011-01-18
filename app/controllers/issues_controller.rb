@@ -136,9 +136,7 @@ class IssuesController < ApplicationController
         flash[:notice] = 'Issue destroyed'
         redirect_to issues_path
       }
-      format.js {
-        render :json => {}.to_json
-      }
+      format.js
     end
   end
 

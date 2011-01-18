@@ -281,12 +281,10 @@ $(document).ready(function() {
 
   $('form[data-remote]').live('submit', function(event) {
     var form = $(this);
-    var model = $('#' + form.find('input[type=submit]').data('model'));
     $.ajax({
       'url': form.attr('action'),
       'type': 'post',
       'data': '_method=delete',
-      'success': function() { model.fadeOut('slow'); },
       'error': function() { alert('Failed to delete'); }
     });
     event.preventDefault();

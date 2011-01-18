@@ -1,9 +1,6 @@
 class JsController < ApplicationController
   before_filter :get_template_path_from_params
 
-  # don't embed JS in default application layout (HTML)
-  layout false
-
   def show
     respond_to do |format|
       format.js {
