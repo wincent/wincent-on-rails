@@ -317,8 +317,9 @@ module ApplicationHelper
     js.gsub(/\s+/, ' ').strip
   end
 
-  def button_to_destroy_model model, url = nil
-    button_to 'destroy', model, :confirm => 'Are you sure?',
+  def button_to_destroy_model model
+    url = polymorphic_path model, :format => :js
+    button_to 'destroy', url, :confirm => 'Are you sure?',
       :method => :delete, :class => 'destructive', :remote => true,
       'data-model' => "#{model.class.to_s.downcase}_#{model.id}"
   end
