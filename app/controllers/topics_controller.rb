@@ -1,6 +1,6 @@
 class TopicsController < ApplicationController
   before_filter :require_admin,   :except => [ :create, :new, :show ]
-  before_filter :get_forum,       :except => [ :index ]
+  before_filter :get_forum,       :except => [ :destroy, :index ]
   before_filter :get_topic,       :only => [ :show ]
   caches_page   :show,            :if => Proc.new { |c| c.request.format.atom? }
   cache_sweeper :topic_sweeper,   :only => [ :create, :update, :destroy ]
@@ -87,10 +87,11 @@ class TopicsController < ApplicationController
   # Admin only.
   def destroy
     # TODO: mark topics as deleted_at rather than really destroying them
-    topic = @forum.topics.find params[:id]
+    topic = Topic.find params[:id] # shallow route
+    forum = topic.forum
     topic.destroy
     respond_to do |format|
-      format.html { redirect_to @forum }
+      format.html { redirect_to forum }
       format.js   { render :json => {}.to_json }
     end
   end

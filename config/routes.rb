@@ -90,11 +90,9 @@ Wincent::Application.routes.draw do
     end
   end
 
-  # avoid some N+1 SELECT problems by allowing unnested links to forum
-  # topics (useful, for example, when displaying search results; no need
-  # to lookup forum from db) ie. /topics/12/ will redirect to
-  # /forum/foo/topic/12/ only if the user clicks on link
-  resources :topics, :only => [ :index, :show ]
+  # use some shallow routes for convenience and to avoid some N+1 select
+  # problems
+  resources :topics, :only => [ :destroy, :index, :show ]
 
   resources :tweets, :path => 'twitter' do
     resources :comments, :only => [ :create, :new ]
