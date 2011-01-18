@@ -140,7 +140,7 @@ function ajax_check_box(selector, class_name, attribute_name, url) {
     '<img alt="Spinner" id="' + spinner_id + '" class="spinner" src="/images/spinner.gif" />';
   field_id.html(new_contents);
   var check_box_id = field_id.find('input');
-  if (field_text == 'true') {
+  if (field_text === 'true') {
     check_box_id.attr('checked', 'checked');
     }
   var old_attr = check_box_id.attr('checked');
@@ -184,7 +184,7 @@ function ajax_select(selector, class_name, attribute_name, options, include_blan
   function option_tag(opt) {
     var tag = '';
     for (var i = 0; i < opt.length; i++) {
-      if (field_text == opt[i][0]) {
+      if (field_text === opt[i][0]) {
         tag = tag + '<option value="' + opt[i][1] + '" selected="selected">' + opt[i][0] + '</option>';
         selection_found = true;
       } else {
@@ -288,14 +288,14 @@ function observe_field(options) {
   };
   var complete = options['complete'] || function() { $('#preview_spinner').hide(); };
 
-  if (typeof window.observed_field_contents == 'undefined')
+  if (typeof window.observed_field_contents === 'undefined')
     window.observed_field_contents = {};
   window.observed_field_contents[field.attr('id')] = field.val();
   setInterval(function() {
     var new_content = field.val();
     var old_content =
       window.observed_field_contents[field.attr('id')];
-    if (new_content != old_content) {
+    if (new_content !== old_content) {
       before();
       var data = options['fieldName'] + '=' + encodeURIComponent(new_content);
       if (options['include']) {

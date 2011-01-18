@@ -27,7 +27,7 @@ function getCookie(name) {
     var c = cookies[i];
     var pos = c.indexOf('=');
     var n = c.substring(0, pos);
-    if (n == name)
+    if (n === name)
       return c.substring(pos + 1);
   }
   return null;
@@ -53,7 +53,7 @@ function deleteCookie(name) {
 function setUpLoginLogoutLinks()
 {
   var user = getCookie('user_id');
-  if (user == null || user == '')
+  if (user === null || user === '')
     $('#logout').remove();
   else
     $('#login').remove();
@@ -105,7 +105,7 @@ function relativizeDates()
     var seconds = Math.round((dist / 1000));
     if (seconds < 0) {
       result = 'in the future';
-    } else if (seconds == 0) {
+    } else if (seconds === 0) {
       result = 'now';
     } else if (seconds < 60) {
       result = 'a few seconds ago';
@@ -123,13 +123,13 @@ function relativizeDates()
       result = Math.round(seconds / 3600) + ' hours ago';
     } else {
       var days = Math.round(seconds / 86400);
-      if (days == 1) {
+      if (days === 1) {
         result = 'yesterday';
       } else if (days <= 7) {
         result = days + ' days ago';
       } else {
         var weeks = Math.round(days / 7);
-        if (weeks == 1) {
+        if (weeks === 1) {
           result = 'a week ago';
         } else if (weeks <= 6) {
           result = weeks + ' weeks ago';
@@ -199,7 +199,7 @@ $.fn.syntaxHighlight = function()
       return text;
 
     var output    = '';
-    while (text != '') {
+    while (text !== '') {
       // iterate through rules, leftmost match wins
       // in case of tie, first matching rule wins (earlier rules have priority)
       var leftmost  = null;
@@ -210,7 +210,7 @@ $.fn.syntaxHighlight = function()
           leftmost    = match.index;
           match.rule  = rule;
           apply       = match;
-          if (leftmost == 0)
+          if (leftmost === 0)
             break;
         }
       }
