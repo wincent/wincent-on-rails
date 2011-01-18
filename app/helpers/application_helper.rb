@@ -319,7 +319,8 @@ module ApplicationHelper
 
   def button_to_destroy_model model, url = nil
     button_to 'destroy', model, :confirm => 'Are you sure?',
-      :method => :delete, :class => 'destructive', :remote => true
+      :method => :delete, :class => 'destructive', :remote => true,
+      'data-model' => "#{model.class.to_s.downcase}_#{model.id}"
   end
 
   def button_to_moderate_model_as_ham model, url
