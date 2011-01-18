@@ -95,8 +95,8 @@ class CommentsController < ApplicationController
     @comment.destroy
     respond_to do |format|
       format.html {
-        # TODO: add flash here, but first check if there are actually any HTML links to this action and format
-        redirect_to comments_path
+        flash[:notice] = 'Comment deleted'
+        redirect_to comments_path # TODO: consider redirecting to parent here
       }
       format.js {
         render :json => {}.to_json
