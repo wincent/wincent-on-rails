@@ -1,5 +1,4 @@
 require 'spec_helper'
-require 'ostruct'
 
 describe ExceptionMailer do
   describe 'exception report' do
