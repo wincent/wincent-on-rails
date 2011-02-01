@@ -21,14 +21,14 @@ module ActionController
 
           # here we define methods: could also use class_variable_set
           class_eval <<-END
-              def sortable_attributes
-                [#{sortable_attributes}]
-              end
+            def sortable_attributes
+              [#{sortable_attributes}]
+            end
 
-              def default_sort_options
-                '#{options[:default].to_s} #{options[:descending] == true ? 'DESC' : 'ASC'}'
-              end
-            END
+            def default_sort_options
+              '#{options[:default].to_s} #{options[:descending] == true ? 'DESC' : 'ASC'}'
+            end
+          END
         end
       end # module ClassMethods
 
