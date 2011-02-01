@@ -87,12 +87,14 @@ class TopicsController < ApplicationController
   # Admin only.
   def destroy
     # TODO: mark topics as deleted_at rather than really destroying them
-    topic = Topic.find params[:id] # shallow route
-    forum = topic.forum
-    topic.destroy
+    @topic = Topic.find params[:id] # shallow route
+    @topic.destroy
     respond_to do |format|
-      format.html { redirect_to forum }
-      format.js   { render :json => {}.to_json }
+      format.html {
+        flash[:notice] = 'Topic destroyed'
+        redirect_to @topic.forum
+      }
+      format.js
     end
   end
 
