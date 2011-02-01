@@ -37,14 +37,13 @@ module ActionController
           @sort_by = params[:sort]  # for use in view
           if params[:order] and params[:order].downcase == 'desc'
             @sort_descending = true # for use in view
-            options = "#{params[:sort]} DESC"
+            "#{params[:sort]} DESC"
           else
-            options = params[:sort]
+            params[:sort]
           end
         else
-          options = default_sort_options
+          default_sort_options
         end
-        options
       end
     end # module Sortable
   end # module Acts
