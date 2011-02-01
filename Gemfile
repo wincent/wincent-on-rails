@@ -7,7 +7,7 @@ gem 'haml',             '~> 3.0.18'
 gem 'mail',             '~> 2.2.15'
 
 gem 'mysql2'
-gem 'rails',            '3.0.3'
+gem 'rails',            '~> 3.0.4.rc1'
 gem 'memcache-client'
 gem 'unicorn',          '~> 1.1.3'
 gem 'wikitext',         '>= 2.1'
