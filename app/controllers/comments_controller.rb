@@ -96,11 +96,9 @@ class CommentsController < ApplicationController
     respond_to do |format|
       format.html {
         flash[:notice] = 'Comment deleted'
-        redirect_to comments_path # TODO: consider redirecting to parent here
+        redirect_to @comment.commentable
       }
-      format.js {
-        render :json => {}.to_json
-      }
+      format.js
     end
   end
 
