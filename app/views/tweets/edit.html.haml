@@ -29,6 +29,5 @@
   =render 'preview'
 .links
   =link_to 'show', @tweet
-  =button_to 'destroy', @tweet, :confirm => 'Are you sure?',
-    :method => :delete, :class => 'destructive'
+  =button_to_destroy_model @tweet
   =link_to 'all tweets', tweets_path
