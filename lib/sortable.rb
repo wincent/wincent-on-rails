@@ -11,19 +11,19 @@ module ActionController
 
           if options[:default]
             order = options[:descending] ? 'DESC' : 'ASC'
-            default_attributes = %Q{:order => "#{options[:default].to_s} #{order}"}
+            default_attributes = "#{options[:default].to_s} #{order}"
           else
             default_attributes = ''
           end
 
-          # here we define methods: could also use class_variable_set
+          # here we define instance methods
           class_eval <<-END
             def sortable_attributes
               [#{sortable_attributes}]
             end
 
             def default_sort_options
-              '#{options[:default].to_s} #{options[:descending] ? 'DESC' : 'ASC'}'
+              '#{default_attributes}'
             end
           END
         end
