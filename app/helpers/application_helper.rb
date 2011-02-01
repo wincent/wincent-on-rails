@@ -318,8 +318,7 @@ module ApplicationHelper
   end
 
   def button_to_destroy_model model
-    url = polymorphic_path model, :format => :js
-    button_to 'destroy', url, :confirm => 'Are you sure?',
+    button_to 'destroy', polymorphic_path(model), :confirm => 'Are you sure?',
       :method => :delete, :class => 'destructive', :remote => true
   end
 

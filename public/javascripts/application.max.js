@@ -283,7 +283,7 @@ $(document).ready(function() {
   $('form[data-remote]').live('submit', function(event) {
     var form = $(this);
     $.ajax({
-      'url': form.attr('action'),
+      'url': form.attr('action') + '.js',
       'type': 'post',
       'data': '_method=delete',
       'error': function() { alert('Failed to delete'); }
