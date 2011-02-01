@@ -3,14 +3,14 @@ require 'spec_helper'
 describe TopicsController do
   # as a nested resource, most of these routes are tested in forums_routing_spec.rb
   describe 'routing' do
-    # only #index and #show implemented at this level
+    # only #index, #show and #destroy implemented at this level
     specify { get('/topics').should have_routing('topics#index') }
     specify { get('/topics/123').should have_routing('topics#show', :id => '123') }
+    specify { delete('/topics/123').should have_routing('topics#destroy', :id => '123') }
 
     # the other RESTful actions are no-ops here
     specify { get('/topics/123/edit').should_not be_recognized }
     specify { put('/topics/123').should_not be_recognized }
-    specify { delete('/topics/123').should_not be_recognized }
     specify { post('/topics').should_not be_recognized }
 
     # as #new is not implemented, this gets routed to #show
