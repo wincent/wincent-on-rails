@@ -40,8 +40,13 @@ class PostsController < ApplicationController
 
   def destroy
     @post.destroy
-    flash[:notice] = "Destroyed post: #{@post.title}"
-    redirect_to posts_path
+    respond_to do |format|
+      format.html {
+        flash[:notice] = 'Deleted post'
+        redirect_to admin_posts_path
+      }
+      format.js
+    end
   end
 
   def show
@@ -77,10 +82,10 @@ private
       @post = Post.find_by_permalink_and_public!(params[:id], true)
     end
   rescue ActiveRecord::RecordNotFound => e
-    # given permalink "foo" a request for "foo.atom" will most likely wind up here
-    if params[:id] =~ /(.+)\.atom\Z/
-      request.format = :atom
-      @post = Post.find_by_permalink_and_public($~[1], true)
+    # given permalink "foo" a request for "foo.atom" or "foo.js" will land here
+    if params[:id] =~ /(.+)\.(atom|js)\Z/
+      request.format = $~[2].to_sym
+      @post = Post.find_by_permalink_and_public $~[1], true
     end
     raise e unless @post
   end

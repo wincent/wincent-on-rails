@@ -25,8 +25,7 @@
           %td=timeinfo post
           %td.links
             =link_to 'edit', edit_post_path(post)
-            =button_to 'destroy', post, :confirm => 'Are you sure?',
-              :method => :delete, :class => 'destructive'
+            =button_to_destroy_model post, :remote => true
 %p.links
   =link_to 'new', new_post_path
   =link_to 'public index', posts_path
