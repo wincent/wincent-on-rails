@@ -10,6 +10,5 @@
     %li=f.submit
 .links
   =link_to 'show', @tag
-  =button_to 'destroy', @tag, :confirm => 'Are you sure?',
-    :method => :delete, :class => 'destructive'
+  -#=button_to_destroy_model @tag
   =link_to 'all tags', tags_path
