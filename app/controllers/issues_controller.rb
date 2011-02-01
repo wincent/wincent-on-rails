@@ -56,7 +56,7 @@ class IssuesController < ApplicationController
     @paginator = RestfulPaginator.new params, issues.count, issues_path
 
     # Rails BUG #5060: must call to_a here so that empty? will work as expected
-    @issues = issues.order(arel_sort_options).limit(@paginator.limit).
+    @issues = issues.order(sort_options).limit(@paginator.limit).
       offset(@paginator.offset).to_a
 
   end
@@ -147,7 +147,7 @@ class IssuesController < ApplicationController
 
       # all() call here is to work around Rails BUG #5060
       #   https://rails.lighthouseapp.com/projects/8994/tickets/5060
-      @issues     = issues.limit(@paginator.limit).offset(@paginator.offset).order(arel_sort_options).all
+      @issues     = issues.limit(@paginator.limit).offset(@paginator.offset).order(sort_options).all
       render 'issues/search/create'
     else
       render 'issues/search/new'

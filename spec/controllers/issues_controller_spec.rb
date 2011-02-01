@@ -23,7 +23,7 @@ describe IssuesController do
     end
 
     it "propagates the user's sort options" do
-      mock(controller).arel_sort_options { '' }
+      mock(controller).sort_options { '' }
       do_get
     end
 

@@ -25,14 +25,14 @@ module ActionController
                 [#{sortable_attributes}]
               end
 
-              def default_arel_sort_options
+              def default_sort_options
                 '#{options[:default].to_s} #{options[:descending] == true ? 'DESC' : 'ASC'}'
               end
             END
         end
       end # module ClassMethods
 
-      def arel_sort_options
+      def sort_options
         if sortable_attributes.include? params[:sort]
           @sort_by = params[:sort]  # for use in view
           if params[:order] and params[:order].downcase == 'desc'
@@ -42,7 +42,7 @@ module ActionController
             options = params[:sort]
           end
         else
-          options = default_arel_sort_options
+          options = default_sort_options
         end
         options
       end

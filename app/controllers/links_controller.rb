@@ -4,7 +4,7 @@ class LinksController < ApplicationController
   acts_as_sortable  :by => [:id, :uri, :permalink, :click_count]
 
   def index
-    @links = Link.order arel_sort_options
+    @links = Link.order sort_options
   end
 
   def new
