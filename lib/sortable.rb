@@ -6,14 +6,14 @@ module ActionController
       module ClassMethods
         def acts_as_sortable options = {}
           if options[:by]
-            sortable_attributes = options[:by].map { |a| a.to_s }
+            sortable_attributes = options[:by].map(&:to_s)
           else
             sortable_attributes = []
           end
           sortable_attributes = sortable_attributes.map { |a| "'#{a}'" }.join(', ')
 
           if options[:default]
-            order = (options[:descending] == true) ? 'DESC' : 'ASC'
+            order = options[:descending] ? 'DESC' : 'ASC'
             default_attributes = %Q{:order => "#{options[:default].to_s} #{order}"}
           else
             default_attributes = ''
@@ -26,7 +26,7 @@ module ActionController
             end
 
             def default_sort_options
-              '#{options[:default].to_s} #{options[:descending] == true ? 'DESC' : 'ASC'}'
+              '#{options[:default].to_s} #{options[:descending] ? 'DESC' : 'ASC'}'
             end
           END
         end
