@@ -12,6 +12,7 @@ module ActionController
           define_method :sortable_attributes do
             sortable_attributes
           end
+          private :sortable_attributes
 
           if options[:default]
             order = options[:descending] ? 'DESC' : 'ASC'
@@ -23,6 +24,7 @@ module ActionController
           define_method :default_sort_options do
             default_attributes
           end
+          private :default_sort_options
         end
       end # module ClassMethods
 
@@ -39,6 +41,7 @@ module ActionController
           default_sort_options
         end
       end
+      private :sort_options
     end # module Sortable
   end # module Acts
 end # module ActionController
