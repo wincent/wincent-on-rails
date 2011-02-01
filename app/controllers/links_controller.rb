@@ -69,7 +69,15 @@ class LinksController < ApplicationController
   end
 
   def destroy
-
+    # TODO: mark links as deleted_at rather than really destroying them
+    @link.destroy
+    respond_to do |format|
+      format.html {
+        flash[:notice] = 'Link destroyed'
+        redirect_to links_path
+      }
+      format.js
+    end
   end
 
 private

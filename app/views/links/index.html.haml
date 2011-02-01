@@ -27,10 +27,6 @@
         %td=link.click_count
         %td.links
           =link_to 'edit', edit_link_path(link)
-          -# TODO: turn this into a real form; these confirm alerts aren't enough
-          -# alternatively, use the delete-but-offer-undo model
-          -# BUG: LinksController destroy action isn't implemented yet
-          =button_to 'destroy', link, :confirm => 'Are you sure?',
-            :method => :delete, :class => 'destructive'
+          =button_to_destroy_model link, :remote => true
 .links
   =link_to 'new link', new_link_path
