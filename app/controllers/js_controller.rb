@@ -4,7 +4,7 @@ class JsController < ApplicationController
   def show
     respond_to do |format|
       format.js {
-        if template_exists?
+        if (Rails.root + 'app' + 'views' + @template).exist?
           render @template
         else
           render :text => '', :status => 404
@@ -19,9 +19,5 @@ private
     # no need to sanitize as router ensures param is of format:
     #   ([a-z_]+/)+[a-z_]+\.js
     @template = "js/#{params[:delegated]}.erb"
-  end
-
-  def template_exists?
-    (Rails.root + 'app' + 'views' + @template).exist?
   end
 end
