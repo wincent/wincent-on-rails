@@ -5,6 +5,5 @@
 =render 'form'
 .links
   =link_to 'show', @snippet
-  =button_to 'destroy', @snippet, :confirm => 'Are you sure?',
-    :method => :delete, :class => 'destructive'
+  =button_to_destroy_model @snippet
   =link_to 'all snippets', snippets_path
