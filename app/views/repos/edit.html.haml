@@ -5,6 +5,5 @@
 =render 'form'
 .links
   =link_to 'show', @repo
-  =button_to 'destroy', @repo, :confirm => 'Are you sure?',
-    :method => :delete, :class => 'destructive'
+  =button_to_destroy_model @repo
   =link_to 'all repos', repos_path
