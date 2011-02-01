@@ -4,10 +4,7 @@ Wincent::Application.routes.draw do
   resources :articles, :id => /[^\/]+/ , :path => 'wiki' do
     resources :comments, :only => [ :create, :new ]
     collection do
-      # this and other RESTful pagination routes were broken by Rails 3.0.3
-      # see Rails BUG: https://rails.lighthouseapp.com/projects/8994/tickets/6028
-      # the workaround for now is to make the page parameter appear as optional
-      get '(page/:page)' => 'articles#index', :page => %r{\d+}
+      get 'page/:page' => 'articles#index', :page => %r{\d+}
     end
   end
 
@@ -25,7 +22,7 @@ Wincent::Application.routes.draw do
     resources :comments, :only => [:create, :new]
     collection do
       get :search
-      get '(page/:page)' => 'issues#index', :page => %r{\d+}
+      get 'page/:page' => 'issues#index', :page => %r{\d+}
     end
   end
 
@@ -36,7 +33,7 @@ Wincent::Application.routes.draw do
   resources :posts, :path => 'blog', :id => /[a-z0-9\-\.]+/ do
     resources :comments, :only => [ :create, :new ]
     collection do
-      get '(page/:page)' => 'posts#index', :page => %r{\d+}
+      get 'page/:page' => 'posts#index', :page => %r{\d+}
     end
   end
 
@@ -76,7 +73,7 @@ Wincent::Application.routes.draw do
   resources :snippets do
     resources :comments, :only => [:create, :new ]
     collection do
-      get '(page/:page)' => 'snippets#index', :page => %r{\d+}
+      get 'page/:page' => 'snippets#index', :page => %r{\d+}
     end
   end
 
@@ -97,7 +94,7 @@ Wincent::Application.routes.draw do
   resources :tweets, :path => 'twitter' do
     resources :comments, :only => [ :create, :new ]
     collection do
-      get '(page/:page)' => 'tweets#index', :page => %r{\d+}
+      get 'page/:page' => 'tweets#index', :page => %r{\d+}
     end
   end
 
