@@ -23,8 +23,7 @@
           %td.links
             =link_to 'edit', edit_tag_path(tag)
             -# BUG: TagsController doesn't even have a destroy action yet
-            =button_to 'destroy', tag, :confirm => 'Are you sure?',
-            :method => :delete, :class => 'destructive'
+            -#=button_to_destroy_model tag, :remote => true
 .links
   =link_to 'new', new_tag_path
   =link_to 'cloud', tags_path
