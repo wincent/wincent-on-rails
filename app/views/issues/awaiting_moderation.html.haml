@@ -14,5 +14,5 @@
 .links
   =link_to 'all issues', issues_path
   -if admin?
-    =button_to 'destroy', @issue, :method => :delete,
-      :confirm => 'Really destroy this issue?', :class => 'destructive'
+    =link_to 'edit', edit_issue_path(@issue)
+    =button_to_destroy_model @issue
