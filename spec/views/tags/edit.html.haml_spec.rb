@@ -31,12 +31,9 @@ describe 'tags/edit' do
   end
 
   it 'has a "destroy" link' do
-    # NOTE: this is a bit silly as #destroy action isn't implemented yet
+    pending 'implementation of tags#destroy action in controller'
+    mock(view).button_to_destroy_model @tag
     render
-    rendered.should have_selector('.links form', :action=> tag_path(@tag)) do |form|
-      form.should have_selector('input[name=_method][value=delete]')
-      form.should have_selector('input[type=submit][data-confirm="Are you sure?"]')
-    end
   end
 
   it 'has an "all tags" link' do
