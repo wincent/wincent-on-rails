@@ -15,7 +15,7 @@
       %div=issue.description.w :base_heading_level => 2
     .links
       =link_to 'edit', edit_issue_path(issue)
-      =button_to_destroy_issue issue
+      =button_to_destroy_model issue, :remote => true
       -button_to_moderate_issue_as_ham issue
 .pagination=@paginator.pagination_links if @paginator
 .links

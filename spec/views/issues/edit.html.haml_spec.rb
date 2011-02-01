@@ -24,7 +24,7 @@ describe 'issues/edit' do
   end
 
   it 'should have a destroy button' do
-    mock(view).button_to_destroy_issue @issue
+    mock(view).button_to_destroy_model @issue
     render
   end
 

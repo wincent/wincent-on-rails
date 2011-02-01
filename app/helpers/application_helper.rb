@@ -317,9 +317,12 @@ module ApplicationHelper
     js.gsub(/\s+/, ' ').strip
   end
 
-  def button_to_destroy_model model
-    button_to 'destroy', model, :confirm => 'Are you sure?',
-      :method => :delete, :class => 'destructive', :remote => true
+  def button_to_destroy_model model, options = {}
+    button_to 'destroy', model, options.reverse_merge!({
+      :confirm  => 'Are you sure?',
+      :method   => :delete,
+      :class    => 'destructive'
+    })
   end
 
   def button_to_moderate_model_as_ham model, url
@@ -342,11 +345,6 @@ module ApplicationHelper
       haml_tag :input, { :name => 'button', :onclick => onclick,
         :type => 'button', :value => 'ham' }
     end
-  end
-
-  # the issue helpers must go here in the application helper because they are used in both Admin::Issues and Issues namespaces
-  def button_to_destroy_issue issue
-    button_to_destroy_model issue
   end
 
   def button_to_moderate_issue_as_ham issue

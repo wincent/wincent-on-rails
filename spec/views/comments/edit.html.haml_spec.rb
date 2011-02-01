@@ -21,7 +21,7 @@ describe 'comments/edit' do
   end
 
   it 'has a destroy button' do
-    mock(view).button_to_destroy_comment @comment
+    mock(view).button_to_destroy_model @comment
     render
   end
 

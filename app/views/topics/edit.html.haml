@@ -22,7 +22,7 @@
         =f.check_box :accepts_comments
       %li=f.submit
   .links
-    =button_to_destroy_topic @topic
+    =button_to_destroy_model @topic
     -button_to_moderate_topic_as_ham @topic if @topic.awaiting_moderation?
 .links
   =link_to 'back to topics awaiting moderation', topics_path

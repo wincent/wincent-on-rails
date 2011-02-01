@@ -17,8 +17,8 @@ describe 'admin/issues/index' do
   end
 
   it 'has a "destroy" button for each issue' do
-    mock(view).button_to_destroy_issue(@issue1)
-    mock(view).button_to_destroy_issue(@issue2)
+    mock(view).button_to_destroy_model(@issue1, :remote => true)
+    mock(view).button_to_destroy_model(@issue2, :remote => true)
     render
   end
 
