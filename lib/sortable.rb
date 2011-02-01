@@ -5,12 +5,9 @@ module ActionController
 
       module ClassMethods
         def acts_as_sortable options = {}
-          if options[:by]
-            sortable_attributes = options[:by].map(&:to_s)
-          else
-            sortable_attributes = []
-          end
-          sortable_attributes = sortable_attributes.map { |a| "'#{a}'" }.join(', ')
+          sortable_attributes = (options[:by] || []).map do |attr|
+            "'#{attr.to_s}'"
+          end.join(', ')
 
           if options[:default]
             order = options[:descending] ? 'DESC' : 'ASC'
