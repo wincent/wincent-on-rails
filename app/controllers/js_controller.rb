@@ -1,5 +1,6 @@
 class JsController < ApplicationController
   before_filter :get_template_path_from_params
+  layout false
 
   def show
     respond_to do |format|
