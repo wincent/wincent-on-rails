@@ -6,8 +6,12 @@ module ActionController
       module ClassMethods
         def acts_as_sortable options = {}
           sortable_attributes = (options[:by] || []).map do |attr|
-            "'#{attr.to_s}'"
-          end.join(', ')
+            attr.to_s
+          end
+
+          define_method :sortable_attributes do
+            sortable_attributes
+          end
 
           if options[:default]
             order = options[:descending] ? 'DESC' : 'ASC'
@@ -16,16 +20,9 @@ module ActionController
             default_attributes = ''
           end
 
-          # here we define instance methods
-          class_eval <<-END
-            def sortable_attributes
-              [#{sortable_attributes}]
-            end
-
-            def default_sort_options
-              '#{default_attributes}'
-            end
-          END
+          define_method :default_sort_options do
+            default_attributes
+          end
         end
       end # module ClassMethods
 
