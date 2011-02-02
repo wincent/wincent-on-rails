@@ -44,12 +44,15 @@ class SnippetsController < ApplicationController
   end
 
   def show
+    # BUG: this should be lazily-evaluated (to avoid db hit for text format)
+    #      but it isn't because we're doing a find(:all) in lib/commentable
     @comments = @snippet.comments.published
     respond_to do |format|
       format.html {
         @comment = @snippet.comments.build if @snippet.accepts_comments?
       }
       format.atom
+      format.text { render :text => @snippet.body }
     end
   end
 

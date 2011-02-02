@@ -15,6 +15,7 @@ class SnippetSweeper < ActionController::Caching::Sweeper
   def expire_cache snippet
     expire_page(snippet_path(snippet) + '.html')  # snippets/1.html
     expire_page(snippet_path(snippet) + '.atom')  # snippets/1.atom
+    expire_page(snippet_path(snippet) + '.txt')   # snippets/1.txt
     expire_page(snippets_path + '.html')          # snippets.html
     expire_page(snippets_path + '.atom')          # snippets.atom
 
