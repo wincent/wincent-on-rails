@@ -347,7 +347,7 @@ describe SnippetsController do
         it 'finds and assigns published comments' do
           Comment.make! :commentable => snippet, :public => false # omitted
           do_request
-          assigns[:comments].should =~ @comments
+          assigns[:comments].to_a.should =~ @comments
         end
 
         it 'produces valid Atom' do

@@ -1,32 +1,36 @@
 # This is a vanilla module rather than being ActiveRecord::Acts::Commentable
 # as it is intended to be used via the :extend option when defining associations.
 module Commentable
-  # All public comments which have passed moderation.
+  # public comments which have passed moderation
   def published
-    find :all, :conditions => { :awaiting_moderation => false, :public => true }
+    where :awaiting_moderation => false, :public => true
   end
 
-  # Returns all comments for this record which haven't yet been moderated.
+  # comments which haven't yet been moderated
   def unmoderated
-    find :all, :conditions => { :awaiting_moderation => true }
+    where :awaiting_moderation => true
   end
 
-  # All comments which have not been flagged as spam (both moderated and unmoderated).
+  # comments which have not been flagged as spam (both moderated and unmoderated)
   def ham
-    find :all
+    # BUG: this method seems pretty useless right now
+    scoped
   end
 
-  # The count of all published (not awaiting moderation) comments.
+  # the count of all published (not awaiting moderation) comments
   def published_count
-    count :conditions => 'awaiting_moderation = FALSE AND public = TRUE'
+    # TODO: lose this and make callers do published.count instead
+    published.count
   end
 
-  # The count of comments awaiting moderation.
+  # the count of comments awaiting moderation.
   def unmoderated_count
-    count :conditions => 'awaiting_moderation = TRUE'
+    # TODO: ditto, lose and make callers do unmoderated.count
+    unmoderated.count
   end
 
   def ham_count
+    # BUG: again, a pretty useless method
     # TODO: find a way to make a counter_cache-style column in the model database for this value
     # this would be useful in the Posts controller index action, for example
     # at the moment we have no choice but to show the full count (moderated + unmoderated) from the comments counter_cache

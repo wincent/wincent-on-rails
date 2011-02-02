@@ -28,19 +28,19 @@ shared_examples_for 'commentable' do
 
   it 'finds all published comments' do
     set_up_comments
-    commentable.comments.published.should =~ [@comment2, @comment3]
+    commentable.comments.published.to_a.should =~ [@comment2, @comment3]
   end
 
   it 'finds all unmoderated comments' do
     # "unmoderated" means :awaiting_moderation => true
     set_up_comments
-    commentable.comments.unmoderated.should =~ [@comment5, @comment6]
+    commentable.comments.unmoderated.to_a.should =~ [@comment5, @comment6]
   end
 
   it 'finds all ham comments' do
     # all comments (both moderated and unmoderated)
     set_up_comments
-    commentable.comments.ham.should =~ [@comment1, @comment2, @comment3, @comment4, @comment5, @comment6]
+    commentable.comments.ham.to_a.should =~ [@comment1, @comment2, @comment3, @comment4, @comment5, @comment6]
   end
 
   it 'reports the count of published comments' do

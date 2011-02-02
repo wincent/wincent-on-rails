@@ -143,7 +143,7 @@ describe ArticlesController do
 
         it 'assigns existing comments' do
           get :show, :id => 'foo'
-          assigns[:comments].should =~ @comments
+          assigns[:comments].to_a.should =~ @comments
         end
 
         context 'comments allowed' do
@@ -339,7 +339,7 @@ describe ArticlesController do
 
         it 'assigns existing comments' do
           get :show, :id => 'foo.atom'
-          assigns[:comments].should =~ @comments
+          assigns[:comments].to_a.should =~ @comments
         end
 
         it 'succeeds' do
