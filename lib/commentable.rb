@@ -11,12 +11,6 @@ module Commentable
     where :awaiting_moderation => true
   end
 
-  # comments which have not been flagged as spam (both moderated and unmoderated)
-  def ham
-    # BUG: this method seems pretty useless right now
-    scoped
-  end
-
   # the count of all published (not awaiting moderation) comments
   def published_count
     # TODO: lose this and make callers do published.count instead
@@ -27,16 +21,6 @@ module Commentable
   def unmoderated_count
     # TODO: ditto, lose and make callers do unmoderated.count
     unmoderated.count
-  end
-
-  def ham_count
-    # BUG: again, a pretty useless method
-    # TODO: find a way to make a counter_cache-style column in the model database for this value
-    # this would be useful in the Posts controller index action, for example
-    # at the moment we have no choice but to show the full count (moderated + unmoderated) from the comments counter_cache
-    # but it would be nice to instead display the ham count
-    # see notes on this below
-    count
   end
 end # module Commentable
 

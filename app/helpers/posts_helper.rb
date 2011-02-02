@@ -4,18 +4,12 @@ module PostsHelper
   end
 
   def comments_link post
-    # NOTE: the problem with this method was that it was causing an "n +  1"
-    # SELECT problem in the index action basically, calling "ham_count"
-    # unavoidably provokes a database query for each post; the counter_cache is
-    # useless (and unused) in this case.
-    #
-    # Previously, the code looked like this:
-    #
-    #   if post.accepts_comments? || post.comments.ham_count > 0
-    #     link_to comment_count(post.comments.ham_count) ...
-    #
-    # For now we avoid the unwanted SELECTS by providing a ham + spam count
-    # which uses the counter cache.
+    # BUG: comment count is inaccurate here (includes non-public comments and
+    #      comments awaiting moderation), but we can't do an actual query here
+    #      (such as comments.published.count) without running into N+1
+    #      select problems; see lib/commentable for some notes on how we might
+    #      be able to implement a custom counter cache to work around this
+    #      problem
     if post.accepts_comments? || post.comments_count > 0
       link_to comment_count(post.comments_count),
         post_path(post, :anchor => 'comments'),
