@@ -1,8 +1,5 @@
 shared_examples_for 'commentable' do
-
-  # seems that as this is a shared block I can't use a "before" block here
-  # (records persist in the database across examples)
-  def set_up_comments
+  before do
     @comment1 = add_comment :awaiting_moderation => false, :public => false
     @comment2 = add_comment :awaiting_moderation => false, :public => true
     @comment3 = add_comment :awaiting_moderation => false, :public => true
@@ -15,11 +12,11 @@ shared_examples_for 'commentable' do
     comment = commentable.comments.build :body => Sham.random
     overrides.each { |k,v| comment.send("#{k.to_s}=", v) }
     comment.save
+    commentable.reload
     comment
   end
 
   it 'finds comments in ascending (chronological) order by creation date' do
-    set_up_comments
     commentable.comments.each do |comment|
       Comment.update_all ['created_at = ?', comment.id.days.ago], ['id = ?', comment.id]
     end
@@ -27,51 +24,51 @@ shared_examples_for 'commentable' do
   end
 
   it 'finds all published comments' do
-    set_up_comments
     commentable.comments.published.to_a.should =~ [@comment2, @comment3]
   end
 
   it 'finds all unmoderated comments' do
     # "unmoderated" means :awaiting_moderation => true
-    set_up_comments
     commentable.comments.unmoderated.to_a.should =~ [@comment5, @comment6]
   end
 
   it 'updates the comments_count cache when a comment is added and not held for moderation (ie. admin comments)' do
-    commentable.comments_count.should == 0
-    add_comment :awaiting_moderation => false
-    commentable.reload
-    commentable.comments_count.should == 1
+    expect do
+      add_comment :awaiting_moderation => false
+    end.to change { commentable.comments_count }.by(1)
   end
 
   it 'does not update the comments_count cache when a comment is added and held for moderation' do
-    commentable.comments_count.should == 0
-    add_comment :awaiting_moderation => true
-    commentable.reload
-    commentable.comments_count.should == 0
+    expect do
+      add_comment :awaiting_moderation => true
+    end.to_not change { commentable.comments_count }
   end
 
   it 'updates the comments_count cache when a comment is added and moderated as ham' do
-    commentable.comments_count.should == 0
-    comment = add_comment :awaiting_moderation => true
-    commentable.reload
-    commentable.comments_count.should == 0
-    comment.moderate_as_ham!
-    commentable.reload
-    commentable.comments_count.should == 1
+    expect do
+      add_comment :awaiting_moderation => true
+    end.to_not change { commentable.comments_count }
+
+    expect do
+      Comment.last.moderate_as_ham!
+      commentable.reload
+    end.to change { commentable.comments_count }.by(1)
   end
 
   it 'updates the comments_count cache when a ham comment is later destroyed' do
-    commentable.comments_count.should == 0
-    comment = add_comment :awaiting_moderation => true
-    commentable.reload
-    commentable.comments_count.should == 0
-    comment.moderate_as_ham!
-    commentable.reload
-    commentable.comments_count.should == 1
-    comment.destroy
-    commentable.reload
-    commentable.comments_count.should == 0
+    expect do
+      add_comment :awaiting_moderation => true
+    end.to_not change { commentable.comments_count }
+
+    expect do
+      Comment.last.moderate_as_ham!
+      commentable.reload
+    end.to change { commentable.comments_count }.by(1)
+
+    expect do
+      Comment.last.destroy
+      commentable.reload
+    end.to change { commentable.comments_count }.by(-1)
   end
 
   # TODO: also check that last_commenter field is correctly updated
