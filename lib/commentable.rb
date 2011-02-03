@@ -10,12 +10,6 @@ module Commentable
   def unmoderated
     where :awaiting_moderation => true
   end
-
-  # the count of all published (not awaiting moderation) comments
-  def published_count
-    # TODO: lose this and make callers do published.count instead
-    published.count
-  end
 end # module Commentable
 
 =begin
