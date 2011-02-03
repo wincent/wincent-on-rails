@@ -16,12 +16,6 @@ module Commentable
     # TODO: lose this and make callers do published.count instead
     published.count
   end
-
-  # the count of comments awaiting moderation.
-  def unmoderated_count
-    # TODO: ditto, lose and make callers do unmoderated.count
-    unmoderated.count
-  end
 end # module Commentable
 
 =begin

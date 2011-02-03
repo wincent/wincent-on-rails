@@ -43,11 +43,6 @@ shared_examples_for 'commentable' do
     commentable.comments.published_count.should == 2
   end
 
-  it 'reports the count of unmoderated comments' do
-    set_up_comments
-    commentable.comments.unmoderated_count.should == 2
-  end
-
   it 'updates the comments_count cache when a comment is added and not held for moderation (ie. admin comments)' do
     commentable.comments_count.should == 0
     add_comment :awaiting_moderation => false
