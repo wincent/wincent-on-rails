@@ -1,4 +1,3 @@
-require 'rspec/core/formatters/base_formatter'
 require 'rspec/core/formatters/base_text_formatter'
 
 # Format spec results for display in the Vim quickfix window
