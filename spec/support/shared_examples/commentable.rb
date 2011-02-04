@@ -80,6 +80,7 @@ shared_examples_for 'commentable (updating timestamps for comment changes)' do
     comment = commentable.comments.build :body => Sham.random
     overrides.each { |k,v| comment.send("#{k.to_s}=", v) }
     comment.save
+    commentable.reload
     comment
   end
 
@@ -94,7 +95,6 @@ shared_examples_for 'commentable (updating timestamps for comment changes)' do
   it 'uses the comment timestamp when a comment is added and is not held for moderation (ie. admin comments)' do
     commentable.comments.should be_empty
     comment = add_comment :awaiting_moderation => false
-    commentable.reload
     commentable.updated_at.to_s.should == comment.updated_at.to_s
   end
 
@@ -102,7 +102,6 @@ shared_examples_for 'commentable (updating timestamps for comment changes)' do
     commentable.comments.should be_empty
     start_date = commentable.updated_at
     add_comment :awaiting_moderation => true
-    commentable.reload
     commentable.updated_at.to_s.should == start_date.to_s
   end
 
@@ -110,7 +109,6 @@ shared_examples_for 'commentable (updating timestamps for comment changes)' do
     commentable.comments.should be_empty
     start_date = commentable.updated_at
     comment = add_comment :awaiting_moderation => true
-    commentable.reload
     commentable.updated_at.to_s.should == start_date.to_s
     comment.moderate_as_ham!
     commentable.reload
@@ -121,7 +119,6 @@ shared_examples_for 'commentable (updating timestamps for comment changes)' do
     commentable.comments.should be_empty
     start_date = commentable.updated_at
     comment = add_comment :awaiting_moderation => true
-    commentable.reload
     commentable.updated_at.to_s.should == start_date.to_s
     comment.moderate_as_ham!
     commentable.reload
@@ -138,6 +135,7 @@ shared_examples_for 'commentable (not updating timestamps for comment changes)' 
     comment = commentable.comments.build :body => Sham.random
     overrides.each { |k,v| comment.send("#{k.to_s}=", v) }
     comment.save
+    commentable.reload
     comment
   end
 
@@ -148,7 +146,6 @@ shared_examples_for 'commentable (not updating timestamps for comment changes)' 
     commentable.comments.should be_empty
     start_date = commentable.updated_at
     comment = add_comment :awaiting_moderation => false
-    commentable.reload
     commentable.updated_at.to_s.should == start_date.to_s
   end
 
@@ -156,7 +153,6 @@ shared_examples_for 'commentable (not updating timestamps for comment changes)' 
     commentable.comments.should be_empty
     start_date = commentable.updated_at
     add_comment :awaiting_moderation => true
-    commentable.reload
     commentable.updated_at.to_s.should == start_date.to_s
   end
 
@@ -164,7 +160,6 @@ shared_examples_for 'commentable (not updating timestamps for comment changes)' 
     commentable.comments.should be_empty
     start_date = commentable.updated_at
     comment = add_comment :awaiting_moderation => true
-    commentable.reload
     commentable.updated_at.to_s.should == start_date.to_s
     comment.moderate_as_ham!
     commentable.reload
@@ -175,7 +170,6 @@ shared_examples_for 'commentable (not updating timestamps for comment changes)' 
     commentable.comments.should be_empty
     start_date = commentable.updated_at
     comment = add_comment :awaiting_moderation => true
-    commentable.reload
     commentable.updated_at.to_s.should == start_date.to_s
     comment.moderate_as_ham!
     commentable.reload
