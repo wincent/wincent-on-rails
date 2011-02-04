@@ -1,11 +1,3 @@
-GIT
-  remote: git://github.com/bernerdschaefer/akephalos.git
-  revision: 0fbcbbf160b7f1eccae38bc4b05cf28240a97835
-  specs:
-    akephalos (0.2.4)
-      capybara (>= 0.4.0)
-      jruby-jars
-
 GEM
   remote: http://rubygems.org/
   specs:
@@ -37,6 +29,9 @@ GEM
       activemodel (= 3.0.4.rc1)
       activesupport (= 3.0.4.rc1)
     activesupport (3.0.4.rc1)
+    akephalos (0.2.5)
+      capybara (~> 0.4.0)
+      jruby-jars
     arel (2.0.7)
     autotest (4.4.6)
       ZenTest (>= 4.4.1)
@@ -152,7 +147,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  akephalos!
+  akephalos (~> 0.2.5)
   autotest
   bundler (~> 1.0.2)
   capybara (~> 0.4.0)
