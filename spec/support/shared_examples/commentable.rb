@@ -1,14 +1,6 @@
 shared_examples_for 'commentable' do
-  before do
-    @published            = add_comment :awaiting_moderation => false, :public => true
-    @unmoderated_public   = add_comment :awaiting_moderation => true,  :public => true
-    @unmoderated_private  = add_comment :awaiting_moderation => true,  :public => false
-    @private              = add_comment :awaiting_moderation => false, :public => false
-  end
-
   def add_comment overrides = {}
-    @comments ||= []
-    @comments << (@comment = commentable.comments.build :body => Sham.random)
+    @comment = commentable.comments.build :body => Sham.random
     overrides.each { |k,v| @comment.send("#{k.to_s}=", v) }
     @comment.save
     commentable.reload
@@ -16,19 +8,50 @@ shared_examples_for 'commentable' do
   end
 
   it 'finds comments in ascending (chronological) order by creation date' do
-    Timecop.travel(10) { add_comment }
-    Timecop.travel(10) { add_comment }
-    Timecop.travel(10) { add_comment }
-    commentable.comments.should == @comments
+    # add comments in now, future, past order just to make sure that
+    # our results really are coming back in chronological order and not
+    # just insertion order
+    Timecop.travel(0) { @now = add_comment }
+    Timecop.travel(10) { @future = add_comment }
+    Timecop.travel(-20) { @past = add_comment }
+    commentable.comments.should == [@past, @now, @future]
   end
 
-  it 'finds all published comments' do
-    commentable.comments.published.to_a.should =~ [@published]
+  describe '#published' do
+    it 'finds all published comments' do
+      published = add_comment :awaiting_moderation => false, :public => true
+      commentable.comments.published.to_a.should =~ [published]
+    end
+
+    it 'does not find unmoderated comments' do
+      add_comment :awaiting_moderation => true,  :public => true
+      add_comment :awaiting_moderation => true,  :public => false
+      commentable.comments.published.to_a.should == []
+    end
+
+    it 'does not find private comments' do
+      add_comment :awaiting_moderation => false, :public => false
+      commentable.comments.published.to_a.should == []
+    end
   end
 
-  it 'finds all unmoderated comments' do
-    # "unmoderated" means :awaiting_moderation => true
-    commentable.comments.unmoderated.to_a.should =~ [@unmoderated_public, @unmoderated_private]
+  describe '#unmoderated' do
+    it 'finds all unmoderated comments' do
+      # "unmoderated" means :awaiting_moderation => true
+      unmoderated_public   = add_comment :awaiting_moderation => true,  :public => true
+      unmoderated_private  = add_comment :awaiting_moderation => true,  :public => false
+      commentable.comments.unmoderated.to_a.should =~ [unmoderated_public, unmoderated_private]
+    end
+
+    it 'does not find published comments' do
+      add_comment :awaiting_moderation => false, :public => true
+      commentable.comments.unmoderated.to_a.should == []
+    end
+
+    it 'does not find private comments' do
+      add_comment :awaiting_moderation => false, :public => false
+      commentable.comments.unmoderated.to_a.should == []
+    end
   end
 
   it 'updates the comments_count cache when a comment is added and not held for moderation (ie. admin comments)' do
