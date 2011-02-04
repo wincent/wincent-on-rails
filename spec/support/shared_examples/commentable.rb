@@ -1,4 +1,4 @@
-shared_examples_for 'commentable' do
+module SharedCommentableExampleHelpers
   def add_comment overrides = {}
     @comment = commentable.comments.build :body => Sham.random
     overrides.each { |k,v| @comment.send("#{k.to_s}=", v) }
@@ -6,6 +6,10 @@ shared_examples_for 'commentable' do
     commentable.reload
     @comment
   end
+end
+
+shared_examples_for 'commentable' do
+  include SharedCommentableExampleHelpers
 
   it 'finds comments in ascending (chronological) order by creation date' do
     # add comments in now, future, past order just to make sure that
@@ -98,12 +102,7 @@ end
 
 # ie. issues, forum topics
 shared_examples_for 'commentable (updating timestamps for comment changes)' do
-  def add_comment overrides = {}
-    @comment = commentable.comments.build :body => Sham.random
-    overrides.each { |k,v| @comment.send("#{k.to_s}=", v) }
-    @comment.save
-    commentable.reload
-  end
+  include SharedCommentableExampleHelpers
 
   # BUG: topic and issue work differently, can't use the same spec for both
   # this is probably codesmell, the fact that I have to write different tests
@@ -149,12 +148,7 @@ end
 
 # ie. blog posts, tweets, snippets, wiki articles
 shared_examples_for 'commentable (not updating timestamps for comment changes)' do
-  def add_comment overrides = {}
-    @comment = commentable.comments.build :body => Sham.random
-    overrides.each { |k,v| @comment.send("#{k.to_s}=", v) }
-    @comment.save
-    commentable.reload
-  end
+  include SharedCommentableExampleHelpers
 
   # BUG: see corresponding comment above about different behaviour in Issues and Topics
   #it 'has a nil timestamp when there are no comments'
