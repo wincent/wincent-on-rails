@@ -9,6 +9,14 @@ Autotest.add_hook :initialize do |a|
   a.add_mapping(%r%^db/schema\.rb$%) {
     a.files_matching all_specs
   }
+
+  # support scoping (at directory level, not file level); eg:
+  #   bin/autotest app/models spec/models
+  # see:
+  #   http://blog.davidchelimsky.net/2008/03/05/limiting-scope-of-autotest
+  unless ARGV.empty?
+    a.find_directories = ARGV.dup
+  end
 end
 
 Autotest.add_hook :ran_command do |a|
