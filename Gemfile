@@ -34,5 +34,6 @@ group :test do
   gem 'mkdtemp',          '>= 1.2'
   gem 'rcov'
   gem 'rr',               '>= 1.0'
+  gem 'timecop'
   gem 'webrat'
 end
