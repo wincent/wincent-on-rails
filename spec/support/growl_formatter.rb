@@ -1,5 +1,3 @@
-require 'rspec/core/formatters/base_formatter'
-require 'rspec/core/formatters/base_text_formatter'
 require 'rspec/core/formatters/progress_formatter'
 
 # Use this custom formatter like this:
