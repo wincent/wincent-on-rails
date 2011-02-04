@@ -1,59 +1,59 @@
 require 'spec_helper'
 
-describe Link, 'URI validation' do
-  it 'should require a URI' do
-    link = Link.make :uri => nil
-    link.should fail_validation_for(:uri)
+describe Link do
+  describe 'URI validation' do
+    it 'should require a URI' do
+      link = Link.make :uri => nil
+      link.should fail_validation_for(:uri)
+    end
+
+    it 'should require URIs to be unique' do
+      uri = Sham.random
+      link = Link.make! :uri => uri
+      link.should_not fail_validation_for(:uri)
+      link = Link.make :uri => uri
+      link.should fail_validation_for(:uri)
+    end
   end
 
-  it 'should require URIs to be unique' do
-    uri = Sham.random
-    link = Link.make! :uri => uri
-    link.should_not fail_validation_for(:uri)
-    link = Link.make :uri => uri
-    link.should fail_validation_for(:uri)
-  end
-end
+  describe 'permalink validation' do
+    it 'should be valid without a permalink' do
+      link = Link.make :permalink => nil
+      link.should_not fail_validation_for(:permalink)
+    end
 
-describe Link, 'permalink validation' do
-  it 'should be valid without a permalink' do
-    link = Link.make :permalink => nil
-    link.should_not fail_validation_for(:permalink)
-  end
+    it 'should require permalinks to be unique' do
+      permalink = Sham.random
+      link = Link.make! :permalink => permalink
+      link.should_not fail_validation_for(:permalink)
+      link = Link.make :permalink => permalink
+      link.should fail_validation_for(:permalink)
+    end
 
-  it 'should require permalinks to be unique' do
-    permalink = Sham.random
-    link = Link.make! :permalink => permalink
-    link.should_not fail_validation_for(:permalink)
-    link = Link.make :permalink => permalink
-    link.should fail_validation_for(:permalink)
-  end
-
-  it 'should accept nil permalinks without triggering uniqueness validation failures' do
-    link = Link.make! :permalink => nil
-    link.should_not fail_validation_for(:permalink)
-    link = Link.make :permalink => nil
-    link.should_not fail_validation_for(:permalink)
-  end
-end
-
-describe Link, 'accessible attributes' do
-  it 'should allow mass-assignment to the uri' do
-    Link.make.should allow_mass_assignment_of(:uri => Sham.random)
+    it 'should accept nil permalinks without triggering uniqueness validation failures' do
+      link = Link.make! :permalink => nil
+      link.should_not fail_validation_for(:permalink)
+      link = Link.make :permalink => nil
+      link.should_not fail_validation_for(:permalink)
+    end
   end
 
-  it 'should allow mass-assignment to the permalink' do
-    Link.make.should allow_mass_assignment_of(:permalink => Sham.random)
-  end
-end
+  describe 'accessible attributes' do
+    it 'should allow mass-assignment to the uri' do
+      Link.make.should allow_mass_assignment_of(:uri => Sham.random)
+    end
 
-describe Link, 'protected attributes' do
-  it 'should deny mass-assignment ot the click count' do
-    Link.make.should_not allow_mass_assignment_of(:click_count => 200)
+    it 'should allow mass-assignment to the permalink' do
+      Link.make.should allow_mass_assignment_of(:permalink => Sham.random)
+    end
   end
-end
 
-describe Link  do
+  describe 'protected attributes' do
+    it 'should deny mass-assignment ot the click count' do
+      Link.make.should_not allow_mass_assignment_of(:click_count => 200)
+    end
+  end
+
   describe '#uri' do
     it 'defaults to nil' do
       Link.new.uri.should be_nil
@@ -109,10 +109,10 @@ describe Link  do
       end
     end
   end
-end
 
-describe Link, 'click count' do
-  it 'should default to 0' do
-    Link.make!.click_count.should == 0
+  describe 'click count' do
+    it 'should default to 0' do
+      Link.make!.click_count.should == 0
+    end
   end
 end
