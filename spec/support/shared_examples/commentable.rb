@@ -58,43 +58,53 @@ shared_examples_for 'commentable' do
     end
   end
 
-  it 'updates the comments_count cache when a comment is added and not held for moderation (ie. admin comments)' do
-    expect do
-      add_comment :awaiting_moderation => false
-    end.to change { commentable.comments_count }.by(1)
-  end
+  describe 'comments_count' do
+    context 'a comment is added and not held for moderation (ie. an admin comment)' do
+      it 'updates the counter cache' do
+        expect do
+          add_comment :awaiting_moderation => false
+        end.to change { commentable.comments_count }.by(1)
+      end
+    end
 
-  it 'does not update the comments_count cache when a comment is added and held for moderation' do
-    expect do
-      add_comment :awaiting_moderation => true
-    end.to_not change { commentable.comments_count }
-  end
+    context 'a comment is added and held for moderation' do
+      it 'does not update the counter cache' do
+        expect do
+          add_comment :awaiting_moderation => true
+        end.to_not change { commentable.comments_count }
+      end
+    end
 
-  it 'updates the comments_count cache when a comment is added and moderated as ham' do
-    expect do
-      add_comment :awaiting_moderation => true
-    end.to_not change { commentable.comments_count }
+    context 'a comment is moderated as ham' do
+      it 'updates the counter cache' do
+        expect do
+          add_comment :awaiting_moderation => true
+        end.to_not change { commentable.comments_count }
 
-    expect do
-      @comment.moderate_as_ham!
-      commentable.reload
-    end.to change { commentable.comments_count }.by(1)
-  end
+        expect do
+          @comment.moderate_as_ham!
+          commentable.reload
+        end.to change { commentable.comments_count }.by(1)
+      end
+    end
 
-  it 'updates the comments_count cache when a ham comment is later destroyed' do
-    expect do
-      add_comment :awaiting_moderation => true
-    end.to_not change { commentable.comments_count }
+    context 'a ham comment is later destroyed' do
+      it 'updates the counter cache' do
+        expect do
+          add_comment :awaiting_moderation => true
+        end.to_not change { commentable.comments_count }
 
-    expect do
-      @comment.moderate_as_ham!
-      commentable.reload
-    end.to change { commentable.comments_count }.by(1)
+        expect do
+          @comment.moderate_as_ham!
+          commentable.reload
+        end.to change { commentable.comments_count }.by(1)
 
-    expect do
-      @comment.destroy
-      commentable.reload
-    end.to change { commentable.comments_count }.by(-1)
+        expect do
+          @comment.destroy
+          commentable.reload
+        end.to change { commentable.comments_count }.by(-1)
+      end
+    end
   end
 
   # TODO: also check that last_commenter field is correctly updated
@@ -112,37 +122,45 @@ shared_examples_for 'commentable (updating timestamps for comment changes)' do
   #  commentable.last_commented_at.to_s.should == commentable.updated_at.to_s
   #end
 
-  it 'uses the comment timestamp when a comment is added and is not held for moderation (ie. admin comments)' do
-    commentable.comments.should be_empty
-    add_comment :awaiting_moderation => false
-    commentable.updated_at.should be_within(1).of(@comment.updated_at)
+  context 'a comment is added and not held for moderation (ie. an admin comment)' do
+    it 'uses the comment timestamp to update the commentable timestamp' do
+      commentable.comments.should be_empty
+      add_comment :awaiting_moderation => false
+      commentable.updated_at.should be_within(1).of(@comment.updated_at)
+    end
   end
 
-  it 'does not update the timestamp when a comment is added and held for moderation' do
-    commentable.comments.should be_empty
-    start_date = commentable.updated_at
-    add_comment :awaiting_moderation => true
-    commentable.updated_at.should be_within(1).of(start_date)
+  context 'a comment is added and held for moderation' do
+    it 'uses the commentable timestamp, irrespective of the timestamp(s) on the comment' do
+      commentable.comments.should be_empty
+      start_date = commentable.updated_at
+      add_comment :awaiting_moderation => true
+      commentable.updated_at.should be_within(1).of(start_date)
+    end
   end
 
-  it 'updates the timestamp when a comment is added and is moderated as ham' do
-    commentable.comments.should be_empty
-    start_date = commentable.updated_at
-    Timecop.travel(10) { add_comment :awaiting_moderation => true }
-    commentable.updated_at.should be_within(1).of(start_date)
-    @comment.moderate_as_ham!
-    commentable.reload.updated_at.should be_within(1).of(@comment.updated_at)
+  context 'a comment is moderated as ham' do
+    it 'uses the comment timestamp to update the commentable timestamp' do
+      commentable.comments.should be_empty
+      start_date = commentable.updated_at
+      Timecop.travel(10) { add_comment :awaiting_moderation => true }
+      commentable.updated_at.should be_within(1).of(start_date)
+      @comment.moderate_as_ham!
+      commentable.reload.updated_at.should be_within(1).of(@comment.updated_at)
+    end
   end
 
-  it 'amends the timestamp when a ham comment is later destroyed' do
-    commentable.comments.should be_empty
-    start_date = commentable.updated_at
-    Timecop.travel(10) { add_comment :awaiting_moderation => true }
-    commentable.updated_at.should be_within(1).of(start_date)
-    @comment.moderate_as_ham!
-    commentable.reload.updated_at.should be_within(1).of(@comment.updated_at)
-    @comment.destroy
-    commentable.reload.updated_at.should be_within(1).of(start_date)
+  context 'a ham comment is later destroyed' do
+    it 'uses the comment timestamp to update the commentable timestamp' do
+      commentable.comments.should be_empty
+      start_date = commentable.updated_at
+      Timecop.travel(10) { add_comment :awaiting_moderation => true }
+      commentable.updated_at.should be_within(1).of(start_date)
+      @comment.moderate_as_ham!
+      commentable.reload.updated_at.should be_within(1).of(@comment.updated_at)
+      @comment.destroy
+      commentable.reload.updated_at.should be_within(1).of(start_date)
+    end
   end
 end
 
@@ -153,37 +171,45 @@ shared_examples_for 'commentable (not updating timestamps for comment changes)' 
   # BUG: see corresponding comment above about different behaviour in Issues and Topics
   #it 'has a nil timestamp when there are no comments'
 
-  it 'uses the commentable updated timestamp when a comment is added and is not held for moderation (ie. admin comments)' do
-    commentable.comments.should be_empty
-    start_date = commentable.updated_at
-    Timecop.travel(10) { add_comment :awaiting_moderation => false }
-    commentable.updated_at.should be_within(1).of(start_date)
+  context 'a comment is added and not helf for moderation (ie. an admin comment)' do
+    it 'uses the commentable timestamp, irrespective of the timestamp(s) on the comment' do
+      commentable.comments.should be_empty
+      start_date = commentable.updated_at
+      Timecop.travel(10) { add_comment :awaiting_moderation => false }
+      commentable.updated_at.should be_within(1).of(start_date)
+    end
   end
 
-  it 'uses the commentable updated timestamp when a comment is added and held for moderation' do
-    commentable.comments.should be_empty
-    start_date = commentable.updated_at
-    Timecop.travel(10) { add_comment :awaiting_moderation => true }
-    commentable.updated_at.should be_within(1).of(start_date)
+  context 'a comment is added and held for moderation' do
+    it 'uses the commentable timestamp, irrespective of the timestamp(s) on the comment' do
+      commentable.comments.should be_empty
+      start_date = commentable.updated_at
+      Timecop.travel(10) { add_comment :awaiting_moderation => true }
+      commentable.updated_at.should be_within(1).of(start_date)
+    end
   end
 
-  it 'uses the commentable updated timestamp when a comment is added and is moderated as ham' do
-    commentable.comments.should be_empty
-    start_date = commentable.updated_at
-    Timecop.travel(10) { add_comment :awaiting_moderation => true }
-    commentable.updated_at.should be_within(1).of(start_date)
-    @comment.moderate_as_ham!
-    commentable.reload.updated_at.should be_within(1).of(start_date)
+  context 'a comment is moderated as ham' do
+    it 'uses the commentable timestamp, irrespective of the timestamp(s) on the comment' do
+      commentable.comments.should be_empty
+      start_date = commentable.updated_at
+      Timecop.travel(10) { add_comment :awaiting_moderation => true }
+      commentable.updated_at.should be_within(1).of(start_date)
+      @comment.moderate_as_ham!
+      commentable.reload.updated_at.should be_within(1).of(start_date)
+    end
   end
 
-  it 'uses the commentable updated timestamp when a ham comment is later destroyed' do
-    commentable.comments.should be_empty
-    start_date = commentable.updated_at
-    Timecop.travel(10) { add_comment :awaiting_moderation => true }
-    commentable.updated_at.should be_within(1).of(start_date)
-    @comment.moderate_as_ham!
-    commentable.reload.updated_at.should be_within(1).of(start_date)
-    @comment.destroy
-    commentable.reload.updated_at.should be_within(1).of(start_date)
+  context 'a ham comment is later destroyed' do
+    it 'uses the commentable timestamp, irrespective of the timestamp(s) on the comment' do
+      commentable.comments.should be_empty
+      start_date = commentable.updated_at
+      Timecop.travel(10) { add_comment :awaiting_moderation => true }
+      commentable.updated_at.should be_within(1).of(start_date)
+      @comment.moderate_as_ham!
+      commentable.reload.updated_at.should be_within(1).of(start_date)
+      @comment.destroy
+      commentable.reload.updated_at.should be_within(1).of(start_date)
+    end
   end
 end
