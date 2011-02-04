@@ -173,7 +173,7 @@ DEPENDENCIES
   memcache-client
   mkdtemp (>= 1.2)
   mongrel
-  mysql2
+  mysql2 (~> 0.2.6)
   rails (~> 3.0.4.rc1)
   rcov
   rr (>= 1.0)
