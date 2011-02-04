@@ -21,8 +21,7 @@ group :development do
 end
 
 group :test do
-  gem 'akephalos',        :git => 'git://github.com/bernerdschaefer/akephalos.git',
-                          :branch => 'capybara-head'
+  gem 'akephalos',        :git => 'git://github.com/bernerdschaefer/akephalos.git'
   gem 'autotest',         :require => nil
   gem 'capybara',         '~> 0.4.0'
   gem 'database_cleaner', '~> 0.6.0'
