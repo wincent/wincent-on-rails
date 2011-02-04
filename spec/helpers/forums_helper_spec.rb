@@ -12,7 +12,9 @@ describe ForumsHelper do
           # pseudo-attribute added by the Topic.find_topics_for_forum method.
           topic = Topic.make! :user => User.make!
           topics = Topic.find_topics_for_forum topic.forum
-          link_to_user_for_topic topics.first
+          expect do
+            link_to_user_for_topic topics.first
+          end.to_not raise_error
         end
       end
     end
