@@ -160,7 +160,6 @@ DEPENDENCIES
   factory_girl_rails
   haml (~> 3.0.18)
   launchy
-  mail (~> 2.2.15)
   memcache-client
   mkdtemp (>= 1.2)
   mysql2 (~> 0.2.6)
