@@ -1,19 +1,19 @@
 shared_examples_for 'commentable' do
   before do
-    @comment1 = add_comment :awaiting_moderation => false, :public => false
-    @comment2 = add_comment :awaiting_moderation => false, :public => true
-    @comment3 = add_comment :awaiting_moderation => false, :public => true
-    @comment4 = add_comment :awaiting_moderation => false, :public => false
-    @comment5 = add_comment :awaiting_moderation => true,  :public => true
-    @comment6 = add_comment :awaiting_moderation => true,  :public => false
+    add_comment :awaiting_moderation => false, :public => false
+    add_comment :awaiting_moderation => false, :public => true
+    add_comment :awaiting_moderation => false, :public => true
+    add_comment :awaiting_moderation => false, :public => false
+    add_comment :awaiting_moderation => true,  :public => true
+    add_comment :awaiting_moderation => true,  :public => false
   end
 
   def add_comment overrides = {}
-    comment = commentable.comments.build :body => Sham.random
-    overrides.each { |k,v| comment.send("#{k.to_s}=", v) }
-    comment.save
+    @comments ||= []
+    @comments << (@comment = commentable.comments.build :body => Sham.random)
+    overrides.each { |k,v| @comment.send("#{k.to_s}=", v) }
+    @comment.save
     commentable.reload
-    comment
   end
 
   it 'finds comments in ascending (chronological) order by creation date' do
@@ -24,12 +24,12 @@ shared_examples_for 'commentable' do
   end
 
   it 'finds all published comments' do
-    commentable.comments.published.to_a.should =~ [@comment2, @comment3]
+    commentable.comments.published.to_a.should =~ [@comments[1], @comments[2]]
   end
 
   it 'finds all unmoderated comments' do
     # "unmoderated" means :awaiting_moderation => true
-    commentable.comments.unmoderated.to_a.should =~ [@comment5, @comment6]
+    commentable.comments.unmoderated.to_a.should =~ [@comments[4], @comments[5]]
   end
 
   it 'updates the comments_count cache when a comment is added and not held for moderation (ie. admin comments)' do
@@ -50,7 +50,7 @@ shared_examples_for 'commentable' do
     end.to_not change { commentable.comments_count }
 
     expect do
-      Comment.last.moderate_as_ham!
+      @comment.moderate_as_ham!
       commentable.reload
     end.to change { commentable.comments_count }.by(1)
   end
@@ -61,12 +61,12 @@ shared_examples_for 'commentable' do
     end.to_not change { commentable.comments_count }
 
     expect do
-      Comment.last.moderate_as_ham!
+      @comment.moderate_as_ham!
       commentable.reload
     end.to change { commentable.comments_count }.by(1)
 
     expect do
-      Comment.last.destroy
+      @comment.destroy
       commentable.reload
     end.to change { commentable.comments_count }.by(-1)
   end
@@ -77,11 +77,10 @@ end
 # ie. issues, forum topics
 shared_examples_for 'commentable (updating timestamps for comment changes)' do
   def add_comment overrides = {}
-    comment = commentable.comments.build :body => Sham.random
-    overrides.each { |k,v| comment.send("#{k.to_s}=", v) }
-    comment.save
+    @comment = commentable.comments.build :body => Sham.random
+    overrides.each { |k,v| @comment.send("#{k.to_s}=", v) }
+    @comment.save
     commentable.reload
-    comment
   end
 
   # BUG: topic and issue work differently, can't use the same spec for both
@@ -94,49 +93,45 @@ shared_examples_for 'commentable (updating timestamps for comment changes)' do
 
   it 'uses the comment timestamp when a comment is added and is not held for moderation (ie. admin comments)' do
     commentable.comments.should be_empty
-    comment = add_comment :awaiting_moderation => false
-    commentable.updated_at.to_s.should == comment.updated_at.to_s
+    add_comment :awaiting_moderation => false
+    commentable.updated_at.should be_within(1).of(@comment.updated_at)
   end
 
   it 'does not update the timestamp when a comment is added and held for moderation' do
     commentable.comments.should be_empty
     start_date = commentable.updated_at
     add_comment :awaiting_moderation => true
-    commentable.updated_at.to_s.should == start_date.to_s
+    commentable.updated_at.should be_within(1).of(start_date)
   end
 
   it 'updates the timestamp when a comment is added and is moderated as ham' do
     commentable.comments.should be_empty
     start_date = commentable.updated_at
-    comment = add_comment :awaiting_moderation => true
-    commentable.updated_at.to_s.should == start_date.to_s
-    comment.moderate_as_ham!
-    commentable.reload
-    commentable.updated_at.to_s.should == comment.updated_at.to_s
+    Timecop.travel(10) { add_comment :awaiting_moderation => true }
+    commentable.updated_at.should be_within(1).of(start_date)
+    @comment.moderate_as_ham!
+    commentable.reload.updated_at.should be_within(1).of(@comment.updated_at)
   end
 
   it 'amends the timestamp when a ham comment is later destroyed' do
     commentable.comments.should be_empty
     start_date = commentable.updated_at
-    comment = add_comment :awaiting_moderation => true
-    commentable.updated_at.to_s.should == start_date.to_s
-    comment.moderate_as_ham!
-    commentable.reload
-    commentable.updated_at.to_s.should == comment.updated_at.to_s
-    comment.destroy
-    commentable.reload
-    commentable.updated_at.to_s.should == start_date.to_s
+    Timecop.travel(10) { add_comment :awaiting_moderation => true }
+    commentable.updated_at.should be_within(1).of(start_date)
+    @comment.moderate_as_ham!
+    commentable.reload.updated_at.should be_within(1).of(@comment.updated_at)
+    @comment.destroy
+    commentable.reload.updated_at.should be_within(1).of(start_date)
   end
 end
 
-# ie. blog posts, wiki articles
+# ie. blog posts, tweets, snippets, wiki articles
 shared_examples_for 'commentable (not updating timestamps for comment changes)' do
   def add_comment overrides = {}
-    comment = commentable.comments.build :body => Sham.random
-    overrides.each { |k,v| comment.send("#{k.to_s}=", v) }
-    comment.save
+    @comment = commentable.comments.build :body => Sham.random
+    overrides.each { |k,v| @comment.send("#{k.to_s}=", v) }
+    @comment.save
     commentable.reload
-    comment
   end
 
   # BUG: see corresponding comment above about different behaviour in Issues and Topics
@@ -145,37 +140,34 @@ shared_examples_for 'commentable (not updating timestamps for comment changes)' 
   it 'uses the commentable updated timestamp when a comment is added and is not held for moderation (ie. admin comments)' do
     commentable.comments.should be_empty
     start_date = commentable.updated_at
-    comment = add_comment :awaiting_moderation => false
-    commentable.updated_at.to_s.should == start_date.to_s
+    Timecop.travel(10) { add_comment :awaiting_moderation => false }
+    commentable.updated_at.should be_within(1).of(start_date)
   end
 
   it 'uses the commentable updated timestamp when a comment is added and held for moderation' do
     commentable.comments.should be_empty
     start_date = commentable.updated_at
-    add_comment :awaiting_moderation => true
-    commentable.updated_at.to_s.should == start_date.to_s
+    Timecop.travel(10) { add_comment :awaiting_moderation => true }
+    commentable.updated_at.should be_within(1).of(start_date)
   end
 
   it 'uses the commentable updated timestamp when a comment is added and is moderated as ham' do
     commentable.comments.should be_empty
     start_date = commentable.updated_at
-    comment = add_comment :awaiting_moderation => true
-    commentable.updated_at.to_s.should == start_date.to_s
-    comment.moderate_as_ham!
-    commentable.reload
-    commentable.updated_at.to_s.should == start_date.to_s
+    Timecop.travel(10) { add_comment :awaiting_moderation => true }
+    commentable.updated_at.should be_within(1).of(start_date)
+    @comment.moderate_as_ham!
+    commentable.reload.updated_at.should be_within(1).of(start_date)
   end
 
   it 'uses the commentable updated timestamp when a ham comment is later destroyed' do
     commentable.comments.should be_empty
     start_date = commentable.updated_at
-    comment = add_comment :awaiting_moderation => true
-    commentable.updated_at.to_s.should == start_date.to_s
-    comment.moderate_as_ham!
-    commentable.reload
-    commentable.updated_at.to_s.should == start_date.to_s
-    comment.destroy
-    commentable.reload
-    commentable.updated_at.to_s.should == start_date.to_s
+    Timecop.travel(10) { add_comment :awaiting_moderation => true }
+    commentable.updated_at.should be_within(1).of(start_date)
+    @comment.moderate_as_ham!
+    commentable.reload.updated_at.should be_within(1).of(start_date)
+    @comment.destroy
+    commentable.reload.updated_at.should be_within(1).of(start_date)
   end
 end
