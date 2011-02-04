@@ -2,10 +2,7 @@ source 'http://rubygems.org'
 
 gem 'bundler',          '~> 1.0.2'
 gem 'haml',             '~> 3.0.18'
-
-# http://groups.google.com/group/mail-ruby/browse_thread/thread/e93bbd05706478dd?pli=1
 gem 'mail',             '~> 2.2.15'
-
 gem 'mysql2',           '~> 0.2.6'  # until Rails 3.1 hits
 gem 'rails',            '~> 3.0.4.rc1'
 gem 'memcache-client'
