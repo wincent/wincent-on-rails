@@ -21,7 +21,7 @@ end
 
 group :test do
   gem 'akephalos',        '~> 0.2.5'
-  gem 'autotest',         :require => nil
+  gem 'autotest-rails',   :require => nil
   gem 'capybara',         '~> 0.4.0'
   gem 'database_cleaner', '~> 0.6.0'
   gem 'launchy'
