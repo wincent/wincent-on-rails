@@ -1,11 +1,9 @@
 shared_examples_for 'commentable' do
   before do
-    add_comment :awaiting_moderation => false, :public => false
-    add_comment :awaiting_moderation => false, :public => true
-    add_comment :awaiting_moderation => false, :public => true
-    add_comment :awaiting_moderation => false, :public => false
-    add_comment :awaiting_moderation => true,  :public => true
-    add_comment :awaiting_moderation => true,  :public => false
+    @published            = add_comment :awaiting_moderation => false, :public => true
+    @unmoderated_public   = add_comment :awaiting_moderation => true,  :public => true
+    @unmoderated_private  = add_comment :awaiting_moderation => true,  :public => false
+    @private              = add_comment :awaiting_moderation => false, :public => false
   end
 
   def add_comment overrides = {}
@@ -14,22 +12,23 @@ shared_examples_for 'commentable' do
     overrides.each { |k,v| @comment.send("#{k.to_s}=", v) }
     @comment.save
     commentable.reload
+    @comment
   end
 
   it 'finds comments in ascending (chronological) order by creation date' do
-    commentable.comments.each do |comment|
-      Comment.update_all ['created_at = ?', comment.id.days.ago], ['id = ?', comment.id]
-    end
-    commentable.reload.comments.should == commentable.comments
+    Timecop.travel(10) { add_comment }
+    Timecop.travel(10) { add_comment }
+    Timecop.travel(10) { add_comment }
+    commentable.comments.should == @comments
   end
 
   it 'finds all published comments' do
-    commentable.comments.published.to_a.should =~ [@comments[1], @comments[2]]
+    commentable.comments.published.to_a.should =~ [@published]
   end
 
   it 'finds all unmoderated comments' do
     # "unmoderated" means :awaiting_moderation => true
-    commentable.comments.unmoderated.to_a.should =~ [@comments[4], @comments[5]]
+    commentable.comments.unmoderated.to_a.should =~ [@unmoderated_public, @unmoderated_private]
   end
 
   it 'updates the comments_count cache when a comment is added and not held for moderation (ie. admin comments)' do
