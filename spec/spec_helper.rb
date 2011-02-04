@@ -20,11 +20,3 @@ RSpec.configure do |config|
     %r{/\.bundle/}
   ]
 end
-
-# Bundler BUG: http://github.com/carlhuda/bundler/issues/issue/478
-# mongrel child process in acceptance specs gets gimped by Bundler
-# we either stop Bundler from meddling with RUBYOPT, or watch our
-# specs hang indefinitely
-if ENV['RUBYOPT']
-  ENV['RUBYOPT'] = ENV['RUBYOPT'].gsub(%r{-r\s*bundler/setup}, '')
-end
