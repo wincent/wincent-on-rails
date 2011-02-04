@@ -1,8 +1,8 @@
 require_dependency 'ostruct'
 
 class ExceptionReporter
-  def initialize app, options = {}
-    @app, @options = app, options
+  def initialize app
+    @app = app
   end
 
   def call env
