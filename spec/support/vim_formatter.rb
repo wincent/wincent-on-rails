@@ -1,6 +1,5 @@
 require 'rspec/core/formatters/base_formatter'
 require 'rspec/core/formatters/base_text_formatter'
-require 'pathname'
 
 # Format spec results for display in the Vim quickfix window
 # Use this custom formatter like this:
@@ -10,24 +9,42 @@ module RSpec
     module Formatters
       class VimFormatter < BaseTextFormatter
 
-        # TODO: handle pending issues
-        # TODO: vim-side function for printing progress
-        def dump_failures
-          failed_examples.each do |failure|
-            exception = failure.execution_result[:exception_encountered]
-            path = exception.backtrace.find do |frame|
-              frame =~ %r{\bspec/.*_spec\.rb:\d+\z}
-            end
-            message = exception.message.gsub("\n", ' ')[0,40]
-            output.puts "#{relativize_path(path)}: #{message}" if path
+        # TODO: vim-side function for printing progress (if that's even possible)
+
+        def example_failed example
+          exception = example.execution_result[:exception]
+          path = exception.backtrace.find do |frame|
+            frame =~ %r{\bspec/.*_spec\.rb:\d+\z}
           end
+          message = format_message exception.message
+          path    = format_caller path
+          output.puts "#{path}: [FAIL] #{message}" if path
         end
 
-        def dump_summary *args; end
+        def example_pending example
+          message = format_message example.execution_result[:pending_message]
+          path    = format_caller example.location
+          output.puts "#{path}: [PEND] #{message}" if path
+        end
 
-        def dump_pending; end
+        def dump_failures *args; end
+
+        def dump_pending *args; end
+
+        # suppress messages like:
+        #   Run filtered using {:focus=>true}
+        def message msg; end
+
+        # like BaseFormatter
+        def dump_summary duration, example_count, failure_count, pending_count
+          @duration = duration
+          @example_count = example_count
+          @failure_count = failure_count
+          @pending_count = pending_count
+        end
 
         def close
+          super
           summary = summary_line example_count, failure_count, pending_count
           if failure_count > 0
             growlnotify "--image ./autotest/fail.png -p Emergency -m '#{summary}' -t 'Spec failure detected'"
@@ -40,20 +57,15 @@ module RSpec
 
       private
 
+        def format_message msg
+          # NOTE: may consider compressing all whitespace here
+          msg.gsub("\n", ' ')[0,40]
+        end
+
         def growlnotify str
           system 'which growlnotify > /dev/null'
           if $?.exitstatus == 0
             system "growlnotify -n autotest #{str}"
-          end
-        end
-
-        def relativize_path path
-          @wd ||= Pathname.new Dir.getwd
-          begin
-            return Pathname.new(path).relative_path_from(@wd)
-          rescue ArgumentError
-            # raised unless both paths relative, or both absolute
-            return path
           end
         end
       end # class VimFormatter
