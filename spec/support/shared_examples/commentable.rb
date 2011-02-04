@@ -20,7 +20,7 @@ shared_examples_for 'commentable' do
     commentable.comments.each do |comment|
       Comment.update_all ['created_at = ?', comment.id.days.ago], ['id = ?', comment.id]
     end
-    commentable.reload.comments.should =~ commentable.comments
+    commentable.reload.comments.should == commentable.comments
   end
 
   it 'finds all published comments' do
