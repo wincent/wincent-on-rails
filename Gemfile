@@ -26,7 +26,6 @@ group :test do
   gem 'capybara',         '~> 0.4.0'
   gem 'database_cleaner', '~> 0.6.0'
   gem 'launchy'
-  gem 'mongrel',          :require => nil
   gem 'mkdtemp',          '>= 1.2'
   gem 'rcov'
   gem 'rr',               '>= 1.0'
