@@ -22,8 +22,8 @@ class ExceptionMailer < ActionMailer::Base
 private
 
   def pretty_backtrace exception
-    rails_root = Regexp.escape(Rails.root)
-    bundle_path = Regexp.escape(Bundler.bundle_path)
+    rails_root = Regexp.escape(Rails.root.to_s)
+    bundle_path = Regexp.escape(Bundler.bundle_path.to_s)
     exception.backtrace.map do |line|
       line.sub! /^#{rails_root}/, 'RAILS_ROOT'
       line.sub! /^#{bundle_path}/, 'BUNDLE_PATH'
