@@ -5,15 +5,7 @@ class Article < ActiveRecord::Base
   # titles may contain anything other than underscores and slashes
   TITLE_REGEX         = %r{\A[^_/]+\z}
 
-  # for internal use only (see the links model/controller); does not support
-  # the more sophisticated features of the wikitext translator, such as
-  # optional link text
-  LINK_REGEX          = %r{\[\[([^_/]+)\]\]}
-  EXTERNAL_LINK_REGEX = %r{https?://.+?}
-  RELATIVE_PATH_REGEX = %r{/.+?}
-
-  # make "articles_path" helper available to redirection_url method
-  include Rails.application.routes.url_helpers
+  include Linking
 
   has_many                :comments,
                           :as         => :commentable,
@@ -28,9 +20,9 @@ class Article < ActiveRecord::Base
                           :with => TITLE_REGEX,
                           :message => 'must not contain underscores or slashes'
   validates_format_of     :redirect,
-                          :with => /\A\s* ((#{LINK_REGEX})          |
-                                           (#{EXTERNAL_LINK_REGEX}) |
-                                           (#{RELATIVE_PATH_REGEX}) )\s*\z/x,
+                          :with => /(#{LINK_REGEX})          |
+                                    (#{EXTERNAL_LINK_REGEX}) |
+                                    (#{RELATIVE_PATH_REGEX})/x,
                           :if => Proc.new { |a| !a.redirect.blank? },
                           :message => 'must be a valid [[wikitext]] link or HTTP/HTTPS URL'
   validates_length_of     :body, :maximum => 128 * 1024, :allow_blank => true
@@ -76,22 +68,8 @@ class Article < ActiveRecord::Base
     !!(self.redirect? && self.redirect =~ /\A\s*\[\[.+\]\]\s*\z/)
   end
 
-  # Returns a redirection URL or path suitable for consumption by
-  # redirect_to, with trailing and leading whitespace stripped.
-  # Returns nil if there is no such redirect.
   def redirection_url
-    # TODO: refactor these regexps for reuse (see validations)
-    if redirect.nil?
-      nil
-    elsif redirect =~ /\A\s*#{LINK_REGEX}\s*\z/
-      articles_path + '/' + Article.parametrize($~[1])
-    elsif redirect =~ /\A\s*(#{EXTERNAL_LINK_REGEX})\s*\z/
-      $~[1]
-    elsif redirect =~ /\A\s*(#{RELATIVE_PATH_REGEX})\s*\z/
-      $~[1]
-    else
-      nil
-    end
+    url_for_link redirect
   end
 
   # this is a string-to-string transformation, unlike to_param/from_param
