@@ -48,6 +48,11 @@ describe 'snippets/show.html.haml' do
     rendered.should have_selector('.links a', :href => '/snippets')
   end
 
+  it 'has a link to the raw format for the snippet' do
+    render
+    rendered.should have_selector('.links a', :href => snippet_path(@snippet, :format => :txt))
+  end
+
   context 'commenting open' do
     it 'displays the comment form' do
       render
