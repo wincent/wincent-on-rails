@@ -45,7 +45,7 @@ class Article < ActiveRecord::Base
   def self.find_with_param! param, user = nil
     article = find_by_title! deparametrize(param)
     if !article.public? && (!user || !user.superuser?)
-      raise ActionController::ForbiddenError.new
+      raise ActionController::ForbiddenError
     end
     article
   end
