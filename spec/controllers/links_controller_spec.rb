@@ -5,7 +5,7 @@ describe LinksController do
 
   describe 'show action with permalink' do
     before do
-      @link = Link.make! :permalink => 'foo'
+      @link = Link.make! :permalink => 'foo', :uri => '[[foo]]'
     end
 
     # was a bug (I'd forgotten to use the "find_link" before filter)
@@ -13,11 +13,16 @@ describe LinksController do
       mock(Link).find_by_permalink('foo') { @link }
       get :show, :id => 'foo'
     end
+
+    it 'redirects to the corresponding URL' do
+      get :show, :id => 'foo'
+      response.should redirect_to('/wiki/foo')
+    end
   end
 
   describe 'show action with raw id' do
     before do
-      @link = Link.make!
+      @link = Link.make! :uri => '[[bar]]'
     end
 
     # was a bug (I'd forgotten to use the "find_link" before filter)
@@ -25,6 +30,11 @@ describe LinksController do
       stub(Link).find_by_permalink(@link.id) { nil }  # fail on first try, but...
       mock(Link).find(@link.id) { @link }             # succeed on fallback
       get :show, :id => @link.id
+    end
+
+    it 'redirects to the corresponding URL' do
+      get :show, :id => @link.id
+      response.should redirect_to('/wiki/bar')
     end
   end
 

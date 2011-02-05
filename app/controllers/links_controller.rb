@@ -31,7 +31,7 @@ class LinksController < ApplicationController
       format.html {
         # TODO: extract into Link#hit! method
         Link.increment_counter :click_count, @link.id
-        redirect_to @link.uri, :status => 303 # "See other", GET request
+        redirect_to @link.redirection_url, :status => 303 # "See other", GET request
       }
       format.js { # AJAX updates
         require_admin do
