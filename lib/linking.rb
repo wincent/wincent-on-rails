@@ -6,6 +6,8 @@ module Linking
   EXTERNAL_LINK_REGEX = %r{\A\s*(https?://\S+)\s*\z}
   RELATIVE_PATH_REGEX = %r{\A\s*(/\S+)\s*\z}
 
+private
+
   # Returns a redirection URL or path suitable for consumption by
   # redirect_to, with trailing and leading whitespace stripped.
   # Returns nil if there is no such redirect.
