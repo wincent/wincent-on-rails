@@ -109,6 +109,36 @@ describe Link do
     end
   end
 
+  describe '#redirection_url' do
+    context 'with a wiki link' do
+      it 'redirects to the wiki' do
+        link = Link.make! :uri => '[[foo bar]]'
+        link.redirection_url.should == '/wiki/foo_bar'
+      end
+    end
+
+    context 'with an HTTP URL' do
+      it 'redirects to the URL' do
+        link = Link.make! :uri => 'http://example.com'
+        link.redirection_url.should == 'http://example.com'
+      end
+    end
+
+    context 'with an HTTPS URL' do
+      it 'redirects to the URL' do
+        link = Link.make! :uri => 'https://example.com'
+        link.redirection_url.should == 'https://example.com'
+      end
+    end
+
+    context 'with a relative path' do
+      it 'redirects to the path' do
+        link = Link.make! :uri => '/issues/new'
+        link.redirection_url.should == '/issues/new'
+      end
+    end
+  end
+
   describe '#to_param' do
     it 'uses permalink as param if available' do
       link = Link.make!

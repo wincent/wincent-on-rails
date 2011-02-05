@@ -26,6 +26,10 @@ class Link < ActiveRecord::Base
                           :message => 'may only contain lowercase letters, numbers and hyphens'
   attr_accessible         :uri,       :permalink
 
+  def redirection_url
+    url_for_link uri
+  end
+
   def to_param
     # pretty permalinks if available, otherwise fall back to id
     (changes['permalink'] && changes['permalink'].first) || self.permalink || self.id
