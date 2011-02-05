@@ -61,11 +61,12 @@ class Article < ActiveRecord::Base
   #   1. Absolute URLs: http://example.com/ or https://example.com/
   #   2. Relative URLs: /issues/640
   #   3. Internal wiki links: [[foo]]
-  # This method returns true if the receiver is an "internal wiki link" redirect.
-  # We're interested in this property because we want to know when to display "redirected from" annotations
-  # (which we only want for redirections _within_ the wiki)
+  # This method returns true if the receiver is an "internal wiki link"
+  # redirect. We're interested in this property because we want to know when to
+  # display "redirected from" annotations (which we only want for redirections
+  # _within_ the wiki)
   def wiki_redirect?
-    !!(self.redirect? && self.redirect =~ /\A\s*\[\[.+\]\]\s*\z/)
+    !!(self.redirect? && self.redirect =~ LINK_REGEX)
   end
 
   def redirection_url
