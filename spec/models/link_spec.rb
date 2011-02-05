@@ -2,16 +2,41 @@ require 'spec_helper'
 
 describe Link do
   describe 'URI validation' do
-    it 'should require a URI' do
+    it 'requires a URI' do
       link = Link.make :uri => nil
       link.should fail_validation_for(:uri)
     end
 
-    it 'should require URIs to be unique' do
-      uri = Sham.random
+    it 'requires URIs to be unique' do
+      uri = 'http://example.com/'
       link = Link.make! :uri => uri
       link.should_not fail_validation_for(:uri)
       link = Link.make :uri => uri
+      link.should fail_validation_for(:uri)
+    end
+
+    it 'accepts wiki links' do
+      link = Link.make :uri => '[[foo bar]]'
+      link.should_not fail_validation_for(:uri)
+    end
+
+    it 'accepts HTTP URLs' do
+      link = Link.make :uri => 'http://example.com/'
+      link.should_not fail_validation_for(:uri)
+    end
+
+    it 'accepts HTTPS URLs' do
+      link = Link.make :uri => 'https://example.com/'
+      link.should_not fail_validation_for(:uri)
+    end
+
+    it 'accepts relative path URLs' do
+      link = Link.make :uri => '/foo/bar'
+      link.should_not fail_validation_for(:uri)
+    end
+
+    it 'does not accept non-links' do
+      link = Link.make :uri => 'not a link'
       link.should fail_validation_for(:uri)
     end
   end

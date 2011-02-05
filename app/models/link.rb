@@ -10,8 +10,15 @@
 # although this could be easily added later on if desired with a Clickthrough
 # model.
 class Link < ActiveRecord::Base
+  include Linking
+
   validates_presence_of   :uri
   validates_uniqueness_of :uri
+  validates_format_of     :uri,
+                          :with => /(#{LINK_REGEX})          |
+                                    (#{EXTERNAL_LINK_REGEX}) |
+                                    (#{RELATIVE_PATH_REGEX})/x,
+                          :message => 'must be a valid [[wiki]] link, HTTP/HTTPS URL or relative path'
   validates_uniqueness_of :permalink, :allow_nil => true
   validates_format_of     :permalink,
                           :with => /\A[a-z0-9\-]*\z/,
