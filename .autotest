@@ -1,3 +1,5 @@
+require 'autotest/bundler'
+
 Autotest.options[:no_full_after_start] = true
 Autotest.options[:no_full_after_failed] = true
 
