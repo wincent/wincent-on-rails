@@ -272,17 +272,17 @@ module ApplicationHelper
   def link_to_commentable commentable
     case commentable
     when Article
-      link_to commentable.title, article_path(commentable)
+      link_to commentable.title, commentable
     when Issue
-      link_to commentable.summary, issue_path(commentable)
+      link_to commentable.summary, commentable
     when Post
-      link_to commentable.title, post_path(commentable)
+      link_to commentable.title, commentable
     when Snippet
-      link_to snippet_title(commentable), snippet_path(commentable)
+      link_to snippet_title(commentable), commentable
     when Topic
-      link_to commentable.title, forum_topic_path(commentable.forum, commentable)
+      link_to commentable.title, commentable
     when Tweet
-      link_to tweet_title(commentable), tweet_path(commentable)
+      link_to tweet_title(commentable), commentable
     when NilClass
       # could get here if there is an orphaned comment in the database
       # should never happen: but in case it does, emitting this string is probably better than crashing
