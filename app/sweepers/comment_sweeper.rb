@@ -28,6 +28,9 @@ class CommentSweeper < ActionController::Caching::Sweeper
       paths << issue_path(commentable) + '.atom'
     when Post
       paths << post_path(commentable) + '.atom'
+    when Snippet
+      paths << snippet_path(commentable) + '.atom'
+      paths << snippet_path(commentable) + '.html'
     when Topic
       forum = commentable.forum
       paths << (forum_topic_path(forum, commentable) + '.atom') if forum
