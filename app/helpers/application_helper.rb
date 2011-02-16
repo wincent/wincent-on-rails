@@ -282,7 +282,7 @@ module ApplicationHelper
     when Topic
       link_to commentable.title, forum_topic_path(commentable.forum, commentable)
     when Tweet
-      link_to "Tweet \##{commentable.id}", tweet_path(commentable)
+      link_to tweet_title(commentable), tweet_path(commentable)
     when NilClass
       # could get here if there is an orphaned comment in the database
       # should never happen: but in case it does, emitting this string is probably better than crashing
