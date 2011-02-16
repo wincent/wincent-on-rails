@@ -11,6 +11,8 @@ module CommentsHelper
       link_to "issue \##{parent.id}", issue_path(parent)
     when Post
       link_to parent.title, post_path(parent)
+    when Snippet
+      link_to "snippet \##{parent.id}", snippet_path(parent)
     when Topic
       link_to parent.title, forum_topic_path(parent.forum, parent)
     when Tweet
