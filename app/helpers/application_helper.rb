@@ -265,8 +265,7 @@ module ApplicationHelper
     when Tweet
       link_to tweet_title(commentable), commentable
     when NilClass
-      # could get here if there is an orphaned comment in the database
-      # should never happen: but in case it does, emitting this string is probably better than crashing
+      # could get here for an orphaned comment in the database (unlikely)
       'deleted parent'
     else # Article, Post, Topic
       link_to commentable.title, commentable
