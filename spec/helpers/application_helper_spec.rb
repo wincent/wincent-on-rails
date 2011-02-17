@@ -193,26 +193,56 @@ describe ApplicationHelper do
   end
 
   describe '#link_to_model' do
-    it 'works with article models' do
+    it 'works with articles' do
       article = Article.make!
       link = link_to(article.title, article_path(article))
       link_to_model(article).should == link
     end
 
-    it 'works with issue models' do
+    it 'works with issues' do
       issue = Issue.make!
       link_to_model(issue).should == link_to(issue.summary, issue_path(issue))
     end
 
-    it 'works with post models' do
+    it 'works with posts' do
       post = Post.make!
       link_to_model(post).should == link_to(post.title, post_path(post))
     end
 
-    it 'works with topic models' do
+    context 'with a snippet' do
+      let(:snippet) { Snippet.make! }
+
+      # TODO: in next Capybara release use selector-based tests here
+      it 'links to the snippet' do
+        link_to_model(snippet).should include(snippet_path(snippet))
+      end
+
+      context 'title is available' do
+        let (:snippet) { Snippet.make! :title => 'foobar' }
+
+        it 'uses the snippet title' do
+          link_to_model(snippet).should =~ /foobar/
+        end
+      end
+    end
+
+    it 'works with topics' do
       topic = Topic.make!
       link = link_to(topic.title, forum_topic_path(topic.forum, topic))
       link_to_model(topic).should == link
+    end
+
+    context 'with a tweet' do
+      let(:tweet) { Tweet.make! :body => 'hello' }
+
+      # TODO: in next Capybara release use selector-based tests here
+      it 'links to the tweet' do
+        link_to_model(tweet).should include(tweet_path(tweet))
+      end
+
+      it 'uses the tweet title' do
+        link_to_model(tweet).should =~ /hello/
+      end
     end
   end
 
