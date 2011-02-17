@@ -1,14 +1,12 @@
 module TagsHelper
   def taggable_link model
     case model
-    when Article, Post
+    when Article, Post, Topic
       link_to model.title, model
     when Issue
       link_to model.summary, model
     when Snippet
       link_to snippet_title(model), model
-    when Topic
-      link_to model.title, model
     when Tweet
       link_to tweet_title(model), model
     else
