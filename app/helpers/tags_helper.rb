@@ -2,15 +2,15 @@ module TagsHelper
   def taggable_link model
     case model
     when Article, Post
-      link_to model.title, (send "#{model.class.to_s.downcase}_path", model)
+      link_to model.title, model
     when Issue
-      link_to model.summary, issue_path(model)
+      link_to model.summary, model
     when Snippet
-      link_to snippet_title(model), snippet_path(model)
+      link_to snippet_title(model), model
     when Topic
       link_to model.title, model
     when Tweet
-      link_to tweet_title(model), tweet_path(model)
+      link_to tweet_title(model), model
     else
       raise 'not yet implemented'
     end
