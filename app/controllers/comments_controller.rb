@@ -119,10 +119,10 @@ private
       @grandparent = Forum.find_with_param! grandparent
       @parent = @grandparent.topics.where(:id => parent).first
     end
-    raise ActiveRecord::RecordNotFound.new('no parent instance') unless @parent
+    raise ActiveRecord::RecordNotFound, 'no parent instance' unless @parent
 
     if !@parent.accepts_comments
-      raise ActionController::ForbiddenError.new \
+      raise ActionController::ForbiddenError,
         'parent does not accept comments'
     end
   end
