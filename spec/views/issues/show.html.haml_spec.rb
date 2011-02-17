@@ -4,7 +4,7 @@ describe 'issues/show' do
   before do
     @issue    = Issue.make!
     @comments = []
-    @comment  = Comment.new
+    @comment  = @issue.comments.build
   end
 
   it 'should show breadcrumbs' do
@@ -21,7 +21,7 @@ describe 'issues/show' do
     before do
       @issue    = Issue.make!(:public => false)
       @comments = []
-      @comment  = Comment.new
+      @comment  = @issue.comments.build
     end
 
     it 'should not advertise an atom feed' do
@@ -34,7 +34,7 @@ describe 'issues/show' do
     before do
       @issue    = Issue.make!
       @comments = []
-      @comment  = Comment.new
+      @comment  = @issue.comments.build
       stub(view).admin? { true }
       render
     end
@@ -52,7 +52,7 @@ describe 'issues/show' do
     before do
       @issue    = Issue.make!
       @comments = []
-      @comment  = Comment.new
+      @comment  = @issue.comments.build
       stub(view).admin? { false }
       render
     end
@@ -70,7 +70,7 @@ describe 'issues/show' do
     before do
       @issue    = Issue.make!(:description => '')
       @comments = []
-      @comment  = Comment.new
+      @comment  = @issue.comments.build
     end
 
     it 'should show "none"' do
