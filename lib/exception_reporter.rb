@@ -1,5 +1,3 @@
-require_dependency 'ostruct'
-
 class ExceptionReporter
   def initialize app
     @app = app
