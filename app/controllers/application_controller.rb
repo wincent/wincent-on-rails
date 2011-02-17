@@ -13,19 +13,6 @@ class ApplicationController < ActionController::Base
 
 protected
 
-  # URL to the comment nested in the context of its parent (resources), including an anchor.
-  # NOTE: this method is dog slow if called in an "N + 1 SELECT" situation
-  def nested_comment_path comment
-    commentable = comment.commentable
-    anchor      = "comment_#{comment.id}"
-    case commentable
-    when Article, Issue, Post, Tweet
-      send "#{commentable.class.to_s.downcase}_path", commentable, :anchor => anchor
-    when Topic
-      forum_topic_path commentable.forum, commentable, :anchor => anchor
-    end
-  end
-
   def handle_http_status_code code, &block
     if request.xhr?
       render :text => Rack::Utils::HTTP_STATUS_CODES[code], :status => code

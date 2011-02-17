@@ -119,10 +119,10 @@ private
       @grandparent = Forum.find_with_param! grandparent
       @parent = @grandparent.topics.where(:id => parent).first
     end
-    raise ActiveRecord::RecordNotFound.new('no parent instance') unless @parent
+    raise ActiveRecord::RecordNotFound, 'no parent instance' unless @parent
 
     if !@parent.accepts_comments
-      raise ActionController::ForbiddenError.new \
+      raise ActionController::ForbiddenError,
         'parent does not accept comments'
     end
   end
@@ -136,6 +136,19 @@ private
       # should never get here; and in fact, shouldn't even get to the previous case either
       # but leave it in for now, as may eventually allow users to edit their own comments
       raise "anonymous users can't manipulate comments"
+    end
+  end
+
+  # URL to the comment nested in the context of its parent (resources), including an anchor.
+  # NOTE: this method is dog slow if called in an "N + 1 SELECT" situation
+  def nested_comment_path comment
+    commentable = comment.commentable
+    anchor      = "comment_#{comment.id}"
+    case commentable
+    when Topic
+      forum_topic_path commentable.forum, commentable, :anchor => anchor
+    else # Article, Issue, Post, Snippet, Tweet
+      polymorphic_path commentable, :anchor => anchor
     end
   end
 end

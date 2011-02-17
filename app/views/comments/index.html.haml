@@ -9,7 +9,7 @@
   %div[@comment]
     %h2
       Comment on
-      =link_to_commentable @comment.commentable
+      =link_to_model @comment.commentable
       (#{@comment.commentable.class.to_s.downcase})
       by
       =link_to_user @comment.user

@@ -6,7 +6,7 @@ describe 'comments/edit' do
   end
 
   it 'has a link back to the commentable model' do
-    mock(view).link_to_commentable @comment.commentable
+    mock(view).link_to_model @comment.commentable
     render
   end
 

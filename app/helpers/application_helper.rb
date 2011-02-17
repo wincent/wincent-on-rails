@@ -256,49 +256,29 @@ module ApplicationHelper
     end
   end
 
-  # TODO: potentially move these methods into authentication.rb as well
-  def logged_in_only &block
-    if logged_in?
-      yield
-    end
-  end
-
-  def logged_in_and_verified_only &block
-    if logged_in_and_verified?
-      yield
-    end
-  end
-
-  def link_to_commentable commentable
-    case commentable
-    when Article
-      link_to commentable.title, article_path(commentable)
+  def link_to_model model
+    case model
     when Issue
-      link_to commentable.summary, issue_path(commentable)
-    when Post
-      link_to commentable.title, post_path(commentable)
+      link_to model.summary, model
     when Snippet
-      link_to snippet_title(commentable), snippet_path(commentable)
-    when Topic
-      link_to commentable.title, forum_topic_path(commentable.forum, commentable)
+      link_to snippet_title(model), model
     when Tweet
-      link_to "Tweet \##{commentable.id}", tweet_path(commentable)
+      link_to tweet_title(model), model
     when NilClass
-      # could get here if there is an orphaned comment in the database
-      # should never happen: but in case it does, emitting this string is probably better than crashing
-      'deleted parent'
-    else
-      raise 'not implemented'
+      # could get here for an orphaned comment (shouldn't happen)
+      'deleted record'
+    else # Article, Post, Topic
+      link_to model.title, model
     end
   end
 
   def polymorphic_comments_path comment
     commentable = comment.commentable
     case commentable
-    when Article, Issue, Post, Snippet, Tweet
-      send "#{commentable.class.to_s.downcase}_comments_path", commentable
     when Topic
       forum_topic_comments_path commentable.forum, commentable
+    else # Article, Issue, Post, Snippet, Tweet
+      send "#{commentable.class.to_s.downcase}_comments_path", commentable
     end
   end
 

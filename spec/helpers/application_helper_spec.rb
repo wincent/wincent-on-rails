@@ -108,15 +108,6 @@ describe ApplicationHelper, '"button_to_moderate_issue_as_ham" method' do
   end
 end
 
-describe ApplicationHelper, '"link_to_commentable" method' do
-
-  # was a bug
-  it 'should adequately escape HTML special characters (Issue summaries)' do
-    issue = Issue.make! :summary => '<em>foo</em>'
-    link_to_commentable(issue).should_not =~ /<em>/
-  end
-end
-
 describe ApplicationHelper, '"tweet_title" method' do
   it 'should strip HTML tags' do
     tweet = Tweet.make :body => "foo ''bar''"
@@ -189,6 +180,66 @@ describe ApplicationHelper do
         tags.should_not match('dashboards.css')
         tags.should match('dashboard.css')
       end
+    end
+  end
+
+  describe '#link_to_model' do
+    it 'works with articles' do
+      article = Article.make!
+      link = link_to(article.title, article_path(article))
+      link_to_model(article).should == link
+    end
+
+    it 'works with issues' do
+      issue = Issue.make!
+      link_to_model(issue).should == link_to(issue.summary, issue_path(issue))
+    end
+
+    it 'works with posts' do
+      post = Post.make!
+      link_to_model(post).should == link_to(post.title, post_path(post))
+    end
+
+    context 'with a snippet' do
+      let(:snippet) { Snippet.make! }
+
+      # TODO: in next Capybara release use selector-based tests here
+      it 'links to the snippet' do
+        link_to_model(snippet).should include(snippet_path(snippet))
+      end
+
+      context 'description is available' do
+        let (:snippet) { Snippet.make! :description => 'foobar' }
+
+        it 'uses the snippet title' do
+          link_to_model(snippet).should =~ /foobar/
+        end
+      end
+    end
+
+    it 'works with topics' do
+      topic = Topic.make!
+      link = link_to(topic.title, topic_path(topic))
+      link_to_model(topic).should == link
+    end
+
+    context 'with a tweet' do
+      let(:tweet) { Tweet.make! :body => 'hello' }
+
+      # TODO: in next Capybara release use selector-based tests here
+      it 'links to the tweet' do
+        link_to_model(tweet).should include(tweet_path(tweet))
+      end
+
+      it 'uses the tweet title' do
+        link_to_model(tweet).should =~ /hello/
+      end
+    end
+
+    # was a bug
+    it 'escapes HTML special characters (such as in issue summaries)' do
+      issue = Issue.make! :summary => '<em>foo</em>'
+      link_to_model(issue).should_not =~ /<em>/
     end
   end
 
