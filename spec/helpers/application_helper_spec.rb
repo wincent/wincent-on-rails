@@ -217,8 +217,8 @@ describe ApplicationHelper do
         link_to_model(snippet).should include(snippet_path(snippet))
       end
 
-      context 'title is available' do
-        let (:snippet) { Snippet.make! :title => 'foobar' }
+      context 'description is available' do
+        let (:snippet) { Snippet.make! :description => 'foobar' }
 
         it 'uses the snippet title' do
           link_to_model(snippet).should =~ /foobar/
@@ -228,7 +228,7 @@ describe ApplicationHelper do
 
     it 'works with topics' do
       topic = Topic.make!
-      link = link_to(topic.title, forum_topic_path(topic.forum, topic))
+      link = link_to(topic.title, topic_path(topic))
       link_to_model(topic).should == link
     end
 
