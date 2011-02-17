@@ -19,10 +19,10 @@ protected
     commentable = comment.commentable
     anchor      = "comment_#{comment.id}"
     case commentable
-    when Article, Issue, Post, Snippet, Tweet
-      polymorphic_path commentable, :anchor => anchor
     when Topic
       forum_topic_path commentable.forum, commentable, :anchor => anchor
+    else # Article, Issue, Post, Snippet, Tweet
+      polymorphic_path commentable, :anchor => anchor
     end
   end
 
