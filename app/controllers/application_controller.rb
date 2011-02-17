@@ -20,7 +20,7 @@ protected
     anchor      = "comment_#{comment.id}"
     case commentable
     when Article, Issue, Post, Snippet, Tweet
-      send "#{commentable.class.to_s.downcase}_path", commentable, :anchor => anchor
+      polymorphic_path commentable, :anchor => anchor
     when Topic
       forum_topic_path commentable.forum, commentable, :anchor => anchor
     end
