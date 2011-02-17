@@ -256,22 +256,6 @@ module ApplicationHelper
     end
   end
 
-  def link_to_commentable commentable
-    case commentable
-    when Issue
-      link_to commentable.summary, commentable
-    when Snippet
-      link_to snippet_title(commentable), commentable
-    when Tweet
-      link_to tweet_title(commentable), commentable
-    when NilClass
-      # could get here for an orphaned comment in the database (unlikely)
-      'deleted parent'
-    else # Article, Post, Topic
-      link_to commentable.title, commentable
-    end
-  end
-
   def link_to_model model
     case model
     when Issue
@@ -280,6 +264,9 @@ module ApplicationHelper
       link_to snippet_title(model), model
     when Tweet
       link_to tweet_title(model), model
+    when NilClass
+      # could get here for an orphaned comment (shouldn't happen)
+      'deleted record'
     else # Article, Post, Topic
       link_to model.title, model
     end

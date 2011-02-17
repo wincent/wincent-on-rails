@@ -108,15 +108,6 @@ describe ApplicationHelper, '"button_to_moderate_issue_as_ham" method' do
   end
 end
 
-describe ApplicationHelper, '"link_to_commentable" method' do
-
-  # was a bug
-  it 'should adequately escape HTML special characters (Issue summaries)' do
-    issue = Issue.make! :summary => '<em>foo</em>'
-    link_to_commentable(issue).should_not =~ /<em>/
-  end
-end
-
 describe ApplicationHelper, '"tweet_title" method' do
   it 'should strip HTML tags' do
     tweet = Tweet.make :body => "foo ''bar''"
@@ -243,6 +234,12 @@ describe ApplicationHelper do
       it 'uses the tweet title' do
         link_to_model(tweet).should =~ /hello/
       end
+    end
+
+    # was a bug
+    it 'escapes HTML special characters (such as in issue summaries)' do
+      issue = Issue.make! :summary => '<em>foo</em>'
+      link_to_model(issue).should_not =~ /<em>/
     end
   end
 
