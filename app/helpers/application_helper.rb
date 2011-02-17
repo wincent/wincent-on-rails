@@ -259,7 +259,7 @@ module ApplicationHelper
   def link_to_commentable commentable
     case commentable
     when Article, Post, Topic
-      link_to commentable.send(:title), commentable
+      link_to commentable.title, commentable
     when Issue
       link_to commentable.summary, commentable
     when Snippet
