@@ -272,6 +272,19 @@ module ApplicationHelper
     end
   end
 
+  def link_to_model model
+    case model
+    when Issue
+      link_to model.summary, model
+    when Snippet
+      link_to snippet_title(model), model
+    when Tweet
+      link_to tweet_title(model), model
+    else # Article, Post, Topic
+      link_to model.title, model
+    end
+  end
+
   def polymorphic_comments_path comment
     commentable = comment.commentable
     case commentable

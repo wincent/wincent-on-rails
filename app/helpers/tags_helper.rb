@@ -1,17 +1,4 @@
 module TagsHelper
-  def taggable_link model
-    case model
-    when Issue
-      link_to model.summary, model
-    when Snippet
-      link_to snippet_title(model), model
-    when Tweet
-      link_to tweet_title(model), model
-    else # Article, Post, Topic
-      link_to model.title, model
-    end
-  end
-
   def tag_names tags
     if tags
       "#{(tags[:found].collect(&:name)).join ', '}"

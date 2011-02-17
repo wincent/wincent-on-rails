@@ -192,6 +192,30 @@ describe ApplicationHelper do
     end
   end
 
+  describe '#link_to_model' do
+    it 'works with article models' do
+      article = Article.make!
+      link = link_to(article.title, article_path(article))
+      link_to_model(article).should == link
+    end
+
+    it 'works with issue models' do
+      issue = Issue.make!
+      link_to_model(issue).should == link_to(issue.summary, issue_path(issue))
+    end
+
+    it 'works with post models' do
+      post = Post.make!
+      link_to_model(post).should == link_to(post.title, post_path(post))
+    end
+
+    it 'works with topic models' do
+      topic = Topic.make!
+      link = link_to(topic.title, forum_topic_path(topic.forum, topic))
+      link_to_model(topic).should == link
+    end
+  end
+
   describe '#wikitext_truncate_and_strip' do
     it 'strips out wikitext markup' do
       wikitext_truncate_and_strip("''fun''").should == 'fun' # quotes are gone

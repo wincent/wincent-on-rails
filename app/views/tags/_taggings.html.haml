@@ -8,5 +8,5 @@
     %tbody
       -group.taggables.each do |taggable|
         %tr
-          %td=taggable_link taggable
+          %td=link_to_model taggable
           %td=timeinfo taggable
