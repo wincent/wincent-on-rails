@@ -256,19 +256,6 @@ module ApplicationHelper
     end
   end
 
-  # TODO: potentially move these methods into authentication.rb as well
-  def logged_in_only &block
-    if logged_in?
-      yield
-    end
-  end
-
-  def logged_in_and_verified_only &block
-    if logged_in_and_verified?
-      yield
-    end
-  end
-
   def link_to_commentable commentable
     case commentable
     when Article, Post, Topic
