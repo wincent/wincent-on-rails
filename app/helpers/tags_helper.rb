@@ -8,12 +8,7 @@ module TagsHelper
     when Snippet
       link_to snippet_title(model), snippet_path(model)
     when Topic
-      # BUG: another "n + 1 SELECT" issue here
-      # if we present a list of model tags, each model here does a model.forum, which means an additional database query for each
-      # for now the workaround will be to simply avoid tagging forum topics!
-      # but a long-term solution will need to be found,
-      # most likely involving "pre-seeding" in some way
-      link_to model.title, forum_topic_path(model.forum, model)
+      link_to model.title, model
     when Tweet
       link_to tweet_title(model), tweet_path(model)
     else
