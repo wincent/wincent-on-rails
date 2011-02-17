@@ -258,8 +258,6 @@ module ApplicationHelper
 
   def link_to_commentable commentable
     case commentable
-    when Article, Post, Topic
-      link_to commentable.title, commentable
     when Issue
       link_to commentable.summary, commentable
     when Snippet
@@ -270,8 +268,8 @@ module ApplicationHelper
       # could get here if there is an orphaned comment in the database
       # should never happen: but in case it does, emitting this string is probably better than crashing
       'deleted parent'
-    else
-      raise 'not implemented'
+    else # Article, Post, Topic
+      link_to commentable.title, commentable
     end
   end
 
