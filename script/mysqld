@@ -32,6 +32,12 @@ BLOCKCOUNT=`expr 100 '*' 1024 '*' 1024 / $BLOCKSIZE`
 if [ -f "tmp/pids/mysql_ram.pid" ]; then
   echo "mysqld [ramdisk] running: stopping"
   mysqladmin -u root --socket=$PWD/tmp/sockets/mysql_ram.sock shutdown > /dev/null
+
+  if [ -d '/Volumes/ramdisk' ]; then
+    echo "notice:: waiting for mysqld to finish shutting down"
+    sleep 5
+    hdiutil detach /Volumes/ramdisk
+  fi
 else
   echo "mysqld [ramdisk] not running: starting"
 
