@@ -4,6 +4,7 @@
 # we are always run from the Rails.root as "script/mysqld"
 if [ $0 != 'script/mysqld' ]; then
   echo "error:: please run from Rails.root as 'script/mysqld'"
+  exit 1
 fi
 
 # production/development database on disk at tmp/mysql
