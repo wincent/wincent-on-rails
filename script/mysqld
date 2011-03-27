@@ -50,7 +50,7 @@ else
       exit 1
     fi
     diskutil eraseVolume HFS+ ramdisk $DEV > /dev/null
-    /usr/local/mysql/scripts/mysql_install_db --basedir=/usr/local/mysql --datadir=/Volumes/ramdisk > /dev/null
+    mysql_install_db --datadir=/Volumes/ramdisk > /dev/null
 
     echo "notice:: created ${DISKSIZE}MB ramdisk at $DEV_TRIMMED; use 'hdiutil detach $DEV_TRIMMED' to dispose of it"
     CREATE_TEST_DATABASE=1
