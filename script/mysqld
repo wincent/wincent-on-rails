@@ -59,7 +59,7 @@ else
   if [ "$CREATE_TEST_DATABASE" ]; then
     echo "notice:: waiting for mysqld to finish launching"
     sleep 5
-    RAILS_ENV=test rake db:create > /dev/null
-    rake db:test:clone_structure > /dev/null # copy structure from schema.rb
+    RAILS_ENV=test bin/rake db:create > /dev/null
+    bin/rake db:test:clone_structure > /dev/null # copy structure from schema.rb
   fi
 fi
