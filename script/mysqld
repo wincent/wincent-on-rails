@@ -37,7 +37,7 @@ if [ -f "tmp/pids/mysql_ram.pid" ]; then
   if [ -d '/Volumes/ramdisk' ]; then
     echo "notice:: waiting for mysqld to finish shutting down"
     sleep 5
-    hdiutil detach /Volumes/ramdisk
+    hdiutil detach /Volumes/ramdisk > /dev/null
   fi
 else
   echo "mysqld [ramdisk] not running: starting"
