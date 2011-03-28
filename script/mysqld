@@ -50,7 +50,7 @@ else
       echo "error:: unexpected device returned by 'hdiutil attach' ($DEV_TRIMMED): bailing"
       exit 1
     fi
-    diskutil eraseVolume HFS+ ramdisk $DEV > /dev/null
+    diskutil eraseVolume hfsx ramdisk $DEV > /dev/null
     mysql_install_db --datadir=/Volumes/ramdisk > /dev/null
 
     echo "notice:: created ${DISKSIZE}MB ramdisk at $DEV_TRIMMED; use 'hdiutil detach $DEV_TRIMMED' to dispose of it"
