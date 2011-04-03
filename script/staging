@@ -1,0 +1,71 @@
+#!/usr/bin/env ruby
+
+# trying to automate this:
+# https://wincent.com/wiki/Cloning_an_EC2_instance_for_testing_purposes
+
+module AWS
+  module EBS
+    class Volume
+      attr_reader :mount_point, :volume_id, :start_time
+
+      def initialize *attrs
+        @mount_point  = attrs.find { |attr| attr =~ %r{^/} }
+        @volume_id    = attrs.find { |attr| attr =~ /^vol-[a-f0-9]+$/ }
+        @start_time   = attrs.find { |attr| attr =~ /^\d{4}-\d{2}-\d{2}/ }
+      end
+    end # class Volume
+  end # module EBS
+
+  module EC2
+    class Instance
+      attr_reader :ebs_volumes
+
+      # Wrapper for ec2-describe-instances
+      # Optionally takes an instance ID to return information about a specific
+      # instance; if omitted, returns information about all instances.
+      # Returns an array of records, where each record comprises another array
+      # containing fields.
+      def self.describe_instances instance = nil
+        `ec2-describe-instances #{instance}`.split("\n").map do |line|
+          line.split("\t")
+        end
+      end
+
+      # Returns a list of known instance IDs
+      def self.instance_ids
+        describe_instances.find_all do |instance|
+          instance.first == 'INSTANCE'
+        end.map do |instance|
+          instance[1]
+        end
+      end
+
+      def initialize id_str
+        raise ArgumentError, 'nil id_str' if id_str.nil?
+        @instance_data  = self.class.describe_instances id_str
+        @ebs_volumes    = attributes_for_type('BLOCKDEVICE').map do |attrs|
+          EBS::Volume.new *attrs
+        end
+      end
+
+    private
+
+      # Introspects the instance data for records matching the specified type.
+      # Returns an array of attributes for each matching record.
+      def attributes_for_type type
+        @instance_data.find_all do |record|
+          record.first == type
+        end.map do |record|
+          record[1..-1] # drop type field: BLOCKDEVICE, INSTANCE, RESERVATION
+        end
+      end
+    end # class Instance
+  end # module EC2
+end # module AWS
+
+require 'pp'
+ids = AWS::EC2::Instance.instance_ids
+ids.each do |id_str|
+  puts "*** INSTANCE ID #{id_str}"
+  pp AWS::EC2::Instance.new(id_str).ebs_volumes
+end
