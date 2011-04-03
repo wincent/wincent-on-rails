@@ -17,6 +17,30 @@ module AWS
   end # module EBS
 
   module EC2
+    def self.run_ec2_command command, *args
+      output = `ec2-#{command} #{args.join}`
+      output.split("\n").map do |line|
+        line.split("\t")
+      end
+    end
+
+    class Zone
+      # Retun a list of all zones.
+      def self.all
+        @zones ||= get_all_zones
+      end
+
+      class << self
+      private
+        def get_all_zones
+          zones = EC2.run_ec2_command('describe-availability-zones', '-H')
+          index = zones.shift.find_index { |header| header == 'Name' }
+          raise '"Name" header not found' unless index
+          zones.map { |zone| zone[index] }
+        end
+      end
+    end
+
     class Instance
       attr_reader :ebs_volumes
 
