@@ -67,9 +67,29 @@ module AWS
       def initialize id_str
         raise ArgumentError, 'nil id_str' if id_str.nil?
         @instance_data  = self.class.describe_instances id_str
+        @instance_attrs = attributes_for_type('INSTANCE').first
         @ebs_volumes    = attributes_for_type('BLOCKDEVICE').map do |attrs|
           EBS::Volume.new *attrs
         end
+      end
+
+      def ami_id
+        attribute_matching /^ami-[0-9a-f]+$/
+      end
+
+      def kernel_id
+        attribute_matching /^aki-[0-9a-f]+$/
+      end
+
+      def ramdisk_id
+        attribute_matching /^ari-[0-9a-f]+$/
+      end
+
+      def zone
+        regexp = Zone.all.each do |zone|
+          Regexp.escape(zone)
+        end.join('|')
+        attribute_matching /^(#{regexp})$/
       end
 
     private
@@ -82,6 +102,10 @@ module AWS
         end.map do |record|
           record[1..-1] # drop type field: BLOCKDEVICE, INSTANCE, RESERVATION
         end
+      end
+
+      def attribute_matching regex
+        @instance_attrs.find { |attr| attr.match regex }
       end
     end # class Instance
   end # module EC2
