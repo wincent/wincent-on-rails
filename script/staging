@@ -24,6 +24,18 @@ module AWS
       end
     end
 
+    class Reservation
+      attr_reader :group
+
+      def initialize *attrs
+        @group = attrs.last
+      end
+
+      def rails?
+        @group == 'rails'
+      end
+    end
+
     class Zone
       # Retun a list of all zones.
       def self.all
@@ -42,7 +54,7 @@ module AWS
     end
 
     class Instance
-      attr_reader :ebs_volumes
+      attr_reader :ebs_volumes, :reservation
 
       # Wrapper for ec2-describe-instances
       # Optionally takes an instance ID to return information about a specific
@@ -69,6 +81,11 @@ module AWS
         @ebs_volumes    = attributes_for_type('BLOCKDEVICE').map do |attrs|
           EBS::Volume.new *attrs
         end
+        @reservation    = Reservation.new(*(attributes_for_type('RESERVATION').first))
+      end
+
+      def id_str
+        attribute_matching /^i-[0-9a-f]+$/
       end
 
       def ami_id
