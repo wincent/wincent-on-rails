@@ -50,9 +50,7 @@ module AWS
       # Returns an array of records, where each record comprises another array
       # containing fields.
       def self.describe_instances instance = nil
-        `ec2-describe-instances #{instance}`.split("\n").map do |line|
-          line.split("\t")
-        end
+        EC2.run_ec2_command 'describe-instances', instance.to_s
       end
 
       # Returns a list of known instance IDs
