@@ -207,7 +207,22 @@ ids.each do |id_str|
       puts "Latest snapshot for #{vol.id_str}: #{vol.latest_snapshot.id_str}"
     end
 
-    p instance
-    p instance.ebs_volumes
+    # register a new snapshot
+    root_volume = instance.ebs_volumes.find { |vol| vol.root_volume? }
+    now = Time.now
+    now = now.strftime('%Y-%m-%d-') + now.to_i.to_s
+    puts "ec2-register -n rails-snapshot-#{now} " \
+         "-d 'Rails instance snapshot #{now}' " \
+         "--root-device-name #{AWS::EBS::Volume::ROOT_DEVICE} " \
+         "-b #{AWS::EBS::Volume::ROOT_DEVICE}=#{root_volume.latest_snapshot.id_str}"
+
+    # the above will give us an AMI ID
+    ami_id = 'ami-feedface'
+    puts "ec2-run-instances -z #{instance.zone} " \
+         "--key ec2instancekey " \
+         "-g rails " \
+         "--kernel #{instance.kernel_id} " \
+         "--ramdisk #{instance.ramdisk_id} " \
+         "#{ami_id}"
   end
 end
