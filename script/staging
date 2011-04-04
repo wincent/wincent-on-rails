@@ -6,11 +6,11 @@
 module AWS
   module EBS
     class Volume
-      attr_reader :mount_point, :volume_id, :start_time
+      attr_reader :mount_point, :id_str, :start_time
 
       def initialize *attrs
         @mount_point  = attrs.find { |attr| attr =~ %r{^/} }
-        @volume_id    = attrs.find { |attr| attr =~ /^vol-[a-f0-9]+$/ }
+        @id_str       = attrs.find { |attr| attr =~ /^vol-[a-f0-9]+$/ }
         @start_time   = attrs.find { |attr| attr =~ /^\d{4}-\d{2}-\d{2}/ }
       end
     end # class Volume
@@ -24,17 +24,67 @@ module AWS
       end
     end
 
+    class Snapshot
+      # Hash for mapping from internal names to headers displayed in
+      # e2-describe-snapshots output.
+      HEADER_MAP = {
+        'id_str'      => 'SnapshotId',
+        'vol_id'      => 'VolumeId',
+        'status'      => 'Status',
+        'start_time'  => 'StartTime',
+        'progress'    => 'Progress',
+        'description' => 'Description'
+      }
+
+      attr_reader *(HEADER_MAP.keys.map { |key| key.to_sym })
+
+      def self.all
+        @snapshots ||= get_all_snapshots
+      end
+
+      class << self
+      private
+        def get_all_snapshots
+          snapshots = EC2.run_ec2_command('describe-snapshots', '-H')
+          headers = snapshots.shift
+          snapshots.map do |snapshot|
+            raise "unexpected output format: #{snapshot}" unless snapshot.shift == 'SNAPSHOT'
+            attrs = {}
+            HEADER_MAP.each do |key, value|
+              attrs[key] = snapshot[headers.find_index { |header| header == value }]
+            end
+            Snapshot.new attrs
+          end
+        end
+      end
+
+      def initialize attrs
+        attrs.each do |key, value|
+          instance_variable_set("@#{key}".to_sym, value)
+        end
+      end
+
+      def <=>(other)
+        raise ArgumentError, "incompatible class: #{other.class}" unless other.is_a?(Snapshot)
+        start_time <=> other.start_time
+      end
+
+      def completed?
+        status == 'completed' && progress == '100%'
+      end
+    end # class Snapshot
+
     class Reservation
       attr_reader :group
 
       def initialize *attrs
-        @group = attrs.last
+        @group = attrs.last or raise ArgumentError, 'nil group'
       end
 
       def rails?
         @group == 'rails'
       end
-    end
+    end # class Reservation
 
     class Zone
       # Retun a list of all zones.
@@ -51,7 +101,7 @@ module AWS
           zones.map { |zone| zone[index] }
         end
       end
-    end
+    end # class Zone
 
     class Instance
       attr_reader :ebs_volumes, :reservation
@@ -107,6 +157,9 @@ module AWS
         attribute_matching /^(#{regexp})$/
       end
 
+      def rails?
+        @reservation.rails?
+      end
     private
 
       # Introspects the instance data for records matching the specified type.
@@ -127,8 +180,18 @@ module AWS
 end # module AWS
 
 require 'pp'
+
 ids = AWS::EC2::Instance.instance_ids
 ids.each do |id_str|
-  puts "*** INSTANCE ID #{id_str}"
-  pp AWS::EC2::Instance.new(id_str).ebs_volumes
+  instance = AWS::EC2::Instance.new(id_str)
+  if instance.reservation.rails?
+    puts "Rails instance ID: #{instance.id_str}"
+    instance.ebs_volumes.each do |vol|
+      puts "Latest snapshot for #{vol.id_str}:"
+      snapshot = AWS::EC2::Snapshot.all.sort.reverse.find do |snapshot|
+        snapshot.vol_id == vol.id_str && snapshot.completed?
+      end
+      p snapshot
+    end
+  end
 end
