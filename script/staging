@@ -6,12 +6,29 @@
 module AWS
   module EBS
     class Volume
-      attr_reader :device, :id_str, :start_time
+      ROOT_DEVICE = '/dev/sda1'
+      DATA_DEVICE = '/dev/sdh'
+
+      attr_reader   :device, :id_str, :start_time
 
       def initialize *attrs
         @device     = attrs.find { |attr| attr =~ %r{^/dev/.+} }
         @id_str     = attrs.find { |attr| attr =~ /^vol-[a-f0-9]+$/ }
         @start_time = attrs.find { |attr| attr =~ /^\d{4}-\d{2}-\d{2}/ }
+      end
+
+      def root_volume?
+        device == ROOT_DEVICE
+      end
+
+      def data_volume?
+        device == DATA_DEVICE
+      end
+
+      def latest_snapshot
+        @latest_snapshot ||= AWS::EC2::Snapshot.all.sort.reverse.find do |snapshot|
+          snapshot.vol_id == id_str && snapshot.completed?
+        end
       end
     end # class Volume
   end # module EBS
@@ -186,12 +203,11 @@ ids.each do |id_str|
   instance = AWS::EC2::Instance.new(id_str)
   if instance.reservation.rails?
     puts "Rails instance ID: #{instance.id_str}"
-    instance.ebs_volumes.each do |vol|
-      puts "Latest snapshot for #{vol.id_str}:"
-      snapshot = AWS::EC2::Snapshot.all.sort.reverse.find do |snapshot|
-        snapshot.vol_id == vol.id_str && snapshot.completed?
-      end
-      p snapshot
+    instance.ebs_volumes.map do |vol|
+      puts "Latest snapshot for #{vol.id_str}: #{vol.latest_snapshot.id_str}"
     end
+
+    p instance
+    p instance.ebs_volumes
   end
 end
