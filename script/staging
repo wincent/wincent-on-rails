@@ -6,12 +6,12 @@
 module AWS
   module EBS
     class Volume
-      attr_reader :mount_point, :id_str, :start_time
+      attr_reader :device, :id_str, :start_time
 
       def initialize *attrs
-        @mount_point  = attrs.find { |attr| attr =~ %r{^/} }
-        @id_str       = attrs.find { |attr| attr =~ /^vol-[a-f0-9]+$/ }
-        @start_time   = attrs.find { |attr| attr =~ /^\d{4}-\d{2}-\d{2}/ }
+        @device     = attrs.find { |attr| attr =~ %r{^/dev/.+} }
+        @id_str     = attrs.find { |attr| attr =~ /^vol-[a-f0-9]+$/ }
+        @start_time = attrs.find { |attr| attr =~ /^\d{4}-\d{2}-\d{2}/ }
       end
     end # class Volume
   end # module EBS
