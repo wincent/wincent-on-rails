@@ -11,11 +11,7 @@
   =timeinfo @article
   by
   =mail_to APP_CONFIG['admin_email'], APP_CONFIG['admin_name']
--if @redirected_from
-  -if admin?
-    %p (Redirected from #{link_to @redirected_from.title, edit_article_path(@redirected_from)})
-  -else
-    %p (Redirected from #{@redirected_from.title})
+=redirected_from
 .article
   =@article.body.w :base_heading_level => 1
 =render 'shared/tags', :tags => @article.tags
