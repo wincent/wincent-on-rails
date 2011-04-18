@@ -3,13 +3,13 @@ require 'spec_helper'
 describe "/articles/show.html.haml" do
   include ArticlesHelper
 
-  before(:each) do
-    #@article = mock_model(Article)
-    #assigns[:article] = @article
+  before do
+    @article  = Article.make!
+    @comments = []
   end
 
   it "should render attributes in <p>" do
-    #render "/articles/show.html.haml"
+    render
   end
 end
 
