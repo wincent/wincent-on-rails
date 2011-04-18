@@ -23,6 +23,11 @@ describe ArticlesHelper do
         it 'reports the article title' do
           helper.redirected_from.should == '<p>(Redirected from foo)</p>'
         end
+
+        it 'escapes the article title' do
+          @redirected_from = Article.make! :title => '<this>'
+          helper.redirected_from.should == '<p>(Redirected from &lt;this&gt;)</p>'
+        end
       end
 
       context 'as an admin user' do
@@ -33,6 +38,10 @@ describe ArticlesHelper do
         it 'includes an edit link' do
           expected = '<p>(Redirected from foo [<a href="/wiki/foo/edit">edit</a>])</p>'
           helper.redirected_from.should == expected
+        end
+
+        it 'returns an HTML-safe string' do
+          helper.redirected_from.should be_html_safe
         end
       end
     end
