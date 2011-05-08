@@ -2,7 +2,7 @@ source 'http://rubygems.org'
 
 gem 'bundler',          '~> 1.0.2'
 gem 'haml',             '~> 3.0.18'
-gem 'mysql2',           '~> 0.2.6'  # until Rails 3.1 hits
+gem 'mysql2',           '0.2.6' # latest, the one compatible with Rails 3, fails to build locally
 gem 'rails',            '3.1.0.beta1'
 gem 'memcache-client'
 gem 'unicorn',          '~> 1.1.3'

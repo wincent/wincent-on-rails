@@ -171,7 +171,7 @@ DEPENDENCIES
   launchy
   memcache-client
   mkdtemp (>= 1.2)
-  mysql2 (~> 0.2.6)
+  mysql2 (= 0.2.6)
   rails (= 3.1.0.beta1)
   rcov
   rr (>= 1.0)
