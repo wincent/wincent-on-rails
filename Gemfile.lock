@@ -1,7 +1,7 @@
 GEM
   remote: http://rubygems.org/
   specs:
-    ZenTest (4.4.2)
+    ZenTest (4.5.0)
     actionmailer (3.1.0.beta1)
       actionpack (= 3.1.0.beta1)
       mail (~> 2.3.0)
@@ -40,7 +40,7 @@ GEM
       ZenTest
     bcrypt-ruby (2.1.4)
     builder (3.0.0)
-    capybara (0.4.1.1)
+    capybara (0.4.1.2)
       celerity (>= 0.7.9)
       culerity (>= 0.2.4)
       mime-types (>= 1.16)
@@ -49,27 +49,27 @@ GEM
       rack-test (>= 0.5.4)
       selenium-webdriver (>= 0.0.27)
       xpath (~> 0.1.3)
-    celerity (0.8.7)
-    childprocess (0.1.6)
-      ffi (~> 0.6.3)
+    celerity (0.8.9)
+    childprocess (0.1.9)
+      ffi (~> 1.0.6)
     columnize (0.3.2)
     configuration (1.2.0)
     culerity (0.2.15)
-    database_cleaner (0.6.2)
+    database_cleaner (0.6.7)
     diff-lcs (1.1.2)
     erubis (2.7.0)
     factory_girl (1.3.3)
     factory_girl_rails (1.0.1)
       factory_girl (~> 1.3)
       railties (>= 3.0.0)
-    ffi (0.6.3)
+    ffi (1.0.7)
       rake (>= 0.8.7)
-    haml (3.0.25)
+    haml (3.1.1)
     hike (1.0.0)
     i18n (0.6.0beta1)
-    jruby-jars (1.5.6)
+    jruby-jars (1.6.1)
     json_pure (1.5.1)
-    launchy (0.3.7)
+    launchy (0.4.0)
       configuration (>= 0.0.5)
       rake (>= 0.8.1)
     linecache (0.43)
@@ -129,9 +129,9 @@ GEM
     ruby-debug-base (0.10.4)
       linecache (>= 0.3)
     rubyzip (0.9.4)
-    selenium-webdriver (0.1.2)
-      childprocess (~> 0.1.5)
-      ffi (~> 0.6.3)
+    selenium-webdriver (0.2.0)
+      childprocess (>= 0.1.7)
+      ffi (>= 1.0.7)
       json_pure
       rubyzip
     sprockets (2.0.0.beta.2)
@@ -146,7 +146,7 @@ GEM
     treetop (1.4.9)
       polyglot (>= 0.3.1)
     tzinfo (0.3.27)
-    unicorn (1.1.6)
+    unicorn (1.1.7)
       rack
     webrat (0.7.3)
       nokogiri (>= 1.2.0)
@@ -154,20 +154,20 @@ GEM
       rack-test (>= 0.5.3)
     wikitext (2.1.1)
     wopen3 (0.3)
-    xpath (0.1.3)
+    xpath (0.1.4)
       nokogiri (~> 1.3)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
-  akephalos (~> 0.2.5)
+  akephalos (>= 0.2.5)
   autotest-rails
-  bundler (~> 1.0.2)
-  capybara (~> 0.4.0)
-  database_cleaner (~> 0.6.0)
+  bundler (>= 1.0.2)
+  capybara (>= 0.4.0)
+  database_cleaner (>= 0.6.0)
   factory_girl_rails
-  haml (~> 3.0.18)
+  haml (>= 3.0.18)
   launchy
   memcache-client
   mkdtemp (>= 1.2)
@@ -175,9 +175,9 @@ DEPENDENCIES
   rails (= 3.1.0.beta1)
   rcov
   rr (>= 1.0)
-  rspec-rails (~> 2.4)
+  rspec-rails (>= 2.4)
   ruby-debug
-  steak (~> 1.1.0)
+  steak (>= 1.1.0)
   timecop
   unicorn (~> 1.1.3)
   webrat
