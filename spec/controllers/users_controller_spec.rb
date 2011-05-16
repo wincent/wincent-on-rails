@@ -45,7 +45,7 @@ describe UsersController do
     end
 
     it 'associates the email with the user' do
-      stub(User).new.mock!.emails.mock!.build
+      stub(User).new.mock!.emails.mock!.new
       get :new
     end
 

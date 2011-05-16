@@ -184,7 +184,7 @@ describe Topic, '"last commenter" association' do
 
   it 'should belong to a last commenter' do
     @user = User.make!
-    @comment = @topic.comments.build :body => Sham.random # can't set user here (protected)
+    @comment = @topic.comments.new :body => Sham.random # can't set user here (protected)
     @comment.user = @user
     @comment.save
     @comment.moderate_as_ham! # only here does the last commenter actually get set
@@ -235,7 +235,7 @@ describe Topic, '"find_topics_for_forum" method' do
   end
 
   def add_comment overrides = {}
-    comment = @topic.comments.build :body => Sham.random
+    comment = @topic.comments.new :body => Sham.random
     comment.awaiting_moderation = false
     overrides.each { |k,v| comment.send("#{k.to_s}=", v) }
     comment.save!

@@ -24,7 +24,7 @@ class TopicsController < ApplicationController
       @excerpt  = params[:excerpt] || ''
       render :partial => 'preview'
     else # normal request
-      @topic = @forum.topics.build(params[:topic])
+      @topic = @forum.topics.new(params[:topic])
       @topic.user = current_user
       @topic.awaiting_moderation = !(admin? or logged_in_and_verified?)
       if @topic.save
@@ -47,7 +47,7 @@ class TopicsController < ApplicationController
     respond_to do |format|
       format.html {
         @topic.hit!
-        @comment = @topic.comments.build if @topic.accepts_comments?
+        @comment = @topic.comments.new if @topic.accepts_comments?
       }
       format.atom
     end

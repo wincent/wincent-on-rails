@@ -111,7 +111,7 @@ class Issue < ActiveRecord::Base
 
   def annotate
     return if @annotations.empty?
-    comment = comments.build(:body => @annotations.join("\n"))
+    comment = comments.new(:body => @annotations.join("\n"))
     user = Thread.current[:current_user]
     comment.user_id = user.id if user
     comment.awaiting_moderation = !(user && user.superuser?)

@@ -47,7 +47,7 @@ class SnippetsController < ApplicationController
     @comments = @snippet.comments.published
     respond_to do |format|
       format.html {
-        @comment = @snippet.comments.build if @snippet.accepts_comments?
+        @comment = @snippet.comments.new if @snippet.accepts_comments?
       }
       format.atom
       format.text { render :text => @snippet.body }

@@ -1,6 +1,6 @@
 module SharedCommentableExampleHelpers
   def add_comment overrides = {}
-    @comment = commentable.comments.build :body => Sham.random
+    @comment = commentable.comments.new :body => Sham.random
     overrides.each { |k,v| @comment.send("#{k.to_s}=", v) }
     @comment.save
     commentable.reload

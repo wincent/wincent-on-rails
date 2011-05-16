@@ -39,7 +39,7 @@ class ArticlesController < ApplicationController
       respond_to do |format|
         format.html {
           flash[:notice] = stale_article_notice if @article.updated_at < 1.year.ago
-          @comment = @article.comments.build if @article.accepts_comments?
+          @comment = @article.comments.new if @article.accepts_comments?
         }
         format.atom
       end

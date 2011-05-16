@@ -12,7 +12,7 @@ class PagesController < ApplicationController
   cache_sweeper :page_sweeper, :only => [:create, :destroy, :update]
 
   def new
-    @page = @product.pages.build
+    @page = @product.pages.new
   end
 
   def create

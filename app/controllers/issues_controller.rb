@@ -72,7 +72,7 @@ class IssuesController < ApplicationController
           else
             @issue.comments.published # public, not awaiting moderation
           end
-          @comment = @issue.comments.build
+          @comment = @issue.comments.new
         end
       }
       format.atom {

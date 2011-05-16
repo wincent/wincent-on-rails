@@ -18,7 +18,7 @@ class CommentsController < ApplicationController
   end
 
   def new
-    @comment = @parent.comments.build
+    @comment = @parent.comments.new
     if request.xhr?
       render :partial => 'form'
     else
@@ -44,7 +44,7 @@ class CommentsController < ApplicationController
   end
 
   def create
-    @comment = @parent.comments.build params[:comment]
+    @comment = @parent.comments.new params[:comment]
     @comment.user = current_user
     @comment.public = params[:comment][:public] if admin? && params[:comment] && params[:comment].key?(:public)
     @comment.awaiting_moderation = !(admin? or logged_in_and_verified?)

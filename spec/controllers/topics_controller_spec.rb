@@ -24,7 +24,7 @@ describe TopicsController do
       10.times {
         # feed has one entry for topic, and one entry for each comment
         # so to fully catch this bug need some comments on the topic
-        comment = topic.comments.build :body => Sham.random
+        comment = topic.comments.new :body => Sham.random
         comment.awaiting_moderation = false
         comment.save
       }

@@ -54,7 +54,7 @@ class PostsController < ApplicationController
     # see issues#show (find_prev_next before filter) for implementation ideas
     @comments = @post.comments.published
     respond_to do |format|
-      format.html { @comment = @post.comments.build if @post.accepts_comments? }
+      format.html { @comment = @post.comments.new if @post.accepts_comments? }
       format.atom
     end
   end

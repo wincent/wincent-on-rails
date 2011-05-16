@@ -42,7 +42,7 @@ class TweetsController < ApplicationController
   def show
     @comments = @tweet.comments.published
     respond_to do |format|
-      format.html { @comment = @tweet.comments.build if @tweet.accepts_comments? }
+      format.html { @comment = @tweet.comments.new if @tweet.accepts_comments? }
       format.atom
     end
   end

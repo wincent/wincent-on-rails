@@ -81,7 +81,7 @@ class User < ActiveRecord::Base
   end
 
   def add_email address
-    emails.build :address => address
+    emails.new :address => address
   end
 
   def self.find_with_param! param

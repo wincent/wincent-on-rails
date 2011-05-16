@@ -7,7 +7,7 @@ describe 'topics/show.html.haml' do
     @topic = Topic.make!({ :title => @title })
     @forum = @topic.forum
     @comments = []
-    @comment = @topic.comments.build
+    @comment = @topic.comments.new
   end
 
   it 'shows breadcrumbs' do

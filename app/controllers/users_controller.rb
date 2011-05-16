@@ -12,12 +12,12 @@ class UsersController < ApplicationController
 
   def new
     @user   = User.new
-    @email  = @user.emails.build
+    @email  = @user.emails.new
   end
 
   def create
     @user = User.new params[:user]
-    @email = @user.emails.build :address => @user.email
+    @email = @user.emails.new :address => @user.email
     if @user.save
       confirm_email_and_redirect 'Successfully created new account'
     else
