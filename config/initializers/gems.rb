@@ -1,4 +1,5 @@
 require 'wikitext/preprocess'
+require 'sass/plugin'
 
 Wikitext::Parser.shared_parser.img_prefix = '/system/images/'
 Haml::Template::options[:ugly] = true
