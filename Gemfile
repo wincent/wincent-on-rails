@@ -6,15 +6,16 @@ gem 'mysql2'
 gem 'rails',            '3.1.0.rc1'
 gem 'memcache-client'
 gem 'unicorn',          '~> 1.1.3'
+gem 'rake',             '0.8.7'     # rspec-rails won't work with Rake 0.9.0
 gem 'sass'
 gem 'wikitext',         '>= 2.1'
 gem 'wopen3',           '>= 0.3'
 
 group :development, :test do
-  gem 'factory_girl_rails'          # factories in development console
-  gem 'rspec-rails'
-  gem 'rspec-core',     '2.6.0'     # 2.6.2 has a buggy gemspec, waiting for > 2.6.2
-  gem 'steak',          '>= 1.1.0'  # again, for generators
+  gem 'factory_girl_rails'
+  gem 'rspec-rails',    '2.6.1.beta1'
+  gem 'rspec-core',     '2.6.3.beta1' # 2.6.2 was buggy
+  gem 'steak',          '>= 1.1.0'
 end
 
 group :development do
