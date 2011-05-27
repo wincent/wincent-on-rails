@@ -13,8 +13,8 @@ gem 'wopen3',           '>= 0.3'
 
 group :development, :test do
   gem 'factory_girl_rails'
-  gem 'rspec-rails',    '2.6.1.beta1'
-  gem 'rspec-core',     '2.6.3'     # 2.6.2 was buggy
+  gem 'rspec-rails'
+  gem 'rspec-core'
   gem 'steak',          '>= 1.1.0'
 end
 
