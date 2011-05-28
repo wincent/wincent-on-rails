@@ -76,14 +76,6 @@ class User < ActiveRecord::Base
     self.comments_count + self.topics_count
   end
 
-  def update_emails options = {}
-    add_email(options[:add]) unless options[:add].blank?
-  end
-
-  def add_email address
-    emails.new :address => address
-  end
-
   def self.find_with_param! param
     find_by_display_name!(deparametrize(param))
   end
