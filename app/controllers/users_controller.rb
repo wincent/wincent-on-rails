@@ -17,8 +17,8 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new params[:user]
-    @email = @user.emails.new :address => @user.email
     if @user.save
+      @email = @user.emails.create :address => @user.email
       confirm_email_and_redirect 'Successfully created new account'
     else
       flash[:error] = 'Failed to create new account'
@@ -34,12 +34,18 @@ class UsersController < ApplicationController
     render
   end
 
+  # TODO: refactor this method, split off email stuff into a separate controller
   def update
-    @email = @user.update_emails :add => params[:user][:email], :delete => {}
     if @user.update_attributes params[:user]
       base_msg = 'Successfully updated'
-      if @email
-        confirm_email_and_redirect(base_msg)
+      if !params[:user][:email].blank?
+        if @email = @user.emails.create(:address => params[:user][:email])
+          confirm_email_and_redirect(base_msg)
+        else
+          get_emails
+          flash[:error] = 'Update failed'
+          render :action => 'edit'
+        end
       else
         flash[:notice] = base_msg
         redirect_to @user

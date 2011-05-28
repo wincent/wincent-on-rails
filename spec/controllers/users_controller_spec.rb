@@ -238,8 +238,8 @@ describe UsersController do
       end
 
       it 'updates emails' do
+        pending
         stub(User).find_with_param!(user.to_param) { user }
-        mock(user).update_emails is_a(Hash)
         do_request
       end
 
@@ -268,13 +268,6 @@ describe UsersController do
         it 'redirects to /dashboard' do
           do_request
           response.should redirect_to('/dashboard')
-        end
-
-        it 'remains logged-in' do
-          do_request
-          user.reload.session_expiry.should > Time.now
-          request.env['action_dispatch.cookies']['user_id'].should == user.id.to_s
-          request.env['action_dispatch.cookies']['session_key'].should == user.session_key
         end
       end
 
