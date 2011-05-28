@@ -8,7 +8,7 @@ gem 'memcache-client'
 gem 'unicorn',          '~> 1.1.3'
 gem 'rake',             '0.8.7'     # rspec-rails won't work with Rake 0.9.0
 gem 'sass'
-gem 'wikitext'
+gem 'wikitext',         '3.0b'
 gem 'wopen3'
 
 group :development, :test do
