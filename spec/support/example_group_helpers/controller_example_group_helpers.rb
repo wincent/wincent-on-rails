@@ -1,6 +1,7 @@
 module ControllerExampleGroupHelpers
   def log_in_as user
-    controller.instance_eval { self.set_current_user user }
+    stub(controller).log_in_with_cookie { user }
+    stub(controller).log_in_with_http_basic { user }
   end
 
   def log_in_as_admin
