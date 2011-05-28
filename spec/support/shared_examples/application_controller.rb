@@ -38,9 +38,9 @@ shared_examples_for 'ApplicationController subclass' do
       end.to raise_error(NoMethodError, /protected/)
     end
 
-    it 'restricts access to #set_current_user=' do
+    it 'restricts access to #set_current_user' do
       expect do
-        controller.set_current_user = nil
+        controller.set_current_user nil
       end.to raise_error(NoMethodError, /protected/)
     end
 

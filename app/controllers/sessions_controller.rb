@@ -9,7 +9,8 @@ class SessionsController < ApplicationController
     reset_session
     old_session.each { |key, value| session[key.to_sym] = value }
 
-    if self.set_current_user = User.authenticate(params[:email], params[:passphrase])
+    if user = User.authenticate(params[:email], params[:passphrase])
+      set_current_user user
       flash[:notice] = 'Successfully logged in'
       original_uri = session[:original_uri] || params[:original_uri]
       if original_uri.blank?
@@ -27,7 +28,7 @@ class SessionsController < ApplicationController
   def destroy
     if self.logged_in?
       reset_session
-      self.current_user = nil # delete some info from the cookies, invalidate the session key in the database
+      set_current_user nil # cookie cleanup and session invalidation in db
       flash[:notice] = 'You have logged out successfully'
     else
       flash[:error] = "Can't log out (weren't logged in)"

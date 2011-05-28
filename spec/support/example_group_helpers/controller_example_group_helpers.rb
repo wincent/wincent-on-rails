@@ -1,6 +1,6 @@
 module ControllerExampleGroupHelpers
   def log_in_as user
-    controller.instance_eval { self.set_current_user = user }
+    controller.instance_eval { self.set_current_user user }
   end
 
   def log_in_as_admin

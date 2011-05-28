@@ -35,13 +35,10 @@ module ActionController
     # Intended for use as a before_filter in the ApplicationController for all
     # actions.
     def log_in_before
-      self.current_user = log_in_with_cookie or log_in_with_http_basic
+      self.current_user = log_in_with_cookie || log_in_with_http_basic
     end
 
-    # Intended for use as a before_filter to protect adminstrator-only
-    # actions. Optionally takes a block, making it convenient for
-    # explicit use within controller actions (the block is only
-    # executed if the user is admin).
+    # before_filter: require a logged-in admin user
     def require_admin &block
       if admin?
         yield if block_given?
@@ -50,7 +47,7 @@ module ActionController
       end
     end
 
-    # before_filter: requires a logged-in user, but doesn't need the user to be verified yet.
+    # before_filter: require a logged-in (not necessarily verified) user
     def require_user
       unless logged_in?
         redirect_to_login 'You must be logged in to access the requested resource'
@@ -62,25 +59,22 @@ module ActionController
       LOCALHOST_ADDRESSES.any? { |l| l == ip }
     end
 
-    # this does a little bit more than the current_user= method
-    # (which just sets the @current_user instance variable)
-    # this is intended to be called from the SessionsController,
-    # whereras the current_user= method is suitable for being called from a
-    # before filter
-    def set_current_user=(user)
+    # Called by controllers to log the user in or out (for example, in response
+    # to a form submission).
+    # Compare with the #current_user= method, which is used only internally, to
+    # set up an already-logged-in user (via a cookie or other automatic mechanism).
+    def set_current_user user
       self.current_user = user
-      if user
-        user.session_key      = random_session_key
-        user.session_expiry   = DEFAULT_SESSION_EXPIRY.days.from_now
-        user.save
-        secure_cookies        = !local_request?
-        cookies[:user_id]     = { :value => user.id.to_s, :secure =>
-          secure_cookies }
-        cookies[:session_key] = { :value => user.session_key, :secure =>
-          secure_cookies }
-      end
+      return unless user
+      user.session_key      = random_session_key
+      user.session_expiry   = DEFAULT_SESSION_EXPIRY.days.from_now
+      user.save
+      secure_cookies        = !local_request?
+      cookies[:user_id]     = { :value => user.id.to_s,     :secure => secure_cookies }
+      cookies[:session_key] = { :value => user.session_key, :secure => secure_cookies }
     end
 
+    # Internal use only (see notes for #set_current_user method)
     def current_user= user
       if user
         # don't trust Rails' session management; manually manage the relevant
@@ -89,7 +83,7 @@ module ActionController
         @current_user = user
       else
         if user = current_user
-          user.update_attribute(:session_key, nil)
+          user.update_attribute :session_key, nil
         end
         @current_user = nil
         cookies.delete :user_id

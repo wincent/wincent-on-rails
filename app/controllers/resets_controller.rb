@@ -49,7 +49,7 @@ class ResetsController < ApplicationController
       if @user.save
         @reset.update_attribute(:completed_at, Time.now)
         flash[:notice] = 'Successfully updated passphrase'
-        self.current_user = @user # auto-log in
+        set_current_user @user # auto-log in
         redirect_to dashboard_path
         return
       end

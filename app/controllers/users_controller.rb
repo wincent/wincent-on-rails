@@ -56,7 +56,7 @@ private
   def confirm_email_and_redirect base_msg
     confirmation  = @email.confirmations.create
     deliver ConfirmationMailer.confirmation_message(confirmation)
-    self.set_current_user = @user if !logged_in? # auto-log in
+    set_current_user @user if !logged_in? # auto-log in
     redirect_to dashboard_path
   end
 
