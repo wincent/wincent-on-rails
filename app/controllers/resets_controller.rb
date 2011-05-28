@@ -11,7 +11,7 @@ class ResetsController < ApplicationController
       if email.resets.where('created_at > ?', 3.days.ago).count > 5
         flash[:error] = 'You have exceeded the resets limit for this email address for today; please try again later'
       else
-        deliver ResetMailer.reset_message(email.resets.create!)
+        deliver ResetMailer.reset_message(email.resets.create)
       end
       redirect_to login_path
     else
