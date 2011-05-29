@@ -1,4 +1,4 @@
-require 'rspec/core/formatters/progress_formatter'
+require 'rspec/core/formatters/documentation_formatter'
 require 'spec/support/formatter_helpers'
 
 # Use this custom formatter like this:
@@ -9,7 +9,7 @@ require 'spec/support/formatter_helpers'
 module RSpec
   module Core
     module Formatters
-      class GrowlFormatter < ProgressFormatter
+      class GrowlFormatter < DocumentationFormatter
         include FormatterHelpers
       end # class GrowlFormatter
     end # module Formatter
