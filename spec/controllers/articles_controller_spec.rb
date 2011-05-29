@@ -270,11 +270,13 @@ describe ArticlesController do
         end
 
         context 'as an admin user' do
+          before do
+            log_in_as_admin
+          end
+
           it 'succeeds' do
-            as_admin do
-              get :show, :id => 'bar'
-              response.should be_success
-            end
+            get :show, :id => 'bar'
+            response.should be_success
           end
         end
       end
