@@ -170,10 +170,9 @@ end
 
 describe Topic, 'user association' do
   it 'should belong to a user' do
-    @user   = User.make!
-    @topic  = Topic.make!
-    @user.topics << @topic
-    @topic.user.should == @user
+    user  = User.make!
+    topic = user.topics.new
+    topic.user.should == user
   end
 end
 
