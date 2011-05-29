@@ -24,7 +24,7 @@ describe 'resets/new' do
       form.should have_selector('input#reset_email_address', :name =>'reset[email_address]', :type => 'text')
 
       # submit button
-      form.should have_selector('input#reset_submit', :name => 'commit', :type => 'submit', :value => 'Reset passphrase')
+      form.should have_selector('input', :name => 'commit', :type => 'submit', :value => 'Reset passphrase')
     end
   end
 
