@@ -141,7 +141,7 @@ private
     unless errors[:emails].blank?
       # want error to read "Email is invalid", not "Emails is invalid"
       errors[:emails].each { |e| errors.add :email, e }
-      errors.delete :emails
+      errors.messages.delete :emails # seems hacky, would like to avoid
     end
   end
 end
