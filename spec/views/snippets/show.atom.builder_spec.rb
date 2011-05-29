@@ -1,11 +1,13 @@
 require 'spec_helper'
 
-describe 'snippets/show.atom' do
+describe 'snippets/show.atom.builder' do
   let(:doc) { Nokogiri::XML(rendered) }
 
   before do
-    @snippet = Snippet.make! :description => 'foo', :body => 'a > b',
-      :markup_type => Snippet::MarkupType::WIKITEXT
+    @snippet = Snippet.make! \
+      :description  => 'foo',
+      :body         => 'a > b',
+      :markup_type  => Snippet::MarkupType::WIKITEXT
     @comments = [Comment.make! :body => 'bar', :commentable => @snippet]
   end
 

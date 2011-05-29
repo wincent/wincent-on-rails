@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'snippets/index.atom' do
+describe 'snippets/index.atom.builder' do
   let(:doc) { Nokogiri::XML(rendered) }
 
   before do
