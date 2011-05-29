@@ -38,7 +38,9 @@ module ActionController
       self.current_user = log_in_with_cookie || log_in_with_http_basic
     end
 
-    # before_filter: require a logged-in admin user
+    # can be used as a before_filter, or inline in a controller
+    # (for example of inline use, see issues#show or links#show where
+    # it is used only for a specific format)
     def require_admin &block
       if admin?
         yield if block_given?
@@ -100,7 +102,7 @@ module ActionController
     end
 
     def logged_in?
-      not current_user.nil?
+      !current_user.nil?
     end
 
     def admin?
