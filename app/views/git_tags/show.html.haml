@@ -6,7 +6,7 @@
   %pre
     =@tag.annotation
 .commit
-  %h2 Commit #{commit_abbrev @commit.commit}
+  %h2 Commit #{commit_abbrev_with_tooltip @commit.commit}
   =render 'commits/show'
 .links
   =link_to 'all repos', repos_path

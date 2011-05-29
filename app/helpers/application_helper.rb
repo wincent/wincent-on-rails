@@ -8,6 +8,12 @@ module ApplicationHelper
     sha1[0..15]
   end
 
+  # Returns the first 16 characters of a commit hash, wrapped in a span
+  # with a title attribute containing the full hash (ie. a tooltip).
+  def commit_abbrev_with_tooltip sha1
+    content_tag(:span, commit_abbrev(sha1), :title => sha1)
+  end
+
   # Wraps the commit#author#time in a span of class "relative-date", and
   # converts it to an ActiveSupport::TimeWithZone so that the JavaScript
   # relativize_dates function can operate on it.

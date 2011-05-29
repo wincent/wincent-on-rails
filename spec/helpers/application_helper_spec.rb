@@ -170,6 +170,13 @@ describe ApplicationHelper do
     end
   end
 
+  describe '#commit_abbrev_with_tooltip' do
+    it 'returns the first 16 characters of the hash with a tooltip' do
+      commit_abbrev_with_tooltip('1234abcd1234abcd999999999999999999999999').
+        should == '<span title="1234abcd1234abcd999999999999999999999999">1234abcd1234abcd</span>'
+    end
+  end
+
   describe '#commit_author_time' do
     pending
   end
