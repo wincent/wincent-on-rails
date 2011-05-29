@@ -32,7 +32,7 @@ pre span.symbol-syntax { color: #fc8a0b; }
 
 table pre { max-width: 640px; }
 
-code, tt { color: #660000; font-family: Consolas, Monaco, Courier; font-size: 14px; padding-left: 0.1em; padding-right: 0.1em; }
+code, tt { color: #660000; font-family: Consolas, Monaco, Courier; font-size: 12px; padding-left: 0.1em; padding-right: 0.1em; }
 
 blockquote { padding-left: 24px; padding-right: 24px; min-height: 32px; background: url(../images/blockquote.png) no-repeat left top; margin-left: 1em; margin-right: 2em; }
 blockquote p, blockquote li { color: #999999; }
