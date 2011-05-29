@@ -10,7 +10,12 @@ describe ActionView::Helpers::SortableHelper do
       # ideally would replace url_for entirely
       controller.params[:action] = 'index'
       controller.params[:controller] = 'issues'
-      @cell = helper.sortable_header_cell :foo, 'bar'
+
+      # TODO: after move to Capybara 1.0.0, might be able to do this
+      #       without explicitly wrapping using Capybara.string
+      #       (but Akephalos is currently blocker for moving to
+      #       Capybara 1.0.0; consider switching to zombie.js)
+      @cell = Capybara.string(helper.sortable_header_cell :foo, 'bar')
     end
 
     it 'returns a "th" cell' do
