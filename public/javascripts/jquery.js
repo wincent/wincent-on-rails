@@ -1,1 +1,1 @@
-jquery-1.6.js
+jquery-1.6.1.js
