@@ -6,7 +6,7 @@ gem 'mysql2'
 gem 'rails',            '3.1.0.rc1'
 gem 'memcache-client'
 gem 'unicorn',          '~> 1.1.3'
-gem 'rake',             '0.8.7'     # rspec-rails won't work with Rake 0.9.0
+gem 'rake'
 gem 'sass'
 gem 'wikitext',         '3.0b'
 gem 'wopen3'
