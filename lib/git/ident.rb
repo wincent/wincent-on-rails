@@ -18,14 +18,8 @@ module Git
     # The offset is expected to be a string of the form "+xxyy" or "-xxyy",
     # where "xx" is a number of hours and "yy" is a number of minutes.
     def self.time_from_timestamp_and_offset timestamp, offset
-      timestamp = timestamp.to_i
-      offset = offset.to_i
-      hours = offset / 100
-      minutes = offset.abs % 100 # for consistency, never do modulo on -ve num
-      minutes *= -1 if hours < 0 # but restore signedness afterwards
-      time = Time.at timestamp.to_i -
-        (hours * 3600 + minutes * 60)
-      time += time.utc_offset
+      # offset ignored, UNIX timestamps by definition are in UTC
+      Time.at timestamp.to_i
     end
 
     def initialize name, email, time
