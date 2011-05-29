@@ -23,6 +23,10 @@ group :development do
 end
 
 group :test do
+  # plan here is to update to capybara 1.0+
+  # (completely replace webrat and steak); akephalos is a blocker for that
+  # and in fact want to try replacing akephalos with zombie/capybara-zombie
+  # if it will make the tests run faster
   gem 'akephalos'
   gem 'autotest-rails',   :require => nil
   gem 'capybara'
