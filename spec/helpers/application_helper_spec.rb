@@ -142,6 +142,13 @@ describe ApplicationHelper do
   # (for example, #content_tag and #link_to) work regardless
   include ::ERB::Util
 
+  let(:first_commit) {
+    # any spec using this will break if we ever rewrite history,
+    # or try running from outside the context of a Git repo; still,
+    # it is the easiest way to test certain methods
+    Git::Repo.new(Rails.root).commit '94617f2ce7d67db3b8033c1955c08594c9f90aef'
+  }
+
   describe '#breadcrumbs' do
     it 'returns an HTML-safe string' do
       breadcrumbs('foo').should be_html_safe
@@ -178,11 +185,15 @@ describe ApplicationHelper do
   end
 
   describe '#commit_author_time' do
-    pending
+    it 'returns the UTC time wrapped in a "relative-date" span' do
+      commit_author_time(first_commit).should == '<span class="relative-date">2007-10-05 11:06:44 UTC</span>'
+    end
   end
 
   describe '#commit_committer_time' do
-    pending
+    it 'returns the UTC time wrapped in a "relative-date" span' do
+      commit_committer_time(first_commit).should == '<span class="relative-date">2007-10-05 11:06:44 UTC</span>'
+    end
   end
 
   describe '#stylesheet_link_tags' do
@@ -222,7 +233,7 @@ describe ApplicationHelper do
       end
 
       context 'description is available' do
-        let (:snippet) { Snippet.make! :description => 'foobar' }
+        let(:snippet) { Snippet.make! :description => 'foobar' }
 
         it 'uses the snippet title' do
           link_to_model(snippet).should =~ /foobar/
