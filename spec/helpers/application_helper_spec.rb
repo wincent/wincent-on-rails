@@ -136,6 +136,12 @@ describe ApplicationHelper, '"tweet_title" method' do
 end
 
 describe ApplicationHelper do
+  # required in Rails 3.1, not sure why it wasn't before; without it,
+  # these specs fail when the #breadcrumbs method calls h() from
+  # ::ERB::Util, while other helper methods that #breadcrumbs uses
+  # (for example, #content_tag and #link_to) work regardless
+  include ::ERB::Util
+
   describe '#breadcrumbs' do
     it 'returns an HTML-safe string' do
       breadcrumbs('foo').should be_html_safe
