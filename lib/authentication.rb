@@ -38,13 +38,9 @@ module ActionController
       self.current_user = log_in_with_cookie || log_in_with_http_basic
     end
 
-    # can be used as a before_filter, or inline in a controller
-    # (for example of inline use, see issues#show or links#show where
-    # it is used only for a specific format)
-    def require_admin &block
-      if admin?
-        yield if block_given?
-      else
+    # Intended for use as a before_filter.
+    def require_admin
+      unless admin?
         redirect_to_login 'The requested resource requires administrator privileges'
       end
     end

@@ -34,10 +34,8 @@ class LinksController < ApplicationController
         redirect_to @link.redirection_url, :status => 303 # "See other", GET request
       }
       format.js { # AJAX updates
-        require_admin do
-          # don't leak out any more information than necessary
-          render :json => @link.to_json(:only => [:uri, :permalink])
-        end
+        # don't leak out any more information than necessary
+        render :json => @link.to_json(:only => [:uri, :permalink])
       }
     end
   end

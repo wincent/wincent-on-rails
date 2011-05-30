@@ -79,11 +79,9 @@ class IssuesController < ApplicationController
         @comments = @issue.comments.published # public, not awaiting moderation
       }
       format.js {
-        require_admin do
-          visible = [:pending_tags, :product_id, :public, :status, :summary]
-          methods = :pending_tags # not a real attribute
-          render :json => @issue.to_json(:only => visible, :methods => methods)
-        end
+        visible = [:pending_tags, :product_id, :public, :status, :summary]
+        methods = :pending_tags # not a real attribute
+        render :json => @issue.to_json(:only => visible, :methods => methods)
       }
     end
   end
