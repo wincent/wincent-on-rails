@@ -42,12 +42,12 @@ class Issue < ActiveRecord::Base
     finder
   end
 
-  # We expose this for use in the controller layer.
+  # We expose this for use in other layers (helpers, observers).
   def self.string_for_status status
     STATUS_MAP[status].to_s.gsub('_', ' ')
   end
 
-  # We expose this for use in the controller layer.
+  # We expose this for use in other layers (helpers, observers).
   def self.string_for_kind kind
     KIND_MAP[kind].to_s.gsub('_', ' ')
   end
