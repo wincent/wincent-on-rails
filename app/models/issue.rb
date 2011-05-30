@@ -23,8 +23,6 @@ class Issue < ActiveRecord::Base
   acts_as_classifiable
   acts_as_taggable
   acts_as_searchable      :attributes => [:summary, :description]
-  set_callback            :save, :before, :prepare_annotation
-  set_callback            :save, :after, :annotate
 
   # Takes un untrusted hash of search parameters and constructs an
   # ActiveRelation query. The calling controller should pass in the appropriate
@@ -60,61 +58,6 @@ class Issue < ActiveRecord::Base
 
   def kind_string
     Issue.string_for_kind kind
-  end
-
-  def prepare_annotation
-    @annotations = []
-    return if new_record?
-    changes.each do |change|
-      field, from, to = change[0], change[1][0], change[1][1]
-      case field
-      when 'summary'
-        @annotations << format_annotation('Summary', from, to)
-      when 'kind'
-        @annotations << format_annotation('Kind', Issue::string_for_kind(from), kind_string)
-      when 'public'
-        @annotations << format_annotation('Public', from, to)
-      when 'status'
-        @annotations << format_annotation('Status', Issue::string_for_status(from), status_string)
-      when 'product_id'
-        if from and to
-          products  = Product.find(from, to)
-          from      = products.find {|p| p.id == from }.name
-          to        = products.find {|p| p.id == to }.name
-        elsif from
-          from, to  = Product.find(from).name, 'none'
-        elsif to
-          from, to  = 'none', Product.find(to).name
-        else # should never get here
-          from, to  = 'none', 'none'
-        end
-        @annotations << format_annotation('Product', from, to)
-      end
-    end
-    if pending_tags?
-      from = tag_names.join(' ')
-      to = pending_tags
-      @annotations << format_annotation('Tags', from, to) if from != to
-    end
-  end
-
-  def annotate
-    return if @annotations.empty?
-    comment = comments.new(:body => @annotations.join("\n"))
-    user = Thread.current[:current_user]
-    comment.user_id = user.id if user
-    comment.awaiting_moderation = !(user && user.superuser?)
-    comment.save
-  end
-
-  # Formats an annotation for a single field using appropriate wikitext markup.
-  def format_annotation field, from, to
-    <<ANNOTATION
-'''#{field}''' changed:
-
-* '''From:''' #{from}
-* '''To:''' #{to}
-ANNOTATION
   end
 
   def self.update_timestamps_for_comment_changes?
