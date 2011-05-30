@@ -23,7 +23,6 @@ class Issue < ActiveRecord::Base
   acts_as_classifiable
   acts_as_taggable
   acts_as_searchable      :attributes => [:summary, :description]
-  set_callback            :create, :after, :send_new_issue_alert
   set_callback            :save, :before, :prepare_annotation
   set_callback            :save, :after, :annotate
 
@@ -61,16 +60,6 @@ class Issue < ActiveRecord::Base
 
   def kind_string
     Issue.string_for_kind kind
-  end
-
-  def send_new_issue_alert
-    # don't inform admin of his own issues
-    return if self.user && self.user.superuser?
-    begin
-      IssueMailer.new_issue_alert(self).deliver
-    rescue Exception => e
-      logger.error "\nerror: Issue#send_new_issue_alert for issue #{self.id} failed due to exception #{e.class}: #{e}\n\n"
-    end
   end
 
   def prepare_annotation
