@@ -186,11 +186,6 @@ describe UsersController do
         assigns[:user].should == user
       end
 
-      it 'finds and assigns user emails' do
-        do_request
-        assigns[:emails].to_a.should == user.emails
-      end
-
       it 'renders users/edit' do
         do_request
         response.should render_template('users/edit')
@@ -254,66 +249,26 @@ describe UsersController do
         log_in_as user
       end
 
-      it 'updates emails' do
-        pending
-        stub(User).find_with_param!(user.to_param) { user }
-        do_request
-      end
-
       it 'updates attributes' do
         stub(User).find_with_param!(user.to_param) { user }
         mock(user).update_attributes @params
         do_request
       end
 
-      context 'new email address added' do
-        it 'creates a confirmation' do
-          do_request
-          user.emails.last.confirmations.size.should == 1
-        end
-
-        it 'creates a confirmation message' do
-          mock.proxy(ConfirmationMailer).confirmation_message(is_a Confirmation)
-          do_request
-        end
-
-        it 'delivers the confirmation message' do
-          mock(controller).deliver is_a(Mail::Message)
-          do_request
-        end
-
-        it 'redirects to /dashboard' do
-          do_request
-          response.should redirect_to('/dashboard')
-        end
+      it 'shows a flash' do
+        do_request
+        flash[:notice].should =~ /successfully updated/i
       end
 
-      context 'no new email address added' do
-        before do
-          @params.delete 'email'
-        end
-
-        it 'shows a flash' do
-          do_request
-          flash[:notice].should =~ /successfully updated/i
-        end
-
-        it 'redirects to #show' do
-          do_request
-          response.should redirect_to(user.reload)
-        end
+      it 'redirects to #show' do
+        do_request
+        response.should redirect_to(user.reload)
       end
 
       context 'failed update' do
         before do
           stub(User).find_with_param!(user.to_param) { user }
           stub(user).update_attributes { false }
-          @params.delete 'email'
-        end
-
-        it 'finds and assigns emails' do
-          do_request
-          assigns[:emails].to_a.should == user.emails
         end
 
         it 'shows a flash' do
