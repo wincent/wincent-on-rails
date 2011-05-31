@@ -19,8 +19,11 @@ class UsersController < ApplicationController
       @user = User.new params[:user]
       @user.save!
       @email = @user.emails.create! :address => @user.email
-      confirm_email_and_redirect 'Successfully created new account'
     end
+    confirmation  = @email.confirmations.create
+    deliver ConfirmationMailer.confirmation_message(confirmation)
+    set_current_user @user if !logged_in? # auto-log in
+    redirect_to dashboard_path
   rescue ActiveRecord::RecordInvalid
     flash[:error] = 'Failed to create new account'
     render :action => 'new'
@@ -45,13 +48,6 @@ class UsersController < ApplicationController
   end
 
 private
-
-  def confirm_email_and_redirect base_msg
-    confirmation  = @email.confirmations.create
-    deliver ConfirmationMailer.confirmation_message(confirmation)
-    set_current_user @user if !logged_in? # auto-log in
-    redirect_to dashboard_path
-  end
 
   def can_edit?
     admin? or (logged_in? and @user.id == self.current_user.id)

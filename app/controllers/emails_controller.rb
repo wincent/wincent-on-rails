@@ -10,9 +10,8 @@ class EmailsController < ApplicationController
   def create
     @email = @user.emails.new params[:email]
     if @email.save
-      # TODO: make the flash message actually true, possibly allow admin to skip confirming
-      flash[:notice] = "Successfully added new email address; " \
-                       "a confirmation email has been sent to #{@email.address}"
+      confirmation  = @email.confirmations.create
+      deliver ConfirmationMailer.confirmation_message(confirmation)
       redirect_to [@user, @email]
     else
       flash[:error] = 'Failed to add new email address'
