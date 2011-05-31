@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100909064030) do
+ActiveRecord::Schema.define(:version => 20110531061835) do
 
   create_table "articles", :force => true do |t|
     t.string   "title"
@@ -66,7 +66,7 @@ ActiveRecord::Schema.define(:version => 20100909064030) do
   end
 
   create_table "emails", :force => true do |t|
-    t.integer  "user_id"
+    t.integer  "user_id",                       :null => false
     t.string   "address"
     t.boolean  "default",    :default => true
     t.boolean  "verified",   :default => false
