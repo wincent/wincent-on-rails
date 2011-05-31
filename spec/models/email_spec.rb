@@ -91,11 +91,28 @@ describe Email do
     it 'defaults to nil' do
       Email.new.user_id.should be_nil
     end
+
+    it 'must not be nil' do
+      Email.make(:user_id => nil).should fail_validation_for(:user)
+    end
   end
 
   describe '#address' do
     it 'defaults to nil' do
       Email.new.address.should be_nil
+    end
+
+    it 'must not be nil' do
+      Email.make(:address => nil).should fail_validation_for(:address)
+    end
+
+    it 'must not be blank' do
+      Email.make(:address => '').should fail_validation_for(:address)
+    end
+
+    it 'must be of the form user@host.domain' do
+      Email.make(:address => 'hey@there').should fail_validation_for(:address)
+      Email.make(:address => 'hey@example.com').should_not fail_validation_for(:address)
     end
   end
 

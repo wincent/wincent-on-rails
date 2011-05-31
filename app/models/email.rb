@@ -2,6 +2,7 @@ class Email < ActiveRecord::Base
   belongs_to              :user
   has_many                :confirmations, :dependent => :destroy
   has_many                :resets, :dependent => :destroy
+  validates_presence_of   :user
   validates_presence_of   :address
   validates_uniqueness_of :address
   validates_format_of     :address,
