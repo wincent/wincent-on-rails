@@ -1,18 +1,14 @@
 -@page_title = @email.address
 =breadcrumbs link_to(@user.display_name, @user), @page_title
 %h1.major=@page_title
--# NOTE: currently abusing a form without a submit button for showing the email record
--#       need to decide what to to do; probably not the right way to avoid making a
--#       table and getting checkboxes for free
-=form_for [@user, @email] do |f|
-  %ul
-    %li
-      =f.label :address
-      =f.text_field :address, :disabled => true
-    %li
-      =f.label :verified, 'Verified?'
-      =f.check_box :verified, :disabled => true
-      -# TODO: link to re-send verification email
-    %li
-      =f.label :default, 'Default?'
-      =f.check_box :default, :disabled => true
+%table
+  %tr
+    %th Address
+    %td=@email.address
+  %tr
+    %th Verified?
+    %td=@email.verified? ? image_tag('tick.png') : image_tag('cross.png')
+    -# TODO: link to re-send verification email; not link to /confirm/new just yet because that only works for currently-logged-in user
+  %tr
+    %th Default?
+    %td=@email.default? ? image_tag('tick.png') : image_tag('cross.png')
