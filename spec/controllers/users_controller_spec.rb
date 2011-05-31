@@ -112,17 +112,34 @@ describe UsersController do
     end
 
     context 'failed creation' do
-      before do
-        stub.instance_of(User).save { false }
-        do_post
+      context 'due to invalid User record' do
+        before do
+          @params['user']['display_name'] = nil
+          do_post
+        end
+
+        it 'shows a flash' do
+          flash[:error].should =~ /failed to create/i
+        end
+
+        it 'renders users/new' do
+          response.should render_template('users/new')
+        end
       end
 
-      it 'shows a flash' do
-        flash[:error].should =~ /failed to create/i
-      end
+      context 'due to invalid Email record' do
+        before do
+          @params['user']['email'] = nil
+          do_post
+        end
 
-      it 'renders users/new' do
-        response.should render_template('users/new')
+        it 'shows a flash' do
+          flash[:error].should =~ /failed to create/i
+        end
+
+        it 'renders users/new' do
+          response.should render_template('users/new')
+        end
       end
     end
   end

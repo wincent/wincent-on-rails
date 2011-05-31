@@ -16,14 +16,15 @@ class UsersController < ApplicationController
   end
 
   def create
-    @user = User.new params[:user]
-    if @user.save
-      @email = @user.emails.create :address => @user.email
+    User.transaction do
+      @user = User.new params[:user]
+      @user.save!
+      @email = @user.emails.create! :address => @user.email
       confirm_email_and_redirect 'Successfully created new account'
-    else
-      flash[:error] = 'Failed to create new account'
-      render :action => 'new'
     end
+  rescue ActiveRecord::RecordInvalid
+    flash[:error] = 'Failed to create new account'
+    render :action => 'new'
   end
 
   def show

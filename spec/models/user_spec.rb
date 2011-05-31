@@ -289,5 +289,20 @@ describe User do
       user.errors[:emails].should be_empty          # would be: "Emails is invalid"
       user.errors[:email].should == ['is invalid']  #  instead: "Email is invalid"
     end
+
+    it 'reports validation errors within a transaction' do
+      # basically double-checking that the pattern used in the users#create
+      # action does the right thing
+      user = User.make  # make and save in two steps
+      user.save!        # otherwise, Factory Girl will auto-create an email
+      expect do
+        User.transaction do
+          user.emails.create! :address => 'bad'
+        end
+      end.to raise_error(ActiveRecord::RecordInvalid)
+      user.should_not be_valid
+      user.errors[:emails].should be_empty          # would be: "Emails is invalid"
+      user.errors[:email].should == ['is invalid']  #  instead: "Email is invalid"
+    end
   end
 end
