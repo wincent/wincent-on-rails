@@ -153,6 +153,8 @@ form input.field_with_errors, form textarea.field_with_errors { border: 4px soli
 form li { display: block; list-style: none; padding-top: 5px; padding-bottom: 5px; }
 form li input[type=password], form li input[type=text], form li textarea { width: 70%; }
 form li label { display: inline-block; text-align: right; color: black; font-weight: bold; vertical-align: top; padding-right: 1em; width: 20%; }
+form li ul { display: inline-block; padding-left: 0px; }
+form li ul li { border: 0px; }
 form li + li { border-top: 1px solid #eeeeee; }
 
 .cloud { text-align: center; }

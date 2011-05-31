@@ -10,17 +10,19 @@
       =f.text_field :display_name
     -unless @emails.empty?
       -# TODO: radio buttons or similar UI here to select default?
-      -@emails.each_with_index do |email, n|
-        %li
-          =f.label "delete_email_#{n}",
-            (n == 0 ? 'Email' : "Email #{n + 1}")
-          -if admin?
-            =link_to email.address, edit_user_email_path(@user, email)
-          -else
-            =mail_to email.address
-          -# TODO: add more info here and possibly a confirmation button
-          -# this could allow us to dump the confirmation#new action entirely
-          -#email.verified ? '(verified)' : '(unverified)'
+      %li
+        =f.label 'emails', 'Emails'
+        %ul
+          -@emails.each do |email|
+            %li
+              -if admin?
+                =link_to email.address, edit_user_email_path(@user, email)
+              -else
+                =mail_to email.address
+              -# TODO: add more info here and possibly a confirmation button
+              -# this could allow us to dump the confirmation#new action entirely
+              -#email.verified ? '(verified)' : '(unverified)'
+              -#="(default)" if email.default? # right now default is meaningless, so not showing it
     %li
       =f.label :email,
         annotation('Add a new email', 'a confirmation email will be sent to this address')
