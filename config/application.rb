@@ -11,7 +11,10 @@ APP_CONFIG = YAML.load_file File.join(File.dirname(__FILE__), 'app_config.yml')
 
 module Wincent
   class Application < Rails::Application
-    config.active_record.observers = :comment_observer, :issue_observer
+    observers = Dir["#{config.root}/app/observers/*_observer.rb"]
+    config.active_record.observers = observers.map do |observer|
+      File.basename(observer).split('.').first.to_sym
+    end
     config.autoload_paths += %W(
       #{config.root}/app/observers
       #{config.root}/app/sweepers
