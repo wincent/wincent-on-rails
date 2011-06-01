@@ -12,12 +12,12 @@ describe 'search/_article' do
 
   it 'shows the result number' do
     do_render
-    rendered.should contain(@result_number.to_s)
+    rendered.should have_content(@result_number.to_s)
   end
 
   it 'uses the article title as link text' do
     do_render
-    rendered.should have_selector('a', :content => @article.title)
+    rendered.should have_css('a', :content => @article.title)
   end
 
   # was a bug
@@ -31,7 +31,7 @@ describe 'search/_article' do
 
   it 'links to the article' do
     do_render
-    rendered.should have_selector('a', :href => article_path(@article))
+    rendered.should have_css('a', :href => article_path(@article))
   end
 
   it 'shows the timeinfo for the article' do

@@ -19,18 +19,18 @@ describe 'snippets/edit' do
 
   it 'has a #show link' do
     render
-    rendered.should have_selector('.links a', :href => snippet_path(@snippet))
+    rendered.should have_css('.links a', :href => snippet_path(@snippet))
   end
 
   it 'has a destroy button' do
     render
-    rendered.should have_selector('.links ' +
+    rendered.should have_css('.links ' +
       "form[action='#{snippet_path(@snippet)}'] " +
       'input[name=_method][value=delete]')
   end
 
   it 'has an #index link' do
     render
-    rendered.should have_selector('.links a', :href => '/snippets')
+    rendered.should have_css('.links a', :href => '/snippets')
   end
 end

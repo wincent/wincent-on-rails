@@ -11,7 +11,7 @@ describe 'snippets/_snippet' do
 
   it 'links to the snippet' do
     do_render
-    rendered.should have_selector('a', :href => snippet_path(snippet))
+    rendered.should have_css('a', :href => snippet_path(snippet))
   end
 
   it 'shows timeinfo for the snippet' do
@@ -22,11 +22,11 @@ describe 'snippets/_snippet' do
   it 'has a comment link' do
     do_render
     rendered.
-      should have_selector('a', :href => new_snippet_comment_path(snippet))
+      should have_css('a', :href => new_snippet_comment_path(snippet))
   end
 
   it 'shows the snippet body HTML' do
     do_render
-    rendered.should have_selector('em', :content => 'foo')
+    rendered.should have_css('em', :content => 'foo')
   end
 end

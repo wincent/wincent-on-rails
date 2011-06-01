@@ -33,7 +33,7 @@ describe 'search/_results' do
 
     it 'has a "search again" link' do
       render
-      rendered.should have_selector('.links a', :href=> '/search')
+      rendered.should have_css('.links a', :href=> '/search')
     end
   end
 
@@ -66,7 +66,7 @@ describe 'search/_results' do
 
     it 'displays "no results"' do
       render
-      rendered.should contain(/no results/i)
+      rendered.should have_content(/no results/i)
     end
   end
 
@@ -79,10 +79,10 @@ describe 'search/_results' do
 
     it 'displays a "more results" form button' do
       render
-      rendered.should have_selector('form', :action => '/search') do |form|
-        form.should have_selector('input[type=hidden][name=offset]', :value => (@offset + 20).to_s)
-        form.should have_selector('input[type=submit]', :value => 'more results...')
-        form.should have_selector('input[type=hidden][name=q]', :value => 'foo')
+      rendered.should have_css('form', :action => '/search') do |form|
+        form.should have_css('input[type=hidden][name=offset]', :value => (@offset + 20).to_s)
+        form.should have_css('input[type=submit]', :value => 'more results...')
+        form.should have_css('input[type=hidden][name=q]', :value => 'foo')
       end
     end
   end

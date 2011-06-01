@@ -13,6 +13,6 @@ describe 'snippets/_preview' do
 
   it 'shows the snippet body HTML' do
     render 'snippets/preview'
-    rendered.should have_selector('em', :content => 'foo')
+    rendered.should have_css('em', :content => 'foo')
   end
 end

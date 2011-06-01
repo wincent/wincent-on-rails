@@ -18,7 +18,7 @@ describe 'snippets/new' do
 
   it 'has a link back to the index' do
     render
-    rendered.should have_selector('.links a', :href => '/snippets',
+    rendered.should have_css('.links a', :href => '/snippets',
       :content => 'index')
   end
 end

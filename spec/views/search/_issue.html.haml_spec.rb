@@ -12,12 +12,12 @@ describe 'search/_issue' do
 
   it 'shows the result number' do
     do_render
-    rendered.should contain(/#{@result_number.to_s}/)
+    rendered.should have_content(/#{@result_number.to_s}/)
   end
 
   it 'uses the issue summary as link text' do
     do_render
-    rendered.should have_selector('a', :content => @issue.summary)
+    rendered.should have_css('a', :content => @issue.summary)
   end
 
   # was a bug
@@ -25,12 +25,12 @@ describe 'search/_issue' do
     @issue = Issue.make! :summary => '<em>foo</em>'
     do_render
     rendered.should match('&lt;em&gt;foo&lt;/em&gt')
-    rendered.should_not have_selector('em', :content => 'foo')
+    rendered.should_not have_css('em', :content => 'foo')
   end
 
   it 'links to the issue' do
     do_render
-    rendered.should have_selector("a[href='#{issue_path @issue}']")
+    rendered.should have_css("a[href='#{issue_path @issue}']")
   end
 
   it 'shows the timeinfo for the issue' do
@@ -41,18 +41,18 @@ describe 'search/_issue' do
   it 'shows the issue kind' do
     mock(@issue).kind_string { 'le bug' }
     do_render
-    rendered.should contain(/le bug/)
+    rendered.should have_content(/le bug/)
   end
 
   it 'shows the issue status' do
     mock(@issue).status_string { 'cerrado' }
     do_render
-    rendered.should contain(/cerrado/)
+    rendered.should have_content(/cerrado/)
   end
 
   it 'gets the issue description' do
     do_render
-    rendered.should contain("can't print")
+    rendered.should have_content("can't print")
   end
 
   it 'truncates the issue description to 240 characters' do

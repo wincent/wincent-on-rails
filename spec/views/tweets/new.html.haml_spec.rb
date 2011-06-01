@@ -18,7 +18,7 @@ describe 'tweets/new.html.haml' do
 
   it 'has a form for the tweet' do
     render
-    rendered.should have_selector('form[method=post]', :action => '/twitter')
+    rendered.should have_css('form[method=post]', :action => '/twitter')
   end
 
   it 'provides a link to the wikitext cheatsheet' do
@@ -28,7 +28,7 @@ describe 'tweets/new.html.haml' do
 
   it 'has a preview div' do
     render
-    rendered.should have_selector('#preview')
+    rendered.should have_css('#preview')
   end
 
   it 'renders the preview partial' do
@@ -39,6 +39,6 @@ describe 'tweets/new.html.haml' do
 
   it 'has a link to the tweets index' do
     render
-    rendered.should have_selector('.links a', :href => '/twitter')
+    rendered.should have_css('.links a', :href => '/twitter')
   end
 end

@@ -9,27 +9,27 @@ describe 'support/index' do
 
   it 'has a forums link' do
     render
-    rendered.should have_selector('div.links a[href="/forums"]')
+    rendered.should have_css('div.links a[href="/forums"]')
   end
 
   it 'has a "lost license code" link' do
     render
-    rendered.should have_selector('div.links a[href="https://secure.wincent.com/a/support/registration/"]')
+    rendered.should have_css('div.links a[href="https://secure.wincent.com/a/support/registration/"]')
   end
 
   it 'has an "all issues" link' do
     render
-    rendered.should have_selector('div.links a[href="/issues"]')
+    rendered.should have_css('div.links a[href="/issues"]')
   end
 
   it 'has a search link' do
     render
-    rendered.should have_selector('div.links a[href="/issues/search"]')
+    rendered.should have_css('div.links a[href="/issues/search"]')
   end
 
   it 'has a "new issue" link' do
     render
-    rendered.should have_selector('div.links a[href="/issues/new"]')
+    rendered.should have_css('div.links a[href="/issues/new"]')
   end
 
   it 'renders the issues list partial' do

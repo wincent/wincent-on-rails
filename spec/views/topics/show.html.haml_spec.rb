@@ -17,6 +17,6 @@ describe 'topics/show.html.haml' do
 
   it 'shows the topic title as a major heading' do
     render
-    rendered.should have_selector('h1.major', :content => @title)
+    rendered.should have_css('h1.major', :content => @title)
   end
 end

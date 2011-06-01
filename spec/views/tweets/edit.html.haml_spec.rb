@@ -21,11 +21,11 @@ describe 'tweets/edit.html.haml' do
 
   it 'has a form for the tweet' do
     render
-    rendered.should have_selector("form[action='#{tweet_path @tweet}'][method=post]") do |form|
+    rendered.should have_css("form[action='#{tweet_path @tweet}'][method=post]") do |form|
       # real HTTP PUT is not supported, the form is just a normal POST
       # with a hidden field faking the PUT
-      form.should have_selector('input[name=_method][value=put]')
-      form.should have_selector("textarea[name='tweet[body]']", :content => 'hello')
+      form.should have_css('input[name=_method][value=put]')
+      form.should have_css("textarea[name='tweet[body]']", :content => 'hello')
     end
   end
 
@@ -36,7 +36,7 @@ describe 'tweets/edit.html.haml' do
 
   it 'has a preview div' do
     render
-    rendered.should have_selector('#preview')
+    rendered.should have_css('#preview')
   end
 
   it 'renders the preview partial' do
@@ -46,20 +46,20 @@ describe 'tweets/edit.html.haml' do
 
   it 'has a "show" link' do
     render
-    rendered.should have_selector('.links') do |div|
-      div.should have_selector("a[href='#{tweet_path(@tweet)}']")
+    rendered.should have_css('.links') do |div|
+      div.should have_css("a[href='#{tweet_path(@tweet)}']")
     end
   end
 
   it 'has a "destroy" link' do
     render
-    rendered.should have_selector('.links') do |div|
-      div.should have_selector("form[action='#{tweet_path(@tweet)}'] input[name=_method][value=delete]")
+    rendered.should have_css('.links') do |div|
+      div.should have_css("form[action='#{tweet_path(@tweet)}'] input[name=_method][value=delete]")
     end
   end
 
   it 'has a link to the tweets index' do
     render
-    rendered.should have_selector(".links a[href='/twitter']")
+    rendered.should have_css(".links a[href='/twitter']")
   end
 end

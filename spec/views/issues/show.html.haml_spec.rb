@@ -9,7 +9,7 @@ describe 'issues/show' do
 
   it 'should show breadcrumbs' do
     render
-    rendered.should have_selector('div#breadcrumbs', :content => "#{@issue.kind_string.humanize} \##{@issue.id}")
+    rendered.should have_css('div#breadcrumbs', :content => "#{@issue.kind_string.humanize} \##{@issue.id}")
   end
 
   it 'should advertise an atom feed' do
@@ -40,7 +40,7 @@ describe 'issues/show' do
     end
 
     it 'should show an edit link' do
-      rendered.should have_selector('a', :href => edit_issue_path(@issue))
+      rendered.should have_css('a', :href => edit_issue_path(@issue))
     end
 
     it 'should show a destroy link' do
@@ -58,7 +58,7 @@ describe 'issues/show' do
     end
 
     it 'should not show an edit link' do
-      rendered.should_not have_selector('a', :href => edit_issue_path(@issue))
+      rendered.should_not have_css('a', :href => edit_issue_path(@issue))
     end
 
     it 'should not show a destroy link' do
@@ -76,7 +76,7 @@ describe 'issues/show' do
     it 'should show "none"' do
       render
       # this is currently a false positive (catches "Description ... Tags ... none")
-      rendered.should contain(/Description.+none/m)
+      rendered.should have_content(/Description.+none/m)
     end
   end
 end

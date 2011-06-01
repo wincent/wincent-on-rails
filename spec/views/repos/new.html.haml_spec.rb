@@ -18,11 +18,11 @@ describe 'repos/new' do
 
   it 'has a form for the repo' do
     render
-    rendered.should have_selector('form[method=post]', :action => '/repos')
+    rendered.should have_css('form[method=post]', :action => '/repos')
   end
 
   it 'has a link to the repos index' do
     render
-    rendered.should have_selector('.links a', :href => '/repos')
+    rendered.should have_css('.links a', :href => '/repos')
   end
 end

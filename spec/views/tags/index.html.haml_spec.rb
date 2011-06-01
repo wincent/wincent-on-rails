@@ -7,6 +7,6 @@ describe 'tags/index' do
 
   it 'should have a "tag search" link' do
     render
-    rendered.should have_selector('.links a[href="/tags/search"]')
+    rendered.should have_css('.links a[href="/tags/search"]')
   end
 end

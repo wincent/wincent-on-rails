@@ -12,12 +12,12 @@ describe 'search/_post' do
 
   it 'shows the result number' do
     do_render
-    rendered.should contain(@result_number.to_s)
+    rendered.should have_content(@result_number.to_s)
   end
 
   it 'uses the post title as link text' do
     do_render
-    rendered.should have_selector('a', :content => @post.title)
+    rendered.should have_css('a', :content => @post.title)
   end
 
   # was a bug
@@ -25,12 +25,12 @@ describe 'search/_post' do
     @post = Post.make! :title => '<em>foo</em>'
     do_render
     rendered.should match('&lt;em&gt;foo&lt;/em&gt;')
-    rendered.should_not have_selector('em', :content => 'foo')
+    rendered.should_not have_css('em', :content => 'foo')
   end
 
   it 'links to the post' do
     do_render
-    rendered.should have_selector('a', :href => post_path(@post))
+    rendered.should have_css('a', :href => post_path(@post))
   end
 
   it 'shows the timeinfo for the post' do

@@ -8,12 +8,12 @@ describe 'admin/issues/index' do
 
   it 'has an "all issues" link' do
     render
-    rendered.should have_selector('div.links a', :href => issues_path)
+    rendered.should have_css('div.links a', :href => issues_path)
   end
 
   it 'has a "refresh" link' do
     render
-    rendered.should have_selector('div.links a', :href => admin_issues_path)
+    rendered.should have_css('div.links a', :href => admin_issues_path)
   end
 
   it 'has a "destroy" button for each issue' do

@@ -8,11 +8,11 @@ describe 'tags/show' do
 
   it 'has an "all tags" link' do
     render
-    rendered.should have_selector('.links a[href="/tags"]')
+    rendered.should have_css('.links a[href="/tags"]')
   end
 
   it 'has a "tag search" link' do
     render
-    rendered.should have_selector('.links a[href="/tags/search"]')
+    rendered.should have_css('.links a[href="/tags/search"]')
   end
 end

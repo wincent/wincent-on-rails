@@ -14,8 +14,6 @@ gem 'wopen3'
 group :development, :test do
   gem 'factory_girl_rails'
   gem 'rspec-rails'
-  gem 'rspec-core'
-  gem 'steak'
 end
 
 group :development do
@@ -23,18 +21,15 @@ group :development do
 end
 
 group :test do
-  # plan here is to update to capybara 1.0+
-  # (completely replace webrat and steak); akephalos is a blocker for that
-  # and in fact want to try replacing akephalos with zombie/capybara-zombie
-  # if it will make the tests run faster
-  gem 'akephalos'
+  # TODO: try zombie/capybara-zombie
+  gem 'akephalos',        :git => 'https://github.com/hiroshi/akephalos.git',
+                          :branch => 'capybara_0.4.0_or_newer'
   gem 'autotest-rails',   :require => nil
-  gem 'capybara'
+  gem 'capybara',         :git => 'git://github.com/jnicklas/capybara.git'
   gem 'database_cleaner'
   gem 'launchy'
   gem 'mkdtemp'
   gem 'rcov'
   gem 'rr'
   gem 'timecop'
-  gem 'webrat'
 end

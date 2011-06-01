@@ -31,12 +31,12 @@ describe 'tweets/_preview.html.haml' do
     long = 'x' * 250
     @tweet = Tweet.make :body => long
     do_render
-    rendered.should have_selector('span.overlength', :content => '(250 characters)')
+    rendered.should have_css('span.overlength', :content => '(250 characters)')
   end
 
   it 'should not use CSS span for short messages' do
     do_render
-    rendered.should_not have_selector('span.overlength')
+    rendered.should_not have_css('span.overlength')
   end
 
   it 'should show the tweet body' do
@@ -47,12 +47,12 @@ describe 'tweets/_preview.html.haml' do
   it 'should render wikitext markup as HTML' do
     @tweet = Tweet.make :body => "'''foo'''"
     do_render
-    rendered.should have_selector('strong', :content => 'foo')
+    rendered.should have_css('strong', :content => 'foo')
   end
 
   it 'should start with a "base heading level" of 3' do
     @tweet = Tweet.make :body => "= foo ="
     do_render
-    rendered.should have_selector('h4', :content => 'foo')
+    rendered.should have_css('h4', :content => 'foo')
   end
 end

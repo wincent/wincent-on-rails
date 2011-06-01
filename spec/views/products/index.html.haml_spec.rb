@@ -15,16 +15,16 @@ describe 'products/index' do
   end
 
   it 'renders list of products' do
-    rendered.should have_selector('h3', :content => 'Synergy')
-    rendered.should have_selector('h3', :content => 'Synergy Advance')
+    rendered.should have_css('h3', :content => 'Synergy')
+    rendered.should have_css('h3', :content => 'Synergy Advance')
   end
 
   it 'shows category headings' do
-    rendered.should have_selector('h2', :content => 'Consumer products')
+    rendered.should have_css('h2', :content => 'Consumer products')
   end
 
   it 'shows description HTML' do
-    rendered.should have_selector('p', :content => 'An iTunes controller')
-    rendered.should have_selector('p', :content => 'An improved iTunes accessory')
+    rendered.should have_css('p', :content => 'An iTunes controller')
+    rendered.should have_css('p', :content => 'An improved iTunes accessory')
   end
 end

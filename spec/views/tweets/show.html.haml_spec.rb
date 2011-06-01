@@ -19,7 +19,7 @@ describe 'tweets/show.html.haml' do
 
   it 'shows the tweet number' do
     render
-    rendered.should contain("Tweet ##{@tweet.id}")
+    rendered.should have_content("Tweet ##{@tweet.id}")
   end
 
   it 'shows the time information for the tweet' do
@@ -29,12 +29,12 @@ describe 'tweets/show.html.haml' do
 
   it 'shows a by-line' do
     render
-    rendered.should contain("by #{APP_CONFIG['admin_name']}")
+    rendered.should have_content("by #{APP_CONFIG['admin_name']}")
   end
 
   it 'shows the tweet body as HTML' do
     render
-    rendered.should have_selector('em', :content => 'hello')
+    rendered.should have_css('em', :content => 'hello')
   end
 
   it 'renders the "shared/tags" partial' do
@@ -45,18 +45,18 @@ describe 'tweets/show.html.haml' do
 
   it 'has a link to the tweets index' do
     render
-    rendered.should have_selector('.links a', :href => '/twitter')
+    rendered.should have_css('.links a', :href => '/twitter')
   end
 
   context 'commenting open' do
     it 'displays the comment form' do
       render
-      rendered.should have_selector('#comment-form')
+      rendered.should have_css('#comment-form')
     end
 
     it 'has a submit button' do
       render
-      rendered.should have_selector('#comment-form a', :href => new_tweet_comment_path(@tweet))
+      rendered.should have_css('#comment-form a', :href => new_tweet_comment_path(@tweet))
     end
   end
 
@@ -67,12 +67,12 @@ describe 'tweets/show.html.haml' do
 
     it 'does not display a comment form' do
       render
-      rendered.should_not have_selector('#comment-form')
+      rendered.should_not have_css('#comment-form')
     end
 
     it 'provides a link to the forums' do
       render
-      rendered.should have_selector('a', :href => '/forums')
+      rendered.should have_css('a', :href => '/forums')
     end
   end
 end

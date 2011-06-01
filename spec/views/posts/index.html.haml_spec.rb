@@ -14,6 +14,6 @@ describe 'posts/index' do
 
   it 'has a link to the tweets Atom feed' do
     render
-    rendered.should have_selector('a', :href => tweets_path(:format => :atom))
+    rendered.should have_css('a', :href => tweets_path(:format => :atom))
   end
 end

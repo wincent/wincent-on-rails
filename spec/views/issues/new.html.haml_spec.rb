@@ -10,7 +10,7 @@ describe 'issues/new' do
 
     # was a bug, fixed in 3bfe4d4
     it 'points out that anonymous tickets must be public' do
-      rendered.should contain(/ticket must be public because you are posting anonymously/)
+      rendered.should have_content(/ticket must be public because you are posting anonymously/)
     end
   end
 

@@ -12,17 +12,17 @@ describe 'search/_tweet' do
 
   it 'shows the result number' do
     do_render
-    rendered.should contain(@result_number.to_s)
+    rendered.should have_content(@result_number.to_s)
   end
 
   it 'uses the tweet number in the link text' do
     do_render
-    rendered.should have_selector('a', :content => "Tweet \##{@tweet.id}")
+    rendered.should have_css('a', :content => "Tweet \##{@tweet.id}")
   end
 
   it 'links to the tweet' do
     do_render
-    rendered.should have_selector('a', :href => tweet_path(@tweet))
+    rendered.should have_css('a', :href => tweet_path(@tweet))
   end
 
   it 'shows the timeinfo for the tweet' do

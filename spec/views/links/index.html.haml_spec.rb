@@ -10,8 +10,8 @@ describe 'links/index' do
 
   it 'renders list of links' do
     render
-    rendered.should have_selector('tr>td', :content => 'perma98')
-    rendered.should have_selector('tr>td', :content => 'perma99')
+    rendered.should have_css('tr>td', :content => 'perma98')
+    rendered.should have_css('tr>td', :content => 'perma99')
   end
 
   it 'uses sortable header cells' do

@@ -13,17 +13,17 @@ describe 'issues/search/new' do
 
   it 'has an "all issues" link' do
     render
-    rendered.should have_selector('div.links a', :href => issues_path)
+    rendered.should have_css('div.links a', :href => issues_path)
   end
 
   it 'has a "support overview" link' do
     render
-    rendered.should have_selector('div.links a', :href => support_path)
+    rendered.should have_css('div.links a', :href => support_path)
   end
 
   it 'has a "site search" link' do
     render
-    rendered.should have_selector('div.links a', :href => search_path)
+    rendered.should have_css('div.links a', :href => search_path)
   end
 
   it 'renders the search form partial' do
