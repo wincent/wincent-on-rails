@@ -14,7 +14,6 @@ class Comment < ActiveRecord::Base
   # we wanted to avoid clobbering the Rails-generated counter cache callback we
   # could use alias_method_chain
   set_callback :create, :after, :update_caches_after_create
-  set_callback :create, :after, :send_new_comment_alert
   set_callback :update, :after, :update_caches
   set_callback :destroy, :after, :update_caches
 
@@ -74,20 +73,5 @@ protected
     timestamp = update_timestamps_for_changes? ? created_at : commentable.updated_at
     commentable.class.update_all [updates, user, id, created_at, timestamp], ['id = ?', commentable.id]
     User.update_all ['comments_count = comments_count + 1'], ['id = ?', user] if user
-  end
-
-  def send_new_comment_alert
-    # don't inform admin of his own comments
-    return if self.user && self.user.superuser?
-    begin
-      CommentMailer.new_comment_alert(self).deliver
-    rescue Exception => e
-      # BUG: we're contaminating the code being tested here with knowledge
-      # about the testing tools
-      #   http://github.com/btakita/rr/issues/issue/40
-      raise e if e.class.to_s =~ /RR::Errors/
-
-      logger.error "\nerror: Comment#send_new_comment_alert for comment #{self.id} failed due to exception #{e.class}: #{e}\n\n"
-    end
   end
 end
