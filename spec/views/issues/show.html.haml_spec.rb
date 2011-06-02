@@ -58,11 +58,12 @@ describe 'issues/show' do
     end
 
     it 'should not show an edit link' do
-      rendered.should_not have_css('a', :href => edit_issue_path(@issue))
+      rendered.should_not have_css("a[href='#{edit_issue_path(@issue)}']")
     end
 
     it 'should not show a destroy link' do
-      rendered.should_not contain(/destroy/) # not sure how best to test this, so this is a cheap stand-in for now
+      # not sure how best to test this, so this is a cheap stand-in for now
+      rendered.should_not have_content('destroy')
     end
   end
 
@@ -75,8 +76,7 @@ describe 'issues/show' do
 
     it 'should show "none"' do
       render
-      # this is currently a false positive (catches "Description ... Tags ... none")
-      rendered.should have_content(/Description.+none/m)
+      rendered.should have_content('Description none')
     end
   end
 end

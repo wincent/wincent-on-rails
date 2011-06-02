@@ -66,7 +66,7 @@ describe 'search/_results' do
 
     it 'displays "no results"' do
       render
-      rendered.should have_content(/no results/i)
+      rendered.should have_content('No results')
     end
   end
 

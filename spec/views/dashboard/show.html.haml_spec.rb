@@ -29,7 +29,7 @@ describe 'dashboard/show' do
     end
 
     it 'does not provide a link to the admin dashboard' do
-      rendered.should_not have_css('a', :href => admin_dashboard_path)
+      rendered.should_not have_css("a[href='#{admin_dashboard_path}']")
     end
   end
 end

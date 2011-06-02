@@ -12,7 +12,7 @@ describe 'search/_issue' do
 
   it 'shows the result number' do
     do_render
-    rendered.should have_content(/#{@result_number.to_s}/)
+    rendered.should have_content(@result_number.to_s)
   end
 
   it 'uses the issue summary as link text' do
@@ -41,13 +41,13 @@ describe 'search/_issue' do
   it 'shows the issue kind' do
     mock(@issue).kind_string { 'le bug' }
     do_render
-    rendered.should have_content(/le bug/)
+    rendered.should have_content('le bug')
   end
 
   it 'shows the issue status' do
     mock(@issue).status_string { 'cerrado' }
     do_render
-    rendered.should have_content(/cerrado/)
+    rendered.should have_content('cerrado')
   end
 
   it 'gets the issue description' do
