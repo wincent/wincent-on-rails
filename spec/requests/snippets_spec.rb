@@ -7,7 +7,7 @@ feature 'snippets' do
 
   scenario 'viewing a snippet in plain-text format' do
     visit snippet_path(@snippet, :format => 'txt')
-    page.body.should == @snippet.body
     page.response_headers['Content-Type'].should =~ %r{\Atext/plain\b}
+    page.body.should == @snippet.body
   end
 end
