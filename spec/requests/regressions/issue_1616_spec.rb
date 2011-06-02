@@ -61,7 +61,8 @@ feature 'validation errors combined with permalink modifications' do
 
     fill_in 'Address', :with => 'valid@example.com'
     click_button 'Update Email'
-    page.should have_content('Public profile') # NOTE: this will change
+    page.should have_content('Address')
+    page.should have_content('valid@example.com')
   end
 
   scenario 'editing a forum', :js do
