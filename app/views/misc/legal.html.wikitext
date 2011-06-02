@@ -26,15 +26,14 @@ The web application depends on or makes use of a number of open source projects:
 ** [http://rubyonrails.org/ Ruby on Rails]
 ** [http://wikitext.rubyforge.org/ Wikitext]
 * Development dependencies:
+** [https://github.com/bernerdschaefer/akephalos Akephalos]
 ** [http://github.com/jnicklas/capybara Capybara]
-** [http://celerity.rubyforge.org/ Celerity]
-** [http://github.com/langalex/culerity Culerity]
 ** [http://github.com/bmabey/database_cleaner Database Cleaner]
 ** [http://github.com/thoughtbot/factory_girl Factory Girl]
+** [http://htmlunit.sourceforge.net/ HtmlUnit]
 ** [http://www.thaiopensource.com/relaxng/jing.html Jing]
 ** [http://github.com/btakita/rr RR]
 ** [http://rspec.info/ RSpec]
-** [http://github.com/cavalle/steak Steak]
 * Other supporting software:
 ** [http://git-scm.com/ Git]
 ** [http://memcached.org/ memcached]
