@@ -1,13 +1,15 @@
 class Topic < ActiveRecord::Base
   belongs_to            :forum, :counter_cache => true
-  belongs_to            :user, :counter_cache => true
-  belongs_to            :last_commenter, :class_name => 'User', :foreign_key => 'last_commenter_id'
+  belongs_to            :user,  :counter_cache => true
+  belongs_to            :last_commenter,
+                        :class_name   => 'User',
+                        :foreign_key  => 'last_commenter_id'
   has_many              :comments,
-                        :as         => :commentable,
-                        :extend     => Commentable,
-                        :order      => 'comments.created_at',
-                        :include    => :user,
-                        :dependent  => :destroy
+                        :as           => :commentable,
+                        :extend       => Commentable,
+                        :order        => 'comments.created_at',
+                        :include      => :user,
+                        :dependent    => :destroy
   validates_presence_of :title
   validates_presence_of :body
   validates_length_of   :body, :maximum => 128 * 1024
@@ -24,16 +26,16 @@ class Topic < ActiveRecord::Base
     begin
       TopicMailer.new_topic_alert(self).deliver
     rescue Exception => e
-      logger.error \
-        "\nerror: Topic#send_new_topic_alert for topic #{self.id} failed due to exception #{e.class}: #{e}\n\n"
+      logger.error "\nerror: Topic#send_new_topic_alert for topic #{self.id} failed due to exception #{e.class}: #{e}\n\n"
     end
   end
 
   def self.find_topics_for_forum forum, offset = 0, limit = 20
-    # we don't move this into the Forum model because if we did so we'd lose the automatic mapping of int/string columns
-    # according the topics schema.
+    # we don't move this into the Forum model because if we did so we'd lose
+    # the automatic mapping of int/string columns according to the topics schema.
     sql = <<-SQL
-      SELECT topics.id, topics.title, topics.comments_count, topics.view_count, topics.updated_at, topics.last_comment_id,
+      SELECT topics.id, topics.title, topics.comments_count, topics.view_count,
+             topics.updated_at, topics.last_comment_id,
              users.id AS last_active_user_id,
              users.display_name AS last_active_user_display_name
       FROM topics
