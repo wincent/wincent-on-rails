@@ -22,7 +22,7 @@ class Topic < ActiveRecord::Base
 
   def send_new_topic_alert
     # don't inform admin of his own topics
-    return if self.user && self.user.superuser?
+    return if user && user.superuser?
     begin
       TopicMailer.new_topic_alert(self).deliver
     rescue Exception => e
