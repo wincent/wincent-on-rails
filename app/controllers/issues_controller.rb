@@ -191,7 +191,7 @@ private
   end
 
   def find_prev_next
-    # 2 additonal queries here, although could try using UNION to combine them into one
+    # 2 additional queries here, although could try using UNION to combine them into one
     @prev   = Issue.last :conditions => default_access_options + " AND id < #{@issue.id}", :order => 'id'
     @next   = Issue.first :conditions => default_access_options + " AND id > #{@issue.id}", :order => 'id'
   end
