@@ -1,5 +1,4 @@
-class Admin::TagsController < ApplicationController
-  before_filter           :require_admin
+class Admin::TagsController < Admin::ApplicationController
   before_filter           :find_tag, :only => [:show, :update]
   acts_as_sortable        :by => [:name, :taggings_count], :default => :name
 

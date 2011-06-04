@@ -1,5 +1,4 @@
-class Admin::ForumsController < ApplicationController
-  before_filter           :require_admin
+class Admin::ForumsController < Admin::ApplicationController
   before_filter           :find_forum, :only => [:show, :update]
 
   def index

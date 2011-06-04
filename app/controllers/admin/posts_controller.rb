@@ -1,5 +1,4 @@
-class Admin::PostsController < ApplicationController
-  before_filter           :require_admin
+class Admin::PostsController < Admin::ApplicationController
   before_filter           :find_post, :only => [:show, :update]
 
   # TODO: really need a published_at field, I think

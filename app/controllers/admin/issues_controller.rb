@@ -1,6 +1,4 @@
-class Admin::IssuesController < ApplicationController
-  before_filter :require_admin
-
+class Admin::IssuesController < Admin::ApplicationController
   # TODO: compact interface for mass-deleting spam issues using checkboxes
   def index
     issues      = Issue.where :awaiting_moderation => true

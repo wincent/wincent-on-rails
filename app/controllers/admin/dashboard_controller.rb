@@ -1,6 +1,4 @@
-class Admin::DashboardController < ApplicationController
-  before_filter     :require_admin
-
+class Admin::DashboardController < Admin::ApplicationController
   def show
     conditions      = 'awaiting_moderation = TRUE'
     @comment_count  = Comment.count :conditions => conditions
