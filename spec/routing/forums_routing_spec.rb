@@ -21,20 +21,6 @@ describe ForumsController do
 
       # topics#index is a no-op here, users go to forums#show to see a list of topics
       specify { get('/forums/foo-bar/topics').should_not be_recognized }
-
-      describe 'comments' do
-        # only #new and #create are implemented while nested
-        # Rails BUG?: only map_to works here; map_from (and therefore also have_routing) do not
-        specify { get('/forums/foo-bar/topics/123/comments/new').should map_to('comments#new', :forum_id => 'foo-bar', :topic_id => '123') }
-        specify { post('/forums/foo-bar/topics/123/comments').should map_to('comments#create', :forum_id => 'foo-bar', :topic_id => '123') }
-
-        # all other RESTful actions are no-ops
-        specify { get('/forums/foo-bar/topics/123/comments').should_not be_recognized }
-        specify { get('/forums/foo-bar/topics/123/comments/456').should_not be_recognized }
-        specify { get('/forums/foo-bar/topics/123/comments/456/edit').should_not be_recognized }
-        specify { put('/forums/foo-bar/topics/123/comments/456').should_not be_recognized }
-        specify { delete('/forums/foo-bar/topics/123/comments/456').should_not be_recognized }
-      end
     end
 
     describe 'helpers' do
@@ -73,14 +59,6 @@ describe ForumsController do
 
       describe 'edit_forum_topic_path' do
         specify { edit_forum_topic_path(@forum, @topic).should == '/forums/foo-bar/topics/123/edit' }
-      end
-
-      describe 'forum_topic_comments_path' do
-        specify { forum_topic_comments_path(@forum, @topic).should == '/forums/foo-bar/topics/123/comments' }
-      end
-
-      describe 'new_forum_topic_comment_path' do
-        specify { new_forum_topic_comment_path(@forum, @topic).should == '/forums/foo-bar/topics/123/comments/new' }
       end
     end
   end

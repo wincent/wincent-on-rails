@@ -3,7 +3,7 @@
   =render 'shared/anonymous'
 -elsif !current_user.verified?
   =render 'shared/unverified'
-=form_for @comment, :url => comment_form_path(@comment) do |f|
+=form_for [@comment.commentable, @comment] do |f|
   %ul
     %li
       =f.label :body, annotation('Body', wikitext_cheatsheet)

@@ -23,16 +23,15 @@ describe IssuesController do
     end
 
     describe 'comments' do
-      # only #new and #create are implemented while nested
-      # Rails BUG?: only map_to works here; map_from (and therefore also have_routing) do not
-      specify { get('/issues/123/comments/new').should map_to('comments#new', :issue_id => '123') }
-      specify { post('/issues/123/comments').should map_to('comments#create', :issue_id => '123') }
+      # only #new, #create and #update are implemented while nested
+      specify { get('/issues/123/comments/new').should have_routing('comments#new', :issue_id => '123') }
+      specify { post('/issues/123/comments').should have_routing('comments#create', :issue_id => '123') }
+      specify { put('/issues/123/comments/456').should have_routing('comments#update', :issue_id => '123', :id => '456') }
 
       # all other RESTful actions are no-ops
       specify { get('/issues/123/comments').should_not be_recognized }
       specify { get('/issues/123/comments/456').should_not be_recognized }
       specify { get('/issues/123/comments/456/edit').should_not be_recognized }
-      specify { put('/issues/123/comments/456').should_not be_recognized }
       specify { delete('/issues/123/comments/456').should_not be_recognized }
     end
 

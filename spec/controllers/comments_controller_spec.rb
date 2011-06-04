@@ -68,12 +68,13 @@ describe CommentsController do
   describe '#update' do
     context 'logged in as admin' do
       before do
-        @comment = Comment.make!
+        @article = Article.make!
+        @comment = Comment.make! :commentable => @article
         log_in_as_admin
       end
 
       def do_put
-        put :update, :id => @comment.id, :comment => { :body => 'foo' }
+        put :update, :article_id => @article.id, :id => @comment.id, :comment => { :body => 'foo' }
       end
 
       it 'runs the "require_admin" before filter' do

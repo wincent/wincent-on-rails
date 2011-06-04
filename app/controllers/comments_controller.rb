@@ -54,7 +54,7 @@ class CommentsController < ApplicationController
       else
         flash[:notice] = 'Successfully added new comment'
       end
-      redirect_to polymorphic_path([@grandparent, @parent].compact)
+      redirect_to @parent
     else
       flash[:error] = 'Failed to add new comment'
       render 'new'
@@ -115,11 +115,9 @@ private
       @parent = Snippet.find parent
     elsif parent = params[:tweet_id]
       @parent = Tweet.find parent
-    elsif parent = params[:topic_id] and grandparent = params[:forum_id]
-      @grandparent = Forum.find_with_param! grandparent
-      @parent = @grandparent.topics.where(:id => parent).first
+    elsif parent = params[:topic_id]
+      @parent = Topic.find parent
     end
-    raise ActiveRecord::RecordNotFound, 'no parent instance' unless @parent
 
     if !@parent.accepts_comments
       raise ActionController::ForbiddenError,

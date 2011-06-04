@@ -22,16 +22,15 @@ describe ArticlesController do
     end
 
     describe 'comments' do
-      # only #new and #create are implemented while nested
-      # Rails BUG?: only map_to works here; map_from (and therefore also have_routing) do not
-      specify { get('/wiki/Rails_3.0_upgrade_notes/comments/new').should map_to('comments#new', :article_id => 'Rails_3.0_upgrade_notes') }
-      specify { post('/wiki/Rails_3.0_upgrade_notes/comments').should map_to('comments#create', :article_id => 'Rails_3.0_upgrade_notes') }
+      # only #new, #create and #update are implemented while nested
+      specify { get('/wiki/Rails_3.0_upgrade_notes/comments/new').should have_routing('comments#new', :article_id => 'Rails_3.0_upgrade_notes') }
+      specify { post('/wiki/Rails_3.0_upgrade_notes/comments').should have_routing('comments#create', :article_id => 'Rails_3.0_upgrade_notes') }
+      specify { put('/wiki/Rails_3.0_upgrade_notes/comments/456').should have_routing('comments#update', :article_id => 'Rails_3.0_upgrade_notes', :id => '456') }
 
       # all other RESTful actions are no-ops
       specify { get('/wiki/Rails_3.0_upgrade_notes/comments').should_not be_recognized }
       specify { get('/wiki/Rails_3.0_upgrade_notes/comments/456').should_not be_recognized }
       specify { get('/wiki/Rails_3.0_upgrade_notes/comments/456/edit').should_not be_recognized }
-      specify { put('/wiki/Rails_3.0_upgrade_notes/comments/456').should_not be_recognized }
       specify { delete('/wiki/Rails_3.0_upgrade_notes/comments/456').should_not be_recognized }
     end
 

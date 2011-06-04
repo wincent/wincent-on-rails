@@ -44,17 +44,20 @@ describe SnippetsController do
     end
 
     describe 'comments' do
-      # only #new and #create are implemented while nested
-      # Rails BUG: only map_to works here; map_from (and therefore also
-      # have_routing) do not
+      # only #new, #create and #update are implemented while nested
       specify do
         get('/snippets/123/comments/new').
-          should map_to('comments#new', :snippet_id => '123')
+          should have_routing('comments#new', :snippet_id => '123')
       end
 
       specify do
         post('/snippets/123/comments').
-          should map_to('comments#create', :snippet_id => '123')
+          should have_routing('comments#create', :snippet_id => '123')
+      end
+
+      specify do
+        put('/snippets/123/comments/456').
+          should have_routing('comments#update', :snippet_id => '123', :id => '456')
       end
 
       # all other RESTful actions are no-ops
@@ -68,10 +71,6 @@ describe SnippetsController do
 
       specify do
         get('/snippets/123/comments/456/edit').should_not be_recognized
-      end
-
-      specify do
-        put('/snippets/123/comments/456').should_not be_recognized
       end
 
       specify do

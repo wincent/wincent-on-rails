@@ -22,16 +22,15 @@ describe PostsController do
     end
 
     describe 'comments' do
-      # only #new and #create are implemented while nested
-      # Rails BUG?: only map_to works here; map_from (and therefore also have_routing) do not
-      specify { get('/blog/synergy-5.0-released/comments/new').should map_to('comments#new', :post_id => 'synergy-5.0-released') }
-      specify { post('/blog/synergy-5.0-released/comments').should map_to('comments#create', :post_id => 'synergy-5.0-released') }
+      # only #new, #create and #update are implemented while nested
+      specify { get('/blog/synergy-5.0-released/comments/new').should have_routing('comments#new', :post_id => 'synergy-5.0-released') }
+      specify { post('/blog/synergy-5.0-released/comments').should have_routing('comments#create', :post_id => 'synergy-5.0-released') }
+      specify { put('/blog/synergy-5.0-released/comments/456').should have_routing('comments#update', :post_id => 'synergy-5.0-released', :id => '456') }
 
       # all other RESTful actions are no-ops
       specify { get('/blog/synergy-5.0-released/comments').should_not be_recognized }
       specify { get('/blog/synergy-5.0-released/comments/456').should_not be_recognized }
       specify { get('/blog/synergy-5.0-released/comments/456/edit').should_not be_recognized }
-      specify { put('/blog/synergy-5.0-released/comments/456').should_not be_recognized }
       specify { delete('/blog/synergy-5.0-released/comments/456').should_not be_recognized }
     end
 

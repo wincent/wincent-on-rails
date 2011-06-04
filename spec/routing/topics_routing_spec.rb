@@ -16,6 +16,19 @@ describe TopicsController do
     # as #new is not implemented, this gets routed to #show
     specify { get('/topics/new').should have_routing('topics#show', :id => 'new') }
 
+    describe 'comments' do
+      # only #new, #create and #update are implemented while nested
+      specify { get('/topics/123/comments/new').should have_routing('comments#new', :topic_id => '123') }
+      specify { post('/topics/123/comments').should have_routing('comments#create', :topic_id => '123') }
+      specify { put('/topics/123/comments/456').should have_routing('comments#update', :topic_id => '123', :id => '456') }
+
+      # all other RESTful actions are no-ops
+      specify { get('/topics/123/comments').should_not be_recognized }
+      specify { get('/topics/123/comments/456').should_not be_recognized }
+      specify { get('/topics/123/comments/456/edit').should_not be_recognized }
+      specify { delete('/topics/123/comments/456').should_not be_recognized }
+    end
+
     describe 'helpers' do
       before do
         @topic = Topic.stub :id => 123
@@ -27,6 +40,14 @@ describe TopicsController do
 
       describe 'topic_path' do
         specify { topic_path(@topic).should == '/topics/123' }
+      end
+
+      describe 'topic_comments_path' do
+        specify { topic_comments_path(@topic).should == '/topics/123/comments' }
+      end
+
+      describe 'new_topic_comment_path' do
+        specify { new_topic_comment_path(@topic).should == '/topics/123/comments/new' }
       end
     end
   end
