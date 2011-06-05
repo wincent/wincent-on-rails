@@ -50,8 +50,8 @@ function ajax_comment_form(url) {
   var click = function() {
     anchor.unbind('click').addClass('disabled');
     var spinner = $('<img/>', {
-      'alt'   : 'Spinner',
-      'id'    : 'spinner_' + global_spinner_counter++,
+      alt     : 'Spinner',
+      id      : 'spinner_' + global_spinner_counter++,
       'class' : 'spinner',
       src     : '/images/spinner.gif'
     });
