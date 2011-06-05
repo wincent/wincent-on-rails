@@ -59,19 +59,19 @@ function ajax_comment_form(url) {
     spinner.show();
     clearAJAXFlash();
     $.ajax({
-      'url'       : url,
-      'type'      : 'get',
-      'dataType'  : 'html',
-      'success'   : function(html) {
+      url       : url,
+      type      : 'get',
+      dataType  : 'html',
+      success   : function(html) {
         clearAJAXFlash();
         comment_div.find('.links').hide();
         comment_div.append(html);
       },
-      'error': function(req) {
+      error: function(req) {
         insertAJAXFlash('error', req.responseText);
         anchor.click(click).removeClass('disabled');
       },
-      'complete': function() {
+      complete: function() {
         spinner.remove();
       }
     });
