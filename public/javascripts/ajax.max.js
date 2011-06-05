@@ -64,12 +64,15 @@ function ajax_comment_form(url) {
       'dataType'  : 'html',
       'success'   : function(html) {
         clearAJAXFlash();
-        comment_div.hide().after(html);
+        comment_div.find('.links').hide();
+        comment_div.append(html);
       },
       'error': function(req) {
         insertAJAXFlash('error', req.responseText);
-        spinner.remove();
         anchor.click(click).removeClass('disabled');
+      },
+      'complete': function() {
+        spinner.remove();
       }
     });
   }
