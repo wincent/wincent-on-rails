@@ -1,4 +1,4 @@
-// Copyright 2009-2010 Wincent Colaiuta. All rights reserved.
+// Copyright 2009-2011 Wincent Colaiuta. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are met:
@@ -48,26 +48,24 @@ function ajax_comment_form(url) {
   var anchor = comment_div.find('a');
   anchor.attr('href', '#comment-form');
   var click = function() {
-    anchor.unbind('click');
-    anchor.addClass('disabled');
+    anchor.unbind('click').addClass('disabled');
     var spinner_id = 'spinner_' + global_spinner_counter++;
     comment_div.append('<img alt="Spinner" id="' + spinner_id + '" class="spinner" src="/images/spinner.gif" />');
     var spinner = comment_div.find('#' + spinner_id);
     spinner.show();
     clearAJAXFlash();
     $.ajax({
-      'url': url,
-      'type': 'get',
-      'dataType': 'html',
-      'success': function(html) {
+      'url'       : url,
+      'type'      : 'get',
+      'dataType'  : 'html',
+      'success'   : function(html) {
         clearAJAXFlash();
-        comment_div.html(html);
+        comment_div.hide().after(html);
       },
       'error': function(req) {
         insertAJAXFlash('error', req.responseText);
         spinner.remove();
-        anchor.click(click);
-        anchor.removeClass('disabled');
+        anchor.click(click).removeClass('disabled');
       }
     });
   }
