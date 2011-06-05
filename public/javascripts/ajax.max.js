@@ -51,7 +51,7 @@ function ajax_comment_form(url) {
     anchor.unbind('click').addClass('disabled');
     var spinner = $('<img/>', {
       'alt'   : 'Spinner',
-      'id'    :  'spinner_' + global_spinner_counter++,
+      'id'    : 'spinner_' + global_spinner_counter++,
       'class' : 'spinner',
       src     : '/images/spinner.gif'
     });
