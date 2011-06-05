@@ -1,4 +1,4 @@
-// Copyright 2008-2010 Wincent Colaiuta. All rights reserved.
+// Copyright 2008-2011 Wincent Colaiuta. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are met:
@@ -279,13 +279,12 @@ $(document).ready(function() {
     return confirm($(this).attr('data-confirm'));
   });
 
-  // set up "remote" (AJAX) forms (only delete for now)
   $('form[data-remote]').live('submit', function(event) {
     var form = $(this);
     $.ajax({
       'url': form.attr('action') + '.js',
       'type': 'post',
-      'data': '_method=delete',
+      'data': form.serialize(),
       'error': function() { alert('Failed to delete'); }
     });
     event.preventDefault();
