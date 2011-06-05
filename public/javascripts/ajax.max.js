@@ -49,9 +49,13 @@ function ajax_comment_form(url) {
   anchor.attr('href', '#comment-form');
   var click = function() {
     anchor.unbind('click').addClass('disabled');
-    var spinner_id = 'spinner_' + global_spinner_counter++;
-    comment_div.append('<img alt="Spinner" id="' + spinner_id + '" class="spinner" src="/images/spinner.gif" />');
-    var spinner = comment_div.find('#' + spinner_id);
+    var spinner = $('<img/>', {
+      'alt'   : 'Spinner',
+      'id'    :  'spinner_' + global_spinner_counter++,
+      'class' : 'spinner',
+      src     : '/images/spinner.gif'
+    });
+    comment_div.append(spinner);
     spinner.show();
     clearAJAXFlash();
     $.ajax({
