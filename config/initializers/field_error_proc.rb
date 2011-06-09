@@ -8,7 +8,7 @@ ActionView::Base.field_error_proc = Proc.new do |html_tag, instance_tag|
 
   # first try appending to existing class attribute,
   # otherwise fallback to adding new class attribute
-  html_tag.sub!(/\A(<[^>]+ class=["'])/, '\1 ' + error_class) ||
-    html_tag.sub!(/\A(<\w+)/, '\1 class="' + error_class + '"')
+  html_tag.sub!(/\A(<[^>]+ class=["'])/, %Q[\\1#{error_class} ]) ||
+    html_tag.sub!(/\A(<\w+)/, %Q[\\1 class="#{error_class}"])
   html_tag.html_safe
 end
