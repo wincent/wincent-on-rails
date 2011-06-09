@@ -297,7 +297,8 @@ describe User do
       user.save!        # otherwise, Factory Girl will auto-create an email
       expect do
         User.transaction do
-          user.emails.create! :address => 'bad'
+          email = user.emails.create :address => 'bad'
+          email.save!
         end
       end.to raise_error(ActiveRecord::RecordInvalid)
       user.should_not be_valid

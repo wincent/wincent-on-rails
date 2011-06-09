@@ -18,13 +18,15 @@ class UsersController < ApplicationController
     User.transaction do
       @user = User.new params[:user]
       @user.save!
-      @email = @user.emails.create! :address => @user.email
+      @email = @user.emails.create :address => @user.email
+      @email.save!
     end
     confirmation  = @email.confirmations.create
     deliver ConfirmationMailer.confirmation_message(confirmation)
     set_current_user @user if !logged_in? # auto-log in
     redirect_to dashboard_path
   rescue ActiveRecord::RecordInvalid
+    @user.valid? # re-run validations to pick up errors in email association
     flash[:error] = 'Failed to create new account'
     render :action => 'new'
   end
