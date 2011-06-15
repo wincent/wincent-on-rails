@@ -25,7 +25,7 @@ group :test do
   gem 'akephalos',        :git => 'https://github.com/hiroshi/akephalos.git',
                           :branch => 'capybara_0.4.0_or_newer'
   gem 'autotest-rails',   :require => nil
-  gem 'capybara',         :git => 'git://github.com/jnicklas/capybara.git'
+  gem 'capybara'
   gem 'database_cleaner'
   gem 'launchy'
   gem 'mkdtemp'
