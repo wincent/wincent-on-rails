@@ -22,9 +22,9 @@ describe TweetsController do
       # only #new, #create and #update are implemented while nested
       specify { get('/twitter/123/comments/new').should have_routing('comments#new', :tweet_id => '123') }
       specify { post('/twitter/123/comments').should have_routing('comments#create', :tweet_id => '123') }
-      specify { put('/twitter/123/comments/456').should have_routing('comments#update', :tweet_id => '123', :id => '456') }
 
       # all other RESTful actions are no-ops
+      specify { put('/twitter/123/comments/456').should_not be_recognized }
       specify { get('/twitter/123/comments').should_not be_recognized }
       specify { get('/twitter/123/comments/456').should_not be_recognized }
       specify { get('/twitter/123/comments/456/edit').should_not be_recognized }

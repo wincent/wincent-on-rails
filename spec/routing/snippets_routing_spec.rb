@@ -55,12 +55,11 @@ describe SnippetsController do
           should have_routing('comments#create', :snippet_id => '123')
       end
 
+      # all other RESTful actions are no-ops
       specify do
-        put('/snippets/123/comments/456').
-          should have_routing('comments#update', :snippet_id => '123', :id => '456')
+        put('/snippets/123/comments/456').should_not be_recognized
       end
 
-      # all other RESTful actions are no-ops
       specify do
         get('/snippets/123/comments').should_not be_recognized
       end
