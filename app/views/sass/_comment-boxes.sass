@@ -45,7 +45,7 @@ ol.comments
 ol.comments.boxed
   > li.odd
     +comment-box(#f7f7f7, #ccc)
-  li.odd.active-fragment
+  > li.odd.active-fragment
     background: #f2ffff
     box-shadow: 5px 5px 5px #999
     -moz-box-shadow: 5px 5px 5px #999
@@ -60,5 +60,10 @@ ol.comments.boxed
   > li.admin
     // BUG: not used yet
     +comment-box(white, #ccc)
+  > li.admin.active-fragment
+    background: #f2ffff
+    box-shadow: 5px 5px 5px #999
+    -moz-box-shadow: 5px 5px 5px #999
+    -webkit-box-shadow: 5px 5px 5px #999
   > li.private
     +comment-box(white, #ccc)
