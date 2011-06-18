@@ -281,11 +281,14 @@ $(document).ready(function() {
 
   $('form[data-remote]').live('submit', function(event) {
     var form = $(this);
+    var submits = form.find('input[type=submit]');
+    submits.addClass('disabled');
     $.ajax({
-      'url': form.attr('action') + '.js',
-      'type': 'post',
-      'data': form.serialize(),
-      'error': function() { alert('Failed to delete'); }
+      url: form.attr('action') + '.js',
+      type: 'post',
+      data: form.serialize(),
+      error: function() { alert('Form submission failed'); },
+      complete: function() { submits.removeClass('disabled'); }
     });
     event.preventDefault();
   });

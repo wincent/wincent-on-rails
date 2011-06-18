@@ -69,10 +69,11 @@ function ajax_comment_form(url) {
       },
       error: function(req) {
         insertAJAXFlash('error', req.responseText);
-        anchor.click(click).removeClass('disabled');
+        anchor.click(click);
       },
       complete: function() {
         spinner.remove();
+        anchor.removeClass('disabled');
       }
     });
   }
