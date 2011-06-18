@@ -4,10 +4,9 @@ module CommentsHelper
   end
 
   def comment_class comment
-    if comment.user && comment.user.superuser?
-      'admin'
-    else
-      cycle('even', 'odd')
-    end + (comment.public? ? '' : ' private')
+    style = cycle('even', 'odd')
+    style += ' admin' if comment.user.try(:superuser?)
+    style += ' private' unless comment.public?
+    style
   end
 end
