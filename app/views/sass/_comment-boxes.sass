@@ -1,7 +1,7 @@
 @import 'mixins'
 
 // this can be merged back into main display.css file because it is general
-ol.comments
+ol#comments
   .comment.private
     // could also add a "watermark" style padlock background to the blockquote here
     cite:after
@@ -41,7 +41,7 @@ ol.comments
     margin: 0px
     padding: 10px
 
-ol.comments.boxed
+ol#comments.boxed
   > li.odd
     +comment-box(#f7f7f7, #ccc)
   > li.odd.active-fragment

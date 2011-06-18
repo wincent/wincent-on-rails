@@ -53,7 +53,7 @@
 %h2.major
   Comments
   =feed_icon issue_path(@issue, :format => :atom)
-%ol(class='comments boxed')
+%ol#comments.boxed
   =render @comments
   -# BUG: no edit links
   -# BUG: here we're using base heading level of 2 but in partial it is 1

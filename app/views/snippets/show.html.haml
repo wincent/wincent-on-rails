@@ -17,11 +17,10 @@
   =link_to 'all snippets', snippets_path
   =link_to 'raw', snippet_path(@snippet, :format => :txt)
 -if @snippet.accepts_comments? || @snippet.comments_count != 0
-  =named_anchor 'comments'
   %h2.major
     Comments
     =feed_icon snippet_path(@snippet, :format => :atom)
-  %ol.comments
+  %ol#comments
     =render @comments
   %h2.major Add a comment
   -if @comment

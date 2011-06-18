@@ -20,11 +20,10 @@
     =link_to 'edit', edit_article_path(@article)
   =link_to 'wiki index', articles_path
 -if @article.accepts_comments? || @article.comments_count != 0
-  =named_anchor 'comments'
   %h2.major
     Comments
     =feed_icon article_path(@article, :format => :atom)
-  %ol.comments
+  %ol#comments
     =render @comments
   %h2.major Add a comment
   -if @comment

@@ -23,11 +23,10 @@
   =link_to 'all posts', posts_path
 -if @post.accepts_comments? || @post.comments_count != 0
   -# TODO: likely able to extract this into a shared partial
-  =named_anchor 'comments'
   %h2.major
     Comments
     =feed_icon post_path(@post, :format => :atom)
-  %ol.comments
+  %ol#comments
     =render @comments
   %h2.major Add a comment
   -if @comment
