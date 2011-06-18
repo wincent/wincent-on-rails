@@ -48,16 +48,22 @@ class CommentsController < ApplicationController
     @comment.user = current_user
     @comment.public = params[:comment][:public] if admin? && params[:comment] && params[:comment].key?(:public)
     @comment.awaiting_moderation = !(admin? or logged_in_and_verified?)
-    if @comment.save
-      if @comment.awaiting_moderation
-        flash[:notice] = 'Your comment has been queued for moderation'
-      else
-        flash[:notice] = 'Successfully added new comment'
-      end
-      redirect_to @parent
-    else
-      flash[:error] = 'Failed to add new comment'
-      render 'new'
+    @comment.save
+    respond_to do |format|
+      format.html {
+        if @comment.new_record?
+          flash[:error] = 'Failed to add new comment'
+          render 'new'
+        else
+          if @comment.awaiting_moderation
+            flash[:notice] = 'Your comment has been queued for moderation'
+          else
+            flash[:notice] = 'Successfully added new comment'
+          end
+          redirect_to @parent
+        end
+      }
+      format.js
     end
   end
 
