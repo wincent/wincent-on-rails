@@ -282,6 +282,9 @@ $(document).ready(function() {
   $('form[data-remote]').live('submit', function(event) {
     var form = $(this);
     var submits = form.find('input[type=submit]');
+    if (submits.hasClass('disabled')) {
+      return false;
+    }
     submits.addClass('disabled');
     $.ajax({
       url: form.attr('action') + '.js',
