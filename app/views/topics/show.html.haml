@@ -11,7 +11,7 @@
   =feed_icon forum_topic_path(@forum, @topic, :format => :atom)
 %div[@topic]
   %ol#comments.boxed
-    %li(class='comment odd')
+    %li{:class => comment_class(@topic)}
       %blockquote=@topic.body.w :base_heading_level => 1
       %cite
         -# BUG: redundant(?) query here:

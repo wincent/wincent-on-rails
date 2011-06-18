@@ -3,10 +3,13 @@ module CommentsHelper
     button_to_moderate_model_as_ham comment, comment_path(comment)
   end
 
-  def comment_class comment
-    style = cycle('even', 'odd')
-    style += ' admin' if comment.user.try(:superuser?)
-    style += ' private' unless comment.public?
+  # Return an appropriate class for commentish (a comment or topic
+  # instance), based on whether it is in an odd or even row, belongs
+  # to a superuser, or is private.
+  def comment_class commentish
+    style = 'comment ' + cycle('even', 'odd')
+    style += ' admin' if commentish.user.try(:superuser?)
+    style += ' private' unless commentish.public?
     style
   end
 end
