@@ -44,23 +44,23 @@ dt img { position: absolute; top: -10px; left: -96px; }
 
 .centered-column { margin-left: 150px; margin-right: 150px; }
 
-#lightbox-image-frame { position: absolute; margin: 0 auto; z-index: 100; padding: 20px 20px 35px 20px; background: black; -webkit-border-radius: 15px; -moz-border-radius: 15px; -webkit-box-shadow: 4px 4px 4px #888888; -moz-box-shadow: 4px 4px 4px #888888; box-shadow: 4px 4px 4px #888888; display: none; z-index: 5000; }
+#lightbox-image-frame { position: absolute; margin: 0 auto; z-index: 100; padding: 20px 20px 35px 20px; background: black; border-radius: 15px; -moz-border-radius: 15px; -webkit-border-radius: 15px; box-shadow: 4px 4px 4px #888888; -moz-box-shadow: 4px 4px 4px #888888; -webkit-box-shadow: 4px 4px 4px #888888; display: none; z-index: 5000; }
 
 #lightbox-caption { margin-top: 10px; margin-bottom: -10px; text-align: center; color: white; }
 #lightbox-caption img { margin-top: 10px; }
 
-#lightbox-spinner-frame { position: fixed; z-index: 100; top: 40%; left: 45%; height: 55px; width: 55px; background: black; -webkit-border-radius: 5px; -moz-border-radius: 5px; -webkit-opacity: 0.5; -moz-opacity: 0.5; opacity: 0.5; filter: alpha(opacity=50); display: none; z-index: 5000; }
+#lightbox-spinner-frame { position: fixed; z-index: 100; top: 40%; left: 45%; height: 55px; width: 55px; background: black; border-radius: 5px; -moz-border-radius: 5px; -webkit-border-radius: 5px; filter: alpha(opacity=50); opacity: 0.5; -moz-opacity: 0.5; -webkit-opacity: 0.5; display: none; z-index: 5000; }
 
 #lightbox-spinner { position: absolute; top: 9px; left: 9px; }
 
-#lightbox-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: black; opacity: 0.25; -webkit-opacity: 0.25; -moz-opacity: 0.25; filter: alpha(opacity=25); z-index: 4000; }
+#lightbox-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: black; filter: alpha(opacity=25); opacity: 0.25; -moz-opacity: 0.25; -webkit-opacity: 0.25; z-index: 4000; }
 
 .lightbox-wrapper { position: relative; display: inline; }
 
-.lightbox { margin: 12px; padding: 8px; background: white; border: 1px solid gray; -webkit-box-shadow: 2px 2px 2px #888888; -moz-box-shadow: 2px 2px 2px #888888; box-shadow: 2px 2px 2px #888888; }
+.lightbox { margin: 12px; padding: 8px; background: white; border: 1px solid gray; box-shadow: 2px 2px 2px #888888; -moz-box-shadow: 2px 2px 2px #888888; -webkit-box-shadow: 2px 2px 2px #888888; }
 
 .widget { position: absolute; top: -10px; left: -10px; }
 
-.opaque { -webkit-opacity: 1; -moz-opacity: 1; opacity: 1; filter: alpha(opacity=100); }
+.opaque { filter: alpha(opacity=100); opacity: 1; -moz-opacity: 1; -webkit-opacity: 1; }
 
-.translucent { -webkit-opacity: 0.25; -moz-opacity: 0.25; opacity: 0.25; filter: alpha(opacity=25); }
+.translucent { filter: alpha(opacity=25); opacity: 0.25; -moz-opacity: 0.25; -webkit-opacity: 0.25; }

@@ -4,3 +4,14 @@
   border-radius: $radius
   -moz-border-radius: $radius
   -webkit-border-radius: $radius
+
+=box-shadow($length: 5px, $color: #999)
+  box-shadow: $length $length $length $color
+  -moz-box-shadow: $length $length $length $color
+  -webkit-box-shadow: $length $length $length $color
+
+=opacity($alpha: 0.5)
+  filter: alpha(opacity=$alpha * 100)
+  opacity: $alpha
+  -moz-opacity: $alpha
+  -webkit-opacity: $alpha

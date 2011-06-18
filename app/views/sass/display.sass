@@ -1,3 +1,5 @@
+@import 'mixins'
+
 // basic appearance
 
 body
@@ -185,13 +187,8 @@ a.mailto:after
     > ul
       display:            block
       border:             1px solid gray
-      -webkit-box-shadow: 5px 5px 5px #888
-      -moz-box-shadow:    5px 5px 5px #888
-      box-shadow:         5px 5px 5px #888
-      -webkit-opacity:    .95
-      -moz-opacity:       .95
-      opacity:            .95
-      filter:             alpha(opacity=95)
+      +box-shadow(5px #888)
+      +opacity(.95)
       background:         white
       padding:            1em
       position:           absolute
@@ -239,9 +236,8 @@ a.mailto:after
     top:                  1em
     left:                 1em
     right:                1em
-  -webkit-border-radius:  1em
-  -moz-border-radius:     1em
   background:             #fff
+  +border-radius(1em)
 
 // tighter fit for application layout, standard fit for empty layout
 #header-shadow + #content
@@ -261,9 +257,7 @@ a.mailto:after
     top: 0.5em
     bottom: 1em
     right: 1.5em
-  border-radius: 1em
-  -moz-border-radius: 1em
-  -webkit-border-radius: 1em
+  +border-radius(1em)
   background: #eeeeee
   border: 2px solid silver
   .hoverlink
@@ -314,7 +308,7 @@ div.column
 
 // flashes
 
-=flash_icon($color,$url)
+=flash-icon($color, $url)
   background:
     color:                $color
     image:                $url
@@ -328,9 +322,7 @@ div.column
     color: black
 
 #error, #notice
-  border-radius:          3px
-  -moz-border-radius:     3px
-  -webkit-border-radius:  3px
+  +border-radius(3px)
   font-weight:            bold
   margin:                 1em
   padding:                1em
@@ -338,19 +330,17 @@ div.column
 
 #error
   border:                 1px solid #b77d74
-  +flash_icon(#f9b8be, url(../images/exclamation.png))
+  +flash-icon(#f9b8be, url(../images/exclamation.png))
 
 #notice
   border:                 1px solid #72a384
-  +flash_icon(#c3e3b5, url(../images/information.png))
+  +flash-icon(#c3e3b5, url(../images/information.png))
 
 // pseudo-flashes
 // just like the real flashes, but class-based rather than id-based so that they can be used multiple times
 
 .error, .notice
-  border-radius:          3px
-  -moz-border-radius:     3px
-  -webkit-border-radius:  3px
+  +border-radius(3px)
   font-weight:            bold
   margin:                 1em
   padding:                1em
@@ -358,11 +348,11 @@ div.column
 
 .error
   border:                 1px solid gray
-  +flash_icon(#f9b8be, url(../images/exclamation.png))
+  +flash-icon(#f9b8be, url(../images/exclamation.png))
 
 .notice
   border:                 1px solid gray
-  +flash_icon(#c3e3b5, url(../images/information.png))
+  +flash-icon(#c3e3b5, url(../images/information.png))
 
 // AJAX
 .spinner
@@ -481,9 +471,8 @@ form
   max-width: 15em
   margin: 1em
   border:                 1px solid gray
-  -webkit-border-radius:  0.33em
-  -webkit-box-shadow:     0.33em 0.33em 0.33em #aaa
-  -moz-border-radius:     0.33em
+  +border-radius(0.33em)
+  +box-shadow(0.33em #aaa)
   padding: 1em
   h3
     margin-top: 0em
@@ -555,9 +544,7 @@ form
     right:                  0
     left:                   0
     bottom:                 1px solid rgba(0, 0, 0, 0.25)
-  -webkit-border-radius:    5px
-  -moz-border-radius:       5px
-  border-radius:            5px
+  +border-radius
   -webkit-box-shadow:       0 1px 3px rgba(0, 0, 0, 0.5)
   -moz-box-shadow:          0 1px 3px rgba(0, 0, 0, 0.5)
   box-shadow:               0 1px 3px rgba(0, 0, 0, 0.5)
@@ -611,9 +598,7 @@ form.button_to
 
 // make buttons look smaller when they are in table cells
 =small-button
-  -webkit-border-radius:    2px
-  -moz-border-radius:       2px
-  border-radius:            2px
+  +border-radius(2px)
   font-size:                10px
   font-weight:              normal
   padding:                  3px 15px 3px 15px

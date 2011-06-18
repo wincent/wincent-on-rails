@@ -23,23 +23,17 @@ ol.comments
     +comment-bubble(#f7f7f7, #ccc, url(../images/comment-bubble-triangle-odd.png))
   li.odd.active-fragment > blockquote
     background: #f2ffff
-    box-shadow: 5px 5px 5px #999
-    -moz-box-shadow: 5px 5px 5px #999
-    -webkit-box-shadow: 5px 5px 5px #999
+    +box-shadow
   li.even
     +comment-bubble(#eaeaea, #ccc, url(../images/comment-bubble-triangle-even.png))
   li.even.active-fragment > blockquote
     background: #f2ffff
-    box-shadow: 5px 5px 5px #999
-    -moz-box-shadow: 5px 5px 5px #999
-    -webkit-box-shadow: 5px 5px 5px #999
+    +box-shadow
   li.admin
     +comment-bubble(white, #666, url(../images/comment-bubble-triangle-admin.png))
   li.admin.active-fragment > blockquote
     background: #f2ffff
-    box-shadow: 5px 5px 5px #999
-    -moz-box-shadow: 5px 5px 5px #999
-    -webkit-box-shadow: 5px 5px 5px #999
+    +box-shadow
   blockquote
     > ol, > ul
       // lists look crap if they are the first or last item in the bubble
