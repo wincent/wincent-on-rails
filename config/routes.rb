@@ -9,7 +9,7 @@ Wincent::Application.routes.draw do
   end
 
   resources :attachments
-  resources :comments, :except => [:create, :new]
+  resources :comments, :except => [:create, :new, :update]
   resources :confirmations, :path => 'confirm'
 
   resources :forums do

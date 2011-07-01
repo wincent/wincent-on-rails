@@ -1,6 +1,6 @@
 module CommentsHelper
   def button_to_moderate_comment_as_ham comment
-    button_to_moderate_model_as_ham comment, comment_path(comment)
+    button_to_moderate_model_as_ham comment, polymorphic_path([comment.commentable, comment])
   end
 
   # Return an appropriate class for commentish (a comment or topic
