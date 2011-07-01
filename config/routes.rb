@@ -2,7 +2,7 @@ Wincent::Application.routes.draw do
   # must explicitly allow period in the id part of the route
   # otherwise it will be classified as a route separator
   resources :articles, :id => /[^\/]+/ , :path => 'wiki' do
-    resources :comments, :only => [:create, :new]
+    resources :comments, :only => [:create, :new, :update]
     collection do
       get 'page/:page' => 'articles#index', :page => %r{\d+}
     end
@@ -17,7 +17,7 @@ Wincent::Application.routes.draw do
   end
 
   resources :issues do
-    resources :comments, :only => [:create, :new]
+    resources :comments, :only => [:create, :new, :update]
     collection do
       get :search
       get 'page/:page' => 'issues#index', :page => %r{\d+}
@@ -29,7 +29,7 @@ Wincent::Application.routes.draw do
   # must explicitly allow period in the id part of the route otherwise it
   # will be classified as a route separator
   resources :posts, :path => 'blog', :id => /[a-z0-9\-\.]+/ do
-    resources :comments, :only => [:create, :new]
+    resources :comments, :only => [:create, :new, :update]
     collection do
       get 'page/:page' => 'posts#index', :page => %r{\d+}
     end
@@ -69,7 +69,7 @@ Wincent::Application.routes.draw do
   resources :sessions
 
   resources :snippets do
-    resources :comments, :only => [:create, :new]
+    resources :comments, :only => [:create, :new, :update]
     collection do
       get 'page/:page' => 'snippets#index', :page => %r{\d+}
     end
@@ -92,11 +92,11 @@ Wincent::Application.routes.draw do
     # to simplify form URL generation (ie. we can just call
     #   form_for [@comment.commentable, @comment]
     # everywhere
-    resources :comments, :only => [:create, :new]
+    resources :comments, :only => [:create, :new, :update]
   end
 
   resources :tweets, :path => 'twitter' do
-    resources :comments, :only => [:create, :new]
+    resources :comments, :only => [:create, :new, :update]
     collection do
       get 'page/:page' => 'tweets#index', :page => %r{\d+}
     end
