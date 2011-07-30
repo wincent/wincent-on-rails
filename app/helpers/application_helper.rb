@@ -114,7 +114,8 @@ module ApplicationHelper
   def timeinfo model, options = {}
     created = model.created_at
     updated = model.updated_at
-    if created.distance_in_words == updated.distance_in_words or options[:updated_string] == false
+    if created.distance_in_words == updated.distance_in_words or
+      options[:updated_string] == false
       relative_date created
     else
       updated_string = options[:updated_string] || 'updated'
