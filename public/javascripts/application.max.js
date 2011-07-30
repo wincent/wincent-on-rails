@@ -76,24 +76,27 @@ function displayCacheableFlash() {
   }
 }
 
-function dateFromUTCString(s) {
-  var m = s.match(/(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2}) UTC/);
-
-  // use an explicit radix to avoid misinterpretation as hex due to possible
-  // leading 0 on all fields except for year
-  return m ?
-    new Date(Date.UTC(parseInt(m[1]),
-                      parseInt(m[2], 10) - 1, // Date.UTC expects zero-based month numbers (0-11)
-                      parseInt(m[3], 10),
-                      parseInt(m[4], 10),
-                      parseInt(m[5], 10),
-                      parseInt(m[6], 10)))
-    : new Date; // fall back to current time if regex failed
-}
-
-function relativizeDates()
+$.fn.relativizeDates = function()
 {
-  $('.relative-date').each(function(i) {
+  var dateFromUTCString = function(s) {
+    var m = s.match(/(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2}) UTC/);
+
+    // use an explicit radix to avoid misinterpretation as hex due to possible
+    // leading 0 on all fields except for year
+    return m ?
+      new Date(Date.UTC(parseInt(m[1]),
+            parseInt(m[2], 10) - 1, // Date.UTC expects zero-based month numbers (0-11)
+            parseInt(m[3], 10),
+            parseInt(m[4], 10),
+            parseInt(m[5], 10),
+            parseInt(m[6], 10)))
+      : new Date; // fall back to current time if regex failed
+  }
+
+  $('.relative-date')
+    .removeClass('relative-date')
+    .addClass('relativized-date')
+    .each(function(i) {
     var result  = this.innerHTML;
     var now     = new Date;
     var then    = dateFromUTCString(result);
@@ -268,11 +271,11 @@ $(document).ready(function() {
   setUpLoginLogoutLinks();
   setUpSearchLink();
   displayCacheableFlash();
-  relativizeDates();
   highlightActiveFragment();
 
-  // syntax highlight for pre blocks
-  $('body').syntaxHighlight();
+  $('body')
+    .syntaxHighlight()
+    .relativizeDates();
 
   // set up "confirm" dialogs
   $('input[data-confirm]').live('click', function() {
