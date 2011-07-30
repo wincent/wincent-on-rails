@@ -14,7 +14,9 @@
     <% if @comment.awaiting_moderation -%>
       insertAJAXFlash('notice', 'Your comment has been queued for moderation');
     <% else -%>
-      $('#comments').html('<%= escape_javascript(render @parent.comments) %>');
+      $('#comments')
+        .html('<%= escape_javascript(render @parent.comments.published) %>')
+        .relativizeDates();
     <% end -%>
   <% end -%>
 })();
