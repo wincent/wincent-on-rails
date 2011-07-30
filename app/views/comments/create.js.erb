@@ -16,7 +16,8 @@
     <% else -%>
       $('#comments')
         .html('<%= escape_javascript(render @parent.comments.published) %>')
-        .relativizeDates();
+        .relativizeDates()
+        .syntaxHighlight();
     <% end -%>
   <% end -%>
 })();

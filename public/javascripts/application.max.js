@@ -76,8 +76,7 @@ function displayCacheableFlash() {
   }
 }
 
-$.fn.relativizeDates = function()
-{
+$.fn.relativizeDates = function() {
   var dateFromUTCString = function(s) {
     var m = s.match(/(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2}) UTC/);
 
@@ -93,7 +92,7 @@ $.fn.relativizeDates = function()
       : new Date; // fall back to current time if regex failed
   }
 
-  $('.relative-date')
+  this.find('.relative-date')
     .removeClass('relative-date')
     .addClass('relativized-date')
     .each(function(i) {
@@ -144,6 +143,8 @@ $.fn.relativizeDates = function()
     this.title = then.toLocaleString();
     this.innerHTML = result;
   });
+
+  return this;
 }
 
 $.fn.syntaxHighlight = function()
