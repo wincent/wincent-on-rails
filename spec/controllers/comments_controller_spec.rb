@@ -20,7 +20,7 @@ describe CommentsController do
       end
 
       it 'finds the comment' do
-        mock(Comment).find(@comment.id)
+        mock(Comment).find(@comment.id.to_s)
         do_get
       end
 

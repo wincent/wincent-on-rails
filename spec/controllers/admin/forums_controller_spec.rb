@@ -44,7 +44,7 @@ describe Admin::ForumsController do
       end
 
       it 'finds the forum' do
-        mock.proxy(Forum).find(@forum.id)
+        mock.proxy(Forum).find(@forum.id.to_s)
         do_request
       end
 
@@ -87,7 +87,7 @@ describe Admin::ForumsController do
       end
 
       it 'finds the forum' do
-        mock.proxy(Forum).find(@forum.id)
+        mock.proxy(Forum).find(@forum.id.to_s)
         do_request
       end
 
