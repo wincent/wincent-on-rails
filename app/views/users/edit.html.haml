@@ -1,19 +1,20 @@
 -@page_title = 'Edit user'
 =breadcrumbs link_to(@user.display_name, @user), @page_title
 %h1.major=@page_title
-=render 'shared/error_messages', :model => [@user, @email]
+=render 'shared/error_messages', :model => @user
 =form_for @user do |f|
   %ul
     %li
       =f.label :display_name,
         annotation('Display name', 'what other users will see')
       =f.text_field :display_name
-    -unless @emails.empty?
+    -unless @user.emails.active.empty?
       -# TODO: radio buttons or similar UI here to select default?
       %li
-        =f.label 'emails', 'Emails'
+        =f.label 'emails',
+          annotation('Emails', link_to('add new email address', new_user_email_path(@user)))
         %ul
-          -@emails.each do |email|
+          -@user.emails.active.each do |email|
             %li
               -if admin?
                 =link_to email.address, edit_user_email_path(@user, email)
@@ -23,10 +24,6 @@
               -# this could allow us to dump the confirmation#new action entirely
               -#email.verified ? '(verified)' : '(unverified)'
               -#="(default)" if email.default? # right now default is meaningless, so not showing it
-    %li
-      =f.label :email,
-        annotation('Add a new email', 'a confirmation email will be sent to this address')
-      =f.text_field :email
     %li
       =f.label :old_passphrase,
         annotation('Old passphrase', 'leave blank unless you want to set a new passphrase')

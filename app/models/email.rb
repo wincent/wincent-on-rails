@@ -9,6 +9,8 @@ class Email < ActiveRecord::Base
                           :with => /[a-z0-9\.\_\-]+@([a-z0-9\-]+\.)+[a-z]{2,6}/i,
                           :message => 'must be of the form user@host.domain'
   attr_accessible         :address, :verified, :deleted # only the admin can touch these (see the emails controller)
+  scope                   :active,
+                          :conditions => { :deleted_at => nil }
 
   def deleted= flag
     # If coming from a form, flag will be a String ('0' or '1').
