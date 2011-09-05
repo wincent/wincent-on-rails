@@ -14,7 +14,10 @@ gem 'wopen3'
 group :development, :test do
   gem 'factory_girl_rails'
   gem 'rspec-rails'
-  gem 'ruby-debug19' if `uname` =~ /Darwin/
+
+  # uncomment for local debugging; but never for production
+  # (linecache19 is misbehaved and breaks the deploy)
+  #gem 'ruby-debug19'
 end
 
 group :test do
