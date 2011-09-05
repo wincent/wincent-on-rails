@@ -14,7 +14,7 @@ gem 'wopen3'
 group :development, :test do
   gem 'factory_girl_rails'
   gem 'rspec-rails'
-  gem 'ruby-debug19'
+  gem 'ruby-debug19' if `uname` =~ /Darwin/
 end
 
 group :test do
