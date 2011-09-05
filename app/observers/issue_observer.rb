@@ -29,6 +29,8 @@ private
           from, to  = 'none', Product.find(to).name
         end
         format_annotation('Product', from, to)
+      when 'awaiting_moderation'
+        # no annotation
       else # summary, public
         format_annotation field.capitalize, from, to
       end
@@ -40,6 +42,7 @@ private
       annotations << format_annotation('Tags', from, to) if from != to
     end
 
+    annotations.compact!
     return if annotations.empty?
     comment = issue.comments.new :body => annotations.join("\n")
     user = Thread.current[:current_user]

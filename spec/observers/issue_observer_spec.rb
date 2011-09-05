@@ -133,5 +133,14 @@ describe IssueObserver do
       issue.save
       issue.comments.first.user_id.should be_nil
     end
+
+    describe 'moderation' do
+      let(:issue) { Issue.make! :awaiting_moderation => true }
+
+      it 'produces no annotation' do
+        issue.moderate_as_ham!
+        issue.comments.should be_empty
+      end
+    end
   end
 end
