@@ -56,8 +56,6 @@ usage() {
   echo "        unlock    loosen permissions to enable deployment"
   echo "         check    check dependencies and prerequisites"
   echo "        deploy    clone repo and deploy"
-  echo "  migrate_test    migrate test database only (staging environment only)"
-  echo "          spec    run specs (staging environment only)"
   echo "       disable    display a maintenance page"
   echo "       migrate    migrate all databases"
   echo "        switch    update the symlink to point to the latest deployment"
@@ -79,7 +77,7 @@ usage() {
   echo "     export STAGING_SERVER=ec2-184-73-234-210.compute-1.amazonaws.com"
   echo ""
   echo "     # note how commands can be chained together:"
-  echo "     $0 staging unlock check deploy migrate_test spec"
+  echo "     $0 staging unlock check deploy"
   echo "     $0 staging disable migrate switch restart enable summary lockdown"
   echo ""
   echo "     # now we repeat in the production environment:"
@@ -131,12 +129,6 @@ while test $# != 0; do
     deploy)
       DO_DEPLOY=true
       ;;
-    migrate_test)
-      DO_MIGRATE_TEST=true
-      ;;
-    spec)
-      DO_SPEC=true
-      ;;
     disable)
       DO_DISABLE=true
       ;;
@@ -172,8 +164,6 @@ while test $# != 0; do
       DO_WAIT=true
       DO_CHECK=true
       DO_DEPLOY=true
-      DO_MIGRATE_TEST=true
-      DO_SPEC=true
       ;;
     finalize)
       DO_DISABLE=true
@@ -189,8 +179,6 @@ while test $# != 0; do
       DO_WAIT=true
       DO_CHECK=true
       DO_DEPLOY=true
-      DO_MIGRATE_TEST=true
-      DO_SPEC=true
       DO_DISABLE=true
       DO_MIGRATE=true
       DO_SWITCH=true
@@ -211,8 +199,6 @@ test -n "$DO_UNLOCK" \
   -o -n "$DO_WAIT" \
   -o -n "$DO_CHECK" \
   -o -n "$DO_DEPLOY" \
-  -o -n "$DO_MIGRATE_TEST" \
-  -o -n "$DO_SPEC" \
   -o -n "$DO_DISABLE" \
   -o -n "$DO_MIGRATE" \
   -o -n "$DO_SWITCH" \
@@ -331,24 +317,6 @@ if [ -n "$DO_DEPLOY" ]; then
                                        --path /data/rails/deploy/shared/bundle \
                                        --without test development && \
                                 bin/rake --silent js:minify:deploy > /dev/null'"
-fi
-
-if [ -n "$DO_MIGRATE_TEST" ]; then
-  if [ $ENVIRONMENT = staging ]; then
-    echo "Processing command: migrate_test"
-    ssh rails@$SERVER "sh -c 'cd $DEPLOY/latest && bin/rake --silent RAILS_ENV=test db:migrate'"
-  else
-    echo "Skipping command: migrate_test (only runs in staging environment)"
-  fi
-fi
-
-if [ -n "$DO_SPEC" ]; then
-  if [ $ENVIRONMENT = staging ]; then
-    echo "Processing command: spec"
-    ssh rails@$SERVER "sh -c 'cd $DEPLOY/latest && bin/rspec -f progress spec'"
-  else
-    echo "Skipping command: spec (only runs in staging environment)"
-  fi
 fi
 
 if [ -n "$DO_DISABLE" ]; then
