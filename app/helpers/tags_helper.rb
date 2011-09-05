@@ -31,8 +31,8 @@ module TagsHelper
   def taggable_name string
     string = string.downcase
     case string
-    when 'article' : 'wiki article'
-    when 'post' : 'blog post'
+    when 'article'  then 'wiki article'
+    when 'post'     then 'blog post'
     else
       string
     end

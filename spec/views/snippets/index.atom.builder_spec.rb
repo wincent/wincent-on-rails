@@ -4,8 +4,8 @@ describe 'snippets/index.atom.builder' do
   let(:doc) { Nokogiri::XML(rendered) }
 
   before do
-    @snippets = [Snippet.make! :description => 'foo', :body => 'a > b',
-      :markup_type => Snippet::MarkupType::WIKITEXT]
+    @snippets = [Snippet.make!(:description => 'foo', :body => 'a > b',
+      :markup_type => Snippet::MarkupType::WIKITEXT)]
   end
 
   it 'uses the custom Atom feed helper' do

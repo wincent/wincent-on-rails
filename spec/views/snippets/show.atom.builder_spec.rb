@@ -8,7 +8,7 @@ describe 'snippets/show.atom.builder' do
       :description  => 'foo',
       :body         => 'a > b',
       :markup_type  => Snippet::MarkupType::WIKITEXT
-    @comments = [Comment.make! :body => 'bar', :commentable => @snippet]
+    @comments = [Comment.make!(:body => 'bar', :commentable => @snippet)]
   end
 
   it 'uses the custom Atom feed helper' do

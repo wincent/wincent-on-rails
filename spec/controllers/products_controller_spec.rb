@@ -5,7 +5,7 @@ describe ProductsController do
 
   describe '#index' do
     before do
-      @products = [ Product.make! :category => 'Excellent' ]
+      @products = [ Product.make!(:category => 'Excellent') ]
     end
 
     it 'is successful' do
