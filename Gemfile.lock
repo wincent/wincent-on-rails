@@ -1,5 +1,5 @@
 GIT
-  remote: https://github.com/hiroshi/akephalos.git
+  remote: git://github.com/hiroshi/akephalos.git
   revision: 2d49cff8327af061d3b41a0eaa7256462ad2fe17
   branch: capybara_0.4.0_or_newer
   specs:

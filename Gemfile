@@ -19,7 +19,7 @@ end
 
 group :test do
   # TODO: try zombie/capybara-zombie
-  gem 'akephalos',        :git => 'https://github.com/hiroshi/akephalos.git',
+  gem 'akephalos',        :git => 'git://github.com/hiroshi/akephalos.git',
                           :branch => 'capybara_0.4.0_or_newer'
   gem 'autotest-rails',   :require => nil
   gem 'capybara'
