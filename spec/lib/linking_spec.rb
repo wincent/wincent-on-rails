@@ -62,7 +62,7 @@ describe Linking do
     include Linking
 
     it 'is a private method' do
-      private_methods.should include('url_for_link')
+      private_methods.should include(:url_for_link)
     end
 
     context 'with an internal (wiki) link' do

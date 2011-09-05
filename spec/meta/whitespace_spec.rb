@@ -75,7 +75,7 @@ describe 'Source code files' do
       begin
         f = File.new(given)
         f.seek(-1, IO::SEEK_END)
-        success = f.readchar == "\n".unpack('c').first
+        success = f.readchar == "\n"
       rescue Errno::EINVAL
         # most likely a zero-byte file
         success = true

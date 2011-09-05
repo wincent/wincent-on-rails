@@ -12,8 +12,10 @@ describe TagsController do
 
     it 'rejects invalid tag names' do
       # only letters, numbers and periods allowed
-      get('/tags/foo.2').should be_recognized
       get('/tags/foo-bar').should_not be_recognized
+
+      # counter-example
+      get('/tags/foo.2').should have_routing('tags#show', :id => 'foo.2')
     end
 
     describe 'non-RESTful routes' do

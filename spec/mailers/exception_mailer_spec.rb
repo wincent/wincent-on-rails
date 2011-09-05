@@ -65,11 +65,13 @@ describe ExceptionMailer do
     end
 
     it 'shows the full expansion of RAILS_ROOT' do
-      @mail.body.should match(/RAILS_ROOT\s+=\s+#{Regexp.escape @root}/)
+      path_regex = /RAILS_ROOT\s+=\s+#{Regexp.escape @root.to_s}/
+      @mail.body.should match(path_regex)
     end
 
     it 'shows the full expansion of BUNDLE_PATH' do
-      @mail.body.should match(/BUNDLE_PATH\s+=\s+#{Regexp.escape Bundler.bundle_path}/)
+      path_regex = /BUNDLE_PATH\s+=\s+#{Regexp.escape Bundler.bundle_path.to_s}/
+      @mail.body.should match(path_regex)
     end
   end
 end
