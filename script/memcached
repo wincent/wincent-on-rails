@@ -7,7 +7,7 @@ pidfile = root + 'tmp' + 'memcached.pid'
 
 if not pidfile.exist?
   puts "memcached not running: starting"
-  system 'memcached', '-d', '-P', pidfile, '-l', '127.0.0.1'
+  system 'memcached', '-d', '-P', pidfile.to_s, '-l', '127.0.0.1'
 elsif `ps x`.split("\n").any? { |line| line.match 'memcached -d' }
   puts "memcached running: stopping"
   pid = pidfile.read.chomp

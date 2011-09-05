@@ -15,7 +15,7 @@ if not pidfile.exist?
   # new in nginx 0.7.x: expects to find mime.types alongside conf file
   FileUtils.cp '/usr/local/nginx/conf/mime.types', tmp
   `RAILS_ROOT=#{root} erb #{template} > #{conf}`
-  system '/usr/local/nginx/sbin/nginx', '-c', conf
+  system '/usr/local/nginx/sbin/nginx', '-c', conf.to_s
 elsif `ps x`.split("\n").any? { |line| line.match 'nginx: master process' }
   puts "nginx running: stopping"
   pid = pidfile.read.chomp
