@@ -81,7 +81,7 @@ GEM
       treetop (~> 1.4.8)
     memcache-client (1.8.5)
     mime-types (1.16)
-    mkdtemp (1.2)
+    mkdtemp (1.2.1)
     multi_json (1.0.3)
     mysql2 (0.3.7)
     nokogiri (1.5.0)
@@ -176,7 +176,7 @@ DEPENDENCIES
   haml
   launchy
   memcache-client
-  mkdtemp
+  mkdtemp (>= 1.2.1)
   mysql2
   rails (= 3.1.0)
   rake
