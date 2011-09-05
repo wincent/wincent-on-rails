@@ -328,7 +328,8 @@ if [ -n "$DO_DEPLOY" ]; then
                                 ln -s $CHECKOUT $DEPLOY/latest && \
                                 cd $CHECKOUT && \
                                 bundle install --quiet --deployment --local --binstubs \
-                                       --path /data/rails/deploy/shared/bundle && \
+                                       --path /data/rails/deploy/shared/bundle \
+                                       --without test development && \
                                 bin/rake --silent js:minify:deploy > /dev/null'"
 fi
 
