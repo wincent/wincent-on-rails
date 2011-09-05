@@ -388,7 +388,7 @@ if [ -n "$DO_SUMMARY" ]; then
   fi
   CURRENT_TAG=$(git describe $REVISION)
   echo "----- start: changes from $LAST_TAG..$CURRENT_TAG -----"
-  git log --oneline --no-decorate --reverse $LAST_TAG..$REVISION
+  PAGER=cat git log --oneline --no-color --no-decorate --reverse $LAST_TAG..$REVISION
   echo "-----   end: changes from $LAST_TAG..$CURRENT_TAG -----"
 fi
 
