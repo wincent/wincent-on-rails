@@ -44,8 +44,6 @@ module ApplicationHelper
       item == 'forums'
     when IssuesController, SupportController
       item == 'support'
-    when MiscController
-      request[:action] == 'about' && item == 'about'
     when ProductsController
       item == 'products'
     when SearchController
