@@ -21,13 +21,13 @@ class User < ActiveRecord::Base
   'may only contain letters, numbers and non-consecutive, non-trailing spaces; must start with at least two letters'
   # TODO: rather than reject leading and trailing spaces, should just trim them
 
-  validates_presence_of     :passphrase,      :if => Proc.new { |u| u.new_record? || u.resetting_passphrase }
-  validates_length_of       :passphrase,      :minimum => MINIMUM_PASSPHRASE_LENGTH,  :if => Proc.new { |u| !u.passphrase.blank? }
-  validates_confirmation_of :passphrase,      :if => Proc.new { |u| !u.passphrase.blank? }
+  validates_presence_of     :passphrase,      :if => proc { |u| u.new_record? || u.resetting_passphrase }
+  validates_length_of       :passphrase,      :minimum => MINIMUM_PASSPHRASE_LENGTH,  :if => proc { |u| !u.passphrase.blank? }
+  validates_confirmation_of :passphrase,      :if => proc { |u| !u.passphrase.blank? }
 
   validates_each            :old_passphrase,
                             :on => :update,
-                            :if => Proc.new { |u| !u.passphrase.blank? && !u.resetting_passphrase } \
+                            :if => proc { |u| !u.passphrase.blank? && !u.resetting_passphrase } \
   do |model, att, value|
     # Guard against cookie-capture attacks for passphrase changes.
     # TODO: same for email updates

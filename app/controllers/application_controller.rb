@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
 
   # fix feed breakage caused by Rails 2.3.0 RC1
   # see: https://wincent.com/issues/1227
-  layout Proc.new { |c|
+  layout proc { |c|
     format = c.request.format
     format && (format.atom? || format.js?) ? false : 'application'
   }

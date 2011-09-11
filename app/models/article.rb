@@ -23,7 +23,7 @@ class Article < ActiveRecord::Base
                           :with => /(#{LINK_REGEX})          |
                                     (#{EXTERNAL_LINK_REGEX}) |
                                     (#{RELATIVE_PATH_REGEX})/x,
-                          :if => Proc.new { |a| !a.redirect.blank? },
+                          :if => proc { |a| !a.redirect.blank? },
                           :message => 'must be a valid [[wiki]] link, HTTP/HTTPS URL or relative path'
   validates_length_of     :body, :maximum => 128 * 1024, :allow_blank => true
   validate                :check_redirect_and_body

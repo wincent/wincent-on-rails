@@ -2,7 +2,7 @@ class TopicsController < ApplicationController
   before_filter :require_admin,   :except => [ :create, :new, :show ]
   before_filter :get_forum,       :except => [ :destroy, :index ]
   before_filter :get_topic,       :only => [ :show ]
-  caches_page   :show,            :if => Proc.new { |c|
+  caches_page   :show,            :if => proc { |c|
     c.request.format && c.request.format.atom?
   }
   cache_sweeper :topic_sweeper,   :only => [ :create, :update, :destroy ]
