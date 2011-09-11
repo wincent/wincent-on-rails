@@ -83,13 +83,13 @@ private
     else
       @post = Post.find_by_permalink_and_public!(params[:id], true)
     end
-  rescue ActiveRecord::RecordNotFound => e
+  rescue ActiveRecord::RecordNotFound
     # given permalink "foo" a request for "foo.atom" or "foo.js" will land here
     if params[:id] =~ /(.+)\.(atom|js)\Z/
       request.format = $~[2].to_sym
       @post = Post.find_by_permalink_and_public $~[1], true
     end
-    raise e unless @post
+    raise unless @post
   end
 
   def record_not_found

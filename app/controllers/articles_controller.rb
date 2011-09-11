@@ -101,13 +101,13 @@ private
   rescue ActionController::ForbiddenError
     flash[:error] = forbidden_flash_message
     redirect_to articles_path
-  rescue ActiveRecord::RecordNotFound => e
+  rescue ActiveRecord::RecordNotFound
     # given title "Foo" a request for "Foo.atom" will wind up here
     if params[:id] =~ /(.+)\.atom\Z/
       request.format = :atom
       @article = Article.find_with_param! $~[1]
     end
-    raise e unless @article
+    raise unless @article
   end
 
   def record_not_found
