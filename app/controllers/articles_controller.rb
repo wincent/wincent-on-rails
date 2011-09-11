@@ -1,7 +1,9 @@
 class ArticlesController < ApplicationController
   before_filter     :require_admin,   :except => [ :index, :show ]
   before_filter     :get_article,     :only => [ :show, :edit, :update ]
-  caches_page       :index, :show,    :if => Proc.new { |c| c.request.format.atom? }
+  caches_page       :index, :show,    :if => Proc.new { |c|
+    c.request.format && c.request.format.atom?
+  }
   cache_sweeper     :article_sweeper, :only => [ :create, :update, :destroy ]
   uses_stylesheet_links
 

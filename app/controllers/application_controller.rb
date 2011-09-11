@@ -8,7 +8,7 @@ class ApplicationController < ActionController::Base
   # see: https://wincent.com/issues/1227
   layout Proc.new { |c|
     format = c.request.format
-    (format.atom? || format.js?) ? false : 'application'
+    format && (format.atom? || format.js?) ? false : 'application'
   }
 
 protected
@@ -16,7 +16,7 @@ protected
   def handle_http_status_code code, &block
     if request.xhr?
       render :text => Rack::Utils::HTTP_STATUS_CODES[code], :status => code
-    elsif request.format.atom?
+    elsif request.format && request.format.atom?
       render :text => '', :status => code
     else # HTML requests
       if block_given?

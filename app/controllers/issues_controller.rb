@@ -3,10 +3,14 @@ class IssuesController < ApplicationController
   before_filter     :find_product, :only => [:index]
   before_filter     :find_issue, :except => [:create, :destroy, :edit, :index, :new, :search, :show, :update]
   before_filter     :find_issue_awaiting_moderation, :only => [:edit, :show, :update]
-  before_filter     :find_prev_next, :only => [:show], :unless => Proc.new { |c| c.request.format.atom? }
+  before_filter     :find_prev_next, :only => [:show], :unless => Proc.new { |c|
+    c.request.format && c.request.format.atom?
+  }
   before_filter     :prepare_issue_for_search, :only => [:index, :search]
   around_filter     :current_user_wrapper
-  caches_page       :show, :if => Proc.new { |c| c.request.format.atom? }
+  caches_page       :show, :if => Proc.new { |c|
+    c.request.format && c.request.format.atom?
+  }
   cache_sweeper     :issue_sweeper, :only => [ :create, :update, :destroy ]
   acts_as_sortable  :by => [:public, :kind, :id, :product_id, :summary, :status, :updated_at],
                     :default => :updated_at,
