@@ -109,6 +109,12 @@ describe IssueObserver do
       body.should =~ /To:.*bar/
     end
 
+    it 'does not add an annotation for description changes' do
+      issue.description = "fixed user's non-wikitext markup"
+      issue.save
+      issue.comments.should be_empty
+    end
+
     it 'collapses multiple annotations into a single comment' do
       # tags: foo -> bar
       issue.tag 'foo'

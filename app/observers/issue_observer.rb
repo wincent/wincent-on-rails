@@ -29,10 +29,10 @@ private
           from, to  = 'none', Product.find(to).name
         end
         format_annotation('Product', from, to)
-      when 'awaiting_moderation'
-        # no annotation
-      else # summary, public
+      when 'summary', 'public'
         format_annotation field.capitalize, from, to
+      else # 'awaiting_moderation' ,'description'
+        # no annotation
       end
     end
 
