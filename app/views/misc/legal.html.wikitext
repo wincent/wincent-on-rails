@@ -24,6 +24,7 @@ The web application depends on or makes use of a number of open source projects:
 ** [http://haml-lang.com/ Haml]
 ** [http://jquery.com/ jQuery]
 ** [http://rubyonrails.org/ Ruby on Rails]
+** [http://sass-lang.com/ Sass]
 ** [http://wikitext.rubyforge.org/ Wikitext]
 * Development dependencies:
 ** [https://github.com/bernerdschaefer/akephalos Akephalos]
