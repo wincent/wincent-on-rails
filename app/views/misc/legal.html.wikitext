@@ -21,7 +21,7 @@ No claim of copyright is made with respect to content contributed by other users
 The web application depends on or makes use of a number of open source projects:
 
 * Runtime dependencies:
-** [http://haml.hamptoncatlin.com/ Haml]
+** [http://haml-lang.com/ Haml]
 ** [http://jquery.com/ jQuery]
 ** [http://rubyonrails.org/ Ruby on Rails]
 ** [http://wikitext.rubyforge.org/ Wikitext]
