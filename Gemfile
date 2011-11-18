@@ -8,7 +8,7 @@ gem 'memcache-client'
 gem 'unicorn'
 gem 'rake'
 gem 'sass'
-gem 'wikitext',         '3.0b'
+gem 'wikitext'
 gem 'wopen3'
 
 group :development, :test do
