@@ -227,22 +227,12 @@ fi
 
 if [ -n "$DO_CHECK" ]; then
   echo "Processing command: check"
-  echo "  checking: JavaScript is correctly minimized"
-  COMPRESSOR=/usr/local/bin/closure/compiler.jar
-  test -f $COMPRESSOR || bail "compressor not found at $COMPRESSOR"
-  test -r $COMPRESSOR || bail "compressor not readable at $COMPRESSOR"
   TMPDIR=$(mktemp -q -d /private/tmp/deploy.XXXXXX) || bail "could not create temporary directory"
   if [ -z "$REF" ]; then
     LOCAL_REF=$BRANCH
   else
     LOCAL_REF=$REF
   fi
-  for JS in $(ls public/javascripts/*.max.js); do
-    git show $LOCAL_REF:$JS > $TMPDIR/max.js
-    git show $LOCAL_REF:${JS/.max.js/.min.js} > $TMPDIR/min.js
-    java -jar $COMPRESSOR --js=$TMPDIR/max.js --js_output_file=$TMPDIR/out.js
-    diff -q $TMPDIR/min.js $TMPDIR/out.js > /dev/null || bail "$JS is not minimized in $LOCAL_REF"
-  done
   echo "  checking: generated static HTML files up-to-date"
   for HAML in $(ls app/views/public/*.html.haml); do
     git show $LOCAL_REF:$HAML > $TMPDIR/src.html.haml
@@ -299,15 +289,13 @@ if [ -n "$DO_DEPLOY" ]; then
                                 git submodule --quiet update > /dev/null && \
                                 (git rev-parse HEAD > $CHECKOUT/REVISION) && \
                                 rm -rf $CHECKOUT/log \
+                                       $CHECKOUT/public/assets \
                                        $CHECKOUT/public/system \
                                        $CHECKOUT/tmp/pids && \
-                                ln -s $SHARED/log    $CHECKOUT/log && \
-                                ln -s $SHARED/system $CHECKOUT/public/system && \
-                                ln -s $SHARED/pids   $CHECKOUT/tmp/pids && \
-                                find $CHECKOUT/public/images \
-                                     $CHECKOUT/public/stylesheets \
-                                     $CHECKOUT/public/javascripts \
-                                     -exec touch {} + && \
+                                ln -s $SHARED/log             $CHECKOUT/log && \
+                                ln -s $SHARED/assets          $CHECKOUT/public/assets && \
+                                ln -s $SHARED/system          $CHECKOUT/public/system && \
+                                ln -s $SHARED/pids            $CHECKOUT/tmp/pids && \
                                 ln -s $SHARED/database.yml    $CHECKOUT/config/database.yml && \
                                 ln -s $SHARED/app_config.yml  $CHECKOUT/config/app_config.yml && \
                                 rm -f $DEPLOY/latest && \
@@ -316,7 +304,7 @@ if [ -n "$DO_DEPLOY" ]; then
                                 bundle install --quiet --deployment --local --binstubs \
                                        --path /data/rails/deploy/shared/bundle \
                                        --without test && \
-                                bin/rake --silent js:minify:deploy > /dev/null'"
+                                bin/rake --silent assets:compile > /dev/null'"
 fi
 
 if [ -n "$DO_DISABLE" ]; then

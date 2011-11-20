@@ -1,0 +1,41 @@
+@import 'mixins'
+
+=comment-bubble($background_color, $border_color, $background_image)
+  list-style-type: none
+  cite
+    display: block
+    font-style: normal
+    background-image: $background_image
+    background-repeat: no-repeat
+    background-position-x: 60px
+    background-posiiton-y: 0px
+    padding-top: 20px
+    margin-left: 1em
+    margin-top: -22px
+  >blockquote
+    +border-radius(1em)
+    border: 2px solid $border_color
+    background: $background_color
+    margin-bottom: 20px
+
+ol#comments
+  li.odd
+    +comment-bubble(#f7f7f7, #ccc, image-url("comment-bubble-triangle-odd.png"))
+  li.odd.active-fragment > blockquote
+    background: #f2ffff
+    +box-shadow
+  li.even
+    +comment-bubble(#eaeaea, #ccc, image-url("comment-bubble-triangle-even.png"))
+  li.even.active-fragment > blockquote
+    background: #f2ffff
+    +box-shadow
+  li.admin
+    +comment-bubble(white, #666, image-url("comment-bubble-triangle-admin.png"))
+  li.admin.active-fragment > blockquote
+    background: #f2ffff
+    +box-shadow
+  blockquote
+    > ol, > ul
+      // lists look crap if they are the first or last item in the bubble
+      margin-bottom: 12px
+      margin-top: 12px

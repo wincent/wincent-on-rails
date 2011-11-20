@@ -19,9 +19,11 @@ module Wincent
       #{config.root}/app/observers
       #{config.root}/app/sweepers
     )
-    config.encoding = 'utf-8'
-    config.filter_parameters += [ :passphrase ]
-    config.time_zone = 'UTC'
+    config.assets.enabled      = true
+    config.assets.version      = '1.0'
+    config.encoding            = 'utf-8'
+    config.filter_parameters  += [:passphrase]
+    config.time_zone           = 'UTC'
 
     url_options = {}
     url_options[:protocol] = APP_CONFIG['protocol'] if APP_CONFIG['protocol']

@@ -3,17 +3,21 @@ source 'http://rubygems.org'
 gem 'bundler'
 gem 'haml'
 gem 'mysql2'
-gem 'rails',            '3.1.1'
+gem 'rails',            '3.1.2'
 gem 'memcache-client'
 gem 'unicorn'
 gem 'rake'
-gem 'sass'
 gem 'wikitext'
 gem 'wopen3'
 
 group :development, :test do
   gem 'factory_girl_rails'
   gem 'rspec-rails'
+
+  # gems for asset compilation (no compilation in production)
+  gem 'coffee-rails'
+  gem 'sass-rails'
+  gem 'uglifier'
 
   # uncomment for local debugging; but never for production
   # (linecache19 is misbehaved and breaks the deploy)
@@ -28,7 +32,7 @@ group :test do
   gem 'capybara'
   gem 'database_cleaner'
   gem 'launchy'
-  gem 'mkdtemp',          '>= 1.2.1'
+  gem 'mkdtemp'
   gem 'rcov'
   gem 'rr'
   gem 'timecop'
