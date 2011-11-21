@@ -304,7 +304,7 @@ if [ -n "$DO_DEPLOY" ]; then
                                 bundle install --quiet --deployment --local --binstubs \
                                        --path /data/rails/deploy/shared/bundle \
                                        --without test && \
-                                bin/rake --silent assets:precompile > /dev/null'"
+                                bin/rake --silent assets:precompile &> /dev/null'"
 fi
 
 if [ -n "$DO_DISABLE" ]; then
