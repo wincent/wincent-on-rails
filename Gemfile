@@ -16,6 +16,10 @@ group :assets do
   gem 'uglifier'
 end
 
+group :production do
+  gem 'therubyracer'
+end
+
 group :development, :test do
   gem 'factory_girl_rails'
   gem 'rspec-rails'
