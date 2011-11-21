@@ -1,5 +1,3 @@
--content_for :javascript do
-  =javascript_include_tag 'git'
 -@page_title = "#{@repo.name} (#{branch_name @branch} branch)"
 =breadcrumbs link_to('Repos', repos_path),
   link_to(@repo.name, @repo), branch_name(@branch)

@@ -7,11 +7,6 @@ describe 'tweets/show.html.haml' do
     @comment = Comment.new
   end
 
-  it 'includes "ajax.js"' do
-    mock(view).javascript_include_tag('ajax')
-    render
-  end
-
   it 'shows breadcrumbs' do
     mock(view).breadcrumbs(/Twitter/, /Tweet #/)
     render

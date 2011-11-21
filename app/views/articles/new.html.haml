@@ -1,5 +1,4 @@
 -content_for :javascript do
-  =javascript_include_tag 'ajax'
   :javascript
     $(function() {
       observe_field({ 'kind': 'article', 'fieldName': 'title', 'include': ['body'], 'url': '#{articles_path}' });

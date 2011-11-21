@@ -1,7 +1,6 @@
 class ForumsController < ApplicationController
   before_filter :require_admin, :except => [ :show, :index ]
   before_filter :get_forum, :only => [ :show, :edit, :update ]
-  uses_stylesheet_links
 
   def new
     @forum = Forum.new

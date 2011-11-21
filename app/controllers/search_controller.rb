@@ -1,6 +1,4 @@
 class SearchController < ApplicationController
-  uses_stylesheet_links
-
   def search
     unless params[:q].blank?
       @offset = params[:offset].to_i

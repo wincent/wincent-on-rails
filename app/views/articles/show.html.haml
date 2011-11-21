@@ -1,5 +1,4 @@
 -content_for :javascript do
-  =javascript_include_tag 'ajax'
   :javascript
     $(function() {
       ajax_comment_form('#{new_article_comment_path @article}');
@@ -23,7 +22,7 @@
   %h2.major
     Comments
     =feed_icon article_path(@article, :format => :atom)
-  %ol#comments
+  %ol#comments.bubbles
     =render @comments
   %h2.major Add a comment
   -if @comment

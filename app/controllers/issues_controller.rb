@@ -16,7 +16,6 @@ class IssuesController < ApplicationController
                     :default => :updated_at,
                     :descending => true
   uses_dynamic_javascript :only => :show
-  uses_stylesheet_links
 
   def new
     # normally "kind" defaults to "bug report"

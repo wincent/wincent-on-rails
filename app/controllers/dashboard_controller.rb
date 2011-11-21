@@ -1,6 +1,5 @@
 class DashboardController < ApplicationController
   before_filter :require_user
-  uses_stylesheet_links
 
   def show
     # potentially add :awaiting_moderation => false here as well

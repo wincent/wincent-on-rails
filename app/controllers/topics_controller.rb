@@ -6,7 +6,6 @@ class TopicsController < ApplicationController
     c.request.format && c.request.format.atom?
   }
   cache_sweeper :topic_sweeper,   :only => [ :create, :update, :destroy ]
-  uses_stylesheet_links
 
   # Admin only.
   # The admin is allowed to see all unmoderated topics at once, for the purposes of moderation.

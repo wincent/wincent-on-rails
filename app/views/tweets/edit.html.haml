@@ -1,5 +1,4 @@
 -content_for :javascript do
-  =javascript_include_tag 'ajax'
   :javascript
     $(function() {
       observe_field({ 'kind': 'tweet', 'fieldName': 'body', 'interval': 5, 'url': '#{tweets_path}' });

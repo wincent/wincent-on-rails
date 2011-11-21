@@ -10,14 +10,15 @@ gem 'rake'
 gem 'wikitext'
 gem 'wopen3'
 
-group :development, :test do
-  gem 'factory_girl_rails'
-  gem 'rspec-rails'
-
-  # gems for asset compilation (no compilation in production)
+group :assets do
   gem 'coffee-rails'
   gem 'sass-rails'
   gem 'uglifier'
+end
+
+group :development, :test do
+  gem 'factory_girl_rails'
+  gem 'rspec-rails'
 
   # uncomment for local debugging; but never for production
   # (linecache19 is misbehaved and breaks the deploy)

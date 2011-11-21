@@ -5,11 +5,6 @@ describe 'tweets/new.html.haml' do
     @tweet = Tweet.new
   end
 
-  it 'includes "ajax.js"' do
-    mock(view).javascript_include_tag('ajax')
-    render
-  end
-
   it 'displays error messages' do
     stub.proxy(view).render
     mock(view).render('shared/error_messages', anything)

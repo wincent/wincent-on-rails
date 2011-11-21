@@ -2,8 +2,6 @@ class ReposController < ApplicationController
   before_filter :require_admin, :except => [:index, :show]
   before_filter :get_repo, :only => [:destroy, :edit, :show, :update]
 
-  uses_stylesheet_links
-
   def index
     # for now only show public repos; may later want to add admin-only
     # viewing of private repos, but possibly under the admin namespace

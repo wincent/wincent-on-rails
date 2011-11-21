@@ -339,26 +339,4 @@ module ApplicationHelper
     end
     %Q{<script src="/js/#{controllers.join('/')}/#{params[:action].to_s}.js" type="text/javascript"></script>}.html_safe
   end
-
-  def stylesheet_link_tags
-    klass = controller.class
-    if klass.respond_to? :included_stylesheet_link_actions
-      return unless klass.included_stylesheet_link_actions.include? params[:action].to_sym
-    elsif klass.respond_to? :excluded_stylesheet_link_actions
-      return if klass.excluded_stylesheet_link_actions.include? params[:action].to_sym
-    else
-      return unless klass.respond_to?(:uses_stylesheet_links?) &&
-                    klass.uses_stylesheet_links?
-    end
-
-    # handle namespaces (controllers with superclasses)
-    controllers = []
-    loop do
-      c = klass.to_s.gsub(/Controller$/, '')
-      break if c == 'Application'
-      controllers.unshift c.underscore
-      break unless klass = klass.superclass
-    end
-    stylesheet_link_tag controllers.join('/')
-  end
 end

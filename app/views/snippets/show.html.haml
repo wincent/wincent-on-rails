@@ -1,5 +1,4 @@
 -content_for :javascript do
-  =javascript_include_tag 'ajax'
   :javascript
     $(function() {
       ajax_comment_form('#{new_snippet_comment_path @snippet.id}');
@@ -20,7 +19,7 @@
   %h2.major
     Comments
     =feed_icon snippet_path(@snippet, :format => :atom)
-  %ol#comments
+  %ol#comments.bubbles
     =render @comments
   %h2.major Add a comment
   -if @comment

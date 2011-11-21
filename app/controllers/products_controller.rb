@@ -4,7 +4,6 @@ class ProductsController < ApplicationController
   before_filter :get_page, :only => :show
   caches_page   :index, :show
   cache_sweeper :product_sweeper, :only => [ :create, :update ] # and later, :destroy
-  uses_stylesheet_links
 
   def index
     @products = Product.front_page.group_by(&:category)

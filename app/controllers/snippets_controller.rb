@@ -4,7 +4,6 @@ class SnippetsController < ApplicationController
   before_filter :get_snippet, :only => [ :edit, :update, :destroy ]
   caches_page   :index, :show # Atom and HTML
   cache_sweeper :snippet_sweeper, :only => [ :create, :update, :destroy ]
-  uses_stylesheet_links
 
   def index
     respond_to do |format|

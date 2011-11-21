@@ -8,11 +8,6 @@ describe 'snippets/_form' do
     stub(view).render 'preview'
   end
 
-  it 'includes ajax.js' do
-    mock(view).javascript_include_tag 'ajax'
-    render
-  end
-
   it 'renders the error messages partial' do
     mock(view).render 'shared/error_messages', :model => @snippet
     render

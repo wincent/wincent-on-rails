@@ -196,17 +196,6 @@ describe ApplicationHelper do
     end
   end
 
-  describe '#stylesheet_link_tags' do
-    describe 'regressions' do
-      it 'does not pluralize the dashboard controller' do
-        stub(helper).controller.stub!.class { DashboardController }
-        tags = helper.stylesheet_link_tags
-        tags.should_not match('dashboards.css')
-        tags.should match('dashboard.css')
-      end
-    end
-  end
-
   describe '#link_to_model' do
     it 'works with articles' do
       article = Article.make!

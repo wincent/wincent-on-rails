@@ -1,7 +1,5 @@
 -if @issue.public?
   -atom_link @issue
--content_for :javascript do
-  =javascript_include_tag 'ajax' if admin?
 -@page_title = "#{@issue.kind_string.humanize} \##{@issue.id.to_s}: #{@issue.summary}"
 -if admin?
   #ajax-flash

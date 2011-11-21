@@ -5,7 +5,6 @@ class PostsController < ApplicationController
     c.request.format && c.request.format.atom?
   }
   cache_sweeper :post_sweeper,  :only => [ :create, :update, :destroy ]
-  uses_stylesheet_links
 
   def index
     respond_to do |format|

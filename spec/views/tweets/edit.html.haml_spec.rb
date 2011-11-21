@@ -9,11 +9,6 @@ describe 'tweets/edit.html.haml' do
     stub.proxy(view).render
   end
 
-  it 'includes "ajax.js"' do
-    mock(view).javascript_include_tag 'ajax'
-    render
-  end
-
   it 'renders the error messages partial' do
     mock(view).render 'shared/error_messages', :model => @tweet
     render
