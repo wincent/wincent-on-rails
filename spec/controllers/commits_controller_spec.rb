@@ -3,10 +3,6 @@ require 'spec_helper'
 describe CommitsController do
   let(:repo) { Repo.make! }
 
-  it 'uses stylesheet links' do
-    CommitsController.uses_stylesheet_links?.should be_true
-  end
-
   describe '#index' do
     def do_request
       get :index , :repo_id => repo.to_param
