@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110531061835) do
+ActiveRecord::Schema.define(:version => 20111220075625) do
 
   create_table "articles", :force => true do |t|
     t.string   "title"
@@ -151,6 +151,8 @@ ActiveRecord::Schema.define(:version => 20110531061835) do
     t.integer "user_id"
     t.boolean "public"
   end
+
+  add_index "needles", ["content", "attribute_name"], :name => "index_needles_on_content_and_attribute_name"
 
   create_table "pages", :force => true do |t|
     t.string   "title"

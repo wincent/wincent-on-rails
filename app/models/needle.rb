@@ -87,7 +87,7 @@ private
       clause_count = @clauses.length
       if clause_count == 0
         nil
-      elsif clause_count == 1 or @options[:type] == :or
+      elsif clause_count == 1 || @options[:type] == :or
         sql_for_OR_query
       elsif @options[:type] == :and
         sql_for_AND_query
@@ -103,7 +103,7 @@ private
     #           USING (model_class, model_id)
     #       JOIN (SELECT model_class, model_id FROM needles WHERE content = 'are') AS sub2
     #           USING (model_class, model_id)
-    #   WHERE attribute_name = 'title' AND content = 'hello'
+    #   WHERE content = 'hello' AND attribute_name = 'title'
     #   AND (user_id = 1 OR public = TRUE OR public IS NULL)
     #   GROUP BY model_class, model_id
     #   ORDER BY count DESC;
@@ -132,7 +132,7 @@ private
     #
     #   SELECT model_class, model_id, COUNT(*) AS count
     #   FROM needles
-    #   WHERE ((attribute_name = 'title' AND content = 'hello') -- first criterion
+    #   WHERE ((content = 'hello' AND attribute_name = 'title') -- first criterion
     #          OR (content = 'here')                            -- second criterion
     #          OR (content = 'there'))                          -- third criterion
     #   AND (user_id = 1 OR public = TRUE OR public IS NULL)    -- user constraint
@@ -186,9 +186,15 @@ private
 
     def tokenize_and_sanitize_clause attribute_name, content
       Needle.tokenize(content).collect do |token|
-        conditions = { 'content' => token }
-        conditions['attribute_name'] = attribute_name unless attribute_name.blank?
-        Needle.send(:sanitize_sql_hash_for_conditions, conditions)
+        unless attribute_name.blank?
+          conditions = ["content = '%s' AND attribute_name = '%s'", token, attribute_name]
+        else
+          conditions = ["content = '%s'", token]
+        end
+
+        # use an Array rather than a hash, as we need to control order
+        # so as to make optimal use of the index
+        Needle.send :sanitize_sql_for_conditions, conditions
       end
     end
 
