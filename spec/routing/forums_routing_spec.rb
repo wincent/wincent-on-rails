@@ -26,7 +26,7 @@ describe ForumsController do
     describe 'helpers' do
       before do
         @forum = Forum.stub :permalink => 'foo-bar'
-        @topic = Topic.stub :id => 123, :forum => @forum
+        @topic = Topic.stub :forum => @forum
       end
 
       describe 'forums_path' do
@@ -54,11 +54,11 @@ describe ForumsController do
       end
 
       describe 'forum_topic_path' do
-        specify { forum_topic_path(@forum, @topic).should == '/forums/foo-bar/topics/123' }
+        specify { forum_topic_path(@forum, @topic).should == "/forums/foo-bar/topics/#{@topic.id}" }
       end
 
       describe 'edit_forum_topic_path' do
-        specify { edit_forum_topic_path(@forum, @topic).should == '/forums/foo-bar/topics/123/edit' }
+        specify { edit_forum_topic_path(@forum, @topic).should == "/forums/foo-bar/topics/#{@topic.id}/edit" }
       end
     end
   end

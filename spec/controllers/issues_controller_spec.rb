@@ -185,20 +185,21 @@ describe IssuesController do
     end
 
     it 'should update the tags' do
-      mock(@issue).pending_tags=
+      mock(@issue).pending_tags= 'foo bar baz'
       stub(Issue).find { @issue }
       do_put
     end
 
     it 'should update the issue' do
-      mock(@issue).update_attributes 'pending_tags' => 'foo bar baz'
-      stub(Issue).find() { @issue }
+      stub(@issue).pending_tags=(anything)
+      mock(@issue).update_attributes({})
+      stub(Issue).find { @issue }
       do_put
     end
 
     it 'should show a notice on success' do
       stub(@issue).save { true }
-      stub(Issue).find() { @issue }
+      stub(Issue).find { @issue }
       do_put
       flash[:notice].should =~ /Successfully updated/
     end
@@ -206,7 +207,7 @@ describe IssuesController do
     it 'should redirect to the issue path on success for comments not awaiting moderation' do
       @issue = Issue.make!
       stub(@issue).save { true }
-      stub(Issue).find() { @issue }
+      stub(Issue).find { @issue }
       do_put
       response.should redirect_to(issue_url @issue)
     end
@@ -214,21 +215,21 @@ describe IssuesController do
     it 'should redirect to the list of issues awaiting moderation on success for comments that are awaiting moderation' do
       @issue.awaiting_moderation = true
       stub(@issue).save { true }
-      stub(Issue).find() { @issue }
+      stub(Issue).find { @issue }
       do_put
       response.should redirect_to(admin_issues_path)
     end
 
     it 'should show an error on failure' do
       stub(@issue).save { false }
-      stub(Issue).find() { @issue }
+      stub(Issue).find { @issue }
       do_put
       flash[:error].should =~ /Update failed/
     end
 
     it 'should render the edit template again on failure' do
       stub(@issue).save { false }
-      stub(Issue).find() { @issue }
+      stub(Issue).find { @issue }
       do_put
       response.should render_template('edit')
     end

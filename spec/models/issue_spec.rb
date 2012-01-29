@@ -150,13 +150,6 @@ describe Issue, 'accessible attributes' do
   end
 end
 
-describe Issue, 'protected attributes' do
-  # don't want non-admin users being able to create or assign tags
-  it 'should not allow mass-assignment to the "pending tags" attribute' do
-    Issue.make.should_not allow_mass_assignment_of(:pending_tags => 'foo bar baz')
-  end
-end
-
 describe Issue, 'validating the description' do
   it 'should not require it to be present' do
     Issue.make(:description => '').should_not fail_validation_for(:description)

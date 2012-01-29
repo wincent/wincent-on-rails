@@ -9,13 +9,13 @@ describe Snippet do
     it 'does not allow modification of values' do
       expect do
         Snippet::MARKUP_TYPES['Wikitext'] = 'new'
-      end.to raise_error(/frozen hash/)
+      end.to raise_error(/frozen hash/i)
     end
 
     it 'does not allow modification of keys' do
       expect do
         Snippet::MARKUP_TYPES.keys.first << 'more'
-      end.to raise_error(/frozen string/)
+      end.to raise_error(/frozen string/i)
     end
   end
 

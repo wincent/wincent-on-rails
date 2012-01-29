@@ -93,17 +93,6 @@ describe Tweet, 'accessible attributes' do
   end
 end
 
-# :created_at, :updated_at
-describe Tweet, 'protected attributes' do
-  it 'should deny mass-assignment to the created at attribute' do
-    Tweet.make!.should_not allow_mass_assignment_of(:created_at => 5.months.ago)
-  end
-
-  it 'should deny mass-assignment to the update at attribute' do
-    Tweet.make!.should_not allow_mass_assignment_of(:updated_at => 1.week.ago)
-  end
-end
-
 describe Tweet, 'find_recent (class) method (interaction-based approach)' do
   it 'should find no more than 20 tweets' do
     mock(Tweet).find :all, hash_including(:limit => 20)

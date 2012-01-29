@@ -63,8 +63,10 @@ describe UsersController do
   describe '#create' do
     before do
       # must use string keys because that's what Rails will pass to controller
-      # (otherwise our mock expectations won't match)
-      @params = { 'user' => User.valid_attributes.stringify_keys }
+      # (otherwise our mock expectations won't match); furthermore we have to
+      # strip out keys which aren't mass-assignable, otherwise Rails will scream
+      attributes = User.valid_attributes.stringify_keys.delete_if { |k,v| k == 'verified' }
+      @params = { 'user' => attributes }
     end
 
     def do_post

@@ -67,13 +67,6 @@ describe Forum, 'accessible attributes' do
   end
 end
 
-# :topics_count
-describe Forum, 'protected attributes' do
-  it 'should deny mass-assignment of the topics count' do
-    Forum.make(:topics_count => 50).should_not allow_mass_assignment_of(:topics_count => 100)
-  end
-end
-
 describe Forum, 'validating the name' do
   it 'should require it to be present' do
      Forum.make(:name => nil).should fail_validation_for(:name)

@@ -145,14 +145,3 @@ describe Message, 'accessible attributes' do
     Message.make(:incoming => false).should allow_mass_assignment_of(:incoming => true)
   end
 end
-
-# :created_at, :updated_at
-describe Message, 'protected attributes' do
-  it 'should deny mass-assignment of the created at attribute' do
-    Message.make!.should_not allow_mass_assignment_of(:created_at => 10.days.ago)
-  end
-
-  it 'should deny mass-assignment of the updated at attribute' do
-    Message.make!.should_not allow_mass_assignment_of(:updated_at => 2.weeks.ago)
-  end
-end

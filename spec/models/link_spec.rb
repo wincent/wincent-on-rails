@@ -73,12 +73,6 @@ describe Link do
     end
   end
 
-  describe 'protected attributes' do
-    it 'should deny mass-assignment ot the click count' do
-      Link.make.should_not allow_mass_assignment_of(:click_count => 200)
-    end
-  end
-
   describe '#uri' do
     it 'defaults to nil' do
       Link.new.uri.should be_nil

@@ -80,7 +80,7 @@ describe SnippetsController do
 
     describe 'helpers' do
       before do
-        @snippet = Snippet.stub :id => 123
+        @snippet = Snippet.stub
       end
 
       describe 'snippets_path' do
@@ -92,15 +92,15 @@ describe SnippetsController do
       end
 
       describe 'snippet_path' do
-        specify { snippet_path(@snippet).should == '/snippets/123' }
+        specify { snippet_path(@snippet).should == "/snippets/#{@snippet.id}" }
       end
 
       describe 'edit_snippet_path' do
-        specify { edit_snippet_path(@snippet).should == '/snippets/123/edit' }
+        specify { edit_snippet_path(@snippet).should == "/snippets/#{@snippet.id}/edit" }
       end
 
       describe 'edit_snippet_path' do
-        specify { edit_snippet_path(@snippet).should == '/snippets/123/edit' }
+        specify { edit_snippet_path(@snippet).should == "/snippets/#{@snippet.id}/edit" }
       end
     end
   end

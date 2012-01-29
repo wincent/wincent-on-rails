@@ -75,40 +75,6 @@ describe User, 'accessible attributes' do
   end
 end
 
-describe User, 'protected attributes' do
-  it 'should deny mass-assignment to the passphrase hash' do
-    User.make.should_not allow_mass_assignment_of(:passphrase_hash => Sham.random)
-  end
-
-  it 'should deny mass-assignment to the passphrase salt' do
-    User.make.should_not allow_mass_assignment_of(:passphrase_salt => Sham.random)
-  end
-
-  it 'should deny mass-assignment to the superuser flag' do
-    User.make.should_not allow_mass_assignment_of(:superuser => true)
-  end
-
-  it 'should deny mass-assignment to the verified flag' do
-    User.make(:verified => false).should_not allow_mass_assignment_of(:verified => true)
-  end
-
-  it 'should deny mass-assignment to the suspended flag' do
-    User.make.should_not allow_mass_assignment_of(:suspended => true)
-  end
-
-  it 'should deny mass-assignment to the session key' do
-    User.make.should_not allow_mass_assignment_of(:session_key => Sham.random)
-  end
-
-  it 'should deny mass-assignment to the session expiry' do
-    User.make.should_not allow_mass_assignment_of(:session_expiry => Time.now)
-  end
-
-  it 'should deny mass-assignment to the deleted at field' do
-    User.make.should_not allow_mass_assignment_of(:deleted_at => Time.now)
-  end
-end
-
 describe User, 'validating the display name' do
   it 'must be present' do
     User.make(:display_name => nil).should fail_validation_for(:display_name)

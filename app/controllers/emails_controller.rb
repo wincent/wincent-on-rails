@@ -28,6 +28,11 @@ class EmailsController < ApplicationController
   end
 
   def update
+    # TODO: review and see whether this should be accessible
+    # (we already have other attributes which are and probably
+    # should not be; eg. verified)
+    @email.default = params[:email].delete(:default)
+
     if @email.update_attributes params[:email]
       flash[:notice] = 'Successfully updated'
       redirect_to [@user, @email]

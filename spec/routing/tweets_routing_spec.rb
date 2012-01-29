@@ -33,7 +33,7 @@ describe TweetsController do
 
     describe 'helpers' do
       before do
-        @tweet = Tweet.stub :id => 123
+        @tweet = Tweet.stub
       end
 
       describe 'tweets_path' do
@@ -45,15 +45,15 @@ describe TweetsController do
       end
 
       describe 'tweet_path' do
-        specify { tweet_path(@tweet).should == '/twitter/123' }
+        specify { tweet_path(@tweet).should == "/twitter/#{@tweet.id}" }
       end
 
       describe 'edit_tweet_path' do
-        specify { edit_tweet_path(@tweet).should == '/twitter/123/edit' }
+        specify { edit_tweet_path(@tweet).should == "/twitter/#{@tweet.id}/edit" }
       end
 
       describe 'edit_tweet_path' do
-        specify { edit_tweet_path(@tweet).should == '/twitter/123/edit' }
+        specify { edit_tweet_path(@tweet).should == "/twitter/#{@tweet.id}/edit" }
       end
     end
   end

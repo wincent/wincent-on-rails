@@ -2,24 +2,23 @@
 require 'spec_helper'
 
 describe Needle::NeedleQuery do
-  # unfortunately this spec is tied fairly intimately to Rails' specific way of preparing queries
-  # (use of backticks, for example; and witness the breakage in Rails 2.1.0_RC1: the change in the output order)
-  # even so it is still the easiest way to test the class
+  # unfortunately this spec is tied fairly intimately to Rails' specific way of
+  # preparing queries even so it is still the easiest way to test the class
   it 'should handle a complex example' do
     input = "title:foo bar http://example.com/ body:http://example.org bad: don't body:body-building :badder"
     query = Needle::NeedleQuery.new(input)
     query.prepare_clauses
     query.clauses.should == [
-      "`needles`.`content` = 'foo' AND `needles`.`attribute_name` = 'title'",
-      "`needles`.`content` = 'bar'",
-      "`needles`.`content` = 'http://example.com/'",
-      "`needles`.`content` = 'http://example.org' AND `needles`.`attribute_name` = 'body'",
-      "`needles`.`content` = 'bad'",
-      "`needles`.`content` = 'don'",
-      "`needles`.`content` = 'body' AND `needles`.`attribute_name` = 'body'",
-      "`needles`.`content` = 'building' AND `needles`.`attribute_name` = 'body'",
-      "`needles`.`content` = 'badder'"
-      ]
+      "content = 'foo' AND attribute_name = 'title'",
+      "content = 'bar'",
+      "content = 'http://example.com/'",
+      "content = 'http://example.org' AND attribute_name = 'body'",
+      "content = 'bad'",
+      "content = 'don'",
+      "content = 'body' AND attribute_name = 'body'",
+      "content = 'building' AND attribute_name = 'body'",
+      "content = 'badder'",
+    ]
   end
 end
 

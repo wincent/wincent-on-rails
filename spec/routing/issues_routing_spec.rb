@@ -37,7 +37,7 @@ describe IssuesController do
 
     describe 'helpers' do
       before do
-        @issue = Issue.stub :id => 123
+        @issue = Issue.stub
       end
 
       describe 'issues_path' do
@@ -49,15 +49,15 @@ describe IssuesController do
       end
 
       describe 'issue_path' do
-        specify { issue_path(@issue).should == '/issues/123' }
+        specify { issue_path(@issue).should == "/issues/#{@issue.id}" }
       end
 
       describe 'edit_issue_path' do
-        specify { edit_issue_path(@issue).should == '/issues/123/edit' }
+        specify { edit_issue_path(@issue).should == "/issues/#{@issue.id}/edit" }
       end
 
       describe 'edit_issue_path' do
-        specify { edit_issue_path(@issue).should == '/issues/123/edit' }
+        specify { edit_issue_path(@issue).should == "/issues/#{@issue.id}/edit" }
       end
     end
   end

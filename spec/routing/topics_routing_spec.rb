@@ -31,7 +31,7 @@ describe TopicsController do
 
     describe 'helpers' do
       before do
-        @topic = Topic.stub :id => 123
+        @topic = Topic.stub
       end
 
       describe 'topics_path' do
@@ -39,15 +39,15 @@ describe TopicsController do
       end
 
       describe 'topic_path' do
-        specify { topic_path(@topic).should == '/topics/123' }
+        specify { topic_path(@topic).should == "/topics/#{@topic.id}" }
       end
 
       describe 'topic_comments_path' do
-        specify { topic_comments_path(@topic).should == '/topics/123/comments' }
+        specify { topic_comments_path(@topic).should == "/topics/#{@topic.id}/comments" }
       end
 
       describe 'new_topic_comment_path' do
-        specify { new_topic_comment_path(@topic).should == '/topics/123/comments/new' }
+        specify { new_topic_comment_path(@topic).should == "/topics/#{@topic.id}/comments/new" }
       end
     end
   end
