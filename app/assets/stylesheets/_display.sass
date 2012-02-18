@@ -49,6 +49,7 @@ pre span.line-number
   width:              3em
   color:              silver
   background:         #fee
+  +unselectable
 
 pre span.line-number:before
   content:            counter(line-number)
@@ -512,6 +513,9 @@ form
 
 .highlight
   background:       #eee
+
+.unselectable
+  +unselectable
 
 // consider per-controller custom CSS for this kind of class
 .post
