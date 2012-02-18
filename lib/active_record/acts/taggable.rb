@@ -33,7 +33,7 @@ module ActiveRecord
             FROM      tags
             JOIN      taggings
             ON        tags.id = taggings.tag_id
-            WHERE     taggings.taggable_type = '#{self.to_s.downcase}'
+            WHERE     taggings.taggable_type = '#{to_s.downcase}'
             GROUP BY  tags.id
             ORDER BY  taggings_count DESC LIMIT 10
           SQL
@@ -65,7 +65,7 @@ module ActiveRecord
         #
         # Use the tags method to get the actual Tags objects.
         def tag_names
-          tags.collect { |tag| tag.name }
+          tags.map(&:name)
         end
 
         # For use in forms.
@@ -129,7 +129,7 @@ module ActiveRecord
             # tag didn't save: probably because of a failed validation
             # what to do here? for now just silently ignore
           else
-            self.tags << t
+            tags << t
           end
         rescue ActiveRecord::RecordNotUnique
           # silently ignore duplicate entry errors
@@ -140,9 +140,9 @@ module ActiveRecord
         #
         # If the receiver has no such tag then no action is taken.
         def remove_tag tag
-          return unless tag = self.tags.where(:name => tag).first
-          tagging = self.taggings.where(:tag_id => tag.id).first
-          self.taggings.destroy tagging
+          return unless tag = tags.where(:name => tag).first
+          tagging = taggings.where(:tag_id => tag.id).first
+          taggings.destroy tagging
         end
       end # module InstanceMethods
     end # module Taggable
