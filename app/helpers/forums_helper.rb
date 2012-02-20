@@ -9,9 +9,8 @@ module ForumsHelper
   # again we rely on a custom field to be set up in the Forums#index action: last_topic_id
   def link_to_topic_for_forum forum
     return if forum.last_topic_id.nil?
-    topic = Topic.new # another temporary object so that we can call forum_topic_path
-    topic.id = forum.last_topic_id
-    link_to 'view &raquo;'.html_safe, forum_topic_path(forum, topic)
+    link_to 'view &raquo;'.html_safe,
+      "#{forum_topics_path forum}/#{forum.last_topic_id}"
   end
 
   def timeinfo_for_forum forum
