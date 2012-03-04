@@ -1,0 +1,2 @@
+class BlobsController < ApplicationController
+end

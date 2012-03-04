@@ -54,15 +54,37 @@ Wincent::Application.routes.draw do
     # Note that this is way more liberal than most Rails resources, so it
     # means we can't do stuff like edit branches, but that's fine as they
     # are effectively a read-only resource.
-    resources :branches, :id => %r{[a-z0-9_][a-z0-9./_-]*}i,
-      :only => [:index, :show]
+    resources :branches,
+              :id   => %r{[a-z0-9_][a-z0-9./_-]*}i,
+              :only => [:index, :show]
 
-    resources :commits, :id => /[a-f0-9]{4,40}/,
-      :only => [:index, :show]
+    # Git is effectively a content-addressable storage system, so we could
+    # retrieve blobs by the SHA-1 hash only; however, for a better user
+    # experience we address blobs using the format "[commit-ish]:[path]", which
+    # will yield URLs like:
+    #
+    #  https://wincent.com/repos/command-t/blobs/master:Gemfile
+    #  https://wincent.com/repos/command-t/blobs/HEAD:Gemfile.lock
+    #  https://wincent.com/repos/command-t/blobs/86e87abcd25:doc/command-t.txt
+    #
+    # This approach is similar to the one taken by Gitweb, and different from
+    # GitHub (which uses the format "{blob,tree}/[commit-ish]/[path]"); I'd
+    # prefer not to go down that route and have to disambiguate branch names
+    # with slashes in them.
+    resources :blobs, :id => %r{[^:]+:[^:]+}, :only => :show, :format => false
+
+    resources :commits, :id => /[a-f0-9]{4,40}/, :only => [:index, :show]
+
+    # See comments on the blobs resource above about why we're using this :id
+    # format. The only difference from the blob format is that the path is
+    # optional, in which case it defaults to the root of the tree.
+    resources :trees, :id => %r{[^:]+(:[^:]+)}, :only => :show, :format => false
 
     # can't use "resources :tags", as we already have a TagsController
-    resources :git_tags, :path => 'tags', :id => %r{[a-z0-9_][a-z0-9./_-]*}i,
-      :only => [:index, :show]
+    resources :git_tags,
+              :path => 'tags',
+              :id   => %r{[a-z0-9_][a-z0-9./_-]*}i,
+              :only => [:index, :show]
   end
 
   resources :resets
