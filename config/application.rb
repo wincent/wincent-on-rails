@@ -15,6 +15,7 @@ module Wincent
     config.active_record.observers = observers.map do |observer|
       File.basename(observer).split('.').first.to_sym
     end
+    config.active_record.whitelist_attributes = true
     config.autoload_paths += %W(
       #{config.root}/app/observers
       #{config.root}/app/sweepers

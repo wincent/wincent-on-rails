@@ -4,7 +4,4 @@ class Monitorship < ActiveRecord::Base
 
   validates_presence_of :user
   validates_presence_of :monitorable
-
-  attr_accessor   :nothing
-  attr_accessible :nothing
 end

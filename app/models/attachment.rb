@@ -34,7 +34,6 @@ class Attachment < ActiveRecord::Base
   validates_presence_of   :path, :mime_type, :original_filename, :filesize
   validates_format_of     :digest, :with => /\A[a-f0-9]{64}\z/
   validates_format_of     :path, :with => %r{\A[a-f0-9]{2}/[a-f0-9]{62}\z}
-  attr_accessible         nil
 
   def self.basedir
     Rails.root + 'files'
