@@ -1,5 +1,4 @@
 require 'capybara/rails'
 require 'capybara/rspec'
-require 'akephalos'
 
-Capybara.javascript_driver = :akephalos
+Capybara.javascript_driver = :webkit

@@ -31,11 +31,9 @@ group :development, :test do
 end
 
 group :test do
-  # TODO: try zombie/capybara-zombie
-  gem 'akephalos',        :git => 'git://github.com/hiroshi/akephalos.git',
-                          :branch => 'capybara_0.4.0_or_newer'
   gem 'autotest-rails',   :require => nil
   gem 'capybara'
+  gem 'capybara-webkit'
   gem 'database_cleaner'
   gem 'launchy'
   gem 'mkdtemp'
