@@ -55,7 +55,8 @@ else
     CREATE_TEST_DATABASE=1
   fi
 
-  mysqld_safe --datadir=/Volumes/ramdisk \
+  mysqld_safe --defaults-extra-file=$PWD/config/mysql-test.cnf \
+              --datadir=/Volumes/ramdisk \
               --log-error=/Volumes/ramdisk/err.log \
               --pid-file=$PWD/tmp/pids/mysql_ram.pid \
               --skip-networking \

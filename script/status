@@ -25,7 +25,7 @@ else
 fi
 
 /bin/echo -n "mysqld [disk]: "
-if [ $(ps ax | grep -v grep | grep 'mysqld --basedir' | grep -c "pid-file=$PWD/tmp/pids/mysql.pid") -eq 0 ]; then
+if [ $(ps ax | grep -v grep | grep -E 'mysqld .*--basedir' | grep -c "pid-file=$PWD/tmp/pids/mysql.pid") -eq 0 ]; then
   echo "stopped"
   check_stale_pid_file 'tmp/pids/mysql.pid'
 else
@@ -33,7 +33,7 @@ else
 fi
 
 /bin/echo -n "mysqld [ram]: "
-if [ $(ps ax | grep -v grep | grep 'mysqld --basedir' | grep -c "pid-file=$PWD/tmp/pids/mysql_ram.pid") -eq 0 ]; then
+if [ $(ps ax | grep -v grep | grep -E 'mysqld .*--basedir' | grep -c "pid-file=$PWD/tmp/pids/mysql_ram.pid") -eq 0 ]; then
   echo "stopped"
   check_stale_pid_file 'tmp/pids/mysql_ram.pid'
 else
