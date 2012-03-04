@@ -162,7 +162,7 @@ GEM
       kgio (~> 2.6)
       rack
       raindrops (~> 0.7)
-    wikitext (3.0)
+    wikitext (3.0.1)
     wopen3 (0.3)
     xpath (0.1.4)
       nokogiri (~> 1.3)
