@@ -1,12 +1,12 @@
 source 'http://rubygems.org'
 
 gem 'bundler'
+gem 'dalli'
 gem 'haml'
 gem 'mysql2'
 gem 'rails'
-gem 'memcache-client'
-gem 'unicorn'
 gem 'rake'
+gem 'unicorn'
 gem 'wikitext'
 gem 'wopen3'
 
