@@ -314,6 +314,7 @@ if [ -n "$DO_DISABLE" ]; then
 fi
 
 if [ -n "$DO_MIGRATE" ]; then
+  # we migrate all databases, not just production, as a sanity check
   echo "Processing command: migrate"
   ssh rails@$SERVER "sh -c 'cd $DEPLOY/latest && \
                             bin/rake --silent RAILS_ENV=test         db:migrate && \
