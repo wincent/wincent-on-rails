@@ -1,8 +1,10 @@
 require File.expand_path('../factory_girl', File.dirname(__FILE__))
 
-Factory.define :comment do |c|
-  c.association :user
-  c.body { Sham.lorem_ipsum }
-  c.association :commentable, :factory => :article
-  c.awaiting_moderation false
+FactoryGirl.define do
+  factory :comment do
+    association :user
+    body { Sham.lorem_ipsum }
+    association :commentable, :factory => :article
+    awaiting_moderation false
+  end
 end

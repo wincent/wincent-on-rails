@@ -1,5 +1,7 @@
 require File.expand_path('../factory_girl', File.dirname(__FILE__))
 
-Factory.define :confirmation do |c|
-  c.association :email
+FactoryGirl.define do
+  factory :confirmation do
+    association :email
+  end
 end

@@ -35,4 +35,6 @@ module GitSpecHelpers
       `git init`
     end
   end
+
+  extend self
 end

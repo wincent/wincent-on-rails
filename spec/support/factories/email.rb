@@ -1,7 +1,9 @@
 require File.expand_path('../factory_girl', File.dirname(__FILE__))
 
-Factory.define :email do |e|
-  e.address { Sham.email_address }
-  e.association :user
-  e.verified true
+FactoryGirl.define do
+  factory :email do
+    address { Sham.email_address }
+    association :user
+    verified true
+  end
 end

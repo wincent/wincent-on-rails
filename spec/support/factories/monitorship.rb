@@ -1,6 +1,8 @@
 require File.expand_path('../factory_girl', File.dirname(__FILE__))
 
-Factory.define :monitorship do |m|
-  m.association :monitorable, :factory => :issue
-  m.association :user
+FactoryGirl.define do
+  factory :monitorship do
+    association :monitorable, :factory => :issue
+    association :user
+  end
 end
