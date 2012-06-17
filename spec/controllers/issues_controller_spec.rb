@@ -136,30 +136,26 @@ describe IssuesController do
   end
 
   describe '#create (html format)' do
-    before do
-      # use a real model instead of a mock or stub here
-      # otherwise I have to mock/stub _all_ of the method calls inside the method
-      # which seems a bit crazy
-      @issue = Issue.make
-      stub(Issue).new { @issue }
-    end
-
     def do_post
-      post :create, :issue => { :pending_tags => 'foo bar baz' }
+      post :create, :issue => {
+        :pending_tags => 'foo bar baz',
+        :summary      => 'necessary for validation...',
+      }
     end
 
     context 'admin user' do
-      it 'sets pending tags' do
-        mock(@issue).pending_tags=('foo bar baz')
+      it 'sets tags' do
         log_in_as_admin
         do_post
+        assigns(:issue).tag_names.should =~ %w[foo bar baz]
       end
     end
 
     context 'anonymous user' do
-      it 'does not set pending tags' do
-        do_not_allow(@issue).pending_tags=
-        do_post
+      it 'does not set tags' do
+        expect do
+          do_post
+        end.to raise_error(ActiveModel::MassAssignmentSecurity::Error)
       end
     end
   end
@@ -184,15 +180,9 @@ describe IssuesController do
       do_put
     end
 
-    it 'should update the tags' do
-      mock(@issue).pending_tags= 'foo bar baz'
-      stub(Issue).find { @issue }
-      do_put
-    end
-
-    it 'should update the issue' do
-      stub(@issue).pending_tags=(anything)
-      mock(@issue).update_attributes({})
+    it 'updates the issue' do
+      mock(@issue).update_attributes({'pending_tags' => 'foo bar baz'},
+                                     {:as => :admin})
       stub(Issue).find { @issue }
       do_put
     end
@@ -259,11 +249,6 @@ describe IssuesController do
       mock(@issue).moderate_as_ham!
       stub(Issue).find() { @issue }
       do_put
-    end
-
-    it 'should complain about unknown parameters' do
-      stub(Issue).find() { @issue }
-      lambda { do_put 'unknown' }.should raise_error
     end
 
     # TODO: stick js into an rjs template so that I can test the rest using a simple "should render_template"

@@ -88,7 +88,8 @@ describe CommentsController do
       end
 
       it 'updates the comment' do
-        mock(@comment).update_attributes 'body' => 'foo'
+        mock(@comment).update_attributes({'body' => 'foo'},
+                                         {:as => :admin})
         stub(Comment).find() { @comment }
         do_put
       end

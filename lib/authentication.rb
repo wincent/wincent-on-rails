@@ -105,6 +105,14 @@ module ActionController
       logged_in? && current_user.superuser?
     end
 
+    def role
+      if admin?
+        :admin
+      else
+        :default
+      end
+    end
+
   private
 
     # only secure over SSL (due to cookie capture attacks)

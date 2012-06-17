@@ -26,10 +26,9 @@ class IssuesController < ApplicationController
   end
 
   def create
-    @issue                      = Issue.new params[:issue]
-    @issue.user                 = current_user
-    @issue.awaiting_moderation  = !(admin? or logged_in_and_verified?)
-    @issue.pending_tags         = params[:issue][:pending_tags] if admin?
+    @issue = Issue.new params[:issue], :as => role
+    @issue.user = current_user
+    @issue.awaiting_moderation = !(admin? or logged_in_and_verified?)
     if @issue.save
       if logged_in_and_verified?
         flash[:notice] = 'Successfully created new issue'
@@ -98,8 +97,7 @@ class IssuesController < ApplicationController
   def update
     respond_to do |format|
       format.html {
-        @issue.pending_tags = params[:issue].delete(:pending_tags)
-        if @issue.update_attributes params[:issue]
+        if @issue.update_attributes params[:issue], :as => role
           flash[:notice] = 'Successfully updated'
           redirect_to (@issue.awaiting_moderation ? admin_issues_path : @issue)
         else
@@ -115,8 +113,7 @@ class IssuesController < ApplicationController
           @issue.moderate_as_ham!
           render :json => {}.to_json
         else
-          @issue.pending_tags = params[:issue][:pending_tags]
-          if @issue.update_attributes params[:issue]
+          if @issue.update_attributes params[:issue], :as => role
             redirect_to issue_path(@issue, :format => :js)
           else
             error = "Update failed: #{@issue.flashable_error_string}"
