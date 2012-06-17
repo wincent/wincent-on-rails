@@ -1,28 +1,27 @@
 class TopicSweeper < ActionController::Caching::Sweeper
   observe Topic
 
-  # Rails BUG: https://rails.lighthouseapp.com/projects/8994/tickets/4868
-  include Rails.application.routes.url_helpers
+  extend  Sweeping
+  include Sweeping
 
-  def after_destroy topic
-    expire_cache topic
-  end
-
-  def after_save topic
-    expire_cache topic
-  end
-
-  def expire_cache topic
-    expire_page(forum_topic_path(topic.forum, topic) + '.atom')
-  end
-
-  # on-demand cache expiration from rake, RSpec etc
+  # on-demand cache expiration from Rake (`rake cache:clear`), RSpec etc
   def self.expire_all
-    # see the notes in the IssueSweeper for full explanation of why we do it this way
-    Topic.all.each do |topic|
-      relative_path = instance.send(:forum_topic_path, topic.forum, topic) + '.atom'
-      absolute_path = ActionController::Base.send(:page_cache_path, relative_path)
-      File.delete absolute_path if File.exist?(absolute_path)
+    Pathname.glob(Rails.root + 'public/forums/*/topics').each do |dir|
+      safe_expire dir, :recurse => true
     end
+  end
+
+  def after_destroy(topic)
+    expire_cache topic
+  end
+
+  def after_save(topic)
+    expire_cache topic
+  end
+
+private
+
+  def expire_cache(topic)
+    safe_expire(forum_topic_path(topic.forum, topic))
   end
 end # class TopicSweeper

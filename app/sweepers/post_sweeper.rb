@@ -1,34 +1,27 @@
 class PostSweeper < ActionController::Caching::Sweeper
   observe Post
 
-  # Rails BUG: https://rails.lighthouseapp.com/projects/8994/tickets/4868
-  include Rails.application.routes.url_helpers
+  extend  Sweeping
+  include Sweeping
 
-  def after_destroy post
-    expire_cache post
-  end
-
-  def after_save post
-    expire_cache post
-  end
-
-  def expire_cache post
-    expire_page(posts_path + '.atom')
-    expire_page(post_path(post) + '.atom')
-  end
-
-  # on-demand cache expiration from rake, RSpec etc
+  # on-demand cache expiration from Rake (`rake cache:clear`), RSpec etc
   def self.expire_all
-    # see the notes in the IssueSweeper for full explanation of why we do it this way
-    Post.all.each do |post|
-      relative_path = instance.send(:post_path, post) + '.atom'
-      absolute_path = ActionController::Base.send(:page_cache_path, relative_path)
-      File.delete absolute_path if File.exist?(absolute_path)
-    end
-    relative_path = instance.send(:posts_path) + '.atom'
+    safe_expire posts_path, :recurse => true  # /blog/*
+    safe_expire posts_path('.atom')           # /blog.atom
+  end
 
-    # TODO: consider moving this into a helper method declared in the superclass
-    absolute_path = ActionController::Base.send(:page_cache_path, relative_path)
-    File.delete absolute_path if File.exist?(absolute_path)
+  def after_destroy(post)
+    expire_cache post
+  end
+
+  def after_save(post)
+    expire_cache post
+  end
+
+private
+
+  def expire_cache(post)
+    safe_expire posts_path('.atom') # /blog.atom
+    safe_expire post_path(post)     # /blog/foo-bar.atom
   end
 end # class PostSweeper

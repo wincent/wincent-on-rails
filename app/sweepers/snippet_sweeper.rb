@@ -1,41 +1,34 @@
 class SnippetSweeper < ActionController::Caching::Sweeper
   observe Snippet
 
-  # Rails BUG: https://rails.lighthouseapp.com/projects/8994/tickets/4868
-  include Rails.application.routes.url_helpers
+  extend  Sweeping
+  include Sweeping
 
-  def after_destroy snippet
-    expire_cache snippet
-  end
-
-  def after_save snippet
-    expire_cache snippet
-  end
-
-  def expire_cache snippet
-    expire_page(snippet_path(snippet) + '.html')  # snippets/1.html
-    expire_page(snippet_path(snippet) + '.atom')  # snippets/1.atom
-    expire_page(snippet_path(snippet) + '.txt')   # snippets/1.txt
-    expire_page(snippets_path + '.html')          # snippets.html
-    expire_page(snippets_path + '.atom')          # snippets.atom
-
-    # now snippet/page/1.html, snippet/page/2.html etc
-    page_dir = ActionController::Base.send(:page_cache_directory) +
-      snippets_path + '/page'
-    FileUtils.rm_rf(page_dir)
-  end
-
-  # on-demand cache expiration from rake (rake cache:clear)
+  # on-demand cache expiration from Rake (`rake cache:clear`), RSpec etc
   def self.expire_all
-    # see the notes in the IssueSweeper for full explanation of why we do it
-    # this way
-    relative_path = instance.send :snippets_path
-    index_path = ActionController::Base.send(:page_cache_directory) +
-      relative_path
+    safe_expire snippets_path, :recurse => true # /snippets/**/*
+    safe_expire snippets_path('.atom')          # /snippets.atom
+    safe_expire snippets_path('.html')          # /snippets.html
+  end
 
-    # snippets, snippets.atom, snippets.html
-    # snippets/2.html, snippets/2.atom etc
-    # snippets/page/2.html, snippets/page/3.html etc
-    FileUtils.rm_rf(Dir["#{index_path}*"])
+  def after_destroy(snippet)
+    expire_cache snippet
+  end
+
+  def after_save(snippet)
+    expire_cache snippet
+  end
+
+private
+
+  def expire_cache(snippet)
+    safe_expire snippet_path(snippet)           # /snippets/1.html
+    safe_expire snippet_path(snippet, '.atom')  # /snippets/1.atom
+    safe_expire snippet_path(snippet, '.txt')   # /snippets/1.txt
+    safe_expire snippets_path('.atom')          # /snippets.atom
+    safe_expire snippets_path('.html')          # /snippets.html
+
+    # /snippet/page/1.html, /snippet/page/2.html etc
+    safe_expire(snippets_path + 'page', :recurse => true)
   end
 end

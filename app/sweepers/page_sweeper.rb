@@ -3,37 +3,29 @@
 class PageSweeper < ActionController::Caching::Sweeper
   observe Page
 
-  # Rails BUG: https://rails.lighthouseapp.com/projects/8994/tickets/4868
-  include Rails.application.routes.url_helpers
+  extend  Sweeping
+  include Sweeping
 
-  def after_destroy page
-    expire_cache page
-  end
-
-  def after_save page
-    expire_cache page
-  end
-
-  def expire_cache page
-    return unless product = page.product
-    expire_page(product_path(product) + '.html')  # products/foo.html
-    #expire_page(product_path(product) + '.atom')  # products/foo.atom
-
-    # now products/foo/about.html, products/foo/buy.html etc
-    page_dir = ActionController::Base.send(:page_cache_directory) + product_path(product)
-    if File.exist? page_dir
-      File.delete(*Dir["#{page_dir}/*.html"])
-    end
-  end
-
-  # on-demand cache expiration from rake (rake cache:clear)
+  # on-demand cache expiration from Rake (`rake cache:clear`), RSpec etc
   def self.expire_all
-    # see the notes in the IssueSweeper for full explanation of why we do it this way
-    relative_path   = instance.send :products_path
-    index_path      = ActionController::Base.send(:page_cache_directory) + relative_path
+    safe_expire products_path, :recurse => true   # /products/**/*
+  end
 
-    # products/foo.atom, products/foo.html etc
-    # products/foo/about.html, products/foo/buy.html etc
-    FileUtils.rm_rf(Dir["#{index_path}/*"])
+  def after_destroy(page)
+    expire_cache page
+  end
+
+  def after_save(page)
+    expire_cache page
+  end
+
+private
+
+  def expire_cache(page)
+    return unless product = page.product
+    safe_expire product_path(product, '.html')   # /products/foo.html
+
+    # /products/foo/about.html, /products/foo/buy/html etc
+    safe_expire product_path(product), :recurse => true
   end
 end
