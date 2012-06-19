@@ -18,7 +18,7 @@ class View
 
   def initialize path
     self.source = File.read path
-    self.engine = Haml::Engine.new(self.source, :format => :html5)
+    self.engine = Haml::Engine.new(source, :format => :html5, :ugly => true)
     @sections = {}
   end
 
