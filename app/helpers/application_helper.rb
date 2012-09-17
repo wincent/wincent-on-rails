@@ -337,6 +337,6 @@ module ApplicationHelper
       controllers.unshift c.tableize
       break unless klass = klass.superclass
     end
-    %Q{<script src="/js/#{controllers.join('/')}/#{params[:action].to_s}.js" type="text/javascript"></script>}.html_safe
+    %{<script src="/js/#{controllers.join('/')}/#{params[:action].to_s}.js" type="text/javascript"></script>}.html_safe
   end
 end
