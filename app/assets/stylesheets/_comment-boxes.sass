@@ -1,3 +1,5 @@
+@import compass/utilities/general/clearfix
+
 // this can be merged back into main display.css file because it is general
 ol#comments
   .comment.private
@@ -40,6 +42,8 @@ ol#comments
     padding: 10px
 
 ol#comments.boxed
+  > li
+    +clearfix
   > li.odd
     +comment-box(#f7f7f7, #ccc)
   > li.odd.active-fragment
