@@ -364,7 +364,7 @@ if [ -n "$DO_SWITCH" ]; then
       p "  skipping: no tagging is performed in the staging environment"
     else
       warn "deployed version $REVISION is not yet tagged; tagging now as $TAG"
-      git tag -s -m "Deployed $(LANG=en_GB.UTF-8; date '+%d %B %Y')." $TAG $REVISION
+      git tag -m "Deployed $(LANG=en_GB.UTF-8; date '+%d %B %Y')." $TAG $REVISION
     fi
   fi
 fi
