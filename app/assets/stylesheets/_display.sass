@@ -8,7 +8,7 @@ body
   font-size:        75%
 
 h1, h2, h3, h4, h5, h6
-  color:            #333333
+  color:            #333
 
 h1.major
   border-bottom:      2px solid #ccc
@@ -136,40 +136,36 @@ a.mailto:after
 #header
   h1
     font-size:        medium
-    margin-top:       -1em
-    margin-bottom:    -1em
-    padding-top:      1em
+    height:           40px
+    margin-top:       0
     padding-left:     1em
-    height:           54px
     a
       font-weight:    bold
+      text-decoration: none
     img
       vertical-align: middle
   #meta
-    background:       image-url("header-bg.png") left bottom repeat-x
+    background: #000
+    float: left
+    height: 40px
+    width: 170px
     a
-      color:          white
-
-#header-shadow
-  height:             20px
-  background:         image-url("header-shadow.png") top repeat-x
+      color:          #fff
 
 #navbar
-  font-size:          0.9em
-  font-weight:        bold
-  background:         #83837d image-url("navbar-bg.png") left top repeat-x
-  height:             11px
-  margin:             0em
-  padding:
-    top:              1em
-    bottom:           1em
+  background:   #000
+  font-size:    0.9em
+  font-weight:  bold
+  height:       40px
+  margin:       0
   li.selected > a
-    background:       image-url("navbar-selected.png") left top repeat-x
-    color:            white
-    text-decoration:  underline
+    color:            #fff
   > li
-    float: left
-    list-style-type: none
+    color:            #aaa
+    float:            left
+    height:           40px
+    list-style-type:  none
+    padding-top:      12px
   >li#login
     margin-right:     1em
     float:            right
@@ -191,36 +187,32 @@ a.mailto:after
       background:         white
       padding:            1em
       position:           absolute
-      top:                70px
+      top:                40px
       z-index:            110
     ul
-      display: block
-      margin-bottom: 1.5em
+      display:        block
+      margin-bottom:  1.5em
       li li
         margin-left: -2em
   > li > a
     padding:        1em
-    color:          black
+    color:          #aaa
     font-weight:    bold
   > li > a:hover
-    background:     image-url("navbar-hover.png") center center repeat-x
     color:          white
 
 #navbar form
-  position:         relative
-  top:              -2px
-  left:             10px
   width:            200px
-  display:          inline
-  margin:           0em
-  padding:          0em
+  display:          inline-block
+  margin:           -2px 0
+  padding:          0
   input
     margin:         0px
     padding:        0px
     font-size:      1.0em
 
 #breadcrumbs
-  margin:           10px 10px 0px 10px
+  margin:           10px 10px 0 10px
   font-size:        0.9em
 
 #content
@@ -241,10 +233,6 @@ a.mailto:after
   -webkit-box-shadow:     0 0 1px 1px #888
   -moz-box-shadow:        0 0 1px 1px #888
   box-shadow:             0 0 1px 1px #888
-
-// tighter fit for application layout, standard fit for empty layout
-#header-shadow + #content
-  margin-top:             -0.5em
 
 #posts
   float: left

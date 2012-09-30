@@ -70,7 +70,6 @@
             =text_field_tag :q, params[:q], :size => 20, :id => :search_box, :style => 'display:none;'
         %li#login=link_to 'log in', login_path
         %li#logout=link_to 'log out', logout_path
-    #header-shadow
     #content
       #cacheable-flash
       -# BUG: this is a bit of kludge so that we don't have to define a
