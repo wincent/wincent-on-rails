@@ -80,11 +80,15 @@ private
     end
   end
 
+  # This and method and its counterpart use rel="prev"/rel="next" as advised by
+  # Google here:
+  #
+  #   http://googlewebmastercentral.blogspot.com/2011/09/pagination-with-relnext-and-relprev.html
   def prev_link
     if on_first_page?
       %Q{<span class="prev disabled">Previous</span>}
     else
-      %Q{<a href="#{@path_or_url}#{params_for_page(@page - 1)}" class="prev">Previous</a>}
+      %Q{<a href="#{@path_or_url}#{params_for_page(@page - 1)}" class="prev" rel="prev">Previous</a>}
     end
   end
 
@@ -92,7 +96,7 @@ private
     if on_last_page?
       %Q{<span class="next disabled">Next</span>}
     else
-      %Q{<a href="#{@path_or_url}#{params_for_page(@page + 1)}" class="next">Next</a>}
+      %Q{<a href="#{@path_or_url}#{params_for_page(@page + 1)}" class="next" rel="next">Next</a>}
     end
   end
 end # class Paginator
