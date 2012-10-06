@@ -6,7 +6,7 @@
       -# TODO: suppress the wincent.com on some pages (products#show, for example)
       wincent.com:
       =@page_title.blank? ? controller.controller_name : @page_title
-    =stylesheet_link_tag 'application'
+    =stylesheet_link_tag APP_CONFIG['google_web_fonts'], 'application'
     =javascript_include_tag 'application'
     =yield :javascript
     =dynamic_javascript_include_tag

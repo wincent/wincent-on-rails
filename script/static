@@ -8,6 +8,7 @@ require 'bundler'
 Bundler.setup
 require 'haml'
 require 'ostruct'
+require 'yaml'
 
 if ARGV.length != 2 or ARGV.any? { |a| a.nil? }
   raise ArgumentError, "bad args: #{ARGV.inspect}"
@@ -18,7 +19,7 @@ class View
 
   def initialize path
     self.source = File.read path
-    self.engine = Haml::Engine.new(source, :format => :html5, :ugly => true)
+    self.engine = Haml::Engine.new(source, format: :html5, ugly: true)
     @sections = {}
   end
 
@@ -35,6 +36,7 @@ class View
   end
 end
 
+APP_CONFIG = YAML.load_file 'config/app_config.yml'
 template = View.new ARGV[0]
 template.output = template.render
 
