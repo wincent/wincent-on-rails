@@ -1,4 +1,4 @@
-@import url(https://fonts.googleapis.com/css?family=Inconsolata:400,700|Open+Sans:400italic,700italic,400,700)
+@import url(https://fonts.googleapis.com/css?family=Inconsolata:400,700|Open+Sans:400italic,700italic,400,700|Yanone+Kaffeesatz:400,700)
 
 // basic appearance
 html
@@ -7,13 +7,15 @@ html
 
 body
   background:       #ddd image-url("bg.jpg")
-  margin:           0px
-  padding:          0px
+  margin:           0
+  padding:          0
   font-family:      "Open Sans", sans-serif
   font-size:        75%
 
 h1, h2, h3, h4, h5, h6
   color:            #333
+  font-family:      "Yanone Kaffeesatz", sans-serif
+  font-size:        2em
 
 h1.major
   border-bottom:      2px solid #ccc
@@ -39,8 +41,8 @@ pre
   padding-bottom:   1px
   margin-left:      1em
   margin-right:     2em
-  font-size:        110%
-  line-height:      18px
+  font-size:        1.1em
+  line-height:      1.5em
   overflow:         auto
 
 pre span.line-number
@@ -97,8 +99,7 @@ table pre
 
 code, tt
   color:            #600
-  font-family:      Consolas, Monaco, Courier
-  font-size:        12px
+  font-family:      Inconsolata, monospace
   padding:
     left:           0.1em
     right:          0.1em
@@ -140,12 +141,13 @@ a.mailto:after
 
 #header
   h1
-    font-size:        medium
     height:           40px
     margin-top:       0
     padding-left:     1em
     a
+      display: inline-block
       font-weight:    bold
+      vertical-align: middle
       text-decoration: none
     img
       vertical-align: middle
@@ -159,7 +161,6 @@ a.mailto:after
 
 #navbar
   background:   #000
-  font-size:    0.9em
   font-weight:  bold
   height:       40px
   margin:       0
@@ -180,6 +181,7 @@ a.mailto:after
   li
     > ul
       display:        none
+      font-size:      0.9em
     li
       display:        block
       margin:         0.5em
@@ -214,11 +216,10 @@ a.mailto:after
   input
     margin:         0px
     padding:        0px
-    font-size:      1.0em
 
 #breadcrumbs
   margin:           10px 10px 0 10px
-  font-size:        0.9em
+  font-size:        0.8em
 
 #content
   line-height:            1.75em
@@ -233,7 +234,7 @@ a.mailto:after
     left:                 auto
     right:                auto
   background:             #fff
-  width:                  960px
+  width:                  860px
   +border-radius(4px)
   -webkit-box-shadow:     0 0 1px 1px #888
   -moz-box-shadow:        0 0 1px 1px #888
@@ -285,7 +286,7 @@ aside
 #footer
   clear:                both
   text-align:           center
-  font-size:            x-small
+  font-size:            0.75em
   margin:               1em
   ul
     li
@@ -366,7 +367,7 @@ div.column
 
 .pagination
   margin:           1em
-  font-size:        x-small
+  font-size:        0.75em
   text-align:       right
   .disabled
     color:          gray
@@ -475,12 +476,12 @@ form
   h3
     margin-top: 0em
   p
-    font-size: xx-small
+    font-size: 0.75em
 
 // general appearance
 
 .when
-  font-size:        x-small
+  font-size:        0.75em
   color:            #bbb
   a
     color:          #bbb
@@ -488,7 +489,7 @@ form
 
 .hoverlink
   visibility:       hidden
-  font-size:        x-small
+  font-size:        0.75em
   color:            #bbb
   border-left:      1px solid silver
   padding-left:     6px
@@ -559,7 +560,6 @@ form
   color:                    #fff
   cursor:                   pointer
   font-weight:              bold
-  font-size:                12px
   &:hover
     background:             #77bed2
     color:                  white
@@ -601,7 +601,7 @@ form.button_to
 // make buttons look smaller when they are in table cells
 =small-button
   +border-radius(2px)
-  font-size:                10px
+  font-size:                0.75em
   font-weight:              normal
   padding:                  3px 15px 3px 15px
 
