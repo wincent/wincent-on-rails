@@ -364,32 +364,47 @@ div.column
 
 // pagination
 
-.pagination
+@import icons/*.png
+
+ul.pagination
   margin:           1em
   font-size:        0.75em
+  height:           16px
+  list-style-type:  none
   text-align:       right
-  .disabled
-    color:          gray
+  li
+    border-right: 1px solid #ccc
+    display: inline-block
+    padding: 0 5px
+    &:first-child
+      border-right: none
+      padding: 0
+    &:last-child
+      border-right: none
+      padding-right: 0
+  .first, .prev, .next, .last
+    display: inline-block
+    vertical-align: middle
+    height: 16px
+    width: 16px
   .first
-    padding-left:   18px
-    background:     image-url("first.png") no-repeat left center
-  .first.disabled
-    background:     image-url("first-disabled.png") no-repeat left center
+    +icons-sprite(first)
   .prev
-    padding-left:   18px
-    background:     image-url("previous.png") no-repeat left center
-  .prev.disabled
-    background:     image-url("previous-disabled.png") no-repeat left center
+    +icons-sprite(previous)
   .next
-    padding-right:  18px
-    background:     image-url("next.png") no-repeat right center
-  .next.disabled
-    background:     image-url("next-disabled.png") no-repeat right center
+    +icons-sprite(next)
   .last
-    padding-right:  18px
-    background:     image-url("last.png") no-repeat right center
-  .last.disabled
-    background:     image-url("last-disabled.png") no-repeat right center
+    +icons-sprite(last)
+  .disabled
+    color: gray
+    .first
+      +icons-sprite(first-disabled)
+    .prev
+      +icons-sprite(previous-disabled)
+    .next
+      +icons-sprite(next-disabled)
+    .last
+      +icons-sprite(last-disabled)
 
 // tables
 

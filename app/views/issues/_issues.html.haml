@@ -1,4 +1,4 @@
-.pagination=@paginator.pagination_links if @paginator
+=@paginator.pagination_links if @paginator
 %table
   %thead
     %tr
@@ -30,4 +30,4 @@
           %td=timeinfo issue
           -if admin?
             %td=issue.public? ? image_tag('tick.png') : image_tag('lock.png')
-.pagination=@paginator.pagination_links if @paginator
+=@paginator.pagination_links if @paginator

@@ -25,11 +25,6 @@ describe 'issues/_issues' do
     rendered.should have_css('tr.even', :count => 2)
   end
 
-  it 'shows pagination at top and bottom of the page' do
-    render
-    rendered.should have_css('div.pagination', :count => 2)
-  end
-
   describe 'regressions' do
     it 'has a sortable header cell for the "id" column' do
       render

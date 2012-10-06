@@ -7,14 +7,14 @@ class Paginator
 
   def initialize params, count, path_or_url, per_page = 10
     # unpack params
-    page          = params[:page].to_i
+    page = params[:page].to_i
 
     # preserve query-string information in links
     @additional_params = []
     params.each do |key, value|
       # we exclude protocol here to keep the URLs pretty
       # if you want your protocol preserved, pass in a URL rather than a path
-      next if ['page', 'action', 'controller', 'protocol', 'authenticity_token'].include? key
+      next if %w[action authenticity_token controller page protocol].include? key
       @additional_params << { key => value }.to_query
     end
 
@@ -24,19 +24,26 @@ class Paginator
     @offset       = (@page - 1) * @limit
     @count        = count
     @path_or_url  = path_or_url
-    if @offset > @count
-      raise ActiveRecord::RecordNotFound
-    end
+
+    raise ActiveRecord::RecordNotFound if @offset > @count
   end
 
   # Displaying x-y of z | << First | < Previous | Next > | Last >>
   def pagination_links
-    links = [label_text, first_link, prev_link, next_link, last_link]
-    links.join(" | ").html_safe
+    # don't bother trying to use safe_concat here; too much hoop-jumping
+    items = [label_text, first_link, prev_link, next_link, last_link]
+    content_tag :ul, items.join.html_safe, class: 'pagination'
   end
 
 private
-  include ActionView::Helpers::NumberHelper # for number_with_delimiter
+
+  # speaking of hoop-jumping, all this is to avoid building HTML using dumb
+  # string concatenation
+  include ActionView::Context               # for block-capturing
+  include ActionView::Helpers::NumberHelper # for #number_with_delimiter
+  include ActionView::Helpers::TagHelper    # for #content_tag
+  include ActionView::Helpers::TextHelper   # for #safe_concat
+  include ActionView::Helpers::UrlHelper    # for #link_to
 
   def params_for_page page
     params = @additional_params.clone
@@ -61,22 +68,22 @@ private
   def label_text
     upper = upper_offset
     lower = @offset < upper ? @offset + 1 : @offset # @offset is zero-based, so adjust up by 1 if we can
-    "Displaying #{number_with_delimiter(lower)}-#{number_with_delimiter(upper)} of #{number_with_delimiter(@count)}:"
+    label = 'Displaying %s-%s of %s:' % [lower, upper, count].map { |n| number_with_delimiter(n) }
+    content_tag :li, label
+  end
+
+  def icon(css_class)
+    content_tag :span, '', class: css_class
   end
 
   def first_link
-    if on_first_page?
-      %Q{<span class="first disabled">First</span>}
-    else
-      %Q{<a href="#{@path_or_url}#{params_for_page(1)}" class="first">First</a>}
-    end
-  end
-
-  def last_link
-    if on_last_page?
-      %Q{<span class="last disabled">Last</span>}
-    else
-      %Q{<a href="#{@path_or_url}#{params_for_page((@count / @limit.to_f).ceil)}" class="last">Last</a>}
+    content_tag :li, class: ('disabled' if on_first_page?) do
+      link_text = icon('first') + 'First'
+      if on_first_page?
+        link_text
+      else
+        link_to link_text, "#{@path_or_url}#{params_for_page 1}"
+      end
     end
   end
 
@@ -85,18 +92,35 @@ private
   #
   #   http://googlewebmastercentral.blogspot.com/2011/09/pagination-with-relnext-and-relprev.html
   def prev_link
-    if on_first_page?
-      %Q{<span class="prev disabled">Previous</span>}
-    else
-      %Q{<a href="#{@path_or_url}#{params_for_page(@page - 1)}" class="prev" rel="prev">Previous</a>}
+    content_tag :li, class: ('disabled' if on_first_page?) do
+      link_text = icon('prev') + 'Previous'
+      if on_first_page?
+        link_text
+      else
+        link_to link_text, "#{@path_or_url}#{params_for_page(@page - 1)}", rel: 'prev'
+      end
     end
   end
 
   def next_link
-    if on_last_page?
-      %Q{<span class="next disabled">Next</span>}
-    else
-      %Q{<a href="#{@path_or_url}#{params_for_page(@page + 1)}" class="next" rel="next">Next</a>}
+    content_tag :li, class: ('disabled' if on_last_page?) do
+      link_text = 'Next'.html_safe + icon('next')
+      if on_last_page?
+        link_text
+      else
+        link_to link_text, "#{@path_or_url}#{params_for_page(@page + 1)}", rel: 'next'
+      end
+    end
+  end
+
+  def last_link
+    content_tag :li, class: ('disabled' if on_last_page?) do
+      link_text = 'Last'.html_safe + icon('last')
+      if on_last_page?
+        link_text
+      else
+        link_to link_text, "#{@path_or_url}#{params_for_page (@count / @limit.to_f).ceil}"
+      end
     end
   end
 end # class Paginator

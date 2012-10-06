@@ -1,8 +1,7 @@
 -@page_title = 'Comment moderation'
 =breadcrumbs link_to('Dashboard', admin_dashboard_path), @page_title
 %h1.major=@page_title
--if @paginator
-  .pagination=@paginator.pagination_links
+=@paginator.pagination_links if @paginator
 -for @comment in @comments
   %div[@comment]
     %h2
@@ -17,5 +16,4 @@
       =link_to 'edit', edit_comment_path(@comment)
       =button_to_destroy_model @comment, :remote => true
       -button_to_moderate_comment_as_ham @comment
--if @paginator
-  .pagination=@paginator.pagination_links
+=@paginator.pagination_links if @paginator

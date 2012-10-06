@@ -5,8 +5,7 @@
 %h2.major
   Recently updated
   =feed_icon articles_path(:format => :atom)
--if @paginator
-  .pagination=@paginator.pagination_links
+=@paginator.pagination_links if @paginator
 %table
   %thead
     %tr

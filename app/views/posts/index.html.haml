@@ -5,9 +5,8 @@
   %h1.major
     Blog posts
     =feed_icon posts_path(:format => :atom)
-  -if @paginator
-    .pagination=@paginator.pagination_links
-  -for post in @posts
+  =@paginator.pagination_links if @paginator
+  -@posts.each do |post|
     .post
       %h2.major=link_to post.title, post_path(post)
       .when
@@ -23,8 +22,7 @@
         \:
         =tag_links(post)
   -# TODO: add search box here
-  -if @paginator
-    .pagination=@paginator.pagination_links
+  =@paginator.pagination_links if @paginator
 %aside
   -cache :tweets_sidebar do
     %h2.major

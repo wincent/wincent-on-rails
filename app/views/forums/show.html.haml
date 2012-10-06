@@ -3,8 +3,7 @@
   -@page_title = @forum.name
   %h1.major=@page_title
   %h2=@forum.description unless @forum.description.blank?
-  -if @paginator
-    .pagination=@paginator.pagination_links
+  =@paginator.pagination_links if @paginator
   %table
     %thead
       %tr
@@ -27,8 +26,7 @@
                   forum_topic_path(@forum, topic) + "\#comment_#{topic.last_comment_id}"
               -else
                 =link_to raw('view &raquo;'), forum_topic_path(@forum, topic)
-  -if @paginator
-    .pagination=@paginator.pagination_links
+  =@paginator.pagination_links if @paginator
 .links
   =link_to 'new topic', new_forum_topic_path(@forum)
   =link_to 'all forums', forums_path
