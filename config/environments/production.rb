@@ -1,9 +1,9 @@
 Wincent::Application.configure do
   STATIC_ASSET_HOSTS = [
-    'd1qyd8e11adcyw.cloudfront.net',  # cdn01-wincent.com
-    'd3fuzw120je1e7.cloudfront.net',  # cdn02-wincent.com
-    'dhnj09q3kacqc.cloudfront.net',   # cdn03-wincent.com
-    'd8c1zvn3ij304.cloudfront.net',   # cdn04-wincent.com
+    'd3ogqji57fkqg9.cloudfront.net',  # cdn01
+    'd19zmavcjzsuj4.cloudfront.net',  # cdn02
+    'djfaa0bz60cz6.cloudfront.net',   # cdn03
+    'd2tdr4rkgjw2gh.cloudfront.net',  # cdn04
   ]
 
   config.action_controller.asset_host = proc do |source|
