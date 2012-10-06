@@ -13,6 +13,7 @@ gem 'wopen3'
 group :assets do
   gem 'coffee-rails'
   gem 'compass-rails'
+  gem 'oily_png'
   gem 'sass-rails'
   gem 'uglifier'
 end
