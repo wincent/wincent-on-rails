@@ -22,7 +22,5 @@
   =link_to 'index', tweets_path
 -content_for :javascript do
   :javascript
-    $(function() {
-      observe_field({ 'kind': 'tweet', 'fieldName': 'body', 'interval': 5, 'url': '#{tweets_path}' });
-      setup_preview_link({ 'kind': 'tweet', 'include': ['body'], 'url': '#{tweets_path}' });
-    });
+    observe_field({ 'kind': 'tweet', 'fieldName': 'body', 'interval': 5, 'url': '#{tweets_path}' });
+    setup_preview_link({ 'kind': 'tweet', 'include': ['body'], 'url': '#{tweets_path}' });

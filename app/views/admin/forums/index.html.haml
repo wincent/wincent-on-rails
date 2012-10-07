@@ -22,8 +22,6 @@
   =link_to 'public index', forums_path
 -content_for :javascript do
   :javascript
-    $(function() {
-      edit_in_place('tr.forum', 'forum', 'description', '/admin/forums/');
-      edit_in_place('tr.forum', 'forum', 'name', '/admin/forums/');
-      edit_in_place('tr.forum', 'forum', 'position', '/admin/forums/');
-    });
+    edit_in_place('tr.forum', 'forum', 'description', '/admin/forums/');
+    edit_in_place('tr.forum', 'forum', 'name', '/admin/forums/');
+    edit_in_place('tr.forum', 'forum', 'position', '/admin/forums/');

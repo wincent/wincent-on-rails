@@ -23,6 +23,4 @@
   =link_to 'cloud', tags_path
 -content_for :javascript do
   :javascript
-    $(function() {
-      edit_in_place('tr.tag', 'tag', 'name', '/admin/tags/');
-    });
+    edit_in_place('tr.tag', 'tag', 'name', '/admin/tags/');

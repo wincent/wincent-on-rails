@@ -1,5 +1,5 @@
 <% if admin? %>
-// Copyright 2009-2010 Wincent Colaiuta. All rights reserved.
+// Copyright 2009-2012 Wincent Colaiuta. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are met:
@@ -22,15 +22,13 @@
 // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 // POSSIBILITY OF SUCH DAMAGE.
 
-$(document).ready(function() {
-  edit_in_place('div.issue', 'issue', 'summary', '/issues/');
-  var options = <%= raw underscores_to_spaces(Issue::STATUS).sort.to_json %>;
-  ajax_select('div.issue', 'issue', 'status', options, false, '/issues/');
-  options = <%= raw underscores_to_spaces(Issue::KIND).sort.to_json %>;
-  ajax_select('div.issue', 'issue', 'kind', options, false, '/issues/');
-  ajax_check_box('div.issue', 'issue', 'public', '/issues/');
-  options = <%= raw product_options.to_json %>;
-  ajax_select('div.issue', 'issue', 'product_id', options, true, '/issues/');
-  edit_in_place('div.issue', 'issue', 'pending_tags', '/issues/');
-});
+edit_in_place('div.issue', 'issue', 'summary', '/issues/');
+var options = <%= raw underscores_to_spaces(Issue::STATUS).sort.to_json %>;
+ajax_select('div.issue', 'issue', 'status', options, false, '/issues/');
+options = <%= raw underscores_to_spaces(Issue::KIND).sort.to_json %>;
+ajax_select('div.issue', 'issue', 'kind', options, false, '/issues/');
+ajax_check_box('div.issue', 'issue', 'public', '/issues/');
+options = <%= raw product_options.to_json %>;
+ajax_select('div.issue', 'issue', 'product_id', options, true, '/issues/');
+edit_in_place('div.issue', 'issue', 'pending_tags', '/issues/');
 <% end %>

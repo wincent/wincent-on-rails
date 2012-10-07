@@ -24,7 +24,5 @@
   =link_to 'public index', posts_path
 -content_for :javascript do
   :javascript
-    $(function() {
-      edit_in_place('tr.post', 'post', 'title', '/admin/posts/');
-      edit_in_place('tr.post', 'post', 'permalink', '/admin/posts/');
-    });
+    edit_in_place('tr.post', 'post', 'title', '/admin/posts/');
+    edit_in_place('tr.post', 'post', 'permalink', '/admin/posts/');

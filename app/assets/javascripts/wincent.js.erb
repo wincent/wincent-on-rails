@@ -1,4 +1,4 @@
-// Copyright 2008-2011 Wincent Colaiuta. All rights reserved.
+// Copyright 2008-2012 Wincent Colaiuta. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are met:
@@ -285,42 +285,41 @@
       $(frag).addClass('active-fragment');
   }
 
-  $(document).ready(function() {
-    setUpLoginLogoutLinks();
-    setUpSearchLink();
-    displayCacheableFlash();
-    highlightActiveFragment();
+  // ready
+  setUpLoginLogoutLinks();
+  setUpSearchLink();
+  displayCacheableFlash();
+  highlightActiveFragment();
 
-    $('body')
-      .syntaxHighlight()
-      .relativizeDates();
+  $('body')
+    .syntaxHighlight()
+    .relativizeDates();
 
-    // set up "confirm" dialogs
-    $('input[data-confirm]').live('click', function() {
-      return confirm($(this).attr('data-confirm'));
-    });
+  // set up "confirm" dialogs
+  $('input[data-confirm]').live('click', function() {
+    return confirm($(this).attr('data-confirm'));
+  });
 
-    $('form[data-remote]').live('submit', function(event) {
-      var form = $(this);
-      var submits = form.find('input[type=submit]');
-      if (submits.hasClass('disabled')) {
-        return false;
-      }
-      submits.addClass('disabled');
-      $.ajax({
-        url: form.attr('action') + '.js',
-        type: 'post',
-        data: form.serialize(),
-        error: function() { alert('Form submission failed'); },
-        complete: function() { submits.removeClass('disabled'); }
-      });
-      event.preventDefault();
-    });
-
-    // set up "popup" links
-    $('a[data-popup]').live('click', function() {
-      window.open(this.href, null, $(this).attr('data-popup'));
+  $('form[data-remote]').live('submit', function(event) {
+    var form = $(this);
+    var submits = form.find('input[type=submit]');
+    if (submits.hasClass('disabled')) {
       return false;
+    }
+    submits.addClass('disabled');
+    $.ajax({
+      url: form.attr('action') + '.js',
+      type: 'post',
+      data: form.serialize(),
+      error: function() { alert('Form submission failed'); },
+      complete: function() { submits.removeClass('disabled'); }
     });
+    event.preventDefault();
+  });
+
+  // set up "popup" links
+  $('a[data-popup]').live('click', function() {
+    window.open(this.href, null, $(this).attr('data-popup'));
+    return false;
   });
 })();

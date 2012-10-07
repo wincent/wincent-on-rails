@@ -35,9 +35,7 @@
   =link_to 'show', post_path(@post)
 -content_for :javascript do
   :javascript
-    $(function() {
-      observe_field({ 'kind': 'post', 'fieldName': 'title', 'include': ['excerpt', 'body'], 'url': '#{posts_path}' });
-      observe_field({ 'kind': 'post', 'fieldName': 'excerpt', 'include': ['title', 'body'], 'url': '#{posts_path}' });
-      observe_field({ 'kind': 'post', 'fieldName': 'body', 'include': ['title', 'excerpt'], 'url': '#{posts_path}' });
-      setup_preview_link({ 'kind': 'post', 'include': ['body', 'title', 'excerpt'], 'url': '#{posts_path}' });
-    });
+    observe_field({ 'kind': 'post', 'fieldName': 'title', 'include': ['excerpt', 'body'], 'url': '#{posts_path}' });
+    observe_field({ 'kind': 'post', 'fieldName': 'excerpt', 'include': ['title', 'body'], 'url': '#{posts_path}' });
+    observe_field({ 'kind': 'post', 'fieldName': 'body', 'include': ['title', 'excerpt'], 'url': '#{posts_path}' });
+    setup_preview_link({ 'kind': 'post', 'include': ['body', 'title', 'excerpt'], 'url': '#{posts_path}' });
