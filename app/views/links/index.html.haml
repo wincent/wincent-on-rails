@@ -1,9 +1,3 @@
--content_for :javascript do
-  :javascript
-    $(document).ready(function() {
-      edit_in_place('tr.link', 'link', 'uri', '/links/');
-      edit_in_place('tr.link', 'link', 'permalink', '/links/');
-    });
 -@page_title = 'Link administration'
 =breadcrumbs link_to('Dashboard', admin_dashboard_path), @page_title
 #ajax-flash
@@ -29,3 +23,9 @@
           =button_to_destroy_model link, :remote => true
 .links
   =link_to 'new link', new_link_path
+-content_for :javascript do
+  :javascript
+    $(function() {
+      edit_in_place('tr.link', 'link', 'uri', '/links/');
+      edit_in_place('tr.link', 'link', 'permalink', '/links/');
+    });

@@ -7,9 +7,6 @@
       wincent.com:
       =@page_title.blank? ? controller.controller_name : @page_title
     =stylesheet_link_tag APP_CONFIG['google_web_fonts'], 'application'
-    =javascript_include_tag 'application'
-    =yield :javascript
-    =dynamic_javascript_include_tag
     =@atom_link unless @atom_link.blank?
   %body
     =named_anchor 'top'
@@ -84,3 +81,6 @@
           :title => "Email me at #{APP_CONFIG['admin_email']}",
           :class => 'mailto'
         %li=link_to 'legal', '/misc/legal'
+    =javascript_include_tag 'application'
+    =yield :javascript
+    =dynamic_javascript_include_tag

@@ -1,9 +1,3 @@
--content_for :javascript do
-  :javascript
-    $(document).ready(function() {
-      edit_in_place('tr.post', 'post', 'title', '/admin/posts/');
-      edit_in_place('tr.post', 'post', 'permalink', '/admin/posts/');
-    });
 -@page_title = 'Post administration'
 =breadcrumbs link_to('Admin', admin_dashboard_path), @page_title
 %h1.major=@page_title
@@ -28,3 +22,9 @@
 %p.links
   =link_to 'new', new_post_path
   =link_to 'public index', posts_path
+-content_for :javascript do
+  :javascript
+    $(function() {
+      edit_in_place('tr.post', 'post', 'title', '/admin/posts/');
+      edit_in_place('tr.post', 'post', 'permalink', '/admin/posts/');
+    });

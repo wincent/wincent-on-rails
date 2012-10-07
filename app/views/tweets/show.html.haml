@@ -1,8 +1,3 @@
--content_for :javascript do
-  :javascript
-    $(function() {
-      ajax_comment_form('#{new_tweet_comment_path @tweet.id}');
-    });
 -@page_title = "Tweet \##{@tweet.id}"
 =breadcrumbs link_to('Twitter', tweets_path), @page_title
 %h1.major=@page_title
@@ -29,3 +24,8 @@
       .links=link_to 'add a comment', new_tweet_comment_path(@tweet)
   -else
     %p Comments are now closed for this tweet. You can discuss it further in the #{link_to 'forums', forums_path}.
+-content_for :javascript do
+  :javascript
+    $(function() {
+      ajax_comment_form('#{new_tweet_comment_path @tweet.id}');
+    });

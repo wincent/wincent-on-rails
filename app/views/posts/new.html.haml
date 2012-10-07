@@ -1,11 +1,3 @@
--content_for :javascript do
-  :javascript
-    $(function() {
-      observe_field({ 'kind': 'post', 'fieldName': 'title', 'include': ['excerpt', 'body'], 'url': '#{posts_path}' });
-      observe_field({ 'kind': 'post', 'fieldName': 'excerpt', 'include': ['title', 'body'], 'url': '#{posts_path}' });
-      observe_field({ 'kind': 'post', 'fieldName': 'body', 'include': ['title', 'excerpt'], 'url': '#{posts_path}' });
-      setup_preview_link({ 'kind': 'post', 'include': ['body', 'title', 'excerpt'], 'url': '#{posts_path}' });
-    });
 -@page_title = 'New post'
 =breadcrumbs link_to('Blog', posts_path), @page_title
 %h1.major=@page_title
@@ -40,3 +32,11 @@
 #ajax-flash
 #preview=render 'preview'
 .links=link_to 'all posts', posts_path
+-content_for :javascript do
+  :javascript
+    $(function() {
+      observe_field({ 'kind': 'post', 'fieldName': 'title', 'include': ['excerpt', 'body'], 'url': '#{posts_path}' });
+      observe_field({ 'kind': 'post', 'fieldName': 'excerpt', 'include': ['title', 'body'], 'url': '#{posts_path}' });
+      observe_field({ 'kind': 'post', 'fieldName': 'body', 'include': ['title', 'excerpt'], 'url': '#{posts_path}' });
+      setup_preview_link({ 'kind': 'post', 'include': ['body', 'title', 'excerpt'], 'url': '#{posts_path}' });
+    });

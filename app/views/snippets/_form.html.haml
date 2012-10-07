@@ -1,22 +1,3 @@
--content_for :javascript do
-  :javascript
-    $(function() {
-      observe_field({ 'kind':       'snippet',
-                      'fieldName':  'body',
-                      'include':    ['description', 'markup_type'],
-                      'url':        '#{snippets_path}' });
-      observe_field({ 'kind':       'snippet',
-                      'fieldName':  'description',
-                      'include':    ['body', 'markup_type'],
-                      'url':        '#{snippets_path}' });
-      observe_field({ 'kind':       'snippet',
-                      'fieldName':  'markup_type',
-                      'include':    ['body', 'description'],
-                      'url':        '#{snippets_path}' });
-      setup_preview_link({'kind':     'snippet',
-                          'include':  ['body', 'description', 'markup_type'],
-                          'url':      '#{snippets_path}' });
-    });
 %h1.major=@page_title
 =render 'shared/error_messages', :model => @snippet
 =form_for @snippet do |f|
@@ -43,3 +24,22 @@
 %h2#preview_link.major Preview
 #ajax-flash
 #preview=render 'preview'
+-content_for :javascript do
+  :javascript
+    $(function() {
+      observe_field({ 'kind':       'snippet',
+                      'fieldName':  'body',
+                      'include':    ['description', 'markup_type'],
+                      'url':        '#{snippets_path}' });
+      observe_field({ 'kind':       'snippet',
+                      'fieldName':  'description',
+                      'include':    ['body', 'markup_type'],
+                      'url':        '#{snippets_path}' });
+      observe_field({ 'kind':       'snippet',
+                      'fieldName':  'markup_type',
+                      'include':    ['body', 'description'],
+                      'url':        '#{snippets_path}' });
+      setup_preview_link({'kind':     'snippet',
+                          'include':  ['body', 'description', 'markup_type'],
+                          'url':      '#{snippets_path}' });
+    });

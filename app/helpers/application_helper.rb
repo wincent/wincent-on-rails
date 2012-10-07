@@ -337,6 +337,8 @@ module ApplicationHelper
       controllers.unshift c.tableize
       break unless klass = klass.superclass
     end
-    %{<script src="/js/#{controllers.join('/')}/#{params[:action].to_s}.js" type="text/javascript"></script>}.html_safe
+
+    content_tag :script, '',
+      src: "/js/#{controllers.join '/'}/#{params[:action].to_s}.js"
   end
 end

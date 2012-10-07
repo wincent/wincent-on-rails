@@ -1,8 +1,3 @@
--content_for :javascript do
-  :javascript
-    $(document).ready(function() {
-      edit_in_place('tr.tag', 'tag', 'name', '/admin/tags/');
-    });
 -@page_title = 'Tag administration'
 =breadcrumbs link_to('Dashboard', admin_dashboard_path), @page_title
 #ajax-flash
@@ -26,3 +21,8 @@
 .links
   =link_to 'new', new_tag_path
   =link_to 'cloud', tags_path
+-content_for :javascript do
+  :javascript
+    $(function() {
+      edit_in_place('tr.tag', 'tag', 'name', '/admin/tags/');
+    });
