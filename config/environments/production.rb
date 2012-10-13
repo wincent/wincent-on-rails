@@ -12,7 +12,16 @@ Wincent::Application.configure do
 
   config.action_controller.perform_caching  = true
   config.action_dispatch.x_sendfile_header  = 'X-Accel-Redirect'
-  config.action_mailer.delivery_method      = :sendmail
+  config.action_mailer.delivery_method      = :smtp
+  config.action_mailer.delivery_settings = {
+    address:              'smtp.gmail.com',
+    port:                 587,
+    user_name:            'support@wincent.com',
+    password:             APP_CONFIG['support_password'],
+    authentication:       :plain,
+    domain:               'wincent.com',
+    enable_starttls_auto: true,
+  }
   config.active_support.deprecation         = :notify
   config.assets.compile                     = false
   config.assets.compress                    = true
