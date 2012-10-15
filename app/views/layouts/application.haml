@@ -8,6 +8,7 @@
       =@page_title.blank? ? controller.controller_name : @page_title
     =stylesheet_link_tag APP_CONFIG['google_web_fonts'], 'application'
     =@atom_link unless @atom_link.blank?
+    =render 'shared/google_analytics'
   %body
     =named_anchor 'top'
     #header
