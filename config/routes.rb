@@ -154,5 +154,5 @@ Wincent::Application.routes.draw do
   get 'search'          => 'search#search'
   get 'support'         => 'support#index'
 
-  root :to => 'products#index'
+  root :to => 'posts#index'
 end
