@@ -1,12 +1,7 @@
 -@taggables.each do |group|
   %h3=pluralizing_count group.taggables.length, taggable_name(group.name)
-  %table
-    %thead
-      %tr
-        %th Item
-        %th When
-    %tbody
-      -group.taggables.each do |taggable|
-        %tr
-          %td=link_to_model taggable
-          %td=timeinfo taggable
+  %ul.taggables
+    -group.taggables.each do |taggable|
+      %li
+        =link_to_model taggable
+        .when=timeinfo taggable
