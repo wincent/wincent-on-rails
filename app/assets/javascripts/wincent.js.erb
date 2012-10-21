@@ -211,8 +211,8 @@
     // syntax coloring for a transcript of a shell session
     // for syntax coloring of a shell script see "bash-syntax"
     styles['shell-syntax'] = {
-      'output':           /^[^#\$\n].*/m, // no CSS
-      'constant':         /(\\\n|.)+/m    // the command
+      'prompt':           /^[#\$] /m,
+      'text':             /^.+?$/m  // no CSS
     };
 
     var highlightText = function(text, rules)
