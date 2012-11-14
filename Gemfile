@@ -32,7 +32,7 @@ group :development, :test do
 end
 
 group :test do
-  gem 'autotest-rails',   :require => nil
+  gem 'autotest-rails', require: nil
   gem 'capybara'
   gem 'capybara-webkit'
   gem 'database_cleaner'
