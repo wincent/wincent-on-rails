@@ -2,7 +2,7 @@
 
 == Software ==
 
-The web application powering this site is Copyright 2007-2012 Wincent Colaiuta.
+The web application powering this site is Copyright 2007-2013 Wincent Colaiuta.
 At present the source code for the site is not publicly available but the
 intention is to release it under
 [/LICENSE.txt the simplified, 2-clause version of the BSD license]
@@ -11,7 +11,7 @@ intention is to release it under
 == Site content ==
 
 Unless otherwise noted, all content published on the site by the site
-administator is Copyright 1997-2012 Wincent Colaiuta. This content includes
+administator is Copyright 1997-2013 Wincent Colaiuta. This content includes
 [/blog blog posts], [/wiki wiki articles], [/twitter "tweets"], product pages,
 and most other material on the site unless otherwise labelled.
 
