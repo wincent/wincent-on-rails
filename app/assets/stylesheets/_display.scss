@@ -1,0 +1,870 @@
+// basic appearance
+html {
+  // http://aestheticallyloyal.com/public/optimize-legibility/
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  background: #dddddd image-url("bg.jpg") {
+    attachment: fixed;
+    position: top left;
+  };
+  margin: 0;
+  padding: 0;
+  font-family: "Open Sans", sans-serif;
+  font-size: 80%;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #333333;
+  font-family: "Yanone Kaffeesatz", sans-serif;
+  font-size: 2em;
+}
+
+h1.major {
+  border-bottom: 2px solid #cccccc;
+  a:hover {
+    text-decoration: none;
+    color: #ee7714;
+  }
+}
+
+h2.major {
+  border-bottom: 1px solid #cccccc;
+  a:hover {
+    text-decoration: none;
+    color: #ee7714;
+  }
+}
+
+p, li {
+  color: #666666;
+}
+
+pre {
+  color: #657b83;
+  background-color: #fdf6e3;
+  border: 1px solid silver;
+  padding: 1em;
+  padding-top: 0em;
+  padding-bottom: 1px;
+  margin-left: 1em;
+  margin-right: 2em;
+  font-size: 1.1em;
+  line-height: 1.5em;
+  overflow: auto;
+}
+
+pre span.line-number {
+  counter-increment: line-number;
+  text-align: right;
+  float: left;
+  margin-left: -1.5em;
+  margin-right: 0.5em;
+  padding-right: 0.5em;
+  border-right: 1px solid silver;
+  width: 3em;
+  color: silver;
+  background: #ffeeee;
+  @include unselectable;
+}
+
+pre span.line-number:before {
+  content: counter(line-number);
+}
+
+// these based on Vim colorscheme because that's what I'm used to looking at
+pre {
+  span.added-syntax {
+    color: #008800;
+  }
+  span.boolean-syntax {
+    color: #cd0000;
+  }
+  span.comment-syntax {
+    color: #0000ee;
+  }
+  span.constant-syntax {
+    color: #1a8b0a;
+  }
+  span.deleted-syntax {
+    color: #cc0000;
+  }
+  span.hunk-header-syntax {
+    color: #009c9c;
+  }
+  span.identifier-syntax {
+    color: #458b73;
+  }
+  span.keyword-syntax {
+    color: #1673cc;
+  }
+  span.numeric-literal-syntax {
+    color: #fc8a0b;
+  }
+  span.preprocessor-syntax {
+    color: #1673cc;
+  }
+  span.statement-syntax {
+    color: #b02f5f;
+  }
+  span.string-literal-syntax {
+    color: #0068ab;
+  }
+  span.prompt-syntax {
+    @include unselectable;
+  }
+  span.symbol-syntax {
+    color: #fc8a0b;
+  }
+}
+
+// for the benefit of Safari (Firefox is fine):
+// for super-wide pre spans inside tables Safari will grow the table as large as need be to avoid adding scrollbars to the pre
+// block; this has the unwanted side-effect of adding scrollbars to the window and making the rest of the text horribly
+// inconvenient to read
+table pre {
+  max-width: 640px;
+}
+
+code, pre, textarea, tt {
+  font-family: Inconsolata, monospace;
+}
+
+textarea {
+  font-size: 1em;
+}
+
+code, tt {
+  color: #660000;
+  padding: 0 0.1em;
+}
+
+// blockquote.png: 32 x 32
+blockquote {
+  padding-left: 24px;
+  padding-right: 24px;
+  min-height: 32px;
+  background: image-url("blockquote.png") no-repeat left top;
+  margin: {
+    left: 1em;
+    right: 2em;
+  };
+  p, li {
+    color: #999999;
+  }
+}
+
+// links
+
+a {
+  color: #2971a7;
+  text-decoration: none;
+  &:hover {
+    text-decoration: underline;
+  }
+  &:visited {
+    font-weight: normal;
+  }
+  img {
+    // for Firefox:
+    border: none;
+  }
+}
+
+// IE6/7 doesn't support the :after pseudo selector
+a.external:after {
+  content: image-url("external.png");
+}
+
+a.mailto:after {
+  content: image-url("mailto.png");
+}
+
+// overall page layout
+
+#header {
+  h1 {
+    height: 40px;
+    margin-top: 0;
+    padding-left: 1em;
+    a {
+      display: inline-block;
+      font-weight: bold;
+      vertical-align: middle;
+      text-decoration: none;
+    }
+    img {
+      vertical-align: middle;
+    }
+  }
+  #meta {
+    background: black;
+    float: left;
+    height: 40px;
+    width: 170px;
+    a {
+      color: white;
+    }
+  }
+}
+
+#navbar {
+  background: black;
+  height: 40px;
+  margin: 0;
+  li.selected > a {
+    color: white;
+  }
+  > li {
+    color: #aaaaaa;
+    float: left;
+    font-weight: bold;
+    height: 40px;
+    list-style-type: none;
+    padding-top: 12px;
+  }
+  >li#login {
+    margin-right: 1em;
+    float: right;
+  }
+  >li#logout {
+    margin-right: 1em;
+    float: right;
+  }
+  li {
+    > ul {
+      display: none;
+      font-size: 0.9em;
+    }
+    li {
+      display: block;
+      font-weight: normal;
+      margin: 0.5em;
+    }
+  }
+  > li:hover {
+    > ul {
+      display: block;
+      border: 1px solid gray;
+      @include box-shadow(5px #888888);
+      @include opacity(0.95);
+      background: white;
+      padding: 1em;
+      position: absolute;
+      top: 40px;
+      z-index: 110;
+    }
+    ul {
+      display: block;
+      margin-bottom: 1.5em;
+      li li {
+        margin-left: -2em;
+      }
+    }
+  }
+  > li > a {
+    padding: 1em;
+    color: #aaaaaa;
+    font-weight: bold;
+  }
+  > li > a:hover {
+    color: white;
+  }
+}
+
+#navbar form {
+  width: 200px;
+  display: inline-block;
+  margin: -2px 0;
+  padding: 0;
+  input {
+    margin: 0px;
+    padding: 0px;
+  }
+}
+
+#breadcrumbs {
+  margin: 10px 10px 0 10px;
+  font-size: 0.8em;
+}
+
+#content {
+  line-height: 1.75em;
+  clear: both;
+  padding: {
+    top: 0.5em;
+    bottom: 1em;
+    left: 2em;
+    right: 3em;
+  };
+  margin: {
+    top: 1em;
+    left: auto;
+    right: auto;
+  };
+  background: white;
+  max-width: 860px;
+  @include border-radius(4px);
+  -webkit-box-shadow: 0 0 1px 1px #888888;
+  -moz-box-shadow: 0 0 1px 1px #888888;
+  box-shadow: 0 0 1px 1px #888888;
+}
+
+#posts {
+  float: left;
+  width: 70%;
+  margin: 0;
+}
+
+aside {
+  margin-left: 73%;
+  margin-top: 1em;
+  margin-right: -1em;
+  padding: {
+    left: 1.5em;
+    top: 0.5em;
+    bottom: 1em;
+    right: 1.5em;
+  };
+  @include border-radius(4px);
+  background: #eeeeee;
+  border: 2px solid silver;
+  .hoverlink {
+    visibility: visible;
+    display: none;
+  }
+  .tweet:hover .hoverlink {
+    display: inline;
+  }
+  .info {
+    text-align: right;
+  }
+  code {
+    word-break: break-all;
+  }
+}
+
+// CSS hacks
+.clearboth {
+  clear: both;
+}
+
+.clearleft {
+  clear: left;
+}
+
+.clearright {
+  clear: right;
+}
+
+.left {
+  float: left;
+}
+
+.right {
+  float: right;
+}
+
+#footer {
+  clear: both;
+  text-align: center;
+  font-size: 0.75em;
+  margin: 1em;
+  ul {
+    li {
+      list-style-type: none;
+      display: inline;
+      padding: 5px 10px 5px 10px;
+    }
+    li + li {
+      border-left: 1px solid silver;
+    }
+  }
+}
+
+div.two-columns {
+  float: left;
+  width: 50%;
+  margin-bottom: 3em;
+}
+
+div.column {
+  padding-left: 1.5em;
+  padding-right: 1.5em;
+}
+
+// flashes
+
+@mixin flash-icon($color, $url) {
+  background: {
+    color: $color;
+    image: $url;
+    position: 10px center;
+    repeat: no-repeat;
+  };
+}
+
+#cacheable-flash {
+  ul {
+    margin: 0em;
+  }
+  li {
+    color: black;
+  }
+}
+
+#error, #notice {
+  @include border-radius(3px);
+  font-weight: bold;
+  margin: 1em;
+  padding: 1em {
+    left: 36px;
+  };
+}
+
+#error {
+  border: 1px solid #b77d74;
+  @include flash-icon(#f9b8be, image-url("exclamation.png"));
+}
+
+#notice {
+  border: 1px solid #72a384;
+  @include flash-icon(#c3e3b5, image-url("information.png"));
+}
+
+// pseudo-flashes
+// just like the real flashes, but class-based rather than id-based so that they can be used multiple times
+
+.error, .notice {
+  @include border-radius(3px);
+  font-weight: bold;
+  margin: 1em;
+  padding: 1em {
+    left: 36px;
+  };
+}
+
+.error {
+  border: 1px solid gray;
+  @include flash-icon(#f9b8be, image-url("exclamation.png"));
+}
+
+.notice {
+  border: 1px solid gray;
+  @include flash-icon(#c3e3b5, image-url("information.png"));
+}
+
+// AJAX
+.spinner {
+  padding-left: 0.33em;
+  margin-bottom: -0.1em;
+  display: none;
+}
+
+// subtle error feedack for failed AJAX requests
+.ajax_error {
+  background: #f9b8be;
+}
+
+// pagination
+
+@import "icons/*.png";
+
+ul.pagination {
+  margin: 1em;
+  font-size: 0.75em;
+  height: 16px;
+  list-style-type: none;
+  text-align: right;
+  li {
+    border-right: 1px solid #cccccc;
+    display: inline-block;
+    padding: 0 5px;
+    &:first-child {
+      border-right: none;
+      padding: 0;
+    }
+    &:last-child {
+      border-right: none;
+      padding-right: 0;
+    }
+  }
+  .first, .prev, .next, .last {
+    display: inline-block;
+    vertical-align: middle;
+    height: 16px;
+    width: 16px;
+  }
+  .first {
+    @include icons-sprite(first);
+  }
+  .prev {
+    @include icons-sprite(previous);
+  }
+  .next {
+    @include icons-sprite(next);
+  }
+  .last {
+    @include icons-sprite(last);
+  }
+  .disabled {
+    color: gray;
+    .first {
+      @include icons-sprite(first-disabled);
+    }
+    .prev {
+      @include icons-sprite(previous-disabled);
+    }
+    .next {
+      @include icons-sprite(next-disabled);
+    }
+    .last {
+      @include icons-sprite(last-disabled);
+    }
+  }
+}
+
+// tables
+
+// tables with header cells on the left
+table tbody tr th {
+  text-align: right;
+}
+
+// tables with header cells along the top
+table thead tr th {
+  text-align: center;
+  border-bottom: 1px silver solid;
+  border-right: 1px silver solid;
+}
+
+td, th {
+  padding: 0.5em;
+}
+
+th {
+  background: #f7f7f7;
+}
+
+th.ascending a {
+  font-weight: bold;
+  background: image-url("upwards-sort-triangle.png") no-repeat right center;
+  padding-right: 16px;
+}
+
+th.descending a {
+  font-weight: bold;
+  background: image-url("downwards-sort-triangle.png") no-repeat right center;
+  padding-right: 16px;
+}
+
+tr.odd {
+  background: #f7f7f7;
+}
+
+tr.even {
+  background: #eaeaea;
+}
+
+form .annotation {
+  font: {
+    size: x-small;
+    weight: normal;
+  };
+  color: #666666;
+}
+
+// forms
+
+form {
+  input.field_with_errors, textarea.field_with_errors {
+    border: 4px solid #f9b8be;
+  }
+  li {
+    display: block;
+    list-style: none;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    input[type=password], input[type=text], textarea {
+      width: 70%;
+    }
+    label {
+      display: inline-block;
+      text-align: right;
+      color: black;
+      font-weight: bold;
+      vertical-align: top;
+      padding-right: 1em;
+      width: 20%;
+    }
+    ul {
+      display: inline-block;
+      padding-left: 0px;
+      li {
+        border: 0px;
+      }
+    }
+  }
+  li + li {
+    border-top: 1px solid #eeeeee;
+  }
+}
+
+// tags
+
+.cloud {
+  text-align: center;
+  a {
+    padding: 0.5em;
+  }
+}
+
+.filterbox {
+  float: right;
+  max-width: 15em;
+  margin: 1em;
+  border: 1px solid gray;
+  @include border-radius(0.33em);
+  @include box-shadow(0.33em #aaaaaa);
+  padding: 1em;
+  h3 {
+    margin-top: 0em;
+  }
+  p {
+    font-size: 0.75em;
+  }
+}
+
+ul.taggables {
+  list-style-type: none;
+  padding: 0;
+}
+
+// general appearance
+
+.when {
+  font-size: 0.75em;
+  color: #bbbbbb;
+  a {
+    color: #bbbbbb;
+    font-weight: normal;
+  }
+}
+
+.hoverlink {
+  visibility: hidden;
+  font-size: 0.75em;
+  color: #bbbbbb;
+  border-left: 1px solid silver;
+  padding-left: 6px;
+  a {
+    color: #bbbbbb;
+    font-weight: normal;
+  }
+}
+
+.comment:hover .hoverlink {
+  visibility: visible;
+}
+
+.snippet:hover .hoverlink {
+  visibility: visible;
+}
+
+.tweet:hover .hoverlink {
+  visibility: visible;
+}
+
+.deleted {
+  color: #bbbbbb;
+  a {
+    color: #bbbbbb;
+  }
+}
+
+.highlight {
+  background: #eeeeee;
+}
+
+.unselectable {
+  @include unselectable;
+}
+
+// consider per-controller custom CSS for this kind of class
+.post {
+  margin-top: 3em;
+  .when {
+    // we do this rather than special casing the h2 (posts#index)
+    // and the h1 (posts#show), because the title varies depending on where it appears
+    margin-top: -1em;
+  }
+  .info {
+    text-align: right;
+    padding: 1em;
+  }
+}
+
+// pad to left by width of comment-bubble.png (16px) plus 6px more breathing room
+.comments_link {
+  float: left;
+  background: image-url("comment-bubble.png") no-repeat left top;
+  padding-left: 22px;
+  padding-top: 0px;
+  padding-bottom: 0px;
+  min-height: 22px;
+}
+
+@mixin button {
+  position: relative;
+  margin: {
+    right: 0.25em;
+  };
+  border: {
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 1px solid rgba(0, 0, 0, 0.25);
+  };
+  @include border-radius;
+  -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+  -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+  text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.25);
+  background: #007d9a;
+  padding: {
+    left: 1.5em;
+    right: 1.5em;
+    top: 0.5em;
+    bottom: 0.5em;
+  };
+  color: white;
+  cursor: pointer;
+  font-weight: bold;
+  &:hover {
+    background: #77bed2;
+    color: white;
+    text-decoration: none;
+  }
+  &:active {
+    top: 1px;
+  }
+  &.destructive {
+    background: #a9014b;
+    &:hover {
+      background: #630030;
+    }
+  }
+  &.disabled {
+    background: silver;
+    &:hover {
+      background: silver;
+    }
+  }
+}
+
+input[type=submit] {
+  @include button;
+}
+
+// make submit button line up with lists of label/input pairs in forms
+li > input[type=submit] {
+  margin-left: 21%;
+}
+
+input[type=button] {
+  @include button;
+}
+
+form.button_to {
+  display: inline;
+  div {
+    display: inline;
+  }
+}
+
+// links which look like buttons
+.links {
+  margin: {
+    top: 2.5em;
+    bottom: 2.5em;
+  };
+  a {
+    @include button;
+  }
+}
+
+// make buttons look smaller when they are in table cells
+@mixin small-button {
+  @include border-radius(2px);
+  font-size: 0.75em;
+  font-weight: normal;
+  padding: 3px 15px 3px 15px;
+}
+
+td.links {
+  a {
+    @include small-button;
+  }
+  form input {
+    @include small-button;
+  }
+}
+
+// products
+// NOTE: could potentially split this off into a separate CSS file
+.product {
+  clear: both;
+  .icon img {
+    float: left;
+    margin: 1em;
+  }
+}
+
+.prev_next {
+  margin-top: -1em;
+  text-align: right;
+}
+
+// comments (issue tracker, forums)
+.comments {
+  th {
+    padding: 1em;
+    vertical-align: top;
+    background: white;
+  }
+  th + td {
+    padding-top: -0.5em;
+    border-bottom: 1px solid #cccccc;
+    width: 85%;
+  }
+  // we want private comments to stand out a bit so that the admin knows which ones are hidden from public view
+  tr.private>th {
+    background: image-url("lock.png") no-repeat right bottom;
+  }
+}
+
+.comments .odd {
+  th + td {
+    border: 1px solid #cccccc;
+    background: #f7f7f7;
+  }
+}
+
+.comments .even {
+  th + td {
+    border: 1px solid #cccccc;
+    background: #eaeaea;
+  }
+}
+
+// live previews
+#preview_link {
+  img {
+    padding-left: 0.33em;
+    margin-bottom: -0.1em;
+  }
+  #preview_spinner {
+    display: none;
+  }
+}
