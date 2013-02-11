@@ -298,17 +298,23 @@ a.mailto:after {
     left: 2em;
     right: 3em;
   };
+
   margin: {
     top: 1em;
     left: auto;
     right: auto;
   };
+
   background: white;
   max-width: 860px;
   @include border-radius(4px);
   -webkit-box-shadow: 0 0 1px 1px #888888;
   -moz-box-shadow: 0 0 1px 1px #888888;
   box-shadow: 0 0 1px 1px #888888;
+
+  @include respond_to(tablet) {
+    margin: 0;
+  }
 }
 
 #posts {
