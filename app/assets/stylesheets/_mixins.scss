@@ -1,0 +1,31 @@
+// general-purpose mixins that can be imported for use in other templates
+
+@mixin border-radius($radius: 5px) {
+  border-radius: $radius;
+  -moz-border-radius: $radius;
+  -webkit-border-radius: $radius;
+}
+
+@mixin box-shadow($length: 5px, $color: #999999) {
+  box-shadow: $length $length $length $color;
+  -moz-box-shadow: $length $length $length $color;
+  -webkit-box-shadow: $length $length $length $color;
+}
+
+@mixin opacity($alpha: 0.5) {
+  filter: alpha(opacity = $alpha * 100);
+  opacity: $alpha;
+  -moz-opacity: $alpha;
+  -webkit-opacity: $alpha;
+}
+
+// http://stackoverflow.com/questions/826782/css-rule-to-disable-text-selection-highlighting
+@mixin unselectable {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+}
