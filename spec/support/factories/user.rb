@@ -20,7 +20,7 @@ FactoryGirl.define do
 
     # an associated email is not "required" (for validation) but it
     # is still necessary in practice if the record is to be usable
-    after_create { |user| Email.make! :user => user  }
+    after(:create) { |user| Email.make! user: user }
   end
 
   factory :admin_user, :parent => :user do

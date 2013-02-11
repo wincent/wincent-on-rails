@@ -4,11 +4,11 @@ FactoryGirl.define do
   factory :reset do
     association :email
 
-    after_build do |reset|
+    after(:build) do |reset|
       reset.email_address = reset.email ? reset.email.address : nil
     end
 
-    after_create do |reset|
+    after(:create) do |reset|
       reset.email_address = reset.email.address
     end
   end
