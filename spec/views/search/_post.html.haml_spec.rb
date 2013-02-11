@@ -7,7 +7,7 @@ describe 'search/_post' do
   end
 
   def do_render
-    render 'search/post', :model => @post, :result_number => @result_number
+    render 'search/post', model: @post, result_number: @result_number
   end
 
   it 'shows the result number' do
@@ -17,20 +17,20 @@ describe 'search/_post' do
 
   it 'uses the post title as link text' do
     do_render
-    rendered.should have_css('a', :content => @post.title)
+    rendered.should have_link(@post.title)
   end
 
   # was a bug
   it 'escapes HTML special characters in the post title' do
-    @post = Post.make! :title => '<em>foo</em>'
+    @post = Post.make! title: '<em>foo</em>'
     do_render
     rendered.should match('&lt;em&gt;foo&lt;/em&gt;')
-    rendered.should_not have_css('em', :content => 'foo')
+    rendered.should_not have_css('em', text: 'foo')
   end
 
   it 'links to the post' do
     do_render
-    rendered.should have_css('a', :href => post_path(@post))
+    rendered.should have_link(@post.title, href: post_path(@post))
   end
 
   it 'shows the timeinfo for the post' do

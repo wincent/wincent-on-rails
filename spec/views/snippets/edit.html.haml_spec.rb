@@ -19,7 +19,7 @@ describe 'snippets/edit' do
 
   it 'has a #show link' do
     render
-    rendered.should have_css('.links a', :href => snippet_path(@snippet))
+    rendered.should have_link('show', href: snippet_path(@snippet))
   end
 
   it 'has a destroy button' do
@@ -31,6 +31,6 @@ describe 'snippets/edit' do
 
   it 'has an #index link' do
     render
-    rendered.should have_css('.links a', :href => '/snippets')
+    rendered.should have_link('all snippets', href: '/snippets')
   end
 end

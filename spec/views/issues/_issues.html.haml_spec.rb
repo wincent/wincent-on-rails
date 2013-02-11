@@ -28,43 +28,43 @@ describe 'issues/_issues' do
   describe 'regressions' do
     it 'has a sortable header cell for the "id" column' do
       render
-      rendered.should have_css('th a', :content => '#') do |link|
-        link.attribute('href').value.should match('sort=id')
+      within('th a', text: '#') do |link|
+        link[:href].should match('sort=id')
       end
     end
 
     it 'has a sortable header cell for the "summary" column' do
       render
-      rendered.should have_css('th a', :content => 'Summary') do |link|
-        link.attribute('href').value.should match('sort=summary')
+      within('th a', text: 'Summary') do |link|
+        link[:href].should match('sort=summary')
       end
     end
 
     it 'has a sortable header cell for the "product" column' do
       render
-      rendered.should have_css('th a', :content => 'Product') do |link|
-        link.attribute('href').value.should match('sort=product_id')
+      within('th a', text: 'Product') do |link|
+        link[:href].should match('sort=product_id')
       end
     end
 
     it 'has a sortable header cell for the "status" column' do
       render
-      rendered.should have_css('th a', :content => 'Status') do |link|
-        link.attribute('href').value.should match('sort=status')
+      within('th a', text: 'Status') do |link|
+        link[:href].should match('sort=status')
       end
     end
 
     it 'has a sortable header cell for the "kind" column' do
       render
-      rendered.should have_css('th a', :content => 'Kind') do |link|
-        link.attribute('href').value.should match('sort=kind')
+      within('th a', text: 'Kind') do |link|
+        link[:href].should match('sort=kind')
       end
     end
 
     it 'has a sortable header cell for the "when" column' do
       render
-      rendered.should have_css('th a', :content => 'When') do |link|
-        link.attribute('href').value.should match('sort=updated_at')
+      within('th a', text: 'When') do |link|
+        link[:href].should match('sort=updated_at')
       end
     end
   end

@@ -3,37 +3,46 @@ require 'spec_helper'
 describe 'search/_results' do
   context 'with one page of search results' do
     before do
-      @models = [@article = Article.make!, @issue = Issue.make!, @post = Post.make!, @topic = Topic.make!]
+      @models = [
+        @article  = Article.make!,
+        @issue    = Issue.make!,
+        @post     = Post.make!,
+        @topic    = Topic.make!,
+      ]
       @offset = 15
     end
 
     it 'renders the article partial for article results' do
       stub.proxy(view).render
-      mock(view).render 'search/article', :model => @article, :result_number => @offset + 1
+      mock(view).render 'search/article',
+        model: @article, result_number: @offset + 1
       render
     end
 
     it 'renders the issue partial for issue results' do
       stub.proxy(view).render
-      mock(view).render 'search/issue', :model => @issue, :result_number => @offset + 2
+      mock(view).render 'search/issue',
+        model: @issue, result_number: @offset + 2
       render
     end
 
     it 'renders the post partial for post results' do
       stub.proxy(view).render
-      mock(view).render 'search/post', :model => @post, :result_number => @offset + 3
+      mock(view).render 'search/post',
+        model: @post, result_number: @offset + 3
       render
     end
 
     it 'renders the topic partial for topic results' do
       stub.proxy(view).render
-      mock(view).render 'search/topic', :model => @topic, :result_number => @offset + 4
+      mock(view).render 'search/topic',
+        model: @topic, result_number: @offset + 4
       render
     end
 
-    it 'has a "search again" link' do
+    it 'has a "new search" link' do
       render
-      rendered.should have_css('.links a', :href=> '/search')
+      rendered.should have_link('new search', href: '/search')
     end
   end
 
@@ -49,7 +58,7 @@ describe 'search/_results' do
 
     it 'renders the partial for existing results' do
       stub.proxy(view).render
-      mock(view).render 'search/issue', :model => @issue, :result_number => 1
+      mock(view).render 'search/issue', model: @issue, result_number: 1
       render
     end
 
@@ -79,11 +88,9 @@ describe 'search/_results' do
 
     it 'displays a "more results" form button' do
       render
-      rendered.should have_css('form', :action => '/search') do |form|
-        form.should have_css('input[type=hidden][name=offset]', :value => (@offset + 20).to_s)
-        form.should have_css('input[type=submit]', :value => 'more results...')
-        form.should have_css('input[type=hidden][name=q]', :value => 'foo')
-      end
+      rendered.should have_css("form[action='/search'] input[type=hidden][name=offset][value='#{@offset + 20}']")
+      rendered.should have_css('form[action="/search"] input[type=submit][value="more results..."]')
+      rendered.should have_css('form[action="/search"] input[type=hidden][name=q][value="foo"]')
     end
   end
 end

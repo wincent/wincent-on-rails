@@ -17,7 +17,7 @@ describe 'comments/edit' do
 
   it 'has a show button' do
     render
-    rendered.should have_css('.links a', :href => comment_path(@comment))
+    rendered.should have_link('show', href: comment_path(@comment))
   end
 
   it 'has a destroy button' do
@@ -40,11 +40,11 @@ describe 'comments/edit' do
 
   it 'has a link back to the list of comments awaiting moderation' do
     render
-    rendered.should have_css('.links a', :href => comments_path)
+    rendered.should have_link('comments', href: comments_path)
   end
 
   it 'has a link back to the administrator dashboard' do
     render
-    rendered.should have_css('.links a', :href => admin_dashboard_path)
+    rendered.should have_link('administrator dashboard', href: admin_dashboard_path)
   end
 end

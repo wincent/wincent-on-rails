@@ -3,15 +3,15 @@ require 'spec_helper'
 describe 'links/index' do
   before do
     stub(view).sortable_header_cell.with_any_args
-    link_98 = Link.make! :permalink => 'perma98'
-    link_99 = Link.make! :permalink => 'perma99'
+    link_98 = Link.make! permalink: 'perma98'
+    link_99 = Link.make! permalink: 'perma99'
     @links = [link_98, link_99]
   end
 
   it 'renders list of links' do
     render
-    rendered.should have_css('tr>td', :content => 'perma98')
-    rendered.should have_css('tr>td', :content => 'perma99')
+    rendered.should have_css('tr>td', text: 'perma98')
+    rendered.should have_css('tr>td', text: 'perma99')
   end
 
   it 'uses sortable header cells' do

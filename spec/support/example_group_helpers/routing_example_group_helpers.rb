@@ -9,11 +9,11 @@ module RoutingExampleGroupHelpers
       when String
         controller, action = string_or_hash.split('#')
         options = options_hash || {}
-        options.merge({ :controller => controller, :action => action })
+        options.merge(controller: controller, action: action)
       when Hash
         string_or_hash
       else
-        raise ArgumentError.new "unexpected argument of class #{destination.class}"
+        raise ArgumentError, "unexpected argument of class #{destination.class}"
       end
     end
   end
@@ -23,19 +23,19 @@ module RoutingExampleGroupHelpers
   end
 
   def delete path
-    { :method => :delete, :path => path }
+    { method: :delete, path: path }
   end
 
   def get path
-    { :method => :get, :path => path }
+    { method: :get, path: path }
   end
 
   def post path
-    { :method => :post, :path => path }
+    { method: :post, path: path }
   end
 
   def put path
-    { :method => :put, :path => path }
+    { method: :put, path: path }
   end
 
   matcher :map_to do |*destination|
@@ -46,7 +46,7 @@ module RoutingExampleGroupHelpers
       @method = @request.delete :method
       @path = @request.delete :path
       @destination = parse_destination destination
-      assert_recognizes(@destination, { :method => @method, :path => @path })
+      assert_recognizes(@destination, { method: @method, path: @path })
     end
 
     failure_message_for_should do
@@ -98,7 +98,7 @@ module RoutingExampleGroupHelpers
       @method = @request.delete :method
       @path = @request.delete :path
       @destination = parse_destination destination
-      assert_routing({ :method => @method, :path => @path}, @destination)
+      assert_routing({ method: @method, path: @path }, @destination)
     end
 
     failure_message_for_should do
@@ -126,15 +126,15 @@ module RoutingExampleGroupHelpers
       # paths which aren't actually routable:
       #
       #  route:
-      #    resource :issues, :except => :index
+      #    resource :issues, except: :index
       #
       #  assertion:
-      #    recognize_path('/issues', :method => :get)
+      #    recognize_path('/issues', method: :get)
       #
       #  "routes" to:
-      #    {:controller => 'issues', :action => 'new'}
+      #    { controller: 'issues', action: 'new'}
       begin
-        assert_recognizes({}, { :method => @method, :path => @path })
+        assert_recognizes({}, { method: @method, path: @path })
       rescue ActionController::RoutingError => e
         @result = e.message
       rescue Test::Unit::AssertionFailedError => e

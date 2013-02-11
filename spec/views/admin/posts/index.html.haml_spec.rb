@@ -11,22 +11,22 @@ describe 'admin/posts/index' do
   describe 'regressions' do
     it 'has a sortable header cell for the "title" column' do
       render
-      rendered.should have_css('th a', :content => 'Title') do |link|
-        link.attribute('href').value.should match('sort=title')
+      within('th a', text: 'Title') do |link|
+        link[:href].should match('sort=title')
       end
     end
 
     it 'has a sortable header cell for the "permalink" column' do
       render
-      rendered.should have_css('th a', :content => 'Permalink') do |link|
-        link.attribute('href').value.should match('sort=permalink')
+      within('th a', text: 'Permalink') do |link|
+        link[:href].should match('sort=permalink')
       end
     end
 
     it 'has a sortable header cell for the "when" column' do
       render
-      rendered.should have_css('th a', :content => 'When') do |link|
-        link.attribute('href').value.should match('sort=created_at')
+      within('th a', text: 'When') do |link|
+        link[:href].should match('sort=created_at')
       end
     end
   end

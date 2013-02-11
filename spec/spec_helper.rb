@@ -1,18 +1,20 @@
-ENV["RAILS_ENV"] ||= 'test'
-require File.expand_path("../../config/environment", __FILE__)
+ENV['RAILS_ENV'] ||= 'test'
+require File.expand_path('../../config/environment', __FILE__)
 require 'rspec/rails'
 
-Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
+Dir[Rails.root.join('spec/support/**/*.rb')].each {|f| require f}
 
 RSpec.configure do |config|
   config.after :each do
     DatabaseCleaner.clean
   end
+
   config.alias_it_should_behave_like_to :it_has_behavior, 'has behavior:'
   config.backtrace_clean_patterns = config.backtrace_clean_patterns + [
     %r{/Library/},
-    %r{/\.bundle/}
+    %r{/\.bundle/},
   ]
+
   config.before :each do
     if Capybara.current_driver == :rack_test
       DatabaseCleaner.strategy = :transaction # for speed
@@ -21,15 +23,16 @@ RSpec.configure do |config|
     end
     DatabaseCleaner.start
   end
+
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
   config.mock_framework = :rr
   config.use_transactional_fixtures = false
   config.treat_symbols_as_metadata_keys_with_true_values = true # needed until RSpec 3
-  config.include ControllerExampleGroupHelpers, :type => :controller
-  config.include GitSpecHelpers, :example_group => {
-    :file_path => %r{\bspec/lib/git/}
+  config.include ControllerExampleGroupHelpers, type: :controller
+  config.include GitSpecHelpers, example_group: {
+    file_path: %r{\bspec/lib/git/},
   }
-  config.include RequestExampleGroupHelpers, :type => :request
-  config.include RoutingExampleGroupHelpers, :type => :routing
-  config.include ViewExampleGroupHelpers, :type => :view
+  config.include FeatureExampleGroupHelpers, type: :feature
+  config.include RoutingExampleGroupHelpers, type: :routing
+  config.include ViewExampleGroupHelpers, type: :view
 end

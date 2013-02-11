@@ -20,7 +20,7 @@ describe 'issues/edit' do
 
   it 'should have a "show" link' do
     render
-    rendered.should have_css('.links a', :href => issue_path(@issue))
+    rendered.should have_link('show', href: issue_path(@issue))
   end
 
   it 'should have a destroy button' do
@@ -43,11 +43,12 @@ describe 'issues/edit' do
 
   it 'should have a link back to the list of issues awaiting moderation' do
     render
-    rendered.should have_css('.links a', :href => admin_issues_path)
+    rendered.should have_link('issues awaiting moderation',
+                              href: admin_issues_path)
   end
 
   it 'should have a link to the list of public isues' do
     render
-    rendered.should have_css('.links a', :href => issues_path)
+    rendered.should have_link('public issues index', href: issues_path)
   end
 end

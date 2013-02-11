@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe 'tweets/show.html.haml' do
   before do
-    @tweet = Tweet.make! :body => "''hello''"
+    @tweet = Tweet.make! body: "''hello''"
     @comments = @tweet.comments.published
     @comment = Comment.new
   end
@@ -29,7 +29,7 @@ describe 'tweets/show.html.haml' do
 
   it 'shows the tweet body as HTML' do
     render
-    rendered.should have_css('em', :content => 'hello')
+    rendered.should have_css('em', text: 'hello')
   end
 
   it 'renders the "shared/tags" partial' do
@@ -40,7 +40,7 @@ describe 'tweets/show.html.haml' do
 
   it 'has a link to the tweets index' do
     render
-    rendered.should have_css('.links a', :href => '/twitter')
+    rendered.should have_link('all tweets', href: '/twitter')
   end
 
   context 'commenting open' do
@@ -51,7 +51,7 @@ describe 'tweets/show.html.haml' do
 
     it 'has a submit button' do
       render
-      rendered.should have_css('#comment-form a', :href => new_tweet_comment_path(@tweet))
+      rendered.should have_css("#comment-form a[href='#{new_tweet_comment_path(@tweet)}']")
     end
   end
 
@@ -67,7 +67,7 @@ describe 'tweets/show.html.haml' do
 
     it 'provides a link to the forums' do
       render
-      rendered.should have_css('a', :href => '/forums')
+      rendered.should have_link('forums', href: '/forums')
     end
   end
 end

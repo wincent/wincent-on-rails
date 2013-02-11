@@ -5,7 +5,7 @@ module ControllerExampleGroupHelpers
   end
 
   def log_in_as_admin
-    log_in_as User.make!(:superuser => true)
+    log_in_as User.make!(superuser: true)
   end
 
   def log_in

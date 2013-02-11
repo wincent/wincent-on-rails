@@ -7,7 +7,7 @@ describe 'search/_article' do
   end
 
   def do_render
-    render 'search/article', :model => @article, :result_number => @result_number
+    render 'search/article', model: @article, result_number: @result_number
   end
 
   it 'shows the result number' do
@@ -17,13 +17,13 @@ describe 'search/_article' do
 
   it 'uses the article title as link text' do
     do_render
-    rendered.should have_css('a', :content => @article.title)
+    rendered.should have_link(@article.title)
   end
 
   # was a bug
   it 'escapes HTML special characters in the article title' do
     # we don't put </em> in the title because slashes are not allowed
-    @article = Article.make! :title => '<em>foo'
+    @article = Article.make! title: '<em>foo'
     do_render
     rendered.should match('&lt;em&gt;foo')
     rendered.should_not match('<em>foo')
@@ -31,7 +31,7 @@ describe 'search/_article' do
 
   it 'links to the article' do
     do_render
-    rendered.should have_css('a', :href => article_path(@article))
+    rendered.should have_link(@article.title, href: article_path(@article))
   end
 
   it 'shows the timeinfo for the article' do
@@ -45,12 +45,12 @@ describe 'search/_article' do
   end
 
   it 'truncates the article body to 240 characters' do
-    mock(view).truncate(@article.body, :length => 240)
+    mock(view).truncate(@article.body, length: 240)
     do_render
   end
 
   it 'passes the truncated article body through the wikitext translator' do
-    stub(view).truncate { mock('body').w :base_heading_level => 2 }
+    stub(view).truncate { mock('body').w base_heading_level: 2 }
     do_render
   end
 end

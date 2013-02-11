@@ -11,15 +11,15 @@ describe 'admin/tags/index' do
   describe 'regressions' do
     it 'has a sortable header cell for the "name" column' do
       render
-      rendered.should have_css('th a', :content => 'Name') do |link|
-        link.attribute('href').value.should match('sort=name')
+      within('th a', text: 'Name') do |link|
+        link[:href].should match('sort=name')
       end
     end
 
     it 'has a sortable header cell for the "taggings count" column' do
       render
-      rendered.should have_css('th a', :content => 'Taggings count') do |link|
-        link.attribute('href').value.should match('sort=taggings_count')
+      within('th a', text: 'Taggings count') do |link|
+        link[:href].should match('sort=taggings_count')
       end
     end
   end

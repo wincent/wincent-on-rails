@@ -4,24 +4,21 @@ describe 'tweets/edit.html.haml' do
   before do
     @tweet = Tweet.make! :body => 'hello'
     assigns[:tweet] = @tweet
-    stub(view).render 'shared/error_messages', :model => @tweet
+    stub(view).render 'shared/error_messages', model: @tweet
     stub(view).render 'preview'
     stub.proxy(view).render
   end
 
   it 'renders the error messages partial' do
-    mock(view).render 'shared/error_messages', :model => @tweet
+    mock(view).render 'shared/error_messages', model: @tweet
     render
   end
 
   it 'has a form for the tweet' do
     render
-    rendered.should have_css("form[action='#{tweet_path @tweet}'][method=post]") do |form|
-      # real HTTP PUT is not supported, the form is just a normal POST
-      # with a hidden field faking the PUT
-      form.should have_css('input[name=_method][value=put]')
-      form.should have_css("textarea[name='tweet[body]']", :content => 'hello')
-    end
+    # real HTTP PUT is not supported, the form is just a normal POST
+    # with a hidden field faking the PUT
+    rendered.should have_css("form[action='#{tweet_path @tweet}'][method=post] input[name=_method][value=put]")
   end
 
   it 'provides a link to the wikitext cheatsheet' do
@@ -41,16 +38,12 @@ describe 'tweets/edit.html.haml' do
 
   it 'has a "show" link' do
     render
-    rendered.should have_css('.links') do |div|
-      div.should have_css("a[href='#{tweet_path(@tweet)}']")
-    end
+    rendered.should have_css(".links a[href='#{tweet_path(@tweet)}']")
   end
 
   it 'has a "destroy" link' do
     render
-    rendered.should have_css('.links') do |div|
-      div.should have_css("form[action='#{tweet_path(@tweet)}'] input[name=_method][value=delete]")
-    end
+    rendered.should have_css(".links form[action='#{tweet_path(@tweet)}'] input[name=_method][value=delete]")
   end
 
   it 'has a link to the tweets index' do

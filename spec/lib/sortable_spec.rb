@@ -27,7 +27,7 @@ describe ActionView::Helpers::SortableHelper do
     end
 
     it 'uses the specified link text' do
-      @cell.should have_css('th a', :content => 'bar')
+      @cell.should have_css('th a', text: 'bar')
     end
   end
 end

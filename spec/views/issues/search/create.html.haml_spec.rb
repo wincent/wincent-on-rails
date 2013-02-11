@@ -10,28 +10,27 @@ describe 'issues/search/create' do
 
   it 'has an "all issues" link' do
     render
-    rendered.should have_css('div.links a', :href => issues_path)
+    rendered.should have_link('all issues', href: issues_path)
   end
 
   it 'has a "search again" link' do
     render
-    # this is a complex JS link, so won't try too hard to test the actual onclick attribute
-    rendered.should have_css('div.links a', :content => 'search again')
+    rendered.should have_link('search again')
   end
 
   it 'hides the search div upon initial display' do
     render
-    rendered.should have_css('div#issue_search', :style => 'display:none;')
+    rendered.should have_css('div#issue_search', visible: false)
   end
 
   it 'has a "new issue" link' do
     render
-    rendered.should have_css('div.links a', :href => new_issue_path)
+    rendered.should have_link('open a ticket', href: new_issue_path)
   end
 
   it 'has a "support overview" link' do
     render
-    rendered.should have_css('div.links a', :href => support_path)
+    rendered.should have_link('support overview', href: support_path)
   end
 
   it 'renders the search form partial' do

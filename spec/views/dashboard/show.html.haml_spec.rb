@@ -16,7 +16,7 @@ describe 'dashboard/show' do
     end
 
     it 'provides a link to the admin dashboard' do
-      rendered.should have_css('.links a', :href => admin_dashboard_path)
+      rendered.should have_link('Admin dashboard', href: admin_dashboard_path)
     end
   end
 

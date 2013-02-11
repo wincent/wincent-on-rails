@@ -3,15 +3,14 @@ require 'spec_helper'
 describe 'tweets/_tweets.html.haml' do
   before do
     @tweets = [
-      Tweet.make!(:body => "''foo''"),
-      Tweet.make!(:body => "'''bar'''")
+      Tweet.make!(body: "''foo''"),
+      Tweet.make!(body: "'''bar'''")
     ]
-    assigns[:tweets] = @tweets
   end
 
   it 'should display a div for each tweet' do
     render
-    rendered.should have_css('div.tweet', :count => 2)
+    rendered.should have_css('div.tweet', count: 2)
   end
 
   it 'should display the HTML body of each tweet' do
@@ -28,7 +27,7 @@ describe 'tweets/_tweets.html.haml' do
 
   it 'should show a permalink for each tweet' do
     render
-    rendered.should have_css("a[href='/twitter/#{@tweets[0].id}']", :content => 'permalink')
-    rendered.should have_css("a[href='/twitter/#{@tweets[1].id}']", :content => 'permalink')
+    rendered.should have_css("a[href='/twitter/#{@tweets[0].id}']", text: 'permalink')
+    rendered.should have_css("a[href='/twitter/#{@tweets[1].id}']", text: 'permalink')
   end
 end

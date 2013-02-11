@@ -14,6 +14,6 @@ describe 'forums/show' do
 
   it 'shows the forum name as a major heading' do
     render
-    rendered.should have_css('h1.major', :content => @name)
+    rendered.should have_css('h1.major', text: @name)
   end
 end

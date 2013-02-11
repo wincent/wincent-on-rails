@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe 'snippets/show.html.haml' do
   before do
-    @snippet = Snippet.make! :body => 'foo', :description => 'bar'
+    @snippet = Snippet.make! body: 'foo', description: 'bar'
     @comments = @snippet.comments.published
     @comment = Comment.new
   end
@@ -14,7 +14,7 @@ describe 'snippets/show.html.haml' do
 
   it 'shows the title' do
     render
-    rendered.should have_css('h1.major', :content => 'bar')
+    rendered.should have_css('h1.major', text: 'bar')
   end
 
   it 'shows the time information for the snippet' do
@@ -40,12 +40,12 @@ describe 'snippets/show.html.haml' do
 
   it 'has a link to the snippets index' do
     render
-    rendered.should have_css('.links a', :href => '/snippets')
+    rendered.should have_link('all snippets', href: '/snippets')
   end
 
   it 'has a link to the raw format for the snippet' do
     render
-    rendered.should have_css('.links a', :href => snippet_path(@snippet, :format => :txt))
+    rendered.should have_link('raw', href: snippet_path(@snippet, format: :txt))
   end
 
   context 'commenting open' do
@@ -56,8 +56,8 @@ describe 'snippets/show.html.haml' do
 
     it 'has a submit button' do
       render
-      rendered.should have_css('#comment-form a',
-        :href => new_snippet_comment_path(@snippet))
+      rendered.should have_link('add a comment',
+                                href: new_snippet_comment_path(@snippet))
     end
   end
 
@@ -73,7 +73,7 @@ describe 'snippets/show.html.haml' do
 
     it 'provides a link to the forums' do
       render
-      rendered.should have_css('a', :href => '/forums')
+      rendered.should have_link('forums', href: '/forums')
     end
   end
 end

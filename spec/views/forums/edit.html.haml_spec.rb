@@ -18,24 +18,24 @@ describe 'forums/edit' do
 
   it 'has a form for the forum' do
     render
-    rendered.should have_css('form', :action => forum_path(@forum)) do |form|
+    within("form[action='#{forum_path(@forum)}']") do |form|
       form.should have_css('input[name=_method][value=put]')
-      form.should have_css('input[type=text]', :name => 'forum[name]')
-      form.should have_css('input[type=text]', :name => 'forum[permalink]')
-      form.should have_css('input[type=text]', :name => 'forum[description]')
-      form.should have_css('input[type=text]', :name => 'forum[position]')
-      form.should have_css('input[type=checkbox]', :name => 'forum[public]')
+      form.should have_css("input[type=text][name='forum[name]']")
+      form.should have_css("input[type=text][name='forum[permalink]']")
+      form.should have_css("input[type=text][name='forum[description]']")
+      form.should have_css("input[type=text][name='forum[position]']")
+      form.should have_css("input[type=checkbox][name='forum[public]']")
       form.should have_css('input[type=submit][value="Update Forum"]')
     end
   end
 
   it 'has a "show" link' do
     render
-    rendered.should have_css('.links a', :href => forum_path(@forum), :content => 'show')
+    rendered.should have_link('show', href: forum_path(@forum))
   end
 
   it 'has an "all forums" link' do
     render
-    rendered.should have_css('.links a', :href => '/forums', :content => 'all forums')
+    rendered.should have_link('all forums', href: '/forums')
   end
 end

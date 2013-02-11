@@ -7,7 +7,7 @@ describe 'search/_topic' do
   end
 
   def do_render
-    render 'search/topic', :model => @topic, :result_number => @result_number
+    render 'search/topic', model: @topic, result_number: @result_number
   end
 
   it 'shows the result number' do
@@ -17,20 +17,20 @@ describe 'search/_topic' do
 
   it 'uses the topic title as link text' do
     do_render
-    rendered.should have_css('a', :content => @topic.title)
+    rendered.should have_link(@topic.title)
   end
 
   # was a bug
   it 'escapes HTML special characters in the topic summary' do
-    @topic = Topic.make! :title => '<em>foo</em>'
+    @topic = Topic.make! title: '<em>foo</em>'
     do_render
     rendered.should match('&lt;em&gt;foo&lt;/em&gt;')
-    rendered.should_not have_css('em', :content => 'foo')
+    rendered.should_not have_css('em', text: 'foo')
   end
 
   it 'links to the topic' do
     do_render
-    rendered.should have_css('a', :href => topic_path(@topic))
+    rendered.should have_link(@topic.title, href: topic_path(@topic))
   end
 
   it 'shows the timeinfo for the topic' do
@@ -44,12 +44,12 @@ describe 'search/_topic' do
   end
 
   it 'truncates the topic body to 240 characters' do
-    mock(view).truncate @topic.body, :length => 240
+    mock(view).truncate @topic.body, length: 240
     do_render
   end
 
   it 'passes the truncated topic body through the wikitext translator' do
-    stub(view).truncate { mock('body').w :base_heading_level => 2 }
+    stub(view).truncate { mock('body').w base_heading_level: 2 }
     do_render
   end
 end

@@ -13,7 +13,7 @@ describe 'tweets/new.html.haml' do
 
   it 'has a form for the tweet' do
     render
-    rendered.should have_css('form[method=post]', :action => '/twitter')
+    rendered.should have_css('form[method=post][action="/twitter"]')
   end
 
   it 'provides a link to the wikitext cheatsheet' do
@@ -34,6 +34,6 @@ describe 'tweets/new.html.haml' do
 
   it 'has a link to the tweets index' do
     render
-    rendered.should have_css('.links a', :href => '/twitter')
+    rendered.should have_link('index', href: '/twitter')
   end
 end

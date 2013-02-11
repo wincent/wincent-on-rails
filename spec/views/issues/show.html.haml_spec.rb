@@ -9,7 +9,8 @@ describe 'issues/show' do
 
   it 'should show breadcrumbs' do
     render
-    rendered.should have_css('div#breadcrumbs', :content => "#{@issue.kind_string.humanize} \##{@issue.id}")
+    rendered.should have_css('div#breadcrumbs',
+                             text: "#{@issue.kind_string.humanize} \##{@issue.id}")
   end
 
   it 'should advertise an atom feed' do
@@ -40,7 +41,7 @@ describe 'issues/show' do
     end
 
     it 'should show an edit link' do
-      rendered.should have_css('a', :href => edit_issue_path(@issue))
+      rendered.should have_link('edit', href: edit_issue_path(@issue))
     end
 
     it 'should show a destroy link' do

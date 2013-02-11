@@ -4,7 +4,7 @@ describe 'topics/show.html.haml' do
 
   before do
     @title = Sham.random
-    @topic = Topic.make!({ :title => @title })
+    @topic = Topic.make!(title: @title)
     @forum = @topic.forum
     @comments = []
     @comment = @topic.comments.new
@@ -17,6 +17,6 @@ describe 'topics/show.html.haml' do
 
   it 'shows the topic title as a major heading' do
     render
-    rendered.should have_css('h1.major', :content => @title)
+    rendered.should have_css('h1.major', text: @title)
   end
 end

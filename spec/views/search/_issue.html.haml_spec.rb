@@ -2,12 +2,12 @@ require 'spec_helper'
 
 describe 'search/_issue' do
   before do
-    @issue          = Issue.make! :description => "can't print"
+    @issue          = Issue.make! description: "can't print"
     @result_number  = 47
   end
 
   def do_render
-    render 'search/issue', :model => @issue, :result_number => @result_number
+    render 'search/issue', model: @issue, result_number: @result_number
   end
 
   it 'shows the result number' do
@@ -17,20 +17,20 @@ describe 'search/_issue' do
 
   it 'uses the issue summary as link text' do
     do_render
-    rendered.should have_css('a', :content => @issue.summary)
+    rendered.should have_link(@issue.summary)
   end
 
   # was a bug
   it 'escapes HTML special characters in the issue summary' do
-    @issue = Issue.make! :summary => '<em>foo</em>'
+    @issue = Issue.make! summary: '<em>foo</em>'
     do_render
     rendered.should match('&lt;em&gt;foo&lt;/em&gt')
-    rendered.should_not have_css('em', :content => 'foo')
+    rendered.should_not have_css('em', text: 'foo')
   end
 
   it 'links to the issue' do
     do_render
-    rendered.should have_css("a[href='#{issue_path @issue}']")
+    rendered.should have_link(@issue.summary, issue_path(@issue))
   end
 
   it 'shows the timeinfo for the issue' do
@@ -56,12 +56,12 @@ describe 'search/_issue' do
   end
 
   it 'truncates the issue description to 240 characters' do
-    mock(view).truncate(@issue.description, :length => 240)
+    mock(view).truncate(@issue.description, length: 240)
     do_render
   end
 
   it 'passes the truncated issue description through the wikitext translator' do
-    stub(view).truncate.with_any_args { mock('description').w(:base_heading_level => 2) }
+    stub(view).truncate.with_any_args { mock('description').w(base_heading_level: 2) }
     do_render
   end
 end

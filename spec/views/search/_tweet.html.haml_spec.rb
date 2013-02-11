@@ -7,7 +7,7 @@ describe 'search/_tweet' do
   end
 
   def do_render
-    render 'search/tweet', :model => @tweet, :result_number => @result_number
+    render 'search/tweet', model: @tweet, result_number: @result_number
   end
 
   it 'shows the result number' do
@@ -15,14 +15,9 @@ describe 'search/_tweet' do
     rendered.should have_content(@result_number.to_s)
   end
 
-  it 'uses the tweet number in the link text' do
-    do_render
-    rendered.should have_css('a', :content => "Tweet \##{@tweet.id}")
-  end
-
   it 'links to the tweet' do
     do_render
-    rendered.should have_css('a', :href => tweet_path(@tweet))
+    rendered.should have_link("Tweet \##{@tweet.id}", href: tweet_path(@tweet))
   end
 
   it 'shows the timeinfo for the tweet' do
@@ -31,17 +26,17 @@ describe 'search/_tweet' do
   end
 
   it 'gets the tweet body' do
-    mock(@tweet).body#).and_return('foo')
+    mock(@tweet).body
     do_render
   end
 
   it 'truncates the tweet body to 240 characters' do
-    mock(view).truncate(@tweet.body, :length => 240)
+    mock(view).truncate(@tweet.body, length: 240)
     do_render
   end
 
   it 'passes the truncated tweet body through the wikitext translator' do
-    stub(view).truncate { mock('body').w :base_heading_level => 2 }
+    stub(view).truncate { mock('body').w base_heading_level: 2 }
     do_render
   end
 end
