@@ -1,10 +1,10 @@
 -@page_title = 'blog index'
--atom_link posts_path(:format => :atom)
+-atom_link posts_path(format: :atom)
 =breadcrumbs 'Blog'
 #posts
   %h1.major
     Blog posts
-    =feed_icon posts_path(:format => :atom)
+    =feed_icon posts_path(format: :atom)
   =@paginator.pagination_links if @paginator
   -@posts.each do |post|
     .post
@@ -27,7 +27,7 @@
   -cache :tweets_sidebar do
     %h2.major
       Tweets
-      =feed_icon tweets_path(:format => :atom)
+      =feed_icon tweets_path(format: :atom)
     =render 'tweets/tweets.html.haml'
     %hr
     %p=link_to 'more tweets', tweets_path

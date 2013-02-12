@@ -48,7 +48,7 @@ module IssuesHelper
     # TODO: make this unobtrusive, make it degrade gracefully
     link_to_function link_text,
       "$('#issue_search').toggle(); $('#issue_summary').focus()",
-      :href => search_issues_path
+      href: search_issues_path
   end
 
   def kind_options_for_select

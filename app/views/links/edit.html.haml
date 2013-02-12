@@ -1,7 +1,7 @@
 -@page_title = 'Edit link'
 =breadcrumbs link_to('Links', links_path), @page_title
 %h1.major=@page_title
-=render 'shared/error_messages', :model => @link
+=render 'shared/error_messages', model: @link
 =form_for @link do |f|
   %ul
     %li

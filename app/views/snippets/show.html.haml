@@ -5,15 +5,15 @@
     =timeinfo @snippet
     by
     =mail_to APP_CONFIG['admin_email'], APP_CONFIG['admin_name']
-  =@snippet.body_html :base_heading_level => 1
-=render 'shared/tags', :tags => @snippet.tags
+  =@snippet.body_html base_heading_level: 1
+=render 'shared/tags', tags: @snippet.tags
 .links
   =link_to 'all snippets', snippets_path
-  =link_to 'raw', snippet_path(@snippet, :format => :txt)
+  =link_to 'raw', snippet_path(@snippet, format: :txt)
 -if @snippet.accepts_comments? || @snippet.comments_count != 0
   %h2.major
     Comments
-    =feed_icon snippet_path(@snippet, :format => :atom)
+    =feed_icon snippet_path(@snippet, format: :atom)
   %ol#comments.bubbles
     =render @comments
   %h2.major Add a comment

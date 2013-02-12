@@ -2,7 +2,7 @@
   %h2=link_to snippet_title(snippet), snippet_path(snippet)
   %div.info
     %span.when=timeinfo snippet
-    =link_to 'permalink', snippet_path(snippet), :class => 'hoverlink'
+    =link_to 'permalink', snippet_path(snippet), class: 'hoverlink'
     =link_to 'comment', new_snippet_comment_path(snippet),
-      :class => 'hoverlink' if snippet.accepts_comments
-  =snippet.body_html :base_heading_level => 3
+      class: 'hoverlink' if snippet.accepts_comments
+  =snippet.body_html base_heading_level: 3
