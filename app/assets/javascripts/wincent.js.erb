@@ -299,31 +299,33 @@
     .syntaxHighlight()
     .relativizeDates();
 
-  // set up "confirm" dialogs
-  $('input[data-confirm]').live('click', function() {
-    return confirm($(this).attr('data-confirm'));
-  });
+  $(document)
+    // set up "confirm" dialogs
+    .on('click', 'input[data-confirm]', function() {
+      return confirm($(this).attr('data-confirm'));
+    })
 
-  $('form[data-remote]').live('submit', function(event) {
-    var $form     = $(this),
-        $submits  = $form.find('input[type=submit]');
-    if ($submits.hasClass('disabled')) {
+    // set up "remote" forms
+    .on('submit', 'form[data-remote]', function(event) {
+      var $form     = $(this),
+          $submits  = $form.find('input[type=submit]');
+      if ($submits.hasClass('disabled')) {
+        return false;
+      }
+      $submits.addClass('disabled');
+      $.ajax({
+        url: $form.attr('action') + '.js',
+        type: 'post',
+        data: $form.serialize(),
+        error: function() { alert('Form submission failed'); },
+        complete: function() { $submits.removeClass('disabled'); }
+      });
+      event.preventDefault();
+    })
+
+    // set up "popup" links
+    .on('click', 'a[data-popup]', function() {
+      window.open(this.href, null, $(this).attr('data-popup'));
       return false;
-    }
-    $submits.addClass('disabled');
-    $.ajax({
-      url: $form.attr('action') + '.js',
-      type: 'post',
-      data: $form.serialize(),
-      error: function() { alert('Form submission failed'); },
-      complete: function() { $submits.removeClass('disabled'); }
     });
-    event.preventDefault();
-  });
-
-  // set up "popup" links
-  $('a[data-popup]').live('click', function() {
-    window.open(this.href, null, $(this).attr('data-popup'));
-    return false;
-  });
 })();
