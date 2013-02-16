@@ -34,6 +34,7 @@ The web application depends on or makes use of a number of open source projects:
 ** [https://github.com/mperham/dalli Dalli]
 ** [http://haml-lang.com/ Haml]
 ** [http://jquery.com/ jQuery]
+** [http://www.ruby-lang.org/ Ruby]
 ** [http://rubyonrails.org/ Ruby on Rails]
 ** [http://sass-lang.com/ Sass]
 ** [http://wikitext.rubyforge.org/ Wikitext]
@@ -54,6 +55,7 @@ The web application depends on or makes use of a number of open source projects:
 ** [http://nginx.org/ nginx]
 ** [http://unicorn.bogomips.org/ Unicorn]
 ** [http://www.vim.org/ Vim]
+** [https://github.com/burke/zeus Zeus]
 
 === Graphics ===
 
