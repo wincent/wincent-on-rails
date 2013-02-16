@@ -302,7 +302,7 @@
   $(document)
     // set up "confirm" dialogs
     .on('click', 'input[data-confirm]', function() {
-      return confirm($(this).attr('data-confirm'));
+      return confirm($(this).data('confirm'));
     })
 
     // set up "remote" forms
@@ -325,7 +325,7 @@
 
     // set up "popup" links
     .on('click', 'a[data-popup]', function() {
-      window.open(this.href, null, $(this).attr('data-popup'));
+      window.open(this.href, null, $(this).data('popup'));
       return false;
     });
 })();

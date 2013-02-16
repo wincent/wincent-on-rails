@@ -147,9 +147,9 @@ function ajax_check_box(selector, class_name, attribute_name, url) {
   field_id.html(new_contents);
   var check_box_id = field_id.find('input');
   if (field_text === 'true') {
-    check_box_id.attr('checked', 'checked');
+    check_box_id.prop('checked', true);
     }
-  var old_attr = check_box_id.attr('checked');
+  var oldProp = check_box_id.prop('checked');
   check_box_id.change(function() {
     var spinner = field_id.find('#' + spinner_id);
     spinner.show();
@@ -158,13 +158,13 @@ function ajax_check_box(selector, class_name, attribute_name, url) {
       'type': 'post',
       'dataType': 'json',
       'data': '_method=put&' + class_name + '[' + attribute_name + ']=' +
-        check_box_id.attr('checked'),
+        check_box_id.prop('checked'),
       'success': function(json) {
-        old_attr = check_box_id.attr('checked');
+        oldProp = check_box_id.prop('checked');
         clearAJAXFlash();
       },
       'error': function(req) {
-        check_box_id.attr('checked', old_attr);
+        check_box_id.prop('checked', oldProp);
         insertAJAXFlash('error', req.responseText);
       },
       'complete': function() {
@@ -221,7 +221,7 @@ function ajax_select(selector, class_name, attribute_name, options, include_blan
       return; // programmer error! bail
     } else {
       // if none of the options match, eg "no product", must be the "blank" option
-      select_id.find('option:first').attr('selected', 'selected');
+      select_id.find('option:first').prop('selected', true);
     }
   }
   var old_val = field_id.find('select option:selected').text();
