@@ -27,9 +27,9 @@
   var getCookie = function(name) {
     var cookies = document.cookie.split('; ');
     for (var i = 0; i < cookies.length; i++) {
-      var c = cookies[i];
-      var pos = c.indexOf('=');
-      var n = c.substring(0, pos);
+      var c   = cookies[i],
+          pos = c.indexOf('='),
+          n   = c.substring(0, pos);
       if (n === name) {
         return c.substring(pos + 1);
       }
@@ -96,15 +96,25 @@
       .removeClass('relative-date')
       .addClass('relativized-date')
       .each(function(i) {
-      var result  = this.innerHTML;
-      var now     = new Date;
-      var then    = dateFromUTCString(result);
-      var dist    = now.getTime() - then.getTime();
-      var months  = new Array('January', 'February',
-          'March', 'April', 'May', 'June', 'July',
-          'August', 'September', 'October', 'November',
-          'December');
-      var seconds = Math.round((dist / 1000));
+      var result  = this.innerHTML,
+          now     = new Date,
+          then    = dateFromUTCString(result),
+          dist    = now.getTime() - then.getTime(),
+          months  = [
+            'January',
+            'February',
+            'March',
+            'April',
+            'May',
+            'June',
+            'July',
+            'August',
+            'September',
+            'October',
+            'November',
+            'December'
+          ],
+          seconds = Math.round(dist / 1000);
       if (seconds < 0) {
         result = 'in the future';
       }
@@ -219,8 +229,8 @@
       while (text !== '') {
         // iterate through rules, leftmost match wins
         // in case of tie, first matching rule wins (earlier rules have priority)
-        var leftmost  = null;
-        var apply     = null;
+        var leftmost  = null,
+            apply     = null;
         for (var rule in rules) {
           var match = text.match(rules[rule]);
           if (match && ((leftmost && match.index < leftmost) || !leftmost)) {
@@ -233,8 +243,8 @@
           }
         }
         if (apply) {
-          var start_span = '<span class="' + apply.rule + '-syntax">';
-          var end_span = '</span>';
+          var start_span  = '<span class="' + apply.rule + '-syntax">',
+              end_span    = '</span>';
           if (apply.rule.match(/^skip-/)) {
             start_span = '';
             end_span = '';
@@ -251,13 +261,10 @@
     }
 
     this.find("pre[class$=syntax][class!=highlighted]").each(function(i) {
-      // do the syntax-highlighting
-      var rules = styles[$(this).attr('class')];
-      var content = highlightText(this.innerHTML, rules);
-
-      // line-numbering
-      var span = '<span class="line-number"></span>';
-      var lines = content.split('\n');
+      var rules   = styles[$(this).attr('class')],        // syntax highlighting
+          content = highlightText(this.innerHTML, rules),
+          span    = '<span class="line-number"></span>',  // line-numbering
+          lines   = content.split('\n');
       this.innerHTML = span + lines.join('\n' + span);
 
       // guard against repeated highlighting
@@ -268,7 +275,7 @@
   };
 
   var setUpSearchLink = function() {
-    $('#search-link').click(function () {
+    $('#search-link').on('click', function () {
       $('#search_box').toggle().focus();
       return false;
     });
@@ -298,18 +305,18 @@
   });
 
   $('form[data-remote]').live('submit', function(event) {
-    var form = $(this);
-    var submits = form.find('input[type=submit]');
-    if (submits.hasClass('disabled')) {
+    var $form     = $(this),
+        $submits  = $form.find('input[type=submit]');
+    if ($submits.hasClass('disabled')) {
       return false;
     }
-    submits.addClass('disabled');
+    $submits.addClass('disabled');
     $.ajax({
-      url: form.attr('action') + '.js',
+      url: $form.attr('action') + '.js',
       type: 'post',
-      data: form.serialize(),
+      data: $form.serialize(),
       error: function() { alert('Form submission failed'); },
-      complete: function() { submits.removeClass('disabled'); }
+      complete: function() { $submits.removeClass('disabled'); }
     });
     event.preventDefault();
   });
