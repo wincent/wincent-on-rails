@@ -1,4 +1,4 @@
-// Copyright 2009-2011 Wincent Colaiuta. All rights reserved.
+// Copyright 2009-2013 Wincent Colaiuta. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are met:
@@ -21,7 +21,7 @@
 // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 // POSSIBILITY OF SUCH DAMAGE.
 
-var global_spinner_counter = 0;
+var globalSpinnerCounter = 0;
 
 function escapeHTML(html) {
   return html
@@ -51,7 +51,7 @@ function ajax_comment_form(url) {
     anchor.unbind('click').addClass('disabled');
     var spinner = $('<img/>', {
       alt     : 'Spinner',
-      id      : 'spinner_' + global_spinner_counter++,
+      id      : 'spinner_' + globalSpinnerCounter++,
       'class' : 'spinner',
       src     : '<%= asset_path 'spinner.gif' %>'
     });
@@ -140,7 +140,7 @@ function ajax_check_box(selector, class_name, attribute_name, url) {
   var record_id = model_id.match(/_(\d+)$/)[1]; // 22
   var field_id = $('#' + model_id + '_' + attribute_name); // issue_22_public
   var field_text = field_id.text(); // eg. true, false
-  var spinner_id = 'spinner_' + global_spinner_counter++;
+  var spinner_id = 'spinner_' + globalSpinnerCounter++;
   var new_contents = '<input id="' + class_name + '_' + attribute_name +
     '" name="' + class_name + '[' + attribute_name + ']" type="checkbox">' +
     '<img alt="Spinner" id="' + spinner_id + '" class="spinner" src="<%= asset_path 'spinner.gif' %>" />';
@@ -179,7 +179,7 @@ function ajax_select(selector, class_name, attribute_name, options, include_blan
   var record_id = model_id.match(/_(\d+)$/)[1]; // 22
   var field_id = $('#' + model_id + '_' + attribute_name); // issue_22_status
   var field_text = field_id.text(); // eg. New, Open, Closed
-  var spinner_id = 'spinner_' + global_spinner_counter++;
+  var spinner_id = 'spinner_' + globalSpinnerCounter++;
   var new_contents = '<select id="' + class_name + '_' + attribute_name + '" name="' + class_name + '[' + attribute_name + ']">';
   if (include_blank) {
     new_contents = new_contents + '<option value=""></option>';
