@@ -693,6 +693,11 @@ ul.taggables {
   background: #eeeeee;
 }
 
+// for non-existent wiki links
+.redlink {
+  color: red;
+}
+
 .unselectable {
   @include unselectable;
 }
