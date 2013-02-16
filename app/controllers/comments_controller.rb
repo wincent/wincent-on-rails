@@ -1,8 +1,8 @@
 class CommentsController < ApplicationController
-  before_filter :require_admin, :except => [ :create, :new, :show ]
-  before_filter :get_comment, :only => [ :edit, :update, :destroy ]
-  before_filter :get_parent, :only => [:create, :new]
-  cache_sweeper :comment_sweeper, :only => [ :create, :update, :destroy ]
+  before_filter :require_admin, except: [ :create, :new, :show ]
+  before_filter :get_comment, only: [ :edit, :update, :destroy ]
+  before_filter :get_parent, only: [:create, :new]
+  cache_sweeper :comment_sweeper, only: [ :create, :update, :destroy ]
 
   # Admin only.
   # The admin is allowed to see all unmoderated comments at once, for the
@@ -45,7 +45,7 @@ class CommentsController < ApplicationController
   end
 
   def create
-    @comment = @parent.comments.new params[:comment], :as => role
+    @comment = @parent.comments.new params[:comment], as: role
     @comment.user = current_user
     @comment.awaiting_moderation = !(admin? or logged_in_and_verified?)
     @comment.save
@@ -76,7 +76,7 @@ class CommentsController < ApplicationController
   def update
     respond_to do |format|
       format.html {
-        if @comment.update_attributes params[:comment], :as => role
+        if @comment.update_attributes params[:comment], as: role
           flash[:notice] = 'Successfully updated'
           redirect_to (@comment.awaiting_moderation ? comments_path : nested_comment_path(@comment))
         else

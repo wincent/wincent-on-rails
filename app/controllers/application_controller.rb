@@ -1,8 +1,8 @@
 class ApplicationController < ActionController::Base
-  before_filter             :log_in_before
+  before_filter         :log_in_before
   protect_from_forgery
-  rescue_from               ActionController::ForbiddenError, :with => :forbidden
-  rescue_from               ActiveRecord::RecordNotFound, :with => :record_not_found
+  rescue_from           ActionController::ForbiddenError, with: :forbidden
+  rescue_from           ActiveRecord::RecordNotFound, with: :record_not_found
 
   # fix feed breakage caused by Rails 2.3.0 RC1
   # see: https://wincent.com/issues/1227
@@ -15,15 +15,16 @@ protected
 
   def handle_http_status_code code, &block
     if request.xhr?
-      render :text => Rack::Utils::HTTP_STATUS_CODES[code], :status => code
+      render text: Rack::Utils::HTTP_STATUS_CODES[code], status: code
     elsif request.format && request.format.atom?
-      render :text => '', :status => code
+      render text: '', status: code
     else # HTML requests
       if block_given?
         yield
       else
-        render :file => Rails.root + 'public' + "#{code}.html", :status => code,
-          :layout => false
+        render  file:   Rails.root + 'public' + "#{code}.html",
+                status: code,
+                layout: false
       end
     end
   end
@@ -79,7 +80,7 @@ protected
   end
 
   def forbidden_flash_message
-    href = login_path :original_uri => request.fullpath
+    href = login_path original_uri: request.fullpath
     log_in = helpers.link_to('Log in', href)
     'Access to the requested resource is forbidden. ' +
       "#{log_in} as an administrator to gain access."

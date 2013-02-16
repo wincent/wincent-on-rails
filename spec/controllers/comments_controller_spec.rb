@@ -11,7 +11,7 @@ describe CommentsController do
       end
 
       def do_get
-        get :edit, :id => @comment.id
+        get :edit, id: @comment.id
       end
 
       it 'runs the "require_admin" before filter' do
@@ -44,7 +44,7 @@ describe CommentsController do
       # but the effort is minimal, so it doesn't hurt to err on the safe side
       it 'denies access to the "edit" action' do
         log_in
-        get :edit, :id => @comment.id
+        get :edit, id: @comment.id
         response.should redirect_to(login_path)
         flash[:notice].should =~ /requires administrator privileges/
       end
@@ -58,7 +58,7 @@ describe CommentsController do
       # strictly speaking this is re-testing the require_admin method
       # but the effort is minimal, so it doesn't hurt to err on the safe side
       it 'denies access to the "edit" action' do
-        get :edit, :id => @comment.id
+        get :edit, id: @comment.id
         response.should redirect_to(login_path)
         flash[:notice].should =~ /requires administrator privileges/
       end
@@ -69,12 +69,15 @@ describe CommentsController do
     context 'logged in as admin' do
       before do
         @article = Article.make!
-        @comment = Comment.make! :commentable => @article
+        @comment = Comment.make! commentable: @article
         log_in_as_admin
       end
 
       def do_put
-        put :update, :article_id => @article.id, :id => @comment.id, :comment => { :body => 'foo' }
+        put :update,
+          article_id: @article.id,
+          id:         @comment.id,
+          comment:    { body: 'foo' }
       end
 
       it 'runs the "require_admin" before filter' do
@@ -88,8 +91,7 @@ describe CommentsController do
       end
 
       it 'updates the comment' do
-        mock(@comment).update_attributes({'body' => 'foo'},
-                                         {:as => :admin})
+        mock(@comment).update_attributes({ 'body' => 'foo' }, { as: :admin })
         stub(Comment).find() { @comment }
         do_put
       end
@@ -139,8 +141,8 @@ describe CommentsController do
   describe '#new' do
     describe 'when commenting not allowed' do
       before do
-        tweet = Tweet.make! :accepts_comments => false
-        get :new, :tweet_id => tweet.id
+        tweet = Tweet.make! accepts_comments: false
+        get :new, tweet_id: tweet.id
       end
 
       it 'is not successful' do
