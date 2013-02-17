@@ -44,19 +44,17 @@ function clearAJAXFlash() {
 }
 
 function ajax_comment_form(url) {
-  var comment_div = $('#comment-form');
-  var anchor = comment_div.find('a');
-  anchor.attr('href', '#comment-form');
+  var $comment_div = $('#comment-form'),
+      $anchor = $comment_div.find('a').attr('href', '#comment-form');
   var click = function() {
-    anchor.unbind('click').addClass('disabled');
-    var spinner = $('<img/>', {
+    $anchor.off('click').addClass('disabled');
+    var $spinner = $('<img/>', {
       alt     : 'Spinner',
       id      : 'spinner_' + globalSpinnerCounter++,
       'class' : 'spinner',
       src     : '<%= asset_path 'spinner.gif' %>'
     });
-    comment_div.append(spinner);
-    spinner.show();
+    $comment_div.append($spinner.show());
     clearAJAXFlash();
     $.ajax({
       url       : url,
@@ -64,95 +62,92 @@ function ajax_comment_form(url) {
       dataType  : 'html',
       success   : function(html) {
         clearAJAXFlash();
-        comment_div.find('.links').hide();
-        comment_div.append(html);
+        $comment_div.append(html).find('.links').hide();
       },
       error: function(req) {
         insertAJAXFlash('error', req.responseText);
-        anchor.click(click);
+        $anchor.on('click', click);
       },
       complete: function() {
-        spinner.remove();
-        anchor.removeClass('disabled');
+        $spinner.remove();
+        $anchor.removeClass('disabled');
       }
     });
   }
-  anchor.click(click);
+  $anchor.on('click', click);
 }
 
 function edit_in_place(selector, class_name, attribute_name, url) {
   var model = $(selector); // could be many
   model.each(function(i) {
-    var model_id = $(this).attr('id'); // issue_22
-    var record_id = model_id.match(/_(\d+)$/)[1]; // 22
-    var field_id = $('#' + model_id + '_' + attribute_name); // issue_22_summary
-    function highlight() { field_id.addClass('highlight'); }
-    function unhighlight() { field_id.removeClass('highlight'); }
+    var model_id = $(this).attr('id'), // issue_22
+        record_id = model_id.match(/_(\d+)$/)[1], // 22
+        $field_id = $('#' + model_id + '_' + attribute_name); // issue_22_summary
+    function highlight() { $field_id.addClass('highlight'); }
+    function unhighlight() { $field_id.removeClass('highlight'); }
     function clickFunction() {
-      var field_text = field_id.text();
-      field_id.unbind('mouseenter mouseleave');
+      $field_id.off('mousenter mouseleave'); // remove 'hover' handlers
+      var field_text = $field_id.text();
       unhighlight();
-      field_id.attr('title', 'Click outside to abort editing');
-      field_id.html('<form action="javascript:void(0)" style="display:inline;"><input type="text" value="' +
-        escapeHTML(field_text) +
-        '"></form>');
-      field_id.find('input')[0].select();
-      field_id.unbind('dblclick');
-      field_id.find('input').blur(function() {
-        field_id.text(field_text);
-        field_id.dblclick(clickFunction);
-        field_id.hover(highlight, unhighlight);
-      });
-      field_id.find('form').submit(function() {
-        var value = field_id.find('input').val();
-        field_id.text('saving...');
-        $.ajax({
-          'url': url + record_id,
-          'type': 'post',
-          'dataType': 'json',
-          'data': '_method=put&' + class_name + '[' + attribute_name + ']=' +
-            encodeURIComponent(value),
-          'success': function(json) {
-            field_id.text(json[class_name][attribute_name]);
-            field_id.removeClass('ajax_error');
-            clearAJAXFlash();
-          },
-          'error': function(req) {
-            field_id.text(value);
-            field_id.addClass('ajax_error');
-            insertAJAXFlash('error', req.responseText);
-          },
-          'complete': function() {
-            field_id.hover(highlight, unhighlight);
-            field_id.dblclick(clickFunction);
-          }
+      $field_id.attr('title', 'Click outside to abort editing')
+        .html('<form action="javascript:void(0)" style="display:inline;"><input type="text" value="' +
+          escapeHTML(field_text) +
+          '"></form>')
+        .find('input')[0].select();
+      $field_id.off('dblclick')
+        .find('input').on('blur', function() {
+          $field_id.text(field_text)
+            .on('dblclick', clickFunction)
+            .hover(highlight, unhighlight);
+        }).end()
+        .find('form').on('submit', function() {
+          var value = $field_id.find('input').val();
+          $field_id.text('saving...');
+          $.ajax({
+            'url': url + record_id,
+            'type': 'post',
+            'dataType': 'json',
+            'data': '_method=put&' + class_name + '[' + attribute_name + ']=' +
+              encodeURIComponent(value),
+            'success': function(json) {
+              $field_id.text(json[class_name][attribute_name])
+                .removeClass('ajax_error');
+              clearAJAXFlash();
+            },
+            'error': function(req) {
+              $field_id.text(value).addClass('ajax_error');
+              insertAJAXFlash('error', req.responseText);
+            },
+            'complete': function() {
+              $field_id.hover(highlight, unhighlight)
+                .on('dblclick', clickFunction);
+            }
+          });
         });
-      });
     }
-    field_id.attr('title', 'Double-click to edit');
-    field_id.dblclick(clickFunction);
-    field_id.hover(highlight, unhighlight);
+    $field_id.attr('title', 'Double-click to edit')
+      .on('dblclick', clickFunction)
+      .hover(highlight, unhighlight);
   });
 }
 
 function ajax_check_box(selector, class_name, attribute_name, url) {
-  var model_id = $(selector).attr('id'); // issue_22
-  var record_id = model_id.match(/_(\d+)$/)[1]; // 22
-  var field_id = $('#' + model_id + '_' + attribute_name); // issue_22_public
-  var field_text = field_id.text(); // eg. true, false
-  var spinner_id = 'spinner_' + globalSpinnerCounter++;
-  var new_contents = '<input id="' + class_name + '_' + attribute_name +
+  var model_id = $(selector).attr('id'), // issue_22
+      record_id = model_id.match(/_(\d+)$/)[1], // 22
+      $field_id = $('#' + model_id + '_' + attribute_name), // issue_22_public
+      field_text = $field_id.text(), // eg. true, false
+      spinner_id = 'spinner_' + globalSpinnerCounter++,
+      new_contents = '<input id="' + class_name + '_' + attribute_name +
     '" name="' + class_name + '[' + attribute_name + ']" type="checkbox">' +
     '<img alt="Spinner" id="' + spinner_id + '" class="spinner" src="<%= asset_path 'spinner.gif' %>" />';
-  field_id.html(new_contents);
-  var check_box_id = field_id.find('input');
+  $field_id.html(new_contents);
+  var check_box_id = $field_id.find('input');
   if (field_text === 'true') {
     check_box_id.prop('checked', true);
     }
   var oldProp = check_box_id.prop('checked');
   check_box_id.change(function() {
-    var spinner = field_id.find('#' + spinner_id);
-    spinner.show();
+    var $spinner = $field_id.find('#' + spinner_id).show();
     $.ajax({
       'url': url + record_id,
       'type': 'post',
@@ -168,19 +163,19 @@ function ajax_check_box(selector, class_name, attribute_name, url) {
         insertAJAXFlash('error', req.responseText);
       },
       'complete': function() {
-        spinner.hide();
+        $spinner.hide();
       }
     });
   });
 }
 
 function ajax_select(selector, class_name, attribute_name, options, include_blank, url) {
-  var model_id = $(selector).attr('id'); // issue_22
-  var record_id = model_id.match(/_(\d+)$/)[1]; // 22
-  var field_id = $('#' + model_id + '_' + attribute_name); // issue_22_status
-  var field_text = field_id.text(); // eg. New, Open, Closed
-  var spinner_id = 'spinner_' + globalSpinnerCounter++;
-  var new_contents = '<select id="' + class_name + '_' + attribute_name + '" name="' + class_name + '[' + attribute_name + ']">';
+  var model_id = $(selector).attr('id'), // issue_22
+      record_id = model_id.match(/_(\d+)$/)[1], // 22
+      $field_id = $('#' + model_id + '_' + attribute_name), // issue_22_status
+      field_text = $field_id.text(), // eg. New, Open, Closed
+      spinner_id = 'spinner_' + globalSpinnerCounter++,
+      new_contents = '<select id="' + class_name + '_' + attribute_name + '" name="' + class_name + '[' + attribute_name + ']">';
   if (include_blank) {
     new_contents = new_contents + '<option value=""></option>';
   }
@@ -204,19 +199,18 @@ function ajax_select(selector, class_name, attribute_name, options, include_blan
   {
     // we have an array of arrays of arrays: this is the optgroup case
     for (var i = 0; i < options.length; i++) {
-      new_contents = new_contents + '<optgroup label="' + options[i][0] + '">';
-      new_contents = new_contents + option_tag(options[i][1]);
-      new_contents = new_contents + '</optgroup>';
+      new_contents += '<optgroup label="' + options[i][0] + '">' +
+        option_tag(options[i][1]) + '</optgroup>';
     }
   }
   else { // non-optgroup case
-    new_contents = new_contents + option_tag(options);
+    new_contents += option_tag(options);
   }
-  new_contents = new_contents + '</select><img alt="Spinner" id="' + spinner_id + '" class= "spinner" src="<%= asset_path 'spinner.gif' %>" />';
-  field_id.html(new_contents);
-  var select_id = field_id.find('select');
+  new_contents += '</select><img alt="Spinner" id="' + spinner_id + '" class= "spinner" src="<%= asset_path 'spinner.gif' %>" />';
+  $field_id.html(new_contents);
+  var select_id = $field_id.find('select');
   if (!selection_found) {
-    if (!include_blank) {
+    if (!include_blank$) {
       alert('failed to find selection');
       return; // programmer error! bail
     } else {
@@ -224,10 +218,9 @@ function ajax_select(selector, class_name, attribute_name, options, include_blan
       select_id.find('option:first').prop('selected', true);
     }
   }
-  var old_val = field_id.find('select option:selected').text();
+  var old_val = $field_id.find('select option:selected').text();
   select_id.change(function() {
-    var spinner = field_id.find('#' + spinner_id);
-    spinner.show();
+    var $spinner = $field_id.find('#' + spinner_id).show();
     $.ajax({
       'url': url + record_id,
       'type': 'post',
@@ -235,7 +228,7 @@ function ajax_select(selector, class_name, attribute_name, options, include_blan
       'data': '_method=put&' + class_name + '[' + attribute_name + ']=' +
         select_id.val(),
       'success': function(json) {
-        old_val = field_id.find('select option:selected').text();
+        old_val = $field_id.find('select option:selected').text();
         clearAJAXFlash();
       },
       'error': function(req) {
@@ -243,7 +236,7 @@ function ajax_select(selector, class_name, attribute_name, options, include_blan
         insertAJAXFlash('error', req.responseText);
       },
       'complete': function() {
-        spinner.hide();
+        $spinner.hide();
       }
     });
   });
@@ -254,10 +247,10 @@ function setup_preview_link(options) {
       '<img src="<%= asset_path 'update.png' %>" alt="refresh" />' +
     '</a>' +
     '<img id="preview_spinner" src="<%= asset_path 'spinner.gif' %>" alt="spinner" />');
-  $('#preview_link a').click(function() {
+  $('#preview_link a').on('click', function() {
     $('#preview_spinner').show();
-    var data = [];
-    var max = options['include'].length;
+    var data = [],
+        max = options['include'].length;
     for (var i = 0; i < max; i++) {
       var included = $('#' + options['kind'] + '_' +
         options['include'][i]).val();
@@ -283,26 +276,24 @@ function setup_preview_link(options) {
 
 function observe_field(options) {
   // defaults
-  var field = options['field'] ||
-    $('#' + options['kind'] + '_' + options['fieldName']);
-  var interval = (options['interval'] || 30) * 1000;
-  var before = options['before'] || function() { $('#preview_spinner').show(); };
-  var success = options['success'] || function(html) {
-    $('#preview').html(html).syntaxHighlight();
-    clearAJAXFlash();
-  };
-  var error = options['error'] || function(req) {
-    insertAJAXFlash('error', req.responseText);
-  };
-  var complete = options['complete'] || function() { $('#preview_spinner').hide(); };
+  var $field = options['field'] || $('#' + options['kind'] + '_' + options['fieldName']),
+      interval = (options['interval'] || 30) * 1000,
+      before = options['before'] || function() { $('#preview_spinner').show(); },
+      success = options['success'] || function(html) {
+        $('#preview').html(html).syntaxHighlight();
+        clearAJAXFlash();
+      },
+      error = options['error'] || function(req) {
+        insertAJAXFlash('error', req.responseText);
+      },
+      complete = options['complete'] || function() { $('#preview_spinner').hide(); };
 
   if (typeof window.observed_field_contents === 'undefined')
     window.observed_field_contents = {};
-  window.observed_field_contents[field.attr('id')] = field.val();
+  window.observed_field_contents[$field.attr('id')] = $field.val();
   setInterval(function() {
-    var new_content = field.val();
-    var old_content =
-      window.observed_field_contents[field.attr('id')];
+    var new_content = $field.val(),
+        old_content = window.observed_field_contents[$field.attr('id')];
     if (new_content !== old_content) {
       before();
       var data = options['fieldName'] + '=' + encodeURIComponent(new_content);
@@ -320,12 +311,12 @@ function observe_field(options) {
         'type': 'post',
         'dataType': 'html',
         'data': data,
-        'success': function(html) { success(html); },
-        'error': function(req) { error(req); },
+        'success': success,
+        'error': error,
         'complete': function() {
           complete();
           // regardless of success/failure, only try to submit once
-          window.observed_field_contents[field.attr('id')] = new_content;
+          window.observed_field_contents[$field.attr('id')] = new_content;
         }
       });
     }
