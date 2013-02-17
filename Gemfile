@@ -24,6 +24,7 @@ end
 
 group :development, :test do
   gem 'factory_girl_rails'
+  gem 'jasmine'
   gem 'rspec-rails'
 
   # uncomment for local debugging; but never for production
