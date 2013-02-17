@@ -1,4 +1,4 @@
-// Copyright 2009-2012 Wincent Colaiuta. All rights reserved.
+// Copyright 2009-2013 Wincent Colaiuta. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are met:
@@ -25,14 +25,13 @@ var global_pending_lightbox_image = null;
 
 // set up lightbox
 function lightbox(thumbnail) {
-
   // add "expand" widget
-  var link = $(thumbnail).parent();
-  link.wrap('<div class="lightbox-wrapper"></div>');
-  link.prepend('<img class="widget expand" alt="expand" title="Click to enlarge" src="<%= asset_path 'dashboard-expand.png' %>" />');
+  var $link = $(thumbnail).parent()
+    .wrap('<div class="lightbox-wrapper"></div>')
+    .prepend('<img class="widget expand" alt="expand" title="Click to enlarge" src="<%= asset_path 'dashboard-expand.png' %>" />');
 
   // examine target href for type and params
-  var href = link.attr('href');
+  var href = $link.attr('href');
   thumbnail.image = !href.match(/\.mov(\?.*)?$/);
   var params = {};
   if (href.match(/(.+)\?(.+)$/)) {
@@ -45,7 +44,7 @@ function lightbox(thumbnail) {
 
   // for images, start preloading on mouseenter
   if (thumbnail.image) {
-    link.mouseenter(function() {
+    $link.mouseenter(function() {
       // will store the preloaded image as a property in the thumbnail DOM element
       if (thumbnail.fullsized)
           return; // already been here for this image
@@ -64,9 +63,9 @@ function lightbox(thumbnail) {
   else {
     // movie dimensions come from query string
     // or if no query string, from image thumbnail
-    var width = parseInt(params['width'] || link.width());
-    var height = parseInt(params['height'] || link.height()) + 16; // plus 16 pixels for controls
-    var movie = $('<object/>', {
+    var width = parseInt(params['width'] || $link.width()),
+        height = parseInt(params['height'] || $link.height()) + 16, // plus 16 pixels for controls
+        movie = $('<object/>', {
       classid: "clsid:02BF25D5-8C17-4B23-BC80-D3488ABDDC6B",
       codebase: "http://www.apple.com/qtactivex/qtplugin.cab",
       title: $(thumbnail).attr('title')
@@ -106,11 +105,11 @@ function lightbox(thumbnail) {
       show_lightbox(e.data.tag.fullsized, false);
     return false;
   }
-  link.bind('click', { tag: thumbnail }, click);
+  $link.on('click', { tag: thumbnail }, click);
 
   function show_overlay() {
     if (!$('#lightbox-overlay').length)
-      $('#content').prepend($('<div id="lightbox-overlay"></div>').click(function() {
+      $('#content').prepend($('<div id="lightbox-overlay"></div>').on('click', function() {
         hide_lightbox();
       }));
     $('#lightbox-overlay').fadeIn();
@@ -143,12 +142,10 @@ function lightbox(thumbnail) {
 
     // for images, entire lightbox should be clickable to dismiss
     // for movies, just the close widget
-    var dismiss = is_image ?
+    var $dismiss = is_image ?
       $('#lightbox-image-frame') :
       $('#lightbox-image-frame').find('a[href=#]'); // the close widget
-    dismiss.click(function() {
-      hide_lightbox();
-    });
+    $dismiss.on('click', hide_lightbox);
 
     // update caption
     $('#lightbox-caption').html(content.attr('title'));
@@ -159,19 +156,16 @@ function lightbox(thumbnail) {
         '<a href="http://www.apple.com/quicktime/download/">' +
         '<img src="<%= asset_path 'quicktime.gif' %>"  alt="Get QuickTime">' +
         '</a>');
-      //var old_height = $('#lightbox-image-frame').height();
-      //$('#lightbox-image-frame').height(old_height + 31);
     }
 
     // position lightbox relative to thumbnail before fading it in:
     // - center horizontally relative to middle of document
     // - center vertically relative to middle of thumbnail
-    var thumbnail_offset = content.thumbnail.offset();
-    var anchor_top = thumbnail_offset.top + content.thumbnail.height() / 2;
-    var content_width = $('#lightbox-image-frame').width();
-    var content_height = $('#lightbox-image-frame').height();
-
-    var content_top = anchor_top - (content_height / 2);
+    var thumbnail_offset = content.thumbnail.offset(),
+        anchor_top = thumbnail_offset.top + content.thumbnail.height() / 2,
+        content_width = $('#lightbox-image-frame').width(),
+        content_height = $('#lightbox-image-frame').height(),
+        content_top = anchor_top - (content_height / 2);
     if (content_top + content_height + 20 > $(document).height()) // allow 20px padding
       content_top = $(document).height() - (content_height + 85);
     if (content_top < 25)
@@ -179,22 +173,25 @@ function lightbox(thumbnail) {
     var left = ($(document).width() / 2) - (content_width / 2);
     if (left < 25)
       left = 25;
-    $('#lightbox-image-frame').css('top', content_top + 'px').css('left', left + 'px').fadeIn('def');
+    $('#lightbox-image-frame').css({
+      top:  content_top + 'px',
+      left: left + 'px'
+    }).fadeIn('def');
 
     // if possible, scroll so that lightbox is centered within viewport
-    var w_width = window.innerWidth;
-    var w_height = window.innerHeight;
-    var w_origin_x = window.pageXOffset;
-    var w_origin_y = window.pageYOffset;
+    var w_width = window.innerWidth,
+        w_height = window.innerHeight,
+        w_origin_x = window.pageXOffset,
+        w_origin_y = window.pageYOffset;
     if (typeof w_width == 'undefined' ||
         typeof w_height == 'undefined' ||
         typeof w_origin_x == 'undefined' ||
         typeof w_origin_y == 'undefined')
       return;
-    var lightbox_center_x = left + content_width / 2;
-    var lightbox_center_y = content_top + content_height / 2;
-    var viewport_center_x = w_origin_x + w_width / 2;
-    var viewport_center_y = w_origin_y + w_height / 2;
+    var lightbox_center_x = left + content_width / 2,
+        lightbox_center_y = content_top + content_height / 2,
+        viewport_center_x = w_origin_x + w_width / 2,
+        viewport_center_y = w_origin_y + w_height / 2;
     w_origin_x -= viewport_center_x - lightbox_center_x;
     w_origin_y -= viewport_center_y - lightbox_center_y;
     if (w_origin_x < 0)
@@ -223,18 +220,17 @@ function lightbox(thumbnail) {
   function disable_expand_widgets() {
     $('.widget.expand').each(function() {
       $(this).removeClass('opaque').addClass('translucent');
-    })
-    $('.lightbox').each(function () {
-      $(this).parent().unbind('click').click(function() { return false; });
     });
-
+    $('.lightbox').each(function () {
+      $(this).parent().off('click').on('click', function() { return false; });
+    });
   };
 
   function enable_expand_widgets() {
     $('.widget.expand').each(function() {
       $(this).removeClass('translucent').addClass('opaque');
     })
-    $('.lightbox').each(function() { $(this).parent().unbind('click').bind('click', { tag: this }, click); });
+    $('.lightbox').each(function() { $(this).parent().off('click').on('click', { tag: this }, click); });
   };
 }
 

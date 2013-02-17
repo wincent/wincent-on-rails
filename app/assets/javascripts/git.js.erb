@@ -1,4 +1,4 @@
-// Copyright 2010-2012 Wincent Colaiuta. All rights reserved.
+// Copyright 2010-2013 Wincent Colaiuta. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are met:
@@ -24,13 +24,13 @@
 // clicking on the abbreviated subject shows the entire commit message
 $('.commit .subject').
   attr('title', 'click to view full commit message').
-  click(function(evt) {
+  on('click', function(evt) {
     evt.preventDefault();
     $(this).toggle().next().toggle();
   });
 
 // clicking on the full commit message toggles back to the abbreviated
-$('pre.message').click(function(evt) {
+$('pre.message').on('click', function(evt) {
   evt.preventDefault();
   $(this).toggle().prev().toggle();
 });
