@@ -9,7 +9,7 @@ module Sweeping
 
   # Note: we can't use `#to_param` everywhere here as it will return nil for
   # just-destroyed records without custom `#to_param` implementations (models
-  # like Issue, Snippet and Tweet which just us `#id` as their param). It works
+  # like Issue, Snippet and Tweet which just use `#id` as their param). It works
   # fine, however, for models like Article, Forum, Post and Product which use
   # permalinks or other non-id strategies.
   #
