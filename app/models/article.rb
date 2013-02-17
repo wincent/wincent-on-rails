@@ -40,6 +40,16 @@ class Article < ActiveRecord::Base
     recent.where(table[:redirect].eq(nil).or(table[:redirect].eq('')))
   }
 
+  # For "redlink" support in wikitext.
+  def self.known_links
+    @known_links ||= Set.new(pluck(:title).map(&:downcase))
+  end
+
+  # Cache-buster method called from the ArticleSweeper.
+  def self.reset_known_links!
+    @known_links = nil # not too worried about the thundering herd here
+  end
+
   # NOTE: MySQL will do a case-insensitive find here, so "foo" and "FOO" refer
   # to the same article
   def self.find_with_param! param, user = nil

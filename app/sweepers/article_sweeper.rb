@@ -12,10 +12,12 @@ class ArticleSweeper < ActionController::Caching::Sweeper
 
   def after_destroy(article)
     expire_cache article
+    reset_known
   end
 
   def after_save(article)
     expire_cache article
+    reset_known
   end
 
 private
@@ -23,5 +25,9 @@ private
   def expire_cache(article)
     safe_expire articles_path('.atom')  # /wiki.atom
     safe_expire article_path(article)   # /wiki/foo.atom
+  end
+
+  def reset_known
+    Article.reset_known_links!
   end
 end # class ArticleSweeper
