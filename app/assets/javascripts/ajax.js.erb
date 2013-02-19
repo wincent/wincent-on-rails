@@ -31,9 +31,9 @@ function escapeHTML(html) {
     .replace(/"/g, '&quot;');
 }
 
-function insertAJAXFlash(css_class, msg) {
+function insertAJAXFlash(cssClass, msg) {
   $('#ajax-flash')
-    .append($('<div/>', { 'class': css_class, html: escapeHTML(msg) }))
+    .append($('<div/>', { 'class': cssClass, html: escapeHTML(msg) }))
     .show();
 }
 
@@ -44,8 +44,8 @@ function clearAJAXFlash() {
 }
 
 function ajaxCommentForm(url) {
-  var $comment_div = $('#comment-form'),
-      $anchor = $comment_div.find('a').attr('href', '#comment-form');
+  var $commentDiv = $('#comment-form'),
+      $anchor = $commentDiv.find('a').attr('href', '#comment-form');
   var click = function() {
     $anchor.off('click').addClass('disabled');
     var $spinner = $('<img/>', {
@@ -54,7 +54,7 @@ function ajaxCommentForm(url) {
       'class' : 'spinner',
       src     : '<%= asset_path 'spinner.gif' %>'
     });
-    $comment_div.append($spinner.show());
+    $commentDiv.append($spinner.show());
     clearAJAXFlash();
     $.ajax({
       url       : url,
@@ -62,7 +62,7 @@ function ajaxCommentForm(url) {
       dataType  : 'html',
       success   : function(html) {
         clearAJAXFlash();
-        $comment_div.append(html).find('.links').hide();
+        $commentDiv.append(html).find('.links').hide();
       },
       error: function(req) {
         insertAJAXFlash('error', req.responseText);
@@ -77,89 +77,89 @@ function ajaxCommentForm(url) {
   $anchor.on('click', click);
 }
 
-function editInPlace(selector, class_name, attribute_name, url) {
+function editInPlace(selector, className, attributeName, url) {
   var model = $(selector); // could be many
   model.each(function(i) {
-    var model_id = $(this).attr('id'), // issue_22
-        record_id = model_id.match(/_(\d+)$/)[1], // 22
-        $field_id = $('#' + model_id + '_' + attribute_name); // issue_22_summary
-    function highlight() { $field_id.addClass('highlight'); }
-    function unhighlight() { $field_id.removeClass('highlight'); }
+    var modelId = $(this).attr('id'), // issue_22
+        recordId = modelId.match(/_(\d+)$/)[1], // 22
+        $fieldId = $('#' + modelId + '_' + attributeName); // issue_22_summary
+    function highlight() { $fieldId.addClass('highlight'); }
+    function unhighlight() { $fieldId.removeClass('highlight'); }
     function clickFunction() {
-      $field_id.off('mousenter mouseleave'); // remove 'hover' handlers
-      var field_text = $field_id.text();
+      $fieldId.off('mousenter mouseleave'); // remove 'hover' handlers
+      var fieldText = $fieldId.text();
       unhighlight();
-      $field_id.attr('title', 'Click outside to abort editing')
+      $fieldId.attr('title', 'Click outside to abort editing')
         .html('<form action="javascript:void(0)" style="display:inline;"><input type="text" value="' +
-          escapeHTML(field_text) +
+          escapeHTML(fieldText) +
           '"></form>')
         .find('input')[0].select();
-      $field_id.off('dblclick')
+      $fieldId.off('dblclick')
         .find('input').on('blur', function() {
-          $field_id.text(field_text)
+          $fieldId.text(fieldText)
             .on('dblclick', clickFunction)
             .hover(highlight, unhighlight);
         }).end()
         .find('form').on('submit', function() {
-          var value = $field_id.find('input').val();
-          $field_id.text('saving...');
+          var value = $fieldId.find('input').val();
+          $fieldId.text('saving...');
           $.ajax({
-            'url': url + record_id,
+            'url': url + recordId,
             'type': 'post',
             'dataType': 'json',
-            'data': '_method=put&' + class_name + '[' + attribute_name + ']=' +
+            'data': '_method=put&' + className + '[' + attributeName + ']=' +
               encodeURIComponent(value),
             'success': function(json) {
-              $field_id.text(json[class_name][attribute_name])
+              $fieldId.text(json[className][attributeName])
                 .removeClass('ajax_error');
               clearAJAXFlash();
             },
             'error': function(req) {
-              $field_id.text(value).addClass('ajax_error');
+              $fieldId.text(value).addClass('ajax_error');
               insertAJAXFlash('error', req.responseText);
             },
             'complete': function() {
-              $field_id.hover(highlight, unhighlight)
+              $fieldId.hover(highlight, unhighlight)
                 .on('dblclick', clickFunction);
             }
           });
         });
     }
-    $field_id.attr('title', 'Double-click to edit')
+    $fieldId.attr('title', 'Double-click to edit')
       .on('dblclick', clickFunction)
       .hover(highlight, unhighlight);
   });
 }
 
-function ajaxCheckBox(selector, class_name, attribute_name, url) {
-  var model_id = $(selector).attr('id'), // issue_22
-      record_id = model_id.match(/_(\d+)$/)[1], // 22
-      $field_id = $('#' + model_id + '_' + attribute_name), // issue_22_public
-      field_text = $field_id.text(), // eg. true, false
-      spinner_id = 'spinner_' + globalSpinnerCounter++,
-      new_contents = '<input id="' + class_name + '_' + attribute_name +
-    '" name="' + class_name + '[' + attribute_name + ']" type="checkbox">' +
-    '<img alt="Spinner" id="' + spinner_id + '" class="spinner" src="<%= asset_path 'spinner.gif' %>" />';
-  $field_id.html(new_contents);
-  var check_box_id = $field_id.find('input');
-  if (field_text === 'true') {
-    check_box_id.prop('checked', true);
+function ajaxCheckBox(selector, className, attributeName, url) {
+  var modelId = $(selector).attr('id'), // issue_22
+      recordId = modelId.match(/_(\d+)$/)[1], // 22
+      $fieldId = $('#' + modelId + '_' + attributeName), // issue_22_public
+      fieldText = $fieldId.text(), // eg. true, false
+      spinnerId = 'spinner_' + globalSpinnerCounter++,
+      newContents = '<input id="' + className + '_' + attributeName +
+    '" name="' + className + '[' + attributeName + ']" type="checkbox">' +
+    '<img alt="Spinner" id="' + spinnerId + '" class="spinner" src="<%= asset_path 'spinner.gif' %>" />';
+  $fieldId.html(newContents);
+  var checkBoxId = $fieldId.find('input');
+  if (fieldText === 'true') {
+    checkBoxId.prop('checked', true);
     }
-  var oldProp = check_box_id.prop('checked');
-  check_box_id.change(function() {
-    var $spinner = $field_id.find('#' + spinner_id).show();
+  var oldProp = checkBoxId.prop('checked');
+  checkBoxId.change(function() {
+    var $spinner = $fieldId.find('#' + spinnerId).show();
     $.ajax({
-      'url': url + record_id,
+      'url': url + recordId,
       'type': 'post',
       'dataType': 'json',
-      'data': '_method=put&' + class_name + '[' + attribute_name + ']=' +
-        check_box_id.prop('checked'),
+      'data': '_method=put&' + className + '[' + attributeName + ']=' +
+        checkBoxId.prop('checked'),
       'success': function(json) {
-        oldProp = check_box_id.prop('checked');
+        oldProp = checkBoxId.prop('checked');
         clearAJAXFlash();
       },
       'error': function(req) {
-        check_box_id.prop('checked', oldProp);
+        checkBoxId.prop('checked', oldProp);
         insertAJAXFlash('error', req.responseText);
       },
       'complete': function() {
@@ -169,25 +169,25 @@ function ajaxCheckBox(selector, class_name, attribute_name, url) {
   });
 }
 
-function ajaxSelect(selector, class_name, attribute_name, options, include_blank, url) {
-  var model_id = $(selector).attr('id'), // issue_22
-      record_id = model_id.match(/_(\d+)$/)[1], // 22
-      $field_id = $('#' + model_id + '_' + attribute_name), // issue_22_status
-      field_text = $field_id.text(), // eg. New, Open, Closed
-      spinner_id = 'spinner_' + globalSpinnerCounter++,
-      new_contents = '<select id="' + class_name + '_' + attribute_name + '" name="' + class_name + '[' + attribute_name + ']">';
-  if (include_blank) {
-    new_contents = new_contents + '<option value=""></option>';
+function ajaxSelect(selector, className, attributeName, options, includeBlank, url) {
+  var modelId = $(selector).attr('id'), // issue_22
+      recordId = modelId.match(/_(\d+)$/)[1], // 22
+      $fieldId = $('#' + modelId + '_' + attributeName), // issue_22_status
+      fieldText = $fieldId.text(), // eg. New, Open, Closed
+      spinnerId = 'spinner_' + globalSpinnerCounter++,
+      newContents = '<select id="' + className + '_' + attributeName + '" name="' + className + '[' + attributeName + ']">';
+  if (includeBlank) {
+    newContents = newContents + '<option value=""></option>';
   }
-  var selection_found = false;
+  var selectionFound = false;
 
   // helper function to reduce duplication below
-  function option_tag(opt) {
+  function optionTag(opt) {
     var tag = '';
     for (var i = 0; i < opt.length; i++) {
-      if (field_text === opt[i][0]) {
+      if (fieldText === opt[i][0]) {
         tag = tag + '<option value="' + opt[i][1] + '" selected="selected">' + opt[i][0] + '</option>';
-        selection_found = true;
+        selectionFound = true;
       } else {
         tag = tag + '<option value="' + opt[i][1] + '">' + opt[i][0] + '</option>';
       }
@@ -199,40 +199,40 @@ function ajaxSelect(selector, class_name, attribute_name, options, include_blank
   {
     // we have an array of arrays of arrays: this is the optgroup case
     for (var i = 0; i < options.length; i++) {
-      new_contents += '<optgroup label="' + options[i][0] + '">' +
-        option_tag(options[i][1]) + '</optgroup>';
+      newContents += '<optgroup label="' + options[i][0] + '">' +
+        optionTag(options[i][1]) + '</optgroup>';
     }
   }
   else { // non-optgroup case
-    new_contents += option_tag(options);
+    newContents += optionTag(options);
   }
-  new_contents += '</select><img alt="Spinner" id="' + spinner_id + '" class= "spinner" src="<%= asset_path 'spinner.gif' %>" />';
-  $field_id.html(new_contents);
-  var select_id = $field_id.find('select');
-  if (!selection_found) {
-    if (!include_blank$) {
+  newContents += '</select><img alt="Spinner" id="' + spinnerId + '" class= "spinner" src="<%= asset_path 'spinner.gif' %>" />';
+  $fieldId.html(newContents);
+  var selectId = $fieldId.find('select');
+  if (!selectionFound) {
+    if (!includeBlank$) {
       alert('failed to find selection');
       return; // programmer error! bail
     } else {
       // if none of the options match, eg "no product", must be the "blank" option
-      select_id.find('option:first').prop('selected', true);
+      selectId.find('option:first').prop('selected', true);
     }
   }
-  var old_val = $field_id.find('select option:selected').text();
-  select_id.change(function() {
-    var $spinner = $field_id.find('#' + spinner_id).show();
+  var oldVal = $fieldId.find('select option:selected').text();
+  selectId.change(function() {
+    var $spinner = $fieldId.find('#' + spinnerId).show();
     $.ajax({
-      'url': url + record_id,
+      'url': url + recordId,
       'type': 'post',
       'dataType': 'json',
-      'data': '_method=put&' + class_name + '[' + attribute_name + ']=' +
-        select_id.val(),
+      'data': '_method=put&' + className + '[' + attributeName + ']=' +
+        selectId.val(),
       'success': function(json) {
-        old_val = $field_id.find('select option:selected').text();
+        oldVal = $fieldId.find('select option:selected').text();
         clearAJAXFlash();
       },
       'error': function(req) {
-        select_id.val(old_val);
+        selectId.val(oldVal);
         insertAJAXFlash('error', req.responseText);
       },
       'complete': function() {
