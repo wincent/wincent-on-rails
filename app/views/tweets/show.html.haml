@@ -26,4 +26,4 @@
     %p Comments are now closed for this tweet. You can discuss it further in the #{link_to 'forums', forums_path}.
 -content_for :javascript do
   :javascript
-    ajax_comment_form('#{new_tweet_comment_path @tweet.id}');
+    ajaxCommentForm('#{new_tweet_comment_path @tweet.id}');
