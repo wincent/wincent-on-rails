@@ -77,7 +77,7 @@ function ajaxCommentForm(url) {
   $anchor.on('click', click);
 }
 
-function edit_in_place(selector, class_name, attribute_name, url) {
+function editInPlace(selector, class_name, attribute_name, url) {
   var model = $(selector); // could be many
   model.each(function(i) {
     var model_id = $(this).attr('id'), // issue_22
