@@ -26,18 +26,18 @@
 #preview=render 'preview'
 -content_for :javascript do
   :javascript
-    observe_field({ 'kind':       'snippet',
-                    'fieldName':  'body',
-                    'include':    ['description', 'markup_type'],
-                    'url':        '#{snippets_path}' });
-    observe_field({ 'kind':       'snippet',
-                    'fieldName':  'description',
-                    'include':    ['body', 'markup_type'],
-                    'url':        '#{snippets_path}' });
-    observe_field({ 'kind':       'snippet',
-                    'fieldName':  'markup_type',
-                    'include':    ['body', 'description'],
-                    'url':        '#{snippets_path}' });
+    observeField({ 'kind':       'snippet',
+                   'fieldName':  'body',
+                   'include':    ['description', 'markup_type'],
+                   'url':        '#{snippets_path}' });
+    observeField({ 'kind':       'snippet',
+                   'fieldName':  'description',
+                   'include':    ['body', 'markup_type'],
+                   'url':        '#{snippets_path}' });
+    observeField({ 'kind':       'snippet',
+                   'fieldName':  'markup_type',
+                   'include':    ['body', 'description'],
+                   'url':        '#{snippets_path}' });
     setup_preview_link({'kind':     'snippet',
                         'include':  ['body', 'description', 'markup_type'],
                         'url':      '#{snippets_path}' });

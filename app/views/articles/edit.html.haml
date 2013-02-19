@@ -34,6 +34,6 @@
   =link_to 'show', article_path(@article)
 -content_for :javascript do
   :javascript
-    observe_field({ 'kind': 'article', 'fieldName': 'title', 'include': ['body'], 'url': '#{articles_path}' });
-    observe_field({ 'kind': 'article', 'fieldName': 'body', 'include': ['title'], 'url': '#{articles_path}' });
+    observeField({ 'kind': 'article', 'fieldName': 'title', 'include': ['body'], 'url': '#{articles_path}' });
+    observeField({ 'kind': 'article', 'fieldName': 'body', 'include': ['title'], 'url': '#{articles_path}' });
     setup_preview_link({ 'kind': 'article', 'include': ['body', 'title'], 'url': '#{articles_path}' });

@@ -22,5 +22,5 @@
   =link_to 'index', tweets_path
 -content_for :javascript do
   :javascript
-    observe_field({ 'kind': 'tweet', 'fieldName': 'body', 'interval': 5, 'url': '#{tweets_path}' });
+    observeField({ 'kind': 'tweet', 'fieldName': 'body', 'interval': 5, 'url': '#{tweets_path}' });
     setup_preview_link({ 'kind': 'tweet', 'include': ['body'], 'url': '#{tweets_path}' });
