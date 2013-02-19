@@ -169,7 +169,7 @@ function ajaxCheckBox(selector, class_name, attribute_name, url) {
   });
 }
 
-function ajax_select(selector, class_name, attribute_name, options, include_blank, url) {
+function ajaxSelect(selector, class_name, attribute_name, options, include_blank, url) {
   var model_id = $(selector).attr('id'), // issue_22
       record_id = model_id.match(/_(\d+)$/)[1], // 22
       $field_id = $('#' + model_id + '_' + attribute_name), // issue_22_status
