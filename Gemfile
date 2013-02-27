@@ -1,4 +1,4 @@
-source 'http://rubygems.org'
+source 'https://rubygems.org'
 
 gem 'bundler'
 gem 'dalli'
@@ -23,7 +23,7 @@ group :production do
 end
 
 group :development, :test do
-  gem 'factory_girl_rails'
+  gem 'factory_girl_rails', '3.4.0'
   gem 'jasmine'
   gem 'rspec-rails'
 
