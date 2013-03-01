@@ -140,16 +140,35 @@ code, tt {
   padding: 0 0.1em;
 }
 
-// blockquote.png: 32 x 32
 blockquote {
   padding-left: 24px;
   padding-right: 24px;
+  position: relative;
   min-height: 32px;
-  background: image-url("blockquote.png") no-repeat left top;
   margin: {
     left: 1em;
     right: 2em;
   };
+
+  &:after,
+  &:before {
+    @include opacity(0.1);
+    font-size: 4em;
+    position: absolute;
+  }
+
+  &:after {
+    content: "\201c";
+    left: 0;
+    top: 0;
+  }
+
+  &:before {
+    bottom: 0;
+    content: "\201d";
+    right: 0;
+  }
+
   p, li {
     color: #999999;
   }
