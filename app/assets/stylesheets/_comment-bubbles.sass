@@ -1,36 +1,61 @@
-=comment-bubble($background_color, $border_color, $background_image)
+// pure-CSS speech bubbles:
+//   http://nicolasgallagher.com/pure-css-speech-bubbles/
+//   http://stackoverflow.com/questions/8896320/pure-css-speech-bubble-with-border
+//
+// suppress pull quotes, instead show speech bubble triangle
+%triangle
+  @include opacity(1)             // override/suppress
+  border-bottom: 0
+  border: 10px solid transparent
+  content: " "                    // override/suppress
+  display: block
+  height: 0
+  left: 60px
+  overflow: hidden
+  top: inherit                    // override/suppress
+  width: 0
+
+=comment-bubble($background-color, $border-color)
   list-style-type: none
   cite
     display: block
     font-style: normal
-    background-image: $background_image
-    background-repeat: no-repeat
-    background-position-x: 60px
-    background-posiiton-y: 0px
     padding-top: 20px
+    position: relative
     margin-left: 1em
     margin-top: -22px
+
   >blockquote
     +border-radius(1em)
-    border: 2px solid $border_color
-    background: $background_color
+    border: 2px solid $border-color
+    background: $background-color
     margin-bottom: 20px
-    &:after, &:before
-      content: ""
+
+    &:after
+      @extend %triangle
+      border-top-color: $border-color
+      bottom: -20px
+      z-index: 1
+
+    &:before
+      @extend %triangle
+      border-top-color: $background-color
+      bottom: -17px
+      z-index: 2
 
 ol#comments.bubbles
   li.odd
-    +comment-bubble(#f7f7f7, #ccc, image-url("comment-bubble-triangle-odd.png"))
+    +comment-bubble(#f7f7f7, #ccc)
   li.odd.active-fragment > blockquote
     background: #f2ffff
     +box-shadow
   li.even
-    +comment-bubble(#eaeaea, #ccc, image-url("comment-bubble-triangle-even.png"))
+    +comment-bubble(#eaeaea, #ccc)
   li.even.active-fragment > blockquote
     background: #f2ffff
     +box-shadow
   li.admin
-    +comment-bubble(white, #666, image-url("comment-bubble-triangle-admin.png"))
+    +comment-bubble(white, #666)
   li.admin.active-fragment > blockquote
     background: #f2ffff
     +box-shadow
