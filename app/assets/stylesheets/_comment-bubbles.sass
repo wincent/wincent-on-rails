@@ -46,19 +46,15 @@
 ol#comments.bubbles
   li.odd
     +comment-bubble(#f7f7f7, #ccc)
-  li.odd.active-fragment > blockquote
-    background: #f2ffff
-    +box-shadow
   li.even
     +comment-bubble(#eaeaea, #ccc)
-  li.even.active-fragment > blockquote
-    background: #f2ffff
-    +box-shadow
   li.admin
     +comment-bubble(white, #666)
-  li.admin.active-fragment > blockquote
+  li.active-fragment > blockquote
     background: #f2ffff
     +box-shadow
+    &:before
+      border-top-color: #f2ffff
   blockquote
     > ol, > ul
       // lists look crap if they are the first or last item in the bubble
