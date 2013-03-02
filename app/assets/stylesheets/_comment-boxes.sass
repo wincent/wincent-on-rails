@@ -9,53 +9,59 @@ ol#comments
 =comment-box($background-color, $border-color)
   background: $background-color
   border: 1px solid $border-color
-  list-style: none
-  margin-bottom: 10px
-  margin-left: -40px
-  padding: 0px
-  white-space: nowrap
   > blockquote
-    background-image: none
     border-left: 1px solid $border-color
-    display: inline-block
-    margin: 0
-    min-height: 80px
-    vertical-align: top
-    white-space: normal
-    width: 75%
-
-    // suppress pull quotes
-    &:after, &:before
-      content: ""
-
-    > ul, > ol
-      margin-bottom: 12px
-      margin-top: 12px
-    > p, li
-      color: #666
   cite
-    background-image: none
     border-right: 1px solid $border-color
-    display: inline-block
-    float: left
-    font-style: normal
-    margin: 0 -1px 0 0
-    padding: 10px
-    vertical-align: top
-    white-space: normal
-    width: 15%
 
 #comments.boxed
   > li
     +clearfix
     +comment-box(#f7f7f7, #ccc)
-  > li:nth-child(even)
-    +comment-box(#eaeaea, #ccc)
-  > li.admin
-    // BUG: not used yet?
-    +comment-box(white, #ccc)
-  > li.private
-    +comment-box(white, #ccc)
-  > li.active-fragment
-    background: $active-fragment-background-color
-    +box-shadow
+    list-style: none
+    margin-bottom: 10px
+    margin-left: -40px
+    padding: 0px
+    white-space: nowrap
+    > blockquote
+      background-image: none
+      display: inline-block
+      margin: 0
+      min-height: 80px
+      vertical-align: top
+      white-space: normal
+      width: 75%
+
+      // suppress pull quotes
+      &:after, &:before
+        content: ""
+
+      > ul, > ol
+        margin-bottom: 12px
+        margin-top: 12px
+      > p, li
+        color: #666
+    cite
+      background-image: none
+      display: inline-block
+      float: left
+      font-style: normal
+      margin: 0 -1px 0 0
+      padding: 10px
+      vertical-align: top
+      white-space: normal
+      width: 15%
+
+    &:nth-child(even)
+      +comment-box(#eaeaea, #ccc)
+
+    &.admin
+      // BUG: not used yet?
+      +comment-box(white, #ccc)
+
+    &.private
+      +comment-box(white, #ccc)
+
+    &.active-fragment
+      background: $active-fragment-background-color
+      +box-shadow
