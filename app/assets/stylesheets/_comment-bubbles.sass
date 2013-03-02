@@ -52,17 +52,21 @@
         bottom: -17px
         z-index: 2
 
-  li:nth-child(even)
-    +comment-bubble(#eaeaea, #ccc)
-  li.admin
-    +comment-bubble(white, #666)
-  li.active-fragment > blockquote
-    background: $active-fragment-background-color
-    +box-shadow
-    &:before
-      border-top-color: $active-fragment-background-color
+    &:nth-child(even)
+      +comment-bubble(#eaeaea, #ccc)
+
+    &.admin
+      +comment-bubble(white, #666)
+
+    &.active-fragment > blockquote
+      background: $active-fragment-background-color
+      +box-shadow
+      &:before
+        border-top-color: $active-fragment-background-color
+
   blockquote
     > ol, > ul
       // lists look crap if they are the first or last item in the bubble
-      margin-bottom: 12px
-      margin-top: 12px
+      margin:
+        bottom: 12px
+        top: 12px
