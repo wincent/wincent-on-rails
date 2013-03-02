@@ -16,36 +16,42 @@
   width: 0
 
 =comment-bubble($background-color, $border-color)
-  list-style-type: none
-  cite
-    display: block
-    font-style: normal
-    padding-top: 20px
-    position: relative
-    margin-left: 1em
-    margin-top: -22px
-
   > blockquote
-    +border-radius(1em)
     border: 2px solid $border-color
     background: $background-color
-    margin-bottom: 20px
 
     &:after
-      @extend %triangle
       border-top-color: $border-color
-      bottom: -20px
-      z-index: 1
 
     &:before
-      @extend %triangle
       border-top-color: $background-color
-      bottom: -17px
-      z-index: 2
 
 #comments.bubbles
   li
     +comment-bubble(#f7f7f7, #ccc)
+    list-style-type: none
+    cite
+      display: block
+      font-style: normal
+      padding-top: 20px
+      position: relative
+      margin:
+        left: 1em
+        top: -22px
+    > blockquote
+      +border-radius(1em)
+      margin-bottom: 20px
+
+      &:after
+        @extend %triangle
+        bottom: -20px
+        z-index: 1
+
+      &:before
+        @extend %triangle
+        bottom: -17px
+        z-index: 2
+
   li:nth-child(even)
     +comment-bubble(#eaeaea, #ccc)
   li.admin
