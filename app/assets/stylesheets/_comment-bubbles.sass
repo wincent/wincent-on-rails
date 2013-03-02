@@ -44,9 +44,9 @@
       z-index: 2
 
 #comments.bubbles
-  li.odd
+  li
     +comment-bubble(#f7f7f7, #ccc)
-  li.even
+  li:nth-child(even)
     +comment-bubble(#eaeaea, #ccc)
   li.admin
     +comment-bubble(white, #666)

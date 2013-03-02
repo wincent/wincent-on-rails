@@ -48,12 +48,11 @@ ol#comments
 #comments.boxed
   > li
     +clearfix
-  > li.odd
     +comment-box(#f7f7f7, #ccc)
-  > li.even
+  > li:nth-child(even)
     +comment-box(#eaeaea, #ccc)
   > li.admin
-    // BUG: not used yet
+    // BUG: not used yet?
     +comment-box(white, #ccc)
   > li.private
     +comment-box(white, #ccc)
