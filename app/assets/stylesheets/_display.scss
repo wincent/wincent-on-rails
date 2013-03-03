@@ -495,10 +495,10 @@ div.column {
 @import "icons/*.png";
 
 ul.pagination {
-  margin: 1em;
   font-size: 0.75em;
   height: 16px;
   list-style-type: none;
+  margin: 1em;
   text-align: right;
   li {
     border-right: 1px solid #cccccc;
@@ -515,8 +515,8 @@ ul.pagination {
   }
   .first, .prev, .next, .last {
     display: inline-block;
-    vertical-align: middle;
     height: 16px;
+    vertical-align: middle;
     width: 16px;
   }
   .first {
