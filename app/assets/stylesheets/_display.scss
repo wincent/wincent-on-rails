@@ -329,7 +329,7 @@ a.mailto:after {
   @include border-radius(4px);
   @include box-shadow(0 0 1px 1px #888);
 
-  @include respond_to(tablet) {
+  @include respond-to(tablet) {
     margin: 0;
   }
 }
