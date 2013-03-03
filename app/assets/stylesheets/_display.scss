@@ -18,7 +18,32 @@ body {
 h1, h2, h3, h4, h5, h6 {
   color: #333333;
   font-family: "Yanone Kaffeesatz", sans-serif;
-  font-size: 2em;
+  line-height: 1;
+  margin-bottom: 0.5em;
+}
+
+h1 {
+  font-size: modular(1em, 3);
+}
+
+h2 {
+  font-size: modular(1em, 2);
+}
+
+h3 {
+  font-size: modular(1em, 1);
+}
+
+h4 {
+  font-size: modular(1em, 0);
+}
+
+h5 {
+  font-size: modular(1em, -1);
+}
+
+h6 {
+  font-size: modular(1em, -2);
 }
 
 h1.major {
