@@ -1,3 +1,4 @@
-previous_failures.txt
+app/assets/images/sprites
 capybara-*.html
 coverage
+previous_failures.txt
