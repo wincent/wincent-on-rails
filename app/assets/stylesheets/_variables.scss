@@ -4,4 +4,6 @@ $default-box-shadow-h-offset: 5px;
 $default-box-shadow-v-offset: 5px;
 
 // app-specific
-$active-fragment-background-color: #f2ffff
+$active-fragment-background-color: #f2ffff;
+$browser-base-font-size: 16px; // default "medium" font in all web browsers
+$desired-base-font-size: 13px;
