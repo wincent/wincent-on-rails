@@ -5,7 +5,7 @@ html {
 }
 
 body {
-  background: #dddddd image-url("bg.jpg") {
+  background: #ddd image-url("bg.jpg") {
     attachment: fixed;
     position: top left;
   };
@@ -16,7 +16,7 @@ body {
 }
 
 h1, h2, h3, h4, h5, h6 {
-  color: #333333;
+  color: #333;
   font-family: "Yanone Kaffeesatz", sans-serif;
   line-height: 1;
   margin-bottom: 0.5em;
@@ -47,7 +47,7 @@ h6 {
 }
 
 h1.major {
-  border-bottom: 2px solid #cccccc;
+  border-bottom: 2px solid #ccc;
   a:hover {
     text-decoration: none;
     color: #ee7714;
@@ -55,7 +55,7 @@ h1.major {
 }
 
 h2.major {
-  border-bottom: 1px solid #cccccc;
+  border-bottom: 1px solid #ccc;
   a:hover {
     text-decoration: none;
     color: #ee7714;
@@ -63,7 +63,7 @@ h2.major {
 }
 
 p, li {
-  color: #666666;
+  color: #666;
 }
 
 pre {
@@ -101,19 +101,19 @@ pre span.line-number:before {
 // these based on Vim colorscheme because that's what I'm used to looking at
 pre {
   span.added-syntax {
-    color: #008800;
+    color: #080;
   }
   span.boolean-syntax {
     color: #cd0000;
   }
   span.comment-syntax {
-    color: #0000ee;
+    color: #00e;
   }
   span.constant-syntax {
     color: #1a8b0a;
   }
   span.deleted-syntax {
-    color: #cc0000;
+    color: #c00;
   }
   span.hunk-header-syntax {
     color: #009c9c;
@@ -195,7 +195,7 @@ blockquote {
   }
 
   p, li {
-    color: #999999;
+    color: #999;
   }
 }
 
@@ -376,7 +376,7 @@ aside {
     right: 1.5em;
   };
   @include border-radius(4px);
-  background: #eeeeee;
+  background: #eee;
   border: 2px solid silver;
   .hoverlink {
     visibility: visible;
@@ -526,7 +526,7 @@ ul.pagination {
   margin: 1em;
   text-align: right;
   li {
-    border-right: 1px solid #cccccc;
+    border-right: 1px solid #ccc;
     display: inline-block;
     padding: 0 5px;
     &:first-child {
@@ -620,7 +620,7 @@ form .annotation {
     size: x-small;
     weight: normal;
   };
-  color: #666666;
+  color: #666;
 }
 
 // forms
@@ -655,7 +655,7 @@ form {
     }
   }
   li + li {
-    border-top: 1px solid #eeeeee;
+    border-top: 1px solid #eee;
   }
 }
 
@@ -674,7 +674,7 @@ form {
   margin: 1em;
   border: 1px solid gray;
   @include border-radius(0.33em);
-  @include box-shadow(0.33em #aaaaaa);
+  @include box-shadow(0.33em #aaa);
   padding: 1em;
   h3 {
     margin-top: 0em;
@@ -693,9 +693,9 @@ ul.taggables {
 
 .when {
   font-size: 0.75em;
-  color: #bbbbbb;
+  color: #bbb;
   a {
-    color: #bbbbbb;
+    color: #bbb;
     font-weight: normal;
   }
 }
@@ -703,11 +703,11 @@ ul.taggables {
 .hoverlink {
   visibility: hidden;
   font-size: 0.75em;
-  color: #bbbbbb;
+  color: #bbb;
   border-left: 1px solid silver;
   padding-left: 6px;
   a {
-    color: #bbbbbb;
+    color: #bbb;
     font-weight: normal;
   }
 }
@@ -725,14 +725,14 @@ ul.taggables {
 }
 
 .deleted {
-  color: #bbbbbb;
+  color: #bbb;
   a {
-    color: #bbbbbb;
+    color: #bbb;
   }
 }
 
 .highlight {
-  background: #eeeeee;
+  background: #eee;
 }
 
 // for non-existent wiki links
@@ -885,7 +885,7 @@ td.links {
   }
   th + td {
     padding-top: -0.5em;
-    border-bottom: 1px solid #cccccc;
+    border-bottom: 1px solid #ccc;
     width: 85%;
   }
   // we want private comments to stand out a bit so that the admin knows which ones are hidden from public view
@@ -896,14 +896,14 @@ td.links {
 
 .comments .odd {
   th + td {
-    border: 1px solid #cccccc;
+    border: 1px solid #ccc;
     background: #f7f7f7;
   }
 }
 
 .comments .even {
   th + td {
-    border: 1px solid #cccccc;
+    border: 1px solid #ccc;
     background: #eaeaea;
   }
 }
