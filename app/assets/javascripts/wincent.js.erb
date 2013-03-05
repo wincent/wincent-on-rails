@@ -79,28 +79,15 @@
   }
 
   $.fn.relativizeDates = function() {
-    var dateFromUTCString = function(s) {
-      var m = s.match(/(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2}) UTC/);
-
-      return m ?
-        new Date(Date.UTC(parseInt(m[1], 10),
-              parseInt(m[2], 10) - 1, // Date.UTC expects zero-based month numbers (0-11)
-              parseInt(m[3], 10),
-              parseInt(m[4], 10),
-              parseInt(m[5], 10),
-              parseInt(m[6], 10)))
-        : new Date; // fall back to current time if regex failed
-    }
-
-    this.find('.relative-date')
-      .removeClass('relative-date')
-      .addClass('relativized-date')
+    this.find('time[data-relative=true]')
+      .removeAttr('data-relative') // do this only once
       .each(function(i) {
-      var result  = this.innerHTML,
-          now     = new Date,
-          then    = dateFromUTCString(result),
-          dist    = now.getTime() - then.getTime(),
-          months  = [
+      var result,
+          original  = this.innerHTML,
+          now       = new Date,
+          then      = new Date(Date.parse(original)),
+          dist      = now.getTime() - then.getTime(),
+          months    = [
             'January',
             'February',
             'March',
@@ -164,6 +151,7 @@
         }
       }
       this.title = then.toLocaleString();
+      this.setAttribute('datetime', original);
       this.innerHTML = result;
     });
 

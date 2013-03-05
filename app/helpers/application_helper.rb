@@ -112,7 +112,7 @@ module ApplicationHelper
   def timeinfo model, options = {}
     created = model.created_at
     updated = model.updated_at
-    if created.distance_in_words == updated.distance_in_words or
+    if created.distance_in_words == updated.distance_in_words ||
       options[:updated_string] == false
       relative_date created
     else
@@ -122,8 +122,8 @@ module ApplicationHelper
   end
 
   # return string wrapped in relative-date CSS span
-  def relative_date string
-    %Q{<span class="relative-date">#{string}</span>}.html_safe
+  def relative_date(date)
+    content_tag :time, date.xmlschema, data: { relative: true }
   end
 
   # This pattern is frequently used in Atom feeds, where the feed as a whole
