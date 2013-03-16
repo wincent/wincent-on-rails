@@ -5,11 +5,11 @@ require 'pathname'
 root = (Pathname.new(__FILE__).dirname + '..').realpath
 pidfile = root + 'tmp' + 'memcached.pid'
 
-if not pidfile.exist?
-  puts "memcached not running: starting"
+if !pidfile.exist?
+  puts 'memcached not running: starting'
   system 'memcached', '-d', '-P', pidfile.to_s, '-l', '127.0.0.1'
 elsif `ps x`.split("\n").any? { |line| line.match 'memcached -d' }
-  puts "memcached running: stopping"
+  puts 'memcached running: stopping'
   pid = pidfile.read.chomp
   system 'kill', '-s', 'QUIT', pid
 
@@ -17,6 +17,6 @@ elsif `ps x`.split("\n").any? { |line| line.match 'memcached -d' }
   # never cleans up its own PID file
   pidfile.delete
 else
-  puts "memcached not running but stale PID file found: cleaning up"
+  puts 'memcached not running but stale PID file found: cleaning up'
   pidfile.delete
 end
