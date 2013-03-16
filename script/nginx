@@ -13,14 +13,14 @@ if not pidfile.exist?
   puts "nginx not running: starting"
 
   # new in nginx 0.7.x: expects to find mime.types alongside conf file
-  FileUtils.cp '/usr/local/nginx/conf/mime.types', tmp
+  FileUtils.cp '/usr/local/etc/nginx/mime.types', tmp
   `RAILS_ROOT=#{root} erb #{template} > #{conf}`
-  system '/usr/local/nginx/sbin/nginx', '-c', conf.to_s
+  system 'nginx', '-c', conf.to_s
 elsif `ps x`.split("\n").any? { |line| line.match 'nginx: master process' }
   puts "nginx running: stopping"
   pid = pidfile.read.chomp
   system 'kill', pid
 else
-  puts "nginx not running but stale PID file found: cleaning up"
+  puts 'nginx not running but stale PID file found: cleaning up'
   pidfile.delete
 end
