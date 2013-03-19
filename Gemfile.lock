@@ -178,7 +178,7 @@ GEM
       rack
       raindrops (~> 0.7)
     websocket (1.0.7)
-    wikitext (4.0.1)
+    wikitext (4.0.2)
     wopen3 (0.3)
     xpath (1.0.0)
       nokogiri (~> 1.3)
