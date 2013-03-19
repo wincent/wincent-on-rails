@@ -26,9 +26,9 @@ fi
 
 # test database in ramdisk
 # see: http://kotega.com/blog/2010/apr/12/mysql-ramdisk-osx/
-DISKSIZE=100 # MB
+DISKSIZE=192 # MB
 BLOCKSIZE=512 # KB
-BLOCKCOUNT=`expr 100 '*' 1024 '*' 1024 / $BLOCKSIZE`
+BLOCKCOUNT=`expr $DISKSIZE '*' 1024 '*' 1024 / $BLOCKSIZE`
 
 if [ -f "tmp/pids/mysql_ram.pid" ]; then
   echo "mysqld [ramdisk] running: stopping"
@@ -51,7 +51,8 @@ else
       exit 1
     fi
     diskutil eraseVolume hfsx ramdisk $DEV > /dev/null
-    mysql_install_db --datadir=/Volumes/ramdisk > /dev/null
+    mysql_install_db --basedir=/usr/local/opt/mysql \
+                     --datadir=/Volumes/ramdisk > /dev/null
     CREATE_TEST_DATABASE=1
   fi
 
