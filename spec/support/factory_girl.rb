@@ -1,4 +1,18 @@
-require 'factory_girl/syntax/sham'
+module Sham
+  def self.method_missing(method, *args, &block)
+    if args.any?
+      raise ArgumentError, "Sham.#{method} called with #{args.inspect}"
+    end
+
+    if block_given? # defining a Sham
+      FactoryGirl.define do
+        sequence method, &block
+      end
+    else # using a Sham
+      FactoryGirl.generate method
+    end
+  end
+end
 
 # Generate a string of 10 random lowercase letters
 Sham.random do |n|
