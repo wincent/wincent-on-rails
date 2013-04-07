@@ -13,6 +13,7 @@ class Snippet < ActiveRecord::Base
     # base types
     WIKITEXT    = 0
     PLAINTEXT   = 1
+    HTML        = 2
 
     # syntax-highlighted types
     C           = 100
@@ -25,6 +26,7 @@ class Snippet < ActiveRecord::Base
   MARKUP_TYPES = Hash.new(0).merge!({
     'Wikitext'    => MarkupType::WIKITEXT,
     'Plain text'  => MarkupType::PLAINTEXT,
+    'HTML'        => MarkupType::HTML,
     'C'           => MarkupType::C,
     'Diff'        => MarkupType::DIFF,
     'Objective-C' => MarkupType::OBJECTIVE_C,
@@ -60,6 +62,8 @@ class Snippet < ActiveRecord::Base
       body.w options
     when MarkupType::PLAINTEXT
       escape_and_wrap_body
+    when MarkupType::HTML
+      body.html_safe
     when MarkupType::C
       escape_and_wrap_body 'c'
     when MarkupType::DIFF
