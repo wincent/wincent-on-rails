@@ -210,7 +210,7 @@ function ajaxSelect(selector, className, attributeName, options, includeBlank, u
   $fieldId.html(newContents);
   var selectId = $fieldId.find('select');
   if (!selectionFound) {
-    if (!includeBlank$) {
+    if (!includeBlank) {
       alert('failed to find selection');
       return; // programmer error! bail
     } else {
