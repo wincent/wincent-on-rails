@@ -2,10 +2,19 @@
 # kept short (140 characters or less, like on Twitter), but this
 # limit is not actually enforced.
 #
-# Table fields:
+# Schema:
 #
-#   text        :body
-#   timestamps
+#  `id` int(11) NOT NULL AUTO_INCREMENT,
+#  `body` text COLLATE utf8_unicode_ci,
+#  `created_at` datetime DEFAULT NULL,
+#  `updated_at` datetime DEFAULT NULL,
+#  `accepts_comments` tinyint(1) DEFAULT '1',
+#  `comments_count` int(11) DEFAULT '0',
+#  `last_commenter_id` int(11) DEFAULT NULL,
+#  `last_comment_id` int(11) DEFAULT NULL,
+#  `last_commented_at` datetime DEFAULT NULL,
+#  `twitter_id` bigint(20) DEFAULT NULL,
+#  `twitter_id_str` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
 #
 class Tweet < ActiveRecord::Base
   RECOMMENDED_MAX_LENGTH = 140
