@@ -34,7 +34,7 @@ class TweetObserver < ActiveRecord::Observer
     # yes, two updates in a row, but it's the easiest way to avoid updating
     # timestamps
     tweet.update_column(:twitter_id, update.id)
-    tweet.update_column(:twitter_id_str, update.id_str)
+    tweet.update_column(:twitter_id_str, update.attrs[:id_str])
   end
 
 private
