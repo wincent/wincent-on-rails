@@ -1,0 +1,11 @@
+development:
+  consumer_key: 'a'
+  consumer_secret: 'b'
+  oauth_token: 'c'
+  oauth_token_secret: 'd'
+
+production:
+  consumer_key: 'e'
+  consumer_secret: 'f'
+  oauth_token: 'g'
+  oauth_token_secret: 'h'
