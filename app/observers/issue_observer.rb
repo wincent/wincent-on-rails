@@ -53,10 +53,12 @@ private
 
   # Formats an annotation for a single field using appropriate wikitext markup.
   def format_annotation field, from, to
-    "'''#{field}''' changed:\n" \
-    "\n"                        \
-    "* '''From:''' #{from}\n"   \
-    "* '''To:''' #{to}"
+    <<-ANNOTATION.strip_heredoc
+      '''#{field}''' changed:
+
+      * '''From:''' #{from}
+      * '''To:''' #{to}
+    ANNOTATION
   end
 
   def send_new_issue_alert issue
