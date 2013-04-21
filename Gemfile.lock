@@ -208,6 +208,7 @@ DEPENDENCIES
   launchy
   mkdtemp
   mysql2
+  nokogiri
   oily_png
   rails
   rake
