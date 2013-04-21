@@ -26,11 +26,11 @@ module Wincent
     config.filter_parameters  += [:passphrase]
     config.time_zone           = 'UTC'
 
-    url_options = {}
-    url_options[:protocol] = APP_CONFIG['protocol'] if APP_CONFIG['protocol']
-    url_options[:host] = APP_CONFIG['host'] if APP_CONFIG['host']
-    if APP_CONFIG['port'] and APP_CONFIG['port'] != 80 and APP_CONFIG['port'] != 443
-      url_options[:port] = APP_CONFIG['port']
+    url_options = {
+      protocol:  APP_CONFIG['protocol'],
+      host:      APP_CONFIG['host'],
+    }.tap do |options|
+      options[:port] = APP_CONFIG['port'] unless APP_CONFIG['port'].in?([80, 443])
     end
     config.action_mailer.default_url_options = url_options
   end
