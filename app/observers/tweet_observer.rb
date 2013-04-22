@@ -83,8 +83,9 @@ private
   def tweet_url(tweet)
     # using Rails routing helpers here would be an uphill battle (see comments
     # in lib/sweeping.rb); these are stable-enough URls, so we hand-roll
-    url = APP_CONFIG['protocol'] + '://' + APP_CONFIG['host']
-    url += (':' + APP_CONFIG['port'].to_s) unless APP_CONFIG['port'].in?([80, 443])
+    config = APP_CONFIG['shortlink']
+    url = config['protocol'] + '://' + config['host']
+    url += (':' + config['port'].to_s) unless config['port'].in?([80, 443])
     url + '/t/' + tweet.short_link
   end
 
