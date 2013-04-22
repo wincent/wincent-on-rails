@@ -8,6 +8,8 @@ require 'nokogiri'
 class TweetObserver < ActiveRecord::Observer
   class << self
     def twitter_config
+      return unless Twitter.credentials?
+
       # https://dev.twitter.com/docs/api/1/get/help/configuration
       # suggests we check the configuration when loaded, but no more than once
       # a day; we do that, approximately, here
@@ -26,6 +28,8 @@ class TweetObserver < ActiveRecord::Observer
   end
 
   def after_create(tweet)
+    return unless Twitter.credentials?
+
     update_text = update_text(tweet)
 
     # TODO: make this an actual async job
