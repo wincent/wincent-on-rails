@@ -35,12 +35,39 @@ class Tweet < ActiveRecord::Base
     find :all, base_options.merge(options)
   end
 
+  # legal path chars: http://tools.ietf.org/html/rfc3986#section-1.1.1
+  SHORT_LINK_CHARS = [
+    '0'..'9',
+    'a'..'z',
+    'A'..'Z',
+    "=.,;:@!$&'()*+~_-".chars,
+  ].map(&:to_a).join
+
+  SHORT_LINK_BASE  = SHORT_LINK_CHARS.size
+  SHORT_LINK_MAP   = Hash[SHORT_LINK_CHARS.chars.zip(0..SHORT_LINK_BASE)]
+  SHORT_LINK_REGEX = /[#{Regexp.escape(SHORT_LINK_CHARS)}]+/
+
   def self.short_link_from_id(id)
-    id.to_s(36)
+    result = ''
+
+    while id > 0
+      mod = id % SHORT_LINK_BASE
+      id /= SHORT_LINK_BASE
+      result = SHORT_LINK_CHARS[mod] + result
+    end
+
+    result
   end
 
   def self.id_from_short_link(id)
-    id.to_i(36)
+    result = 0
+
+    id.chars.each do |char|
+      # no need to check #has_key? here; trust the routes to keep out bad input
+      result = result * SHORT_LINK_BASE + SHORT_LINK_MAP[char]
+    end
+
+    result
   end
 
   def short_link
