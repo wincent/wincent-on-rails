@@ -154,5 +154,10 @@ Wincent::Application.routes.draw do
   get 'search'          => 'search#search'
   get 'support'         => 'support#index'
 
+  # to avoid having to invalidate two versions of the cached files, we do a
+  # redirect here; note that in practice, nginx should handle this before we
+  # get here
+  get '/t/:id'          => redirect('/twitter/%{id}')
+
   root :to => 'posts#index'
 end
