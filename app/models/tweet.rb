@@ -51,9 +51,8 @@ class Tweet < ActiveRecord::Base
     result = ''
 
     while id > 0
-      mod = id % SHORT_LINK_BASE
+      result = SHORT_LINK_CHARS[id % SHORT_LINK_BASE] + result
       id /= SHORT_LINK_BASE
-      result = SHORT_LINK_CHARS[mod] + result
     end
 
     result
