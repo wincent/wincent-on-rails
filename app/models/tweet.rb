@@ -50,10 +50,10 @@ class Tweet < ActiveRecord::Base
   def self.short_link_from_id(id)
     result = ''
 
-    while id > 0
+    begin
       result = SHORT_LINK_CHARS[id % SHORT_LINK_BASE] + result
       id /= SHORT_LINK_BASE
-    end
+    end while id > 0
 
     result
   end

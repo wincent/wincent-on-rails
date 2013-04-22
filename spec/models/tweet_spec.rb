@@ -72,6 +72,67 @@ describe Tweet do
     let(:model) { Tweet.make! }
     let(:new_model) { Tweet.make }
   end
+
+  describe '.short_link_from_id' do
+    subject { Tweet.short_link_from_id(id) }
+
+    context 'with an id of 0' do
+      let(:id) { 0 }
+      it { should == '0' }
+    end
+
+    context 'with an id of 1' do
+      let(:id) { 1 }
+      it { should == '1' }
+    end
+
+    context 'with an id of 78 (about to wrap around)' do
+      let(:id) { 78 }
+      it { should == '-' }
+    end
+
+    context 'with an id of 79 (just wrapped around)' do
+      let(:id) { 79 }
+      it { should == '10' }
+    end
+  end
+
+  describe '.id_from_short_link' do
+    subject { Tweet.id_from_short_link(link) }
+
+    context 'with a link of "-"' do
+      let(:link) { '-' }
+      it { should == 78 }
+    end
+
+    context 'with a link of "10"' do
+      let(:link) { '10' }
+      it { should == 79 }
+    end
+
+    it 'can round trip' do
+      link = 'b@:-1Xy2'
+      id = Tweet.id_from_short_link(link)
+      Tweet.short_link_from_id(id).should == link
+    end
+  end
+
+  describe '#shortlink' do
+    context 'with a new record' do
+      it 'explodes' do
+        expect { Tweet.new.short_link }.to raise_error
+      end
+    end
+
+    context 'with an existing record' do
+      let(:tweet) { Tweet.make! }
+
+      it 'delegates to the .short_link_from_id class method' do
+        mock(Tweet).short_link_from_id(tweet.id)
+        tweet.short_link
+      end
+    end
+  end
 end
 
 describe Tweet, 'comments association' do
