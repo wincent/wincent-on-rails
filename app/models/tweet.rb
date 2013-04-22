@@ -35,6 +35,19 @@ class Tweet < ActiveRecord::Base
     find :all, base_options.merge(options)
   end
 
+  def self.short_link_from_id(id)
+    id.to_s(36)
+  end
+
+  def self.id_from_short_link(id)
+    id.to_i(36)
+  end
+
+  def short_link
+    # note: will raise for new records
+    self.class.short_link_from_id(id)
+  end
+
   def overlength?
     rendered_length > RECOMMENDED_MAX_LENGTH
   end

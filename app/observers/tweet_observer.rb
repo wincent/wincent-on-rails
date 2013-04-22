@@ -81,7 +81,7 @@ private
     # in lib/sweeping.rb); these are stable-enough URls, so we hand-roll
     url = APP_CONFIG['protocol'] + '://' + APP_CONFIG['host']
     url += (':' + APP_CONFIG['port'].to_s) unless APP_CONFIG['port'].in?([80, 443])
-    url + '/t/' + tweet.id.to_s
+    url + '/t/' + tweet.short_link
   end
 
   Token = Struct.new(:type, :value)

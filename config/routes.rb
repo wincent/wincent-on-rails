@@ -157,7 +157,9 @@ Wincent::Application.routes.draw do
   # to avoid having to invalidate two versions of the cached files, we do a
   # redirect here; note that in practice, nginx should handle this before we
   # get here
-  get '/t/:id'          => redirect('/twitter/%{id}')
+  get '/t/:id' => redirect { |params|
+    "/twitter/#{Tweet.id_from_short_link(params[:id])}"
+  }
 
   root :to => 'posts#index'
 end
