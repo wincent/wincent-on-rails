@@ -49,7 +49,7 @@ class SnippetsController < ApplicationController
         @comment = @snippet.comments.new if @snippet.accepts_comments?
       }
       format.atom
-      format.text { render :text => @snippet.body }
+      format.text { render text: @snippet.body }
     end
   end
 
