@@ -105,14 +105,9 @@ describe TweetsController do
       controller.active_layout.should be_nil
     end
 
-    it 'should find recent tweets' do
-      mock(Tweet).find_recent { [] }
+    it 'assigns to the @tweets instance variable' do
       do_get
-    end
-
-    it 'should assign to the @tweets instance variable' do
-      do_get
-      assigns[:tweets].should be_kind_of(Array)
+      assigns[:tweets].all? { |item| item.is_a?(Tweet) }.should be_true
       assigns[:tweets].length.should == 10
     end
 

@@ -18,22 +18,23 @@
 #
 class Tweet < ActiveRecord::Base
   RECOMMENDED_MAX_LENGTH = 140
+  PAGE_SIZE              = 20
+
   has_many              :comments,
-                        :as               => :commentable,
-                        :extend           => Commentable,
-                        :order            => 'comments.created_at',
-                        :include          => :user,
-                        :dependent        => :destroy
-  belongs_to            :last_commenter,  :class_name => 'User'
+                        as:               :commentable,
+                        extend:           Commentable,
+                        order:            'comments.created_at',
+                        include:          :user,
+                        dependent:        :destroy
+  belongs_to            :last_commenter,  class_name: 'User'
   validates_presence_of :body
-  acts_as_searchable    :attributes       => [ :body ]
-  acts_as_taggable
   attr_accessible       :accepts_comments, :body, :pending_tags
 
-  def self.find_recent options = {}
-    base_options = { :order => 'created_at DESC', :limit => 20 }
-    find :all, base_options.merge(options)
-  end
+  scope                 :recent, order('created_at DESC')
+  scope                 :page, limit(PAGE_SIZE)
+
+  acts_as_searchable    attributes:       [:body]
+  acts_as_taggable
 
   # legal path chars: http://tools.ietf.org/html/rfc3986#section-1.1.1
   SHORT_LINK_CHARS = [

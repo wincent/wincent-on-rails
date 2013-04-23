@@ -1,34 +1,31 @@
 class Post < ActiveRecord::Base
+  PAGE_SIZE = 10
+
   has_many                :comments,
-                          :as         => :commentable,
-                          :extend     => Commentable,
-                          :order      => 'comments.created_at',
-                          :include    => :user,
-                          :dependent  => :destroy
-  belongs_to              :last_commenter, :class_name => 'User'
+                          as:        :commentable,
+                          extend:    Commentable,
+                          order:     'comments.created_at',
+                          include:   :user,
+                          dependent: :destroy
+  belongs_to              :last_commenter, class_name: 'User'
   validates_presence_of   :title
   validates_format_of     :permalink,
-                          :with => /\A[a-z0-9\.\-]+\z/,
-                          :message => 'must contain only lowercase letters, numbers, periods and hyphens'
+                          with: /\A[a-z0-9\.\-]+\z/,
+                          message: 'must contain only lowercase letters, numbers, periods and hyphens'
   validates_presence_of   :permalink
   validates_uniqueness_of :permalink
   validates_presence_of   :excerpt
-  validates_length_of     :body, :maximum => 128 * 1024, :allow_blank => true
-  attr_accessible         :title, :permalink, :excerpt, :body, :public, :accepts_comments, :pending_tags
+  validates_length_of     :body, maximum: 128 * 1024, allow_blank: true
+  attr_accessible         :title, :permalink, :excerpt, :body, :public,
+                          :accepts_comments, :pending_tags
   before_validation       :set_permalink
-  acts_as_taggable
-  acts_as_searchable      :attributes => [:title, :excerpt, :body]
 
-  def self.find_recent options = {}
-    # we use "posts.created_at" rather than just "created_at" to disambiguate in the case where we
-    # pass an :include option (which will cause a join)
-    base_options = {
-      :conditions => { 'public' => true },
-      :order => 'posts.created_at DESC',
-      :limit => 10
-    }
-    find :all, base_options.merge(options)
-  end
+  scope :public, where(public: true)
+  scope :recent, public.order('created_at DESC')
+  scope :page,   limit(PAGE_SIZE)
+
+  acts_as_taggable
+  acts_as_searchable      attributes: %i[title excerpt body]
 
   def suggested_permalink
     # iconv can't be trusted to behave the same across platforms, so don't use
@@ -72,5 +69,4 @@ private
       self.permalink = self.suggested_permalink
     end
   end
-
 end

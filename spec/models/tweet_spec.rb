@@ -154,65 +154,6 @@ describe Tweet, 'accessible attributes' do
   end
 end
 
-describe Tweet, 'find_recent (class) method (interaction-based approach)' do
-  it 'should find no more than 20 tweets' do
-    mock(Tweet).find :all, hash_including(:limit => 20)
-    Tweet.find_recent
-  end
-
-  it 'should sort tweets in reverse creation order' do
-    mock(Tweet).find :all, hash_including(:order => 'created_at DESC')
-    Tweet.find_recent
-  end
-
-  it 'should use custom offset if supplied' do
-    mock(Tweet).find :all, hash_including(:offset => 35)
-    Tweet.find_recent :offset => 35
-  end
-
-  it 'should use custom limit if supplied' do
-    mock(Tweet).find :all, hash_including(:limit => 100)
-    Tweet.find_recent :limit => 100
-  end
-end
-
-describe Tweet, 'find_recent (class) method (state-based approach)' do
-  def old_tweet days_count
-    past = days_count.days.ago
-    tweet = Tweet.make!
-    Tweet.update_all ['created_at = ?, updated_at = ?', past, past], ['id = ?', tweet.id]
-    tweet
-  end
-
-  it 'should find no more than 20 tweets' do
-    25.times { Tweet.make! }
-    Tweet.find_recent.length.should <= 20
-  end
-
-  it 'should sort tweets in reverse creation order' do
-    old = old_tweet(3)
-    new = Tweet.make!
-    Tweet.find_recent.should == [new, old]
-  end
-
-  it 'should use offset from paginator if supplied' do
-    first = old_tweet(10)
-    second = old_tweet(8)
-    third = old_tweet(6)
-    fourth = Tweet.make!
-    paginator = RestfulPaginator.new({ :page => 2 }, 4, 'foo', 2)
-    Tweet.find_recent(:offset => paginator.offset,
-      :limit => paginator.limit).should == [second, first]
-  end
-
-  it 'should use limit from paginator if supplied' do
-    20.times { Tweet.make! }
-    paginator = RestfulPaginator.new({}, 20, 'foo', 10)
-    Tweet.find_recent(:offset => paginator.offset,
-      :limit => paginator.limit).length.should == 10
-  end
-end
-
 describe Tweet, 'rendered_length method' do
   before do
     @tweet = Tweet.new

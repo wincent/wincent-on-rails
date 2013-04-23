@@ -1,20 +1,19 @@
 class PostsController < ApplicationController
-  before_filter :require_admin, :except => [ :index, :show ]
-  before_filter :get_post,      :except => [ :index, :new, :create ]
-  caches_page   :index, :show,  :if => proc { |c|
+  before_filter :require_admin, except: %i[index show]
+  before_filter :get_post,      except: %i[index new create]
+  caches_page   :index, :show,  if: proc { |c|
     c.request.format && c.request.format.atom?
   }
-  cache_sweeper :post_sweeper,  :only => [ :create, :update, :destroy ]
+  cache_sweeper :post_sweeper,  only: %i[create update destroy]
 
   def index
     respond_to do |format|
       format.html {
-        @paginator  = RestfulPaginator.new params,
-          Post.count(:conditions => { :public => true }), posts_path
-        @posts      = Post.find_recent :include => :tags, :offset => @paginator.offset
-        @tweets     = Tweet.find_recent if !fragment_exist?(:tweets_sidebar)
+        @paginator = RestfulPaginator.new(params, Post.public.count, posts_path)
+        @posts     = Post.recent.includes(:tags).offset(@paginator.offset).page
+        @tweets    = Tweet.recent.page if !fragment_exist?(:tweets_sidebar)
       }
-      format.atom { @posts = Post.find_recent }
+      format.atom { @posts = Post.recent.page }
     end
   end
 
@@ -25,8 +24,10 @@ class PostsController < ApplicationController
 
   def create
     if request.xhr? # live preview
-      @post = Post.new :title => params[:title], :excerpt => params[:excerpt], :body => params[:body]
-      render :partial => 'preview'
+      @post = Post.new(title:   params[:title],
+                       excerpt: params[:excerpt],
+                       body:    params[:body])
+      render partial: 'preview'
     else # normal request
       @post = Post.new params[:post]
       if @post.save
@@ -70,7 +71,7 @@ class PostsController < ApplicationController
       redirect_to @post
     else
       flash[:error] = 'Update failed'
-      render :action => 'edit'
+      render action: 'edit'
     end
   end
 
@@ -94,7 +95,7 @@ private
   def record_not_found
     if admin?
       flash[:notice] = 'Requested post not found: create it?'
-      session[:new_post_params] = { :title => params[:id], :permalink => params[:id] }
+      session[:new_post_params] = { title: params[:id], permalink: params[:id] }
       redirect_to new_post_path
     else
       super posts_path
