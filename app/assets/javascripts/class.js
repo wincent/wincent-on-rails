@@ -24,61 +24,29 @@
 (function() {
   "use strict";
 
-  // based on listing 6.21 in John Resig & Bear Bibeault's "Secrets of a
-  // JavaScript Ninja", with some temporary variables to make more explicit
-  // some of the cleverness that's going on, and some additional checking added
-  var canDecompileFunctions = /abc123/.test(function() { return abc123; }),
-      superCallDetector     = canDecompileFunctions ? /\b_super\b/ : /.*/,
-      isSettingUpSubclass   = false;
+  window.Class = {
+    subclass : function(overrides) {
+      var superclass = this.prototype || Class,
+          prototype  = Object.create(superclass),
+          init       = overrides.init;
 
-  Object.subclass = function extend(overrides) {
-    isSettingUpSubclass = true;
-    var superclass      = this.prototype,
-        prototype       = new this();
-    isSettingUpSubclass = false;
+      Object.getOwnPropertyNames(overrides).forEach(function(name) {
+        Object.defineProperty(prototype, name,
+          Object.getOwnPropertyDescriptor(overrides, name));
+      });
 
-    for (var name in overrides) {
-      var override            = overrides[name],
-          superclassProperty  = superclass[name];
-
-      // standard case: merge overrides into the prototype
-      prototype[name] = overrides[name];
-
-      // look for special cases
-      if (typeof override === 'function') {
-        if (typeof superclassProperty === 'function') {
-          if (superCallDetector.test(override)) {
-            // this is a function that overrides a function and (potentially,
-            // depending on whether the browser supports decompilation) uses
-            // _super()
-            prototype[name] = (function(name, fn) {
-              return function() {
-                var originalSuper = this._super;
-
-                try {
-                  this._super = superclass[name];
-                  return fn.apply(this, arguments);
-                } finally {
-                  this._super = originalSuper;
-                }
-              }
-            })(name, overrides[name]);
+      if (!overrides.init) {
+        init = function() {
+          if (superclass.init) {
+            superclass.init.apply(this, arguments);
           }
-        } else if (canDecompileFunctions && superCallDetector.test(override)) {
-          throw new ReferenceError("_super() called, but no implementation available");
-        }
+        };
       }
-    }
 
-    function Class() {
-      if (!isSettingUpSubclass && this.init) {
-        this.init.apply(this, arguments);
-      }
-    }
-
-    Class.prototype = prototype;
-    Class.constructor = Class;
-    Class.subclass = extend;
-    return Class;
-  };
+      init.prototype = prototype;
+      init.superclass = superclass;
+      init.subclass = this.subclass;
+      return init;
+    },
+  }
 })();

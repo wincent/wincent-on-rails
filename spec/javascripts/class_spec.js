@@ -1,12 +1,12 @@
 describe('class.js', function() {
-  describe('Object.subclass', function() {
+  describe('Class.subclass', function() {
     var Person;
 
     beforeEach(function() {
-      Person = Object.subclass({
+      Person = Class.subclass({
         init: function() { this.initRan = true; },
         greeting: function() { return this.salutation },
-        age:  20,
+        age: 20,
         salutation: 'Hi'
       });
 
@@ -42,11 +42,11 @@ describe('class.js', function() {
       expect(new BrainSurgeon().age).toEqual(20);
     });
 
-    it('allows subclasses to call _super()', function() {
+    it('allows subclasses to call superclass method', function() {
       var Butcher = Person.subclass({
         init: function() {
           this.subclassInitRan = true;
-          this._super();
+          Butcher.superclass.init.call(this);
         }
        }), butcher = new Butcher();
 
@@ -54,7 +54,7 @@ describe('class.js', function() {
       expect(butcher.initRan).toBe(true);
     });
 
-    it('does not require that subclasses call _super()', function() {
+    it('does not require that subclasses call superclass method', function() {
       var Baker = Person.subclass({
         init: function() {
           this.subclassInitRan = true;
@@ -65,12 +65,12 @@ describe('class.js', function() {
       expect(baker.initRan).toBeFalsy();
     });
 
-    it('correctly sets `this` when calling _super()', function() {
+    it('correctly sets `this` when calling superclass methods', function() {
       var Plumber = Person.subclass({
         greeting: function() {
           // even when running the superclass implementation of greeting(),
           // we expect the plumber saluation to be used
-          return this._super() + '!!!';
+          return Plumber.superclass.greeting.call(this) + '!!!';
         },
         salutation: 'Hey!'
       });
@@ -116,13 +116,15 @@ describe('class.js', function() {
       expect(new AfricanAmericanMale() instanceof AfricanAmericanMale).toBe(true);
     });
 
-    it('allows _super() functions to call functions in subclasses', function() {
+    it('allows superclass functions to call functions in subclasses', function() {
       var Engineer = Person.subclass({
             add: function() { return this.number() + this.number(); },
             number: function() { return 1; }
           }),
           SoftwareEngineer = Engineer.subclass({
-            add: function() { return this._super() + 100; },
+            add: function() {
+              return SoftwareEngineer.superclass.add.call(this) + 100;
+            },
             number: function() { return 10; }
           });
 
@@ -130,33 +132,59 @@ describe('class.js', function() {
       expect(new SoftwareEngineer().add()).toEqual(120);
     });
 
-    it('preserves this._super across multiple levels', function() {
-      // in other words, when a superclass calls _super(), the subclasses'
-      // _super() still works
+    it('preserves superclass relation across multiple levels', function() {
+      // in other words, when a superclass calls its own superclass function,
+      // the subclasses' superclass calls still work
       var Manager = Person.subclass({
             result: function() { return 10; }
           }),
           HiringManager = Manager.subclass({
-            result: function() { return 20 + this._super(); }
+            result: function() {
+              return 20 + HiringManager.superclass.result.call();
+            }
           }),
           GeneralManager = HiringManager.subclass({
-            result: function() { return this._super() + 100 + this._super(); }
+            result: function() {
+              return GeneralManager.superclass.result.call() + 100 +
+                GeneralManager.superclass.result.call();
+            }
           });
 
       expect(new HiringManager().result()).toEqual(30);
       expect(new GeneralManager().result()).toEqual(160);
     });
 
-    it('blows up when there is a missing implementation of _super()', function() {
-      // caveat: safety valve won't work on browsers that don't support
-      // decompilation
-      var subclassPerson = function() {
-        Person.subclass({
-          missing: function() { return (typeof this._super()); }
-        });
-      };
+    describe('without an explicit init() function', function() {
+      it('can subclass', function() {
+        var subclassWithoutInit = function() { Class.subclass({}); };
+        expect(subclassWithoutInit).not.toThrow();
+      });
 
-      expect(subclassPerson).toThrow();
+      it('constructs working instances', function() {
+        var Empty = Class.subclass({
+          size: function() { return 0; }
+        }), Full = Empty.subclass({
+          size: function() { return Full.superclass.size.call(this) + 10; }
+        });
+
+        expect(new Full().size()).toEqual(10);
+      });
+
+      it('still uses the superclass init() function', function() {
+        var Weak = Person.subclass({});
+        expect(new Weak().initRan).toBe(true);
+      });
+
+      it('passes through argument to the superclas init() function', function() {
+        var Special = Class.subclass({
+          init: function(a, b) {
+            this.a = a;
+            this.b = b;
+          }
+        }), Ordinary = Special.subclass({});
+        expect(new Ordinary(1, 2).a).toBe(1);
+        expect(new Ordinary(1, 2).b).toBe(2);
+      });
     });
   });
 });
