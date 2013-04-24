@@ -11,17 +11,6 @@
   user-select: none;
 }
 
-// http://mrandmrsok.com/blog/modular-scale-calculator-using-scss
-@function modular($base-size, $scale: 0, $ratio: $major-third) {
-  @if $scale > 0 {
-    @return modular($base-size / $ratio, $scale - 1);
-  } @else if $scale < 0 {
-    @return modular($base-size * $ratio, $scale + 1);
-  } @else {
-    @return $base-size;
-  }
-}
-
 @mixin respond-to($media) {
   @if $media == tablet {
     @media only screen and

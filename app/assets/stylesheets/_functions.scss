@@ -1,0 +1,14 @@
+@function calc-em($desired-px, $context-px) {
+  @return ($desired-px / $context-px) * 1em;
+}
+
+// http://mrandmrsok.com/blog/modular-scale-calculator-using-scss
+@function modular($base-size, $scale: 0, $ratio: $major-third) {
+  @if $scale > 0 {
+    @return modular($base-size / $ratio, $scale - 1);
+  } @else if $scale < 0 {
+    @return modular($base-size * $ratio, $scale + 1);
+  } @else {
+    @return $base-size;
+  }
+}
