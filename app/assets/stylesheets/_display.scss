@@ -1,3 +1,7 @@
+$footer-color: #f5f5f5;
+$logo-height: 40px;
+$logo-width: 42px;
+
 // basic appearance
 html {
   // http://aestheticallyloyal.com/public/optimize-legibility/
@@ -5,10 +9,7 @@ html {
 }
 
 body {
-  background: #ddd image-url("bg.jpg") {
-    attachment: fixed;
-    position: top left;
-  };
+  background: $footer-color;
   margin: 0;
   padding: 0;
   font-family: "Open Sans", sans-serif;
@@ -23,27 +24,27 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 h1 {
-  font-size: modular(1em, 3);
+  font-size: modular(1em, 5);
 }
 
 h2 {
-  font-size: modular(1em, 2);
+  font-size: modular(1em, 4);
 }
 
 h3 {
-  font-size: modular(1em, 1);
+  font-size: modular(1em, 3);
 }
 
 h4 {
-  font-size: modular(1em, 0);
+  font-size: modular(1em, 2);
 }
 
 h5 {
-  font-size: modular(1em, -1);
+  font-size: modular(1em, 1);
 }
 
 h6 {
-  font-size: modular(1em, -2);
+  font-size: modular(1em, 0);
 }
 
 h1.major {
@@ -75,70 +76,80 @@ pre {
     left: 1em;
     right: 2em;
   }
-  font-size: 1.1em;
   line-height: 1.5em;
   overflow: auto;
-}
 
-pre span.line-number {
-  counter-increment: line-number;
-  text-align: right;
-  float: left;
-  margin-left: -1.5em;
-  margin-right: 0.5em;
-  padding-right: 0.5em;
-  border-right: 1px solid silver;
-  width: 3em;
-  color: silver;
-  background: #ffeeee;
-  @include unselectable;
-}
+  span.line-number {
+    counter-increment: line-number;
+    text-align: right;
+    float: left;
+    margin-left: -1.5em;
+    margin-right: 0.5em;
+    padding-right: 0.5em;
+    border-right: 1px solid silver;
+    width: 3em;
+    color: silver;
+    background: #ffeeee;
+    @include unselectable;
+  }
 
-pre span.line-number:before {
-  content: counter(line-number);
-}
+  span.line-number:before {
+    content: counter(line-number);
+  }
 
-// these based on Vim colorscheme because that's what I'm used to looking at
-pre {
+  // these based on Vim colorscheme because that's what I'm used to looking at
   span.added-syntax {
     color: #080;
   }
+
   span.boolean-syntax {
     color: #cd0000;
   }
+
   span.comment-syntax {
     color: #00e;
   }
+
   span.constant-syntax {
     color: #1a8b0a;
   }
+
   span.deleted-syntax {
     color: #c00;
   }
+
   span.hunk-header-syntax {
     color: #009c9c;
   }
+
   span.identifier-syntax {
     color: #458b73;
   }
+
   span.keyword-syntax {
     color: #1673cc;
   }
+
   span.numeric-literal-syntax {
     color: #fc8a0b;
   }
+
   span.preprocessor-syntax {
     color: #1673cc;
   }
+
   span.statement-syntax {
     color: #b02f5f;
   }
+
   span.string-literal-syntax {
     color: #0068ab;
   }
+
   span.prompt-syntax {
     @include unselectable;
   }
+
   span.symbol-syntax {
     color: #fc8a0b;
   }
@@ -229,66 +240,67 @@ a.mailto:after {
 
 // overall page layout
 
-#header {
+nav.global {
+  background: black;
+  border-bottom: 1px solid #999;
+  height: $logo-height;
+  position: relative;
+
   h1 {
-    height: 40px;
-    margin-top: 0;
-    padding-left: 1em;
+    display: table-cell;
+    margin: 0;
+    vertical-align: top;
+
+
     a {
-      display: inline-block;
-      font-weight: bold;
-      vertical-align: middle;
-      text-decoration: none;
-    }
-    img {
-      vertical-align: middle;
-    }
-  }
-  #meta {
-    background: black;
-    float: left;
-    height: 40px;
-    width: 170px;
-    a {
+      background-image: image-url('logo.png');
+      background-position: left;
+      background-repeat: no-repeat;
       color: white;
+      display: table-cell;
+      font-weight: bold;
+      height: $logo-height;
+      padding-left: $logo-width + 5px;
+      text-decoration: none;
+      vertical-align: middle;
     }
   }
 }
 
 #navbar {
-  background: black;
-  height: 40px;
+  display: table-cell;
+  font-size: smaller;
   margin: 0;
+
   li.selected > a {
     color: white;
   }
+
   > li {
     color: #aaa;
-    float: left;
+    display: inline-block;
     font-weight: bold;
-    height: 40px;
     list-style-type: none;
-    padding-top: 12px;
+
+    > a {
+      vertical-align: middle;
+      display: table-cell;
+    }
   }
-  >li#login {
-    margin-right: 1em;
-    float: right;
-  }
-  >li#logout {
-    margin-right: 1em;
-    float: right;
-  }
+
   li {
     > ul {
       display: none;
       font-size: 0.9em;
     }
+
     li {
       display: block;
       font-weight: normal;
       margin: 0.5em;
     }
   }
+
   > li:hover {
     > ul {
       display: block;
@@ -301,29 +313,53 @@ a.mailto:after {
       top: 40px;
       z-index: 110;
     }
+
     ul {
       display: block;
       margin-bottom: 1.5em;
+
       li li {
         margin-left: -2em;
       }
     }
   }
+
   > li > a {
     padding: 1em;
     color: #aaa;
     font-weight: bold;
   }
+
   > li > a:hover {
     color: white;
   }
 }
 
+#login-logout {
+  display: table-cell;
+  position: absolute;
+  right: 0;
+  top: 0;
+  vertical-align: middle;
+}
+
+a#login,
+a#logout {
+  color: #fff;
+  display: table-cell;
+  font-size: 13px;
+  font-weight: bold;
+  height: $logo-height;
+  padding: 0 1em;
+  vertical-align: middle;
+}
+
 #navbar form {
   width: 200px;
-  display: inline-block;
+  display: table-cell;
   margin: -2px 0;
   padding: 0;
+  vertical-align: middle;
   input {
     margin: 0;
     padding: 0;
@@ -331,30 +367,21 @@ a.mailto:after {
 }
 
 #breadcrumbs {
-  margin: 10px 10px 0;
+  margin: 10px 0 0;
   font-size: 0.8em;
 }
 
+#content-wrapper {
+  background: #fff;
+}
+
 #content {
-  line-height: 1.75em;
+  background: #fff;
   clear: both;
-  padding: {
-    top: 0.5em;
-    bottom: 1em;
-    left: 2em;
-    right: 3em;
-  };
-
-  margin: {
-    top: 1em;
-    left: auto;
-    right: auto;
-  };
-
-  background: white;
+  line-height: 1.75em;
+  margin: 0 auto;
   max-width: 860px;
-  @include border-radius(4px);
-  @include box-shadow(0 0 1px 1px #888);
+  padding: 0.5em 3em 1em 2em;
 
   @include respond-to(tablet) {
     margin: 0;
@@ -411,19 +438,24 @@ aside {
   float: right;
 }
 
-#footer {
+footer.global {
+  background: $footer-color;
+  border-top: 1px solid silver;
   clear: both;
-  text-align: center;
-  font-size: 0.75em;
-  margin: 1em;
+  font-size: smaller;
+
   ul {
-    li {
-      list-style-type: none;
-      display: inline;
-      padding: 5px 10px 5px 10px;
-    }
-    li + li {
-      border-left: 1px solid silver;
+    margin: 0;
+    padding: 0;
+  }
+
+  li {
+    display: inline-block;
+    list-style-type: none;
+
+    a {
+      display: inline-block;
+      padding: 1em;
     }
   }
 }
@@ -750,8 +782,9 @@ ul.taggables {
     margin-top: -1em;
   }
   .info {
-    text-align: right;
+    font-size: smaller;
     padding: 1em;
+    text-align: right;
   }
 }
 
@@ -869,6 +902,7 @@ td.links {
 }
 
 .prev_next {
+  font-size: smaller;
   margin-top: -1em;
   text-align: right;
 }

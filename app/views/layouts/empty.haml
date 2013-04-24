@@ -6,5 +6,6 @@
     =stylesheet_link_tag APP_CONFIG['google_web_fonts'], 'application'
     =render 'shared/google_analytics'
   %body
-    #content
-      =yield
+    #content-wrapper
+      #content
+        =yield

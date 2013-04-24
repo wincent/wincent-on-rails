@@ -6,11 +6,4 @@ $default-box-shadow-v-offset: 5px;
 // app-specific
 $active-fragment-background-color: #f2ffff;
 $browser-base-font-size: 16px; // default "medium" font in all web browsers
-$desired-base-font-size: 13px;
-
-// modular scaling
-$minor-second: 15 / 16;
-$major-second: 8/ 9;
-$minor-third: 5 / 6;
-$major-third: 4 / 5;
-$golden-ratio: 1 / 1.618;
+$desired-base-font-size: 16px;
