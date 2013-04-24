@@ -28,10 +28,7 @@ group :development, :test do
   gem 'factory_girl_rails'
   gem 'jasmine'
   gem 'rspec-rails'
-
-  # uncomment for local debugging; but never for production
-  # (linecache19 is misbehaved and breaks the deploy)
-  #gem 'ruby-debug19'
+  gem 'debugger'
 end
 
 group :test do
