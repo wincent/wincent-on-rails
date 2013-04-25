@@ -1,23 +1,23 @@
 Wincent::Application.routes.draw do
   # must explicitly allow period in the id part of the route
   # otherwise it will be classified as a route separator
-  resources :articles, :id => /[^\/]+/ , :path => 'wiki' do
-    resources :comments, :only => [:create, :new, :update]
+  resources :articles, id: /[^\/]+/ , path: 'wiki' do
+    resources :comments, only: %i[create new update]
     collection do
       get 'page/:page' => 'articles#index', :page => %r{\d+}
     end
   end
 
   resources :attachments
-  resources :comments, :except => [:create, :new, :update]
-  resources :confirmations, :path => 'confirm'
+  resources :comments, except: %i[create new update]
+  resources :confirmations, path: 'confirm'
 
   resources :forums do
-    resources :topics, :except => :index
+    resources :topics, except: :index
   end
 
   resources :issues do
-    resources :comments, :only => [:create, :new, :update]
+    resources :comments, only: %i[create new update]
     collection do
       get :search
       get 'page/:page' => 'issues#index', :page => %r{\d+}
@@ -28,15 +28,15 @@ Wincent::Application.routes.draw do
 
   # must explicitly allow period in the id part of the route otherwise it
   # will be classified as a route separator
-  resources :posts, :path => 'blog', :id => /[a-z0-9\-\.]+/ do
-    resources :comments, :only => [:create, :new, :update]
+  resources :posts, path: 'blog', id: /[a-z0-9\-\.]+/ do
+    resources :comments, only: %i[create new update]
     collection do
       get 'page/:page' => 'posts#index', :page => %r{\d+}
     end
   end
 
   resources :products do
-    resources :pages, :except => [ :index, :show ]
+    resources :pages, except: %i[index show]
   end
 
   # mapping to "product_page" would overwrite the nested RESTful route above
@@ -55,8 +55,8 @@ Wincent::Application.routes.draw do
     # means we can't do stuff like edit branches, but that's fine as they
     # are effectively a read-only resource.
     resources :branches,
-              :id   => %r{[a-z0-9_][a-z0-9./_-]*}i,
-              :only => [:index, :show]
+              id:   %r{[a-z0-9_][a-z0-9./_-]*}i,
+              only: %i[index show]
 
     # Git is effectively a content-addressable storage system, so we could
     # retrieve blobs by the SHA-1 hash only; however, for a better user
@@ -71,27 +71,27 @@ Wincent::Application.routes.draw do
     # GitHub (which uses the format "{blob,tree}/[commit-ish]/[path]"); I'd
     # prefer not to go down that route and have to disambiguate branch names
     # with slashes in them.
-    resources :blobs, :id => %r{[^:]+:[^:]+}, :only => :show, :format => false
+    resources :blobs, id: %r{[^:]+:[^:]+}, only: :show, format: false
 
-    resources :commits, :id => /[a-f0-9]{4,40}/, :only => [:index, :show]
+    resources :commits, id: /[a-f0-9]{4,40}/, only: %i[index show]
 
     # See comments on the blobs resource above about why we're using this :id
     # format. The only difference from the blob format is that the path is
     # optional, in which case it defaults to the root of the tree.
-    resources :trees, :id => %r{[^:]+(:[^:]+)}, :only => :show, :format => false
+    resources :trees, id: %r{[^:]+(:[^:]+)}, only: :show, format: false
 
     # can't use "resources :tags", as we already have a TagsController
     resources :git_tags,
-              :path => 'tags',
-              :id   => %r{[a-z0-9_][a-z0-9./_-]*}i,
-              :only => [:index, :show]
+              path: 'tags',
+              id:   %r{[a-z0-9_][a-z0-9./_-]*}i,
+              only: %i[index show]
   end
 
   resources :resets
   resources :sessions
 
   resources :snippets do
-    resources :comments, :only => [:create, :new, :update]
+    resources :comments, only: %i[create new update]
     collection do
       get 'page/:page' => 'snippets#index', :page => %r{\d+}
     end
@@ -101,7 +101,7 @@ Wincent::Application.routes.draw do
 
   # must explicitly allow period in the id part of the route otherwise
   # it will be classified as a route separator
-  resources :tags, :id => /[a-z0-9\.]+/ do
+  resources :tags, id: /[a-z0-9\.]+/ do
     collection do
       get :search
     end
@@ -109,23 +109,23 @@ Wincent::Application.routes.draw do
 
   # use some shallow routes for convenience and to avoid some N+1 select
   # problems
-  resources :topics, :only => [ :destroy, :index, :show ] do
+  resources :topics, only: %i[destroy index show] do
     # and we nest this one here rather than under forums -> topics
     # to simplify form URL generation (ie. we can just call
     #   form_for [@comment.commentable, @comment]
     # everywhere
-    resources :comments, :only => [:create, :new, :update]
+    resources :comments, only: %i[create new update]
   end
 
-  resources :tweets, :path => 'twitter' do
-    resources :comments, :only => [:create, :new, :update]
+  resources :tweets, path: 'twitter' do
+    resources :comments, only: %i[create new update]
     collection do
       get 'page/:page' => 'tweets#index', :page => %r{\d+}
     end
   end
 
   resources :users do
-    resources :emails, :id => /[^\/]+/
+    resources :emails, id: /[^\/]+/
   end
 
   # although conditionally inlining admin functionality in the standard
@@ -133,7 +133,7 @@ Wincent::Application.routes.draw do
   # looks different for admin users so we provide a separate admin interface
   # for some resources
   namespace :admin do
-    resources :forums, :only => [ :index, :show, :update ]
+    resources :forums, only: %i[index show update]
     resources :issues
     resources :posts
     resources :tags
