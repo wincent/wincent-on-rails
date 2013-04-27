@@ -479,6 +479,10 @@ div.column {
 
 // flashes
 
+%flash {
+  font-size: small;
+}
+
 @mixin flash-icon($color, $url) {
   background: {
     color: $color;
@@ -498,6 +502,7 @@ div.column {
 }
 
 #error, #notice {
+  @extend %flash;
   @include border-radius(3px);
   font-weight: bold;
   margin: 1em;
@@ -520,7 +525,9 @@ div.column {
 // just like the real flashes, but class-based rather than id-based so that they can be used multiple times
 
 .error, .notice {
+  @extend %flash;
   @include border-radius(3px);
+  border: 1px solid gray;
   font-weight: bold;
   margin: 1em;
   padding: 1em {
@@ -529,12 +536,10 @@ div.column {
 }
 
 .error {
-  border: 1px solid gray;
   @include flash-icon(#f9b8be, image-url("exclamation.png"));
 }
 
 .notice {
-  border: 1px solid gray;
   @include flash-icon(#c3e3b5, image-url("information.png"));
 }
 
