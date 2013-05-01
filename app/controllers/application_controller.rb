@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::Base
-  before_filter         :log_in_before
+  before_filter         :log_in_before,
+                        :vary_xhr
   protect_from_forgery
   rescue_from           ActionController::ForbiddenError, with: :forbidden
   rescue_from           ActiveRecord::RecordNotFound, with: :record_not_found
@@ -101,5 +102,14 @@ protected
       ' (this looks like a temporary error; you may want to try again later)'
   rescue Exception
     flash[:error] << error_msg + ' (the cause of the error was unknown)'
+  end
+
+  def vary_xhr
+    # make sure the browser knows to cache Ajax and non-Ajax variants separately
+    # (avoids problems with back button etc); see:
+    #
+    #   https://code.google.com/p/chromium/issues/detail?id=94369
+    #
+    headers['Vary'] = 'X-Requested-With'
   end
 end
