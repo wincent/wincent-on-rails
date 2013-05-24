@@ -203,7 +203,6 @@ PLATFORMS
 DEPENDENCIES
   autotest-rails
   bundler
-  capybara
   capybara-webkit
   coffee-rails
   compass-rails
