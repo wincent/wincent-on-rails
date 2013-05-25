@@ -3,9 +3,9 @@ class User < ActiveRecord::Base
   MINIMUM_PASSPHRASE_LENGTH   = 8
 
   has_many                  :comments
-  has_many                  :emails, :dependent => :destroy
+  has_many                  :emails, dependent: :destroy
   has_many                  :issues
-  has_many                  :monitorships, :dependent => :destroy
+  has_many                  :monitorships, dependent: :destroy
   has_many                  :topics
 
   attr_reader               :passphrase
@@ -15,20 +15,23 @@ class User < ActiveRecord::Base
   # NOTE: validates_uniqueness_of causes an extra SELECT every time you save, one for each attribute whose uniqueness you validate
 
   validates_presence_of     :display_name
-  validates_uniqueness_of   :display_name,  :case_sensitive => false
-  validates_length_of       :display_name,  :minimum => MINIMUM_DISPLAY_NAME_LENGTH
-  validates_format_of       :display_name,  :with => /\A[a-z]{2}( ?[a-z0-9]+)+\z/i, :allow_nil => true, :message =>
-  'may only contain letters, numbers and non-consecutive, non-trailing spaces; must start with at least two letters'
+  validates_uniqueness_of   :display_name,  case_sensitive: false
+  validates_length_of       :display_name,  minimum: MINIMUM_DISPLAY_NAME_LENGTH
+  validates_format_of       :display_name,
+    with: /\A[a-z]{2}( ?[a-z0-9]+)+\z/i,
+    allow_nil: true,
+    message: 'may only contain letters, numbers and non-consecutive, non-trailing spaces; must start with at least two letters'
   # TODO: rather than reject leading and trailing spaces, should just trim them
 
-  validates_presence_of     :passphrase,      :if => proc { |u| u.new_record? || u.resetting_passphrase }
-  validates_length_of       :passphrase,      :minimum => MINIMUM_PASSPHRASE_LENGTH,  :if => proc { |u| !u.passphrase.blank? }
-  validates_confirmation_of :passphrase,      :if => proc { |u| !u.passphrase.blank? }
+  validates_presence_of     :passphrase, if: -> (u) { u.new_record? || u.resetting_passphrase }
+  validates_length_of       :passphrase,
+    minimum: MINIMUM_PASSPHRASE_LENGTH,
+    if: -> (u) { u.passphrase.present? }
+  validates_confirmation_of :passphrase, if: -> (u) { u.passphrase.present? }
 
-  validates_each            :old_passphrase,
-                            :on => :update,
-                            :if => proc { |u| !u.passphrase.blank? && !u.resetting_passphrase } \
-  do |model, att, value|
+  validates_each :old_passphrase,
+    on: :update,
+    if: -> (u) { u.passphrase.present? && !u.resetting_passphrase } do |model, att, value|
     # Guard against cookie-capture attacks for passphrase changes.
     # TODO: same for email updates
     record_in_database = User.find(model.id)
@@ -47,7 +50,7 @@ class User < ActiveRecord::Base
 
   def self.find_by_email email
     return nil if email.blank?
-    first :include => :emails, :conditions => ['emails.address = ?', email]
+    Email.where(address: email).includes(:user).first.try(:user)
   end
 
   # User accounts may have multiple email addresses associated with them,

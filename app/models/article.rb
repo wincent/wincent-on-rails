@@ -8,36 +8,35 @@ class Article < ActiveRecord::Base
   include Linking
 
   has_many                :comments,
-                          :as         => :commentable,
-                          :extend     => Commentable,
-                          :order      => 'comments.created_at',
-                          :include    => :user,
-                          :dependent  => :destroy
-  belongs_to              :last_commenter, :class_name => 'User'
+                          as:         :commentable,
+                          extend:     Commentable,
+                          order:      'comments.created_at',
+                          include:    :user,
+                          dependent:  :destroy
+  belongs_to              :last_commenter, class_name: 'User'
   validates_presence_of   :title
   validates_uniqueness_of :title
   validates_format_of     :title,
-                          :with => TITLE_REGEX,
-                          :message => 'must not contain underscores or slashes'
+                          with:    TITLE_REGEX,
+                          message: 'must not contain underscores or slashes'
   validates_format_of     :redirect,
-                          :with => /(#{LINK_REGEX})          |
-                                    (#{EXTERNAL_LINK_REGEX}) |
-                                    (#{RELATIVE_PATH_REGEX})/x,
-                          :if => proc { |a| !a.redirect.blank? },
-                          :message => 'must be a valid [[wiki]] link, HTTP/HTTPS URL or relative path'
-  validates_length_of     :body, :maximum => 128 * 1024, :allow_blank => true
+                          with: /(#{LINK_REGEX})          |
+                                 (#{EXTERNAL_LINK_REGEX}) |
+                                 (#{RELATIVE_PATH_REGEX})/x,
+                          if: -> (a) { !a.redirect.blank? },
+                          message: 'must be a valid [[wiki]] link, HTTP/HTTPS URL or relative path'
+  validates_length_of     :body, maximum: 128 * 1024, allow_blank: true
   validate                :check_redirect_and_body
   attr_accessible         :title, :redirect, :body, :public, :accepts_comments, :pending_tags
-  acts_as_searchable      :attributes => [:title, :body]
+  acts_as_searchable      attributes: %i[title body]
   acts_as_taggable
 
-  scope :published, where(:public => true)
+  scope :published, where(public: true)
   scope :recent, published.order('updated_at DESC').limit(10)
 
   # for the Atom feed
-  scope :recent_excluding_redirects, lambda {
-    table = Article.arel_table
-    recent.where(table[:redirect].eq(nil).or(table[:redirect].eq('')))
+  scope :recent_excluding_redirects, -> {
+    recent.where('redirect IS NULL OR redirect = ""')
   }
 
   # NOTE: MySQL will do a case-insensitive find here, so "foo" and "FOO" refer

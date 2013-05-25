@@ -6,9 +6,9 @@ Wincent::Application.configure do
     'd2tdr4rkgjw2gh.cloudfront.net',  # cdn04
   ]
 
-  config.action_controller.asset_host = proc do |source|
+  config.action_controller.asset_host = -> (source) {
     'https://' + STATIC_ASSET_HOSTS[source.hash % STATIC_ASSET_HOSTS.size]
-  end
+  }
 
   config.action_controller.perform_caching  = true
   config.action_dispatch.x_sendfile_header  = 'X-Accel-Redirect'

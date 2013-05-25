@@ -1,9 +1,7 @@
 class PostsController < ApplicationController
   before_filter :require_admin, except: %i[index show]
   before_filter :get_post,      except: %i[index new create]
-  caches_page   :index, :show,  if: proc { |c|
-    c.request.format && c.request.format.atom?
-  }
+  caches_page   :index, :show,  if: -> (c) { c.request.format.try(:atom?) }
   cache_sweeper :post_sweeper,  only: %i[create update destroy]
 
   def index

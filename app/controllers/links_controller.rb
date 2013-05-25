@@ -1,7 +1,7 @@
 class LinksController < ApplicationController
-  before_filter     :require_admin, :except => :show
-  before_filter     :find_link, :only => [:edit, :show, :update, :destroy]
-  acts_as_sortable  :by => [:id, :uri, :permalink, :click_count]
+  before_filter    :require_admin, except: :show
+  before_filter    :find_link, only: %i[edit show update destroy]
+  acts_as_sortable by: %i[id uri permalink click_count]
 
   def index
     @links = Link.order sort_options

@@ -1,10 +1,8 @@
 class ArticlesController < ApplicationController
-  before_filter     :require_admin,   :except => [ :index, :show ]
-  before_filter     :get_article,     :only => [ :show, :edit, :update ]
-  caches_page       :index, :show,    :if => proc { |c|
-    c.request.format && c.request.format.atom?
-  }
-  cache_sweeper     :article_sweeper, :only => [ :create, :update, :destroy ]
+  before_filter :require_admin,   except: %i[index show]
+  before_filter :get_article,     only: %i[show edit update]
+  caches_page   :index, :show,    if: -> (c) { c.request.format.try(:atom?) }
+  cache_sweeper :article_sweeper, only: %i[create update destroy]
 
   def index
     respond_to do |format|

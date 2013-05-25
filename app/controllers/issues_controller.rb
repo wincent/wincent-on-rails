@@ -1,21 +1,21 @@
 class IssuesController < ApplicationController
-  before_filter     :require_admin, :except => [:create, :index, :new, :search, :show]
-  before_filter     :find_product, :only => [:index]
-  before_filter     :find_issue, :except => [:create, :destroy, :edit, :index, :new, :search, :show, :update]
-  before_filter     :find_issue_awaiting_moderation, :only => [:edit, :show, :update]
-  before_filter     :find_prev_next, :only => [:show], :unless => proc { |c|
-    c.request.format && c.request.format.atom?
-  }
-  before_filter     :prepare_issue_for_search, :only => [:index, :search]
+  before_filter     :require_admin, except: %i[create index new search show]
+  before_filter     :find_product, only: :index
+  before_filter     :find_issue,
+                    except: %i[create destroy edit index new search show update]
+  before_filter     :find_issue_awaiting_moderation, only: %i[edit show update]
+  before_filter     :find_prev_next,
+                    only: :show,
+                    unless: -> (c) { c.request.format.try(:atom?) }
+  before_filter     :prepare_issue_for_search, only: %i[index search]
   around_filter     :current_user_wrapper
-  caches_page       :show, :if => proc { |c|
-    c.request.format && c.request.format.atom?
-  }
-  cache_sweeper     :issue_sweeper, :only => [ :create, :update, :destroy ]
-  acts_as_sortable  :by => [:public, :kind, :id, :product_id, :summary, :status, :updated_at],
-                    :default => :updated_at,
-                    :descending => true
-  uses_dynamic_javascript :only => :show
+  caches_page       :show,
+                    if: -> (c) { c.request.format.try(:atom?) }
+  cache_sweeper     :issue_sweeper, only: %i[create update destroy]
+  acts_as_sortable  by: %i[public kind id product_id summary status updated_at],
+                    default: :updated_at,
+                    descending: true
+  uses_dynamic_javascript only: :show
 
   def new
     # normally "kind" defaults to "bug report"
