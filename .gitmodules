@@ -7,3 +7,9 @@
 [submodule "vendor/assets/javascripts/spin.js"]
 	path = vendor/assets/javascripts/spin.js
 	url = elastic1.unixhosts.net:/pub/git/public/spin.js.git
+[submodule "vendor/assets/javascripts/backbone"]
+	path = vendor/assets/javascripts/backbone
+	url = elastic1.unixhosts.net:/pub/git/public/backbone.git
+[submodule "vendor/assets/javascripts/underscore"]
+	path = vendor/assets/javascripts/underscore
+	url = elastic1.unixhosts.net:/pub/git/public/underscore.git

@@ -98,7 +98,8 @@ function editInPlace(selector, className, attributeName, url) {
         .find('input').on('blur', function() {
           $fieldId.text(fieldText)
             .on('dblclick', clickFunction)
-            .hover(highlight, unhighlight);
+            .on('mouseenter', highlight)
+            .on('mouseleave', unhighlight);
         }).end()
         .find('form').on('submit', function() {
           var value = $fieldId.find('input').val();
@@ -119,7 +120,9 @@ function editInPlace(selector, className, attributeName, url) {
               insertAJAXFlash('error', req.responseText);
             },
             'complete': function() {
-              $fieldId.hover(highlight, unhighlight)
+              $fieldId
+                .on('mousenter', highlight)
+                .on('mouseleave', unhighlight)
                 .on('dblclick', clickFunction);
             }
           });
@@ -127,7 +130,8 @@ function editInPlace(selector, className, attributeName, url) {
     }
     $fieldId.attr('title', 'Double-click to edit')
       .on('dblclick', clickFunction)
-      .hover(highlight, unhighlight);
+      .on('mouseenter', highlight)
+      .on('mouseleave', unhighlight);
   });
 }
 
@@ -146,7 +150,7 @@ function ajaxCheckBox(selector, className, attributeName, url) {
     checkBoxId.prop('checked', true);
     }
   var oldProp = checkBoxId.prop('checked');
-  checkBoxId.change(function() {
+  checkBoxId.on('change', function() {
     var $spinner = $fieldId.find('#' + spinnerId).show();
     $.ajax({
       'url': url + recordId,
@@ -219,7 +223,7 @@ function ajaxSelect(selector, className, attributeName, options, includeBlank, u
     }
   }
   var oldVal = $fieldId.find('select option:selected').text();
-  selectId.change(function() {
+  selectId.on('change', function() {
     var $spinner = $fieldId.find('#' + spinnerId).show();
     $.ajax({
       'url': url + recordId,
