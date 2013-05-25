@@ -1,6 +1,9 @@
 [submodule "assets"]
 	path = assets
 	url = elastic1.unixhosts.net:/pub/git/private/assets.wincent.com.git
+[submodule "vendor/assets/javascripts/jquery"]
+	path = vendor/assets/javascripts/jquery
+	url = elastic1.unixhosts.net:/pub/git/public/jquery.git
 [submodule "vendor/assets/javascripts/spin.js"]
 	path = vendor/assets/javascripts/spin.js
 	url = elastic1.unixhosts.net:/pub/git/public/spin.js.git
