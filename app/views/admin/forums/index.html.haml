@@ -9,8 +9,8 @@
       %th Actions
   -unless @forums.empty?
     %tbody
-      -for forum in @forums
-        %tr(class="forum #{cycle('odd', 'even')}" id="forum_#{forum.id}")
+      - @forums.each do |forum|
+        %tr.forum(id="forum_#{forum.id}")
           %td(id="forum_#{forum.id}_position")=forum.position
           %td(id="forum_#{forum.id}_name")=forum.name
           %td(id="forum_#{forum.id}_description")=forum.description

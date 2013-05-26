@@ -9,17 +9,23 @@ html {
 
 body {
   background: $footer-color;
-  margin: 0;
-  padding: 0;
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
   font-size: percentage($desired-base-font-size / $browser-base-font-size);
+  line-height: 1.5;
 }
 
 h1, h2, h3, h4, h5, h6 {
   color: #333;
-  font-family: "Yanone Kaffeesatz", sans-serif;
-  line-height: 1;
-  margin-bottom: 0.5em;
+  font-family: 'Yanone Kaffeesatz', sans-serif;
+  font-weight: bold;
+}
+
+h1, h2, h3 {
+  margin-bottom: 1.5em;
+}
+
+h4, h5, h6 {
+  margin-bottom: 1em;
 }
 
 h1 {
@@ -48,6 +54,8 @@ h6 {
 
 h1.major {
   border-bottom: 2px solid #ccc;
+
+  a:focus,
   a:hover {
     text-decoration: none;
     color: #ee7714;
@@ -56,27 +64,34 @@ h1.major {
 
 h2.major {
   border-bottom: 1px solid #ccc;
+
+  a:focus,
   a:hover {
     text-decoration: none;
     color: #ee7714;
   }
 }
 
+p {
+  margin-bottom: 1em;
+}
 p, li {
   color: #666;
 }
 
+li {
+  list-style: disc;
+  margin-bottom: 0.5em;
+}
+
 pre {
-  color: #657b83;
   background-color: #fdf6e3;
   border: 1px solid silver;
-  padding: 0em 1em 1px;
-  margin: {
-    left: 1em;
-    right: 2em;
-  }
+  color: #657b83;
   line-height: 1.5em;
+  margin-bottom: 1em;
   overflow: auto;
+  padding: 0 1em 1px;
 
   span.line-number {
     counter-increment: line-number;
@@ -215,6 +230,7 @@ a {
   color: #2971a7;
   text-decoration: none;
 
+  &:focus,
   &:hover {
     text-decoration: underline;
   }
@@ -240,9 +256,9 @@ a.mailto:after {
 // overall page layout
 
 nav.global {
-  background: black;
+  background: #000;
   border-bottom: 1px solid #999;
-  height: $logo-height;
+  height: $navbar-height;
   position: relative;
 
   h1 {
@@ -297,6 +313,7 @@ nav.global {
     }
   }
 
+  > li:focus,
   > li:hover {
     > ul {
       display: block;
@@ -326,6 +343,7 @@ nav.global {
     font-weight: bold;
   }
 
+  > li > a:focus,
   > li > a:hover {
     color: white;
   }
@@ -345,7 +363,7 @@ a#logout {
   display: table-cell;
   font-size: 13px;
   font-weight: bold;
-  height: $logo-height;
+  height: $navbar-height;
   padding: 0 1em;
   vertical-align: middle;
 }
@@ -404,6 +422,7 @@ aside {
     display: none;
   }
 
+  .tweet:focus .hoverlink,
   .tweet:hover .hoverlink {
     display: inline;
   }
@@ -559,7 +578,7 @@ ul.pagination {
   font-size: 0.75em;
   height: 16px;
   list-style-type: none;
-  margin: 1em;
+  margin: 1em 1em 1.5em;
   text-align: right;
   li {
     border-right: 1px solid #ccc;
@@ -646,12 +665,12 @@ th.descending a {
   padding-right: 16px;
 }
 
-tr.odd {
+tr {
   background: #f7f7f7;
-}
 
-tr.even {
-  background: #eaeaea;
+  &:nth-child(even) {
+    background: #eaeaea;
+  }
 }
 
 form .annotation {
@@ -751,14 +770,17 @@ ul.taggables {
   }
 }
 
+.comment:focus .hoverlink,
 .comment:hover .hoverlink {
   visibility: visible;
 }
 
+.snippet:focus .hoverlink,
 .snippet:hover .hoverlink {
   visibility: visible;
 }
 
+.tweet:focus .hoverlink,
 .tweet:hover .hoverlink {
   visibility: visible;
 }
@@ -785,12 +807,14 @@ ul.taggables {
 
 // consider per-controller custom CSS for this kind of class
 .post {
-  margin-top: 3em;
+  margin-bottom: 3em;
+
   .when {
     // we do this rather than special casing the h2 (posts#index)
     // and the h1 (posts#show), because the title varies depending on where it appears
     margin-top: -1em;
   }
+
   .info {
     font-size: smaller;
     padding: 1em;
@@ -831,6 +855,7 @@ ul.taggables {
   color: white;
   cursor: pointer;
   font-weight: bold;
+  &:focus,
   &:hover {
     background: #77bed2;
     color: white;
@@ -841,12 +866,14 @@ ul.taggables {
   }
   &.destructive {
     background: #a9014b;
+    &:focus,
     &:hover {
       background: #630030;
     }
   }
   &.disabled {
     background: silver;
+    &:focus,
     &:hover {
       background: silver;
     }
@@ -878,7 +905,8 @@ form.button_to {
   margin: {
     top: 2.5em;
     bottom: 2.5em;
-  };
+  }
+
   a {
     @include button;
   }
@@ -889,13 +917,14 @@ form.button_to {
   @include border-radius(2px);
   font-size: 0.75em;
   font-weight: normal;
-  padding: 3px 15px 3px 15px;
+  padding: 3px 15px;
 }
 
 td.links {
   a {
     @include small-button;
   }
+
   form input {
     @include small-button;
   }
@@ -905,13 +934,14 @@ td.links {
 // NOTE: could potentially split this off into a separate CSS file
 .product {
   clear: both;
+
   .icon img {
     float: left;
     margin: 1em;
   }
 }
 
-.prev_next {
+.prev-next {
   font-size: smaller;
   margin-top: -1em;
   text-align: right;
@@ -924,28 +954,16 @@ td.links {
     vertical-align: top;
     background: white;
   }
+
   th + td {
     padding-top: -0.5em;
     border-bottom: 1px solid #ccc;
     width: 85%;
   }
+
   // we want private comments to stand out a bit so that the admin knows which ones are hidden from public view
-  tr.private>th {
-    background: image-url("lock.png") no-repeat right bottom;
-  }
-}
-
-.comments .odd {
-  th + td {
-    border: 1px solid #ccc;
-    background: #f7f7f7;
-  }
-}
-
-.comments .even {
-  th + td {
-    border: 1px solid #ccc;
-    background: #eaeaea;
+  tr.private > th {
+    background: image-url('lock.png') no-repeat right bottom;
   }
 }
 

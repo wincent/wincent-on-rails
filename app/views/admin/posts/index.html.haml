@@ -11,8 +11,8 @@
       %th Actions
   -unless @posts.empty?
     %tbody
-      -for post in @posts
-        %tr(class="post #{cycle('odd', 'even')}" id="post_#{post.id}")
+      - @posts.each do |post|
+        %tr(id="post_#{post.id}")
           %td(id="post_#{post.id}_title")=post.title
           %td(id="post_#{post.id}_permalink")=post.permalink
           %td=timeinfo post

@@ -12,8 +12,8 @@
         %th Summary
         %th When
     %tbody
-      -for issue in @issues
-        %tr(class="#{cycle 'odd', 'even'} issue" id="issue_#{issue.id}")
+      - @issues.each do |issue|
+        %tr.issue(id="issue_#{issue.id}")
           %td=link_to "#{issue.kind_string} \##{issue.id}", issue_path(issue)
           %td=truncate issue.summary, :length => 60
           %td=timeinfo issue
@@ -28,8 +28,8 @@
         %th Topic
         %th When
     %tbody
-      -for topic in @topics
-        %tr(class="#{cycle 'odd', 'even'} topic" id="topic_#{topic.id}")
+      - @topics.each do |topic|
+        %tr.topic(id="topic_#{topic.id}")
           %td=link_to topic.forum.name, forum_path(topic.forum)
           %td=link_to topic.title, forum_topic_path(topic.forum, topic)
           %td=timeinfo topic
@@ -45,8 +45,8 @@
         %th Kind
         %th When
     %tbody
-      -for comment in @comments
-        %tr(class="#{cycle 'odd', 'even'} comment" id="comment_#{comment.id}")
+      - @comments.each do |comment|
+        %tr.comment(id="comment_#{comment.id}")
           %td=wikitext_truncate_and_strip comment.body, :length => 60
           -# BUG: N + 1 select problem here, and can't do eager loading on a polymorphic association
           %td=link_to_model comment.commentable

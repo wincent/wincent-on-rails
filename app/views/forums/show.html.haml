@@ -13,8 +13,8 @@
         %th Last post
     -unless @topics.empty?
       %tbody
-        -for topic in @topics
-          %tr{ :class => cycle('even', 'odd') }
+        - @topics.each do |topic|
+          %tr
             %td=link_to topic.title, forum_topic_path(@forum, topic)
             %td=number_with_delimiter topic.comments_count
             %td=number_with_delimiter topic.view_count

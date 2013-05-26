@@ -1,7 +1,7 @@
 -atom_link @issue
 -@page_title = "#{@issue.kind_string} \##{@issue.id.to_s}"
 %h1.major="#{@issue.kind_string} \##{@issue.id.to_s}"
-.prev_next
+.prev-next
   =link_to_prev_issue @prev
   =link_to_next_issue @next
 %h2

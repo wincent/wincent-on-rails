@@ -12,8 +12,8 @@
         =sortable_header_cell :public, 'Public?'
   -unless @issues.empty?
     %tbody
-      -for issue in @issues
-        %tr{ :class => cycle('odd', 'even') }
+      - @issues.each do |issue|
+        %tr
           %td=issue.id.to_s
           %td=link_to truncate(issue.summary, :length => 60),
             issue_path(issue), :title => issue.summary

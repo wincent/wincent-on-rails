@@ -8,14 +8,14 @@
       =sortable_header_cell :name, 'Name'
       =sortable_header_cell :taggings_count, 'Taggings count'
       %th Actions
-  -unless @tags.empty?
+  - unless @tags.empty?
     %tbody
-      -for tag in @tags
-        %tr(class="tag #{cycle('odd', 'even')}" id="tag_#{tag.id}")
+      - @tags.each do |tag|
+        %tr.tag(id="tag_#{tag.id}")
           %td(id="tag_#{tag.id}_name")=tag.name
           %td=tag.taggings_count
           %td.links
-            =link_to 'edit', edit_tag_path(tag)
+            = link_to 'edit', edit_tag_path(tag)
             -# BUG: TagsController doesn't even have a destroy action yet
             -#=button_to_destroy_model tag, :remote => true
 .links
