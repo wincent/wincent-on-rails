@@ -1,6 +1,5 @@
 $footer-color: #f5f5f5;
-$logo-height: 40px;
-$logo-width: 42px;
+$navbar-height: 40px;
 
 // basic appearance
 html {
@@ -253,14 +252,11 @@ nav.global {
 
 
     a {
-      background-image: image-url('logo.png');
-      background-position: left;
-      background-repeat: no-repeat;
       color: white;
       display: table-cell;
       font-weight: bold;
-      height: $logo-height;
-      padding-left: $logo-width + 5px;
+      height: $navbar-height;
+      padding-left: 5px;
       text-decoration: none;
       vertical-align: middle;
     }
