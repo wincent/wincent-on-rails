@@ -263,9 +263,14 @@
   };
 
   var setUpSearchLink = function() {
-    $('#search-link').on('click', function () {
-      $('#search_box').toggle().focus();
-      return false;
+    $('#search-link').on('click', function(evt) {
+      evt.preventDefault();
+      var $searchBox = $('#search_box');
+      if ($searchBox.is(':visible')) {
+        $searchBox.hide();
+      } else if ($searchBox.length) {
+        $searchBox.show().trigger('focus');
+      }
     });
   }
 

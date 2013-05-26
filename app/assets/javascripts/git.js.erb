@@ -21,16 +21,30 @@
 // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 // POSSIBILITY OF SUCH DAMAGE.
 
-// clicking on the abbreviated subject shows the entire commit message
-$('.commit .subject').
-  attr('title', 'click to view full commit message').
-  on('click', function(evt) {
-    evt.preventDefault();
-    $(this).toggle().next().toggle();
-  });
+(function() {
+  function toggle($el, other) {
+    if ($el.is(':visible')) {
+      $el.hide();
+    } else {
+      $el.show();
+    }
 
-// clicking on the full commit message toggles back to the abbreviated
-$('pre.message').on('click', function(evt) {
-  evt.preventDefault();
-  $(this).toggle().prev().toggle();
-});
+    if (other) { // 'next' or 'prev'
+      toggle($el[other]());
+    }
+  }
+
+  // clicking on the abbreviated subject shows the entire commit message
+  $('.commit .subject').
+    attr('title', 'click to view full commit message').
+    on('click', function(evt) {
+      evt.preventDefault();
+      toggle($(this), 'next');
+    });
+
+  // clicking on the full commit message toggles back to the abbreviated
+  $('pre.message').on('click', function(evt) {
+    evt.preventDefault();
+    toggle($(this), 'prev');
+  });
+})();
