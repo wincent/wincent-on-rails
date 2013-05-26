@@ -1,6 +1,6 @@
 %h1.major Search
 %form.search{'accept-charset' => 'UTF-8', :action => search_path, :method => :get}
-  =text_field_tag :q, 'enter your search terms here', :size => 75
+  =text_field_tag :q, '', placeholder: 'enter your search terms here', size: 75
   %input(type='submit' value='Search')
 .tips
   %h4 Search tips
