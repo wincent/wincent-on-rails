@@ -12,8 +12,8 @@
 }
 
 @mixin prefixed-transition($duration, $property, $easing) {
-  @each $prefix in moz, ms, o, webkit {
-    -#{$prefix}-transition: $duration -#{$prefix}-#{$property} $easing;
+  @each $prefix in -moz, -ms, -o, -webkit {
+    #{$prefix}-transition: $duration prefixed-for-transition($prefix, $property) $easing;
   }
   transition: $duration $property $easing;
 }
