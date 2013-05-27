@@ -1,0 +1,127 @@
+// Application slideout menu
+//
+// Overall structure:
+//
+//   %body
+//     .viewport
+//       .app
+//         / app content goes here
+//       .menu (initially hidden)
+//         .menu-inner (extra wrapper required in order to conceal scrollbar)
+//           / menu content goes here
+
+$menu-width: 260px;
+$background-color: #333;
+$padding: 10px;
+
+.app {
+  @include prefixed-transition(.2s, transform, ease-in-out);
+  min-width: 320px;
+  position: relative;
+  z-index: 1;
+}
+
+.menu {
+  @include transition(.2s opacity ease-in-out);
+  -webkit-overflow-scrolling: touch;
+  background: $background-color;
+  color: #ddd;
+  font-size: 18px;
+  font-weight: bold;
+  height: 100%;
+  left: 0;
+  opacity: 0;
+  overflow: scroll;
+  position: fixed;
+  top: 0;
+  width: $menu-width + 20px; // room for (hidden) scrollbar
+  z-index: 0;
+
+  &::-webkit-scrollbar {
+    width: 0; // for Safari
+  }
+}
+
+.menu-inner {
+  width: $menu-width;
+
+  .search {
+    padding: $padding;
+
+    input {
+      @include border-radius(3px);
+      @include box-sizing(border-box);
+      @include box-shadow(0 0 8px rgba(0, 0, 0, 0.1) inset,
+                          0 0 16px rgba(0, 0, 0, 0.1));
+      border: 1px solid #ccc;
+      color: #fff;
+      font-size: 14px;
+      line-height: 1;
+      padding: $padding / 2;
+      background: rgba(255, 255, 255, 0.8);
+      margin: 0;
+      width: 100%;
+    }
+  }
+
+  h2 {
+    @include box-shadow(0 1px 0 0 tint($background-color, 10) inset);
+    border-top: 1px solid shade($background-color, 50);
+    background: shade($background-color, 30);
+    color: #fff;
+    font-family: $light-family;
+    font-size: 11px;
+    font-weight: normal;
+    margin: 0;
+    padding: ($padding / 2) $padding;
+    text-transform: uppercase;
+  }
+
+  li {
+    margin: 0;
+    padding: 0;
+  }
+
+  a {
+    @include box-shadow(0 1px 0 0 tint($background-color, 10) inset);
+    border-top: 1px solid shade($background-color, 50);
+    color: #ddd;
+    display: block;
+    font-weight: normal;
+    padding: $padding;
+    text-shadow: 1px 1px 1px #333;
+
+    &:focus,
+    &:hover {
+      background-color: tint($background-color, 10);
+      text-decoration: none;
+    }
+
+    &:active {
+      background-color: shade($background-color, 10);
+    }
+  }
+}
+
+.menu-open {
+  .viewport {
+    overflow-x: hidden;
+    width: 100%;
+  }
+
+  .app {
+    // tranform + translateX is faster than just setting left with a transition
+    @include transform(translateX($menu-width));
+    overflow: scroll;
+  }
+
+  .menu {
+    opacity: 1;
+  }
+}
+
+.menu-closed .app {
+  // work around webkit bug: we need an explicit "closed" state; can't merely
+  // rely on the absence of the "open" state
+  left: 0;
+}

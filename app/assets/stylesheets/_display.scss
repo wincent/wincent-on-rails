@@ -9,14 +9,14 @@ html {
 
 body {
   background: $footer-color;
-  font-family: 'Open Sans', sans-serif;
+  font-family: $light-family;
   font-size: percentage($desired-base-font-size / $browser-base-font-size);
   line-height: 1.5;
 }
 
 h1, h2, h3, h4, h5, h6 {
   color: #333;
-  font-family: 'Yanone Kaffeesatz', sans-serif;
+  font-family: $heavy-family;
   font-weight: bold;
 }
 
@@ -178,7 +178,7 @@ table pre {
 }
 
 code, pre, textarea, tt {
-  font-family: Inconsolata, monospace;
+  font-family: $mono-family;
 }
 
 textarea {
@@ -455,6 +455,10 @@ aside {
 
 .right {
   float: right;
+}
+
+.hide {
+  display: none;
 }
 
 footer.global {
