@@ -11,13 +11,6 @@
   user-select: none;
 }
 
-@mixin prefixed-transition($duration, $property, $easing) {
-  @each $prefix in -moz, -ms, -o, -webkit {
-    #{$prefix}-transition: $duration prefixed-for-transition($prefix, $property) $easing;
-  }
-  transition: $duration $property $easing;
-}
-
 @mixin respond-to($media) {
   @if $media == tablet {
     @media only screen and

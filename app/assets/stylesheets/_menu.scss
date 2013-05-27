@@ -15,14 +15,14 @@ $background-color: #333;
 $padding: 10px;
 
 .app {
-  @include prefixed-transition(.2s, transform, ease-in-out);
+  @include transition(transform .2s ease-in-out);
   min-width: 320px;
   position: relative;
   z-index: 1;
 }
 
 .menu {
-  @include transition(.2s opacity ease-in-out);
+  @include transition(opacity .2s ease-in-out);
   -webkit-overflow-scrolling: touch;
   background: $background-color;
   color: #ddd;
