@@ -10,8 +10,9 @@
 //         .menu-inner (extra wrapper required in order to conceal scrollbar)
 //           / menu content goes here
 
-$menu-width: 260px;
 $background-color: #333;
+$navbar-height: 40px;
+$menu-width: 260px;
 $padding: 10px;
 
 .app {
@@ -42,27 +43,58 @@ $padding: 10px;
   }
 }
 
+.menu-icon {
+  @include user-select(none);
+  color: #ccc;
+  display: inline-block;
+  float: left;
+  font-size: $navbar-height;
+  height: $navbar-height;
+  line-height: $navbar-height;
+  margin: 0 $padding 0 0;
+  text-align: center;
+  width: $navbar-height;
+
+  &:focus,
+  &:hover {
+    color: #fff;
+    text-decoration: none;
+  }
+
+  &:active {
+    @include background-image(radial-gradient(center center, ellipse contain, #ccc, #333));
+    color: #fff;
+  }
+
+  @include respond-to(tablet) {
+    display: none;
+  }
+}
+.menu-inner input,
+.navbar-links input {
+  @include border-radius(3px);
+  @include box-sizing(border-box);
+  @include box-shadow(0 0 8px rgba(0, 0, 0, 0.1) inset,
+                      0 0 16px rgba(0, 0, 0, 0.1));
+  border: 1px solid #ccc;
+  color: #666;
+  font-size: 14px;
+  line-height: 1;
+  padding: $padding / 2;
+  background: rgba(255, 255, 255, 0.8);
+  margin: 0;
+  width: 100%;
+
+  &:focus,
+  &:hover,
+  &:active {
+    background: rgba(255, 255, 255, 0.95);
+    color: #333;
+  }
+}
+
 .menu-inner {
   width: $menu-width;
-
-  .search {
-    padding: $padding;
-
-    input {
-      @include border-radius(3px);
-      @include box-sizing(border-box);
-      @include box-shadow(0 0 8px rgba(0, 0, 0, 0.1) inset,
-                          0 0 16px rgba(0, 0, 0, 0.1));
-      border: 1px solid #ccc;
-      color: #fff;
-      font-size: 14px;
-      line-height: 1;
-      padding: $padding / 2;
-      background: rgba(255, 255, 255, 0.8);
-      margin: 0;
-      width: 100%;
-    }
-  }
 
   h2 {
     @include box-shadow(0 1px 0 0 tint($background-color, 10) inset);
@@ -101,6 +133,10 @@ $padding: 10px;
       background-color: shade($background-color, 10);
     }
   }
+
+  .search {
+    padding: $padding;
+  }
 }
 
 .menu-open {
@@ -118,10 +154,166 @@ $padding: 10px;
   .menu {
     opacity: 1;
   }
+
+  .menu-icon {
+    color: #fff;
+  }
 }
 
 .menu-closed .app {
   // work around webkit bug: we need an explicit "closed" state; can't merely
   // rely on the absence of the "open" state
   left: 0;
+}
+
+nav.global {
+  background: #000;
+  border-bottom: 1px solid #999;
+  height: $navbar-height;
+  position: relative;
+
+  h1 {
+    display: table-cell;
+    font-size: 22px;
+    margin: 0;
+    padding-right: (2 * $padding);
+    vertical-align: top;
+
+    a {
+      color: white;
+      display: table-cell;
+      font-weight: bold;
+      height: $navbar-height;
+      padding-left: 5px;
+      text-decoration: none;
+      vertical-align: middle;
+    }
+  }
+}
+
+.navbar-links {
+  display: none;
+  font-size: smaller;
+  margin: 0;
+
+  @include respond-to(tablet) {
+    display: table-cell;
+  }
+
+  form {
+    width: 200px;
+    display: table-cell;
+    padding: 0 0 0 $padding;
+    vertical-align: middle;
+
+    input {
+      @include border-radius(3px);
+      @include box-sizing(border-box);
+      @include box-shadow(0 0 8px rgba(0, 0, 0, 0.1) inset,
+                          0 0 16px rgba(0, 0, 0, 0.1));
+      border: 1px solid #ccc;
+      color: #666;
+      font-size: 14px;
+      line-height: 1;
+      padding: $padding / 2;
+      background: rgba(255, 255, 255, 0.8);
+      margin: 0;
+      width: 100%;
+
+      &:focus,
+      &:hover,
+      &:active {
+        background: rgba(255, 255, 255, 0.95);
+        color: #333;
+      }
+    }
+  }
+
+  li.selected > a {
+    color: #fff;
+  }
+
+  > li { // top-level nav
+    display: inline-block;
+    font-weight: bold;
+    list-style-type: none;
+    margin: 0;
+    padding: 0 $padding;
+
+    &:focus,
+    &:hover {
+      .products {
+        @include box-shadow(0 0 $padding $padding rgba(0, 0, 0, 0.1));
+        @include opacity(0.95);
+        display: table-row;
+        border: 1px solid gray;
+        border-top: 0;
+        background: #eee;
+        padding: 0 ($padding * 2) $padding;
+        position: absolute;
+        top: 40px;
+        vertical-align: top;
+
+        &:before {
+          border: $padding solid transparent;
+          border-bottom: $padding solid #eee;
+          content: ' ';
+          display: inline-block;
+          height: 0;
+          overflow: hidden;
+          position: relative;
+          top: -($padding * 2);
+          width: 0;
+          z-index: 3;
+        }
+
+        h3 {
+          margin-bottom: 1em;
+        }
+      }
+    }
+
+    > a { // top-level
+      color: #aaa;
+      display: table-cell;
+      height: $navbar-height;
+      vertical-align: middle;
+    }
+
+    .product-category {
+      display: table-cell;
+      padding-right: 30px;
+      vertical-align: top;
+
+      li {
+        list-style-type: none;
+      }
+    }
+
+    .products { // drop-down nav
+      display: none;
+      font-size: 0.9em;
+      vertical-align: top;
+      z-index: 2;
+    }
+  }
+}
+
+#login-logout {
+  display: table-cell;
+  position: absolute;
+  right: 0;
+  top: 0;
+  vertical-align: middle;
+}
+
+a#login,
+a#logout {
+  color: #fff;
+  display: table-cell;
+  font-size: 13px;
+  font-weight: bold;
+  height: $navbar-height;
+  padding: 0 1em;
+  vertical-align: middle;
 }

@@ -1,45 +1,23 @@
-// general-purpose mixins that can be imported for use in other templates
-
-// http://stackoverflow.com/questions/826782/css-rule-to-disable-text-selection-highlighting
-@mixin unselectable {
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  -o-user-select: none;
-  user-select: none;
-}
-
+// As we're taking a "mobile first" approach, the default styles apply to small
+// screen widths and up. We progressively enhance by adding more styles as the
+// screen size gets larger.
+//
+// This is the opposite of the typical breakpoint approach, where items are
+// hidden or overridden as the screen gets smaller. We're not doing that because
+// we want to encourage "mobile first" thinking, and also, free the
+// resource-constrained mobile devices to not have to worry about parsing and
+// calculating all those overrides.
 @mixin respond-to($media) {
-  @if $media == tablet {
-    @media only screen and
-      (max-width: 768px) and
-      (orientation: portrait) { @content; }
+  @if $media == mobile {
+    @media only screen and (min-width: 320px) { @content; }
   }
-  @else if $media == tablet_landscape {
-    @media only screen and
-      (max-width: 768px) and
-      (orientation: landscape) { @content; }
+  @else if $media == small-tablet {
+    @media only screen and (min-width: 480px) { @content; }
   }
-  @else if $media == small_tablet {
-    @media only screen and
-      (max-width: 480px) and
-      (orientation: portrait) { @content; }
+  @else if $media == tablet {
+    @media only screen and (min-width: 768px) { @content; }
   }
-  @else if $media == small_tablet_landscape {
-    @media only screen and
-      (max-width: 480px) and
-      (orientation: landscape) { @content; }
-  }
-  @else if $media == mobile {
-    @media only screen and
-      (max-width: 320px) and
-      (orientation: portrait) { @content; }
-  }
-  @else if $media == mobile_landscape {
-    @media only screen and
-      (max-width: 320px) and
-      (orientation: landscape) { @content; }
+  @else if $media == desktop {
+    @media only screen and (min-width: 1024px) { @content; }
   }
 }

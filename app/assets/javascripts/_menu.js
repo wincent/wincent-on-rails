@@ -26,7 +26,7 @@
 
   Wincent.Menu = Class.subclass({
     appSelector        : '.app',
-    menuButtonSelector : 'nav.global h1 a', // temporary, obviously
+    menuButtonSelector : '.menu-icon',
     menuSelector       : '.menu',
     viewportSelector   : '.viewport',
 

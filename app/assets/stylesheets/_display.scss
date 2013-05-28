@@ -1,5 +1,4 @@
 $footer-color: #f5f5f5;
-$navbar-height: 40px;
 
 // basic appearance
 html {
@@ -94,6 +93,7 @@ pre {
   padding: 0 1em 1px;
 
   span.line-number {
+    @include user-select(none);
     counter-increment: line-number;
     text-align: right;
     float: left;
@@ -104,7 +104,6 @@ pre {
     width: 3em;
     color: silver;
     background: #ffeeee;
-    @include unselectable;
   }
 
   span.line-number:before {
@@ -161,7 +160,7 @@ pre {
   }
 
   span.prompt-syntax {
-    @include unselectable;
+    @include user-select(none);
   }
 
   span.symbol-syntax {
@@ -254,131 +253,6 @@ a.mailto:after {
 }
 
 // overall page layout
-
-nav.global {
-  background: #000;
-  border-bottom: 1px solid #999;
-  height: $navbar-height;
-  position: relative;
-
-  h1 {
-    display: table-cell;
-    margin: 0;
-    vertical-align: top;
-
-
-    a {
-      color: white;
-      display: table-cell;
-      font-weight: bold;
-      height: $navbar-height;
-      padding-left: 5px;
-      text-decoration: none;
-      vertical-align: middle;
-    }
-  }
-}
-
-#navbar {
-  display: table-cell;
-  font-size: smaller;
-  margin: 0;
-
-  li.selected > a {
-    color: white;
-  }
-
-  > li {
-    color: #aaa;
-    display: inline-block;
-    font-weight: bold;
-    list-style-type: none;
-
-    > a {
-      vertical-align: middle;
-      display: table-cell;
-    }
-  }
-
-  li {
-    > ul {
-      display: none;
-      font-size: 0.9em;
-    }
-
-    li {
-      display: block;
-      font-weight: normal;
-      margin: 0.5em;
-    }
-  }
-
-  > li:focus,
-  > li:hover {
-    > ul {
-      display: block;
-      border: 1px solid gray;
-      @include box-shadow;
-      @include opacity(0.95);
-      background: white;
-      padding: 1em;
-      position: absolute;
-      top: 40px;
-      z-index: 110;
-    }
-
-    ul {
-      display: block;
-      margin-bottom: 1.5em;
-
-      li li {
-        margin-left: -2em;
-      }
-    }
-  }
-
-  > li > a {
-    padding: 1em;
-    color: #aaa;
-    font-weight: bold;
-  }
-
-  > li > a:focus,
-  > li > a:hover {
-    color: white;
-  }
-}
-
-#login-logout {
-  display: table-cell;
-  position: absolute;
-  right: 0;
-  top: 0;
-  vertical-align: middle;
-}
-
-a#login,
-a#logout {
-  color: #fff;
-  display: table-cell;
-  font-size: 13px;
-  font-weight: bold;
-  height: $navbar-height;
-  padding: 0 1em;
-  vertical-align: middle;
-}
-
-#navbar form {
-  width: 200px;
-  display: table-cell;
-  margin: -2px 0;
-  padding: 0;
-  vertical-align: middle;
-  input {
-    margin: 0;
-    padding: 0;
-  }
-}
 
 #breadcrumbs {
   margin: 10px 0 0;
@@ -803,10 +677,6 @@ ul.taggables {
 // for non-existent wiki links
 .redlink {
   color: red;
-}
-
-.unselectable {
-  @include unselectable;
 }
 
 // consider per-controller custom CSS for this kind of class
