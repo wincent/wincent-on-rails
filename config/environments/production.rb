@@ -29,5 +29,6 @@ Wincent::Application.configure do
   config.cache_classes                      = true
   config.cache_store                        = :dalli_store, '127.0.0.1'
   config.consider_all_requests_local        = false
+  config.eager_load                         = true
   config.serve_static_assets                = false
 end

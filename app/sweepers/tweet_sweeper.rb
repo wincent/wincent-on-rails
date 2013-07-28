@@ -30,7 +30,7 @@ private
     safe_expire tweets_path('.html')        # /twitter.html
 
     # /twitter/page/1.html, /twitter/page/2.html etc
-    safe_expire(tweets_path + 'page', :recurse => true)
+    safe_expire(tweets_path + 'page', recurse: true)
 
     expire_fragment :tweets_sidebar
   end

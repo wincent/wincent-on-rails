@@ -64,7 +64,7 @@ describe Admin::ForumsController do
         json['forum'].should == {
           'name'        => @forum.name,
           'description' => nil,
-          'position'    => 0
+          'position'    => 0,
         }
       end
     end

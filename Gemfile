@@ -1,24 +1,24 @@
 source 'https://rubygems.org'
 
+gem 'actionpack-page_caching' # will be maintained until Rails 4.1
 gem 'bundler'
+gem 'coffee-rails'
+gem 'compass-rails', '~> 2.0.alpha'
 gem 'dalli'
 gem 'haml'
 gem 'mysql2'
 gem 'nokogiri'
+gem 'oily_png'
+gem 'protected_attributes' # was in Rails core, extracted in 4.0
 gem 'rails'
+gem 'rails-observers' # was in Rails core, extracted in 4.0
 gem 'rake'
+gem 'sass-rails'
 gem 'twitter'
+gem 'uglifier'
 gem 'unicorn'
 gem 'wikitext'
 gem 'wopen3'
-
-group :assets do
-  gem 'coffee-rails'
-  gem 'compass-rails'
-  gem 'oily_png'
-  gem 'sass-rails'
-  gem 'uglifier'
-end
 
 group :production do
   gem 'therubyracer'

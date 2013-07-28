@@ -39,22 +39,21 @@ class Snippet < ActiveRecord::Base
   attr_accessible :accepts_comments, :body, :description, :markup_type,
     :pending_tags, :public
 
-  belongs_to :last_commenter, :class_name => 'User'
+  belongs_to :last_commenter, class_name: 'User'
 
   has_many  :comments,
-            :as => :commentable,
-            :extend => Commentable,
-            :order => 'comments.created_at',
-            :include => :user,
-            :dependent => :destroy
+            -> { includes(:user).order('comments.created_at') },
+            as:        :commentable,
+            extend:    Commentable,
+            dependent: :destroy
 
-  scope :published, where(:public => true)
-  scope :recent, published.order('updated_at DESC').limit(10)
+  scope :published, -> { where(public: true) }
+  scope :recent,    -> { published.order('updated_at DESC').limit(10) }
 
   validates_presence_of :body
   validates_inclusion_of :markup_type,
-    :in => MARKUP_TYPES.values,
-    :message => 'not a valid markup type'
+    in:      MARKUP_TYPES.values,
+    message: 'not a valid markup type'
 
   def body_html options = {}
     case markup_type

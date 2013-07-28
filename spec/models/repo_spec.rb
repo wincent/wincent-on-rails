@@ -122,7 +122,7 @@ describe Repo do
           repo = Repo.make!
           repo.clone_url = 'git.example.com:/foo.git'
           repo.save :validate => false
-        end.should raise_error(ActiveRecord::RecordNotUnique)
+        end.to raise_error(ActiveRecord::RecordNotUnique)
       end
     end
 
@@ -142,7 +142,7 @@ describe Repo do
           repo = Repo.make!
           repo.name = 'foo'
           repo.save :validate => false
-        end.should raise_error(ActiveRecord::RecordNotUnique)
+        end.to raise_error(ActiveRecord::RecordNotUnique)
       end
     end
 
@@ -162,7 +162,7 @@ describe Repo do
           repo = Repo.make!
           repo.permalink = 'foo'
           repo.save :validate => false
-        end.should raise_error(ActiveRecord::RecordNotUnique)
+        end.to raise_error(ActiveRecord::RecordNotUnique)
       end
     end
 
@@ -184,7 +184,7 @@ describe Repo do
       it 'must be readable' do
         path = Pathname.new Dir.mkdtemp
         path.chmod 0000
-        Repo.make(:path => path).
+        Repo.make(path: path.to_s).
           should fail_validation_for(:path)
       end
 
@@ -198,16 +198,16 @@ describe Repo do
         expect do
           repo2 = Repo.make!
           repo2.path = repo1.path
-          repo2.save :validate => false
-        end.should raise_error(ActiveRecord::RecordNotUnique)
+          repo2.save validate: false
+        end.to raise_error(ActiveRecord::RecordNotUnique)
       end
 
       specify 'RAILS_ROOT is valid' do
-        Repo.make(:path => Rails.root).should_not fail_validation_for(:path)
+        Repo.make(path: Rails.root.to_s).should_not fail_validation_for(:path)
       end
 
       specify '"non-pathy string!" is not valid' do
-        Repo.make(:path => 'non-pathy string!').should fail_validation_for(:path)
+        Repo.make(path: 'non-pathy string!').should fail_validation_for(:path)
       end
     end
 
@@ -227,12 +227,12 @@ describe Repo do
 
       it 'has a database-level constraint to guard against race conditions' do
         product = Product.make!
-        Repo.make! :product_id => product.id
+        Repo.make! product_id: product.id
         expect do
           repo = Repo.make!
           repo.product_id = product.id
-          repo.save :validate => false
-        end.should raise_error(ActiveRecord::RecordNotUnique)
+          repo.save validate: false
+        end.to raise_error(ActiveRecord::RecordNotUnique)
       end
     end
 
@@ -262,7 +262,7 @@ describe Repo do
           repo = Repo.make!
           repo.rw_clone_url = 'git.example.com:/foo.git'
           repo.save :validate => false
-        end.should raise_error(ActiveRecord::RecordNotUnique)
+        end.to raise_error(ActiveRecord::RecordNotUnique)
       end
     end
   end
@@ -285,7 +285,7 @@ describe Repo do
     it 'returns public repos' do
       repo  = Repo.make! :public => true
       other = Repo.make! :public => false
-      Repo.published.all.should == [repo]
+      Repo.published.to_a.should == [repo]
     end
   end
 

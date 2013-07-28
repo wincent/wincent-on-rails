@@ -21,19 +21,18 @@ class Tweet < ActiveRecord::Base
   PAGE_SIZE              = 20
 
   has_many              :comments,
+                        -> { includes(:user).order('comments.created_at') },
                         as:               :commentable,
                         extend:           Commentable,
-                        order:            'comments.created_at',
-                        include:          :user,
                         dependent:        :destroy
   belongs_to            :last_commenter,  class_name: 'User'
   validates_presence_of :body
   attr_accessible       :accepts_comments, :body, :pending_tags
 
-  scope                 :recent, order('created_at DESC')
-  scope                 :page, limit(PAGE_SIZE)
+  scope                 :recent, -> { order('created_at DESC') }
+  scope                 :page,   -> { limit(PAGE_SIZE) }
 
-  acts_as_searchable    attributes:       [:body]
+  acts_as_searchable    attributes: [:body]
   acts_as_taggable
 
   # legal path chars: http://tools.ietf.org/html/rfc3986#section-1.1.1

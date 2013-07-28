@@ -16,6 +16,11 @@ module Wincent
       File.basename(observer).split('.').first.to_sym
     end
     config.active_record.whitelist_attributes = true
+
+    # will eventually want to set this to `false` (or just delete it; it is the
+    # default as of Rails 4.0.0) to play nicely with Backbone
+    config.active_record.include_root_in_json = true
+
     config.autoload_paths += %W(
       #{config.root}/app/observers
       #{config.root}/app/sweepers

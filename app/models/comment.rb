@@ -20,7 +20,8 @@ class Comment < ActiveRecord::Base
   set_callback :update, :after, :update_caches
   set_callback :destroy, :after, :update_caches
 
-  scope :recent, where(:public => true).limit(10).order('created_at DESC')
+  scope :published, -> { where(public: true) }
+  scope :recent,    -> { published.order('created_at DESC').limit(10) }
 
 protected
 
@@ -44,19 +45,18 @@ protected
     conditions = {
       :awaiting_moderation => false, :commentable_id => commentable_id, :commentable_type => commentable_type
       }
-    comment_count   = Comment.count :conditions => conditions
-    last_comment    = Comment.last :conditions => conditions, :order => 'created_at'
+    comment_count   = Comment.where(conditions).count
+    last_comment    = Comment.where(conditions).order('created_at').last
     last_user       = last_comment ? last_comment.user : (commentable.user if commentable.respond_to?(:user))
     comment_id      = last_comment ? last_comment.id : nil
     last_commented  = last_comment ? last_comment.created_at : commentable.created_at
     updates         = 'comments_count = ?, last_commenter_id = ?, last_comment_id = ?, last_commented_at = ?, updated_at = ?'
     timestamp       = (update_timestamps_for_changes? && !last_commented.nil?) ? last_commented : commentable.updated_at
-    commentable.class.update_all [updates, comment_count, last_user, comment_id, last_commented, timestamp],
-      ['id = ?', commentable.id]
+    commentable.class.where(id: commentable).update_all([updates, comment_count, last_user, comment_id, last_commented, timestamp])
 
     if user
-      user_comment_count = Comment.count :conditions => { :awaiting_moderation => false, :user_id => user.id }
-      User.update_all ['comments_count = ?', user_comment_count], ['id = ?', user]
+      user_comment_count = Comment.where(awaiting_moderation: false, user_id: user).count
+      user.update_column(:comments_count, user_comment_count)
     end
   end
 
@@ -74,7 +74,8 @@ protected
       updated_at        = ?
     UPDATES
     timestamp = update_timestamps_for_changes? ? created_at : commentable.updated_at
-    commentable.class.update_all [updates, user, id, created_at, timestamp], ['id = ?', commentable.id]
-    User.update_all ['comments_count = comments_count + 1'], ['id = ?', user] if user
+    commentable.class.where(id: commentable).
+      update_all([updates, user, id, created_at, timestamp])
+    User.increment_counter(:comments_count, user.id) if user
   end
 end

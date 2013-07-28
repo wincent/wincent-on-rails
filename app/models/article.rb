@@ -8,10 +8,9 @@ class Article < ActiveRecord::Base
   include Linking
 
   has_many                :comments,
+                          -> { includes(:user).order('comments.created_at') },
                           as:         :commentable,
                           extend:     Commentable,
-                          order:      'comments.created_at',
-                          include:    :user,
                           dependent:  :destroy
   belongs_to              :last_commenter, class_name: 'User'
   validates_presence_of   :title
@@ -31,8 +30,8 @@ class Article < ActiveRecord::Base
   acts_as_searchable      attributes: %i[title body]
   acts_as_taggable
 
-  scope :published, where(public: true)
-  scope :recent, published.order('updated_at DESC').limit(10)
+  scope :published, -> { where(public: true) }
+  scope :recent,    -> { published.order('updated_at DESC').limit(10) }
 
   # for the Atom feed
   scope :recent_excluding_redirects, -> {

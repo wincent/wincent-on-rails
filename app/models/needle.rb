@@ -11,6 +11,7 @@
 #
 # Note that for speed neither a real ActiveRecord "belongs_to" association,
 # nor timestamp fields (updated_at, created_at), nor validations, are used.
+#
 class Needle < ActiveRecord::Base
   # internally generated from "safe" inputs, so basically everything is
   # accessible

@@ -10,7 +10,7 @@ RSpec.configure do |config|
   end
 
   config.alias_it_should_behave_like_to :it_has_behavior, 'has behavior:'
-  config.backtrace_clean_patterns = config.backtrace_clean_patterns + [
+  config.backtrace_exclusion_patterns += [
     %r{/Library/},
     %r{/\.bundle/},
   ]

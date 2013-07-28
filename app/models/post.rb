@@ -2,10 +2,9 @@ class Post < ActiveRecord::Base
   PAGE_SIZE = 10
 
   has_many                :comments,
+                          -> { includes(:user).order('comments.created_at') },
                           as:        :commentable,
                           extend:    Commentable,
-                          order:     'comments.created_at',
-                          include:   :user,
                           dependent: :destroy
   belongs_to              :last_commenter, class_name: 'User'
   validates_presence_of   :title
@@ -20,9 +19,9 @@ class Post < ActiveRecord::Base
                           :accepts_comments, :pending_tags
   before_validation       :set_permalink
 
-  scope :public, where(public: true)
-  scope :recent, public.order('created_at DESC')
-  scope :page,   limit(PAGE_SIZE)
+  scope :public, -> { where(public: true) }
+  scope :recent, -> { public.order('created_at DESC') }
+  scope :page,   -> { limit(PAGE_SIZE) }
 
   acts_as_taggable
   acts_as_searchable      attributes: %i[title excerpt body]

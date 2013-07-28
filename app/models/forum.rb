@@ -1,16 +1,16 @@
 class Forum < ActiveRecord::Base
   has_many                :topics,
-                          :order => 'topics.updated_at DESC',
-                          :dependent => :destroy
+                          -> { order('topics.updated_at DESC') },
+                          dependent: :destroy
   validates_presence_of   :name
   validates_format_of     :name,
-                          :with => /\A[a-z0-9\- ]+\z/i,
-                          :message => 'may only contain letters, numbers, hyphens and spaces'
+                          with: /\A[a-z0-9\- ]+\z/i,
+                          message: 'may only contain letters, numbers, hyphens and spaces'
   validates_uniqueness_of :name
   validates_presence_of   :permalink
   validates_format_of     :permalink,
-                          :with => /\A[a-z0-9\-]+\z/,
-                          :message => 'must contain only lowercase letters, numbers and hyphens'
+                          with: /\A[a-z0-9\-]+\z/,
+                          message: 'must contain only lowercase letters, numbers and hyphens'
   validates_uniqueness_of :permalink
   attr_accessible         :name, :description, :permalink, :position, :public
   before_create           :set_position

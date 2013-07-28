@@ -1,22 +1,21 @@
 class Topic < ActiveRecord::Base
-  belongs_to            :forum, :counter_cache => true
-  belongs_to            :user,  :counter_cache => true
+  belongs_to            :forum, counter_cache: true
+  belongs_to            :user,  counter_cache: true
   belongs_to            :last_commenter,
-                        :class_name   => 'User',
-                        :foreign_key  => 'last_commenter_id'
+                        class_name:  'User',
+                        foreign_key: 'last_commenter_id'
   has_many              :comments,
-                        :as           => :commentable,
-                        :extend       => Commentable,
-                        :order        => 'comments.created_at',
-                        :include      => :user,
-                        :dependent    => :destroy
+                        -> { includes(:user).order('comments.created_at') },
+                        as:        :commentable,
+                        extend:    Commentable,
+                        dependent: :destroy
   validates_presence_of :title
   validates_presence_of :body
-  validates_length_of   :body, :maximum => 128 * 1024
+  validates_length_of   :body, maximum: 128 * 1024
   attr_accessible       :title, :body
   before_create         :set_last_comment_info
   acts_as_classifiable
-  acts_as_searchable    :attributes => [:title, :body]
+  acts_as_searchable    attributes: [:title, :body]
   acts_as_taggable
   set_callback          :create, :after, :send_new_topic_alert
 

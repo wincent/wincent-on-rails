@@ -16,14 +16,14 @@ describe ApplicationHelper, 'timeinfo method' do
     timeinfo @model
   end
 
-  it 'should return just the creation date if update and creation date are the same (exact match)' do
+  it 'returns just the creation date if update and creation date are the same (exact match)' do
     date = 2.days.ago
     mock(@model).created_at { date }
     mock(@model).updated_at { date }
     timeinfo(@model).should =~ /#{Regexp.escape date.to_s}/
   end
 
-  it 'should return just the creation date if update and creation date are the same (fuzzy match)' do
+  it 'returns just the creation date if update and creation date are the same (fuzzy match)' do
     earlier_date  = (2.days + 2.hours).ago
     later_date    = (2.days + 1.hour).ago
     mock(@model).created_at { earlier_date }
@@ -32,7 +32,7 @@ describe ApplicationHelper, 'timeinfo method' do
     timeinfo(@model).should =~ /#{Regexp.escape earlier_date.to_s}/
   end
 
-  it 'should return both creation and edit date if different' do
+  it 'returns both creation and edit date if different' do
     earlier_date  = 3.hours.ago
     later_date    = 1.hour.ago
     mock(@model).created_at { earlier_date }
@@ -43,7 +43,7 @@ describe ApplicationHelper, 'timeinfo method' do
     info.should =~ /updated.+#{Regexp.escape later_date.to_s}/
   end
 
-  it 'should allow you to override the "updated" string' do
+  it 'allows you to override the "updated" string' do
     # for some model types, it might sound better to say "edited" rather than updated
     earlier_date  = 3.hours.ago
     later_date    = 1.hour.ago
@@ -54,7 +54,7 @@ describe ApplicationHelper, 'timeinfo method' do
     info.should =~ /edited.+#{Regexp.escape later_date.to_s}/
   end
 
-  it 'should not show the "updated" date at all if "updated_string" is set to false' do
+  it 'does not show the "updated" date at all if "updated_string" is set to false' do
     earlier_date  = 3.hours.ago
     later_date    = 1.hour.ago
     mock(@model).created_at { earlier_date }
