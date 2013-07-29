@@ -2,58 +2,56 @@ require 'spec_helper'
 
 describe TweetsController do
   describe 'routing' do
-    specify { get('/twitter').should have_routing('tweets#index') }
-    specify { get('/twitter/new').should have_routing('tweets#new') }
-    specify { get('/twitter/123').should have_routing('tweets#show', :id => '123') }
-    specify { get('/twitter/123/edit').should have_routing('tweets#edit', :id => '123') }
-    specify { put('/twitter/123').should have_routing('tweets#update', :id => '123') }
-    specify { delete('/twitter/123').should have_routing('tweets#destroy', :id => '123') }
-    specify { post('/twitter').should have_routing('tweets#create') }
+    specify { expect(get: '/twitter').to route_to('tweets#index') }
+    specify { expect(get: '/twitter/new').to route_to('tweets#new') }
+    specify { expect(get: '/twitter/123').to route_to('tweets#show', id: '123') }
+    specify { expect(get: '/twitter/123/edit').to route_to('tweets#edit', id: '123') }
+    specify { expect(put: '/twitter/123').to route_to('tweets#update', id: '123') }
+    specify { expect(delete: '/twitter/123').to route_to('tweets#destroy', id: '123') }
+    specify { expect(post: '/twitter').to route_to('tweets#create') }
 
     describe 'index pagination' do
-      specify { get('/twitter/page/2').should have_routing('tweets#index', :page => '2') }
+      specify { expect(get: '/twitter/page/2').to route_to('tweets#index', page: '2') }
 
       it 'rejects non-numeric :page params' do
-        get('/twitter/page/foo').should_not be_recognized
+        expect(get: '/twitter/page/foo').to_not be_routable
       end
     end
 
     describe 'comments' do
       # only #new, #create and #update are implemented while nested
-      specify { get('/twitter/123/comments/new').should have_routing('comments#new', :tweet_id => '123') }
-      specify { post('/twitter/123/comments').should have_routing('comments#create', :tweet_id => '123') }
-      specify { put('/twitter/123/comments/456').should have_routing('comments#update', :tweet_id => '123', :id => '456') }
+      specify { expect(get: 'twitter/123/comments/new').to route_to('comments#new', tweet_id: '123') }
+      specify { expect(post: 'twitter/123/comments').to route_to('comments#create', tweet_id: '123') }
+      specify { expect(put: 'twitter/123/comments/456').to route_to('comments#update', tweet_id: '123', id: '456') }
 
       # all other RESTful actions are no-ops
-      specify { get('/twitter/123/comments').should_not be_recognized }
-      specify { get('/twitter/123/comments/456').should_not be_recognized }
-      specify { get('/twitter/123/comments/456/edit').should_not be_recognized }
-      specify { delete('/twitter/123/comments/456').should_not be_recognized }
+      specify { expect(get: 'twitter/123/comments').to_not be_routable }
+      specify { expect(get: '/twitter/123/comments/456').to_not be_routable }
+      specify { expect(get: '/twitter/123/comments/456/edit').to_not be_routable }
+      specify { expect(delete: '/twitter/123/comments/456').to_not be_routable }
     end
 
     describe 'helpers' do
-      before do
-        @tweet = Tweet.stub
-      end
+      let(:tweet) { Tweet.stub }
 
       describe 'tweets_path' do
-        specify { tweets_path.should == '/twitter' }
+        specify { expect(tweets_path).to eq('/twitter') }
       end
 
       describe 'new_tweet_path' do
-        specify { new_tweet_path.should == '/twitter/new' }
+        specify { expect(new_tweet_path).to eq('/twitter/new') }
       end
 
       describe 'tweet_path' do
-        specify { tweet_path(@tweet).should == "/twitter/#{@tweet.id}" }
+        specify { expect(tweet_path(tweet)).to eq("/twitter/#{tweet.id}") }
       end
 
       describe 'edit_tweet_path' do
-        specify { edit_tweet_path(@tweet).should == "/twitter/#{@tweet.id}/edit" }
+        specify { expect(edit_tweet_path(tweet)).to eq("/twitter/#{tweet.id}/edit") }
       end
 
       describe 'edit_tweet_path' do
-        specify { edit_tweet_path(@tweet).should == "/twitter/#{@tweet.id}/edit" }
+        specify { expect(edit_tweet_path(tweet)).to eq("/twitter/#{tweet.id}/edit") }
       end
     end
   end

@@ -2,13 +2,11 @@ require 'spec_helper'
 
 describe SearchController do
   describe 'routing' do
-    specify do
-      get('/search').should have_routing('search#search')
-    end
+    specify { expect(get: '/search').to route_to('search#search') }
 
     describe 'helpers' do
       describe 'search_path' do
-        specify { search_path.should == '/search' }
+        specify { expect(search_path).to eq('/search') }
       end
     end
   end

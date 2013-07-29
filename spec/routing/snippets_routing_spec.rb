@@ -3,104 +3,102 @@ require 'spec_helper'
 describe SnippetsController do
   describe 'routing' do
     specify do
-      get('/snippets').should have_routing('snippets#index')
+      expect(get: '/snippets').to route_to('snippets#index')
     end
 
     specify do
-      get('/snippets/new').should have_routing('snippets#new')
+      expect(get: '/snippets/new').to route_to('snippets#new')
     end
 
     specify do
-      get('/snippets/123').should have_routing('snippets#show', :id => '123')
+      expect(get: '/snippets/123').to route_to('snippets#show', id: '123')
     end
 
     specify do
-      get('/snippets/123/edit').
-        should have_routing('snippets#edit', :id => '123')
+      expect(get: '/snippets/123/edit').
+        to route_to('snippets#edit', id: '123')
     end
 
     specify do
-      put('/snippets/123').should have_routing('snippets#update', :id => '123')
+      expect(put: '/snippets/123').to route_to('snippets#update', id: '123')
     end
 
     specify do
-      delete('/snippets/123').
-        should have_routing('snippets#destroy', :id => '123')
+      expect(delete: '/snippets/123').
+        to route_to('snippets#destroy', id: '123')
     end
 
     specify do
-      post('/snippets').should have_routing('snippets#create')
+      expect(post: '/snippets').to route_to('snippets#create')
     end
 
     describe 'index pagination' do
       specify do
-        get('/snippets/page/2').
-          should have_routing('snippets#index', :page => '2')
+        expect(get: '/snippets/page/2').
+          to route_to('snippets#index', page: '2')
       end
 
       it 'rejects non-numeric :page params' do
-        get('/snippets/page/foo').should_not be_recognized
+        expect(get: '/snippets/page/foo').to_not be_routable
       end
     end
 
     describe 'comments' do
       # only #new, #create and #update are implemented while nested
       specify do
-        get('/snippets/123/comments/new').
-          should have_routing('comments#new', :snippet_id => '123')
+        expect(get: '/snippets/123/comments/new').
+          to route_to('comments#new', snippet_id: '123')
       end
 
       specify do
-        post('/snippets/123/comments').
-          should have_routing('comments#create', :snippet_id => '123')
+        expect(post: '/snippets/123/comments').
+          to route_to('comments#create', snippet_id: '123')
       end
 
       specify do
-        put('/snippets/123/comments/456').
-          should have_routing('comments#update', :snippet_id => '123', :id => '456')
+        expect(put: '/snippets/123/comments/456').
+          to route_to('comments#update', snippet_id: '123', id: '456')
       end
 
       # all other RESTful actions are no-ops
       specify do
-        get('/snippets/123/comments').should_not be_recognized
+        expect(get: '/snippets/123/comments').to_not be_routable
       end
 
       specify do
-        get('/snippets/123/comments/456').should_not be_recognized
+        expect(get: '/snippets/123/comments/456').to_not be_routable
       end
 
       specify do
-        get('/snippets/123/comments/456/edit').should_not be_recognized
+        expect(get: '/snippets/123/comments/456/edit').to_not be_routable
       end
 
       specify do
-        delete('/snippets/123/comments/456').should_not be_recognized
+        expect(delete: '/snippets/123/comments/456').to_not be_routable
       end
     end
 
     describe 'helpers' do
-      before do
-        @snippet = Snippet.stub
-      end
+      let(:snippet) { Snippet.stub }
 
       describe 'snippets_path' do
-        specify { snippets_path.should == '/snippets' }
+        specify { expect(snippets_path).to eq('/snippets') }
       end
 
       describe 'new_snippet_path' do
-        specify { new_snippet_path.should == '/snippets/new' }
+        specify { expect(new_snippet_path).to eq('/snippets/new') }
       end
 
       describe 'snippet_path' do
-        specify { snippet_path(@snippet).should == "/snippets/#{@snippet.id}" }
+        specify { expect(snippet_path(snippet)).to eq("/snippets/#{snippet.id}") }
       end
 
       describe 'edit_snippet_path' do
-        specify { edit_snippet_path(@snippet).should == "/snippets/#{@snippet.id}/edit" }
+        specify { expect(edit_snippet_path(snippet)).to eq("/snippets/#{snippet.id}/edit") }
       end
 
       describe 'edit_snippet_path' do
-        specify { edit_snippet_path(@snippet).should == "/snippets/#{@snippet.id}/edit" }
+        specify { expect(edit_snippet_path(snippet)).to eq("/snippets/#{snippet.id}/edit") }
       end
     end
   end

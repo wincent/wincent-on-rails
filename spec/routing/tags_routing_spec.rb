@@ -2,51 +2,51 @@ require 'spec_helper'
 
 describe TagsController do
   describe 'routing' do
-    specify { get('/tags').should have_routing('tags#index') }
-    specify { get('/tags/new').should have_routing('tags#new') }
-    specify { get('/tags/foo.bar').should have_routing('tags#show', :id => 'foo.bar') }
-    specify { get('/tags/foo.bar/edit').should have_routing('tags#edit', :id => 'foo.bar') }
-    specify { put('/tags/foo.bar').should have_routing('tags#update', :id => 'foo.bar') }
-    specify { delete('/tags/foo.bar').should have_routing('tags#destroy', :id => 'foo.bar') }
-    specify { post('/tags').should have_routing('tags#create') }
+    specify { expect(get: '/tags').to route_to('tags#index') }
+    specify { expect(get: '/tags/new').to route_to('tags#new') }
+    specify { expect(get: '/tags/foo.bar').to route_to('tags#show', id: 'foo.bar') }
+    specify { expect(get: '/tags/foo.bar/edit').to route_to('tags#edit', id: 'foo.bar') }
+    specify { expect(put: '/tags/foo.bar').to route_to('tags#update', id: 'foo.bar') }
+    specify { expect(delete: '/tags/foo.bar').to route_to('tags#destroy', id: 'foo.bar') }
+    specify { expect(post: '/tags').to route_to('tags#create') }
 
     it 'rejects invalid tag names' do
       # only letters, numbers and periods allowed
-      get('/tags/foo-bar').should_not be_recognized
+      expect(get: '/tags/foo-bar').to_not be_routable
 
       # counter-example
-      get('/tags/foo.2').should have_routing('tags#show', :id => 'foo.2')
+      expect(get: '/tags/foo.2').to route_to('tags#show', id: 'foo.2')
     end
 
     describe 'non-RESTful routes' do
-      specify { get('/tags/search').should map_to('tags#search') }
+      specify { expect(get: '/tags/search').to route_to('tags#search') }
     end
 
     describe 'helpers' do
-      before do
+      let(:tag) do
         # we use an tag with a "tricky" id (containing a period, which is
         # usually a format separator) to test the routes
-        @tag = Tag.stub :name => 'foo.bar'
+        Tag.stub name: 'foo.bar'
       end
 
       describe 'tags_path' do
-        specify { tags_path.should == '/tags' }
+        specify { expect(tags_path).to eq('/tags') }
       end
 
       describe 'new_tag_path' do
-        specify { new_tag_path.should == '/tags/new' }
+        specify { expect(new_tag_path).to eq('/tags/new') }
       end
 
       describe 'tag_path' do
-        specify { tag_path(@tag).should == '/tags/foo.bar' }
+        specify { expect(tag_path(tag)).to eq('/tags/foo.bar') }
       end
 
       describe 'edit_tag_path' do
-        specify { edit_tag_path(@tag).should == '/tags/foo.bar/edit' }
+        specify { expect(edit_tag_path(tag)).to eq('/tags/foo.bar/edit') }
       end
 
       describe 'search_tags_path' do
-        specify { search_tags_path.should == '/tags/search' }
+        specify { expect(search_tags_path).to eq('/tags/search') }
       end
     end
   end

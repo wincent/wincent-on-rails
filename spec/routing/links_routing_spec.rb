@@ -2,40 +2,38 @@ require 'spec_helper'
 
 describe LinksController do
   describe 'routing' do
-    specify { get('/links').should have_routing('links#index') }
-    specify { get('/links/new').should have_routing('links#new') }
-    specify { get('/links/foo').should have_routing('links#show', :id => 'foo') }
-    specify { get('/links/foo/edit').should have_routing('links#edit', :id => 'foo') }
-    specify { put('/links/foo').should have_routing('links#update', :id => 'foo') }
-    specify { delete('/links/foo').should have_routing('links#destroy', :id => 'foo') }
-    specify { post('/links').should have_routing('links#create') }
+    specify { expect(get: '/links').to route_to('links#index') }
+    specify { expect(get: '/links/new').to route_to('links#new') }
+    specify { expect(get: '/links/foo').to route_to('links#show', id: 'foo') }
+    specify { expect(get: '/links/foo/edit').to route_to('links#edit', id: 'foo') }
+    specify { expect(put: '/links/foo').to route_to('links#update', id: 'foo') }
+    specify { expect(delete: '/links/foo').to route_to('links#destroy', id: 'foo') }
+    specify { expect(post: '/links').to route_to('links#create') }
 
     # shortcut
-    specify { get('l/foo').should map_to('links#show', :id => 'foo') }
+    specify { expect(get: 'l/foo').to route_to('links#show', id: 'foo') }
 
     describe 'helpers' do
-      before do
-        @link = Link.stub :permalink => 'foo'
-      end
+      let(:link) { Link.stub permalink: 'foo' }
 
       describe 'links_path' do
-        specify { links_path.should == '/links' }
+        specify { expect(links_path).to eq('/links') }
       end
 
       describe 'new_link_path' do
-        specify { new_link_path.should == '/links/new' }
+        specify { expect(new_link_path).to eq('/links/new') }
       end
 
       describe 'link_path' do
-        specify { link_path(@link).should == '/links/foo' }
+        specify { expect(link_path(link)).to eq('/links/foo') }
       end
 
       describe 'edit_link_path' do
-        specify { edit_link_path(@link).should == '/links/foo/edit' }
+        specify { expect(edit_link_path(link)).to eq('/links/foo/edit') }
       end
 
       describe 'edit_link_path' do
-        specify { edit_link_path(@link).should == '/links/foo/edit' }
+        specify { expect(edit_link_path(link)).to eq('/links/foo/edit') }
       end
     end
   end

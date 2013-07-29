@@ -2,63 +2,61 @@ require 'spec_helper'
 
 describe ForumsController do
   describe 'routing' do
-    specify { get('/forums').should have_routing('forums#index') }
-    specify { get('/forums/new').should have_routing('forums#new') }
-    specify { get('/forums/foo-bar').should have_routing('forums#show', :id => 'foo-bar') }
-    specify { get('/forums/foo-bar/edit').should have_routing('forums#edit', :id => 'foo-bar') }
-    specify { put('/forums/foo-bar').should have_routing('forums#update', :id => 'foo-bar') }
-    specify { delete('/forums/foo-bar').should have_routing('forums#destroy', :id => 'foo-bar') }
-    specify { post('/forums').should have_routing('forums#create') }
+    specify { expect(get: '/forums').to route_to('forums#index') }
+    specify { expect(get: '/forums/new').to route_to('forums#new') }
+    specify { expect(get: '/forums/foo-bar').to route_to('forums#show', id: 'foo-bar') }
+    specify { expect(get: '/forums/foo-bar/edit').to route_to('forums#edit', id: 'foo-bar') }
+    specify { expect(put: '/forums/foo-bar').to route_to('forums#update', id: 'foo-bar') }
+    specify { expect(delete: '/forums/foo-bar').to route_to('forums#destroy', id: 'foo-bar') }
+    specify { expect(post: '/forums').to route_to('forums#create') }
 
     describe 'topics' do
       # only #new, #show, #edit, #update, #destroy, #create implemented while nested
-      specify { get('/forums/foo-bar/topics/new').should have_routing('topics#new', :forum_id => 'foo-bar') }
-      specify { get('/forums/foo-bar/topics/123').should have_routing('topics#show', :forum_id => 'foo-bar', :id => '123') }
-      specify { get('/forums/foo-bar/topics/123/edit').should have_routing('topics#edit', :forum_id => 'foo-bar', :id => '123') }
-      specify { put('/forums/foo-bar/topics/123').should have_routing('topics#update', :forum_id => 'foo-bar', :id => '123') }
-      specify { delete('/forums/foo-bar/topics/123').should have_routing('topics#destroy', :forum_id => 'foo-bar', :id => '123') }
-      specify { post('/forums/foo-bar/topics').should map_to('topics#create', :forum_id => 'foo-bar') }
+      specify { expect(get: '/forums/foo-bar/topics/new').to route_to('topics#new', forum_id: 'foo-bar') }
+      specify { expect(get: '/forums/foo-bar/topics/123').to route_to('topics#show', forum_id: 'foo-bar', id: '123') }
+      specify { expect(get: '/forums/foo-bar/topics/123/edit').to route_to('topics#edit', forum_id: 'foo-bar', id: '123') }
+      specify { expect(put: '/forums/foo-bar/topics/123').to route_to('topics#update', forum_id: 'foo-bar', id: '123') }
+      specify { expect(delete: '/forums/foo-bar/topics/123').to route_to('topics#destroy', forum_id: 'foo-bar', id: '123') }
+      specify { expect(post: '/forums/foo-bar/topics').should route_to('topics#create', forum_id: 'foo-bar') }
 
       # topics#index is a no-op here, users go to forums#show to see a list of topics
-      specify { get('/forums/foo-bar/topics').should_not be_recognized }
+      specify { expect(get: '/forums/foo-bar/topics').to_not be_routable }
     end
 
     describe 'helpers' do
-      before do
-        @forum = Forum.stub :permalink => 'foo-bar'
-        @topic = Topic.stub :forum => @forum
-      end
+      let(:forum) { Forum.stub permalink: 'foo-bar' }
+      let(:topic) { Topic.stub forum: forum }
 
       describe 'forums_path' do
-        specify { forums_path.should == '/forums' }
+        specify { expect(forums_path).to eq('/forums') }
       end
 
       describe 'new_forum_path' do
-        specify { new_forum_path.should == '/forums/new' }
+        specify { expect(new_forum_path).to eq('/forums/new') }
       end
 
       describe 'forum_path' do
-        specify { forum_path(@forum).should == '/forums/foo-bar' }
+        specify { expect(forum_path(forum)).to eq('/forums/foo-bar') }
       end
 
       describe 'edit_forum_path' do
-        specify { edit_forum_path(@forum).should == '/forums/foo-bar/edit' }
+        specify { expect(edit_forum_path(forum)).to eq('/forums/foo-bar/edit') }
       end
 
       describe 'forum_topics_path' do
-        specify { forum_topics_path(@forum).should == '/forums/foo-bar/topics' }
+        specify { expect(forum_topics_path(forum)).to eq('/forums/foo-bar/topics') }
       end
 
       describe 'new_forum_topic_path' do
-        specify { new_forum_topic_path(@forum).should == '/forums/foo-bar/topics/new' }
+        specify { expect(new_forum_topic_path(forum)).to eq('/forums/foo-bar/topics/new') }
       end
 
       describe 'forum_topic_path' do
-        specify { forum_topic_path(@forum, @topic).should == "/forums/foo-bar/topics/#{@topic.id}" }
+        specify { expect(forum_topic_path(forum, topic)).to eq("/forums/foo-bar/topics/#{topic.id}") }
       end
 
       describe 'edit_forum_topic_path' do
-        specify { edit_forum_topic_path(@forum, @topic).should == "/forums/foo-bar/topics/#{@topic.id}/edit" }
+        specify { expect(edit_forum_topic_path(forum, topic)).to eq("/forums/foo-bar/topics/#{topic.id}/edit") }
       end
     end
   end

@@ -2,31 +2,31 @@ require 'spec_helper'
 
 describe ReposController do
   describe 'routing' do
-    specify { get('/repos').should have_routing('repos#index') }
-    specify { get('/repos/new').should have_routing('repos#new') }
-    specify { post('/repos').should have_routing('repos#create') }
-    specify { get('/repos/command-t').should have_routing('repos#show', :id => 'command-t') }
-    specify { get('/repos/command-t/edit').should have_routing('repos#edit', :id => 'command-t') }
-    specify { put('/repos/command-t').should have_routing('repos#update', :id => 'command-t') }
-    specify { delete('/repos/command-t').should have_routing('repos#destroy', :id => 'command-t') }
+    specify { expect(get: '/repos').to route_to('repos#index') }
+    specify { expect(get: '/repos/new').to route_to('repos#new') }
+    specify { expect(post: '/repos').to route_to('repos#create') }
+    specify { expect(get: '/repos/command-t').to route_to('repos#show', id: 'command-t') }
+    specify { expect(get: '/repos/command-t/edit').to route_to('repos#edit', id: 'command-t') }
+    specify { expect(put: '/repos/command-t').to route_to('repos#update', id: 'command-t') }
+    specify { expect(delete: '/repos/command-t').to route_to('repos#destroy', id: 'command-t') }
 
     describe 'helpers' do
-      let(:repo) { Repo.make! :permalink => 'foo' }
+      let(:repo) { Repo.make! permalink: 'foo' }
 
       describe 'repos_path' do
-        specify { repos_path.should == '/repos' }
+        specify { expect(repos_path).to eq('/repos') }
       end
 
       describe 'new_repo_path' do
-        specify { new_repo_path.should == '/repos/new' }
+        specify { expect(new_repo_path).to eq('/repos/new') }
       end
 
       describe 'repo_path' do
-        specify { repo_path(repo).should == '/repos/foo' }
+        specify { expect(repo_path(repo)).to eq('/repos/foo') }
       end
 
       describe 'edit_repo_path' do
-        specify { edit_repo_path(repo).should == '/repos/foo/edit' }
+        specify { expect(edit_repo_path(repo)).to eq('/repos/foo/edit') }
       end
     end
   end

@@ -33,6 +33,5 @@ RSpec.configure do |config|
     file_path: %r{\bspec/lib/git/},
   }
   config.include FeatureExampleGroupHelpers, type: :feature
-  config.include RoutingExampleGroupHelpers, type: :routing
   config.include ViewExampleGroupHelpers, type: :view
 end
