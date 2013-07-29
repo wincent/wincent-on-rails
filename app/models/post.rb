@@ -43,8 +43,8 @@ class Post < ActiveRecord::Base
     #   user can correct the problem
     # worst case scenario is that validation passes and then the database-level
     # constraint kicks in
-    last =  Post.last :conditions => ['permalink REGEXP ?', "^#{base}(-[0-9]+)?$"],
-      :order => 'permalink'
+    last =  Post.where(['permalink REGEXP ?', "^#{base}(-[0-9]+)?$"]).
+      order('permalink').last
     if last.nil?
       base
     else

@@ -86,7 +86,7 @@ describe TweetsController do
     end
 
     def do_get
-      get :index, :format => 'atom'
+      get :index, format: 'atom'
     end
 
     it 'should be successful' do
@@ -188,7 +188,7 @@ describe TweetsController do
     end
 
     before do
-      @params   = { :tweet => { 'body' => 'foo bar baz' } }
+      @params   = { tweet: { 'body' => 'foo bar baz' } }
       @tweet    = Tweet.new @params[:tweet]
     end
 
@@ -245,7 +245,7 @@ describe TweetsController do
     def do_post params = {}, admin = true
       request.env['HTTP_X_REQUESTED_WITH'] = 'XMLHttpRequest'
       log_in_as_admin if admin == true
-      post :create, params.merge({ :format => 'js' })
+      post :create, params.merge(format: 'js')
     end
 
     it 'should return an error for non-admins' do
@@ -256,8 +256,8 @@ describe TweetsController do
     end
 
     it 'should assign to the @tweet instance variable' do
-      mock(Tweet).new({ :body => 'foo' })
-      do_post({ :body => 'foo' })
+      mock(Tweet).new(body: 'foo')
+      do_post(body: 'foo')
     end
 
     it 'should render the "tweets/_preview" template' do
@@ -266,14 +266,14 @@ describe TweetsController do
     end
 
     it 'should not trigger the cache sweeper' do
-      TweetSweeper.instance.should_not_receive(:after_save)
+      mock(TweetSweeper.instance).after_save.never
       do_post
     end
   end
 
   describe '#show' do
     def do_get tweet
-      get :show, :id => tweet.id
+      get :show, id: tweet.id
     end
 
     before do
@@ -319,7 +319,7 @@ describe TweetsController do
     end
 
     def do_get
-      get :show, :id => @tweet.id.to_s, :format => 'atom'
+      get :show, id: @tweet.id.to_s, format: 'atom'
     end
 
     # make sure we don't get bitten by bugs like:
@@ -332,7 +332,7 @@ describe TweetsController do
 
     it 'should produce valid atom when there are multiple comments' do
       pending unless can_validate_feeds?
-      10.times { Comment.make! :commentable => @tweet }
+      10.times { Comment.make! commentable: @tweet }
       do_get
       response.body.should be_valid_atom
     end
@@ -341,7 +341,7 @@ describe TweetsController do
   describe '#edit' do
     def do_get tweet, admin = true
       log_in_as_admin if admin == true
-      get :edit, :id => tweet.id
+      get :edit, id: tweet.id
     end
 
     before do
@@ -379,7 +379,7 @@ describe TweetsController do
   describe '#update' do
     def do_put tweet, admin = true, params = {}
       log_in_as_admin if admin == true
-      put :update, params.merge({:id => tweet.id})
+      put :update, params.merge(id: tweet.id)
     end
 
     def do_successful_update
@@ -409,7 +409,7 @@ describe TweetsController do
     end
 
     it 'should update the tweet record' do
-      params = { :tweet => { 'body' => 'foo' } }
+      params = { tweet: { 'body' => 'foo' } }
       stub(Tweet).find { @tweet }
       mock(@tweet).update_attributes(params[:tweet])
       do_put @tweet, true, params
@@ -444,7 +444,7 @@ describe TweetsController do
   describe '#destroy' do
     def do_delete tweet, admin = true
       log_in_as_admin if admin == true
-      delete :destroy, :id => tweet.id
+      delete :destroy, id: tweet.id
     end
 
     before do
@@ -458,7 +458,7 @@ describe TweetsController do
 
     it 'should destroy the tweet' do
       do_delete @tweet
-      lambda { Tweet.find(@tweet.id) }.should raise_error(ActiveRecord::RecordNotFound)
+      expect { Tweet.find(@tweet.id) }.to raise_error(ActiveRecord::RecordNotFound)
     end
 
     it 'should redirect to the tweets index' do

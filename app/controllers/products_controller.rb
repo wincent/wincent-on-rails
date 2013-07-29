@@ -63,7 +63,7 @@ private
         redirect_to @product
       end
     else
-      @page = @product.pages.first :conditions => { :front => true }
+      @page = @product.pages.where(front: true).first
     end
   end
 end

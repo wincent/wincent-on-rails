@@ -5,6 +5,13 @@
 # upgrades), so here we hand-roll some helpers that will hopefully isolate us
 # from changes in Rails in the future.
 #
+# In Rails 4 with the extraction of the rails-observers gem, more breakage
+# ensued, this time around `#expire_fragment`. This has always behaved insanely,
+# so we just overwrite it here with a mad hack. For more context, see:
+#
+#   https://github.com/rails/rails/issues/9349
+#   https://github.com/rails/rails/issues/8129
+#
 module Sweeping
 
   # Note: we can't use `#to_param` everywhere here as it will return nil for
@@ -18,6 +25,15 @@ module Sweeping
   # weight on getting the URL design right the first time.
 
 private
+
+  def expire_fragment(*args)
+    # Yes, a terrible hack, but ApplicationController is where the method is
+    # defined (via a mix-in from ActionController::Caching::Fragments), and
+    # Sweepers work in a scary way (delegating `#method_missing` to
+    # `@controller` if set). The only way to be sure this thing will always
+    # actually expire a fragment is this ghastly hack:
+    ApplicationController.new.expire_fragment(*args)
+  end
 
   def article_path(article, ext = '.atom')
     articles_path + (article.to_param + ext)

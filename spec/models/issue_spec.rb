@@ -8,12 +8,11 @@ describe Issue do
   # we test a value larger than the default MySQL TEXT size (65535)
   it 'should support description content of over 128K' do
     # make sure the long description survives the round-trip from the db
-    length = 128 * 1024
-    long_description = 'x' * length
-    issue = Issue.make! :description => long_description
-    issue.description.length.should == length
+    long_description = ('x' * 127 + ' ') * 1024
+    issue = Issue.make! description: long_description
+    issue.description.length.should == long_description.length
     issue.reload
-    issue.description.length.should == length
+    issue.description.length.should == long_description.length
   end
 
   let(:commentable) { Issue.make! }
@@ -125,39 +124,39 @@ end
 # :summary, :description, :public, :product_id, :kind
 describe Issue, 'accessible attributes' do
   it 'should allow mass-assignment to the summary' do
-    Issue.make.should allow_mass_assignment_of(:summary => Sham.random)
+    Issue.make.should allow_mass_assignment_of(summary: Sham.random)
   end
 
   it 'should allow mass-assignment to the description' do
-    Issue.make.should allow_mass_assignment_of(:description => Sham.random)
+    Issue.make.should allow_mass_assignment_of(description: Sham.random)
   end
 
   it 'should allow mass-assignment to the public attribute' do
-    Issue.make(:public => false).should allow_mass_assignment_of(:public => true)
+    Issue.make(public: false).should allow_mass_assignment_of(public: true)
   end
 
   it 'should allow mass-assignment to the product_id' do
-    Issue.make.should allow_mass_assignment_of(:product_id => Product.make!.id)
+    Issue.make.should allow_mass_assignment_of(product_id: Product.make!.id)
   end
 
   it 'should allow mass-assignment to the kind' do
-    Issue.make.should allow_mass_assignment_of(:kind => Issue::KIND[:feedback])
+    Issue.make.should allow_mass_assignment_of(kind: Issue::KIND[:feedback])
   end
 
   it 'should allow mass-assignment to the "status" attribute' do
-    issue = Issue.make :status => Issue::STATUS[:closed]
-    issue.should allow_mass_assignment_of(:status => Issue::STATUS[:open])
+    issue = Issue.make status: Issue::STATUS[:closed]
+    issue.should allow_mass_assignment_of(status: Issue::STATUS[:open])
   end
 end
 
 describe Issue, 'validating the description' do
   it 'should not require it to be present' do
-    Issue.make(:description => '').should_not fail_validation_for(:description)
+    Issue.make(description: '').should_not fail_validation_for(:description)
   end
 
   it 'should complain if longer than 128k' do
     long_description = 'x' * (128 * 1024 + 100)
-    issue = Issue.make(:description => long_description)
+    issue = Issue.make(description: long_description)
     issue.should fail_validation_for(:description)
   end
 end

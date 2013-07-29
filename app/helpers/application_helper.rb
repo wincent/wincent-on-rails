@@ -161,28 +161,20 @@ module ApplicationHelper
     pluralizing_count number, 'comment'
   end
 
-  # There are 3 possible approaches to wikitext truncation and stripping:
+  # Translate, strip, then truncate wikitext markup.
   #
-  #   - translate -> strip -> truncate: HTML entities can appear in the
-  #     view because "truncate" marks strings as not HTML-safe
-  #   - translate -> truncate -> strip: we risk chopping entities and other
-  #     markup in half, which will then appear in the view
-  #   - truncate -> translate -> strip: we risk mangling the wikitext, and
-  #     our actual length may be way off the desired length
+  # Explicitly checks for truncated entities before returning the output as an
+  # HTML-safe string. If there is a truncated entity, it is deleted.
   #
-  # This method takes the first approach, but explicitly checks for truncated
-  # entities before returning the output. If there is no truncated entity,
-  # the output is marked HTML-safe; if there is a truncated entity, it is
-  # deleted.
-  #
-  # See: https://wincent.com/issues/1684
-  def wikitext_truncate_and_strip markup, options = {}
-    stripped    = strip_tags markup.w # may have entities, eg. &quot; etc
-    compressed  = stripped.gsub(/\s+/, ' ').strip
-    truncated   = truncate compressed, options
-    if truncated.html_safe? # string wasn't changed
-      truncated
-    else # string was chopped!
+  # See https://wincent.com/issues/1684 for more context, although note that
+  # with Rails 4.0.0 the behavior of `#truncate` changed to always return an
+  # HTML-safe string, like other helpers.
+  def wikitext_truncate_and_strip(markup, options = {})
+    squished  = strip_tags(markup.w).squish # may have entities, eg. &quot; etc
+    truncated = truncate squished, options.merge(escape: false)
+    if truncated == squished # string wasn't changed
+      truncated.html_safe
+    else # string was chopped
       omission = options[:omission] || '...'
       truncated.gsub! /&[^;]+?#{Regexp.escape omission}\z/, omission
       truncated.html_safe
@@ -191,7 +183,7 @@ module ApplicationHelper
 
   # used in tweet#index, tags#show etc
   def tweet_title tweet
-    wikitext_truncate_and_strip tweet.body, :length => 80
+    wikitext_truncate_and_strip tweet.body, length: 80
   end
 
   # used in snippet#index, tags#show etc
@@ -285,11 +277,11 @@ module ApplicationHelper
   end
 
   def button_to_destroy_model model, options = {}
-    button_to 'destroy', model, options.reverse_merge!({
-      :confirm  => 'Are you sure?',
-      :method   => :delete,
-      :class    => 'destructive'
-    })
+    button_to 'destroy', model, options.reverse_merge!(
+      method: :delete,
+      class:  'destructive',
+      data:   { confirm:  'Are you sure?' },
+    )
   end
 
   def button_to_moderate_model_as_ham model, url

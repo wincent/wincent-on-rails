@@ -41,10 +41,10 @@ describe Paginator do
   it 'should raise ActiveRecord::RecordNotFound if page number if out of range' do
     params = @params.clone
     params[:page] = @count # way out of range
-    lambda { Paginator.new(params, @count, @url) }.should raise_error(ActiveRecord::RecordNotFound)
+    expect { Paginator.new(params, @count, @url) }.to raise_error(ActiveRecord::RecordNotFound)
     params[:page] = (@count / 10) + 2 # just out of range
-    lambda { Paginator.new(params, @count, @url) }.should raise_error(ActiveRecord::RecordNotFound)
+    expect { Paginator.new(params, @count, @url) }.to raise_error(ActiveRecord::RecordNotFound)
     params[:page] = (@count / 10) + 1 # just in of range
-    lambda { Paginator.new(params, @count, @url) }.should_not raise_error(ActiveRecord::RecordNotFound)
+    expect { Paginator.new(params, @count, @url) }.to_not raise_error
   end
 end

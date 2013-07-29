@@ -8,15 +8,15 @@ module ActiveRecord
       module ClassMethods
         def acts_as_taggable
           class_eval do
-            has_many      :taggings, :as => :taggable, :dependent => :destroy
-            has_many      :tags,     :through => :taggings
+            has_many      :taggings, as: :taggable, dependent: :destroy
+            has_many      :tags,     through: :taggings
             attr_writer   :pending_tags
 
             # only problem here is that error messages refer to "pending tags" instead of "tags"
-            validates_format_of :pending_tags, :with =>
+            validates_format_of :pending_tags, with:
               /\A[a-z0-9]+(\.[a-z0-9]+)*(\s+[a-z0-9]+(\.[a-z0-9]+)*)*\z/i,
-              :allow_blank => true,
-              :message => 'may only contain letters, numbers and periods'
+              allow_blank: true,
+              message: 'may only contain letters, numbers and periods'
             include ActiveRecord::Acts::Taggable::InstanceMethods
             extend ActiveRecord::Acts::Taggable::MoreClassMethods
             set_callback :save, :after, :save_pending_tags
@@ -124,7 +124,7 @@ module ActiveRecord
         # Database level constraints are relied upon to ensure that the same
         # tag is not applied more than once to a given model.
         def add_tag tag
-          t = Tag.find_or_create_by_name tag
+          t = Tag.find_or_create_by(name: tag)
           if t.id == nil
             # tag didn't save: probably because of a failed validation
             # what to do here? for now just silently ignore
@@ -140,8 +140,8 @@ module ActiveRecord
         #
         # If the receiver has no such tag then no action is taken.
         def remove_tag tag
-          return unless tag = tags.where(:name => tag).first
-          tagging = taggings.where(:tag_id => tag.id).first
+          return unless tag = tags.where(name: tag).first
+          tagging = taggings.where(tag_id: tag.id).first
           taggings.destroy tagging
         end
       end # module InstanceMethods

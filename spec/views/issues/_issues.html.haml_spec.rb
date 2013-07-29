@@ -19,12 +19,6 @@ describe 'issues/_issues' do
   it 'links to a status-scope search from the status string'
   it 'shows the timestamp information for each issue'
 
-  it 'employs alternating table rows' do
-    render
-    rendered.should have_css('tr.odd', :count => 2)
-    rendered.should have_css('tr.even', :count => 2)
-  end
-
   describe 'regressions' do
     it 'has a sortable header cell for the "id" column' do
       render

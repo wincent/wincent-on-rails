@@ -48,9 +48,9 @@ class User < ActiveRecord::Base
   # pull in User.digest and User.random_salt from Authentication module
   include ActiveRecord::Authentication
 
-  def self.find_by_email email
+  def self.find_by_email(email)
     return nil if email.blank?
-    Email.where(address: email).includes(:user).first.try(:user)
+    Email.where(address: email).includes(:user).references(:user).first.try(:user)
   end
 
   # User accounts may have multiple email addresses associated with them,

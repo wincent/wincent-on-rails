@@ -33,12 +33,11 @@ class CommentsController < ApplicationController
     if admin?
       @comment = Comment.find params[:id]
     elsif logged_in?
-      t = Comment.arel_table
-      @comment = Comment.where(:awaiting_moderation => false).
-        where(t[:public].eq(true).or(t[:user_id].eq(current_user.id))).
+      @comment = Comment.where(awaiting_moderation: false).
+        where('public = ? OR user_id = ?', true, current_user_id)
         find(params[:id])
     else # anonymous user
-      @comment = Comment.where(:public => true, :awaiting_moderation => false).
+      @comment = Comment.where(public: true, awaiting_moderation: false).
         find(params[:id])
     end
     redirect_to nested_comment_path(@comment)

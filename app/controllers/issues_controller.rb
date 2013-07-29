@@ -143,9 +143,9 @@ class IssuesController < ApplicationController
       issues      = Issue.search default_access_options, params[:issue]
       @paginator  = Paginator.new params, issues.count, search_issues_path
 
-      # all() call here is to work around Rails BUG #5060
+      # to_a() call here is to work around Rails BUG #5060
       #   https://rails.lighthouseapp.com/projects/8994/tickets/5060
-      @issues     = issues.limit(@paginator.limit).offset(@paginator.offset).order(sort_options).all
+      @issues     = issues.limit(@paginator.limit).offset(@paginator.offset).order(sort_options).to_a
       render 'issues/search/create'
     else
       render 'issues/search/new'

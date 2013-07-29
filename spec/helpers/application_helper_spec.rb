@@ -20,7 +20,7 @@ describe ApplicationHelper, 'timeinfo method' do
     date = 2.days.ago
     mock(@model).created_at { date }
     mock(@model).updated_at { date }
-    timeinfo(@model).should =~ /#{Regexp.escape date.to_s}/
+    timeinfo(@model).should =~ /#{Regexp.escape date.xmlschema}/
   end
 
   it 'returns just the creation date if update and creation date are the same (fuzzy match)' do
@@ -29,7 +29,7 @@ describe ApplicationHelper, 'timeinfo method' do
     mock(@model).created_at { earlier_date }
     mock(@model).updated_at { later_date }
     earlier_date.distance_in_words.should == later_date.distance_in_words # check our assumption about fuzzy equality
-    timeinfo(@model).should =~ /#{Regexp.escape earlier_date.to_s}/
+    timeinfo(@model).should =~ /#{Regexp.escape earlier_date.xmlschema}/
   end
 
   it 'returns both creation and edit date if different' do
@@ -39,8 +39,8 @@ describe ApplicationHelper, 'timeinfo method' do
     mock(@model).updated_at { later_date }
     earlier_date.distance_in_words.should_not == later_date.distance_in_words # check our assumption about inequality
     info = timeinfo(@model)
-    info.should =~ /Created.+#{Regexp.escape earlier_date.to_s}/
-    info.should =~ /updated.+#{Regexp.escape later_date.to_s}/
+    info.should =~ /Created.+#{Regexp.escape earlier_date.xmlschema}/
+    info.should =~ /updated.+#{Regexp.escape later_date.xmlschema}/
   end
 
   it 'allows you to override the "updated" string' do
@@ -49,9 +49,9 @@ describe ApplicationHelper, 'timeinfo method' do
     later_date    = 1.hour.ago
     mock(@model).created_at { earlier_date }
     mock(@model).updated_at { later_date }
-    info = timeinfo(@model, :updated_string => 'edited')
-    info.should =~ /Created.+#{Regexp.escape earlier_date.to_s}/
-    info.should =~ /edited.+#{Regexp.escape later_date.to_s}/
+    info = timeinfo(@model, updated_string: 'edited')
+    info.should =~ /Created.+#{Regexp.escape earlier_date.xmlschema}/
+    info.should =~ /edited.+#{Regexp.escape later_date.xmlschema}/
   end
 
   it 'does not show the "updated" date at all if "updated_string" is set to false' do
@@ -59,9 +59,9 @@ describe ApplicationHelper, 'timeinfo method' do
     later_date    = 1.hour.ago
     mock(@model).created_at { earlier_date }
     mock(@model).updated_at { later_date }
-    info = timeinfo @model, :updated_string => false
-    info.should =~ /#{Regexp.escape earlier_date.to_s}/
-    info.should_not =~ /#{Regexp.escape later_date.to_s}/
+    info = timeinfo @model, updated_string: false
+    info.should =~ /#{Regexp.escape earlier_date.xmlschema}/
+    info.should_not =~ /#{Regexp.escape later_date.xmlschema}/
   end
 end
 
@@ -73,8 +73,8 @@ describe ApplicationHelper, 'product_options method' do
 
   it 'should return an array of name/id pairs' do
     Product.delete_all
-    product1 = Product.make! :name => 'foo'
-    product2 = Product.make! :name => 'bar'
+    product1 = Product.make! name: 'foo'
+    product2 = Product.make! name: 'bar'
     product_options.should == [[nil, [["foo", product1.id], ["bar", product2.id]]]]
   end
 end
@@ -91,7 +91,7 @@ describe ApplicationHelper, 'underscores_to_spaces method' do
   end
 
   it 'should convert symbol-based keys to strings' do
-    hash = { :foo => 1, :bar => 2 }
+    hash = { foo: 1, bar: 2 }
     underscores_to_spaces(hash).should =~ [['foo', 1], ['bar', 2]]
   end
 end
@@ -110,27 +110,27 @@ end
 
 describe ApplicationHelper, '"tweet_title" method' do
   it 'should strip HTML tags' do
-    tweet = Tweet.make :body => "foo ''bar''"
+    tweet = Tweet.make body: "foo ''bar''"
     tweet_title(tweet).should =~ /foo bar/
   end
 
   it 'should compress whitespace' do
-    tweet = Tweet.make :body => "foo    bar   \n   baz"
+    tweet = Tweet.make body: "foo    bar   \n   baz"
     tweet_title(tweet).should =~ /foo bar baz/
   end
 
   it 'should remove leading whitespace' do
-    tweet = Tweet.make :body => "  foo\n  bar"
+    tweet = Tweet.make body: "  foo\n  bar"
     tweet_title(tweet).should =~ /\Afoo bar/
   end
 
   it 'should remove trailing whitespace' do
-    tweet = Tweet.make :body => "foo  \nbar  "
+    tweet = Tweet.make body: "foo  \nbar  "
     tweet_title(tweet).should =~ /foo bar\z/
   end
 
   it 'should truncate long text to 80 characters' do
-    tweet = Tweet.make :body => 'x' * 100
+    tweet = Tweet.make body: 'x' * 100
     tweet_title(tweet).length.should == 80
   end
 end
@@ -222,7 +222,7 @@ describe ApplicationHelper do
       end
 
       context 'description is available' do
-        let(:snippet) { Snippet.make! :description => 'foobar' }
+        let(:snippet) { Snippet.make! description: 'foobar' }
 
         it 'uses the snippet title' do
           link_to_model(snippet).should =~ /foobar/
@@ -237,7 +237,7 @@ describe ApplicationHelper do
     end
 
     context 'with a tweet' do
-      let(:tweet) { Tweet.make! :body => 'hello' }
+      let(:tweet) { Tweet.make! body: 'hello' }
 
       # TODO: in next Capybara release use selector-based tests here
       it 'links to the tweet' do
@@ -251,7 +251,7 @@ describe ApplicationHelper do
 
     # was a bug
     it 'escapes HTML special characters (such as in issue summaries)' do
-      issue = Issue.make! :summary => '<em>foo</em>'
+      issue = Issue.make! summary: '<em>foo</em>'
       link_to_model(issue).should_not =~ /<em>/
     end
   end
@@ -262,7 +262,7 @@ describe ApplicationHelper do
     end
 
     it 'truncates long output' do
-      wikitext_truncate_and_strip('long long long', :length => 10).
+      wikitext_truncate_and_strip('long long long', length: 10).
         should == 'long lo...'
     end
 
@@ -274,13 +274,13 @@ describe ApplicationHelper do
 
     it 'applies any custom "omission" option' do
       output = wikitext_truncate_and_strip 'foo, bar, baz, bing, bong',
-        :length => 18, :omission => '[snip]'
+        length: 18, omission: '[snip]'
       output.should == 'foo, bar, ba[snip]'
     end
 
     context 'truncation which cuts an entity in half' do
       it 'removes the mangled entity' do
-        output = wikitext_truncate_and_strip 'foo, bar & baz', :length => 14
+        output = wikitext_truncate_and_strip 'foo, bar & baz', length: 14
         output.should == 'foo, bar ...' # safe output
         output.should be_html_safe      # and marked as such
       end
@@ -288,7 +288,7 @@ describe ApplicationHelper do
 
     context 'truncation which leaves entities intact' do
       it 'marks the output as HTML safe' do
-        output = wikitext_truncate_and_strip 'foo & bar etc', :length => 15
+        output = wikitext_truncate_and_strip 'foo & bar etc', length: 15
         output.should == 'foo &amp; ba...'  # safe output
         output.should be_html_safe          # and marked as such
       end

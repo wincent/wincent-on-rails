@@ -16,9 +16,9 @@ describe 'tweets/edit.html.haml' do
 
   it 'has a form for the tweet' do
     render
-    # real HTTP PUT is not supported, the form is just a normal POST
-    # with a hidden field faking the PUT
-    rendered.should have_css("form[action='#{tweet_path @tweet}'][method=post] input[name=_method][value=put]")
+    # real HTTP PATCH is not supported, the form is just a normal POST
+    # with a hidden field faking the PATCH
+    rendered.should have_css("form[action='#{tweet_path @tweet}'][method=post] input[name=_method][value=patch]")
   end
 
   it 'provides a link to the wikitext cheatsheet' do

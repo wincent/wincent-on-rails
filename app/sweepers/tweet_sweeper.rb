@@ -10,7 +10,7 @@ class TweetSweeper < ActionController::Caching::Sweeper
     safe_expire tweets_path('.atom')          # /twitter.atom
     safe_expire tweets_path('.html')          # /twitter.html
 
-    instance.expire_fragment :tweets_sidebar
+    expire_fragment :tweets_sidebar
   end
 
   def after_destroy(tweet)

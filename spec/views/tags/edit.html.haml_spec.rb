@@ -19,7 +19,7 @@ describe 'tags/edit' do
   it 'has a form for the tag' do
     render
     within("form[action='#{tag_path(@tag)}']") do |form|
-      form.should have_css('input[name=_method][value=put]')
+      form.should have_css('input[name=_method][value=patch]')
       form.should have_css('input[type="text"][name="tag[name]"]')
       form.should have_css('input[type=submit][value="Update Tag"]')
     end

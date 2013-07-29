@@ -175,7 +175,7 @@ describe('class.js', function() {
         expect(new Weak().initRan).toBe(true);
       });
 
-      it('passes through argument to the superclas init() function', function() {
+      it('passes through argument to the superclass init() function', function() {
         var Special = Class.subclass({
           init: function(a, b) {
             this.a = a;

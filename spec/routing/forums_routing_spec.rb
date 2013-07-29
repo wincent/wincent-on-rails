@@ -17,7 +17,7 @@ describe ForumsController do
       specify { expect(get: '/forums/foo-bar/topics/123/edit').to route_to('topics#edit', forum_id: 'foo-bar', id: '123') }
       specify { expect(put: '/forums/foo-bar/topics/123').to route_to('topics#update', forum_id: 'foo-bar', id: '123') }
       specify { expect(delete: '/forums/foo-bar/topics/123').to route_to('topics#destroy', forum_id: 'foo-bar', id: '123') }
-      specify { expect(post: '/forums/foo-bar/topics').should route_to('topics#create', forum_id: 'foo-bar') }
+      specify { expect(post: '/forums/foo-bar/topics').to route_to('topics#create', forum_id: 'foo-bar') }
 
       # topics#index is a no-op here, users go to forums#show to see a list of topics
       specify { expect(get: '/forums/foo-bar/topics').to_not be_routable }

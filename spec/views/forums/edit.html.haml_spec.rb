@@ -12,14 +12,15 @@ describe 'forums/edit' do
 
   it 'renders the error messages partial' do
     stub.proxy(view).render
-    mock(view).render 'shared/error_messages', :model => @forum
+    mock(view).render 'shared/error_messages', model: @forum
     render
   end
 
   it 'has a form for the forum' do
     render
+    puts response.body
     within("form[action='#{forum_path(@forum)}']") do |form|
-      form.should have_css('input[name=_method][value=put]')
+      form.should have_css('input[name=_method][value=patch]')
       form.should have_css("input[type=text][name='forum[name]']")
       form.should have_css("input[type=text][name='forum[permalink]']")
       form.should have_css("input[type=text][name='forum[description]']")

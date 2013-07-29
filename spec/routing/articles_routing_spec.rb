@@ -38,12 +38,12 @@ describe ArticlesController do
       it 'handles trailing slashes on resources declared using ":as"' do
         # bug appeared in Rails 2.3.0 RC1; see:
         #   http://rails.lighthouseapp.com/projects/8994/tickets/2039
-        expect(get: '/wiki/').should route_to('articles#index')
+        expect(get: '/wiki/').to route_to('articles#index')
       end
 
       it 'handles comment creation on articles with periods in the title' do
         # see: https://wincent.com/issues/1410
-        expect(post: '/wiki/foo.bar/comments').should route_to('comments#create', article_id: 'foo.bar')
+        expect(post: '/wiki/foo.bar/comments').to route_to('comments#create', article_id: 'foo.bar')
       end
     end
 
