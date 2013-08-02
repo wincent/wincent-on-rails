@@ -244,6 +244,7 @@ nav.global {
     &:hover {
       .products {
         @include opacity(.95);
+        visibility: visible;
       }
     }
 
@@ -277,6 +278,7 @@ nav.global {
       font-size: 0.9em;
       top: 40px;
       vertical-align: top;
+      visibility: hidden;
       z-index: 2;
 
       &:before {
