@@ -50,7 +50,7 @@ $padding: 10px;
   float: left;
   font-size: $navbar-height;
   height: $navbar-height;
-  line-height: $navbar-height;
+  line-height: $navbar-height - 8px;
   margin: 0 $padding 0 0;
   text-align: center;
   width: $navbar-height;
@@ -249,10 +249,12 @@ nav.global {
         border: 1px solid gray;
         border-top: 0;
         background: #eee;
+        height: auto;
         padding: 0 ($padding * 2) $padding;
         position: absolute;
         top: 40px;
         vertical-align: top;
+        width: auto;
 
         &:before {
           border: $padding solid transparent;
@@ -291,9 +293,12 @@ nav.global {
     }
 
     .products { // drop-down nav
-      display: none;
+      @include transition(opacity .1s ease-in-out);
+      @include opacity(0);
       font-size: 0.9em;
+      height: 0;
       vertical-align: top;
+      width: 0;
       z-index: 2;
     }
   }
