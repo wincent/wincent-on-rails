@@ -44,7 +44,7 @@ function lightbox(thumbnail) {
 
   // for images, start preloading on mouseenter
   if (thumbnail.image) {
-    $link.mouseenter(function() {
+    $link.on('mouseenter', function() {
       // will store the preloaded image as a property in the thumbnail DOM element
       if (thumbnail.fullsized)
           return; // already been here for this image
