@@ -17,14 +17,7 @@ h1, h2, h3, h4, h5, h6 {
   color: #333;
   font-family: $heavy-family;
   font-weight: bold;
-}
-
-h1, h2, h3 {
-  margin-bottom: 1.5em;
-}
-
-h4, h5, h6 {
-  margin-bottom: 1em;
+  margin-top: 1em;
 }
 
 h1 {
@@ -72,7 +65,7 @@ h2.major {
 }
 
 p {
-  margin-bottom: 1em;
+  margin-top: 1em;
 }
 p, li {
   color: #666;
@@ -80,7 +73,7 @@ p, li {
 
 li {
   list-style: disc;
-  margin-bottom: 0.5em;
+  margin-top: 0.5em;
 }
 
 pre {
@@ -88,7 +81,7 @@ pre {
   border: 1px solid silver;
   color: #657b83;
   line-height: 1.5em;
-  margin-bottom: 1em;
+  margin-top: 1em;
   overflow: auto;
   padding: 0 1em 1px;
 
@@ -268,28 +261,35 @@ a.mailto:after {
   clear: both;
   line-height: 1.75em;
   margin: 0 auto;
-  max-width: 960px;
-  padding: 0.5em 3em 1em 2em;
+  padding: 0.5em 2em 1em;
 
-  @include respond-to(tablet) {
-    margin: 0;
+  @include respond-to(desktop) {
+    max-width: 960px;
   }
 }
 
 #posts {
-  float: left;
-  width: 70%;
   margin: 0;
+
+  @include respond-to(desktop) {
+    float: left;
+    width: 70%;
+  }
 }
 
 aside {
   @include border-radius(4px);
   background: #eee;
+  clear: both;
   font-size: small;
-  margin-left: 73%;
-  margin-right: -1em;
   margin-top: 1em;
-  padding: 0.5em 1.5em 1em;
+  padding: .5em 1.5em 1em;
+
+  @include respond-to(desktop) {
+    clear: none;
+    margin-left: 73%;
+    margin-right: -1em;
+  }
 
   .hoverlink {
     visibility: visible;
@@ -686,7 +686,7 @@ ul.taggables {
   .when {
     // we do this rather than special casing the h2 (posts#index)
     // and the h1 (posts#show), because the title varies depending on where it appears
-    margin-top: -1em;
+    margin-bottom: 1em;
   }
 
   .info {
