@@ -51,7 +51,7 @@ function lightbox(thumbnail) {
       var image = $('<img />').attr('src', href);
       image.thumbnail = $(thumbnail); // keep reference to "parent" thumbnail
       image.attr('title', image.thumbnail.attr('title'));
-      $(image).load(function() {
+      $(image).on('load', function() {
         image.loaded = true;
         if (global_pending_lightbox_image == image) {
           show_lightbox(image, true);
@@ -234,6 +234,6 @@ function lightbox(thumbnail) {
   };
 }
 
-$('.lightbox').each(function () {
+$('.lightbox').each(function() {
   lightbox(this);
 });
