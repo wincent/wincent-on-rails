@@ -321,4 +321,11 @@
       window.open(this.href, null, $(this).data('popup'));
       return false;
     });
+
+  $.ajaxPrefilter(function(options, originalOptions, xhr) {
+    var token = $('meta[name="csrf-token"]').attr('content');
+    if (token) {
+      xhr.setRequestHeader('X-CSRF-Token', token);
+    }
+  });
 })();
