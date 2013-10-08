@@ -106,7 +106,7 @@ class IssuesController < ApplicationController
           @issue.moderate_as_ham!
           render :json => {}.to_json
         else
-          if @issue.update_attributes params[:issue], :as => role
+          if @issue.update_attributes issue_params
             redirect_to issue_path(@issue, :format => :js)
           else
             error = "Update failed: #{@issue.flashable_error_string}"
