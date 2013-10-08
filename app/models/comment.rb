@@ -5,8 +5,7 @@ class Comment < ActiveRecord::Base
   validates_length_of   :body, :maximum => 128 * 1024
   validates_presence_of :commentable
 
-  attr_accessible       :body
-  attr_accessible       :body, :public, :as => :admin
+  attr_accessible       :body, :public
 
   acts_as_classifiable
   acts_as_taggable

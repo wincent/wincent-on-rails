@@ -44,7 +44,7 @@ class CommentsController < ApplicationController
   end
 
   def create
-    @comment = @parent.comments.new params[:comment], as: role
+    @comment = @parent.comments.new(comment_params)
     @comment.user = current_user
     @comment.awaiting_moderation = !(admin? or logged_in_and_verified?)
     @comment.save
@@ -75,7 +75,7 @@ class CommentsController < ApplicationController
   def update
     respond_to do |format|
       format.html {
-        if @comment.update_attributes params[:comment], as: role
+        if @comment.update_attributes(comment_params)
           flash[:notice] = 'Successfully updated'
           redirect_to (@comment.awaiting_moderation ? comments_path : nested_comment_path(@comment))
         else
@@ -107,6 +107,12 @@ class CommentsController < ApplicationController
   end
 
 private
+
+  def comment_params
+    permitted = [:body]
+    permitted << :public if admin?
+    params.require(:comment).permit(*permitted)
+  end
 
   def get_parent
     if parent = params[:article_id]

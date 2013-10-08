@@ -26,7 +26,7 @@ class IssuesController < ApplicationController
   end
 
   def create
-    @issue = Issue.new params[:issue], :as => role
+    @issue = Issue.new(issue_params)
     @issue.user = current_user
     @issue.awaiting_moderation = !(admin? or logged_in_and_verified?)
     if @issue.save
@@ -97,7 +97,7 @@ class IssuesController < ApplicationController
   def update
     respond_to do |format|
       format.html {
-        if @issue.update_attributes params[:issue], :as => role
+        if @issue.update_attributes(issue_params)
           flash[:notice] = 'Successfully updated'
           redirect_to (@issue.awaiting_moderation ? admin_issues_path : @issue)
         else
@@ -153,6 +153,12 @@ class IssuesController < ApplicationController
   end
 
 private
+
+  def issue_params
+    permitted = %i[description kind product_id public status summary]
+    permitted << :pending_tags if admin?
+    params.require(:issue).permit(*permitted)
+  end
 
   def find_product
     @product = Product.find_by_name(params[:product]) if params[:product]
