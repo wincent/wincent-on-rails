@@ -8,18 +8,8 @@ describe 'snippets/index' do
     stub.proxy(view).render
   end
 
-  it 'has an Atom link' do
-    mock(view).atom_link '/snippets.atom'
-    render
-  end
-
   it 'has breadcrumbs' do
     mock(view).breadcrumbs 'Snippets'
-    render
-  end
-
-  it 'has a feed icon' do
-    mock(view).feed_icon '/snippets.atom'
     render
   end
 

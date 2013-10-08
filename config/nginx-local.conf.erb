@@ -20,8 +20,6 @@ http {
              text/xml
              application/x-javascript
              application/xml
-             application/xml+atom
-             application/xml+rss;
   gzip_proxied any; # default is "off" (no compression on proxied requests)
 
   upstream mongrels {
@@ -72,29 +70,11 @@ http {
         return 503;
       }
 
-      # cached pages: only for GET requests
-      set $cache_extension '';
-      if ($request_method = GET) {
-        set $cache_extension '.html';
-      }
+      set $cache_extension '.html';
+      set $index_filename 'index';
 
       if (-f $request_filename) {
         break;
-      }
-
-      set $index_filename 'index';
-      if (-f $request_filename$index_filename$cache_extension) {
-        # URI has trailing slash
-        rewrite (.*) $1$index_filename$cache_extension break;
-      }
-
-      if (-f $request_filename/$index_filename$cache_extension) {
-        # URI has no trailing slash
-        rewrite (.*) $1/ permanent;
-      }
-
-      if (-f $request_filename$cache_extension) {
-        rewrite (.*) $1.html break;
       }
 
       if (-f $static_root$uri) {

@@ -15,13 +15,12 @@ class LinksController < ApplicationController
     @link = Link.new params[:link]
     respond_to do |format|
       if @link.save
+        # don't redirect to actual link ("show" itself is just a redirect)
         flash[:notice] = 'Successfully created new link'
-        format.html { redirect_to links_path } # don't redirect to actual link ("show" itself is just a redirect)
-        #format.xml  { render :xml => @link, :status => :created, :location => @link }
+        format.html { redirect_to links_path }
       else
         flash[:error] = 'Failed to create new link'
-        format.html { render :action => 'new' }
-        #format.xml  { render :xml => @link.errors, :status => :unprocessable_entity }
+        format.html { render action: 'new' }
       end
     end
   end
@@ -31,11 +30,11 @@ class LinksController < ApplicationController
       format.html {
         # TODO: extract into Link#hit! method
         Link.increment_counter :click_count, @link.id
-        redirect_to @link.redirection_url, :status => 303 # "See other", GET request
+        redirect_to @link.redirection_url, status: 303 # "See other", GET request
       }
       format.js { # AJAX updates
         # don't leak out any more information than necessary
-        render :json => @link.to_json(:only => [:uri, :permalink])
+        render json: @link.to_json(only: %i[uri permalink])
       }
     end
   end
@@ -52,15 +51,15 @@ class LinksController < ApplicationController
           redirect_to links_path # can't redirect to #show
         else
           flash[:error] = 'Update failed'
-          render :action => :edit
+          render action: :edit
         end
       }
       format.js { # an AJAX update
         if @link.update_attributes params[:link]
-          render :json => @link.to_json(:only => [:uri, :permalink])
+          render json: @link.to_json(only: %i[uri permalink])
         else
           error = "Update failed: #{@link.flashable_error_string}"
-          render :text => error, :status => 422
+          render text: error, status: 422
         end
       }
     end
@@ -87,5 +86,4 @@ private
   def record_not_found
     super(admin? ? links_path : nil)
   end
-
 end

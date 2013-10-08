@@ -8,8 +8,7 @@ class ApplicationController < ActionController::Base
   # fix feed breakage caused by Rails 2.3.0 RC1
   # see: https://wincent.com/issues/1227
   layout -> (c) {
-    format = c.request.format
-    format && (format.atom? || format.js?) ? false : 'application'
+    c.request.format.try(:js?) ? false : 'application'
   }
 
 protected
@@ -17,8 +16,6 @@ protected
   def handle_http_status_code code, &block
     if request.xhr?
       render text: Rack::Utils::HTTP_STATUS_CODES[code], status: code
-    elsif request.format && request.format.atom?
-      render text: '', status: code
     else # HTML requests
       if block_given?
         yield

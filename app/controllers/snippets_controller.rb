@@ -2,8 +2,6 @@ class SnippetsController < ApplicationController
   before_filter :require_admin, :except => [ :index, :show ]
   before_filter :get_published_snippet, :only => :show
   before_filter :get_snippet, :only => [ :edit, :update, :destroy ]
-  caches_page   :index, :show # Atom and HTML
-  cache_sweeper :snippet_sweeper, :only => [ :create, :update, :destroy ]
 
   def index
     respond_to do |format|
@@ -11,9 +9,6 @@ class SnippetsController < ApplicationController
         @paginator = RestfulPaginator.new params, Snippet.published.count,
           snippets_path, 10
         @snippets = Snippet.recent.offset @paginator.offset
-      }
-      format.atom {
-        @snippets = Snippet.recent
       }
     end
   end
@@ -48,7 +43,6 @@ class SnippetsController < ApplicationController
       format.html {
         @comment = @snippet.comments.new if @snippet.accepts_comments?
       }
-      format.atom
       format.text { render text: @snippet.body }
     end
   end

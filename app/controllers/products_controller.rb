@@ -2,17 +2,13 @@ class ProductsController < ApplicationController
   before_filter :require_admin, :except => [ :index, :show ]
   before_filter :get_product, :only => [ :edit, :show, :update ]
   before_filter :get_page, :only => :show
-  caches_page   :index, :show
-  cache_sweeper :product_sweeper, :only => [ :create, :update ] # and later, :destroy
 
   def index
     @products = Product.front_page.group_by(&:category)
-    # TODO: Atom feed will be for product update notices (all products)
   end
 
   def show
     render
-    # TODO: Atom feed will be for product update notices (one product only)
   end
 
   # admin-only

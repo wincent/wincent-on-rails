@@ -68,79 +68,6 @@ describe TweetsController do
       do_get
       assigns[:paginator].offset.should == 0
     end
-
-    it 'should page-cache the output' do
-      pending 'Rails makes it impossible to test "cache_page"'
-      # turning on page caching contaminates the production "public" folder
-      # but without page caching turned on, it doesn't even set up the filter
-      mock(controller).cache_page
-      do_get
-    end
-  end
-
-  describe  '#index (Atom fortmat)' do
-    render_views # so that we can test layouts as well
-
-    before do
-      10.times { Tweet.make! }
-    end
-
-    def do_get
-      get :index, format: 'atom'
-    end
-
-    it 'should be successful' do
-      do_get
-      response.should be_success
-    end
-
-    it 'should render the #index template' do
-      do_get
-      response.should render_template('index')
-    end
-
-    it 'should not use a layout' do
-      do_get
-      pending "unsure how to do this under Rails 3/RSpec 2"
-      controller.active_layout.should be_nil
-    end
-
-    it 'assigns to the @tweets instance variable' do
-      do_get
-      assigns[:tweets].all? { |item| item.is_a?(Tweet) }.should be_true
-      assigns[:tweets].length.should == 10
-    end
-
-    it 'should page-cache the output' do
-      pending 'Rails makes it impossible to test "cache_page"'
-      # turning on page caching contaminates the production "public" folder
-      # but without page caching turned on, it doesn't even set up the filter
-      mock(controller).cache_page
-      do_get
-    end
-
-    it 'should produce valid atom when there are no tweets' do
-      pending unless can_validate_feeds?
-      Tweet.destroy_all
-      do_get
-      response.body.should be_valid_atom
-    end
-
-    it 'should produce valid atom when there are multiple tweets' do
-      pending unless can_validate_feeds?
-      do_get
-      response.body.should be_valid_atom
-    end
-
-    # Rails 2.3.0 RC1 BUG: http://rails.lighthouseapp.com/projects/8994/tickets/2043
-    it 'should produce entry links to HTML-formatted records' do
-      do_get
-      doc = Nokogiri::XML(response.body)
-      doc.xpath('/atom:feed/atom:entry/atom:link', ATOM_XMLNS).each do |link|
-        # make sure links are /twitter/1234, not /twitter/1234.atom
-        link['href'].should_not =~ %r{\.atom}
-      end
-    end
   end
 
   describe '#new' do
@@ -233,12 +160,6 @@ describe TweetsController do
       do_failed_post
       response.should render_template('new')
     end
-
-    it 'should trigger the cache sweeper' do
-      mock(TweetSweeper.instance).after_save(@tweet)
-      stub(Tweet).new { @tweet }
-      do_post
-    end
   end
 
   describe '#create (via AJAX)' do
@@ -263,11 +184,6 @@ describe TweetsController do
     it 'should render the "tweets/_preview" template' do
       do_post
       response.should render_template('tweets/_preview')
-    end
-
-    it 'should not trigger the cache sweeper' do
-      mock(TweetSweeper.instance).after_save.never
-      do_post
     end
   end
 
@@ -300,41 +216,6 @@ describe TweetsController do
       tweet.id = 1_342_103
       do_get tweet
       response.should redirect_to(tweets_path)
-    end
-
-    it 'should page-cache the output' do
-      pending 'Rails makes it impossible to test "cache_page"'
-      # turning on page caching contaminates the production "public" folder
-      # but without page caching turned on, it doesn't even set up the filter
-      mock(controller).cache_page
-      do_get @tweet
-    end
-  end
-
-  describe '#show (Atom format)' do
-    render_views # so that we can test layouts as well
-
-    before do
-      @tweet = Tweet.make!
-    end
-
-    def do_get
-      get :show, id: @tweet.id.to_s, format: 'atom'
-    end
-
-    # make sure we don't get bitten by bugs like:
-    # https://wincent.com/issues/1227
-    it 'should produce valid atom when there are no comments' do
-      pending unless can_validate_feeds?
-      do_get
-      response.body.should be_valid_atom
-    end
-
-    it 'should produce valid atom when there are multiple comments' do
-      pending unless can_validate_feeds?
-      10.times { Comment.make! commentable: @tweet }
-      do_get
-      response.body.should be_valid_atom
     end
   end
 
@@ -434,11 +315,6 @@ describe TweetsController do
       do_failed_update
       response.should render_template('edit')
     end
-
-    it 'should trigger the cache sweeper' do
-      mock(TweetSweeper.instance).after_save(@tweet)
-      do_put @tweet
-    end
   end
 
   describe '#destroy' do
@@ -471,11 +347,6 @@ describe TweetsController do
       tweet.id = 1_342_103
       do_delete tweet
       response.should redirect_to(tweets_path)
-    end
-
-    it 'should trigger the cache sweeper' do
-      mock(TweetSweeper.instance).after_destroy(@tweet)
-      do_delete @tweet
     end
   end
 end

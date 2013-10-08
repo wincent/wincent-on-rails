@@ -9,7 +9,6 @@ class PagesController < ApplicationController
   before_filter :require_admin
   before_filter :get_product
   before_filter :get_page, :only => [:destroy, :edit, :update]
-  cache_sweeper :page_sweeper, :only => [:create, :destroy, :update]
 
   def new
     @page = @product.pages.new

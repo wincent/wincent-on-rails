@@ -2,8 +2,6 @@ class TopicsController < ApplicationController
   before_filter :require_admin, except: %i[create new show]
   before_filter :get_forum,     except: %i[destroy index]
   before_filter :get_topic,     only: :show
-  caches_page   :show,          if: -> (c) { c.request.format.try(:atom?) }
-  cache_sweeper :topic_sweeper, only: %i[create update destroy]
 
   # Admin only.
   # The admin is allowed to see all unmoderated topics at once, for the purposes of moderation.
@@ -48,7 +46,6 @@ class TopicsController < ApplicationController
         @topic.hit!
         @comment = @topic.comments.new if @topic.accepts_comments?
       }
-      format.atom
     end
   end
 
@@ -100,7 +97,7 @@ class TopicsController < ApplicationController
 private
 
   def public_only?
-    request.format && request.format.atom? || !admin?
+    !admin?
   end
 
   def get_forum

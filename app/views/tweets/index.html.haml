@@ -1,8 +1,5 @@
--atom_link tweets_path(:format => :atom)
 =breadcrumbs 'Twitter'
-%h1.major
-  Tweets
-  =feed_icon tweets_path(:format => :atom)
+%h1.major Tweets
 =@paginator.pagination_links
 =render 'tweets.html.haml'
 =@paginator.pagination_links

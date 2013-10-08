@@ -9,11 +9,6 @@ describe 'tweets/index.html.haml' do
     stub.proxy(view).render
   end
 
-  it 'includes an Atom feed link' do
-    mock(view).atom_link('/twitter.atom')
-    render
-  end
-
   it 'includes breadcrumbs' do
     mock(view).breadcrumbs 'Twitter'
     render

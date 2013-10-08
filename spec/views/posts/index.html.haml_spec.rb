@@ -11,9 +11,4 @@ describe 'posts/index' do
     render
     rendered.should_not match(/<p>\w*<p>/)
   end
-
-  it 'has a link to the tweets Atom feed' do
-    render
-    rendered.should have_css("a[href='#{tweets_path(format: :atom)}']")
-  end
 end

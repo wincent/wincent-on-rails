@@ -23,7 +23,6 @@ module Wincent
 
     config.autoload_paths += %W(
       #{config.root}/app/observers
-      #{config.root}/app/sweepers
     )
     config.assets.enabled      = true
     config.assets.version      = '1.0'
@@ -40,9 +39,3 @@ module Wincent
     config.action_mailer.default_url_options = url_options
   end
 end
-
-# Sometimes we need a reasonable, stable default date (for example, to provide
-# an "updated at" date for an empty Atom feed; we don't want to use "Time.now"
-# in such cases as that might confuse newsreaders).
-# Seeing as this is a Rails app, use the "Rails Epoch" rather than the UNIX one.
-RAILS_EPOCH = RAILS_1_0_0_RELEASE_DATE = Date.civil(2005, 12, 13)

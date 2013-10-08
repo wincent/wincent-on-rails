@@ -105,14 +105,6 @@ module ActionController
       logged_in? && current_user.superuser?
     end
 
-    def role
-      if admin?
-        :admin
-      else
-        :default
-      end
-    end
-
   private
 
     # only secure over SSL (due to cookie capture attacks)
@@ -142,14 +134,14 @@ module ActionController
     end
 
     # Redirect to the login page showing the supplied msg in the flash
-    # For non-HTML formats (XML, Atom, JavaScript), return a 403 error instead of redirecting
+    # For non-HTML formats (XML, JavaScript), return a 403 error instead of redirecting
     def redirect_to_login msg
       if request.format && request.format.html?
         flash[:notice] = msg
         session[:original_uri] = request.fullpath
         redirect_to login_path
-      else # XML, Atom, JavaScript etc
-        render :text => Rack::Utils::HTTP_STATUS_CODES[403], :status => 403 # Forbidden
+      else # XML, JavaScript etc
+        render text: Rack::Utils::HTTP_STATUS_CODES[403], status: 403 # Forbidden
       end
     end
   end # module Authentication

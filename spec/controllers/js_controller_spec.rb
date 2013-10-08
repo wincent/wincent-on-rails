@@ -38,10 +38,5 @@ describe JsController do
       do_get
       controller.active_layout.should be_nil
     end
-
-    it 'does not page-cache the output' do
-      do_not_allow(controller).cache_page
-      do_get
-    end
   end
 end

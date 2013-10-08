@@ -1,8 +1,6 @@
 require 'additions/time'
 
 module ApplicationHelper
-  include CustomAtomFeedHelper
-
   # Returns the first 16 characters of a commit hash.
   def commit_abbrev sha1
     sha1[0..15]
@@ -58,24 +56,6 @@ module ApplicationHelper
     match ? 'selected' : nil
   end
 
-  # sets up the application layout
-  def atom_link model = nil
-    case model
-    when Issue
-      @atom_link = auto_discovery_link_tag :atom, issue_path(model, :format => :atom)
-    when Post
-      @atom_link = auto_discovery_link_tag :atom, post_path(model, :format => :atom)
-    when Topic
-      @atom_link = auto_discovery_link_tag :atom, forum_topic_path(model.forum, model, :format => :atom)
-    when String # "model" should actually be a URL here
-      @atom_link = auto_discovery_link_tag :atom, model
-    end
-  end
-
-  def feed_icon url
-    link_to image_tag('feed-icon-14x14.png'), url
-  end
-
   def page_title string
     @page_title = string # picked up in application layout
     haml_tag :h1, h(string)
@@ -124,18 +104,6 @@ module ApplicationHelper
   # return string wrapped in relative-date CSS span
   def relative_date(date)
     content_tag :time, date.xmlschema, data: { relative: true }
-  end
-
-  # This pattern is frequently used in Atom feeds, where the feed as a whole
-  # should have an "updated" field that reflects the last modification to
-  # either the main model itself (the first "entry" in the feed) or any of the
-  # attached comments (the remaining "entry" spans).
-  def last_activity model, comments
-    updated_at = model.updated_at
-    comments.each do |comment|
-      updated_at = comment.updated_at if comment.updated_at > updated_at
-    end
-    updated_at
   end
 
   def pluralizing_count number, thing

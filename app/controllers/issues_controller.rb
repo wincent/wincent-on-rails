@@ -4,14 +4,10 @@ class IssuesController < ApplicationController
   before_filter     :find_issue,
                     except: %i[create destroy edit index new search show update]
   before_filter     :find_issue_awaiting_moderation, only: %i[edit show update]
-  before_filter     :find_prev_next,
-                    only: :show,
-                    unless: -> (c) { c.request.format.try(:atom?) }
+  before_filter     :find_prev_next, only: :show
   before_filter     :prepare_issue_for_search, only: %i[index search]
   around_filter     :current_user_wrapper
-  caches_page       :show,
-                    if: -> (c) { c.request.format.try(:atom?) }
-  cache_sweeper     :issue_sweeper, only: %i[create update destroy]
+
   acts_as_sortable  by: %i[public kind id product_id summary status updated_at],
                     default: :updated_at,
                     descending: true
@@ -76,9 +72,6 @@ class IssuesController < ApplicationController
           end
           @comment = @issue.comments.new
         end
-      }
-      format.atom {
-        @comments = @issue.comments.published # public, not awaiting moderation
       }
       format.js {
         visible = [:pending_tags, :product_id, :public, :status, :summary]

@@ -1,8 +1,6 @@
 class PostsController < ApplicationController
   before_filter :require_admin, except: %i[index show]
   before_filter :get_post,      except: %i[index new create]
-  caches_page   :index, :show,  if: -> (c) { c.request.format.try(:atom?) }
-  cache_sweeper :post_sweeper,  only: %i[create update destroy]
 
   def index
     respond_to do |format|
@@ -11,7 +9,6 @@ class PostsController < ApplicationController
         @posts     = Post.recent.includes(:tags).offset(@paginator.offset).page
         @tweets    = Tweet.recent.page if !fragment_exist?(:tweets_sidebar)
       }
-      format.atom { @posts = Post.recent.page }
     end
   end
 
@@ -55,7 +52,6 @@ class PostsController < ApplicationController
     @comments = @post.comments.published
     respond_to do |format|
       format.html { @comment = @post.comments.new if @post.accepts_comments? }
-      format.atom
     end
   end
 
@@ -82,8 +78,8 @@ private
       @post = Post.find_by_permalink_and_public!(params[:id], true)
     end
   rescue ActiveRecord::RecordNotFound
-    # given permalink "foo" a request for "foo.atom" or "foo.js" will land here
-    if params[:id] =~ /(.+)\.(atom|js)\Z/
+    # given permalink "foo" a request for "foo.js" will land here
+    if params[:id] =~ /(.+)\.(js)\z/
       request.format = $~[2].to_sym
       @post = Post.find_by_permalink_and_public $~[1], true
     end

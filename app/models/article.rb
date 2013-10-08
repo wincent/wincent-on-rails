@@ -33,11 +33,6 @@ class Article < ActiveRecord::Base
   scope :published, -> { where(public: true) }
   scope :recent,    -> { published.order('updated_at DESC').limit(10) }
 
-  # for the Atom feed
-  scope :recent_excluding_redirects, -> {
-    recent.where('redirect IS NULL OR redirect = ""')
-  }
-
   # NOTE: MySQL will do a case-insensitive find here, so "foo" and "FOO" refer
   # to the same article
   def self.find_with_param! param, user = nil

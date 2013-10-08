@@ -1,6 +1,5 @@
 source 'https://rubygems.org'
 
-gem 'actionpack-page_caching' # will be maintained until Rails 4.1
 gem 'bundler'
 gem 'coffee-rails'
 gem 'compass-rails', '~> 2.0.alpha'

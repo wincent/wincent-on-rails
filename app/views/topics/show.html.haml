@@ -1,14 +1,8 @@
--# BUG: atom_link call here causes a redundant query:
--# SELECT `forums`.* FROM `forums` WHERE (`forums`.`id` = 1) LIMIT 1
--# (previously found the forum via permalink in controller)
--atom_link @topic
 =breadcrumbs link_to('Forums', forums_path),
   link_to(@forum.name, forum_path(@forum)),
   @topic.title
 -@page_title = @topic.title
-%h1.major
-  =@page_title
-  =feed_icon forum_topic_path(@forum, @topic, :format => :atom)
+%h1.major= @page_title
 %div[@topic]
   %ol#comments.boxed
     %li{:class => comment_class(@topic)}

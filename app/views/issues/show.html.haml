@@ -1,5 +1,3 @@
--if @issue.public?
-  -atom_link @issue
 -@page_title = "#{@issue.kind_string.humanize} \##{@issue.id.to_s}: #{@issue.summary}"
 -if admin?
   #ajax-flash
@@ -48,9 +46,7 @@
       %tr
         %th Tags
         %td(id="issue_#{@issue.id}_pending_tags")=tag_links(@issue)
-%h2.major
-  Comments
-  =feed_icon issue_path(@issue, :format => :atom)
+%h2.major Comments
 %ol#comments.boxed
   =render @comments
   -# BUG: no edit links

@@ -1,8 +1,6 @@
 class ArticlesController < ApplicationController
   before_filter :require_admin,   except: %i[index show]
   before_filter :get_article,     only: %i[show edit update]
-  caches_page   :index, :show,    if: -> (c) { c.request.format.try(:atom?) }
-  cache_sweeper :article_sweeper, only: %i[create update destroy]
 
   def index
     respond_to do |format|
@@ -10,9 +8,6 @@ class ArticlesController < ApplicationController
         @paginator  = RestfulPaginator.new params, Article.published.count, articles_path
         @articles   = Article.recent.offset @paginator.offset
         @tags       = Article.find_top_tags
-      }
-      format.atom {
-        @articles   = Article.recent_excluding_redirects
       }
     end
   end
@@ -40,7 +35,6 @@ class ArticlesController < ApplicationController
           flash[:notice] = stale_article_notice if @article.updated_at < 1.year.ago
           @comment = @article.comments.new if @article.accepts_comments?
         }
-        format.atom
       end
       clear_redirection_info
     end
@@ -98,13 +92,6 @@ private
   rescue ActionController::ForbiddenError
     flash[:error] = forbidden_flash_message
     redirect_to articles_path
-  rescue ActiveRecord::RecordNotFound
-    # given title "Foo" a request for "Foo.atom" will wind up here
-    if params[:id] =~ /(.+)\.atom\Z/
-      request.format = :atom
-      @article = Article.find_with_param! $~[1]
-    end
-    raise unless @article
   end
 
   def record_not_found

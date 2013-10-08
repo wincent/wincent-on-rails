@@ -13,24 +13,6 @@ describe 'issues/show' do
                              text: "#{@issue.kind_string.humanize} \##{@issue.id}")
   end
 
-  it 'should advertise an atom feed' do
-    mock(view).atom_link(@issue)
-    render
-  end
-
-  context 'private issue' do
-    before do
-      @issue    = Issue.make!(:public => false)
-      @comments = []
-      @comment  = @issue.comments.new
-    end
-
-    it 'should not advertise an atom feed' do
-      do_not_allow(view).atom_link.with_any_args
-      render
-    end
-  end
-
   context 'viewed by an administrator' do
     before do
       @issue    = Issue.make!

@@ -1,8 +1,6 @@
 class TweetsController < ApplicationController
   before_filter :require_admin, except: %i[index show]
   before_filter :get_tweet,     only:   %i[edit show update destroy]
-  cache_sweeper :tweet_sweeper, only:   %i[create update destroy]
-  caches_page   :index, :show   # Atom and HTML
 
   def index
     respond_to do |format|
@@ -10,8 +8,6 @@ class TweetsController < ApplicationController
         @paginator = RestfulPaginator.new(params, Tweet.count, tweets_path, Tweet::PAGE_SIZE)
         @tweets    = Tweet.recent.offset(@paginator.offset).page
       }
-
-      format.atom { @tweets = Tweet.recent.page }
     end
   end
 
@@ -41,7 +37,6 @@ class TweetsController < ApplicationController
     @comments = @tweet.comments.published
     respond_to do |format|
       format.html { @comment = @tweet.comments.new if @tweet.accepts_comments? }
-      format.atom
     end
   end
 

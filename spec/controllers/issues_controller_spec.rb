@@ -33,7 +33,7 @@ describe IssuesController do
     end
   end
 
-  describe '#show (HTML format)' do
+  describe '#show' do
     def do_get issue
       get :show, :id => issue.id
     end
@@ -41,54 +41,6 @@ describe IssuesController do
     it 'should run the "find_prev_next" before filter' do
       mock(controller).find_prev_next
       do_get Issue.make!
-    end
-  end
-
-  describe '#show (Atom format)' do
-    render_views # so that we can test layouts as well
-
-    def do_get issue
-      get :show, :id => issue.id, :format => 'atom'
-    end
-
-    it 'should not run the "find_prev_next" before filter' do
-      do_not_allow(controller).find_prev_next
-      do_get Issue.make!
-    end
-
-    # make sure we don't get bitten by bugs like:
-    # https://wincent.com/issues/1227
-    it 'should produce valid atom' do
-      pending unless can_validate_feeds?
-      do_get Issue.make!
-      response.body.should be_valid_atom
-    end
-
-    # Rails 2.3.0 RC1 BUG: http://rails.lighthouseapp.com/projects/8994/tickets/2043
-    it 'should produce entry links to HTML-formatted records' do
-      issue = Issue.make!
-      10.times {
-        # feed has one entry for issue, and one entry for each comment
-        # so to fully catch this bug need some comments on the issue
-        comment = issue.comments.new :body => Sham.random
-        comment.awaiting_moderation = false
-        comment.save
-      }
-      do_get issue
-      doc = Nokogiri::XML(response.body)
-      doc.xpath('/atom:feed/atom:entry/atom:link', ATOM_XMLNS).each do |link|
-        # make sure links are /issues/1234#comment_3000,
-        # not /issues/1234.atom#comment_3000
-        link['href'].should_not =~ %r{\.atom}
-      end
-    end
-
-    it 'should redirect to main issues feed for non-existent issues' do
-      pending 'broken because redirects to issues.atom, which is not yet implemented'
-    end
-
-    it 'should redirect to main issues feed for private issues' do
-      pending 'broken because redirects to issues.atom, which is not yet implemented'
     end
   end
 

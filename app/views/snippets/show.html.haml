@@ -11,9 +11,7 @@
   =link_to 'all snippets', snippets_path
   =link_to 'raw', snippet_path(@snippet, format: :txt)
 -if @snippet.accepts_comments? || @snippet.comments_count != 0
-  %h2.major
-    Comments
-    =feed_icon snippet_path(@snippet, format: :atom)
+  %h2.major Comments
   %ol#comments.bubbles
     =render @comments
   %h2.major Add a comment
