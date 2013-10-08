@@ -1,7 +1,7 @@
 #!/bin/sh
 
 usage() {
-  echo "usage: $0 [nginx|memcached|mysqld|all]"
+  echo "usage: $0 [nginx|memcached|all]"
   exit 1
 }
 
@@ -14,13 +14,9 @@ while test $# != 0; do
     memcached)
       START_MEMCACHED=1
       ;;
-    mysql|mysqld)
-      START_MYSQLD=1
-      ;;
     all)
       START_NGINX=1
       START_MEMCACHED=1
-      START_MYSQLD=1
       ;;
     *)
       usage
@@ -35,8 +31,4 @@ fi
 
 if [ -n "$START_MEMCACHED" ]; then
   script/memcached
-fi
-
-if [ -n "$START_MYSQLD" ]; then
-  script/mysqld
 fi
