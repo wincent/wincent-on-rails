@@ -208,7 +208,7 @@ function lightbox(thumbnail) {
   };
 
   function show_spinner() {
-    if ($('#lightbox-spinner-frame').length == 0)
+    if (!$('#lightbox-spinner-frame').length)
       // don't add spinner more than once
       $(document.body).append($('<div id="lightbox-spinner-frame">' +
             '<img id="lightbox-spinner" alt="spinner" src="<%= asset_path 'spinner-large.gif' %>" />' +
