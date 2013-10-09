@@ -3,13 +3,13 @@
 	url = elastic1.unixhosts.net:/pub/git/private/assets.wincent.com.git
 [submodule "vendor/assets/javascripts/jquery"]
 	path = vendor/assets/javascripts/jquery
-	url = elastic1.unixhosts.net:/pub/git/public/jquery.git
+	url = git://elastic1.unixhosts.net/jquery.git
 [submodule "vendor/assets/javascripts/spin.js"]
 	path = vendor/assets/javascripts/spin.js
-	url = elastic1.unixhosts.net:/pub/git/public/spin.js.git
+	url = git://elastic1.unixhosts.net/spin.js.git
 [submodule "vendor/assets/javascripts/backbone"]
 	path = vendor/assets/javascripts/backbone
-	url = elastic1.unixhosts.net:/pub/git/public/backbone.git
+	url = git://elastic1.unixhosts.net/backbone.git
 [submodule "vendor/assets/javascripts/underscore"]
 	path = vendor/assets/javascripts/underscore
-	url = elastic1.unixhosts.net:/pub/git/public/underscore.git
+	url = git://elastic1.unixhosts.net/underscore.git

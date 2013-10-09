@@ -14,11 +14,11 @@
 ActiveRecord::Schema.define(version: 20130421200936) do
 
   create_table "articles", force: true do |t|
-    t.string   "title",                                             null: false
+    t.string   "title"
     t.string   "redirect"
-    t.text     "body",              limit: 16777215,                null: false
-    t.boolean  "public",                             default: true, null: false
-    t.boolean  "accepts_comments",                   default: true, null: false
+    t.text     "body",              limit: 16777215
+    t.boolean  "public",                             default: true
+    t.boolean  "accepts_comments",                   default: true
     t.integer  "comments_count",                     default: 0
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -30,16 +30,16 @@ ActiveRecord::Schema.define(version: 20130421200936) do
   add_index "articles", ["title"], name: "index_articles_on_title", unique: true, using: :btree
 
   create_table "attachments", force: true do |t|
-    t.string   "digest",                             null: false
-    t.string   "path",                               null: false
-    t.string   "mime_type",                          null: false
+    t.string   "digest"
+    t.string   "path"
+    t.string   "mime_type"
     t.integer  "user_id"
-    t.string   "original_filename",                  null: false
-    t.integer  "filesize",                           null: false
+    t.string   "original_filename"
+    t.integer  "filesize"
     t.integer  "attachable_id"
     t.string   "attachable_type"
-    t.boolean  "awaiting_moderation", default: true, null: false
-    t.boolean  "public",              default: true, null: false
+    t.boolean  "awaiting_moderation", default: true
+    t.boolean  "public",              default: true
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -47,20 +47,20 @@ ActiveRecord::Schema.define(version: 20130421200936) do
   add_index "attachments", ["digest"], name: "index_attachments_on_digest", unique: true, using: :btree
 
   create_table "comments", force: true do |t|
-    t.text     "body",                limit: 16777215,                null: false
+    t.text     "body",                limit: 16777215
     t.integer  "user_id"
-    t.integer  "commentable_id",                                      null: false
-    t.string   "commentable_type",                                    null: false
-    t.boolean  "awaiting_moderation",                  default: true, null: false
-    t.boolean  "public",                               default: true, null: false
+    t.integer  "commentable_id"
+    t.string   "commentable_type"
+    t.boolean  "awaiting_moderation",                  default: true
+    t.boolean  "public",                               default: true
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "confirmations", force: true do |t|
-    t.integer  "email_id",     null: false
-    t.string   "secret",       null: false
-    t.datetime "cutoff",       null: false
+    t.integer  "email_id"
+    t.string   "secret"
+    t.datetime "cutoff"
     t.datetime "completed_at"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -68,9 +68,9 @@ ActiveRecord::Schema.define(version: 20130421200936) do
 
   create_table "emails", force: true do |t|
     t.integer  "user_id",                    null: false
-    t.string   "address",                    null: false
-    t.boolean  "default",    default: true,  null: false
-    t.boolean  "verified",   default: false, null: false
+    t.string   "address"
+    t.boolean  "default",    default: true
+    t.boolean  "verified",   default: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.datetime "deleted_at"
@@ -79,39 +79,39 @@ ActiveRecord::Schema.define(version: 20130421200936) do
   add_index "emails", ["address"], name: "index_emails_on_address", unique: true, using: :btree
 
   create_table "forums", force: true do |t|
-    t.string   "name",                        null: false
+    t.string   "name"
     t.string   "description"
     t.integer  "topics_count", default: 0
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "position"
-    t.boolean  "public",       default: true, null: false
-    t.string   "permalink",                   null: false
+    t.boolean  "public",       default: true
+    t.string   "permalink"
   end
 
   add_index "forums", ["name"], name: "index_forums_on_name", unique: true, using: :btree
   add_index "forums", ["permalink"], name: "index_forums_on_permalink", unique: true, using: :btree
 
   create_table "issues", force: true do |t|
-    t.integer  "kind",                                 default: 0,    null: false
-    t.string   "summary",                                             null: false
-    t.boolean  "public",                               default: true, null: false
-    t.integer  "user_id",                              default: 0
-    t.integer  "status",                               default: 0,    null: false
+    t.integer  "kind",                                 default: 0
+    t.string   "summary"
+    t.boolean  "public",                               default: true
+    t.integer  "user_id"
+    t.integer  "status",                               default: 0
     t.text     "description",         limit: 16777215
-    t.boolean  "awaiting_moderation",                  default: true, null: false
-    t.integer  "comments_count",                       default: 0,    null: false
+    t.boolean  "awaiting_moderation",                  default: true
+    t.integer  "comments_count",                       default: 0
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "last_commenter_id"
     t.integer  "last_comment_id"
     t.datetime "last_commented_at"
     t.integer  "product_id"
-    t.boolean  "accepts_comments",                     default: true, null: false
+    t.boolean  "accepts_comments",                     default: true
   end
 
   create_table "links", force: true do |t|
-    t.string   "uri",                     null: false
+    t.string   "uri"
     t.string   "permalink"
     t.integer  "click_count", default: 0
     t.datetime "created_at"
@@ -130,24 +130,24 @@ ActiveRecord::Schema.define(version: 20130421200936) do
     t.string   "subject_header"
     t.string   "in_reply_to_header"
     t.text     "body"
-    t.boolean  "incoming",           default: true, null: false
+    t.boolean  "incoming",           default: true
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "monitorships", force: true do |t|
-    t.integer  "user_id",          null: false
-    t.integer  "monitorable_id",   null: false
-    t.string   "monitorable_type", null: false
+    t.integer  "user_id"
+    t.integer  "monitorable_id"
+    t.string   "monitorable_type"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "needles", force: true do |t|
-    t.string  "model_class",    null: false
-    t.integer "model_id",       null: false
-    t.string  "attribute_name", null: false
-    t.string  "content",        null: false
+    t.string  "model_class"
+    t.integer "model_id"
+    t.string  "attribute_name"
+    t.string  "content"
     t.integer "user_id"
     t.boolean "public"
   end
@@ -155,10 +155,10 @@ ActiveRecord::Schema.define(version: 20130421200936) do
   add_index "needles", ["content", "attribute_name"], name: "index_needles_on_content_and_attribute_name", using: :btree
 
   create_table "pages", force: true do |t|
-    t.string   "title",                       null: false
-    t.string   "permalink",                   null: false
-    t.text     "body",                        null: false
-    t.boolean  "front",       default: false, null: false
+    t.string   "title"
+    t.string   "permalink"
+    t.text     "body"
+    t.boolean  "front",       default: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "product_id"
@@ -166,12 +166,12 @@ ActiveRecord::Schema.define(version: 20130421200936) do
   end
 
   create_table "posts", force: true do |t|
-    t.string   "title",                                             null: false
-    t.string   "permalink",                                         null: false
-    t.text     "excerpt",                                           null: false
+    t.string   "title"
+    t.string   "permalink"
+    t.text     "excerpt"
     t.text     "body",              limit: 16777215
-    t.boolean  "public",                             default: true, null: false
-    t.boolean  "accepts_comments",                   default: true, null: false
+    t.boolean  "public",                             default: true
+    t.boolean  "accepts_comments",                   default: true
     t.integer  "comments_count",                     default: 0
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -183,16 +183,16 @@ ActiveRecord::Schema.define(version: 20130421200936) do
   add_index "posts", ["permalink"], name: "index_posts_on_permalink", unique: true, using: :btree
 
   create_table "products", force: true do |t|
-    t.string   "name",                                null: false
-    t.string   "permalink",                           null: false
+    t.string   "name"
+    t.string   "permalink"
     t.text     "description"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "bundle_identifier"
-    t.text     "header",                              null: false
-    t.text     "footer",                              null: false
+    t.text     "header"
+    t.text     "footer"
     t.integer  "position"
-    t.string   "category",             default: "",   null: false
+    t.string   "category"
     t.boolean  "hide_from_front_page", default: true
   end
 
@@ -201,9 +201,9 @@ ActiveRecord::Schema.define(version: 20130421200936) do
   add_index "products", ["permalink"], name: "index_products_on_permalink", unique: true, using: :btree
 
   create_table "repos", force: true do |t|
-    t.string   "name",                         null: false
-    t.string   "permalink",                    null: false
-    t.string   "path",                         null: false
+    t.string   "name"
+    t.string   "permalink"
+    t.string   "path"
     t.string   "description"
     t.integer  "product_id"
     t.boolean  "public",       default: false
@@ -221,8 +221,8 @@ ActiveRecord::Schema.define(version: 20130421200936) do
   add_index "repos", ["rw_clone_url"], name: "index_repos_on_rw_clone_url", unique: true, using: :btree
 
   create_table "resets", force: true do |t|
-    t.string   "secret",       null: false
-    t.datetime "cutoff",       null: false
+    t.string   "secret"
+    t.datetime "cutoff"
     t.datetime "completed_at"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -244,9 +244,9 @@ ActiveRecord::Schema.define(version: 20130421200936) do
   end
 
   create_table "taggings", force: true do |t|
-    t.integer  "tag_id",        null: false
-    t.integer  "taggable_id",   null: false
-    t.string   "taggable_type", null: false
+    t.integer  "tag_id"
+    t.integer  "taggable_id"
+    t.string   "taggable_type"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -254,7 +254,7 @@ ActiveRecord::Schema.define(version: 20130421200936) do
   add_index "taggings", ["tag_id", "taggable_id", "taggable_type"], name: "index_taggings_on_tag_id_and_taggable_id_and_taggable_type", unique: true, using: :btree
 
   create_table "tags", force: true do |t|
-    t.string   "name",                       null: false
+    t.string   "name"
     t.integer  "taggings_count", default: 0
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -263,13 +263,13 @@ ActiveRecord::Schema.define(version: 20130421200936) do
   add_index "tags", ["name"], name: "index_tags_on_name", unique: true, using: :btree
 
   create_table "topics", force: true do |t|
-    t.string   "title",                                               null: false
-    t.text     "body",                limit: 16777215,                null: false
-    t.integer  "forum_id",                                            null: false
+    t.string   "title"
+    t.text     "body",                limit: 16777215
+    t.integer  "forum_id"
     t.integer  "user_id"
-    t.boolean  "public",                               default: true, null: false
-    t.boolean  "accepts_comments",                     default: true, null: false
-    t.boolean  "awaiting_moderation",                  default: true, null: false
+    t.boolean  "public",                               default: true
+    t.boolean  "accepts_comments",                     default: true
+    t.boolean  "awaiting_moderation",                  default: true
     t.integer  "comments_count",                       default: 0
     t.integer  "view_count",                           default: 0
     t.datetime "created_at"
@@ -280,11 +280,11 @@ ActiveRecord::Schema.define(version: 20130421200936) do
   end
 
   create_table "tweets", force: true do |t|
-    t.text     "body",                                       null: false
+    t.text     "body"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "accepts_comments",            default: true, null: false
-    t.integer  "comments_count",              default: 0,    null: false
+    t.boolean  "accepts_comments",            default: true
+    t.integer  "comments_count",              default: 0
     t.integer  "last_commenter_id"
     t.integer  "last_comment_id"
     t.datetime "last_commented_at"
@@ -293,12 +293,12 @@ ActiveRecord::Schema.define(version: 20130421200936) do
   end
 
   create_table "users", force: true do |t|
-    t.string   "display_name",                    null: false
-    t.string   "passphrase_hash",                 null: false
-    t.string   "passphrase_salt",                 null: false
-    t.boolean  "superuser",       default: false, null: false
-    t.boolean  "verified",        default: false, null: false
-    t.boolean  "suspended",       default: false, null: false
+    t.string   "display_name"
+    t.string   "passphrase_hash"
+    t.string   "passphrase_salt"
+    t.boolean  "superuser",       default: false
+    t.boolean  "verified",        default: false
+    t.boolean  "suspended",       default: false
     t.string   "session_key"
     t.datetime "session_expiry"
     t.datetime "deleted_at"
