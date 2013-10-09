@@ -9,9 +9,9 @@
 @import 'compass/css3/user-interface';
 @import 'compass/reset/utilities';
 @import 'compass/utilities/general/clearfix';
+@import 'normalize';
 
 // global
-@import 'reset';
 @import 'variables';
 @import 'functions';
 @import 'mixins';
