@@ -107,7 +107,7 @@ describe IssuesController do
       it 'does not set tags' do
         expect do
           do_post
-        end.to raise_error(ActiveModel::MassAssignmentSecurity::Error)
+        end.to_not change { Tag.count }
       end
     end
   end
@@ -133,8 +133,7 @@ describe IssuesController do
     end
 
     it 'updates the issue' do
-      mock(@issue).update_attributes({'pending_tags' => 'foo bar baz'},
-                                     {:as => :admin})
+      mock(@issue).update_attributes('pending_tags' => 'foo bar baz')
       stub(Issue).find { @issue }
       do_put
     end
