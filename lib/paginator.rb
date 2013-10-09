@@ -73,7 +73,14 @@ private
   end
 
   def icon(css_class)
-    content_tag :span, '', class: css_class
+    # map from the original class names to the Font Awesome icon names
+    css_class = {
+      'first' => 'icon-fast-backward',
+      'last'  => 'icon-fast-forward',
+      'prev'  => 'icon-play icon-rotate-180',
+      'next'  => 'icon-play',
+    }[css_class]
+    content_tag :i, '', class: css_class
   end
 
   def first_link
