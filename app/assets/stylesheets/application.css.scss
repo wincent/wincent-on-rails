@@ -11,6 +11,9 @@
 @import 'compass/utilities/general/clearfix';
 @import 'normalize';
 
+$FontAwesomePath: '/assets';
+@import 'font-awesome/font-awesome';
+
 // global
 @import 'variables';
 @import 'functions';
