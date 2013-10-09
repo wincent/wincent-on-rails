@@ -109,7 +109,13 @@ $padding: 10px;
     text-transform: uppercase;
   }
 
+  ul {
+    margin: 0;
+    padding: 0;
+  }
+
   li {
+    list-style-type: none;
     margin: 0;
     padding: 0;
   }
@@ -198,6 +204,10 @@ nav.global {
 
   @include respond-to(tablet) {
     display: table-cell;
+  }
+
+  ul {
+    padding: 0;
   }
 
   form {

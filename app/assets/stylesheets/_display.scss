@@ -73,7 +73,7 @@ p, li {
 
 li {
   list-style: disc;
-  margin-top: 0.5em;
+  margin-top: .5em;
 }
 
 pre {
@@ -91,8 +91,8 @@ pre {
     text-align: right;
     float: left;
     margin-left: -1.5em;
-    margin-right: 0.5em;
-    padding-right: 0.5em;
+    margin-right: .5em;
+    padding-right: .5em;
     border-right: 1px solid silver;
     width: 3em;
     color: silver;
@@ -179,7 +179,7 @@ textarea {
 
 code, tt {
   color: #660000;
-  padding: 0 0.1em;
+  padding: 0 .1em;
 }
 
 blockquote {
@@ -194,7 +194,7 @@ blockquote {
 
   &:after,
   &:before {
-    @include opacity(0.1);
+    @include opacity(.1);
     font-size: 4em;
     position: absolute;
   }
@@ -249,7 +249,7 @@ a.mailto:after {
 
 #breadcrumbs {
   margin: 10px 0 0;
-  font-size: 0.8em;
+  font-size: .8em;
 }
 
 #content-wrapper {
@@ -261,7 +261,7 @@ a.mailto:after {
   clear: both;
   line-height: 1.75em;
   margin: 0 auto;
-  padding: 0.5em 2em 1em;
+  padding: .5em 2em 1em;
 
   @include respond-to(desktop) {
     max-width: 960px;
@@ -453,7 +453,7 @@ div.column {
 @import "icons/*.png";
 
 ul.pagination {
-  font-size: 0.75em;
+  font-size: .75em;
   height: 16px;
   list-style-type: none;
   margin: 1em 1em 1.5em;
@@ -524,7 +524,7 @@ table thead tr th {
 }
 
 td, th {
-  padding: 0.5em;
+  padding: .5em;
 }
 
 th {
@@ -600,7 +600,7 @@ form {
 .cloud {
   text-align: center;
   a {
-    padding: 0.5em;
+    padding: .5em;
   }
 }
 
@@ -609,14 +609,14 @@ form {
   max-width: 15em;
   margin: 1em;
   border: 1px solid gray;
-  @include border-radius(0.33em);
-  @include box-shadow(0.33em #aaa);
+  @include border-radius(.33em);
+  @include box-shadow(.33em #aaa);
   padding: 1em;
   h3 {
     margin-top: 0em;
   }
   p {
-    font-size: 0.75em;
+    font-size: .75em;
   }
 }
 
@@ -628,7 +628,7 @@ ul.taggables {
 // general appearance
 
 .when {
-  font-size: 0.75em;
+  font-size: .75em;
   color: #bbb;
   a {
     color: #bbb;
@@ -638,7 +638,7 @@ ul.taggables {
 
 .hoverlink {
   visibility: hidden;
-  font-size: 0.75em;
+  font-size: .75em;
   color: #bbb;
   border-left: 1px solid silver;
   padding-left: 6px;
@@ -708,23 +708,23 @@ ul.taggables {
 
 @mixin button {
   @include border-radius;
-  @include box-shadow(0 1px 3px rgba(0, 0, 0, 0.5));
+  @include box-shadow(0 1px 3px rgba(0, 0, 0, .5));
   position: relative;
-  margin-right: 0.25em;
+  margin-right: .25em;
   border: {
     top: 0;
     right: 0;
     left: 0;
-    bottom: 1px solid rgba(0, 0, 0, 0.25);
+    bottom: 1px solid rgba(0, 0, 0, .25);
   };
 
-  text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.25);
+  text-shadow: 0 -1px 1px rgba(0, 0, 0, .25);
   background: #007d9a;
   padding: {
     left: 1.5em;
     right: 1.5em;
-    top: 0.5em;
-    bottom: 0.5em;
+    top: .5em;
+    bottom: .5em;
   };
   color: white;
   cursor: pointer;
@@ -789,7 +789,7 @@ form.button_to {
 // make buttons look smaller when they are in table cells
 @mixin small-button {
   @include border-radius(2px);
-  font-size: 0.75em;
+  font-size: .75em;
   font-weight: normal;
   padding: 3px 15px;
 }
@@ -830,7 +830,7 @@ td.links {
   }
 
   th + td {
-    padding-top: -0.5em;
+    padding-top: -.5em;
     border-bottom: 1px solid #ccc;
     width: 85%;
   }
