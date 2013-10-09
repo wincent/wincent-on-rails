@@ -21,8 +21,6 @@
 // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 // POSSIBILITY OF SUCH DAMAGE.
 
-var globalSpinnerCounter = 0;
-
 function escapeHTML(html) {
   return html
     .replace(/&/g, '&amp;')
@@ -44,17 +42,12 @@ function clearAJAXFlash() {
 }
 
 function ajaxCommentForm(url) {
-  var $commentDiv = $('#comment-form'),
+  var commentSelector = '#comment-form',
+      $commentDiv = $(commentSelector),
       $anchor = $commentDiv.find('a').attr('href', '#comment-form');
   var click = function() {
     $anchor.off('click').addClass('disabled');
-    var $spinner = $('<img/>', {
-      alt     : 'Spinner',
-      id      : 'spinner_' + globalSpinnerCounter++,
-      'class' : 'spinner',
-      src     : '<%= asset_path 'spinner.gif' %>'
-    });
-    $commentDiv.append($spinner.show());
+    var spinner = new Wincent.Spinner(commentSelector, 'small');
     clearAJAXFlash();
     $.ajax({
       url       : url,
@@ -69,7 +62,7 @@ function ajaxCommentForm(url) {
         $anchor.on('click', click);
       },
       complete: function() {
-        $spinner.remove();
+        spinner.stop();
         $anchor.removeClass('disabled');
       }
     });
@@ -138,20 +131,21 @@ function editInPlace(selector, className, attributeName, url) {
 function ajaxCheckBox(selector, className, attributeName, url) {
   var modelId = $(selector).attr('id'), // issue_22
       recordId = modelId.match(/_(\d+)$/)[1], // 22
-      $fieldId = $('#' + modelId + '_' + attributeName), // issue_22_public
+      fieldSelector = '#' + modelId + '_' + attributeName, // issue_22_public
+      $fieldId = $(fieldSelector),
       fieldText = $fieldId.text(), // eg. true, false
-      spinnerId = 'spinner_' + globalSpinnerCounter++,
       newContents = '<input id="' + className + '_' + attributeName +
-    '" name="' + className + '[' + attributeName + ']" type="checkbox">' +
-    '<img alt="Spinner" id="' + spinnerId + '" class="spinner" src="<%= asset_path 'spinner.gif' %>" />';
+    '" name="' + className + '[' + attributeName + ']" type="checkbox">';
   $fieldId.html(newContents);
+
   var checkBoxId = $fieldId.find('input');
   if (fieldText === 'true') {
     checkBoxId.prop('checked', true);
     }
   var oldProp = checkBoxId.prop('checked');
   checkBoxId.on('change', function() {
-    var $spinner = $fieldId.find('#' + spinnerId).show();
+    var spinner = new Wincent.Spinner(fieldSelector, 'small');
+
     $.ajax({
       'url': url + recordId,
       'type': 'post',
@@ -167,7 +161,7 @@ function ajaxCheckBox(selector, className, attributeName, url) {
         insertAJAXFlash('error', req.responseText);
       },
       'complete': function() {
-        $spinner.hide();
+        spinner.stop();
       }
     });
   });
@@ -176,9 +170,9 @@ function ajaxCheckBox(selector, className, attributeName, url) {
 function ajaxSelect(selector, className, attributeName, options, includeBlank, url) {
   var modelId = $(selector).attr('id'), // issue_22
       recordId = modelId.match(/_(\d+)$/)[1], // 22
-      $fieldId = $('#' + modelId + '_' + attributeName), // issue_22_status
+      fieldSelector = '#' + modelId + '_' + attributeName, // issue_22_status
+      $fieldId = $(fieldSelector), // issue_22_status
       fieldText = $fieldId.text(), // eg. New, Open, Closed
-      spinnerId = 'spinner_' + globalSpinnerCounter++,
       newContents = '<select id="' + className + '_' + attributeName + '" name="' + className + '[' + attributeName + ']">';
   if (includeBlank) {
     newContents = newContents + '<option value=""></option>';
@@ -210,7 +204,7 @@ function ajaxSelect(selector, className, attributeName, options, includeBlank, u
   else { // non-optgroup case
     newContents += optionTag(options);
   }
-  newContents += '</select><img alt="Spinner" id="' + spinnerId + '" class= "spinner" src="<%= asset_path 'spinner.gif' %>" />';
+  newContents += '</select>';
   $fieldId.html(newContents);
   var selectId = $fieldId.find('select');
   if (!selectionFound) {
@@ -224,7 +218,7 @@ function ajaxSelect(selector, className, attributeName, options, includeBlank, u
   }
   var oldVal = $fieldId.find('select option:selected').text();
   selectId.on('change', function() {
-    var $spinner = $fieldId.find('#' + spinnerId).show();
+    var spinner = new Wincent.Spinner(fieldSelector, 'small');
     $.ajax({
       'url': url + recordId,
       'type': 'post',
@@ -240,7 +234,7 @@ function ajaxSelect(selector, className, attributeName, options, includeBlank, u
         insertAJAXFlash('error', req.responseText);
       },
       'complete': function() {
-        $spinner.hide();
+        spinner.stop();
       }
     });
   });
