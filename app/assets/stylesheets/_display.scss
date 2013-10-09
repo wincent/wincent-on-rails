@@ -445,56 +445,76 @@ div.column {
 
 // pagination
 
+// TODO: more sprites, for example flash icons can go in here?
+// limitation: sprites by definition have to be background images
+// that might or mightnot be ok
+// sigh...
 @import "icons/*.png";
 
 ul.pagination {
   font-size: .75em;
-  height: 16px;
   list-style-type: none;
-  margin: 1em 1em 1.5em;
+  margin: 0;
+  padding: 0;
   text-align: right;
+
   li {
-    border-right: 1px solid #ccc;
     display: inline-block;
+    /*height: 16px;*/
     padding: 0 5px;
+
     &:first-child {
-      border-right: none;
+      display: none; // hide meta data on small screens
       padding: 0;
+
+      @include respond-to(small-tablet) {
+        display: inline-block;
+      }
     }
+
     &:last-child {
-      border-right: none;
       padding-right: 0;
     }
   }
+
   .first, .prev, .next, .last {
     display: inline-block;
     height: 16px;
     vertical-align: middle;
     width: 16px;
   }
+
   .first {
     @include icons-sprite(first);
   }
+
   .prev {
     @include icons-sprite(previous);
   }
+
   .next {
     @include icons-sprite(next);
   }
+
   .last {
     @include icons-sprite(last);
   }
+
   .disabled {
     color: gray;
+
     .first {
       @include icons-sprite(first-disabled);
     }
+
     .prev {
       @include icons-sprite(previous-disabled);
     }
+
     .next {
       @include icons-sprite(next-disabled);
     }
+
     .last {
       @include icons-sprite(last-disabled);
     }
