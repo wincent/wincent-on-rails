@@ -644,7 +644,10 @@ ul.taggables {
 .comments-link {
   float: left;
 
-  &:hover {
+  &:before {
+    @include icon($comments-alt);
+    display: inline-block;
+    margin-right: .25em;
     text-decoration: none;
   }
 }

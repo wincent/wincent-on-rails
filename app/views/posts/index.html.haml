@@ -21,9 +21,8 @@
         -#      be able to implement a custom counter cache to work around this
         -#      problem
         - if post.accepts_comments? || post.comments_count > 0
-          = link_to post_path(post, anchor: 'comments'), class: 'comments-link' do
-            = content_tag(:i, '', class: 'icon-comments-alt')
-            = comment_count(post.comments_count)
+          = link_to comment_count(post.comments_count),
+              post_path(post, anchor: 'comments'), class: 'comments-link'
         =link_to 'Tags', tags_path
         \:
         =tag_links(post)
