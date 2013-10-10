@@ -238,11 +238,17 @@ a {
 }
 
 a.external:after {
-  content: image-url("external.png");
+  @include icon($external-link);
+  display: inline-block;
+  margin-left: .25em;
+  text-decoration: none;
 }
 
 a.mailto:after {
-  content: image-url("mailto.png");
+  @include icon($envelope-alt);
+  display: inline-block;
+  margin-left: .25em;
+  text-decoration: none;
 }
 
 // overall page layout
