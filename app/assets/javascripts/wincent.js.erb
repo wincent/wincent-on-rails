@@ -61,23 +61,6 @@
     }
   }
 
-  var insertFlash = function(css, msg) {
-    if (msg) {
-      $('#cacheable-flash').append($('<div/>', { 'class': css, html: msg }));
-    }
-  }
-
-  var displayCacheableFlash = function() {
-    var flash = getCookie('flash');
-    if (flash) {
-      flash = unescape(flash).replace(/\+/g, ' ');
-      flash = eval('flash = ' + flash + ';');
-      insertFlash('error', flash.error);
-      insertFlash('notice', flash.notice);
-      deleteCookie('flash');
-    }
-  }
-
   $.fn.relativizeDates = function() {
     this.find('time[data-relative=true]')
       .removeAttr('data-relative') // do this only once
@@ -285,7 +268,6 @@
   // ready
   setUpLoginLogoutLinks();
   setUpSearchLink();
-  displayCacheableFlash();
   highlightActiveFragment();
 
   $('body')

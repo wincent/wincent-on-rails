@@ -1,4 +1,6 @@
 class ApplicationController < ActionController::Base
+  include ERB::Util     # for h()
+
   before_filter         :log_in_before,
                         :vary_xhr
   protect_from_forgery
@@ -28,7 +30,7 @@ protected
     end
   end
 
-  # 403 error: request understood by refused, and authentication will not help
+  # 403 error: request understood but refused, and authentication will not help
   def forbidden
     handle_http_status_code 403
   end
@@ -89,9 +91,9 @@ protected
     flash[:error] = [] if flash[:error].blank?
     flash[:notice] = [] if flash[:notice].blank?
     recipient = mail.to.first
-    error_msg = "An error occurred sending to #{recipient}"
+    error_msg = "An error occurred sending to #{h recipient}"
     mail.deliver
-    flash[:notice] << "An email has been sent to #{recipient}"
+    flash[:notice] << "An email has been sent to #{h recipient}"
   rescue Net::SMTPFatalError
     flash[:error] << error_msg +
       ' (this looks like a permanent error; please check the address)'

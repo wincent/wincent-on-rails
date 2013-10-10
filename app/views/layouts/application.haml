@@ -58,7 +58,15 @@
             = link_to 'log out', logout_path, id: 'logout'
         #content-wrapper
           #content
-            #cacheable-flash
+            - if flash[:notice]
+              #notice
+                %i.icon-info-sign
+                = raw flash[:notice]
+            - if flash[:error]
+              #error
+                %i.icon-exclamation-sign
+                = raw flash[:error]
+
             -# BUG: this is a bit of kludge so that we don't have to define a
             -# separate layout just to get breadcrumbs on our wikitext pages
             -# handled by the "misc" controller
