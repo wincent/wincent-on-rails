@@ -242,7 +242,7 @@ function ajaxSelect(selector, className, attributeName, options, includeBlank, u
 
 function setupPreviewLink(options) {
   $('#preview_link').append('<a href="#">' +
-      '<img src="<%= asset_path 'update.png' %>" alt="refresh" />' +
+      '<i class="icon-refresh"></i>' +
     '</a>' +
     '<img id="preview_spinner" src="<%= asset_path 'spinner.gif' %>" alt="spinner" />');
   $('#preview_link a').on('click', function() {
