@@ -4,9 +4,6 @@
 [submodule "vendor/assets/javascripts/jquery"]
 	path = vendor/assets/javascripts/jquery
 	url = git://elastic1.unixhosts.net/jquery.git
-[submodule "vendor/assets/javascripts/spin.js"]
-	path = vendor/assets/javascripts/spin.js
-	url = git://elastic1.unixhosts.net/spin.js.git
 [submodule "vendor/assets/javascripts/backbone"]
 	path = vendor/assets/javascripts/backbone
 	url = git://elastic1.unixhosts.net/backbone.git
