@@ -330,7 +330,7 @@ if [ -n "$DO_DEPLOY" ]; then
              bundle install --quiet --deployment --local \
                             --path /data/rails/deploy/shared/bundle \
                             --without test"
-  run rails "cd $CHECKOUT && bin/rake --silent assets:precompile"
+  run rails "cd $CHECKOUT && bin/rake --silent RAILS_ENV=production assets:precompile"
 fi
 
 if [ -n "$DO_DISABLE" ]; then
