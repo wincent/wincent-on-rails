@@ -2,7 +2,6 @@ source 'https://rubygems.org'
 
 gem 'bundler'
 gem 'closure-compiler'
-gem 'coffee-rails'
 gem 'compass-rails', '~> 2.0.alpha'
 gem 'dalli'
 gem 'haml'
