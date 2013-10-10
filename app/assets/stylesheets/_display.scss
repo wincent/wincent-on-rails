@@ -497,16 +497,18 @@ th {
   background: #f7f7f7;
 }
 
-th.ascending a {
-  font-weight: bold;
-  background: image-url("upwards-sort-triangle.png") no-repeat right center;
-  padding-right: 16px;
+th.ascending a:after {
+  @include icon($sort-up);
+  display: inline-block;
+  margin-left: .25em;
+  text-decoration: none;
 }
 
-th.descending a {
-  font-weight: bold;
-  background: image-url("downwards-sort-triangle.png") no-repeat right center;
-  padding-right: 16px;
+th.descending a:after {
+  @include icon($sort-down);
+  display: inline-block;
+  margin-left: .25em;
+  text-decoration: none;
 }
 
 tr {
