@@ -61,6 +61,15 @@ module ApplicationHelper
     haml_tag :h1, h(string)
   end
 
+  # Inserts a tag that produces a Font Awesome icon corresponding to `names`.
+  #
+  #   icon('fast-forward')
+  #   icon('play rotate-180')
+  #
+  def icon(*names)
+    content_tag :i, '', class: names.map { |name| "icon-#{name}" }.join(' ')
+  end
+
   def annotation field, *annotation
     "#{field}<br><span class=\"annotation\">#{annotation.join('<br>')}</span>".html_safe
   end

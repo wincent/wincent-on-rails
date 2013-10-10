@@ -789,26 +789,6 @@ td.links {
   text-align: right;
 }
 
-// comments (issue tracker, forums)
-.comments {
-  th {
-    padding: 1em;
-    vertical-align: top;
-    background: white;
-  }
-
-  th + td {
-    padding-top: -.5em;
-    border-bottom: 1px solid #ccc;
-    width: 85%;
-  }
-
-  // we want private comments to stand out a bit so that the admin knows which ones are hidden from public view
-  tr.private > th {
-    background: image-url('lock.png') no-repeat right bottom;
-  }
-}
-
 // live previews
 #preview_link img {
   padding-left: .33em;

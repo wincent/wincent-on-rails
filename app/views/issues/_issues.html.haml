@@ -29,5 +29,5 @@
               :title => "show all #{issue.kind_string.pluralize}"
           %td=timeinfo issue
           -if admin?
-            %td=issue.public? ? image_tag('tick.png') : image_tag('lock.png')
+            %td=issue.public? ? icon('ok') : icon('lock')
 =@paginator.pagination_links if @paginator

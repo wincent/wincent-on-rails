@@ -20,4 +20,10 @@ table
 
 .issue.private
   h1
-    background: image-url("lock.png") no-repeat right center
+    position: relative
+  h1:after
+    +icon($lock)
+    display: inline-block
+    margin-left: .25em
+    position: absolute
+    right: 0

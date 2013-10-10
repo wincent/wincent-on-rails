@@ -7,8 +7,8 @@
     %td=@email.address
   %tr
     %th Verified?
-    %td=@email.verified? ? image_tag('tick.png') : image_tag('cross.png')
+    %td= icon(@email.default? ? 'check' : 'check-empty')
     -# TODO: link to re-send verification email; not link to /confirm/new just yet because that only works for currently-logged-in user
   %tr
     %th Default?
-    %td=@email.default? ? image_tag('tick.png') : image_tag('cross.png')
+    %td= icon(@email.default? ? 'check' : 'check-empty')
