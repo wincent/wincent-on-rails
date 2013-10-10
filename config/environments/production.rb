@@ -26,8 +26,8 @@ Wincent::Application.configure do
   config.assets.compile                     = false
   config.assets.compress                    = true
   config.assets.digest                      = true
-  config.assets.paths                      += Rails.root + 'app/assets/fonts'
-  config.assets.precompile                 += /\.(eot|svg|ttf|woff)\z/
+  config.assets.paths                      << Rails.root + 'app/assets/fonts'
+  config.assets.precompile                 << /\.(eot|svg|ttf|woff)\z/
   config.cache_classes                      = true
   config.cache_store                        = :dalli_store, '127.0.0.1'
   config.consider_all_requests_local        = false
