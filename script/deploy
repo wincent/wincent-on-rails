@@ -267,7 +267,7 @@ if [ -n "$DO_CHECK" ]; then
     STATIC=${STATIC#app/views/} # trim leading directories
     git show $LOCAL_REF:$STATIC > $TMPDIR/static.html
     script/static $TMPDIR/src.html.haml $TMPDIR/out.html
-    diff -q $TMPDIR/out.html $TMPDIR/static.html > /dev/null || bail "static version of $HAML not up-to-date in $LOCAL_REF"
+    diff -q $TMPDIR/out.html $TMPDIR/static.html > /dev/null || bail "static version of $HAML not up-to-date in $LOCAL_REF (run: bundle exec rake static:generate)"
   done
   p "  checking: directories exist and are writable"
   run rails test -d $DEPLOY
