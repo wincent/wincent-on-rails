@@ -79,9 +79,6 @@
               title: "Email me at #{APP_CONFIG['admin_email']}",
               class: 'mailto'
             %li= link_to 'legal', '/misc/legal'
-        = javascript_include_tag 'application'
-        = dynamic_javascript_include_tag
-        = yield :javascript
       .menu
         .menu-inner
           %section.search
@@ -103,5 +100,9 @@
               %li= link_to 'Command-T', '/products/command-t', title: 'Fast file navigation for Vim'
               %li= link_to 'Wikitext', '/products/wikitext', title: 'Fast wikitext-to-HTML translator'
               %li= link_to 'All products', products_path
-      :javascript
-        new Wincent.Menu();
+
+    = javascript_include_tag 'application'
+    = dynamic_javascript_include_tag
+    = yield :javascript
+    :javascript
+      new Wincent.Menu();
