@@ -308,17 +308,17 @@ if [ -n "$DO_DEPLOY" ]; then
   else
     REMOTE_REF=$REF
   fi
+  # TODO: borrow Adam's idea of having a clone which we just fetch into for speed
+  #       (submodules won't be any quicker, but it's still a start)
   run rails test ! -e $CHECKOUT
   run rails git clone --quiet --recursive $REPO $CHECKOUT
   run rails "cd $CHECKOUT && git checkout --quiet -b deploy $REMOTE_REF"
   run rails "cd $CHECKOUT && git submodule --quiet update --init"
   run rails "cd $CHECKOUT && (git rev-parse HEAD > $CHECKOUT/REVISION)"
   run rails rm -rf $CHECKOUT/log \
-                   $CHECKOUT/public/assets \
                    $CHECKOUT/public/system \
                    $CHECKOUT/tmp/pids
   run rails ln -s $SHARED/log             $CHECKOUT/log
-  run rails ln -s $SHARED/assets          $CHECKOUT/public/assets
   run rails ln -s $SHARED/system          $CHECKOUT/public/system
   run rails ln -s $SHARED/pids            $CHECKOUT/tmp/pids
   run rails ln -s $SHARED/database.yml    $CHECKOUT/config/database.yml
@@ -330,7 +330,6 @@ if [ -n "$DO_DEPLOY" ]; then
              bundle install --quiet --deployment --local \
                             --path /data/rails/deploy/shared/bundle \
                             --without test"
-  run rails "cd $CHECKOUT && bin/rake --silent RAILS_ENV=production assets:precompile"
 fi
 
 if [ -n "$DO_DISABLE" ]; then

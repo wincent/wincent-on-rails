@@ -26,6 +26,7 @@ Wincent::Application.configure do
   config.assets.compile                     = false
   config.assets.compress                    = true
   config.assets.digest                      = true
+  config.assets.js_compressor               = :closure
   config.assets.precompile                 << /\.(eot|svg|ttf|woff)\z/
   config.cache_classes                      = true
   config.cache_store                        = :dalli_store, '127.0.0.1'
