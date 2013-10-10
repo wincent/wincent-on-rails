@@ -8,9 +8,4 @@ Wincent::Application.configure do
   config.cache_classes                                    = false
   config.consider_all_requests_local                      = true
   config.eager_load                                       = false
-
-  # prevent Compass from littering all over app/assets/images; confine the
-  # mess to a .gitignore-able subdirectory
-  config.compass.generated_images_dir = 'app/assets/images/sprites'
-  config.assets.paths << Rails.root + 'app/assets/images/sprites'
 end
