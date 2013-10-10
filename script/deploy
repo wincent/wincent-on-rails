@@ -327,7 +327,7 @@ if [ -n "$DO_DEPLOY" ]; then
   run rails rm -f $DEPLOY/latest
   run rails ln -s $CHECKOUT $DEPLOY/latest
   run rails "cd $CHECKOUT && \
-             bundle install --quiet --deployment --local --binstubs \
+             bundle install --quiet --deployment --local \
                             --path /data/rails/deploy/shared/bundle \
                             --without test"
   run rails "cd $CHECKOUT && bin/rake --silent assets:precompile"
