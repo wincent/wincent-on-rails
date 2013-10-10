@@ -72,24 +72,13 @@ private
     content_tag :li, label
   end
 
-  def icon(css_class)
-    # map from the original class names to the Font Awesome icon names
-    css_class = {
-      'first' => 'icon-fast-backward',
-      'last'  => 'icon-fast-forward',
-      'prev'  => 'icon-play icon-rotate-180',
-      'next'  => 'icon-play',
-    }[css_class]
-    content_tag :i, '', class: css_class
-  end
-
   def first_link
     content_tag :li, class: ('disabled' if on_first_page?) do
-      link_text = icon('first') + 'First'
+      link_text, klass = 'First', 'first'
       if on_first_page?
-        link_text
+        content_tag :span, link_text, class: klass
       else
-        link_to link_text, "#{@path_or_url}#{params_for_page 1}"
+        link_to link_text, "#{@path_or_url}#{params_for_page 1}", class: klass
       end
     end
   end
@@ -100,33 +89,38 @@ private
   #   http://googlewebmastercentral.blogspot.com/2011/09/pagination-with-relnext-and-relprev.html
   def prev_link
     content_tag :li, class: ('disabled' if on_first_page?) do
-      link_text = icon('prev') + 'Previous'
+      link_text, klass = 'Previous', 'prev icon-rotate-180'
       if on_first_page?
-        link_text
+        content_tag :span, link_text, class: klass
       else
-        link_to link_text, "#{@path_or_url}#{params_for_page(@page - 1)}", rel: 'prev'
+        link_to link_text, "#{@path_or_url}#{params_for_page(@page - 1)}",
+          rel: 'prev',
+          class: klass
       end
     end
   end
 
   def next_link
     content_tag :li, class: ('disabled' if on_last_page?) do
-      link_text = 'Next'.html_safe + icon('next')
+      link_text, klass = 'Next', 'next'
       if on_last_page?
-        link_text
+        content_tag :span, link_text, class: klass
       else
-        link_to link_text, "#{@path_or_url}#{params_for_page(@page + 1)}", rel: 'next'
+        link_to link_text, "#{@path_or_url}#{params_for_page(@page + 1)}",
+          rel: 'next',
+          class: klass
       end
     end
   end
 
   def last_link
     content_tag :li, class: ('disabled' if on_last_page?) do
-      link_text = 'Last'.html_safe + icon('last')
+      link_text, klass = 'Last', 'last'
       if on_last_page?
-        link_text
+        content_tag :span, link_text, class: klass
       else
-        link_to link_text, "#{@path_or_url}#{params_for_page (@count / @limit.to_f).ceil}"
+        link_to link_text, "#{@path_or_url}#{params_for_page (@count / @limit.to_f).ceil}",
+          class: klass
       end
     end
   end

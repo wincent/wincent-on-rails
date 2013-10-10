@@ -442,8 +442,29 @@ ul.pagination {
     }
   }
 
-  i {
+  .first:before {
+    @include icon($fast-backward);
+  }
+
+  .last:after {
+    @include icon($fast-forward);
+  }
+
+  .prev:before {
+    @include icon($play);
+  }
+
+  .next:after {
+    @include icon($play);
+  }
+
+  .first:before,
+  .last:after,
+  .prev:before,
+  .next:after {
+    display: inline-block;
     margin: 0 2px;
+    text-decoration: none;
   }
 
   .disabled {
