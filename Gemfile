@@ -20,7 +20,9 @@ gem 'wikitext'
 gem 'wopen3'
 
 group :production do
-  gem 'therubyracer'
+  # if we move to a later version (eg. 0.12.0), then we'll depend on libv8
+  # 3.16.14.3, but that won't compile on Fedora 8, so stay locked here
+  gem 'therubyracer', '0.11.4' # implies libv8 3.11.8.17
 end
 
 group :development, :test do
