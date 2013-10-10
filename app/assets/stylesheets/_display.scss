@@ -644,7 +644,7 @@ ul.taggables {
 }
 
 @mixin button {
-  @include border-radius;
+  @include border-radius(5px);
   @include box-shadow(0 1px 3px rgba(0, 0, 0, .5));
   position: relative;
   margin-right: .25em;
