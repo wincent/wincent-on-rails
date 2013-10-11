@@ -260,6 +260,8 @@ if [ -n "$DO_CHECK" ]; then
   else
     LOCAL_REF=$REF
   fi
+  p "  checking: precompiled assets are available"
+  bin/rake REF=$LOCAL_REF assets:deploy:check || bail "precompiled assets are not available (run bin/rake REF=$LOCAL_REF assets:deploy:store)"
   p "  checking: generated static HTML files up-to-date"
   for HAML in $(ls app/views/public/*.html.haml); do
     git show $LOCAL_REF:$HAML > $TMPDIR/src.html.haml
@@ -267,7 +269,7 @@ if [ -n "$DO_CHECK" ]; then
     STATIC=${STATIC#app/views/} # trim leading directories
     git show $LOCAL_REF:$STATIC > $TMPDIR/static.html
     script/static $TMPDIR/src.html.haml $TMPDIR/out.html
-    diff -q $TMPDIR/out.html $TMPDIR/static.html > /dev/null || bail "static version of $HAML not up-to-date in $LOCAL_REF (run: bundle exec rake static:generate)"
+    diff -q $TMPDIR/out.html $TMPDIR/static.html > /dev/null || bail "static version of $HAML not up-to-date in $LOCAL_REF (run: bin/rake static:generate)"
   done
   p "  checking: directories exist and are writable"
   run rails test -d $DEPLOY
@@ -308,6 +310,7 @@ if [ -n "$DO_DEPLOY" ]; then
   else
     REMOTE_REF=$REF
   fi
+  ASSETS_SHA1=$(bin/rake REF=$REMOTE_REF assets:deploy:print_tag)
   # TODO: borrow Adam's idea of having a clone which we just fetch into for speed
   #       (submodules won't be any quicker, but it's still a start)
   run rails test ! -e $CHECKOUT
@@ -316,9 +319,10 @@ if [ -n "$DO_DEPLOY" ]; then
   run rails "cd $CHECKOUT && git submodule --quiet update --init"
   run rails "cd $CHECKOUT && (git rev-parse HEAD > $CHECKOUT/REVISION)"
   run rails rm -rf $CHECKOUT/log \
-                   $CHECKOUT/public/system \
-                   $CHECKOUT/tmp/pids
+                   $CHECKOUT/public/assets \
+                   $CHECKOUT/public/system
   run rails ln -s $SHARED/log             $CHECKOUT/log
+  run rails ln -s $SHARED/assets          $CHECKOUT/public/assets
   run rails ln -s $SHARED/system          $CHECKOUT/public/system
   run rails ln -s $SHARED/pids            $CHECKOUT/tmp/pids
   run rails ln -s $SHARED/database.yml    $CHECKOUT/config/database.yml
@@ -326,6 +330,9 @@ if [ -n "$DO_DEPLOY" ]; then
   run rails ln -s $SHARED/twitter.yml     $CHECKOUT/config/twitter.yml
   run rails rm -f $DEPLOY/latest
   run rails ln -s $CHECKOUT $DEPLOY/latest
+  run rails "cd $CHECKOUT && \
+             git read-tree -u --prefix=tmp/assets $ASSETS_SHA1"
+  run rails cp -R $CHECKOUT/tmp/assets/ $CHECKOUT/public/assets/
   run rails "cd $CHECKOUT && \
              bundle install --quiet --deployment --local \
                             --path /data/rails/deploy/shared/bundle \
