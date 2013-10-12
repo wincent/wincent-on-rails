@@ -314,7 +314,7 @@ if [ -n "$DO_DEPLOY" ]; then
   ASSETS_SHA1=$(bin/rake REF=$REMOTE_REF assets:deploy:print_tag)
   run rails test ! -e $CHECKOUT
   run rails "test -d $MIRROR || git clone --quiet --recursive --mirror $REPO $MIRROR"
-  run rails "cd $MIRROR && git fetch --recurse-submodules origin"
+  run rails "cd $MIRROR && git fetch --quiet --recurse-submodules origin"
   run rails git clone --quiet --recursive $MIRROR $CHECKOUT
   run rails "cd $CHECKOUT && git checkout --quiet -b deploy $REMOTE_REF"
   run rails "cd $CHECKOUT && git submodule --quiet update --init"
