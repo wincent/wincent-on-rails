@@ -304,6 +304,7 @@ if [ -n "$DO_DEPLOY" ]; then
   TIMESTAMP=$(date '+%Y%m%d%H%M%S')
   p "  timestamp: $TIMESTAMP"
   SHARED=$DEPLOY/shared
+  MIRROR=$SHARED/mirror
   CHECKOUT=$DEPLOY/releases/$TIMESTAMP
   if [ -z "$REF" ]; then
     REMOTE_REF=origin/$BRANCH
@@ -311,13 +312,14 @@ if [ -n "$DO_DEPLOY" ]; then
     REMOTE_REF=$REF
   fi
   ASSETS_SHA1=$(bin/rake REF=$REMOTE_REF assets:deploy:print_tag)
-  # TODO: borrow Adam's idea of having a clone which we just fetch into for speed
-  #       (submodules won't be any quicker, but it's still a start)
   run rails test ! -e $CHECKOUT
-  run rails git clone --quiet --recursive $REPO $CHECKOUT
+  run rails "test -d $MIRROR || git clone --quiet --recursive --mirror $REPO $MIRROR"
+  run rails "cd $MIRROR && git fetch --recurse-submodules origin"
+  run rails git clone --quiet --recursive $MIRROR $CHECKOUT
   run rails "cd $CHECKOUT && git checkout --quiet -b deploy $REMOTE_REF"
   run rails "cd $CHECKOUT && git submodule --quiet update --init"
   run rails "cd $CHECKOUT && (git rev-parse HEAD > $CHECKOUT/REVISION)"
+  run rails "cd $CHECKOUT && git remote rm origin"
   run rails rm -rf $CHECKOUT/log \
                    $CHECKOUT/public/assets \
                    $CHECKOUT/public/system
