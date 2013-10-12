@@ -71,7 +71,11 @@ namespace :assets do
 
     def commit
       Dir.chdir(assets_scratch_repo) do
-        tree = run!("git write-tree --prefix public/assets").chomp
+        tree = run! [
+          'rm public/assets/.gitignore',
+          'git add --all public/assets',
+          'git write-tree --prefix public/assets',
+        ].join(' && ').chomp
         message = "Asset build for #{ref_as_hash}"
         run! "git tag -a -m #{Shellwords.shellescape(message)} #{Shellwords.shellescape(tag)} #{tree}"
       end
