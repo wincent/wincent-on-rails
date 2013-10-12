@@ -51,6 +51,7 @@ namespace :assets do
         puts 'Cloning scratch repo'
         run! [
           "git clone -q . #{Shellwords.shellescape(dest)}",
+          "cd #{Shellwords.shellescape(dest)}",
           "git checkout -q --detach #{Shellwords.shellescape(ref)}",
         ].join(' && ')
       end
