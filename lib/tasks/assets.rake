@@ -17,7 +17,8 @@ namespace :assets do
       else
         purge_scratch_repo
         prepare_scratch_repo
-        set_up_symlinks
+        set_up_upstream_remote
+        set_up_config_files
         precompile
         commit
         push
@@ -55,7 +56,13 @@ namespace :assets do
       end
     end
 
-    def set_up_symlinks
+    def set_up_upstream_remote
+      Dir.chdir(assets_scratch_repo) do
+        run! 'git remote add upstream git.wincent.com:/pub/git/private/wincent.com.git'
+      end
+    end
+
+    def set_up_config_files
       Dir.chdir(assets_scratch_repo) do
         %w[app_config database twitter].each do |file|
           FileUtils.cp "config/#{file}.yml.sample", "config/#{file}.yml"
@@ -83,7 +90,7 @@ namespace :assets do
 
     def push
       Dir.chdir(assets_scratch_repo) do
-        run! "git push origin tag #{Shellwords.shellescape(tag)}"
+        run! "git push upstream tag #{Shellwords.shellescape(tag)}"
       end
     end
 
