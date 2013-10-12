@@ -385,7 +385,13 @@ fi
 
 if [ -n "$DO_RESTART" ]; then
   p "Processing command: restart"
-  run root monit restart unicorn
+  run root monit unmonitor unicorn
+  MASTER=$(ssh rails@$SERVER cat /data/rails/deploy/shared/pids/unicorn.pid)
+  run rails kill -USR2 $MASTER  # tell current master to fork a brand new master
+  sleep 10                      # give new master a little time to boot up
+  run rails kill -WINCH $MASTER # tell old master to allow old workers to die off
+  run rails kill -QUIT $MASTER  # tell old master to go away once workers are done
+  run root monit monitor unicorn
 fi
 
 if [ -n "$DO_START" ]; then
