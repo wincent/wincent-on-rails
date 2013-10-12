@@ -10,12 +10,14 @@ class Confirmation < ActiveRecord::Base
     Digest::SHA1.hexdigest(Time.now.to_s + rand.to_s + SECRET_SALT)
   end
 
-  def set_secret_and_cutoff
-    self.secret = Confirmation.secret if self.secret.blank?
-    self.cutoff = 3.days.from_now if self.cutoff.nil?
-  end
-
   def to_param
     secret
+  end
+
+private
+
+  def set_secret_and_cutoff
+    self.secret = Confirmation.secret if secret.blank?
+    self.cutoff = 3.days.from_now if cutoff.nil?
   end
 end

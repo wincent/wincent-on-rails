@@ -39,7 +39,7 @@ class Reset < ActiveRecord::Base
 private
 
   def set_secret_and_cutoff
-    self.secret = Reset.secret if self.secret.blank?
-    self.cutoff = 3.days.from_now if self.cutoff.nil?
+    self.secret = Reset.secret if secret.blank?
+    self.cutoff = 3.days.from_now if cutoff.nil?
   end
 end
