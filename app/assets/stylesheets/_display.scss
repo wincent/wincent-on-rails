@@ -654,6 +654,7 @@ ul.taggables {
   .when {
     // we do this rather than special casing the h2 (posts#index)
     // and the h1 (posts#show), because the title varies depending on where it appears
+    margin-top: -1em;
     margin-bottom: 1em;
   }
 
