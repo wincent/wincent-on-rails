@@ -365,7 +365,7 @@ if [ -n "$DO_SWITCH" ]; then
   run rails "rm -f $CURRENT && ln -s \$(readlink $LATEST) $CURRENT"
   REVISION=$(ssh rails@$SERVER cat $LATEST/REVISION)
   if [ ! $(git describe --exact-match $REVISION 2> /dev/null) ]; then
-    TAG=$(git describe $(git rev-list --tags --max-count=1) | awk -F . '{ printf "%d.%d", $1, $2 + 1}')
+    TAG=$(git describe $(git rev-list --tags='0.*' --max-count=1) | awk -F . '{ printf "%d.%d", $1, $2 + 1}')
     if [ $ENVIRONMENT = staging ]; then
       warn "deployed version $REVISION is not yet tagged; would tag now as $TAG"
       p "  skipping: no tagging is performed in the staging environment"
@@ -401,7 +401,7 @@ if [ -n "$DO_SUMMARY" ]; then
   REVISION=$(ssh rails@$SERVER cat $DEPLOY/latest/REVISION)
   if [ $(git describe --exact-match $REVISION 2> /dev/null) ]; then
     # common case: latest deployed revision is tagged
-    LAST_TAG=$(git for-each-ref --sort=-taggerdate --format='%(refname:short)' --count=2 refs/tags | tail -1)
+    LAST_TAG=$(git for-each-ref --sort=-taggerdate --format='%(refname:short)' --count=2 'refs/tags/0.*' | tail -1)
   else
     # rare case (probably only staging): latest deployed revision is not tagged
     LAST_TAG=$(git describe $(git rev-list --tags --max-count=1))
