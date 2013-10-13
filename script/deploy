@@ -334,7 +334,8 @@ if [ -n "$DO_DEPLOY" ]; then
   run rails ln -s $CHECKOUT $DEPLOY/latest
   run rails "cd $CHECKOUT && \
              git read-tree -u --prefix=tmp/assets $ASSETS_SHA1"
-  run rails cp -R $CHECKOUT/tmp/assets/ $CHECKOUT/public/assets/
+  run rails "tar cpf - -C $CHECKOUT/tmp/assets . | \
+             tar xpf - -C $CHECKOUT/public/assets"
   run rails "cd $CHECKOUT && \
              bundle install --quiet --deployment --local \
                             --path /data/rails/deploy/shared/bundle \
