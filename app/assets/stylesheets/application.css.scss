@@ -15,9 +15,10 @@
 @import 'variables';
 @import 'functions';
 @import 'mixins';
+@import 'comment-boxes';
+@import 'comment-bubbles';
 
 // per-controller styles
-@import 'articles';
 @import 'branches';
 @import 'commits';
 @import 'dashboard';
@@ -26,10 +27,7 @@
 @import 'git_tags';
 @import 'issues';
 @import 'menu';
-@import 'posts';
 @import 'products';
 @import 'repos';
 @import 'searches';
-@import 'snippets';
-@import 'topics';
 @import 'tweets';
