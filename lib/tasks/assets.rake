@@ -73,6 +73,10 @@ namespace :assets do
 
     def precompile
       Dir.chdir(assets_scratch_repo) do
+        # we want a stable manifest digest, otherwise Sprockets will pick a
+        # (basically) random manifest each time:
+        #  https://github.com/sstephenson/sprockets/blob/eb84c414b76850af9b51bc495a52fb15d6ad24e3/lib/sprockets/manifest.rb#L46
+        run! 'echo "{}" > public/assets/manifest-1bbe9a59b91db51e3d8fca89661cbfab.json'
         run! 'bin/rake RAILS_ENV=production assets:precompile'
       end
     end
