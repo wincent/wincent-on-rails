@@ -192,10 +192,8 @@ blockquote {
   padding-right: 24px;
   position: relative;
   min-height: 32px;
-  margin: {
-    left: 1em;
-    right: 2em;
-  };
+  margin-left: 1em;
+  margin-right: 2em;
 
   &:after,
   &:before {
