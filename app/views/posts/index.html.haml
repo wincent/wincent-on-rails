@@ -29,7 +29,7 @@
   -# TODO: add search box here
   =@paginator.pagination_links if @paginator
 %aside
-  -cache :tweets_sidebar do
+  -cache :tweets_sidebar, expires_in: 30.minutes do
     %h2.major Tweets
     =render 'tweets/tweets.html.haml'
     %hr
