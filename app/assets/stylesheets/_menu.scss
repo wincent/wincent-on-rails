@@ -35,7 +35,6 @@ $padding: 10px;
   overflow: scroll;
   position: fixed;
   top: 0;
-  width: $menu-width + 20px; // room for (hidden) scrollbar
   z-index: 0;
 
   &::-webkit-scrollbar {
@@ -94,6 +93,7 @@ $padding: 10px;
 }
 
 .menu-inner {
+  margin-right: 20px; // to conceal scroll-bar
   width: $menu-width;
 
   h2 {
