@@ -97,7 +97,7 @@ function lightbox(thumbnail) {
       if (e.data.tag.fullsized.loaded)
         show_lightbox(e.data.tag.fullsized, true);
       else {
-        show_spinner();
+        showSpinner();
         global_pending_lightbox_image = e.data.tag.fullsized;
       }
     }
@@ -207,12 +207,12 @@ function lightbox(thumbnail) {
       .scrollTop(w_origin_y);
   };
 
-  function show_spinner() {
-    if (!$('#lightbox-spinner-frame').length)
-      // don't add spinner more than once
-      $(document.body).append($('<div id="lightbox-spinner-frame">' +
-            '<img id="lightbox-spinner" alt="spinner" src="<%= asset_path 'spinner-large.gif' %>" />' +
-        '</div>'));
+  function showSpinner() {
+    if (!$('#lightbox-spinner-frame').length) {
+      // don't add frame more than once
+      $(document.body).append('<div id="lightbox-spinner-frame"></div>');
+      new Wincent.Spinner('#lightbox-spinner-frame', 'large');
+    }
     $('#lightbox-spinner-frame').show();
   };
 
