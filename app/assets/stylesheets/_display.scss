@@ -682,45 +682,48 @@ ul.taggables {
 @mixin button {
   @include border-radius(5px);
   @include box-shadow(0 1px 3px rgba(0, 0, 0, .5));
-  position: relative;
-  margin-right: .25em;
-  border: {
-    top: 0;
-    right: 0;
-    left: 0;
-    bottom: 1px solid rgba(0, 0, 0, .25);
-  };
-
-  text-shadow: 0 -1px 1px rgba(0, 0, 0, .25);
   background: #007d9a;
-  padding: {
-    left: 1.5em;
-    right: 1.5em;
-    top: .5em;
-    bottom: .5em;
-  };
-
+  border-bottom: 1px solid rgba(0, 0, 0, .25);
+  border: 0;
+  box-sizing: border-box;
   color: white;
   cursor: pointer;
+  display: inline-block;
   font-weight: bold;
+  line-height: 1.75em;
+  margin: 0 .25em .25em 0;
+  padding: .5em 1.5em;
+  position: relative;
+  text-shadow: 0 -1px 1px rgba(0, 0, 0, .25);
+  width: 100%;
+
+  @include respond-to(small-tablet) {
+    width: auto;
+  }
+
   &:focus,
   &:hover {
     background: #77bed2;
     color: white;
     text-decoration: none;
   }
+
   &:active {
     top: 1px;
   }
+
   &.destructive {
     background: #a9014b;
+
     &:focus,
     &:hover {
       background: #630030;
     }
   }
+
   &.disabled {
     background: silver;
+
     &:focus,
     &:hover {
       background: silver;
