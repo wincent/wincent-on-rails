@@ -11,7 +11,7 @@
     = stylesheet_link_tag APP_CONFIG['google_web_fonts'], 'application'
     = render 'shared/google_analytics'
   %body
-    .viewport
+    .viewport.menu-closed
       .app
         = named_anchor 'top'
         %nav.global
@@ -79,7 +79,7 @@
               title: "Email me at #{APP_CONFIG['admin_email']}",
               class: 'mailto'
             %li= link_to 'legal', '/misc/legal'
-      .menu
+      .menu.hide
         .menu-inner
           %section.search
             %form(accept-charset='UTF-8' action=search_path method='get')
