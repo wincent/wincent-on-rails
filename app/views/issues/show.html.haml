@@ -8,46 +8,55 @@
   .prev-next
     =link_to_prev_issue @prev
     =link_to_next_issue @next
-  %table
-    %tbody
-      %tr
-        %th Kind
-        %td(id="issue_#{@issue.id}_kind")=@issue.kind_string
-      %tr
-        %th Summary
-        %td(id="issue_#{@issue.id}_summary")=@issue.summary
-      %tr
-        %th Product
-        %td(id="issue_#{@issue.id}_product_id")=link_to_product_issues @issue.product
-      %tr
-        %th When
-        %td=timeinfo @issue
-      %tr
-        %th Status
-        %td(id="issue_#{@issue.id}_status")=@issue.status_string
-      %tr
-        %th Reporter
-        %td=link_to_user @issue.user
-      %tr
-        %th
-          Description
-          -if admin?
-            %br
-            =link_to 'edit', edit_issue_path(@issue)
-        %td
-          -if @issue.description.blank?
-            none
-          -else
-            =@issue.description.w :base_heading_level => 1
-      -if admin?
+  -#
+    Even though non-admins can't edit issues, they still get the form element,
+    in order to keep the markup simple
+  = form_for @issue do |f|
+    %table
+      %tbody
         %tr
-          %th Public?
+          %th Kind
+          %td(id="issue_#{@issue.id}_kind")=@issue.kind_string
+        %tr
+          %th Summary
+          %td(id="issue_#{@issue.id}_summary")=@issue.summary
+        %tr
+          %th Product
+          %td(id="issue_#{@issue.id}_product_id")=link_to_product_issues @issue.product
+        %tr
+          %th When
+          %td=timeinfo @issue
+        %tr
+          %th Status
           %td
-            = form_for @issue do |f|
-              = f.check_box :public, 'data-ajax' => true
-      %tr
-        %th Tags
-        %td(id="issue_#{@issue.id}_pending_tags")=tag_links(@issue)
+            - if admin?
+              = f.select :status,
+                  underscores_to_spaces(Issue::STATUS).sort,
+                  {},
+                  'data-ajax' => true
+            - else
+              = @issue.status_string
+        %tr
+          %th Reporter
+          %td=link_to_user @issue.user
+        %tr
+          %th
+            Description
+            -if admin?
+              %br
+              =link_to 'edit', edit_issue_path(@issue)
+          %td
+            -if @issue.description.blank?
+              none
+            -else
+              =@issue.description.w :base_heading_level => 1
+        -if admin?
+          %tr
+            %th Public?
+            %td= f.check_box :public, 'data-ajax' => true
+        %tr
+          %th Tags
+          %td(id="issue_#{@issue.id}_pending_tags")=tag_links(@issue)
 %h2.major Comments
 %ol#comments.boxed
   =render @comments

@@ -128,14 +128,14 @@ function editInPlace(selector, className, attributeName, url) {
   });
 }
 
-$(document).on('change', 'input[data-ajax]', function(event) {
-  var $input  = $(event.currentTarget),
-      $form   = $input.closest('form'),
-      data    = $form.serialize(),
-      spinner = new Wincent.Spinner($form, 'small');
+$(document).on('change', 'input[data-ajax], select[data-ajax]', function(event) {
+  var $element  = $(event.currentTarget),
+      $form     = $element.closest('form'),
+      data      = $form.serialize(),
+      spinner   = new Wincent.Spinner($form, 'small');
 
   // must only disable after serializing
-  $input.prop('disabled', true);
+  $element.prop('disabled', true);
 
   $.ajax({
     'url'      : $form.attr('action'),
@@ -145,14 +145,30 @@ $(document).on('change', 'input[data-ajax]', function(event) {
   })
     .done(function(json) {
       clearAJAXFlash();
+
+      if ($element.is('select')) {
+        // make sure we can identify the selected option if a subsequent change
+        // ends up triggering the `fail()` function (below)
+        $element.find(':selected')
+          .attr('selected', 'selected')
+          .siblings()
+          .removeAttr('selected');
+      }
     })
     .fail(function(req) {
-      $input.prop('checked', !$input.prop('checked'));
       insertAJAXFlash('error', req.responseText);
+
+      // revert element to initial state, if appropriate
+      if ($element.is('input[type=checkbox]')) {
+        $element.prop('checked', !$element.prop('checked'));
+      } else if ($element.is('select')) {
+        var previousSelection = $element.find('option[selected]').val();
+        $element.val(previousSelection);
+      }
     })
     .always(function() {
       spinner.stop();
-      $input.prop('disabled', false);
+      $element.prop('disabled', false);
     });
 });
 
