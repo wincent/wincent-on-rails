@@ -23,11 +23,5 @@
 // POSSIBILITY OF SUCH DAMAGE.
 
 editInPlace('div.issue', 'issue', 'summary', '/issues/');
-var options = <%= raw underscores_to_spaces(Issue::STATUS).sort.to_json %>;
-ajaxSelect('div.issue', 'issue', 'status', options, false, '/issues/');
-options = <%= raw underscores_to_spaces(Issue::KIND).sort.to_json %>;
-ajaxSelect('div.issue', 'issue', 'kind', options, false, '/issues/');
-options = <%= raw product_options.to_json %>;
-ajaxSelect('div.issue', 'issue', 'product_id', options, true, '/issues/');
 editInPlace('div.issue', 'issue', 'pending_tags', '/issues/');
 <% end %>

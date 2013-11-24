@@ -16,7 +16,14 @@
       %tbody
         %tr
           %th Kind
-          %td(id="issue_#{@issue.id}_kind")=@issue.kind_string
+          %td
+            - if admin?
+              = f.select :kind,
+                  underscores_to_spaces(Issue::KIND).sort,
+                  {},
+                  'data-ajax' => true
+            - else
+              = @issue.kind_string
         %tr
           %th Summary
           %td(id="issue_#{@issue.id}_summary")=@issue.summary
