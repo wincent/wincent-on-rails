@@ -148,7 +148,9 @@ $(document).on('change', 'input[data-ajax], select[data-ajax]', function(event) 
 
       if ($element.is('select')) {
         // make sure we can identify the selected option if a subsequent change
-        // ends up triggering the `fail()` function (below)
+        // ends up triggering the `fail()` function (note the difference between
+        // finding the currently selected element using `:selected` here the
+        // previously selected element using `option[seleted]` below)
         $element.find(':selected')
           .attr('selected', 'selected')
           .siblings()
