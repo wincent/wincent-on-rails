@@ -3,8 +3,9 @@
   #ajax-flash
 =breadcrumbs link_to('Issues', issues_path),
   "#{@issue.kind_string.humanize} \##{@issue.id.to_s}"
-%div(class="issue#{@issue.public ? '' : ' private'}" id="issue_#{@issue.id}")
-  %h1(class="major #{@issue.kind_string.parameterize}")="#{@issue.kind_string.humanize} \##{@issue.id.to_s}"
+.issue(class="#{'private' unless @issue.public}" id="issue_#{@issue.id}")
+  %h1.major(class="#{@issue.kind_string.parameterize}")
+    #{@issue.kind_string.humanize} ##{@issue.id.to_s}
   .prev-next
     =link_to_prev_issue @prev
     =link_to_next_issue @next
