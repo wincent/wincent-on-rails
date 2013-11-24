@@ -190,15 +190,6 @@ module ApplicationHelper
       :title => "show items tagged with: #{query}"
   end
 
-  # For use in AJAX product pop-up menus.
-  # Take OrderedHash output from Product.categorized and massage it into
-  # nested-arrays, suitable for conversion to JSON.
-  def product_options
-    Product.categorized.map do |category, products|
-      [category, products.map { |product| [product.name, product.id] }]
-    end
-  end
-
   # Convert key names from "feature_request" etc to "feature request".
   # Again, for use in pop-up menus in forms.
   def underscores_to_spaces options

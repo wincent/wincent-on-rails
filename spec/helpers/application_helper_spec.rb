@@ -65,20 +65,6 @@ describe ApplicationHelper, 'timeinfo method' do
   end
 end
 
-describe ApplicationHelper, 'product_options method' do
-  it 'should find all products' do
-    mock(Product).categorized { Hash.new }
-    product_options
-  end
-
-  it 'should return an array of name/id pairs' do
-    Product.delete_all
-    product1 = Product.make! name: 'foo'
-    product2 = Product.make! name: 'bar'
-    product_options.should == [[nil, [["foo", product1.id], ["bar", product2.id]]]]
-  end
-end
-
 describe ApplicationHelper, 'underscores_to_spaces method' do
   it 'should return an array of name/id pairs' do
     hash = { 'foo' => 1, 'bar' => 2 }

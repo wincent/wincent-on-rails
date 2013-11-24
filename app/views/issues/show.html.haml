@@ -22,7 +22,14 @@
           %td(id="issue_#{@issue.id}_summary")=@issue.summary
         %tr
           %th Product
-          %td(id="issue_#{@issue.id}_product_id")=link_to_product_issues @issue.product
+          %td
+            - if admin?
+              %select{ 'name' => 'issue[product_id]', 'data-ajax' => true }
+                %option(value='')
+                = option_groups_from_collection_for_select Product.categorized,
+                    :last, :first, :id, :name, (@issue.product ? @issue.product.id : nil)
+            - else
+              = link_to_product_issues(@issue.product)
         %tr
           %th When
           %td=timeinfo @issue
