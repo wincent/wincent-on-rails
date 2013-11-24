@@ -42,7 +42,9 @@
       -if admin?
         %tr
           %th Public?
-          %td(id="issue_#{@issue.id}_public")=@issue.public?
+          %td
+            = form_for @issue do |f|
+              = f.check_box :public, 'data-ajax' => true
       %tr
         %th Tags
         %td(id="issue_#{@issue.id}_pending_tags")=tag_links(@issue)

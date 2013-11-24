@@ -128,44 +128,33 @@ function editInPlace(selector, className, attributeName, url) {
   });
 }
 
-function ajaxCheckBox(selector, className, attributeName, url) {
-  var modelId = $(selector).attr('id'), // issue_22
-      recordId = modelId.match(/_(\d+)$/)[1], // 22
-      fieldSelector = '#' + modelId + '_' + attributeName, // issue_22_public
-      $fieldId = $(fieldSelector),
-      fieldText = $fieldId.text(), // eg. true, false
-      newContents = '<input id="' + className + '_' + attributeName +
-    '" name="' + className + '[' + attributeName + ']" type="checkbox">';
-  $fieldId.html(newContents);
+$(document).on('change', 'input[data-ajax]', function(event) {
+  var $input  = $(event.currentTarget),
+      $form   = $input.closest('form'),
+      data    = $form.serialize(),
+      spinner = new Wincent.Spinner($form, 'small');
 
-  var checkBoxId = $fieldId.find('input');
-  if (fieldText === 'true') {
-    checkBoxId.prop('checked', true);
-    }
-  var oldProp = checkBoxId.prop('checked');
-  checkBoxId.on('change', function() {
-    var spinner = new Wincent.Spinner(fieldSelector, 'small');
+  // must only disable after serializing
+  $input.prop('disabled', true);
 
-    $.ajax({
-      'url': url + recordId,
-      'type': 'post',
-      'dataType': 'json',
-      'data': '_method=put&' + className + '[' + attributeName + ']=' +
-        checkBoxId.prop('checked'),
-      'success': function(json) {
-        oldProp = checkBoxId.prop('checked');
-        clearAJAXFlash();
-      },
-      'error': function(req) {
-        checkBoxId.prop('checked', oldProp);
-        insertAJAXFlash('error', req.responseText);
-      },
-      'complete': function() {
-        spinner.stop();
-      }
+  $.ajax({
+    'url'      : $form.attr('action'),
+    'type'     : 'post',
+    'dataType' : 'json',
+    'data'     : data
+  })
+    .done(function(json) {
+      clearAJAXFlash();
+    })
+    .fail(function(req) {
+      $input.prop('checked', !$input.prop('checked'));
+      insertAJAXFlash('error', req.responseText);
+    })
+    .always(function() {
+      spinner.stop();
+      $input.prop('disabled', false);
     });
-  });
-}
+});
 
 function ajaxSelect(selector, className, attributeName, options, includeBlank, url) {
   var modelId = $(selector).attr('id'), // issue_22
