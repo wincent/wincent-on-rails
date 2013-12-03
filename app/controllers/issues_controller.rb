@@ -99,6 +99,16 @@ class IssuesController < ApplicationController
         end
       }
 
+      # new Ajax code (for checkbox and select updates)
+      format.json {
+        if @issue.update_attributes(issue_params)
+          render json: {}
+        else
+          render text:   "Update failed: #{@issue.flashable_error_string}",
+                 status: 422
+        end
+      }
+
       format.js {
         # I don't really like this special case but it seems to be the only
         # way to classify as ham without updating the record timestamp
