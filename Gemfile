@@ -8,7 +8,7 @@ gem 'haml'
 gem 'mysql2'
 gem 'nokogiri'
 gem 'protected_attributes' # was in Rails core, extracted in 4.0
-gem 'rails', '4.0.1'
+gem 'rails', '4.0.2'
 gem 'rails-observers' # was in Rails core, extracted in 4.0
 gem 'rake'
 gem 'sass-rails'
