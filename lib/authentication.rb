@@ -109,12 +109,12 @@ module ActionController
 
     # only secure over SSL (due to cookie capture attacks)
     def log_in_with_cookie
-      if cookies[:user_id] and cookies[:session_key]
+      if cookies[:user_id] && cookies[:session_key]
         user = User.find_by_id_and_session_key(cookies[:user_id], cookies[:session_key])
         if user
           expiry = user.session_expiry
-          if expiry and expiry > Time.now
-            return user
+          if expiry && expiry > Time.now
+            user
           end
         end
       end
