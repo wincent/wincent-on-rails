@@ -1,7 +1,7 @@
-=breadcrumbs 'Tags'
+= breadcrumbs 'Tags'
 %h1.major Tags
 .cloud
-  -for tag in @tags
-    =scaled_tag(tag)
+  - @tags.each do |tag|
+    = scaled_tag(tag)
 .links
-  =link_to 'tag search', search_tags_path
+  = link_to 'tag search', search_tags_path
