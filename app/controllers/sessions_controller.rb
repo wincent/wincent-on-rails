@@ -26,7 +26,7 @@ class SessionsController < ApplicationController
   end
 
   def destroy
-    if self.logged_in?
+    if logged_in?
       reset_session
       set_current_user nil # cookie cleanup and session invalidation in db
       flash[:notice] = 'You have logged out successfully'
