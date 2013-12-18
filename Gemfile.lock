@@ -153,6 +153,8 @@ GEM
       websocket (~> 1.0.4)
     simple_oauth (0.2.0)
     spring (1.0.0)
+    spring-commands-rspec (1.0.1)
+      spring (>= 0.9.1)
     sprockets (2.10.1)
       hike (~> 1.2)
       multi_json (~> 1.0)
@@ -213,6 +215,7 @@ DEPENDENCIES
   rspec-rails
   sass-rails
   spring
+  spring-commands-rspec
   timecop
   twitter
   unicorn

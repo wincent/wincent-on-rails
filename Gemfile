@@ -23,6 +23,7 @@ group :development, :test do
   gem 'jasmine'
   gem 'rspec-rails'
   gem 'spring'
+  gem 'spring-commands-rspec'
 end
 
 group :test do
