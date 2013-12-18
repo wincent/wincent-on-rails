@@ -152,6 +152,7 @@ GEM
       rubyzip (~> 1.0.0)
       websocket (~> 1.0.4)
     simple_oauth (0.2.0)
+    spring (1.0.0)
     sprockets (2.10.1)
       hike (~> 1.2)
       multi_json (~> 1.0)
@@ -211,6 +212,7 @@ DEPENDENCIES
   rr
   rspec-rails
   sass-rails
+  spring
   timecop
   twitter
   unicorn

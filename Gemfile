@@ -18,10 +18,11 @@ gem 'wikitext'
 gem 'wopen3'
 
 group :development, :test do
+  gem 'debugger'
   gem 'factory_girl_rails'
   gem 'jasmine'
   gem 'rspec-rails'
-  gem 'debugger'
+  gem 'spring'
 end
 
 group :test do
