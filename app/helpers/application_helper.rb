@@ -9,7 +9,7 @@ module ApplicationHelper
   # Returns the first 16 characters of a commit hash, wrapped in a span
   # with a title attribute containing the full hash (ie. a tooltip).
   def commit_abbrev_with_tooltip sha1
-    content_tag(:span, commit_abbrev(sha1), :title => sha1)
+    content_tag(:span, commit_abbrev(sha1), title: sha1)
   end
 
   # Wraps the commit#author#time in a span of class "relative-date", and
@@ -18,7 +18,7 @@ module ApplicationHelper
   def commit_author_time commit
     content_tag :span,
       commit.author.time.in_time_zone('UTC'),
-      :class => 'relative-date'
+      class: 'relative-date'
   end
 
   # Wraps the commit#committer#time in a span of class "relative-date", and
@@ -27,7 +27,7 @@ module ApplicationHelper
   def commit_committer_time commit
     content_tag :span,
       commit.committer.time.in_time_zone('UTC'),
-      :class => 'relative-date'
+      class: 'relative-date'
   end
 
   # Returns an appropriate CSS class to indicate whether the passed item
@@ -70,12 +70,12 @@ module ApplicationHelper
     content_tag :i, '', class: names.map { |name| "icon-#{name}" }.join(' ')
   end
 
-  def annotation field, *annotation
+  def annotation(field, *annotation)
     "#{field}<br><span class=\"annotation\">#{annotation.join('<br>')}</span>".html_safe
   end
 
-  def named_anchor name
-    content_tag :a, '', :id => name, :name => name
+  def named_anchor(name)
+    content_tag :a, '', id: name, name: name
   end
 
   def wikitext_cheatsheet
@@ -98,7 +98,7 @@ module ApplicationHelper
   #   - :updated_string: joining string shown if a record has been
   #     updated/edited (default: 'updated'). If false, no updated date info is
   #     shown.
-  def timeinfo model, options = {}
+  def timeinfo(model, options = {})
     created = model.created_at
     updated = model.updated_at
     if created.distance_in_words == updated.distance_in_words ||
@@ -115,7 +115,7 @@ module ApplicationHelper
     content_tag :time, date.xmlschema, data: { relative: true }
   end
 
-  def pluralizing_count number, thing
+  def pluralizing_count(number, thing)
     # note that we sanitize thing because it can come from user params (eg. /tags/foo?type=article)
     if number == 1
       "1 #{thing.singularize}"
