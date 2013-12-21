@@ -418,6 +418,20 @@ div.column {
   background: #f9b8be;
 }
 
+[data-editable]:not(.editing) {
+  position: relative; // this may be overly aggressive
+
+  &:hover:after {
+    background: #fffacd;
+    border: 1px dashed #ddd;
+    bottom: 0;
+    content: 'Double-click to edit';
+    padding: .5em;
+    position: absolute;
+    right: 0;
+  }
+}
+
 // pagination
 
 ul.pagination {

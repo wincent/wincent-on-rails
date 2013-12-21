@@ -11,7 +11,6 @@ class IssuesController < ApplicationController
   acts_as_sortable  by: %i[public kind id product_id summary status updated_at],
                     default: :updated_at,
                     descending: true
-  uses_dynamic_javascript only: :show
 
   def new
     # normally "kind" defaults to "bug report"
@@ -99,7 +98,7 @@ class IssuesController < ApplicationController
         end
       }
 
-      # new Ajax code (for checkbox and select updates)
+      # new Ajax code (for checkbox, select and contenteditable updates)
       format.json {
         if @issue.update_attributes(issue_params)
           render json: {}

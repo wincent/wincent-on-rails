@@ -128,6 +128,53 @@ function editInPlace(selector, className, attributeName, url) {
   });
 }
 
+$(document)
+  .on('dblclick', '[data-editable]', function(event) {
+    $el = $(this).addClass('editing');
+    $el.data('original-content', $el.html());
+    $el[0].contentEditable = 'true';
+    $el.focus();
+  })
+  .on('blur', '[data-editable]', function() {
+    $el = $(this).removeClass('editing');
+    $el[0].contentEditable = 'false';
+  })
+  .on('keydown', '[data-editable]', function(event) {
+    if (event.keyCode === 13) { // return
+      event.preventDefault();
+      $el = $(this).blur();
+      if ($el.html() !== $el.data('original-content')) {
+        var $form   = $el.closest('form'),
+            spinner = new Wincent.Spinner($form, 'small'),
+            $hidden = $('<input>', {
+              type: 'hidden',
+              name: $(this).data('name'),
+              value: $el.text()
+            }).appendTo($form);
+
+        $.ajax({
+          url  : $form.attr('action'),
+          type : 'post',
+          data : $form.serialize(),
+          dataType : 'json'
+        })
+          .done(function(json) {
+            clearAJAXFlash();
+          })
+          .fail(function(req) {
+            insertAJAXFlash('error', req.responseText);
+          })
+          .always(function() {
+            spinner.stop();
+            $hidden.remove();
+          });
+      }
+    } else if (event.keyCode === 27) { // escape
+      $el = $(this).blur();
+      $el.html($el.data('original-content'));
+    }
+  });
+
 $(document).on('change', 'input[data-ajax], select[data-ajax]', function(event) {
   var $element  = $(event.currentTarget),
       $form     = $element.closest('form'),

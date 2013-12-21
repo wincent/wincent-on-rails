@@ -27,7 +27,8 @@
               = @issue.kind_string
         %tr
           %th Summary
-          %td(id="issue_#{@issue.id}_summary")=@issue.summary
+          %td{ data: { name: 'issue[summary]', editable: admin? } }
+            = @issue.summary
         %tr
           %th Product
           %td
@@ -71,7 +72,8 @@
             %td= f.check_box :public, 'data-ajax' => true
         %tr
           %th Tags
-          %td(id="issue_#{@issue.id}_pending_tags")=tag_links(@issue)
+          %td{ data: { name: 'issue[pending_tags]', editable: admin? } }
+            = tag_links(@issue)
 %h2.major Comments
 %ol#comments.boxed
   =render @comments
