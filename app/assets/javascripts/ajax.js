@@ -150,7 +150,7 @@ $(document)
             $hidden = $('<input>', {
               type: 'hidden',
               name: $(this).data('name'),
-              value: $el.text()
+              value: $el.text().trim()
             }).appendTo($form);
 
         $.ajax({
