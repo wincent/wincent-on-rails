@@ -277,28 +277,4 @@ module ApplicationHelper
   def button_to_moderate_issue_as_ham issue
     button_to_moderate_model_as_ham issue, issue_path(issue)
   end
-
-  def dynamic_javascript_include_tag
-    klass = controller.class
-    if klass.respond_to? :included_dynamic_javascript_actions
-      return unless klass.included_dynamic_javascript_actions.include? params[:action].to_sym
-    elsif klass.respond_to? :excluded_dynamic_javascript_actions
-      return if klass.excluded_dynamic_javascript_actions.include? params[:action].to_sym
-    else
-      return unless klass.respond_to?(:uses_dynamic_javascript?) &&
-                    klass.uses_dynamic_javascript?
-    end
-
-    # handle namespaces (controllers with superclasses)
-    controllers = []
-    loop do
-      c = klass.to_s.gsub(/Controller$/, '')
-      break if c == 'Application'
-      controllers.unshift c.tableize
-      break unless klass = klass.superclass
-    end
-
-    content_tag :script, '',
-      src: "/js/#{controllers.join '/'}/#{params[:action].to_s}.js"
-  end
 end
