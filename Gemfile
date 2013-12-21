@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 gem 'bundler'
 gem 'closure-compiler'
-gem 'compass-rails', '~> 2.0.alpha'
+gem 'compass-rails'
 gem 'dalli'
 gem 'haml'
 gem 'mysql2'
