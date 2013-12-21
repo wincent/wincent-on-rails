@@ -145,6 +145,7 @@ $(document)
       $el = $(this).blur();
       if ($el.html() !== $el.data('original-content')) {
         var $form   = $el.closest('form'),
+            $method = $form.find('input[name=_method]'),
             spinner = new Wincent.Spinner($form, 'small'),
             $hidden = $('<input>', {
               type: 'hidden',
@@ -155,7 +156,7 @@ $(document)
         $.ajax({
           url  : $form.attr('action'),
           type : 'post',
-          data : $form.serialize(),
+          data : $hidden.add($method).serialize(),
           dataType : 'json'
         })
           .done(function(json) {
@@ -178,7 +179,8 @@ $(document)
 $(document).on('change', 'input[data-ajax], select[data-ajax]', function(event) {
   var $element  = $(event.currentTarget),
       $form     = $element.closest('form'),
-      data      = $form.serialize(),
+      $method   = $form.find('input[name=_method]'),
+      data      = $element.add($method).serialize(),
       spinner   = new Wincent.Spinner($form, 'small');
 
   // must only disable after serializing
