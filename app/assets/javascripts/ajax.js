@@ -185,10 +185,10 @@ $(document).on('change', 'input[data-ajax], select[data-ajax]', function(event) 
   $element.prop('disabled', true);
 
   $.ajax({
-    'url'      : $form.attr('action'),
-    'type'     : 'post',
-    'dataType' : 'json',
-    'data'     : data
+    url      : $form.attr('action'),
+    type     : 'post',
+    dataType : 'json',
+    data     : data
   })
     .done(function(json) {
       clearAJAXFlash();
