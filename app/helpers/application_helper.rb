@@ -214,11 +214,7 @@ module ApplicationHelper
   # Use whenever an item might be posted by an anonymous (nil) user;
   # comments, topics, issues and so forth.
   def link_to_user user
-    if user.nil?
-      'anonymous'
-    else
-      link_to user.display_name, user_path(user)
-    end
+    user ? link_to(user) : 'anonymous'
   end
 
   def link_to_model model

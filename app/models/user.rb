@@ -96,6 +96,11 @@ class User < ActiveRecord::Base
     User.parametrize(param || display_name)
   end
 
+  # make `link_to(user)` do something reasonable
+  def to_s
+    display_name
+  end
+
 private
 
   def clear_passphrase
