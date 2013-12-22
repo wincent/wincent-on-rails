@@ -27,7 +27,7 @@
             = link.permalink
         %td= link.click_count
         %td.links
-          = link_to 'edit', edit_link_path(link)
-          = button_to_destroy_model link, :remote => true
+          = link_to 'edit', edit_link_path(link.id)
+          = button_to_destroy_model link, remote: true
 .links
   = link_to 'new link', new_link_path
