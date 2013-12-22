@@ -6,7 +6,7 @@ class TopicsController < ApplicationController
   # Admin only.
   # The admin is allowed to see all unmoderated topics at once, for the purposes of moderation.
   def index
-    @topics = Topic.where :awaiting_moderation => true
+    @topics = Topic.where awaiting_moderation: true
   end
 
   def new
@@ -103,7 +103,7 @@ private
   def get_forum
     if params[:forum_id]
       if public_only?
-        @forum = Forum.find_with_param! params[:forum_id], :public => true
+        @forum = Forum.public.find_with_param! params[:forum_id]
       else
         @forum = Forum.find_with_param! params[:forum_id]
       end
@@ -115,10 +115,10 @@ private
 
   def get_topic
     @topic = if public_only?
-      @forum.topics.where(:public => true, :awaiting_moderation => false)
+      @forum.topics.where(public: true, awaiting_moderation: false)
     else
-      @forum.topics.where(:awaiting_moderation => false)
-    end.find params[:id]
+      @forum.topics.where(awaiting_moderation: false)
+    end.find(params[:id])
   end
 
   def record_not_found

@@ -1,5 +1,5 @@
 #ajax-flash
--page_title 'Forums administration'
+- page_title 'Forums administration'
 %table
   %thead
     %tr
@@ -7,21 +7,28 @@
       %th Name
       %th Description
       %th Actions
-  -unless @forums.empty?
+  - unless @forums.empty?
     %tbody
       - @forums.each do |forum|
         %tr.forum(id="forum_#{forum.id}")
-          %td(id="forum_#{forum.id}_position")=forum.position
-          %td(id="forum_#{forum.id}_name")=forum.name
-          %td(id="forum_#{forum.id}_description")=forum.description
+          %td
+            = form_for forum,
+              url: admin_forum_path(forum.id),
+              html: { data: { name: 'forum[position]', editable: true } } do |f|
+              = forum.position
+          %td
+            = form_for forum,
+              url: admin_forum_path(forum.id),
+              html: { data: { name: 'forum[name]', editable: true } } do |f|
+              = forum.name
+          %td
+            = form_for forum,
+              url: admin_forum_path(forum.id),
+              html: { data: { name: 'forum[description]', editable: true } } do |f|
+              = forum.description
           %td.links
-            =link_to 'edit', edit_forum_path(forum)
-            =link_to 'view', forum_path(forum)
+            = link_to 'edit', edit_forum_path(forum.id)
+            = link_to 'view', forum_path(forum.id)
 %p.links
   =link_to 'new', new_forum_path
   =link_to 'public index', forums_path
--content_for :javascript do
-  :javascript
-    editInPlace('tr.forum', 'forum', 'description', '/admin/forums/');
-    editInPlace('tr.forum', 'forum', 'name', '/admin/forums/');
-    editInPlace('tr.forum', 'forum', 'position', '/admin/forums/');

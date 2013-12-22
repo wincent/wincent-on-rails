@@ -205,7 +205,7 @@ describe Forum do
     end
 
     it 'finds by permalink' do
-      mock(Forum).find_by_permalink!('foo bar') { @forum }
+      mock(Forum).find_by_permalink('foo bar') { @forum }
       Forum.find_with_param! @name
     end
 
@@ -221,14 +221,14 @@ describe Forum do
       lambda { Forum.find_with_param!('non-existent') }.should raise_error(ActiveRecord::RecordNotFound)
     end
 
-    it 'should accept and use optional conditions such as "public: true" (public forum)' do
-      Forum.find_with_param!('foo-bar', public: true).should == @forum
+    it 'works with the `public` scope (public forum)' do
+      Forum.public.find_with_param!('foo-bar').should == @forum
     end
 
-    it 'should accept and use optional conditions such as "public: true" (private forum)' do
+    it 'works without the `public` scope (private forum)' do
       private_forum = Forum.make! name: 'baz', public: false
-      Forum.find_with_param!('baz', public: false).should == private_forum
-      lambda { Forum.find_with_param!('baz', public: true) }.should raise_error(ActiveRecord::RecordNotFound)
+      Forum.find_with_param!('baz').should == private_forum
+      lambda { Forum.public.find_with_param!('baz') }.should raise_error(ActiveRecord::RecordNotFound)
     end
   end
 

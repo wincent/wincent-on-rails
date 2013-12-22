@@ -14,17 +14,14 @@ class Forum < ActiveRecord::Base
   validates_uniqueness_of :permalink
   attr_accessible         :name, :description, :permalink, :position, :public
   before_create           :set_position
+
+  scope :public, -> { where(public: true) }
   before_validation       :set_permalink
 
-  # conditions will be {} or { :public => true/false }
-  def self.find_with_param! param, conditions = {}
+  def self.find_with_param!(param)
     # forum name will be downcased in the URL, but MySQL will do a
     # case-insensitive search for us anyway
-    if conditions.empty?
-      self
-    else
-      where(conditions)
-    end.find_by_permalink! param
+    find_by_permalink(param) || find(param)
   end
 
   def self.find_all
