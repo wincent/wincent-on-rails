@@ -1,29 +1,29 @@
 -@page_title = 'Link administration'
-=breadcrumbs link_to('Dashboard', admin_dashboard_path), @page_title
+= breadcrumbs link_to('Dashboard', admin_dashboard_path), @page_title
 #ajax-flash
-%h1.major=@page_title
+%h1.major= @page_title
 %table
   %thead
     %tr
-      =sortable_header_cell :id, 'Id'
-      =sortable_header_cell :uri, 'URI'
-      =sortable_header_cell :permalink, 'Permalink'
-      =sortable_header_cell :click_count, 'Click count'
+      = sortable_header_cell :id, 'Id'
+      = sortable_header_cell :uri, 'URI'
+      = sortable_header_cell :permalink, 'Permalink'
+      = sortable_header_cell :click_count, 'Click count'
       %th Actions
-  -unless @links.empty?
+  - unless @links.empty?
     %tbody
     - @links.each do |link|
       %tr.link(id="link_#{link.id}")
-        %td=link.id
-        %td(id="link_#{link.id}_uri")=link.uri
-        %td(id="link_#{link.id}_permalink")=link.permalink
-        %td=link.click_count
+        %td= link.id
+        %td
+          = form_for link, html: { data: { name: 'link[uri]', editable: true } } do |f|
+            = link.uri
+        %td
+          = form_for link, html: { data: { name: 'link[permalink]', editable: true } } do |f|
+            = link.permalink
+        %td= link.click_count
         %td.links
-          =link_to 'edit', edit_link_path(link)
-          =button_to_destroy_model link, :remote => true
+          = link_to 'edit', edit_link_path(link)
+          = button_to_destroy_model link, :remote => true
 .links
-  =link_to 'new link', new_link_path
--content_for :javascript do
-  :javascript
-    editInPlace('tr.link', 'link', 'uri', '/links/');
-    editInPlace('tr.link', 'link', 'permalink', '/links/');
+  = link_to 'new link', new_link_path
