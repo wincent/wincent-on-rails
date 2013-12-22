@@ -19,12 +19,25 @@ class TagsController < ApplicationController
 
   # admin only
   def update
-    if @tag.update_attributes params[:tag]
-      flash[:notice] = 'Successfully updated'
-      redirect_to @tag
-    else
-      flash[:error] = 'Update failed'
-      render :action => :edit
+    respond_to do |format|
+      format.html {
+        if @tag.update_attributes(params[:tag])
+          flash[:notice] = 'Successfully updated'
+          redirect_to @tag
+        else
+          flash[:error] = 'Update failed'
+          render action: :edit
+        end
+      }
+
+      format.js {
+        if @tag.update_attributes(params[:tag])
+          render json: {}
+        else
+          render text:   "Update failed: #{@tag.flashable_error_string}",
+                 status: 422
+        end
+      }
     end
   end
 
@@ -54,6 +67,6 @@ private
   end
 
   def get_tag
-    @tag = Tag.find_by_name! params[:id]
+    @tag = Tag.find_by_name(params[:id]) || Tag.find(params[:id])
   end
 end

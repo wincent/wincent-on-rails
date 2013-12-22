@@ -127,7 +127,7 @@ describe TagsController do
 
       context 'failed update' do
         before do
-          stub(Tag).find_by_name!(tag.name).stub!.update_attributes { false }
+          stub(Tag).find_by_name(tag.name).stub!.update_attributes { false }
         end
 
         it 'shows a flash' do
