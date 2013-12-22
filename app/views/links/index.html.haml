@@ -16,10 +16,14 @@
       %tr.link(id="link_#{link.id}")
         %td= link.id
         %td
-          = form_for link, html: { data: { name: 'link[uri]', editable: true } } do |f|
+          = form_for link,
+            url: link_path(link.id),
+            html: { data: { name: 'link[uri]', editable: true } } do |f|
             = link.uri
         %td
-          = form_for link, html: { data: { name: 'link[permalink]', editable: true } } do |f|
+          = form_for link,
+            url: link_path(link.id),
+            html: { data: { name: 'link[permalink]', editable: true } } do |f|
             = link.permalink
         %td= link.click_count
         %td.links
