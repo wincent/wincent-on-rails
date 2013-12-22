@@ -12,25 +12,26 @@ class Admin::PostsController < Admin::ApplicationController
 
   def show
     respond_to do |format|
-      format.js { # AJAX updates
-        render :json => @post.to_json(:only => [:permalink, :title])
-      }
+      format.js do
+        render json: @post.to_json(only: %i[permalink title])
+      end
     end
   end
 
   def update
     respond_to do |format|
-      format.js { # an AJAX update
-        if @post.update_attributes params[:post]
+      format.js do
+        if @post.update_attributes(params[:post])
           # don't use admin_post_path here because we want to force the use of a
           # numeric id; url_for will keep us in admin namespace here
-          redirect_to url_for(:controller => 'posts', :action => 'show',
-            :id => @post.id)
+          redirect_to url_for(controller: 'posts',
+                              action: 'show',
+                              id: @post.id)
         else
-          error = "Update failed: #{@post.flashable_error_string}"
-          render :text => error, :status => 422
+          render text:   "Update failed: #{@post.flashable_error_string}",
+                 status: 422
         end
-      }
+      end
     end
   end
 

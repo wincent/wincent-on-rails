@@ -70,64 +70,6 @@ function ajaxCommentForm(url) {
   $anchor.on('click', click);
 }
 
-function editInPlace(selector, className, attributeName, url) {
-  var model = $(selector); // could be many
-  model.each(function(i) {
-    var modelId = $(this).attr('id'), // issue_22
-        recordId = modelId.match(/_(\d+)$/)[1], // 22
-        $fieldId = $('#' + modelId + '_' + attributeName); // issue_22_summary
-    function highlight() { $fieldId.addClass('highlight'); }
-    function unhighlight() { $fieldId.removeClass('highlight'); }
-    function clickFunction() {
-      $fieldId.off('mousenter mouseleave'); // remove 'hover' handlers
-      var fieldText = $fieldId.text();
-      unhighlight();
-      $fieldId.attr('title', 'Click outside to abort editing')
-        .html('<form action="javascript:void(0)" style="display:inline;"><input type="text" value="' +
-          escapeHTML(fieldText) +
-          '"></form>')
-        .find('input')[0].select();
-      $fieldId.off('dblclick')
-        .find('input').on('blur', function() {
-          $fieldId.text(fieldText)
-            .on('dblclick', clickFunction)
-            .on('mouseenter', highlight)
-            .on('mouseleave', unhighlight);
-        }).end()
-        .find('form').on('submit', function() {
-          var value = $fieldId.find('input').val();
-          $fieldId.text('saving...');
-          $.ajax({
-            'url': url + recordId,
-            'type': 'post',
-            'dataType': 'json',
-            'data': '_method=put&' + className + '[' + attributeName + ']=' +
-              encodeURIComponent(value),
-            'success': function(json) {
-              $fieldId.text(json[className][attributeName])
-                .removeClass('ajax_error');
-              clearAJAXFlash();
-            },
-            'error': function(req) {
-              $fieldId.text(value).addClass('ajax_error');
-              insertAJAXFlash('error', req.responseText);
-            },
-            'complete': function() {
-              $fieldId
-                .on('mousenter', highlight)
-                .on('mouseleave', unhighlight)
-                .on('dblclick', clickFunction);
-            }
-          });
-        });
-    }
-    $fieldId.attr('title', 'Double-click to edit')
-      .on('dblclick', clickFunction)
-      .on('mouseenter', highlight)
-      .on('mouseleave', unhighlight);
-  });
-}
-
 (function() {
   var RETURN_KEY = 13,
       ESCAPE_KEY = 27;

@@ -72,16 +72,16 @@ class PostsController < ApplicationController
 private
 
   def get_post
-    if admin?
-      @post = Post.find_by_permalink!(params[:id])
+    @post = if admin?
+      Post.find_by_permalink(params[:id]) || Post.find(params[:id])
     else
-      @post = Post.find_by_permalink_and_public!(params[:id], true)
+      Post.public.find_by_permalink(params[:id]) || Post.public.find(params[:id])
     end
   rescue ActiveRecord::RecordNotFound
     # given permalink "foo" a request for "foo.js" will land here
     if params[:id] =~ /(.+)\.(js)\z/
       request.format = $~[2].to_sym
-      @post = Post.find_by_permalink_and_public $~[1], true
+      @post = Post.public.find_by_permalink($~[1]) || Post.public.find($~[1])
     end
     raise unless @post
   end

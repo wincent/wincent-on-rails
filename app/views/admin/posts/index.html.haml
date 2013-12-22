@@ -1,28 +1,32 @@
--@page_title = 'Post administration'
-=breadcrumbs link_to('Admin', admin_dashboard_path), @page_title
-%h1.major=@page_title
+- @page_title = 'Post administration'
+= breadcrumbs link_to('Admin', admin_dashboard_path), @page_title
+%h1.major= @page_title
 #ajax-flash
 %table
   %thead
     %tr
-      =sortable_header_cell :title, 'Title'
-      =sortable_header_cell :permalink, 'Permalink'
-      =sortable_header_cell :created_at, 'When'
+      = sortable_header_cell :title, 'Title'
+      = sortable_header_cell :permalink, 'Permalink'
+      = sortable_header_cell :created_at, 'When'
       %th Actions
-  -unless @posts.empty?
+  - unless @posts.empty?
     %tbody
       - @posts.each do |post|
-        %tr(id="post_#{post.id}")
-          %td(id="post_#{post.id}_title")=post.title
-          %td(id="post_#{post.id}_permalink")=post.permalink
-          %td=timeinfo post
+        %tr
+          %td
+            = form_for post,
+              url: admin_post_path(post.id),
+              html: { data: { name: 'post[title]', editable: true } } do |f|
+              = post.title
+          %td
+            = form_for post,
+              url: admin_post_path(post.id),
+              html: { data: { name: 'post[permalink]', editable: true } } do |f|
+              = post.permalink
+          %td= timeinfo post
           %td.links
-            =link_to 'edit', edit_post_path(post)
-            =button_to_destroy_model post, :remote => true
+            = link_to 'edit', edit_post_path(post.id)
+            = button_to_destroy_model post, remote: true
 %p.links
-  =link_to 'new', new_post_path
-  =link_to 'public index', posts_path
--content_for :javascript do
-  :javascript
-    editInPlace('tr.post', 'post', 'title', '/admin/posts/');
-    editInPlace('tr.post', 'post', 'permalink', '/admin/posts/');
+  = link_to 'new', new_post_path
+  = link_to 'public index', posts_path
