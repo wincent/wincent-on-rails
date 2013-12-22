@@ -128,100 +128,105 @@ function editInPlace(selector, className, attributeName, url) {
   });
 }
 
-$(document)
-  .on('dblclick', '[data-editable]', function(event) {
-    $el = $(this).addClass('editing');
-    $el.data('original-content', $el.html());
-    $el[0].contentEditable = 'true';
-    $el.focus();
-  })
-  .on('blur', '[data-editable]', function() {
-    $el = $(this).removeClass('editing');
-    $el[0].contentEditable = 'false';
-  })
-  .on('keydown', '[data-editable]', function(event) {
-    if (event.keyCode === 13) { // return
-      event.preventDefault();
-      $el = $(this).blur();
-      if ($el.html() !== $el.data('original-content')) {
-        var $form   = $el.closest('form'),
-            $method = $form.find('input[name=_method]'),
-            spinner = new Wincent.Spinner($form, 'small'),
-            $hidden = $('<input>', {
-              type: 'hidden',
-              name: $(this).data('name'),
-              value: $el.text().trim()
-            }).appendTo($form);
+(function() {
+  var RETURN_KEY = 13,
+      ESCAPE_KEY = 27;
 
-        $.ajax({
-          url  : $form.attr('action'),
-          type : 'post',
-          data : $hidden.add($method).serialize(),
-          dataType : 'json'
-        })
-          .done(function(json) {
-            clearAJAXFlash();
-          })
-          .fail(function(req) {
-            insertAJAXFlash('error', req.responseText);
-          })
-          .always(function() {
-            spinner.stop();
-            $hidden.remove();
-          });
-      }
-    } else if (event.keyCode === 27) { // escape
-      $el = $(this).blur();
-      $el.html($el.data('original-content'));
-    }
-  });
-
-$(document).on('change', 'input[data-ajax], select[data-ajax]', function(event) {
-  var $element  = $(event.currentTarget),
-      $form     = $element.closest('form'),
-      $method   = $form.find('input[name=_method]'),
-      data      = $element.add($method).serialize(),
-      spinner   = new Wincent.Spinner($form, 'small');
-
-  // must only disable after serializing
-  $element.prop('disabled', true);
-
-  $.ajax({
-    url      : $form.attr('action'),
-    type     : 'post',
-    dataType : 'json',
-    data     : data
-  })
-    .done(function(json) {
-      clearAJAXFlash();
-
-      if ($element.is('select')) {
-        // make sure we can identify the selected option if a subsequent change
-        // ends up triggering the `fail()` function (note the difference between
-        // finding the currently selected element using `:selected` here the
-        // previously selected element using `option[seleted]` below)
-        $element.find(':selected')
-          .attr('selected', 'selected')
-          .siblings()
-          .removeAttr('selected');
-      }
+  $(document)
+    .on('dblclick', '[data-editable]', function(event) {
+      $el = $(this).addClass('editing');
+      $el.data('original-content', $el.html());
+      $el[0].contentEditable = 'true';
+      $el.focus();
     })
-    .fail(function(req) {
-      insertAJAXFlash('error', req.responseText);
-
-      // revert element to initial state, if appropriate
-      if ($element.is('input[type=checkbox]')) {
-        $element.prop('checked', !$element.prop('checked'));
-      } else if ($element.is('select')) {
-        var previousSelection = $element.find('option[selected]').val();
-        $element.val(previousSelection);
-      }
+    .on('blur', '[data-editable]', function() {
+      $el = $(this).removeClass('editing');
+      $el[0].contentEditable = 'false';
     })
-    .always(function() {
-      spinner.stop();
-      $element.prop('disabled', false);
+    .on('keydown', '[data-editable]', function(event) {
+      if (event.keyCode === RETURN_KEY) {
+        event.preventDefault();
+        $el = $(this).blur();
+        if ($el.html() !== $el.data('original-content')) {
+          var $form   = $el.closest('form'),
+              $method = $form.find('input[name=_method]'),
+              spinner = new Wincent.Spinner($form, 'small'),
+              $hidden = $('<input>', {
+                type: 'hidden',
+                name: $(this).data('name'),
+                value: $el.text().trim()
+              }).appendTo($form);
+
+          $.ajax({
+            url  : $form.attr('action'),
+            type : 'post',
+            data : $hidden.add($method).serialize(),
+            dataType : 'json'
+          })
+            .done(function(json) {
+              clearAJAXFlash();
+            })
+            .fail(function(req) {
+              insertAJAXFlash('error', req.responseText);
+            })
+            .always(function() {
+              spinner.stop();
+              $hidden.remove();
+            });
+        }
+      } else if (event.keyCode === ESCAPE_KEY) {
+        $el = $(this).blur();
+        $el.html($el.data('original-content'));
+      }
     });
-});
+
+  $(document).on('change', 'input[data-ajax], select[data-ajax]', function(event) {
+    var $element  = $(event.currentTarget),
+        $form     = $element.closest('form'),
+        $method   = $form.find('input[name=_method]'),
+        data      = $element.add($method).serialize(),
+        spinner   = new Wincent.Spinner($form, 'small');
+
+    // must only disable after serializing
+    $element.prop('disabled', true);
+
+    $.ajax({
+      url      : $form.attr('action'),
+      type     : 'post',
+      dataType : 'json',
+      data     : data
+    })
+      .done(function(json) {
+        clearAJAXFlash();
+
+        if ($element.is('select')) {
+          // make sure we can identify the selected option if a subsequent change
+          // ends up triggering the `fail()` function (note the difference between
+          // finding the currently selected element using `:selected` here the
+          // previously selected element using `option[seleted]` below)
+          $element.find(':selected')
+            .attr('selected', 'selected')
+            .siblings()
+            .removeAttr('selected');
+        }
+      })
+      .fail(function(req) {
+        insertAJAXFlash('error', req.responseText);
+
+        // revert element to initial state, if appropriate
+        if ($element.is('input[type=checkbox]')) {
+          $element.prop('checked', !$element.prop('checked'));
+        } else if ($element.is('select')) {
+          var previousSelection = $element.find('option[selected]').val();
+          $element.val(previousSelection);
+        }
+      })
+      .always(function() {
+        spinner.stop();
+        $element.prop('disabled', false);
+      });
+  });
+})();
 
 function setupPreviewLink(options) {
   $('<a href="#"><i class="icon-refresh"></i></a>')
