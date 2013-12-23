@@ -16,7 +16,18 @@
       render: function() {
         return (
           <div className="tagBox">
-            empty tag box here...
+            tag box here...
+            <TagPill />
+          </div>
+        );
+      }
+    });
+
+    var TagPill = React.createClass({
+      render: function() {
+        return (
+          <div className="tagPill">
+            I am a pill
           </div>
         );
       }
