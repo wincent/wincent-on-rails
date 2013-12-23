@@ -44,13 +44,6 @@ module IssuesHelper
     end
   end
 
-  def link_to_issue_search link_text = 'search'
-    # TODO: make this unobtrusive, make it degrade gracefully
-    link_to_function link_text,
-      "$('#issue_search').toggle(); $('#issue_summary').focus()",
-      href: search_issues_path
-  end
-
   def kind_options_for_select
     options_for_select underscores_to_spaces(Issue::KIND).sort
   end
