@@ -10,14 +10,16 @@
   <div id="content"></div>
   <script type="text/jsx">
     /**
-    * @jsx React.DOM
-    */
+     * @jsx React.DOM
+     */
     var TagBox = React.createClass({
       render: function() {
         return (
           <div className="tagBox">
             tag box here...
             <TagPill />
+            <TagPill />
+            <TagInput />
           </div>
         );
       }
@@ -29,6 +31,14 @@
           <div className="tagPill">
             I am a pill
           </div>
+        );
+      }
+    });
+
+    var TagInput = React.createClass({
+      render: function() {
+        return (
+          <input className="tagInput"></input>
         );
       }
     });
