@@ -17,8 +17,9 @@
         return (
           <div className="tagBox">
             tag box here...
-            <TagPill />
-            <TagPill />
+            <TagPill name="foo"/>
+            <TagPill name="bar"/>
+            <TagPill name="foo.bar"/>
             <TagInput />
           </div>
         );
@@ -28,9 +29,9 @@
     var TagPill = React.createClass({
       render: function() {
         return (
-          <div className="tagPill">
-            I am a pill
-          </div>
+          <span className="tagPill">
+            {this.props.name}
+          </span>
         );
       }
     });
