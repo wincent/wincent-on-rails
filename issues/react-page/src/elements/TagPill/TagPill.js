@@ -3,7 +3,11 @@
  */
 "use strict";
 
-var React = require("React");
+var React             = require("React"),
+    ReactStyle        = require("ReactStyle"),
+    TagPillStyleRules = require("./TagPillStyleRules");
+
+ReactStyle.addRules(TagPillStyleRules);
 
 var TagPill = React.createClass({
   getInitialState: function() {
@@ -18,7 +22,7 @@ var TagPill = React.createClass({
 
   render: function() {
     return (
-      <span className="tag-pill">
+      <span className={TagPillStyleRules.tagPill}>
         {this.props.name}
       </span>
     );
