@@ -20,10 +20,16 @@ var TagPill = React.createClass({
   componentWillMount: function() {
   },
 
+  handleClose: function(event) {
+    console.log("closing");
+    event.preventDefault();
+  },
+
   render: function() {
     return (
       <span className={TagPillStyleRules.tagPill}>
         {this.props.name}
+        <a href="#" onClick={this.handleClose}>&times;</a>
       </span>
     );
   }

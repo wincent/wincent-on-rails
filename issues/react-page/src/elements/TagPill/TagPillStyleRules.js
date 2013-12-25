@@ -12,10 +12,17 @@ var TagPillStyleRules = ReactStyle.create({
     padding             : '0 .5em',
     '-mozUserSelect'    : 'none',
     '-webkitUserSelect' : 'none',
-    userSelect          : 'none'
+    userSelect          : 'none',
+    whiteSpace          : 'nowrap'
   },
   '.tagPill:after' : {
     content: '' // could use this for checkbox (or not)
+  },
+  '.tagPill a' : {
+    display        : 'inline-block',
+    fontWeight     : 'bold',
+    marginLeft     : '.5em',
+    textDecoration : 'none'
   }
 });
 
