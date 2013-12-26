@@ -28,12 +28,10 @@ describe Admin::ForumsController do
   end
 
   describe '#show.js' do
-    before do
-      @forum = Forum.make!
-    end
+    let(:forum) { Forum.make! }
 
     def do_request
-      get :show, :id => @forum.id, :format => :js
+      xhr :get, :show, id: forum.id, format: :js
     end
 
     it_has_behavior 'require_admin (non-HTML)'
@@ -44,17 +42,17 @@ describe Admin::ForumsController do
       end
 
       it 'finds the forum' do
-        mock.proxy(Forum).find(@forum.id.to_s)
+        mock.proxy(Forum).find(forum.id.to_s)
         do_request
       end
 
       it 'assigns found forum' do
         do_request
-        assigns[:forum].should == @forum
+        assigns[:forum].should == forum
       end
 
       it 'renders as JSON' do
-        stub(Forum).find.mock(@forum).to_json(anything)
+        stub(Forum).find.mock(forum).to_json(anything)
         do_request
       end
 
@@ -62,7 +60,7 @@ describe Admin::ForumsController do
         do_request
         json = JSON.parse(response.body)
         json['forum'].should == {
-          'name'        => @forum.name,
+          'name'        => forum.name,
           'description' => nil,
           'position'    => 0,
         }

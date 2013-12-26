@@ -38,7 +38,7 @@ describe TweetsController do
     it 'fetches tweets in reverse creation order' do
       past = 3.days.ago
       old = Tweet.make!
-      Tweet.update_all ['created_at = ?, updated_at = ?', past, past], ['id = ?', old.id]
+      Tweet.where(id: old).update_all ['created_at = ?, updated_at = ?', past, past]
       new = Tweet.make!
       do_get
       assigns[:tweets].should == [new, old]
