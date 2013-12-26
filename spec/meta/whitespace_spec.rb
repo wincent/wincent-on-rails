@@ -19,20 +19,18 @@ describe 'Source code files' do
     end
   end
 
-  before :all do
-    @pwd = Dir.pwd
-    Dir.chdir File.join(File.dirname(__FILE__), '..', '..')
-  end
-
-  after :all do
-    Dir.chdir @pwd
+  around :each do |example|
+    GC.start # work around Ruby 2.1.0 bug
+    Dir.chdir(Rails.root) { example.run }
   end
 
   def check_file file, regex
     bad_lines = []
-    File.readlines(file).each_with_index do |line, index|
-      if line.match(regex)
-        bad_lines << index + 1
+    File.open(file, 'r') do |f|
+      f.readlines.each_with_index do |line, index|
+        if line.match(regex)
+          bad_lines << index + 1
+        end
       end
     end
     bad_lines
