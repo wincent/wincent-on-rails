@@ -20,6 +20,10 @@ var ReactStyle = require('ReactStyle');
 var SiteBoilerPlateStyleRules = ReactStyle.create({
   '*': {
     boxSizing: 'border-box'
+  },
+  'body': {
+    fontFamily: 'Helvetica',
+    fontWeight: 100
   }
 });
 

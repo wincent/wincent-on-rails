@@ -10,6 +10,7 @@ var TagPillStyleRules = ReactStyle.create({
     display             : 'inline-block',
     margin              : '2px',
     padding             : '0 .5em',
+    '-khtmlUserSelect'  : 'none',
     '-mozUserSelect'    : 'none',
     '-webkitUserSelect' : 'none',
     userSelect          : 'none',

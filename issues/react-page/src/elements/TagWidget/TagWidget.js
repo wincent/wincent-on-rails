@@ -17,9 +17,13 @@
  */
 "use strict";
 
-var React     = require('React'),
-    TagPill   = require('../TagPill/TagPill.js'),
-    TagInput  = require('../TagInput/TagInput.js');
+var React               = require("React"),
+    ReactStyle          = require("ReactStyle"),
+    TagPill             = require("../TagPill/TagPill.js"),
+    TagInput            = require("../TagInput/TagInput.js"),
+    TagWidgetStyleRules = require("../TagWidget/TagWidgetStyleRules.js");
+
+ReactStyle.addRules(TagWidgetStyleRules);
 
 var TagWidget = React.createClass({
   getInitialState: function() {
@@ -38,7 +42,6 @@ var TagWidget = React.createClass({
         <p>This is a tag box</p>
         <p>with some pills</p>
         {this.state.data.map(function(s) { return <TagPill name={s} />; })}
-        <p>and an input field</p>
         <TagInput />
       </div>
     );

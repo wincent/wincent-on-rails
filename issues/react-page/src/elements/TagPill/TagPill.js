@@ -7,6 +7,9 @@ var React             = require("React"),
     ReactStyle        = require("ReactStyle"),
     TagPillStyleRules = require("./TagPillStyleRules");
 
+var DRAG_OPACITY     = .4,
+    STANDARD_OPACITY = 1;
+
 ReactStyle.addRules(TagPillStyleRules);
 
 var TagPill = React.createClass({
