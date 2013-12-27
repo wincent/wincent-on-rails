@@ -50,7 +50,17 @@ var TagInput = React.createClass({
           previousChar = (previousIdx >= 0 ? value[previousIdx] : undefined),
           nextChar     = (nextIdx < value.length ? value[nextIdx] : undefined);
 
-      if (previousChar === ' ' || nextChar === ' ') {
+      if (previousChar === ' ' && nextChar === ' ') {
+        event.preventDefault();
+
+        // collapse adjacent spaces together
+        value = value.split("");
+        value.splice(previousIdx, nextIdx - previousIdx, '');
+        input.value = value.join("");
+
+        // reset cursor
+        input.setSelectionRange(previousIdx + 1, previousIdx + 1);
+      } if (previousChar === ' ' || nextChar === ' ') {
         event.preventDefault();
       }
       // TODO: note that backspace over a selection can also create two spaces
