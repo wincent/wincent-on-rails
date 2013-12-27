@@ -26,11 +26,21 @@ var TagInput = React.createClass({
     input.style.width = newWidth + "px";
   },
 
+  // TODO: put this somewhere more general
+  escapeHTML: function(string) {
+    return string
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+  },
+
   getTextWidth: function(input) {
     // copy the input value to a hidden div with the same styling as the input,
     // then measure the width of that
     var hiddenDiv = document.createElement("div"),
-        styles    = window.getComputedStyle(input);
+        styles    = window.getComputedStyle(input),
+        value     = this.escapeHTML(input.value + "w"); // 1-char of padding
 
     hiddenDiv.style.position      = "absolute";
     hiddenDiv.style.left          = "-10000px";
@@ -41,7 +51,7 @@ var TagInput = React.createClass({
     hiddenDiv.style.fontWeight    = styles['font-weight'];
     hiddenDiv.style.letterSpacing = styles['letter-spacing'];
     hiddenDiv.style.whitespace    = 'nowrap';
-    hiddenDiv.innerHTML           = input.value + 'i'; // 1-char of padding
+    hiddenDiv.innerHTML           = value;
 
     document.body.appendChild(hiddenDiv);
     var width = hiddenDiv.clientWidth;
