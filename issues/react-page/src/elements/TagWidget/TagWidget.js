@@ -44,12 +44,18 @@ var TagWidget = React.createClass({
     }
   },
 
+  handleTagInput: function(newTag) {
+    this.state.data.push(newTag);
+    this.setState(this.state);
+  },
+
   render: function() {
     return (
       <div className={TagWidgetStyleRules.tagWidget}
            onClick={this.handleClick}>
         {this.state.data.map(function(s) { return <TagPill name={s} />; })}
-        <TagInput ref="tagInput" />
+        <TagInput ref="tagInput"
+                  onTagInput={this.handleTagInput} />
       </div>
     );
   },

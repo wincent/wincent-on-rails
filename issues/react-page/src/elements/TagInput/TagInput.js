@@ -7,6 +7,9 @@ var React              = require("React"),
     ReactStyle         = require("ReactStyle"),
     TagInputStyleRules = require("./TagInputStyleRules");
 
+var RETURN_KEY_CODE = 13,
+    ESCAPE_KEY_CODE = 27;
+
 ReactStyle.addRules(TagInputStyleRules);
 
 var TagInput = React.createClass({
@@ -21,9 +24,18 @@ var TagInput = React.createClass({
   },
 
   handleInput: function(event) {
+    // resize dynamically
     var input    = event.target,
         newWidth = this.getTextWidth(input);
     input.style.width = newWidth + "px";
+  },
+
+  handleKeyDown: function(event) {
+    if (event.keyCode === RETURN_KEY_CODE) {
+      var input = this.getDOMNode();
+      this.props.onTagInput(input.value.trim());
+      input.value = '';
+    }
   },
 
   // TODO: put this somewhere more general
@@ -64,6 +76,7 @@ var TagInput = React.createClass({
       <input className={TagInputStyleRules.tagInput}
              type="text"
              onInput={this.handleInput}
+             onKeyDown={this.handleKeyDown}
              autoComplete="off">
       </input>
     );
