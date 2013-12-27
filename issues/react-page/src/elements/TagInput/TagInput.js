@@ -43,13 +43,14 @@ var TagInput = React.createClass({
     } else if (keyCode === SPACE_KEY_CODE) {
       // if cursor is before or after a space, must preventDefault() here
       // (runs of multiple spaces will break our width calculation)
-      var input = this.getDOMNode(),
-          previous = input.selectionStart - 1,
-          next = input.selectionEnd,
-          value = input.value;
+      var input        = this.getDOMNode(),
+          value        = input.value,
+          previousIdx  = input.selectionStart - 1,
+          nextIdx      = input.selectionEnd,
+          previousChar = (previousIdx >= 0 ? value[previousIdx] : undefined),
+          nextChar     = (nextIdx < value.length ? value[nextIdx] : undefined);
 
-      if ((previous >= 0 && value[previous] === ' ') ||
-          (next < value.length && value[next] === ' ')) {
+      if (previousChar === ' ' || nextChar === ' ') {
         event.preventDefault();
       }
       // TODO: note that backspace over a selection can also create two spaces
