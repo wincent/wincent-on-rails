@@ -36,13 +36,20 @@ var TagWidget = React.createClass({
   componentWillUnmount: function() {
   },
 
+  handleClick: function(event) {
+    // if outside of input area, focus input
+    var tagInput = this.refs.tagInput.getDOMNode();
+    if (event.target !== tagInput) {
+      tagInput.focus();
+    }
+  },
+
   render: function() {
     return (
-      <div className="tag-widget">
-        <p>This is a tag box</p>
-        <p>with some pills</p>
+      <div className={TagWidgetStyleRules.tagWidget}
+           onClick={this.handleClick}>
         {this.state.data.map(function(s) { return <TagPill name={s} />; })}
-        <TagInput />
+        <TagInput ref="tagInput" />
       </div>
     );
   },
