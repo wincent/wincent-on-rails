@@ -8,7 +8,8 @@ var React              = require("React"),
     TagInputStyleRules = require("./TagInputStyleRules");
 
 var RETURN_KEY_CODE    = 13,
-    ESCAPE_KEY_CODE    = 27;
+    ESCAPE_KEY_CODE    = 27,
+    SPACE_KEY_CODE     = 32;
 
 ReactStyle.addRules(TagInputStyleRules);
 
@@ -39,6 +40,19 @@ var TagInput = React.createClass({
       input.value = '';
     } else if (keyCode === ESCAPE_KEY_CODE) {
       this.getDOMNode().blur();
+    } else if (keyCode === SPACE_KEY_CODE) {
+      // if cursor is before or after a space, must preventDefault() here
+      // (runs of multiple spaces will break our width calculation)
+      var input = this.getDOMNode(),
+          previous = input.selectionStart - 1,
+          next = input.selectionEnd,
+          value = input.value;
+
+      if ((previous >= 0 && value[previous] === ' ') ||
+          (next < value.length && value[next] === ' ')) {
+        event.preventDefault();
+      }
+      // TODO: note that backspace over a selection can also create two spaces
     }
   },
 
