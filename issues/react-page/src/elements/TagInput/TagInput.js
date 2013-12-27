@@ -50,18 +50,30 @@ var TagInput = React.createClass({
           previousChar = (previousIdx >= 0 ? value[previousIdx] : undefined),
           nextChar     = (nextIdx < value.length ? value[nextIdx] : undefined);
 
-      if (previousChar === ' ' && nextChar === ' ') {
+      if (previousChar === ' ' || nextChar === ' ') {
         event.preventDefault();
 
-        // collapse adjacent spaces together
-        value = value.split("");
-        value.splice(previousIdx, nextIdx - previousIdx, '');
-        input.value = value.join("");
+        if (previousChar === ' ' && nextChar === ' ') {
+          // collapse adjacent spaces together
+          value = value.split("");
+          value.splice(previousIdx, nextIdx - previousIdx);
+          input.value = value.join("");
 
-        // reset cursor
-        input.setSelectionRange(previousIdx + 1, previousIdx + 1);
-      } if (previousChar === ' ' || nextChar === ' ') {
-        event.preventDefault();
+          // reset cursor
+          input.setSelectionRange(previousIdx + 1, previousIdx + 1);
+        } else if (previousChar === ' ' && nextChar !== ' ') {
+          // remove selection
+          value = value.split("");
+          value.splice(previousIdx + 1, nextIdx - previousIdx - 2);
+          input.value = value.join("");
+          input.setSelectionRange(previousIdx + 2, previousIdx + 2);
+        } else if (previousChar !== ' ' && nextChar === ' ') {
+          // remove selection
+          value = value.split("");
+          value.splice(previousIdx + 1, nextIdx - previousIdx - 2);
+          input.value = value.join("");
+          input.setSelectionRange(previousIdx + 2, previousIdx + 2);
+        }
       }
       // TODO: note that backspace over a selection can also create two spaces
     }
