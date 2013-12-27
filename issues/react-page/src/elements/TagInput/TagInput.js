@@ -7,8 +7,14 @@ var React              = require("React"),
     ReactStyle         = require("ReactStyle"),
     TagInputStyleRules = require("./TagInputStyleRules");
 
-var RETURN_KEY_CODE = 13,
-    ESCAPE_KEY_CODE = 27;
+var RETURN_KEY_CODE    = 13,
+    ESCAPE_KEY_CODE    = 27,
+    ZERO_KEY_CODE      = 48,
+    NINE_KEY_CODE      = ZERO_KEY_CODE + 9,
+    UPPER_A_KEY_CODE   = 65,
+    UPPER_Z_KEY_CODE   = UPPER_A_KEY_CODE + 25,
+    BACKSPACE_KEY_CODE = 8,
+    DELETE_KEY_CODE    = 46;
 
 ReactStyle.addRules(TagInputStyleRules);
 
@@ -31,10 +37,21 @@ var TagInput = React.createClass({
   },
 
   handleKeyDown: function(event) {
-    if (event.keyCode === RETURN_KEY_CODE) {
+    var keyCode  = event.keyCode,
+        shiftKey = event.shiftKey && !event.altKey && !event.ctrlKey,
+        modifier = event.shiftKey || event.altKey || event.ctrlKey;
+
+    if (keyCode === RETURN_KEY_CODE) {
       var input = this.getDOMNode();
       this.props.onTagInput(input.value.trim());
       input.value = '';
+    } else if (keyCode === ESCAPE_KEY_CODE) {
+      this.getDOMNode().blur();
+    } else if ((keyCode >= ZERO_KEY_CODE && keyCode <= NINE_KEY_CODE && !modifier) ||
+        (keyCode >= UPPER_A_KEY_CODE && keyCode <= UPPER_Z_KEY_CODE && (!modifier || shiftKey))) {
+      // all good
+    } else {
+      event.preventDefault(); // not allowed, still need to deal with pasting as well
     }
   },
 
