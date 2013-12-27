@@ -45,8 +45,18 @@ var TagWidget = React.createClass({
   },
 
   handleTagInput: function(newTag) {
-    this.state.data.push(newTag);
-    this.setState(this.state);
+    newTag = newTag
+      .trim()
+      .toLowerCase()
+      .replace(/ +/g, '.')           // spaces become dots
+      .replace(/[^a-z0-9.]+/gi, ''); // all other illegal chars get eaten
+
+    // NOTE: might want to provide better feedback for the edge case where the
+    // entire thing gets eaten
+    if (newTag.length) {
+      this.state.data.push(newTag);
+      this.setState(this.state);
+    }
   },
 
   render: function() {

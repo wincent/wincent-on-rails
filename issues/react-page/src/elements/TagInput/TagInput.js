@@ -8,8 +8,7 @@ var React              = require("React"),
     TagInputStyleRules = require("./TagInputStyleRules");
 
 var RETURN_KEY_CODE    = 13,
-    ESCAPE_KEY_CODE    = 27,
-    SPACE_KEY_CODE     = 32;
+    ESCAPE_KEY_CODE    = 27;
 
 ReactStyle.addRules(TagInputStyleRules);
 
@@ -40,42 +39,6 @@ var TagInput = React.createClass({
       input.value = '';
     } else if (keyCode === ESCAPE_KEY_CODE) {
       this.getDOMNode().blur();
-    } else if (keyCode === SPACE_KEY_CODE) {
-      // if cursor is before or after a space, must preventDefault() here
-      // (runs of multiple spaces will break our width calculation)
-      var input        = this.getDOMNode(),
-          value        = input.value,
-          previousIdx  = input.selectionStart - 1,
-          nextIdx      = input.selectionEnd,
-          previousChar = (previousIdx >= 0 ? value[previousIdx] : undefined),
-          nextChar     = (nextIdx < value.length ? value[nextIdx] : undefined);
-
-      if (previousChar === ' ' || nextChar === ' ') {
-        event.preventDefault();
-
-        if (previousChar === ' ' && nextChar === ' ') {
-          // collapse adjacent spaces together
-          value = value.split("");
-          value.splice(previousIdx, nextIdx - previousIdx);
-          input.value = value.join("");
-
-          // reset cursor
-          input.setSelectionRange(previousIdx + 1, previousIdx + 1);
-        } else if (previousChar === ' ' && nextChar !== ' ') {
-          // remove selection
-          value = value.split("");
-          value.splice(previousIdx + 1, nextIdx - previousIdx - 2);
-          input.value = value.join("");
-          input.setSelectionRange(previousIdx + 2, previousIdx + 2);
-        } else if (previousChar !== ' ' && nextChar === ' ') {
-          // remove selection
-          value = value.split("");
-          value.splice(previousIdx + 1, nextIdx - previousIdx - 2);
-          input.value = value.join("");
-          input.setSelectionRange(previousIdx + 2, previousIdx + 2);
-        }
-      }
-      // TODO: note that backspace over a selection can also create two spaces
     }
   },
 
@@ -104,7 +67,7 @@ var TagInput = React.createClass({
     hiddenDiv.style.fontWeight    = styles['font-weight'];
     hiddenDiv.style.letterSpacing = styles['letter-spacing'];
     hiddenDiv.style.whitespace    = 'nowrap';
-    hiddenDiv.innerHTML           = value;
+    hiddenDiv.innerHTML           = value.replace(/ /g, '&nbsp;');
 
     document.body.appendChild(hiddenDiv);
     var width = hiddenDiv.clientWidth;
