@@ -41,12 +41,29 @@ var TagInput = React.createClass({
       input.value = '';
     } else if (keyCode === ESCAPE_KEY_CODE) {
       input.blur();
-    } else if (keyCode === BACKSPACE_KEY_CODE &&
-               input.selectionStart === 0 &&
-               input.selectionEnd === 0) {
-      // if backspace and at beginning, delete pill to the left
+    } else if (keyCode === BACKSPACE_KEY_CODE && input.selectionStart !== 0) {
+      // special case: we want backspace to delete a tag only if it is a keyDown
+      // followed by a keyUp at position 0; we do not want it to happen if it is
+      // a series of keyDown starting at position > 0 (ie. because of pressing
+      // and holding the backspace key)
+      this.pendingDeletion = true;
+    }
+  },
+
+  handleKeyUp: function(event) {
+    var keyCode = event.keyCode,
+        input   = this.getDOMNode(),
+        value   = input.value;
+
+    if (keyCode === BACKSPACE_KEY_CODE &&
+        input.selectionStart === 0 &&
+        input.selectionEnd === 0 &&
+        !this.pendingDeletion) {
+      // if backspace and at beginning, delete pill to the left; see the note in
+      // the handleKeyDown method for more info about this special case
       this.props.onTagPop();
     }
+    this.pendingDeletion = false;
   },
 
   // TODO: put this somewhere more general
@@ -88,6 +105,7 @@ var TagInput = React.createClass({
              type="text"
              onInput={this.handleInput}
              onKeyDown={this.handleKeyDown}
+             onKeyUp={this.handleKeyUp}
              autoComplete="off">
       </input>
     );
