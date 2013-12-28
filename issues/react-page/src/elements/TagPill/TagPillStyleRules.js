@@ -24,6 +24,9 @@ var TagPillStyleRules = ReactStyle.create({
     fontWeight     : 'bold',
     marginLeft     : '.5em',
     textDecoration : 'none'
+  },
+  '.tagPill.dragging' : {
+    opacity : '.4'
   }
 });
 
