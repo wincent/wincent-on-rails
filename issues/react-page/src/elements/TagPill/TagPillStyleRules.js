@@ -4,7 +4,7 @@ var ReactStyle = require("ReactStyle");
 
 var TagPillStyleRules = ReactStyle.create({
   '.tagPill' : {
-    background          : '#eeeff4',
+    background          : 'hsl(230, 21.4%, 94.5%)', // #eeeff4
     border              : '1px solid #3b5999',
     borderRadius        : '2px',
     display             : 'inline-block',
@@ -17,7 +17,7 @@ var TagPillStyleRules = ReactStyle.create({
     whiteSpace          : 'nowrap'
   },
   '.tagPill:hover, .tagPill:focus' : {
-    background : '#c8c9c0', // FIXME: placeholder only
+    background : 'hsl(230, 21.4%, 74.5%)',
   },
   '.tagPill a' : {
     display        : 'inline-block',
@@ -27,11 +27,11 @@ var TagPillStyleRules = ReactStyle.create({
     textDecoration : 'none'
   },
   '.tagPill a:hover, .tagPill a:focus' : {
-    background : '#666', // FIXME: placeholder only
-    color      : '#aaa'  // FIXME: placeholder only
+    background : 'hsl(230, 21.4%, 54.5%)',
+    color      : 'hsl(230, 21.4%, 100%)',
   },
   '.tagPill a:active' : {
-    color : '#999' // FIXME: placeholder only
+    color : 'hsl(230, 21.4%, 90%)',
   },
   '.tagPill.dragging' : {
     opacity : '.4'
