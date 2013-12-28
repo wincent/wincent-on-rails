@@ -17,19 +17,16 @@
  */
 
 
-var React = require('React');
-var SiteBoilerPlate = require('../core/SiteBoilerPlate.js');
-var Banner = require('../elements/Banner/Banner.js');
+var React = require('React'),
+    SiteBoilerPlate = require('../core/SiteBoilerPlate.js');
 
-var index = React.createClass({
-
+var about = React.createClass({
   render: function() {
     return (
       <SiteBoilerPlate>
-        <Banner bannerMessage="About Us"/>
       </SiteBoilerPlate>
     );
   }
 });
 
-module.exports = index;
+module.exports = about;
