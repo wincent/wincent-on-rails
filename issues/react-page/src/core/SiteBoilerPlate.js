@@ -45,7 +45,7 @@ var SiteBoilerPlateStyleRules = require('./SiteBoilerPlateStyleRules.js');
 /**
  * Component for performing some redundant site wrapping. Customize to your
  * liking, or create a new, similar module. `react-page` automatically ensures
- * that all fo the JavaScript used to generate the page, will be bundled and
+ * that all of the JavaScript used to generate the page, will be bundled and
  * sent into the response so that all the event handlers will work.
  *
  * Usage:
