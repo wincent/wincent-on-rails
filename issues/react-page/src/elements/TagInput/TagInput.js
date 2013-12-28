@@ -7,7 +7,8 @@ var React              = require("React"),
     ReactStyle         = require("ReactStyle"),
     TagInputStyleRules = require("./TagInputStyleRules");
 
-var RETURN_KEY_CODE    = 13,
+var BACKSPACE_KEY_CODE = 8,
+    RETURN_KEY_CODE    = 13,
     ESCAPE_KEY_CODE    = 27;
 
 ReactStyle.addRules(TagInputStyleRules);
@@ -31,14 +32,18 @@ var TagInput = React.createClass({
   },
 
   handleKeyDown: function(event) {
-    var keyCode  = event.keyCode;
+    var keyCode  = event.keyCode,
+        input    = this.getDOMNode(),
+        value    = input.value;
 
     if (keyCode === RETURN_KEY_CODE) {
-      var input = this.getDOMNode();
-      this.props.onTagInput(input.value);
+      this.props.onTagPush(value);
       input.value = '';
     } else if (keyCode === ESCAPE_KEY_CODE) {
-      this.getDOMNode().blur();
+      input.blur();
+    } else if (keyCode === BACKSPACE_KEY_CODE && value === '') {
+      // if backspace and at beginning, delete pill to the left
+      this.props.onTagPop();
     }
   },
 

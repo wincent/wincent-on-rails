@@ -30,7 +30,8 @@ var TagWidget = React.createClass({
     }
   },
 
-  handleTagInput: function(newTag) {
+  // called whenever the child TagInput component is used to add a new tag
+  handleTagPush: function(newTag) {
     newTag = newTag
       .trim()
       .toLowerCase()
@@ -45,13 +46,21 @@ var TagWidget = React.createClass({
     }
   },
 
+  handleTagPop: function() {
+    if (this.state.data.length) {
+      this.state.data.pop();
+      this.setState(this.state);
+    }
+  },
+
   render: function() {
     return (
       <div className={TagWidgetStyleRules.tagWidget}
            onClick={this.handleClick}>
         {this.state.data.map(function(s) { return <TagPill name={s} />; })}
         <TagInput ref="tagInput"
-                  onTagInput={this.handleTagInput} />
+                  onTagPush={this.handleTagPush}
+                  onTagPop={this.handleTagPop} />
       </div>
     );
   },
