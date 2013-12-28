@@ -41,7 +41,9 @@ var TagInput = React.createClass({
       input.value = '';
     } else if (keyCode === ESCAPE_KEY_CODE) {
       input.blur();
-    } else if (keyCode === BACKSPACE_KEY_CODE && value === '') {
+    } else if (keyCode === BACKSPACE_KEY_CODE &&
+               input.selectionStart === 0 &&
+               input.selectionEnd === 0) {
       // if backspace and at beginning, delete pill to the left
       this.props.onTagPop();
     }
