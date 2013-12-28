@@ -5,10 +5,10 @@
 
 var React               = require("React"),
     ReactStyle          = require("ReactStyle"),
-    TagAutocomplete     = require("../TagAutocomplete/TagAutocomplete.js"),
-    TagInput            = require("../TagInput/TagInput.js"),
-    TagPill             = require("../TagPill/TagPill.js"),
-    TagWidgetStyleRules = require("../TagWidget/TagWidgetStyleRules.js");
+    TagAutocomplete     = require("../TagAutocomplete/TagAutocomplete"),
+    TagInput            = require("../TagInput/TagInput"),
+    TagPill             = require("../TagPill/TagPill"),
+    TagWidgetStyleRules = require("../TagWidget/TagWidgetStyleRules");
 
 ReactStyle.addRules(TagWidgetStyleRules);
 

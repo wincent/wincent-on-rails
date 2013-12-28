@@ -17,8 +17,8 @@
  */
 
 var React           = require('React'),
-    SiteBoilerPlate = require('./core/SiteBoilerPlate.js'),
-    TagWidget       = require('./elements/TagWidget/TagWidget.js');
+    SiteBoilerPlate = require('./core/SiteBoilerPlate'),
+    TagWidget       = require('./elements/TagWidget/TagWidget');
 
 var index = React.createClass({
   render: function() {

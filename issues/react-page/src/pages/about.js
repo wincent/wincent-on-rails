@@ -18,7 +18,7 @@
 
 
 var React = require('React'),
-    SiteBoilerPlate = require('../core/SiteBoilerPlate.js');
+    SiteBoilerPlate = require('../core/SiteBoilerPlate');
 
 var about = React.createClass({
   render: function() {
