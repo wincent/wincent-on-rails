@@ -9,21 +9,29 @@ var TagPillStyleRules = ReactStyle.create({
     borderRadius        : '2px',
     display             : 'inline-block',
     margin              : '2px',
-    padding             : '0 .5em',
+    padding             : '0 0 0 .5em',
     '-khtmlUserSelect'  : 'none',
     '-mozUserSelect'    : 'none',
     '-webkitUserSelect' : 'none',
     userSelect          : 'none',
     whiteSpace          : 'nowrap'
   },
-  '.tagPill:after' : {
-    content: '' // could use this for checkbox (or not)
+  '.tagPill:hover, .tagPill:focus' : {
+    background : '#c8c9c0', // FIXME: placeholder only
   },
   '.tagPill a' : {
     display        : 'inline-block',
     fontWeight     : 'bold',
-    marginLeft     : '.5em',
+    marginLeft     : '.25em',
+    padding        : '0 .25em',
     textDecoration : 'none'
+  },
+  '.tagPill a:hover, .tagPill a:focus' : {
+    background : '#666', // FIXME: placeholder only
+    color      : '#aaa'  // FIXME: placeholder only
+  },
+  '.tagPill a:active' : {
+    color : '#999' // FIXME: placeholder only
   },
   '.tagPill.dragging' : {
     opacity : '.4'
