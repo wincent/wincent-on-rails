@@ -20,9 +20,9 @@ var TagPill = React.createClass({
   componentWillMount: function() {
   },
 
-  handleClose: function(event) {
-    console.log("closing");
+  handleDelete: function(event) {
     event.preventDefault();
+    this.props.onTagDelete(this.props.name);
   },
 
   handleDragStart: function(event) {
@@ -42,7 +42,7 @@ var TagPill = React.createClass({
             onDragStart={this.handleDragStart}
             onDragEnd={this.handleDragEnd}>
         {this.props.name}
-        <a href="#" onClick={this.handleClose}>&times;</a>
+        <a href="#" onClick={this.handleDelete}>&times;</a>
       </span>
     );
   }

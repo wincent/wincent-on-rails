@@ -53,10 +53,16 @@ var TagWidget = React.createClass({
     }
   },
 
+  handleTagDelete: function(name) {
+    this.state.data.splice(this.state.data.indexOf(name), 1);
+    this.setState(this.state);
+  },
+
   render: function() {
     var tagPills = this.state.data.map(function(name) {
-      return <TagPill name={name} />;
-    });
+      return <TagPill name={name}
+                      onTagDelete={this.handleTagDelete} />;
+    }.bind(this));
 
     return (
       <div className={TagWidgetStyleRules.tagWidget}
