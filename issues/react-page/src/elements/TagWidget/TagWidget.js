@@ -54,10 +54,15 @@ var TagWidget = React.createClass({
   },
 
   render: function() {
+    var tagPills = this.state.data.map(function(name) {
+      return <TagPill name={name} />;
+    });
+
     return (
       <div className={TagWidgetStyleRules.tagWidget}
-           onClick={this.handleClick}>
-        {this.state.data.map(function(s) { return <TagPill name={s} />; })}
+           onClick={this.handleClick}
+           onDragStart={this.handleDragStart} >
+        {tagPills}
         <TagInput ref="tagInput"
                   onTagPush={this.handleTagPush}
                   onTagPop={this.handleTagPop} />
