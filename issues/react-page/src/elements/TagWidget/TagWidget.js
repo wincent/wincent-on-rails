@@ -73,25 +73,31 @@ var TagWidget = React.createClass({
     if (typeof oldSelectedIdx === "undefined" &&
         maxSelectedIdx >= 0 &&
         keyCode === DOWN_KEY_CODE) {
+      // first time here, and there are completions available; select first
       newSelectedIdx = 0;
     } else if (typeof oldSelectedIdx !== "undefined") {
+        // we've been here before, and a completion is currently selected
         if (keyCode === UP_KEY_CODE && oldSelectedIdx > 0) {
           newSelectedIdx = oldSelectedIdx - 1;
         } else if (keyCode === DOWN_KEY_CODE && oldSelectedIdx < maxSelectedIdx) {
           newSelectedIdx = oldSelectedIdx + 1;
         } else if (keyCode === RETURN_KEY_CODE || keyCode === TAB_KEY_CODE) {
+          // accept selected suggestion
           this.refs.tagInput.getDOMNode().value = '';
           this.pushTag(this.state.filteredCompletions[oldSelectedIdx]);
         } else {
+          // non-special keys are allowed to pass through
           return;
         }
     } else if (keyCode === RETURN_KEY_CODE) {
+      // no completions selected; add currently inputed text
       var input = this.refs.tagInput.getDOMNode(),
           value = input.value;
       this.pushTag(value);
       input.value = '';
       return;
     } else {
+      // no completions selected, not a special key, let it through
       return;
     }
 
