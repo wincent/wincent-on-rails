@@ -22,8 +22,11 @@ var TagAutocomplete = React.createClass({
 
   render: function() {
     var completions = this.state.completions.map(function(completion, i) {
-      return <li key={i}>{completion}</li>;
-    });
+      if (this.props.selectedIdx === i) {
+        var className = TagAutocompleteStyleRules.selected;
+      }
+      return <li key={i} className={className}>{completion}</li>;
+    }.bind(this));
 
     return (
       <div className={TagAutocompleteStyleRules.tagAutocomplete}>

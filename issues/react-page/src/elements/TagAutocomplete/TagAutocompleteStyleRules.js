@@ -29,7 +29,7 @@ var TagAutocompleteStyleRules = ReactStyle.create({
   '.tagAutocomplete li:last-child' : {
     border : 0
   },
-  '.tagAutocomplete li:hover, .tagAutocomplete li:focus' : {
+  '.tagAutocomplete li:hover, .tagAutocomplete li:focus, .tagAutocomplete li.selected' : {
     background: '#efefef'
   },
   '.tagAutocomplete li:active' : {
