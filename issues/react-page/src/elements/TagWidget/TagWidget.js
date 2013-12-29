@@ -95,6 +95,8 @@ var TagWidget = React.createClass({
     // entire thing gets eaten
     if (newTag.length) {
       this.state.tags.push(newTag);
+      this.state.autocompleteSelectedIdx = undefined;
+      this.state.filteredCompletions = [];
       this.setState(this.state);
     }
   },
