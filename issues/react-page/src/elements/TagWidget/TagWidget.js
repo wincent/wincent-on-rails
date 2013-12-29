@@ -68,7 +68,7 @@ var TagWidget = React.createClass({
         completions    = this.state.filteredCompletions,
         maxSelectedIdx = completions.length - 1, // -1 if no completions
         oldSelectedIdx = this.state.autocompleteSelectedIdx,
-        newSelectedIdx = oldSelectedIdx;
+        newSelectedIdx;
 
     if (typeof oldSelectedIdx === "undefined" &&
         maxSelectedIdx >= 0 &&
@@ -79,10 +79,9 @@ var TagWidget = React.createClass({
           newSelectedIdx = oldSelectedIdx - 1;
         } else if (keyCode === DOWN_KEY_CODE && oldSelectedIdx < maxSelectedIdx) {
           newSelectedIdx = oldSelectedIdx + 1;
-        } else if (keyCode === RETURN_KEY_CODE) {
+        } else if (keyCode === RETURN_KEY_CODE || keyCode === TAB_KEY_CODE) {
           this.refs.tagInput.getDOMNode().value = '';
           this.pushTag(this.state.filteredCompletions[oldSelectedIdx]);
-          return;
         } else {
           return;
         }
