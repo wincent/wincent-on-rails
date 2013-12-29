@@ -20,16 +20,13 @@ ReactStyle.addRules(TagWidgetStyleRules);
 var TagWidget = React.createClass({
   getInitialState: function() {
     return {
-      tags:                 ['foo', 'bar', 'foo.bar'],
+      tags:                 [],
       availableCompletions: ['git', 'javascript', 'os.x', 'rails', 'ruby', 'security'],
       filteredCompletions:  []
     };
   },
 
   componentDidMount: function() {
-  },
-
-  componentWillUnmount: function() {
   },
 
   // Takes the available completions and filters them based on TagInput value
@@ -51,6 +48,7 @@ var TagWidget = React.createClass({
     }
   },
 
+  // re-filter the autocomplete list on any input
   handleChange: function(event) {
     var tagInput = this.refs.tagInput.getDOMNode();
     if (event.target === tagInput) {
@@ -83,8 +81,7 @@ var TagWidget = React.createClass({
           newSelectedIdx = oldSelectedIdx + 1;
         } else if (keyCode === RETURN_KEY_CODE) {
           this.refs.tagInput.getDOMNode().value = '';
-          // FIXME: this method is no longer a callback, so should have a different name
-          this.handleTagPush(this.state.filteredCompletions[oldSelectedIdx]);
+          this.pushTag(this.state.filteredCompletions[oldSelectedIdx]);
           return;
         } else {
           return;
@@ -92,8 +89,7 @@ var TagWidget = React.createClass({
     } else if (keyCode === RETURN_KEY_CODE) {
       var input = this.refs.tagInput.getDOMNode(),
           value = input.value;
-      // FIXME: this method is no longer a callback, so should have a different name
-      this.handleTagPush(value);
+      this.pushTag(value);
       input.value = '';
       return;
     } else {
@@ -105,8 +101,7 @@ var TagWidget = React.createClass({
     this.setState(this.state);
   },
 
-  // called whenever the child TagInput component is used to add a new tag
-  handleTagPush: function(newTag) {
+  pushTag: function(newTag) {
     newTag = newTag
       .trim()
       .toLowerCase()
@@ -114,13 +109,15 @@ var TagWidget = React.createClass({
       .replace(/[^a-z0-9.]+/gi, ''); // all other illegal chars get eaten
 
     // NOTE: might want to provide better feedback for the edge case where the
-    // entire thing gets eaten
-    if (newTag.length) {
+    // entire thing gets eaten, or the tag is a dupe
+    if (newTag.length && this.state.tags.indexOf(newTag) === -1) {
+      // tag is non-zero width after sanitization, and not a dupe
       this.state.tags.push(newTag);
-      this.state.autocompleteSelectedIdx = undefined;
-      this.state.filteredCompletions = [];
-      this.setState(this.state);
     }
+
+    this.state.autocompleteSelectedIdx = undefined;
+    this.state.filteredCompletions = [];
+    this.setState(this.state);
   },
 
   handleTagPop: function() {
