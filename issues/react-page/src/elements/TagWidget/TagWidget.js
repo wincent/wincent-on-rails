@@ -19,7 +19,7 @@ var TagWidget = React.createClass({
   getInitialState: function() {
     return {
       tags:                 ['foo', 'bar', 'foo.bar'],
-      availableCompletions: ['git', 'javascript', 'os.x', 'rails', 'security'],
+      availableCompletions: ['git', 'javascript', 'os.x', 'rails', 'ruby', 'security'],
       filteredCompletions:  []
     };
   },

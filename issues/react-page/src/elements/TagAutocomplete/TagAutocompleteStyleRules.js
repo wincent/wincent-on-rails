@@ -10,6 +10,8 @@ var TagAutocompleteStyleRules = ReactStyle.create({
     top        : '100%',
     display    : 'none',
     left       : 0,
+    maxHeight  : '1000%', // show no more than 10 autocomplete entries
+    overflowY  : 'scroll',
     position   : 'absolute',
     width      : '100%',
   },
