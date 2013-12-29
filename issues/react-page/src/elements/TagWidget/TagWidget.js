@@ -35,8 +35,10 @@ var TagWidget = React.createClass({
       return []; // don't show suggestions if user hasn't inputed anything
     } else {
       return this.state.availableCompletions.filter(function(completion) {
-        return completion.indexOf(string) !== -1;
-      });
+        // candidate must match, and must not already be present in tags list
+        return completion.indexOf(string) !== -1 &&
+        this.state.tags.indexOf(completion) === -1;
+      }.bind(this));
     }
   },
 
