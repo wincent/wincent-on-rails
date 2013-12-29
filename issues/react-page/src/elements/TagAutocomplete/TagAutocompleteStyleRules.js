@@ -38,7 +38,7 @@ var TagAutocompleteStyleRules = ReactStyle.create({
     background: '#efefef'
   },
   '.tagAutocomplete li:active' : {
-    background: '#ffea00'
+    background: '#ddd'
   }
 });
 
