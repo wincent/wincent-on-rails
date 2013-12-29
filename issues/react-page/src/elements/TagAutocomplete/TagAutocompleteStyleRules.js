@@ -13,6 +13,9 @@ var TagAutocompleteStyleRules = ReactStyle.create({
     position   : 'absolute',
     width      : '100%',
   },
+  '.tagAutocomplete.active' : {
+    display : 'block'
+  },
   '.tagAutocomplete ul' : {
     listStyleType : 'none',
     margin        : 0,

@@ -11,7 +11,7 @@ ReactStyle.addRules(TagAutocompleteStyleRules);
 
 var TagAutocomplete = React.createClass({
   getInitialState: function() {
-    return { completions: ['git', 'javascript', 'os.x', 'rails', 'security'] };
+    return {};
   },
 
   componentDidMount: function() {
@@ -21,15 +21,18 @@ var TagAutocomplete = React.createClass({
   },
 
   render: function() {
-    var completions = this.state.completions.map(function(completion, i) {
+    var completions = this.props.completions.map(function(completion, i) {
       if (this.props.selectedIdx === i) {
         var className = TagAutocompleteStyleRules.selected;
       }
       return <li key={i} className={className}>{completion}</li>;
     }.bind(this));
 
+    var className = TagAutocompleteStyleRules.tagAutocomplete +
+      (this.props.completions.length ? ' ' + TagAutocompleteStyleRules.active : '');
+
     return (
-      <div className={TagAutocompleteStyleRules.tagAutocomplete}>
+      <div className={className}>
         <ul>
           {completions}
         </ul>

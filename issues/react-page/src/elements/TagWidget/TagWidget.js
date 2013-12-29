@@ -17,13 +17,24 @@ ReactStyle.addRules(TagWidgetStyleRules);
 
 var TagWidget = React.createClass({
   getInitialState: function() {
-    return { tags: ['foo', 'bar', 'foo.bar'] };
+    return {
+      tags:                 ['foo', 'bar', 'foo.bar'],
+      availableCompletions: ['git', 'javascript', 'os.x', 'rails', 'security'],
+      filteredCompletions:  []
+    };
   },
 
   componentDidMount: function() {
   },
 
   componentWillUnmount: function() {
+  },
+
+  // Takes the available completions and filters them based on TagInput value
+  filterCompletions: function(string) {
+    return this.state.availableCompletions.filter(function(completion) {
+      return completion.indexOf(string) !== -1;
+    });
   },
 
   handleClick: function(event) {
@@ -34,14 +45,29 @@ var TagWidget = React.createClass({
     }
   },
 
+  handleChange: function(event) {
+    var tagInput = this.refs.tagInput.getDOMNode();
+    if (event.target === tagInput) {
+      var oldList = this.state.filteredCompletions,
+          newList = this.filterCompletions(tagInput.value);
+
+      if (newList.length !== oldList.length ||
+          newList.some(function(string, idx) { return oldList[idx] !== string; })) {
+        this.state.filteredCompletions = newList;
+        this.setState(this.state);
+      }
+    }
+  },
+
   handleKeyDown: function(event) {
     var keyCode        = event.keyCode,
-        maxSelectedIdx = 4, // TODO: put real value here
+        completions    = this.state.filteredCompletions,
+        maxSelectedIdx = completions.length - 1, // -1 if no completions
         oldSelectedIdx = this.state.autocompleteSelectedIdx,
         newSelectedIdx;
 
     if (typeof oldSelectedIdx === "undefined" &&
-        typeof maxSelectedIdx !== "undefined" &&
+        maxSelectedIdx >= 0 &&
         keyCode === DOWN_KEY_CODE) {
       newSelectedIdx = 0;
     } else if (keyCode === UP_KEY_CODE && oldSelectedIdx > 0) {
@@ -93,6 +119,7 @@ var TagWidget = React.createClass({
 
     return (
       <div className={TagWidgetStyleRules.tagWidget}
+           onChange={this.handleChange}
            onClick={this.handleClick}
            onDragStart={this.handleDragStart}
            onKeyDown={this.handleKeyDown}>
@@ -100,7 +127,8 @@ var TagWidget = React.createClass({
         <TagInput ref="tagInput"
                   onTagPush={this.handleTagPush}
                   onTagPop={this.handleTagPop} />
-        <TagAutocomplete selectedIdx={this.state.autocompleteSelectedIdx} />
+        <TagAutocomplete completions={this.state.filteredCompletions}
+                         selectedIdx={this.state.autocompleteSelectedIdx} />
       </div>
     );
   },
