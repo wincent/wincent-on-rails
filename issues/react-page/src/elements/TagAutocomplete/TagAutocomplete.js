@@ -15,10 +15,11 @@ var TagAutocomplete = React.createClass({
   },
 
   handleMouseEnter: function(event) {
-    // something weird here: mouseOver, mouseExit etc don't appear to fire, and
-    // "mouseEnter" events are only useful if we unpack them as below (because
-    // the nativeEvent here appears to be a mouseOut event); not at all clear
-    // that this will work cross-browser
+    // at the moment React supports mouseEnter but not mouseOver (see:
+    // https://github.com/facebook/react/issues/340); this is fine, as
+    // mouseEnter is actually better, but it also explains why things look a
+    // little weird here: we have to "unpack" the native event below, and it
+    // appears to be a mouseOut event under the covers
     this.props.onTagSelect(event.nativeEvent.toElement);
   },
 
