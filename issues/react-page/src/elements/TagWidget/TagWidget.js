@@ -73,7 +73,11 @@ var TagWidget = React.createClass({
         oldSelectedIdx = this.state.autocompleteSelectedIdx,
         newSelectedIdx;
 
-    if (typeof oldSelectedIdx === "undefined" &&
+    if (keyCode === ESCAPE_KEY_CODE) {
+      var input = this.refs.tagInput.getDOMNode();
+      input.blur();
+      this.state.filteredCompletions = [];
+    } else if (typeof oldSelectedIdx === "undefined" &&
         maxSelectedIdx >= 0 &&
         keyCode === DOWN_KEY_CODE) {
       // first time here, and there are completions available; select first
@@ -88,10 +92,6 @@ var TagWidget = React.createClass({
           // accept selected suggestion
           this.refs.tagInput.getDOMNode().value = '';
           this.pushTag(this.state.filteredCompletions[oldSelectedIdx]);
-        } else if (keyCode === ESCAPE_KEY_CODE) {
-          var input = this.refs.tagInput.getDOMNode();
-          input.blur();
-          this.state.filteredCompletions = [];
         } else {
           // non-special keys are allowed to pass through
           return;
@@ -103,10 +103,6 @@ var TagWidget = React.createClass({
       this.pushTag(value);
       input.value = '';
       return;
-    } else if (keyCode === ESCAPE_KEY_CODE) {
-      var input = this.refs.tagInput.getDOMNode();
-      input.blur();
-      this.state.filteredCompletions = [];
     } else {
       // no completions selected, not a special key, let it through
       return;
