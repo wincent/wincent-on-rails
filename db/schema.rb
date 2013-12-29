@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130421200936) do
+ActiveRecord::Schema.define(version: 20131229202052) do
 
   create_table "articles", force: true do |t|
     t.string   "title"
@@ -261,6 +261,7 @@ ActiveRecord::Schema.define(version: 20130421200936) do
   end
 
   add_index "tags", ["name"], name: "index_tags_on_name", unique: true, using: :btree
+  add_index "tags", ["taggings_count", "name"], name: "index_tags_on_taggings_count_and_name", using: :btree
 
   create_table "topics", force: true do |t|
     t.string   "title"
