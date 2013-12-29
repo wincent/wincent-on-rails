@@ -12,6 +12,7 @@ var React               = require("React"),
 
 var TAB_KEY_CODE       = 9,  // accept autocomplete suggestion
     RETURN_KEY_CODE    = 13, // add tag/accept autocomplete suggestion
+    ESCAPE_KEY_CODE    = 27, // blur input field/close autocomplete menu
     UP_KEY_CODE        = 38, // previous autocomplete suggestion
     DOWN_KEY_CODE      = 40; // next autocomplete suggestion
 
@@ -87,6 +88,10 @@ var TagWidget = React.createClass({
           // accept selected suggestion
           this.refs.tagInput.getDOMNode().value = '';
           this.pushTag(this.state.filteredCompletions[oldSelectedIdx]);
+        } else if (keyCode === ESCAPE_KEY_CODE) {
+          var input = this.refs.tagInput.getDOMNode();
+          input.blur();
+          this.state.filteredCompletions = [];
         } else {
           // non-special keys are allowed to pass through
           return;
@@ -98,6 +103,10 @@ var TagWidget = React.createClass({
       this.pushTag(value);
       input.value = '';
       return;
+    } else if (keyCode === ESCAPE_KEY_CODE) {
+      var input = this.refs.tagInput.getDOMNode();
+      input.blur();
+      this.state.filteredCompletions = [];
     } else {
       // no completions selected, not a special key, let it through
       return;

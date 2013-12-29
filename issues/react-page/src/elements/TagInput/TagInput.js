@@ -7,8 +7,7 @@ var React              = require("React"),
     ReactStyle         = require("ReactStyle"),
     TagInputStyleRules = require("./TagInputStyleRules");
 
-var BACKSPACE_KEY_CODE = 8,  // delete tag
-    ESCAPE_KEY_CODE    = 27; // blur input field
+var BACKSPACE_KEY_CODE = 8;  // delete tag
 
 ReactStyle.addRules(TagInputStyleRules);
 
@@ -24,9 +23,7 @@ var TagInput = React.createClass({
     var keyCode = event.keyCode,
         input   = this.getDOMNode();
 
-    if (keyCode === ESCAPE_KEY_CODE) {
-      input.blur();
-    } else if (keyCode === BACKSPACE_KEY_CODE) {
+    if (keyCode === BACKSPACE_KEY_CODE) {
       if (input.selectionStart !== 0 && input.selectionEnd !== 0) {
         this.pendingDeletion = true;
       } else if (input.selectionStart === 0 &&
