@@ -32,9 +32,13 @@ var TagWidget = React.createClass({
 
   // Takes the available completions and filters them based on TagInput value
   filterCompletions: function(string) {
-    return this.state.availableCompletions.filter(function(completion) {
-      return completion.indexOf(string) !== -1;
-    });
+    if (string === "") {
+      return []; // don't show suggestions if user hasn't inputed anything
+    } else {
+      return this.state.availableCompletions.filter(function(completion) {
+        return completion.indexOf(string) !== -1;
+      });
+    }
   },
 
   handleClick: function(event) {
