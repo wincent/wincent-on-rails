@@ -22,12 +22,27 @@ var TagWidget = React.createClass({
   getInitialState: function() {
     return {
       tags:                 [],
-      availableCompletions: ['git', 'javascript', 'os.x', 'rails', 'ruby', 'security'],
+      availableCompletions: [],
       filteredCompletions:  []
     };
   },
 
   componentDidMount: function() {
+    // get available completions from the server
+    var request = new XMLHttpRequest();
+    request.open("GET", "/tags.json");
+
+    request.onreadystatechange = function() {
+      if (request.status === 200 && request.readyState === 4) {
+        var tags = JSON.parse(request.responseText);
+        this.state.availableCompletions = tags.map(function(tag) {
+          return tag.name;
+        });
+        this.setState(this.state);
+      }
+    }.bind(this);
+
+    request.send();
   },
 
   // Takes the available completions and filters them based on TagInput value
