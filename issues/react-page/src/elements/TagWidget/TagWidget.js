@@ -79,7 +79,7 @@ var TagWidget = React.createClass({
       this.state.filteredCompletions = [];
     } else if (typeof oldSelectedIdx === "undefined" &&
         maxSelectedIdx >= 0 &&
-        keyCode === DOWN_KEY_CODE) {
+        (keyCode === DOWN_KEY_CODE || keyCode === TAB_KEY_CODE)) {
       // first time here, and there are completions available; select first
       newSelectedIdx = 0;
     } else if (typeof oldSelectedIdx !== "undefined") {
