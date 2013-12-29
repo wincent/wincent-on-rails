@@ -137,8 +137,7 @@ var TagWidget = React.createClass({
 
   render: function() {
     var tagPills = this.state.tags.map(function(name) {
-      return <TagPill name={name}
-                      onTagDelete={this.handleTagDelete} />;
+      return <TagPill name={name} onTagDelete={this.handleTagDelete} />;
     }.bind(this));
 
     return (
@@ -148,9 +147,7 @@ var TagWidget = React.createClass({
            onDragStart={this.handleDragStart}
            onKeyDown={this.handleKeyDown}>
         {tagPills}
-        <TagInput ref="tagInput"
-                  onTagPush={this.handleTagPush}
-                  onTagPop={this.handleTagPop} />
+        <TagInput ref="tagInput" onTagPop={this.handleTagPop} />
         <TagAutocomplete completions={this.state.filteredCompletions}
                          selectedIdx={this.state.autocompleteSelectedIdx} />
       </div>

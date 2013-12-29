@@ -13,10 +13,6 @@ var BACKSPACE_KEY_CODE = 8,  // delete tag
 ReactStyle.addRules(TagInputStyleRules);
 
 var TagInput = React.createClass({
-  getInitialState: function() {
-    return {};
-  },
-
   handleInput: function(event) {
     // resize dynamically
     var input    = event.target,
@@ -25,8 +21,8 @@ var TagInput = React.createClass({
   },
 
   handleKeyDown: function(event) {
-    var keyCode  = event.keyCode,
-        input    = this.getDOMNode();
+    var keyCode = event.keyCode,
+        input   = this.getDOMNode();
 
     if (keyCode === ESCAPE_KEY_CODE) {
       input.blur();

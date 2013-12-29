@@ -10,16 +10,6 @@ var React             = require("React"),
 ReactStyle.addRules(TagPillStyleRules);
 
 var TagPill = React.createClass({
-  getInitialState: function() {
-    return {};
-  },
-
-  componentDidMount: function() {
-  },
-
-  componentWillMount: function() {
-  },
-
   handleDelete: function(event) {
     event.preventDefault();
     this.props.onTagDelete(this.props.name);
