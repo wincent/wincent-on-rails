@@ -10,16 +10,6 @@ var React                     = require("React"),
 ReactStyle.addRules(TagAutocompleteStyleRules);
 
 var TagAutocomplete = React.createClass({
-  getInitialState: function() {
-    return {};
-  },
-
-  componentDidMount: function() {
-  },
-
-  componentWillMount: function() {
-  },
-
   render: function() {
     var completions = this.props.completions.map(function(completion, i) {
       if (this.props.selectedIdx === i) {
