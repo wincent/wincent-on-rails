@@ -10,7 +10,9 @@ var React               = require("React"),
     TagPill             = require("../TagPill/TagPill"),
     TagWidgetStyleRules = require("../TagWidget/TagWidgetStyleRules");
 
-var UP_KEY_CODE        = 38, // previous autocomplete suggestion
+var TAB_KEY_CODE       = 9,  // accept autocomplete suggestion
+    RETURN_KEY_CODE    = 13, // add tag/accept autocomplete suggestion
+    UP_KEY_CODE        = 38, // previous autocomplete suggestion
     DOWN_KEY_CODE      = 40; // next autocomplete suggestion
 
 ReactStyle.addRules(TagWidgetStyleRules);
@@ -68,16 +70,32 @@ var TagWidget = React.createClass({
         completions    = this.state.filteredCompletions,
         maxSelectedIdx = completions.length - 1, // -1 if no completions
         oldSelectedIdx = this.state.autocompleteSelectedIdx,
-        newSelectedIdx;
+        newSelectedIdx = oldSelectedIdx;
 
     if (typeof oldSelectedIdx === "undefined" &&
         maxSelectedIdx >= 0 &&
         keyCode === DOWN_KEY_CODE) {
       newSelectedIdx = 0;
-    } else if (keyCode === UP_KEY_CODE && oldSelectedIdx > 0) {
-      newSelectedIdx = oldSelectedIdx - 1;
-    } else if (keyCode === DOWN_KEY_CODE && oldSelectedIdx < maxSelectedIdx) {
-      newSelectedIdx = oldSelectedIdx + 1;
+    } else if (typeof oldSelectedIdx !== "undefined") {
+        if (keyCode === UP_KEY_CODE && oldSelectedIdx > 0) {
+          newSelectedIdx = oldSelectedIdx - 1;
+        } else if (keyCode === DOWN_KEY_CODE && oldSelectedIdx < maxSelectedIdx) {
+          newSelectedIdx = oldSelectedIdx + 1;
+        } else if (keyCode === RETURN_KEY_CODE) {
+          this.refs.tagInput.getDOMNode().value = '';
+          // FIXME: this method is no longer a callback, so should have a different name
+          this.handleTagPush(this.state.filteredCompletions[oldSelectedIdx]);
+          return;
+        } else {
+          return;
+        }
+    } else if (keyCode === RETURN_KEY_CODE) {
+      var input = this.refs.tagInput.getDOMNode(),
+          value = input.value;
+      // FIXME: this method is no longer a callback, so should have a different name
+      this.handleTagPush(value);
+      input.value = '';
+      return;
     } else {
       return;
     }

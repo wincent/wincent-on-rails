@@ -7,21 +7,14 @@ var React              = require("React"),
     ReactStyle         = require("ReactStyle"),
     TagInputStyleRules = require("./TagInputStyleRules");
 
-var BACKSPACE_KEY_CODE = 8,
-    RETURN_KEY_CODE    = 13,
-    ESCAPE_KEY_CODE    = 27;
+var BACKSPACE_KEY_CODE = 8,  // delete tag
+    ESCAPE_KEY_CODE    = 27; // blur input field
 
 ReactStyle.addRules(TagInputStyleRules);
 
 var TagInput = React.createClass({
   getInitialState: function() {
     return {};
-  },
-
-  componentDidMount: function() {
-  },
-
-  componentWillMount: function() {
   },
 
   handleInput: function(event) {
@@ -33,13 +26,9 @@ var TagInput = React.createClass({
 
   handleKeyDown: function(event) {
     var keyCode  = event.keyCode,
-        input    = this.getDOMNode(),
-        value    = input.value;
+        input    = this.getDOMNode();
 
-    if (keyCode === RETURN_KEY_CODE) {
-      this.props.onTagPush(value);
-      input.value = '';
-    } else if (keyCode === ESCAPE_KEY_CODE) {
+    if (keyCode === ESCAPE_KEY_CODE) {
       input.blur();
     } else if (keyCode === BACKSPACE_KEY_CODE) {
       if (input.selectionStart !== 0 && input.selectionEnd !== 0) {
