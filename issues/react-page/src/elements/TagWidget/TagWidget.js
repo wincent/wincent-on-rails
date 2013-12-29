@@ -139,6 +139,14 @@ var TagWidget = React.createClass({
     this.pushTag(newTag);
   },
 
+  // callback invokved when someone "selects" an autocomplete suggestion via
+  // mouseEnter
+  handleTagSelect: function(element) {
+    var tagIdx = this.state.filteredCompletions.indexOf(element.innerHTML);
+    this.state.autocompleteSelectedIdx = tagIdx;
+    this.setState(this.state);
+  },
+
   handleTagPop: function() {
     if (this.state.tags.length) {
       this.state.tags.pop();
@@ -166,7 +174,8 @@ var TagWidget = React.createClass({
         <TagInput ref="tagInput" onTagPop={this.handleTagPop} />
         <TagAutocomplete completions={this.state.filteredCompletions}
                          selectedIdx={this.state.autocompleteSelectedIdx}
-                         onTagPush={this.handleTagPush} />
+                         onTagPush={this.handleTagPush}
+                         onTagSelect={this.handleTagSelect} />
       </div>
     );
   },
