@@ -34,10 +34,7 @@ var TagWidget = React.createClass({
 
     request.onreadystatechange = function() {
       if (request.status === 200 && request.readyState === 4) {
-        var tags = JSON.parse(request.responseText);
-        this.state.availableCompletions = tags.map(function(tag) {
-          return tag.name;
-        });
+        this.state.availableCompletions = JSON.parse(request.responseText);
         this.setState(this.state);
       }
     }.bind(this);
