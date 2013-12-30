@@ -30,6 +30,12 @@ var TagPill = React.createClass({
     if (this.props.isDuplicate) {
       className += " " + TagPillStyleRules.duplicate;
     }
+    if (this.props.isPendingAddition) {
+      className += " " + TagPillStyleRules.pendingAddition;
+    }
+    if (this.props.isPendingRemoval) {
+      className += " " + TagPillStyleRules.pendingRemoval;
+    }
 
     return (
       <span className={className}

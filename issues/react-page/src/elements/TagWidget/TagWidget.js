@@ -24,6 +24,8 @@ var TagWidget = React.createClass({
       tags:                    [],
       availableCompletions:    [],
       filteredCompletions:     [],
+      pendingAddition:         [], // for styling purposes
+      pendingRemoval:          [], // for styling purposes
       autocompleteSelectedIdx: undefined,
       duplicateTag:            undefined
     };
@@ -150,6 +152,14 @@ var TagWidget = React.createClass({
       if (this.state.tags.indexOf(newTag) === -1) {
         // tag is not a dupe
         this.state.tags.push(newTag);
+        this.state.pendingAddition.push(newTag);
+
+        // DEBUGGING
+        setTimeout(function() {
+          this.state.pendingAddition.pop();
+          this.setState(this.state);
+        }.bind(this), 1000);
+
       } else {
         // tag is a dupe
         this.state.duplicateTag = newTag;
@@ -179,7 +189,15 @@ var TagWidget = React.createClass({
   handleTagPop: function() {
     if (this.state.tags.length) {
       this.clearDuplicateMarker();
-      this.state.tags.pop();
+      var popped = this.state.tags.pop();
+      this.state.pendingRemoval.push(popped);
+
+      // DEBUGGING
+      setTimeout(function() {
+        this.state.pendingRemoval.pop();
+        this.setState(this.state);
+      }.bind(this), 1000);
+
       this.setState(this.state);
     }
   },
@@ -187,13 +205,27 @@ var TagWidget = React.createClass({
   handleTagDelete: function(name) {
     this.clearDuplicateMarker();
     this.state.tags.splice(this.state.tags.indexOf(name), 1);
+    this.state.pendingRemoval.push(name);
+
+    // DEBUGGING
+    setTimeout(function() {
+      this.state.pendingRemoval.pop();
+      this.setState(this.state);
+    }.bind(this), 1000);
+
     this.setState(this.state);
   },
 
   render: function() {
     var tagPills = this.state.tags.map(function(name) {
+      var isDuplicate       = name === this.state.duplicateTag,
+          isPendingAddition = this.state.pendingAddition.indexOf(name) !== -1,
+          isPendingRemoval  = this.state.pendingRemoval.indexOf(name) !== -1;
+
       return <TagPill name={name}
-                      isDuplicate={name === this.state.duplicateTag}
+                      isDuplicate={isDuplicate}
+                      isPendingAddition={isPendingAddition}
+                      isPendingRemoval={isPendingRemoval}
                       onTagDelete={this.handleTagDelete} />;
     }.bind(this));
 

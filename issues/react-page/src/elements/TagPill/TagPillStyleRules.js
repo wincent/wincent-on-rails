@@ -37,7 +37,14 @@ var TagPillStyleRules = ReactStyle.create({
     opacity : '.4'
   },
   '.tagPill.duplicate' : {
-    borderColor: '#f00'
+    borderColor : '#f00'
+  },
+  '.tagPill.pendingAddition' : {
+    opacity : '.75'
+  },
+  '.tagPill.pendingRemoval' : {
+    background : 'hsl(230, 0, 74.5%)', // desaturate
+    opacity : '.5'
   }
 });
 
