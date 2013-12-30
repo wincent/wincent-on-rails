@@ -30,11 +30,8 @@ var TagPill = React.createClass({
     if (this.props.isDuplicate) {
       className += " " + TagPillStyleRules.duplicate;
     }
-    if (this.props.isPendingAddition) {
-      className += " " + TagPillStyleRules.pendingAddition;
-    }
-    if (this.props.isPendingRemoval) {
-      className += " " + TagPillStyleRules.pendingRemoval;
+    if (this.props.isPending) {
+      className += " " + TagPillStyleRules.pending;
     }
 
     return (
