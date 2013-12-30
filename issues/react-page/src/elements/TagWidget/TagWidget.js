@@ -57,6 +57,13 @@ var TagWidget = React.createClass({
     }
   },
 
+  clearDuplicateMarker: function() {
+    if (this.state.duplicateTag) {
+      this.state.duplicateTag = undefined;
+      this.setState(this.state);
+    }
+  },
+
   handleClick: function(event) {
     // if outside of input area, focus input
     var tagInput = this.refs.tagInput.getDOMNode();
@@ -79,10 +86,7 @@ var TagWidget = React.createClass({
         this.setState(this.state);
       }
 
-      if (this.state.duplicateTag) {
-        this.state.duplicateTag = undefined;
-        this.setState(this.state);
-      }
+      this.clearDuplicateMarker();
     }
   },
 
@@ -180,6 +184,7 @@ var TagWidget = React.createClass({
   },
 
   handleTagDelete: function(name) {
+    this.clearDuplicateMarker();
     this.state.tags.splice(this.state.tags.indexOf(name), 1);
     this.setState(this.state);
   },
