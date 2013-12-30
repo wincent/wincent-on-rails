@@ -35,6 +35,9 @@ var TagPillStyleRules = ReactStyle.create({
   },
   '.tagPill.dragging' : {
     opacity : '.4'
+  },
+  '.tagPill.duplicate' : {
+    borderColor: '#f00'
   }
 });
 

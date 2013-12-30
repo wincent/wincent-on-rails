@@ -21,9 +21,11 @@ ReactStyle.addRules(TagWidgetStyleRules);
 var TagWidget = React.createClass({
   getInitialState: function() {
     return {
-      tags:                 [],
-      availableCompletions: [],
-      filteredCompletions:  []
+      tags:                    [],
+      availableCompletions:    [],
+      filteredCompletions:     [],
+      autocompleteSelectedIdx: undefined,
+      duplicateTag:            undefined
     };
   },
 
@@ -63,7 +65,8 @@ var TagWidget = React.createClass({
     }
   },
 
-  // re-filter the autocomplete list on any input
+  // re-filter the autocomplete list on any input,
+  // clear duplicate indicator
   handleChange: function(event) {
     var tagInput = this.refs.tagInput.getDOMNode();
     if (event.target === tagInput) {
@@ -73,6 +76,11 @@ var TagWidget = React.createClass({
       if (newList.length !== oldList.length ||
           newList.some(function(string, idx) { return oldList[idx] !== string; })) {
         this.state.filteredCompletions = newList;
+        this.setState(this.state);
+      }
+
+      if (this.state.duplicateTag) {
+        this.state.duplicateTag = undefined;
         this.setState(this.state);
       }
     }
@@ -133,10 +141,15 @@ var TagWidget = React.createClass({
       .replace(/[^a-z0-9.]+/gi, ''); // all other illegal chars get eaten
 
     // NOTE: might want to provide better feedback for the edge case where the
-    // entire thing gets eaten, or the tag is a dupe
-    if (newTag.length && this.state.tags.indexOf(newTag) === -1) {
-      // tag is non-zero width after sanitization, and not a dupe
-      this.state.tags.push(newTag);
+    // entire thing gets eaten
+    if (newTag.length) {
+      if (this.state.tags.indexOf(newTag) === -1) {
+        // tag is not a dupe
+        this.state.tags.push(newTag);
+      } else {
+        // tag is a dupe
+        this.state.duplicateTag = newTag;
+      }
     }
 
     this.state.autocompleteSelectedIdx = undefined;
@@ -173,7 +186,9 @@ var TagWidget = React.createClass({
 
   render: function() {
     var tagPills = this.state.tags.map(function(name) {
-      return <TagPill name={name} onTagDelete={this.handleTagDelete} />;
+      return <TagPill name={name}
+                      isDuplicate={name === this.state.duplicateTag}
+                      onTagDelete={this.handleTagDelete} />;
     }.bind(this));
 
     return (

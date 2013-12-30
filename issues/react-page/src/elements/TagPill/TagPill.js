@@ -26,8 +26,13 @@ var TagPill = React.createClass({
   },
 
   render: function() {
+    var className = TagPillStyleRules.tagPill;
+    if (this.props.isDuplicate) {
+      className += " " + TagPillStyleRules.duplicate;
+    }
+
     return (
-      <span className={TagPillStyleRules.tagPill}
+      <span className={className}
             draggable="true"
             onDragStart={this.handleDragStart}
             onDragEnd={this.handleDragEnd}>
