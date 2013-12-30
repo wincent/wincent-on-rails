@@ -4,7 +4,18 @@ class TagsController < ApplicationController
 
   def index
     # BUG: information leak here (should really exclude tags which apply to items we can't access)
-    @tags = Tag.where('taggings_count > 0').order('name')
+    respond_to do |format|
+      format.html do
+        @tags = Tag.where('taggings_count > 0').order('name')
+      end
+
+      # for tag autocomplete widget
+      format.json do
+        render json: Tag.where('taggings_count > 0')
+                        .order('taggings_count DESC')
+                        .pluck(:name)
+      end
+    end
   end
 
   def show
