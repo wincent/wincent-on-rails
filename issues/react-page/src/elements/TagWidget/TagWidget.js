@@ -178,6 +178,7 @@ var TagWidget = React.createClass({
 
   handleTagPop: function() {
     if (this.state.tags.length) {
+      this.clearDuplicateMarker();
       this.state.tags.pop();
       this.setState(this.state);
     }
