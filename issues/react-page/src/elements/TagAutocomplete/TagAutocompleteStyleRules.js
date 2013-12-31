@@ -2,6 +2,9 @@
 
 var ReactStyle = require("ReactStyle");
 
+// show no more than 10 autocomplete entries at a time
+var VISIBLE_AUTOCOMPLETE_ENTRIES = 10;
+
 var TagAutocompleteStyleRules = ReactStyle.create({
   '.tagAutocomplete' : {
     background : '#fff',
@@ -10,7 +13,7 @@ var TagAutocompleteStyleRules = ReactStyle.create({
     top        : '100%',
     display    : 'none',
     left       : 0,
-    maxHeight  : '1000%', // show no more than 10 autocomplete entries
+    maxHeight  : (VISIBLE_AUTOCOMPLETE_ENTRIES * 100) + '%',
     overflowY  : 'scroll',
     position   : 'absolute',
     width      : '100%',
@@ -41,5 +44,7 @@ var TagAutocompleteStyleRules = ReactStyle.create({
     background: '#ddd'
   }
 });
+
+TagAutocompleteStyleRules.VISIBLE_AUTOCOMPLETE_ENTRIES = VISIBLE_AUTOCOMPLETE_ENTRIES;
 
 module.exports = TagAutocompleteStyleRules;

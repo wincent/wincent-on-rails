@@ -10,6 +10,27 @@ var React                     = require("React"),
 ReactStyle.addRules(TagAutocompleteStyleRules);
 
 var TagAutocomplete = React.createClass({
+  componentDidUpdate: function() {
+    var menu      = this.getDOMNode(),
+        selection = this.refs && this.refs.selected && this.refs.selected.getDOMNode();
+
+    if (selection) {
+      // is selection off the bottom of the scrollable area?
+      var count = TagAutocompleteStyleRules.VISIBLE_AUTOCOMPLETE_ENTRIES,
+          delta = selection.offsetTop -
+                  (menu.scrollTop + count * selection.clientHeight);
+      if (delta > 0) {
+        menu.scrollTop += (delta + selection.clientHeight);
+      }
+
+      // is selection off the top of the scrollable area?
+      delta = menu.scrollTop - selection.offsetTop;
+      if (delta > 0) {
+        menu.scrollTop -= delta;
+      }
+    }
+  },
+
   handleClick: function(event) {
     this.props.onTagPush(event.target.innerHTML);
   },
@@ -26,15 +47,21 @@ var TagAutocomplete = React.createClass({
   render: function() {
     var completions = this.props.completions.map(function(completion, i) {
       if (this.props.selectedIdx === i) {
-        var className = TagAutocompleteStyleRules.selected;
+        return (
+          <li className={TagAutocompleteStyleRules.selected}
+              onClick={this.handleClick}
+              onMouseEnter={this.handleMouseEnter}
+              ref="selected">
+            {completion}
+          </li>
+        );
+      } else {
+        return (
+          <li onClick={this.handleClick} onMouseEnter={this.handleMouseEnter}>
+            {completion}
+          </li>
+        );
       }
-      return (
-        <li className={className}
-            onClick={this.handleClick}
-            onMouseEnter={this.handleMouseEnter}>
-          {completion}
-        </li>
-      );
     }.bind(this));
 
     var className = TagAutocompleteStyleRules.tagAutocomplete +
