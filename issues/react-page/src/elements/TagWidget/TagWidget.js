@@ -217,6 +217,9 @@ var TagWidget = React.createClass({
            onDragStart={this.handleDragStart}
            onKeyDown={this.handleKeyDown}>
         {tagPills}
+        <input type="hidden"
+               name={this.props.resourceName}
+               value={this.state.tags.join(" ")} />
         <TagInput ref="tagInput" onTagPop={this.handleTagPop} />
         <TagAutocomplete completions={this.state.filteredCompletions}
                          selectedIdx={this.state.autocompleteSelectedIdx}

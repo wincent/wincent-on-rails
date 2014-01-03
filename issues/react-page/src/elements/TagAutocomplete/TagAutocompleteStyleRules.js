@@ -17,6 +17,7 @@ var TagAutocompleteStyleRules = ReactStyle.create({
     overflowY  : 'scroll',
     position   : 'absolute',
     width      : '100%',
+    zIndex     : '1'
   },
   '.tagAutocomplete.active' : {
     display : 'block'

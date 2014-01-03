@@ -24,7 +24,10 @@ var index = React.createClass({
   render: function() {
     return (
       <SiteBoilerPlate>
-        <TagWidget />
+        {/* example of a tag widget attached to a saved (existing) resource) */}
+        <TagWidget resourceUrl="/issues/1290" />
+        {/* example of a tag widget attached to an unsaved (not-yet-existent) */}
+        <TagWidget resourceName="issues[pending_tags]" />
       </SiteBoilerPlate>
     );
   }
