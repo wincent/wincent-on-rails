@@ -175,7 +175,7 @@ var TagWidget = React.createClass({
 
     // DEBUGGING: replace with actual Ajax request
     setTimeout(function() {
-      this.state.pending.pop();
+      this.state.pending.splice(this.state.pending.indexOf(newTag), 1);
       this.setState(this.state);
     }.bind(this), 1000);
   },
