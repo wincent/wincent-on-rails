@@ -151,14 +151,14 @@ var TagWidget = React.createClass({
       if (this.state.tags.indexOf(newTag) === -1) {
         // tag is not a dupe
         this.state.tags.push(newTag);
-        this.state.pending.push(newTag);
 
-        // DEBUGGING
-        setTimeout(function() {
-          this.state.pending.pop();
+        if (this.props.resourceURL) {
+          // widget is attached to a saved resource; make an Ajax request now
+          this.createTagging(newTag);
+        } else {
+          // widget is attached to an unsaved resource; no immediate Ajax
           this.setState(this.state);
-        }.bind(this), 1000);
-
+        }
       } else {
         // tag is a dupe
         this.state.duplicateTag = newTag;
@@ -168,6 +168,16 @@ var TagWidget = React.createClass({
     this.state.autocompleteSelectedIdx = undefined;
     this.state.filteredCompletions = [];
     this.setState(this.state);
+  },
+
+  createTagging: function(newTag) {
+    this.state.pending.push(newTag);
+
+    // DEBUGGING: replace with actual Ajax request
+    setTimeout(function() {
+      this.state.pending.pop();
+      this.setState(this.state);
+    }.bind(this), 1000);
   },
 
   // callback invoked when someone clicks on an autocomplete suggestion
