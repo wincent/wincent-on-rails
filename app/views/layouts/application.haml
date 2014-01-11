@@ -6,8 +6,8 @@
     = csrf_meta_tags
     %title
       -# TODO: suppress the wincent.com on some pages (products#show, for example)
-      wincent.com:
       = @page_title.presence || controller.controller_name
+      &middot; wincent.com
     = stylesheet_link_tag APP_CONFIG['google_web_fonts'], 'application'
     = render 'shared/google_analytics'
   %body
