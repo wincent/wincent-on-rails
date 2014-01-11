@@ -29,9 +29,19 @@
   -# TODO: add search box here
   =@paginator.pagination_links if @paginator
 %aside
-  -cache :tweets_sidebar, expires_in: 30.minutes do
-    %h2.major Tweets
-    =render 'tweets/tweets.html.haml'
-    %hr
-    %p=link_to 'more tweets', tweets_path
+  %a.twitter-timeline{ 'data-dnt' => true, 'data-widget-id' => '422146193406164992', 'href' => 'https://twitter.com/wincent' }
+    Tweets by @wincent
 .clearboth
+
+- content_for :javascript do
+  :javascript
+    !function(d, s, id) {
+      var js,
+          fjs = d.getElementsByTagName(s)[0];
+      if (!d.getElementById(id)) {
+        js = d.createElement(s);
+        js.id = id;
+        js.src = "https://platform.twitter.com/widgets.js";
+        fjs.parentNode.insertBefore(js, fjs);
+      }
+    }(document, "script", "twitter-wjs");
