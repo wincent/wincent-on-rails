@@ -18,7 +18,7 @@
           %tr
             %td=page.title
             %td=page.permalink
-            %td=page.front? ? icon('ok') : raw('&nbsp;')
+            %td=page.front? ? icon('check') : raw('&nbsp;')
             %td.links=link_to 'edit', edit_product_page_path(@product, page)
 .links
   =link_to 'create a new page', new_product_page_path(@product)

@@ -60,11 +60,11 @@
           #content
             - if flash[:notice]
               #notice
-                %i.icon-info-sign
+                %i.fa.fa-info-circle
                 = raw flash[:notice]
             - if flash[:error]
               #error
-                %i.icon-exclamation-sign
+                %i.fa.fa-exclamation-circle
                 = raw flash[:error]
 
             -# BUG: this is a bit of kludge so that we don't have to define a

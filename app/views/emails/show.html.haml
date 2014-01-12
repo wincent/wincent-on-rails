@@ -7,8 +7,8 @@
     %td=@email.address
   %tr
     %th Verified?
-    %td= icon(@email.default? ? 'check' : 'check-empty')
+    %td= icon(@email.default? ? 'check-square-o' : 'square-o')
     -# TODO: link to re-send verification email; not link to /confirm/new just yet because that only works for currently-logged-in user
   %tr
     %th Default?
-    %td= icon(@email.default? ? 'check' : 'check-empty')
+    %td= icon(@email.default? ? 'check-square-o' : 'square-o')

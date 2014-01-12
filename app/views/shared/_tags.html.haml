@@ -1,5 +1,5 @@
 -# expects taggable local variable to be defined and passed in as:
 -# render 'shared/tags', taggable: @article
 .info
-  = link_to content_tag(:i, '', class: 'icon-tags'), tags_path, class: 'tags-link'
+  = link_to icon('tags'), tags_path, class: 'tags-link'
   = tag_links(taggable)

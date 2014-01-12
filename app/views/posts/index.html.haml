@@ -23,7 +23,7 @@
         - if post.accepts_comments? || post.comments_count > 0
           = link_to comment_count(post.comments_count),
               post_path(post, anchor: 'comments'), class: 'comments-link'
-        = link_to content_tag(:i, '', class: 'icon-tags'), tags_path, class: 'tags-link'
+        = link_to icon('tags'), tags_path, class: 'tags-link'
         = tag_links(post)
   -# TODO: add search box here
   =@paginator.pagination_links if @paginator

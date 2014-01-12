@@ -171,7 +171,7 @@ function ajaxCommentForm(url) {
 })();
 
 function setupPreviewLink(options) {
-  $('<a href="#"><i class="icon-refresh"></i></a>')
+  $('<a href="#"><i class="fa fa-refresh"></i></a>')
     .appendTo('#preview_link')
     .on('click', function() {
       var spinner = new Wincent.Spinner('#preview_link', 'small');

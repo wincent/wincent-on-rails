@@ -67,7 +67,7 @@ module ApplicationHelper
   #   icon('play rotate-180')
   #
   def icon(*names)
-    content_tag :i, '', class: names.map { |name| "icon-#{name}" }.join(' ')
+    content_tag :i, '', class: ['fa'].concat(names.map { |name| "fa-#{name}" }).join(' ')
   end
 
   def annotation(field, *annotation)
