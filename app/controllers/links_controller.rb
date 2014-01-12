@@ -45,7 +45,7 @@ class LinksController < ApplicationController
 
   def update
     respond_to do |format|
-      format.html {
+      format.html do
         if @link.update_attributes params[:link]
           flash[:notice] = 'Successfully updated'
           redirect_to links_path # can't redirect to #show
@@ -53,15 +53,16 @@ class LinksController < ApplicationController
           flash[:error] = 'Update failed'
           render action: :edit
         end
-      }
-      format.js { # an AJAX update
+      end
+
+      format.js do # an AJAX update
         if @link.update_attributes params[:link]
-          render json: @link.to_json(only: %i[uri permalink])
+          render json: {}
         else
-          error = "Update failed: #{@link.flashable_error_string}"
-          render text: error, status: 422
+          render text:   "Update failed: #{@link.flashable_error_string}",
+                 status: 422
         end
-      }
+      end
     end
   end
 
