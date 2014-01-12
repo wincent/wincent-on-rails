@@ -21,3 +21,14 @@
     @media only screen and (min-width: 1024px) { @content; }
   }
 }
+
+// Font Awesome used to include something like this, but it no longer does...
+@mixin icon($icon) {
+  *margin-right: .3em; // fixes ie7 issues
+  -webkit-font-smoothing: antialiased;
+  content: $icon;
+  font-family: FontAwesome;
+  font-style: normal;
+  font-weight: normal;
+  text-decoration: inherit;
+}

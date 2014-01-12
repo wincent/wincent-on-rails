@@ -241,14 +241,14 @@ a {
 }
 
 a.external:after {
-  @include icon($external-link);
+  @include icon($fa-var-external-link);
   display: inline-block;
   margin-left: .25em;
   text-decoration: none;
 }
 
 a.mailto:after {
-  @include icon($envelope-alt);
+  @include icon($fa-var-envelope-o);
   display: inline-block;
   margin-left: .25em;
   text-decoration: none;
@@ -447,19 +447,19 @@ ul.pagination {
   }
 
   .first:before {
-    @include icon($fast-backward);
+    @include icon($fa-var-fast-backward);
   }
 
   .last:after {
-    @include icon($fast-forward);
+    @include icon($fa-var-fast-forward);
   }
 
   .prev:before {
-    @include icon($play);
+    @include icon($fa-var-play);
   }
 
   .next:after {
-    @include icon($play);
+    @include icon($fa-var-play);
   }
 
   .first:before,
@@ -502,14 +502,14 @@ th {
 }
 
 th.ascending a:after {
-  @include icon($sort-up);
+  @include icon($fa-var-sort-desc);
   display: inline-block;
   margin-left: .25em;
   text-decoration: none;
 }
 
 th.descending a:after {
-  @include icon($sort-down);
+  @include icon($fa-var-sort-asc);
   display: inline-block;
   margin-left: .25em;
   text-decoration: none;
@@ -672,7 +672,7 @@ a.tags-link {
   float: left;
 
   &:before {
-    @include icon($comments-alt);
+    @include icon($fa-var-comments-o);
     display: inline-block;
     margin-right: .25em;
     text-decoration: none;
