@@ -2,6 +2,10 @@ source 'https://rubygems.org'
 
 gem 'bundler'
 gem 'closure-compiler'
+
+# TODO: delete this line after non-pre release
+gem 'compass', '1.0.0.alpha.17'
+
 gem 'compass-rails'
 gem 'dalli'
 gem 'haml'
@@ -11,6 +15,10 @@ gem 'protected_attributes' # was in Rails core, extracted in 4.0
 gem 'rails', '4.1.0.beta1'
 gem 'rails-observers' # was in Rails core, extracted in 4.0
 gem 'rake'
+
+# TODO: remove once fix for https://github.com/nex3/sass/issues/1033 appears in a release
+gem 'sass', path: 'vendor/gems/sass'
+
 gem 'sass-rails'
 gem 'unicorn'
 gem 'wikitext'
