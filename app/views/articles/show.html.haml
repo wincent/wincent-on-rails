@@ -8,7 +8,7 @@
 =redirected_from
 .article
   =@article.body.w :base_heading_level => 1
-=render 'shared/tags', :tags => @article.tags
+= render 'shared/tags', taggable: @article
 .links
   -if admin?
     =link_to 'edit', edit_article_path(@article)

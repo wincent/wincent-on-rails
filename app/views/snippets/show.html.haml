@@ -6,7 +6,7 @@
     by
     =mail_to APP_CONFIG['admin_email'], APP_CONFIG['admin_name']
   =@snippet.body_html base_heading_level: 1
-=render 'shared/tags', tags: @snippet.tags
+= render 'shared/tags', taggable: @snippet
 .links
   =link_to 'all snippets', snippets_path
   =link_to 'raw', snippet_path(@snippet, format: :txt)

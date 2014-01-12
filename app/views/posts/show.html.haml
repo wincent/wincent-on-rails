@@ -8,7 +8,7 @@
     =mail_to APP_CONFIG['admin_email'], APP_CONFIG['admin_name']
   .excerpt=@post.excerpt.w :base_heading_level => 1
   #body=@post.body.w :base_heading_level => 1
-=render 'shared/tags', :tags => @post.tags
+= render 'shared/tags', taggable: @post
 %p.links
   -if admin?
     =link_to 'edit', edit_post_path(@post)

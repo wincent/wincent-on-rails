@@ -284,6 +284,10 @@ a.mailto:after {
     float: left;
     width: 70%;
   }
+
+  .info {
+    text-align: right;
+  }
 }
 
 aside {
@@ -588,6 +592,10 @@ ul.taggables {
   padding: 0;
 }
 
+a.tags-link {
+  text-decoration: none;
+}
+
 // general appearance
 
 .when {
@@ -647,12 +655,12 @@ ul.taggables {
     margin-top: -1em;
     margin-bottom: 1em;
   }
+}
 
-  .info {
-    font-size: smaller;
-    padding: 1em;
-    text-align: right;
-  }
+.info {
+  font-size: smaller;
+  color: #ddd;
+  padding: 0;
 }
 
 .comments-link {

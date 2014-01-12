@@ -1,9 +1,5 @@
--# expects tags local variable to be defined and passed in as:
--# render 'shared/tags', :tags => @article.tags
-.cloud
-  %h2 Tags
-  -if tags.nil? or tags.empty?
-    none
-  -else
-    -for tag in tags
-      =scaled_tag tag
+-# expects taggable local variable to be defined and passed in as:
+-# render 'shared/tags', taggable: @article
+.info
+  = link_to content_tag(:i, '', class: 'icon-tags'), tags_path, class: 'tags-link'
+  = tag_links(taggable)
