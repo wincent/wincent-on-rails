@@ -261,7 +261,7 @@ if [ -n "$DO_CHECK" ]; then
     LOCAL_REF=$REF
   fi
   p "  checking: precompiled assets are available"
-  bin/rake REF=$LOCAL_REF assets:deploy:check || bail "precompiled assets are not available (run bin/rake REF=$LOCAL_REF assets:deploy:store)"
+  bin/rake REF=$LOCAL_REF assets:deploy:check || bail "precompiled assets are not available (run rake REF=$LOCAL_REF assets:deploy:store)"
   p "  checking: generated static HTML files up-to-date"
   for HAML in $(ls app/views/public/*.html.haml); do
     git show $LOCAL_REF:$HAML > $TMPDIR/src.html.haml
@@ -269,7 +269,7 @@ if [ -n "$DO_CHECK" ]; then
     STATIC=${STATIC#app/views/} # trim leading directories
     git show $LOCAL_REF:$STATIC > $TMPDIR/static.html
     script/static $TMPDIR/src.html.haml $TMPDIR/out.html
-    diff -q $TMPDIR/out.html $TMPDIR/static.html > /dev/null || bail "static version of $HAML not up-to-date in $LOCAL_REF (run: bin/rake static:generate)"
+    diff -q $TMPDIR/out.html $TMPDIR/static.html > /dev/null || bail "static version of $HAML not up-to-date in $LOCAL_REF (run: rake static:generate)"
   done
   p "  checking: directories exist and are writable"
   run rails test -d $DEPLOY
