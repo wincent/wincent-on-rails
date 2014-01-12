@@ -293,7 +293,7 @@ if [ -n "$DO_CHECK" ]; then
   env SCHEMA=$TMPDIR/schema.HEAD.rb bin/rake --silent db:schema:dump
   git show $LOCAL_REF:db/schema.rb > $TMPDIR/schema.REF.rb
   diff -q -b $TMPDIR/schema.REF.rb $TMPDIR/schema.HEAD.rb > /dev/null || \
-    warn "current schema does not match $LOCAL_REF:db/schema.rb -- did you remember to run rake 'db:schema:dump' and check in the result?"
+    warn "current schema does not match $LOCAL_REF:db/schema.rb -- did you remember to run rake db:schema:dump and check in the result?"
   p "  checking: worktree is clean"
   git diff --quiet || \
     warn "worktree has uncommitted changes -- did the specs really pass against what you're going to deploy?"
