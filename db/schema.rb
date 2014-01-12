@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131229202052) do
+ActiveRecord::Schema.define(version: 20140112011949) do
 
   create_table "articles", force: true do |t|
     t.string   "title"
@@ -153,6 +153,7 @@ ActiveRecord::Schema.define(version: 20131229202052) do
   end
 
   add_index "needles", ["content", "attribute_name"], name: "index_needles_on_content_and_attribute_name", using: :btree
+  add_index "needles", ["model_id", "model_class"], name: "index_needles_on_model_id_and_model_class", using: :btree
 
   create_table "pages", force: true do |t|
     t.string   "title"
