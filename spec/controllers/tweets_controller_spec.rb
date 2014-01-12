@@ -6,14 +6,14 @@ describe TweetsController do
   describe '#index' do
     it 'redirects' do
       get :index
-      response.should redirect_to('https://twitter.com/wincent')
+      response.should redirect_to(APP_CONFIG['twitter_url'])
     end
   end
 
   describe '#show' do
     it 'redirects' do
       get :show, id: '1'
-      response.should redirect_to('https://twitter.com/wincent')
+      response.should redirect_to(APP_CONFIG['twitter_url'])
     end
   end
 end
