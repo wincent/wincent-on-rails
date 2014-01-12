@@ -8,7 +8,8 @@
     "underscore": "~1.5.2",
     "backbone": "~1.0.0",
     "react": "~0.4.1",
-    "bootstrap": "~3.0.0"
+    "bootstrap": "~3.0.0",
+    "modular-scale": "~2.0.3"
   },
   "private": true
 }
