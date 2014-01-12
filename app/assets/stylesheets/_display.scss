@@ -6,11 +6,11 @@ html {
   text-rendering: optimizeLegibility;
 }
 
+@include establish-baseline;
+
 body {
   background: $footer-color;
   font-family: $light-family;
-  font-size: percentage($desired-base-font-size / $browser-base-font-size);
-  line-height: 1.5;
 }
 
 h1,
