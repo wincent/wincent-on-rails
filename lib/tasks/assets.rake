@@ -107,25 +107,17 @@ namespace :assets do
       run!("git rev-parse #{Shellwords.shellescape(ref)}").chomp
     end
 
-    def bower_components
-      Rails.root + 'bower_components'
-    end
-
-    def rails_assets_paths
+    def assets_paths
       Wincent::Application.config.assets.paths.map { |path| Pathname.new(path) }
     end
 
     def fingerprintable_paths
-      [bower_components] + rails_assets_paths
-    end
-
-    def relative_fingerprintable_paths
-      fingerprintable_paths.map { |path| path.relative_path_from(Rails.root) }
+      assets_paths.map { |path| path.relative_path_from(Rails.root) }
     end
 
     def fingerprint
       @fingerprint ||= begin
-        paths     = Shellwords.shelljoin(relative_fingerprintable_paths)
+        paths     = Shellwords.shelljoin(fingerprintable_paths)
         command   = "git ls-tree #{Shellwords.shellescape(ref)} #{paths}"
         path_info = Dir.chdir(Rails.root) { run!(command) }
         Digest::SHA1.hexdigest(path_info)
