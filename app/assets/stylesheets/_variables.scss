@@ -1,13 +1,17 @@
 // third-party (Compass)
-$default-box-shadow-color: #999;
-$default-box-shadow-h-offset: 5px;
-$default-box-shadow-v-offset: 5px;
-$rhythm-unit: 'rem';
+$default-box-shadow-color:     #999;
+$default-box-shadow-h-offset:  5px;
+$default-box-shadow-v-offset:  5px;
+$rhythm-unit:                  'rem';
+
+// third-party (modular-scale)
+$ms-base:  1rem;
+$ms-ratio: $augmented-fourth;
 
 // app-specific
 // [placeholder]
 
 // fonts
-$light-family: 'Open Sans', sans-serif;
-$heavy-family: 'Yanone Kaffeesatz', sans-serif;
-$mono-family: Inconsolata, monospace;
+$light-family:  'Open Sans', sans-serif;
+$heavy-family:  'Yanone Kaffeesatz', sans-serif;
+$mono-family:   Inconsolata, monospace;

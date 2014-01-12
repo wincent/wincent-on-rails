@@ -17,34 +17,36 @@ h3,
 h4,
 h5,
 h6 {
+  @include margin-leader(1);
+  @include margin-trailer(0);
   color: #333;
   font-family: $heavy-family;
   font-weight: bold;
-  margin-top: 1em;
 }
 
 h1 {
-  font-size: modular(1em, 5);
+  @include adjust-font-size-to($xxx-large);
 }
 
 h2 {
-  font-size: modular(1em, 4);
+  @include adjust-font-size-to($xx-large);
 }
 
 h3 {
-  font-size: modular(1em, 3);
+  @include adjust-font-size-to($x-large);
 }
 
 h4 {
-  font-size: modular(1em, 2);
+  @include adjust-font-size-to($large);
 }
 
 h5 {
-  font-size: modular(1em, 1);
+  @include adjust-font-size-to($normal);
 }
 
 h6 {
-  font-size: modular(1em, 0);
+  @include adjust-font-size-to($normal);
+  font-weight: normal;
 }
 
 h1.major {
@@ -602,8 +604,11 @@ a.tags-link {
 // general appearance
 
 .when {
+  @include margin-trailer(1);
+
   font-size: .75em;
   color: #bbb;
+
   a {
     color: #bbb;
     font-weight: normal;
@@ -650,13 +655,10 @@ a.tags-link {
 
 // consider per-controller custom CSS for this kind of class
 .post {
-  margin-bottom: 3em;
+  @include margin-leader(3);
 
-  .when {
-    // we do this rather than special casing the h2 (posts#index)
-    // and the h1 (posts#show), because the title varies depending on where it appears
-    margin-top: -1em;
-    margin-bottom: 1em;
+  &:first-of-type {
+    @include margin-leader(1);
   }
 }
 

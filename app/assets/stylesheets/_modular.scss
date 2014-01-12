@@ -1,0 +1,20 @@
+// Modular scale sizes, in rem units
+//
+// Note that we're using a "double-stranded" scale here (one scale starting at a
+// base size of 1rem, superimposed with another starting at 1.5rem), which gives
+// us more sizes with smaller spaces in between them.
+//
+// For more info, see:
+//
+//   https://github.com/Team-Sass/modular-scale/
+//   http://alistapart.com/article/more-meaningful-typography
+
+$xxx-small: ms(-4, 1rem 1.5rem);
+$xx-small:  ms(-3, 1rem 1.5rem);
+$x-small:   ms(-2, 1rem 1.5rem);
+$small:     ms(-1, 1rem 1.5rem);
+$normal:    $ms-base;
+$large:     ms(1, 1rem 1.5rem);
+$x-large:   ms(2, 1rem 1.5rem);
+$xx-large:  ms(3, 1rem 1.5rem);
+$xxx-large: ms(4, 1rem 1.5rem);

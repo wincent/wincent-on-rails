@@ -11,20 +11,22 @@
 @import 'compass/utilities/general/clearfix';
 @import 'normalize-css/normalize';
 @import 'font-awesome/scss/font-awesome';
+@import 'modular-scale/stylesheets/modular-scale';
 
 // global
 @import 'variables';
 @import 'colors';
 @import 'functions';
 @import 'mixins';
+@import 'modular';
 @import 'comment-boxes';
 @import 'comment-bubbles';
+@import 'display';
 
 // per-controller styles
 @import 'branches';
 @import 'commits';
 @import 'dashboard';
-@import 'display';
 @import 'forums';
 @import 'git_tags';
 @import 'issues';

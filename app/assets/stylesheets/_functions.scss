@@ -1,17 +1,1 @@
-// modular scaling
-$minor-second: 15 / 16;
-$major-second: 8/ 9;
-$minor-third: 5 / 6;
-$major-third: 4 / 5;
-$golden-ratio: 1 / 1.618;
-
-// http://mrandmrsok.com/blog/modular-scale-calculator-using-scss
-@function modular($base-size, $scale: 0, $ratio: $major-second) {
-  @if $scale > 0 {
-    @return modular($base-size / $ratio, $scale - 1);
-  } @else if $scale < 0 {
-    @return modular($base-size * $ratio, $scale + 1);
-  } @else {
-    @return $base-size;
-  }
-}
+// [placeholder]
