@@ -136,13 +136,12 @@ describe CommentsController do
 
   # Testing the CommentsController (use of ActionController::ForbiddenError) and
   # AppController (use of "forbidden" method) here, but using the
-  # TweetsController as a concrete example seeing as that's where we first saw
-  # this kind of request (see commit 2a897ba).
+  # SnippetsController as a concrete example.
   describe '#new' do
     describe 'when commenting not allowed' do
       before do
-        tweet = Tweet.make! accepts_comments: false
-        get :new, tweet_id: tweet.id
+        snippet = Snippet.make! accepts_comments: false
+        get :new, snippet_id: snippet.id
       end
 
       it 'is not successful' do

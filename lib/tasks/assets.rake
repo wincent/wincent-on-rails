@@ -65,7 +65,7 @@ namespace :assets do
 
     def set_up_config_files
       Dir.chdir(assets_scratch_repo) do
-        %w[app_config database twitter].each do |file|
+        %w[app_config database].each do |file|
           FileUtils.cp "config/#{file}.yml.sample", "config/#{file}.yml"
         end
       end

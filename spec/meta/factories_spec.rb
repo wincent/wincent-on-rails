@@ -21,7 +21,6 @@ describe 'Factories' do
     Tag,
     Tagging,
     Topic,
-    Tweet,
     User,
     Word ].each do |model_class|
 

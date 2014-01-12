@@ -117,12 +117,7 @@ Wincent::Application.routes.draw do
     resources :comments, only: %i[create new update]
   end
 
-  resources :tweets, path: 'twitter' do
-    resources :comments, only: %i[create new update]
-    collection do
-      get 'page/:page' => 'tweets#index', :page => %r{\d+}
-    end
-  end
+  resources :tweets, only: %i[index show], path: 'twitter'
 
   resources :users do
     resources :emails, id: /[^\/]+/
@@ -153,12 +148,6 @@ Wincent::Application.routes.draw do
   get 'misc/:action'    => 'misc'
   get 'search'          => 'search#search'
   get 'support'         => 'support#index'
-
-  # to avoid having to invalidate two versions of the cached files, we do a
-  # redirect here; note that in practice, nginx could/should handle this before
-  # we get here
-  get '/t/:id' => redirect { |params| "/twitter/#{Tweet.id_from_short_link(params[:id])}" },
-      :id      => Tweet::SHORT_LINK_REGEX
 
   root :to => 'posts#index'
 end

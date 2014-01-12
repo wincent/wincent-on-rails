@@ -2,7 +2,7 @@
 
 == Software ==
 
-The web application powering this site is Copyright 2007-2013 Wincent Colaiuta.
+The web application powering this site is Copyright 2007-2014 Greg Hurrell.
 At present the source code for the site is not publicly available but the
 intention is to release it under
 [/LICENSE.txt the simplified, 2-clause version of the BSD license]
@@ -12,8 +12,8 @@ intention is to release it under
 
 Unless otherwise noted, all content published on the site by the site
 administator is Copyright 1997-2013 Wincent Colaiuta. This content includes
-[/blog blog posts], [/wiki wiki articles], [/twitter "tweets"], product pages,
-and most other material on the site unless otherwise labelled.
+[/blog blog posts], [/wiki wiki articles], product pages, and most other
+material on the site unless otherwise labelled.
 
 No claim of copyright is made with respect to content contributed by other
 users, such as:

@@ -118,8 +118,6 @@ private
       @parent = Post.find_by_permalink! parent
     elsif parent = params[:snippet_id]
       @parent = Snippet.find parent
-    elsif parent = params[:tweet_id]
-      @parent = Tweet.find parent
     elsif parent = params[:topic_id]
       @parent = Topic.find parent
     end
@@ -150,7 +148,7 @@ private
     case commentable
     when Topic
       forum_topic_path commentable.forum, commentable, :anchor => anchor
-    else # Article, Issue, Post, Snippet, Tweet
+    else # Article, Issue, Post, Snippet
       polymorphic_path commentable, :anchor => anchor
     end
   end

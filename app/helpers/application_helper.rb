@@ -158,11 +158,6 @@ module ApplicationHelper
     end
   end
 
-  # used in tweet#index, tags#show etc
-  def tweet_title tweet
-    wikitext_truncate_and_strip tweet.body, length: 80
-  end
-
   # used in snippet#index, tags#show etc
   def snippet_title snippet
     if snippet.description.blank?
@@ -223,8 +218,6 @@ module ApplicationHelper
       link_to model.summary, model
     when Snippet
       link_to snippet_title(model), model
-    when Tweet
-      link_to tweet_title(model), model
     when NilClass
       # could get here for an orphaned comment (shouldn't happen)
       'deleted record'

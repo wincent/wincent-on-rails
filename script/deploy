@@ -329,7 +329,6 @@ if [ -n "$DO_DEPLOY" ]; then
   run rails ln -s $SHARED/pids            $CHECKOUT/tmp/pids
   run rails ln -s $SHARED/database.yml    $CHECKOUT/config/database.yml
   run rails ln -s $SHARED/app_config.yml  $CHECKOUT/config/app_config.yml
-  run rails ln -s $SHARED/twitter.yml     $CHECKOUT/config/twitter.yml
   run rails rm -f $DEPLOY/latest
   run rails ln -s $CHECKOUT $DEPLOY/latest
   run rails "cd $CHECKOUT && \

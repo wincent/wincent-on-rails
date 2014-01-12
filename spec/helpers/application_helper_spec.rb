@@ -94,33 +94,6 @@ describe ApplicationHelper, '"button_to_moderate_issue_as_ham" method' do
   end
 end
 
-describe ApplicationHelper, '"tweet_title" method' do
-  it 'should strip HTML tags' do
-    tweet = Tweet.make body: "foo ''bar''"
-    tweet_title(tweet).should =~ /foo bar/
-  end
-
-  it 'should compress whitespace' do
-    tweet = Tweet.make body: "foo    bar   \n   baz"
-    tweet_title(tweet).should =~ /foo bar baz/
-  end
-
-  it 'should remove leading whitespace' do
-    tweet = Tweet.make body: "  foo\n  bar"
-    tweet_title(tweet).should =~ /\Afoo bar/
-  end
-
-  it 'should remove trailing whitespace' do
-    tweet = Tweet.make body: "foo  \nbar  "
-    tweet_title(tweet).should =~ /foo bar\z/
-  end
-
-  it 'should truncate long text to 80 characters' do
-    tweet = Tweet.make body: 'x' * 100
-    tweet_title(tweet).length.should == 80
-  end
-end
-
 describe ApplicationHelper do
   # required in Rails 3.1, not sure why it wasn't before; without it,
   # these specs fail when the #breadcrumbs method calls h() from
@@ -220,19 +193,6 @@ describe ApplicationHelper do
       topic = Topic.make!
       link = link_to(topic.title, topic_path(topic))
       link_to_model(topic).should == link
-    end
-
-    context 'with a tweet' do
-      let(:tweet) { Tweet.make! body: 'hello' }
-
-      # TODO: in next Capybara release use selector-based tests here
-      it 'links to the tweet' do
-        link_to_model(tweet).should include(tweet_path(tweet))
-      end
-
-      it 'uses the tweet title' do
-        link_to_model(tweet).should =~ /hello/
-      end
     end
 
     # was a bug

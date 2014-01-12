@@ -164,7 +164,7 @@ shared_examples_for 'commentable (updating timestamps for comment changes)' do
   end
 end
 
-# ie. blog posts, tweets, snippets, wiki articles
+# ie. blog posts, snippets, wiki articles
 shared_examples_for 'commentable (not updating timestamps for comment changes)' do
   include SharedCommentableExampleHelpers
 

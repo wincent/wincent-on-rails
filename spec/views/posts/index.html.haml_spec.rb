@@ -2,7 +2,6 @@ require 'spec_helper'
 
 describe 'posts/index' do
   before do
-    @tweets = [Tweet.make!]
     @posts  = [Post.make!]
   end
 

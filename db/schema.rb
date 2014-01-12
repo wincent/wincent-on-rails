@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140112011949) do
+ActiveRecord::Schema.define(version: 20140112024214) do
 
   create_table "articles", force: true do |t|
     t.string   "title"
@@ -279,19 +279,6 @@ ActiveRecord::Schema.define(version: 20140112011949) do
     t.integer  "last_commenter_id"
     t.integer  "last_comment_id"
     t.datetime "last_commented_at"
-  end
-
-  create_table "tweets", force: true do |t|
-    t.text     "body"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.boolean  "accepts_comments",            default: true
-    t.integer  "comments_count",              default: 0
-    t.integer  "last_commenter_id"
-    t.integer  "last_comment_id"
-    t.datetime "last_commented_at"
-    t.integer  "twitter_id",        limit: 8
-    t.string   "twitter_id_str"
   end
 
   create_table "users", force: true do |t|

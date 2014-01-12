@@ -7,7 +7,6 @@ class PostsController < ApplicationController
       format.html {
         @paginator = RestfulPaginator.new(params, Post.public.count, posts_path)
         @posts     = Post.recent.includes(:tags).offset(@paginator.offset).page
-        @tweets    = Tweet.recent.page if !fragment_exist?(:tweets_sidebar)
       }
     end
   end

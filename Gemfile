@@ -12,7 +12,6 @@ gem 'rails', '4.1.0.beta1'
 gem 'rails-observers' # was in Rails core, extracted in 4.0
 gem 'rake'
 gem 'sass-rails'
-gem 'twitter'
 gem 'unicorn'
 gem 'wikitext'
 gem 'wopen3'
