@@ -36,4 +36,18 @@ namespace :twitter do
       end
     end
   end
+
+  desc 'destroy all tweets'
+  task :destroy => :environment do
+    unless ENV['SUDO'] == true.to_s
+      raise "specify SUDO=true it the environment if you really want to do this"
+    end
+
+    # deletes needles (via callbacks)
+    # would delete comments too (if they hadn't been migrated anyway)
+    Tweet.find_each do |tweet|
+      puts "destroying tweet #{tweet.id}"
+      tweet.destroy
+    end
+  end
 end
