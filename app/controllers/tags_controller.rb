@@ -31,7 +31,7 @@ class TagsController < ApplicationController
   # admin only
   def update
     respond_to do |format|
-      format.html {
+      format.html do
         if @tag.update_attributes(params[:tag])
           flash[:notice] = 'Successfully updated'
           redirect_to @tag
@@ -39,16 +39,16 @@ class TagsController < ApplicationController
           flash[:error] = 'Update failed'
           render action: :edit
         end
-      }
+      end
 
-      format.js {
+      format.js do
         if @tag.update_attributes(params[:tag])
           render json: {}
         else
           render text:   "Update failed: #{@tag.flashable_error_string}",
                  status: 422
         end
-      }
+      end
     end
   end
 
