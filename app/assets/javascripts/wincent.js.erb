@@ -190,10 +190,10 @@
 
     // syntax coloring for a transcript of a shell session
     // for syntax coloring of a shell script see "bash-syntax"
-    styles['shell-syntax'] = {
-      'prompt': /^[#\$] /m,
-      'text':   /^.+?$/m  // no CSS
-    };
+    styles['shell-syntax'] = styles['default'].concat([
+      ['prompt', /^[#\$] /m],
+      ['text',   /^.+?$/m] // no CSS
+    ]);
 
     var highlightText = function(text, rules)
     {
@@ -206,9 +206,9 @@
         // in case of tie, first matching rule wins (earlier rules have priority)
         var leftmost  = null,
             apply     = null;
-        for (var i = 0, max = rules.length - 1; i < max; i += 2) {
-          var ruleName  = rules[i],
-              ruleRegex = rules[i + 1],
+        for (var i = 0, max = rules.length; i < max; i++) {
+          var ruleName  = rules[i][0],
+              ruleRegex = rules[i][1],
               match     = text.match(ruleRegex);
           if (match && ((leftmost && match.index < leftmost) || !leftmost)) {
             leftmost    = match.index;
