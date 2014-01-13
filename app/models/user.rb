@@ -96,7 +96,7 @@ class User < ActiveRecord::Base
     User.parametrize(param || display_name)
   end
 
-  # make `link_to(user)` do something reasonable
+  # make `link_to(user, user)` do something reasonable
   def to_s
     display_name
   end
