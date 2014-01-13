@@ -143,52 +143,56 @@
 
   $.fn.syntaxHighlight = function()
   {
-    var styles = {};
-    styles['c-syntax'] = {
-      'preprocessor':     /^\s*#.*/m, // without m (multi-line) mode, ^ anchors at start of string
-      'comment':          /\/\/.*|\/\*([^\*]|\*(?!\/))*\*\//,
-      'string-literal':   /("(<a .+?a>|[^"\\]|\\.)*"|'([^'\\]|\\.)?')/,
-      'keyword':          /\b(_Bool|bool|char|const|int|long|short|struct|typedef|unsigned|void)\b/,
-      'statement':        /\b(break|case|continue|default|do|else|for|goto|if|return|sizeof|static|switch|while)\b/,
-      'boolean':          /\b(true|false)\b/,
-      'numeric-literal':  /\b(0[xX][a-fA-F0-9]+|\d+(\.\d+f?)?)\b/
+    var styles = {
+      // all languages inherit the "default" ruleset as a starting point
+      'default': [
+        ['skip-anchor',   /<a .+?a>/], // don't mangle anchor tags
+        ['skip-entities', /&\w+;/]     // or entities
+      ]
     };
+
+    styles['c-syntax'] = styles['default'].concat([
+      ['preprocessor',    /^\s*#.*/m], // without m (multi-line) mode, ^ anchors at start of string
+      ['comment',         /\/\/.*|\/\*([^\*]|\*(?!\/))*\*\//],
+      ['string-literal',  /("(<a .+?a>|[^"\\]|\\.)*"|'([^'\\]|\\.)?')/],
+      ['keyword',         /\b(_Bool|bool|char|const|int|long|short|struct|typedef|unsigned|void)\b/],
+      ['statement',       /\b(break|case|continue|default|do|else|for|goto|if|return|sizeof|static|switch|while)\b/],
+      ['boolean',         /\b(true|false)\b/],
+      ['numeric-literal', /\b(0[xX][a-fA-F0-9]+|\d+(\.\d+f?)?)\b/]
+    ]);
 
     // for Git diffs and patches
-    styles['diff-syntax'] = {
-      'skip-header':  /^(---|\+\+\+) .*/m,
-      'deleted':      /^-.*/m,
-      'added':        /^\+.*/m,
-      'hunk-header':  /^@@ -\d+(,\d+) \+\d+(,\d+) @@.*/m
-    };
+    styles['diff-syntax'] = styles['default'].concat([
+      ['skip-header', /^(---|\+\+\+) .*/m],
+      ['deleted',     /^-.*/m],
+      ['added',       /^\+.*/m],
+      ['hunk-header', /^@@ -\d+(,\d+) \+\d+(,\d+) @@.*/m]
+    ]),
 
-    // Objective-C is based on C with some overrides
-    styles['objc-syntax'] = $.extend({}, styles['c-syntax'], {
-      'keyword': /\b(_Bool|BOOL|bool|char|const|int|long|short|struct|typedef|unsigned|void)\b/,
-      'boolean': /\b(YES|NO|true|false)\b/
-    });
+    // Objective-C is based on C with some augmentations of existing rules
+    styles['objc-syntax'] = styles['default'].concat(styles['c-syntax'], [
+      ['keyword', /\bBOOL\b/],
+      ['boolean', /\b(YES|NO)\b/]
+    ]);
 
-    styles['ruby-syntax'] = {
-      // could almost make these default rules
-      'skip-anchor':      /<a .+?a>/,  // don't mangle HTML tags ("a" tags)
-      'skip-entities':    /&\w+;/,     // or entities
-      'comment':          /#.*/,
-      'string-literal':   /("(<a .+?a>|[^"\\]|\\.)*"|'(<a .+?a>|[^'\\]|\\.)*')/,
-      'keyword':          /\b(begin|break|catch|class|continue|def|else|end|for|if|include|load|module|raise|redo|require|rescue|retry|then|throw|unless|until|while|yield)\b/,
-      'statement':        /\b(private|protected|public)\b/,
-      'boolean':          /\b(true|false)\b/,
-      'constant':         /\b[A-Z][a-zA-Z0-9_]*\b/,
-      'namespace':        /::/, // no CSS for this; just to stop false positives for the symbol rule
-      'identifier':       /(\$|@{1,2})[a-z_][a-zA-Z0-9_]*\b/, // or to be zealous, add: |\b[a-z][a-zA-Z0-9_]*\b
-      'symbol':           /:[a-zA-Z_][a-zA-Z0-9_]*\b/,
-      'numeric-literal':  /\b(0[xX][a-fA-F0-9]+(_[a-fA-F0-9]+)*|0[bB][0-1]+(_[0-1]+)*|[0-9]+(_[0-9]+)*(\.[0-9]+(_[0-9]+)*)?)\b/
-    };
+    styles['ruby-syntax'] = styles['default'].concat([
+      ['comment',         /#.*/],
+      ['string-literal',  /("(<a .+?a>|[^"\\]|\\.)*"|'(<a .+?a>|[^'\\]|\\.)*')/],
+      ['keyword',         /\b(begin|break|catch|class|continue|def|else|end|for|if|include|load|module|raise|redo|require|rescue|retry|then|throw|unless|until|while|yield)\b/],
+      ['statement',       /\b(private|protected|public)\b/],
+      ['boolean',         /\b(true|false)\b/],
+      ['constant',        /\b[A-Z][a-zA-Z0-9_]*\b/],
+      ['namespace',       /::/], // no CSS for this; just to stop false positives for the symbol rule
+      ['identifier',      /(\$|@{1,2})[a-z_][a-zA-Z0-9_]*\b/], // or to be zealous, add: |\b[a-z][a-zA-Z0-9_]*\b
+      ['symbol',          /:[a-zA-Z_][a-zA-Z0-9_]*\b/],
+      ['numeric-literal', /\b(0[xX][a-fA-F0-9]+(_[a-fA-F0-9]+)*|0[bB][0-1]+(_[0-1]+)*|[0-9]+(_[0-9]+)*(\.[0-9]+(_[0-9]+)*)?)\b/]
+    ]);
 
     // syntax coloring for a transcript of a shell session
     // for syntax coloring of a shell script see "bash-syntax"
     styles['shell-syntax'] = {
-      'prompt':           /^[#\$] /m,
-      'text':             /^.+?$/m  // no CSS
+      'prompt': /^[#\$] /m,
+      'text':   /^.+?$/m  // no CSS
     };
 
     var highlightText = function(text, rules)
@@ -202,11 +206,13 @@
         // in case of tie, first matching rule wins (earlier rules have priority)
         var leftmost  = null,
             apply     = null;
-        for (var rule in rules) {
-          var match = text.match(rules[rule]);
+        for (var i = 0, max = rules.length - 1; i < max; i += 2) {
+          var ruleName  = rules[i],
+              ruleRegex = rules[i + 1],
+              match     = text.match(ruleRegex);
           if (match && ((leftmost && match.index < leftmost) || !leftmost)) {
             leftmost    = match.index;
-            match.rule  = rule;
+            match.rule  = ruleName;
             apply       = match;
             if (leftmost === 0) {
               break;
