@@ -1,10 +1,9 @@
-%li{:class => comment_class(comment), :id => "comment_#{comment.id}"}
-  %blockquote=comment.body.w :base_heading_level => 2
+%li{ class: comment_class(comment), id: "comment_#{comment.id}" }
+  %blockquote= comment.body.w(base_heading_level: local_assigns.fetch(:base_heading_level, 2))
   %cite
-    =link_to_user comment.user
-    -if comment.user
+    = link_to_user comment.user
+    - if comment.user
       %br
-      =pluralizing_count(comment.user.utterances_count, 'posts')
+      = pluralizing_count(comment.user.utterances_count, 'posts')
     %br
-    %span.when=timeinfo comment, :updated_string => 'edited'
-    =link_to 'permalink', comment_path(comment), :class => 'hoverlink'
+    %span.when= link_to timeinfo(comment, updated_string: 'edited'), comment

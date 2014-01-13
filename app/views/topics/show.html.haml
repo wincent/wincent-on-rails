@@ -1,36 +1,35 @@
-=breadcrumbs link_to('Forums', forums_path),
+= breadcrumbs link_to('Forums', forums_path),
   link_to(@forum.name, forum_path(@forum)),
   @topic.title
--@page_title = @topic.title
+- @page_title = @topic.title
 %h1.major= @page_title
 %div[@topic]
   %ol#comments.boxed
-    %li{:class => comment_class(@topic)}
-      %blockquote=@topic.body.w :base_heading_level => 1
+    %li{ class: comment_class(@topic) }
+      %blockquote= @topic.body.w(base_heading_level: 1)
       %cite
         -# BUG: redundant(?) query here:
         -# SELECT `users`.* FROM `users` WHERE (`users`.`id` = 1) LIMIT 1
-        =link_to_user @topic.user
-        %br
-        =pluralizing_count(@topic.user.utterances_count, 'post') if @topic.user
-        %br
-        %span.when=timeinfo @topic, :updated_string => false
-        =link_to 'permalink', forum_topic_path(@forum, @topic),
-          :class => 'hoverlink'
-        -if admin?
+        = link_to_user @topic.user
+        - if @topic.user
           %br
-          =link_to 'edit', edit_forum_topic_path(@forum, @topic)
-    -# BUG: base heading level here is 1, but in partial we're using 2
-    =render @comments
+          = pluralizing_count(@topic.user.utterances_count, 'post')
+        %br
+        %span.when
+          = link_to timeinfo(@topic, updated_string: false), forum_topic_path(@forum, @topic)
+        - if admin?
+          %br
+          = link_to 'edit', edit_forum_topic_path(@forum, @topic)
+    = render @comments, locals: { base_heading_level: 1 }
 %h2.major Reply
--if @topic.accepts_comments
+- if @topic.accepts_comments
   -# BUG: redundant queries when form rendered:
   -# SELECT `topics`.* FROM `topics` WHERE (`topics`.`id` = 1) LIMIT 1
   -# SELECT `forums`.* FROM `forums` WHERE (`forums`.`id` = 1) LIMIT 1
-  =render 'comments/form'
--else
+  = render 'comments/form'
+- else
   %p This topic is now closed.
 .links
-  =link_to 'topic index', forum_path(@forum)
-  -if admin?
-    =link_to 'edit topic', edit_forum_topic_path(@forum, @topic)
+  = link_to 'topic index', forum_path(@forum)
+  - if admin?
+    = link_to 'edit topic', edit_forum_topic_path(@forum, @topic)

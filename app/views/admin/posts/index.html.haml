@@ -23,7 +23,7 @@
               url: admin_post_path(post.id),
               html: { data: { name: 'post[permalink]', editable: true } } do |f|
               = post.permalink
-          %td= timeinfo post
+          %td= link_to timeinfo(post), post
           %td.links
             = link_to 'edit', edit_post_path(post.id)
             = button_to_destroy_model post, remote: true
