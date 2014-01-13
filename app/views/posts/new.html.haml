@@ -12,10 +12,10 @@
       =f.text_field :permalink
     %li
       =f.label :excerpt, annotation('Excerpt', wikitext_cheatsheet)
-      =f.text_area :excerpt
+      =f.text_area :excerpt, rows: 10
     %li
       =f.label :body, annotation('Body', 'optional')
-      =f.text_area :body, :rows => 30
+      =f.text_area :body, rows: 30
     %li
       =f.label :pending_tags, 'Tags'
       =f.text_field :pending_tags
