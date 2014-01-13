@@ -13,7 +13,7 @@
 @import 'font-awesome/scss/font-awesome';
 @import 'modular-scale/stylesheets/modular-scale';
 
-// global
+// global/shared
 @import 'variables';
 @import 'colors';
 @import 'functions';
@@ -21,16 +21,15 @@
 @import 'modular';
 @import 'comment-boxes';
 @import 'comment-bubbles';
+@import 'commit-logs';
 @import 'display';
+@import 'menu';
 
 // per-controller styles
-@import 'branches';
 @import 'commits';
 @import 'dashboard';
 @import 'forums';
 @import 'git_tags';
 @import 'issues';
-@import 'menu';
 @import 'products';
-@import 'repos';
 @import 'searches';
