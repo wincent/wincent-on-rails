@@ -74,7 +74,7 @@ ol#comments {
     &.private {
       @include comment-box(white, #cccccc);
     }
-    &.active-fragment {
+    &:target {
       background: $active-fragment-background-color;
       @include box-shadow;
     }

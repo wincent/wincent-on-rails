@@ -63,7 +63,7 @@
     &.admin {
       @include comment-bubble(white, #666666);
     }
-    &.active-fragment > blockquote {
+    &:target > blockquote {
       background: $active-fragment-background-color;
       @include box-shadow;
       &:before {

@@ -257,18 +257,9 @@
     });
   }
 
-  // if the URL includes a fragment identifier (ie. #foo)
-  // then add the "active-fragment" class to the corresponding element
-  var highlightActiveFragment = function() {
-    var frag = window.location.hash;
-    if (frag.length >= 2)
-      $(frag).addClass('active-fragment');
-  }
-
   // ready
   setUpLoginLogoutLinks();
   setUpSearchLink();
-  highlightActiveFragment();
 
   $('body')
     .syntaxHighlight()
