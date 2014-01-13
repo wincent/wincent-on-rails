@@ -9,12 +9,14 @@
 //   https://github.com/Team-Sass/modular-scale/
 //   http://alistapart.com/article/more-meaningful-typography
 
-$xxx-small: ms(-4, 1rem 1.5rem);
-$xx-small:  ms(-3, 1rem 1.5rem);
-$x-small:   ms(-2, 1rem 1.5rem);
+$xxx-small: ms(-5, 1rem 1.5rem);
+$xx-small:  ms(-4, 1rem 1.5rem);
+$x-small:   ms(-3, 1rem 1.5rem);
+$smaller:   ms(-2, 1rem 1.5rem);
 $small:     ms(-1, 1rem 1.5rem);
 $normal:    $ms-base;
 $large:     ms(1, 1rem 1.5rem);
-$x-large:   ms(2, 1rem 1.5rem);
-$xx-large:  ms(3, 1rem 1.5rem);
-$xxx-large: ms(4, 1rem 1.5rem);
+$larger:    ms(2, 1rem 1.5rem);
+$x-large:   ms(3, 1rem 1.5rem);
+$xx-large:  ms(4, 1rem 1.5rem);
+$xxx-large: ms(5, 1rem 1.5rem);

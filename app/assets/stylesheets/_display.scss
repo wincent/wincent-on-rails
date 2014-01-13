@@ -37,16 +37,15 @@ h3 {
 }
 
 h4 {
-  @include adjust-font-size-to($large);
+  @include adjust-font-size-to($larger);
 }
 
 h5 {
-  @include adjust-font-size-to($normal);
+  @include adjust-font-size-to($large);
 }
 
 h6 {
   @include adjust-font-size-to($normal);
-  font-weight: normal;
 }
 
 h1.major {

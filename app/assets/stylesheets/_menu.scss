@@ -10,10 +10,10 @@
 //         .menu-inner (extra wrapper required in order to conceal scrollbar)
 //           / menu content goes here
 
-$background-color: #333;
-$navbar-height: 40px;
-$menu-width: 260px;
-$padding: 10px;
+$background-color:  #333;
+$navbar-height:     40px;
+$menu-width:        260px;
+$padding:           10px;
 
 .app {
   @include transition(transform .2s ease-in-out);
@@ -27,7 +27,6 @@ $padding: 10px;
   -webkit-overflow-scrolling: touch;
   background: $background-color;
   color: #ddd;
-  font-size: 18px;
   font-weight: bold;
   height: 100%;
   left: 0;
@@ -50,7 +49,7 @@ $padding: 10px;
   font-size: $navbar-height;
   height: $navbar-height;
   line-height: $navbar-height - 8px;
-  margin: 0 $padding 0 0;
+  margin: 0;
   text-align: center;
   width: $navbar-height;
 
@@ -69,19 +68,20 @@ $padding: 10px;
     display: none;
   }
 }
+
+// TODO: revamp form styling across the board
 .menu-inner input,
 .navbar-links input {
   @include border-radius(3px);
   @include box-sizing(border-box);
   @include box-shadow(0 0 8px rgba(0, 0, 0, 0.1) inset,
                       0 0 16px rgba(0, 0, 0, 0.1));
-  border: 1px solid #ccc;
-  color: #666;
-  font-size: 14px;
-  line-height: 1;
-  padding: $padding / 2;
+  @include rhythm-padding(.25, .25);
   background: rgba(255, 255, 255, 0.8);
+  border: 0;
+  color: #666;
   margin: 0;
+  padding-left: $padding;
   width: 100%;
 
   &:focus,
@@ -97,15 +97,18 @@ $padding: 10px;
   width: $menu-width;
 
   h2 {
+    @include adjust-font-size-to($small);
     @include box-shadow(0 1px 0 0 tint($background-color, 10) inset);
+    @include leading-border($lines: .5);
+    @include padding-trailer(.5);
     border-top: 1px solid shade($background-color, 50);
     background: shade($background-color, 30);
     color: #fff;
     font-family: $light-family;
-    font-size: 11px;
     font-weight: normal;
     margin: 0;
-    padding: ($padding / 2) $padding;
+    padding-left: $padding;
+    padding-right: $padding;
     text-transform: uppercase;
   }
 
@@ -180,7 +183,7 @@ nav.global {
 
   h1 {
     display: table-cell;
-    font-size: 22px;
+    @include adjust-font-size-to($large);
     margin: 0;
     padding-right: (2 * $padding);
     vertical-align: top;
@@ -198,8 +201,8 @@ nav.global {
 }
 
 .navbar-links {
+  @include adjust-font-size-to($small);
   display: none;
-  font-size: smaller;
   margin: 0;
 
   @include respond-to(tablet) {
@@ -215,28 +218,6 @@ nav.global {
     display: table-cell;
     padding: 0 0 0 $padding;
     vertical-align: middle;
-
-    input {
-      @include border-radius(3px);
-      @include box-sizing(border-box);
-      @include box-shadow(0 0 8px rgba(0, 0, 0, 0.1) inset,
-                          0 0 16px rgba(0, 0, 0, 0.1));
-      border: 1px solid #ccc;
-      color: #666;
-      font-size: 14px;
-      line-height: 1;
-      padding: $padding / 2;
-      background: rgba(255, 255, 255, 0.8);
-      margin: 0;
-      width: 100%;
-
-      &:focus,
-      &:hover,
-      &:active {
-        background: rgba(255, 255, 255, 0.95);
-        color: #333;
-      }
-    }
   }
 
   li.selected > a {
@@ -285,7 +266,6 @@ nav.global {
       display: table-row;
       padding: 0 ($padding * 2);
       position: absolute;
-      font-size: 0.9em;
       top: 40px;
       vertical-align: top;
       visibility: hidden;
@@ -305,7 +285,8 @@ nav.global {
       }
 
       h3 {
-        margin-bottom: 1em;
+        @include adjust-font-size-to($large);
+        @include margin-leader(1);
       }
 
       > li {
@@ -326,9 +307,9 @@ nav.global {
 
 a#login,
 a#logout {
+  @include adjust-font-size-to($small);
   color: #fff;
   display: table-cell;
-  font-size: 13px;
   font-weight: bold;
   height: $navbar-height;
   padding: 0 1em;
