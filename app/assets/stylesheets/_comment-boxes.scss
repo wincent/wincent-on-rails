@@ -1,0 +1,82 @@
+// this can be merged back into main display.css file because it is general
+ol#comments {
+  .comment.private {
+    // could also add a "watermark" style padlock background to the blockquote here
+    cite:after {
+      @include icon($fa-var-lock);
+    }
+  }
+}
+
+// this will eventually be general too (used by topic comments as well)
+@mixin comment-box($background-color, $border-color) {
+  background: $background-color;
+  border: 1px solid $border-color;
+  > blockquote {
+    border-left: 1px solid $border-color;
+  }
+  cite {
+    border-right: 1px solid $border-color;
+  }
+}
+
+#comments.boxed {
+  > li {
+    @include clearfix;
+    @include comment-box(#f7f7f7, #cccccc);
+    list-style: none;
+    margin: {
+      bottom: 10px;
+      left: -40px;
+    };
+    padding: 0;
+    white-space: nowrap;
+    > blockquote {
+      background-image: none;
+      display: inline-block;
+      margin: 0;
+      min-height: 80px;
+      vertical-align: top;
+      white-space: normal;
+      width: 75%;
+      // suppress pull quotes
+      &:after, &:before {
+        content: "";
+      }
+      > ul, > ol {
+        margin: {
+          bottom: 12px;
+          top: 12px;
+        };
+      }
+      > p, li {
+        color: #666666;
+      }
+    }
+    cite {
+      background-image: none;
+      display: inline-block;
+      float: left;
+      font-style: normal;
+      margin: 0 -1px 0 0;
+      padding: 10px;
+      vertical-align: top;
+      white-space: normal;
+      width: 15%;
+    }
+    &:nth-child(even) {
+      @include comment-box(#eaeaea, #cccccc);
+    }
+    &.admin {
+      // BUG: not used yet?
+      @include comment-box(white, #cccccc);
+    }
+    &.private {
+      @include comment-box(white, #cccccc);
+    }
+    &.active-fragment {
+      background: $active-fragment-background-color;
+      @include box-shadow;
+    }
+  }
+}
