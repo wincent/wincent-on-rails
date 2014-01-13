@@ -177,7 +177,7 @@
 
     styles['ruby-syntax'] = styles['default'].concat([
       ['comment',         /#.*/],
-      ['string-literal',  /("(<a .+?a>|[^"\\]|\\.)*"|'(<a .+?a>|[^'\\]|\\.)*')/],
+      ['string-literal',  /("(<a .+?a>|[^"\\]|\\.)*"|'([^'\\]|\\.)*')/],
       ['keyword',         /\b(begin|break|catch|class|continue|def|else|end|for|if|include|load|module|raise|redo|require|rescue|retry|then|throw|unless|until|while|yield)\b/],
       ['statement',       /\b(private|protected|public)\b/],
       ['boolean',         /\b(true|false)\b/],
