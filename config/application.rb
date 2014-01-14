@@ -23,6 +23,7 @@ module Wincent
 
     config.autoload_paths += %W(
       #{config.root}/app/observers
+      #{config.root}/lib
     )
     config.assets.enabled      = true
     config.assets.version      = '1.0'
