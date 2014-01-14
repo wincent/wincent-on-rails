@@ -37,8 +37,9 @@ var TagWidget = React.createClass({
 
     request.onreadystatechange = function() {
       if (request.status === 200 && request.readyState === 4) {
-        this.state.availableCompletions = JSON.parse(request.responseText);
-        this.setState(this.state);
+        this.setState({
+          availableCompletions: JSON.parse(request.responseText)
+        });
       }
     }.bind(this);
 
@@ -60,8 +61,7 @@ var TagWidget = React.createClass({
 
   clearDuplicateMarker: function() {
     if (this.state.duplicateTag) {
-      this.state.duplicateTag = undefined;
-      this.setState(this.state);
+      this.setState({ duplicateTag: undefined });
     }
   },
 
@@ -83,8 +83,7 @@ var TagWidget = React.createClass({
 
       if (newList.length !== oldList.length ||
           newList.some(function(string, idx) { return oldList[idx] !== string; })) {
-        this.state.filteredCompletions = newList;
-        this.setState(this.state);
+        this.setState({ filteredCompletions: newList });
       }
 
       this.clearDuplicateMarker();
@@ -134,8 +133,7 @@ var TagWidget = React.createClass({
     }
 
     event.preventDefault();
-    this.state.autocompleteSelectedIdx = newSelectedIdx;
-    this.setState(this.state);
+    this.setState({ autocompleteSelectedIdx: newSelectedIdx });
   },
 
   pushTag: function(newTag) {
@@ -150,24 +148,22 @@ var TagWidget = React.createClass({
     if (newTag.length) {
       if (this.state.tags.indexOf(newTag) === -1) {
         // tag is not a dupe
-        this.state.tags.push(newTag);
+        this.setState({ tags: this.state.tags.concat(newTag) });
 
         if (this.props.resourceURL) {
           // widget is attached to a saved resource; make an Ajax request now
           this.createTagging(newTag);
-        } else {
-          // widget is attached to an unsaved resource; no immediate Ajax
-          this.setState(this.state);
         }
       } else {
         // tag is a dupe
-        this.state.duplicateTag = newTag;
+        this.setState({ duplicateTag: newTag });
       }
     }
 
-    this.state.autocompleteSelectedIdx = undefined;
-    this.state.filteredCompletions = [];
-    this.setState(this.state);
+    this.setState({
+      autocompleteSelectedIdx: undefined,
+      filteredCompletions:     []
+    });
   },
 
   createTagging: function(newTag) {
@@ -175,8 +171,9 @@ var TagWidget = React.createClass({
 
     // DEBUGGING: replace with actual Ajax request
     setTimeout(function() {
-      this.state.pending.splice(this.state.pending.indexOf(newTag), 1);
-      this.setState(this.state);
+      var pending = this.state.pending.slice(0);
+      pending.splice(pending.indexOf(newTag), 1);
+      this.setState({ pending: pending });
     }.bind(this), 1000);
   },
 
@@ -191,22 +188,21 @@ var TagWidget = React.createClass({
   // mouseEnter
   handleTagSelect: function(element) {
     var tagIdx = this.state.filteredCompletions.indexOf(element.innerHTML);
-    this.state.autocompleteSelectedIdx = tagIdx;
-    this.setState(this.state);
+    this.setState({ autocompleteSelectedIdx: tagIdx });
   },
 
   handleTagPop: function() {
     if (this.state.tags.length) {
       this.clearDuplicateMarker();
-      this.state.tags.pop();
-      this.setState(this.state);
+      this.setState({ tags: this.state.tags.slice(0, -1) });
     }
   },
 
   handleTagDelete: function(name) {
     this.clearDuplicateMarker();
-    this.state.tags.splice(this.state.tags.indexOf(name), 1);
-    this.setState(this.state);
+    var tags = this.state.tags.slice(0);
+    tags.splice(tags.indexOf(name), 1)
+    this.setState({ tags: tags });
   },
 
   render: function() {
