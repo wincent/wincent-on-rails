@@ -1,4 +1,5 @@
 require 'wikitext/preprocess'
+require 'wikitext/haml_filter'
 
 Wikitext::Parser.shared_parser.img_prefix = '/system/images/'
 Wikitext::Parser.shared_parser.link_proc = -> (target) {
