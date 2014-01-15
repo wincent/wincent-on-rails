@@ -9,9 +9,9 @@ class CustomFormBuilder < ActionView::Helpers::FormBuilder
   #   <div class="field-row">
   #     <label for="issue_summary">
   #       <div class="label-text">Summary</div>
+  #       <!-- superclass's original input here -->
   #       <aside class="annotation">enter as much detail as possible</aside)
   #     </label>
-  #     <!-- superclass's original input here -->
   #   </div>
   #
   (WRAPPABLE_HELPERS + ADDITIONAL_HELPERS).each do |name|
@@ -21,11 +21,13 @@ class CustomFormBuilder < ActionView::Helpers::FormBuilder
       label_text = label_text(options.delete(:label) || attr.to_s.humanize)
 
       @template.content_tag(:div, class: 'field-row') do
-        @template.safe_join([
-          @template.content_tag(:label, label_text),
-          super(attr, *args, options),
-          annotation,
-        ], '')
+        @template.content_tag(:label) do
+          @template.safe_join([
+            label_text,
+            super(attr, *args, options),
+            annotation,
+          ], '')
+        end
       end
     end
   end
