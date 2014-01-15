@@ -1,0 +1,37 @@
+$form-padding: 10px;
+
+.field-row {
+  @include box-shadow(0 1px 2px 0 tint($border-color, 10) inset);
+  @include margin-leader(.5);
+  @include margin-trailer(.5);
+  @include leading-border($lines: .25);
+  @include trailing-border($lines: .25);
+  border: 1px solid $border-color;
+  padding-left: $form-padding;
+  padding-right: $form-padding;
+
+  label {
+    display: block;
+  }
+
+  input[type=text],
+  textarea {
+    border: 0;
+    width: 100%;
+
+    &:focus {
+      outline: 0;
+    }
+  }
+}
+
+.label-text {
+  @include adjust-font-size-to($small);
+  font-weight: bold;
+}
+
+.annotation {
+  @include adjust-font-size-to($smaller);
+  color: $aside-text;
+  margin-top: 0;
+}
