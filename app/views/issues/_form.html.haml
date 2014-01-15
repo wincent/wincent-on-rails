@@ -2,11 +2,9 @@
 
 = f.text_field :summary, annotation: 'a one-line summary of your issue'
 
-:ruby
-  product_options = content_tag(:option, '', value: '') +
-    option_groups_from_collection_for_select(Product.categorized, :last, :first, :id, :name, (@issue.product.try(:id)))
-= f.select :product_id, product_options
-
+= f.select :product_id, content_tag(:option, '', value: '') +   |
+  option_groups_from_collection_for_select(Product.categorized, |
+  :last, :first, :id, :name, (@issue.product.try(:id)))         |
 = f.select :status, underscores_to_spaces(Issue::STATUS).sort if admin?
 
 = f.text_area :description,
