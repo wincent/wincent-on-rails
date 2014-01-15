@@ -18,7 +18,7 @@
 
 @mixin comment-bubble($background-color, $border-color) {
   > blockquote {
-    border: 2px solid $border-color;
+    border: 1px solid $border-color;
     background: $background-color;
     &:after {
       border-top-color: $border-color;
@@ -44,7 +44,7 @@
       };
     }
     > blockquote {
-      @include border-radius(1em);
+      @include border-radius(5px);
       margin-bottom: 20px;
       &:after {
         @extend %triangle;
@@ -53,7 +53,7 @@
       }
       &:before {
         @extend %triangle;
-        bottom: -17px;
+        bottom: -19px;
         z-index: 2;
       }
     }
