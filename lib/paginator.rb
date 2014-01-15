@@ -89,7 +89,7 @@ private
   #   http://googlewebmastercentral.blogspot.com/2011/09/pagination-with-relnext-and-relprev.html
   def prev_link
     content_tag :li, class: ('disabled' if on_first_page?) do
-      link_text, klass = 'Previous', 'prev fa-rotate-180' # for Font Awesome
+      link_text, klass = 'Previous', 'prev'
       if on_first_page?
         content_tag :span, link_text, class: klass
       else
