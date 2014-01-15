@@ -94,32 +94,22 @@ class IssuesController < ApplicationController
           redirect_to (@issue.awaiting_moderation ? admin_issues_path : @issue)
         else
           flash[:error] = 'Update failed'
-          render :action => 'edit'
+          render action: 'edit'
         end
       }
 
-      # new Ajax code (for checkbox, select and contenteditable updates)
       format.json {
-        if @issue.update_attributes(issue_params)
-          render json: {}
-        else
-          render text:   "Update failed: #{@issue.flashable_error_string}",
-                 status: 422
-        end
-      }
-
-      format.js {
         # I don't really like this special case but it seems to be the only
         # way to classify as ham without updating the record timestamp
         if params[:button] == 'ham'
           @issue.moderate_as_ham!
-          render :json => {}.to_json
+          render json: {}
         else
-          if @issue.update_attributes issue_params
-            redirect_to issue_path(@issue, :format => :js)
+          if @issue.update_attributes(issue_params)
+            render json: {}
           else
-            error = "Update failed: #{@issue.flashable_error_string}"
-            render :text => error, :status => 422
+            render text:   "Update failed: #{@issue.flashable_error_string}",
+                   status: 422
           end
         end
       }
