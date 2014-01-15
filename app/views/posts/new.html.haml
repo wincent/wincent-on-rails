@@ -1,9 +1,7 @@
 - @page_title = 'New post'
 = breadcrumbs link_to('Blog', posts_path), @page_title
 %h1.major= @page_title
-= render 'shared/error_messages', model: @post
 = render 'form', post: @post
-
 %h2#preview_link.major Preview
 -# TODO: graceful non-JS fallback
 #ajax-flash
