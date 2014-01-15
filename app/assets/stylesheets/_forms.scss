@@ -1,4 +1,5 @@
 $form-padding: 10px;
+$focus-color: #fcfcfc;
 
 .field-row {
   @include border-radius(3px);
@@ -14,7 +15,7 @@ $form-padding: 10px;
   &.focused {
     @include box-shadow(1px 1px 2px 0 tint($border-color, 50) inset,
                         -1px -1px 2px 0 tint($border-color, 50) inset);
-    background: #fcfcfc;
+    background: $focus-color;
     border-color: tint($border-color, 20);
   }
 
@@ -22,14 +23,34 @@ $form-padding: 10px;
     display: block;
   }
 
+  input[type=email],
+  input[type=password],
   input[type=text],
   textarea {
-    background: inherit;
+    background-color: inherit;
     border: 0;
     width: 100%;
 
     &:focus {
       outline: 0;
+    }
+  }
+
+  // Prevent webkit autofill from ruining everything with some unsightly yellow
+  // styling; this requires a cunning trick, as setting a new background-color
+  // is not enough; see:
+  //
+  //   http://stackoverflow.com/a/13860010
+  //
+  input[type=email],
+  input[type=password],
+  input[type=text] {
+    &:-webkit-autofill {
+      -webkit-box-shadow: 0 0 0 150px #fff inset;
+
+      &:focus {
+        -webkit-box-shadow: 0 0 0 150px $focus-color inset;
+      }
     }
   }
 }

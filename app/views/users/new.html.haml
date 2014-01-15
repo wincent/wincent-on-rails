@@ -1,24 +1,16 @@
--@page_title = 'Sign up'
-=breadcrumbs 'Sign up'
-%h1.major=@page_title
-=render 'shared/error_messages', :model => [@user, @email]
-=form_for @user do |f|
-  %ul
-    %li
-      =f.label :email,
-        annotation('Email', 'a confirmation email will be sent to this address')
-      =f.text_field :email
-    %li
-      =f.label :display_name,
-        annotation('Display name', 'what other users will see')
-      =f.text_field :display_name
-    %li
-      =f.label :passphrase
-      =f.password_field :passphrase
-    %li
-      =f.label :passphrase_confirmation,
-        annotation('Passhrase again', 'confirm your passphrase')
-      =f.password_field :passphrase_confirmation
-    -if admin?
-      -# admins can manipulate some additional attributes at creation time
-    %li=f.submit 'Sign up'
+- @page_title = 'Sign up'
+= breadcrumbs 'Sign up'
+%h1.major= @page_title
+= render 'shared/error_messages', model: [@user, @email]
+= form_for @user do |f|
+  = f.email_field :email,
+    annotation: 'a confirmation email will be sent to this address',
+    required: true
+  = f.text_field :display_name,
+    annotation: 'what other users will see',
+    required: true
+  = f.password_field :passphrase, required: true
+  = f.password_field :passphrase_confirmation, required: true,
+    label: 'Passhrase again',
+    annotation: 'confirm your passphrase'
+  = f.submit 'Sign up'
