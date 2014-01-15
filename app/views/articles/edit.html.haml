@@ -1,38 +1,17 @@
--@page_title = 'Edit article'
-=breadcrumbs link_to('Wiki', articles_path),
+- @page_title = 'Edit article'
+= breadcrumbs link_to('Wiki', articles_path),
   link_to(@article.title, article_path(@article)),
   @page_title
-%h1.major=@page_title
-=render 'shared/error_messages', :model => @article
-=form_for @article do |f|
-  %ul
-    %li
-      =f.label :title
-      =f.text_field :title
-    %li
-      =f.label :redirect, annotation('Redirect', 'optional')
-      =f.text_field :redirect
-    %li
-      =f.label :body, annotation('Body', wikitext_cheatsheet)
-      =f.text_area :body, :rows => 30
-    %li
-      =f.label :pending_tags, 'Tags'
-      =f.text_field :pending_tags
-    %li
-      =f.label :public
-      =f.check_box :public
-    %li
-      =f.label :accepts_comments
-      =f.check_box :accepts_comments
-    %li=f.submit
+%h1.major= @page_title
+= render 'form', article: @article
 %h2#preview_link.major Preview
 -# TODO: graceful non-JS fallback
 #ajax-flash
-#preview=render 'preview'
+#preview= render 'preview'
 .links
   =link_to 'index', articles_path
   =link_to 'show', article_path(@article)
--content_for :javascript do
+- content_for :javascript do
   :javascript
     observeField({ 'kind': 'article', 'fieldName': 'title', 'include': ['body'], 'url': '#{articles_path}' });
     observeField({ 'kind': 'article', 'fieldName': 'body', 'include': ['title'], 'url': '#{articles_path}' });
