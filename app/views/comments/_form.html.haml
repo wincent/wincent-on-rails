@@ -4,13 +4,6 @@
 - elsif !current_user.verified?
   = render 'shared/unverified'
 = form_for [@comment.commentable, @comment], remote: request.xhr? do |f|
-  %ul
-    %li
-      = f.label :body, annotation('Body', wikitext_cheatsheet)
-      = f.text_area :body, rows: 10
-    - if admin?
-      %li
-        = f.label :public, 'Public?'
-        = f.check_box :public
-    %li
-      = f.submit
+  = f.text_area :body, rows: 10, annotation: wikitext_cheatsheet
+  = f.check_box :public if admin?
+  = f.submit

@@ -1,6 +1,7 @@
 $form-padding: 10px;
 
 .field-row {
+  @include border-radius(3px);
   @include box-shadow(0 1px 2px 0 tint($border-color, 10) inset);
   @include margin-leader(.5);
   @include margin-trailer(.5);
@@ -10,12 +11,20 @@ $form-padding: 10px;
   padding-left: $form-padding;
   padding-right: $form-padding;
 
+  &.focused {
+    @include box-shadow(1px 1px 2px 0 tint($border-color, 50) inset,
+                        -1px -1px 2px 0 tint($border-color, 50) inset);
+    background: #fcfcfc;
+    border-color: tint($border-color, 20);
+  }
+
   label {
     display: block;
   }
 
   input[type=text],
   textarea {
+    background: inherit;
     border: 0;
     width: 100%;
 

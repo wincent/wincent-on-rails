@@ -299,6 +299,16 @@
     .on('click', 'a[data-popup]', function() {
       window.open(this.href, null, $(this).data('popup'));
       return false;
+    })
+
+    // set up custom form styles
+    // until we get level-4 CSS selectors (eg. parent `A! > B` selectors)
+    // this is the best we can do
+    .on('focus', '.field-row input, .field-row textarea', function() {
+      $(this).closest('.field-row').addClass('focused');
+    })
+    .on('blur', '.field-row input, .field-row textarea', function() {
+      $(this).closest('.field-row').removeClass('focused');
     });
 
   $.ajaxPrefilter(function(options, originalOptions, xhr) {
