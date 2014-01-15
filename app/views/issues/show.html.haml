@@ -12,7 +12,7 @@
   -#
     Even though non-admins can't edit issues, they still get the form element,
     in order to keep the markup simple
-  = form_for @issue do |f|
+  = form_for @issue, builder: Helpers::FormBuilder do |f|
     %table
       %tbody
         %tr
