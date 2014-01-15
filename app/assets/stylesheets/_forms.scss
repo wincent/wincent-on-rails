@@ -27,11 +27,13 @@ $form-padding: 10px;
 
 .label-text {
   @include adjust-font-size-to($small);
+  display: block;
   font-weight: bold;
 }
 
 .annotation {
   @include adjust-font-size-to($smaller);
   color: $aside-text;
+  display: block;
   margin-top: 0;
 }

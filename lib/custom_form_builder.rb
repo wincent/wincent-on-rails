@@ -8,9 +8,9 @@ class CustomFormBuilder < ActionView::Helpers::FormBuilder
   #
   #   <div class="field-row">
   #     <label for="issue_summary">
-  #       <div class="label-text">Summary</div>
+  #       <span class="label-text">Summary</span>
   #       <!-- superclass's original input here -->
-  #       <aside class="annotation">enter as much detail as possible</aside)
+  #       <span class="annotation">enter as much detail as possible</span)
   #     </label>
   #   </div>
   #
@@ -35,14 +35,14 @@ class CustomFormBuilder < ActionView::Helpers::FormBuilder
 private
 
   def label_text(label_text)
-    @template.content_tag(:div, label_text, class: 'label-text')
+    @template.content_tag(:span, label_text, class: 'label-text')
   end
 
   def annotation(annotations)
     return '' unless annotations
 
     @template.safe_join(Array(annotations).map do |annotation|
-      @template.content_tag(:aside, annotation, class: 'annotation')
+      @template.content_tag(:span, annotation, class: 'annotation')
     end, ' ')
   end
 end
