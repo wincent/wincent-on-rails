@@ -1,39 +1,16 @@
--@page_title = 'Edit post'
-=breadcrumbs link_to('Blog', posts_path), @page_title
-%h1.major=@page_title
-=render 'shared/error_messages', :model => @post
-=form_for @post do |f|
-  %ul
-    %li
-      =f.label :title
-      =f.text_field :title
-    %li
-      =f.label :permalink, annotation('Permalink', 'optional')
-      =f.text_field :permalink
-    %li
-      =f.label :excerpt, annotation('Excerpt', wikitext_cheatsheet)
-      =f.text_area :excerpt, rows: 10
-    %li
-      =f.label :body, annotation('Body', wikitext_cheatsheet)
-      =f.text_area :body, rows: 30
-    %li
-      =f.label :pending_tags, 'Tags'
-      =f.text_field :pending_tags
-    %li
-      =f.label :public
-      =f.check_box :public
-    %li
-      =f.label :accepts_comments
-      =f.check_box :accepts_comments
-    %li=f.submit
+- @page_title = 'Edit post'
+= breadcrumbs link_to('Blog', posts_path), @page_title
+%h1.major= @page_title
+= render 'shared/error_messages', model: @post
+= render 'form', post: @post
 %h2#preview_link.major Preview
 -# TODO: graceful non-JS fallback
 #ajax-flash
-#preview=render 'preview'
+#preview= render 'preview'
 .links
-  =link_to 'posts index', posts_path
-  =link_to 'show', post_path(@post)
--content_for :javascript do
+  = link_to 'posts index', posts_path
+  = link_to 'show', post_path(@post)
+- content_for :javascript do
   :javascript
     observeField({ 'kind': 'post', 'fieldName': 'title', 'include': ['excerpt', 'body'], 'url': '#{posts_path}' });
     observeField({ 'kind': 'post', 'fieldName': 'excerpt', 'include': ['title', 'body'], 'url': '#{posts_path}' });

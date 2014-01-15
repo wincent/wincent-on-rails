@@ -70,17 +70,14 @@ module ApplicationHelper
     content_tag :i, '', class: ['fa'].concat(names.map { |name| "fa-#{name}" }).join(' ')
   end
 
-  def annotation(field, *annotation)
-    "#{field}<br><span class=\"annotation\">#{annotation.join('<br>')}</span>".html_safe
-  end
-
   def named_anchor(name)
     content_tag :a, '', id: name, name: name
   end
 
   def wikitext_cheatsheet
     link_to 'wikitext markup', '/misc/wikitext_cheatsheet',
-      'data-popup' => 'height=720,width=400'
+      'data-popup' => 'height=720,width=400',
+      class: 'external'
   end
 
   # Pretty formatting for model creation/update information.

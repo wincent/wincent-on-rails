@@ -1,0 +1,9 @@
+= form_for post do |f|
+  = f.text_field :title
+  = f.text_field :permalink,    annotation: 'optional'
+  = f.text_area  :excerpt,      rows: 10, annotation: wikitext_cheatsheet
+  = f.text_area  :body,         rows: 30, annotation: 'optional'
+  = f.text_field :pending_tags, label: 'Tags'
+  = f.check_box  :public
+  = f.check_box  :accepts_comments
+  = f.submit
