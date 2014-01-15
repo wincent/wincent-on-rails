@@ -123,11 +123,24 @@ function ajaxCommentForm(url) {
     });
 
   $(document).on('change', 'input[data-ajax], select[data-ajax]', function(event) {
-    var $element  = $(event.currentTarget),
-        $form     = $element.closest('form'),
-        $method   = $form.find('input[name=_method]'),
-        data      = $element.add($method).serialize(),
-        spinner   = new Wincent.Spinner($form, 'small');
+    var $element   = $(event.currentTarget),
+        serialized = $element.serialize(),
+        $form      = $element.closest('form'),
+        $method    = $form.find('input[name=_method]'),
+        spinner    = new Wincent.Spinner($form, 'small');
+
+    // special-case handling for checkboxes (which the browser won't serialize
+    // if unchecked)
+    if (serialized) {
+      serialized = $element.add($method).serialize();
+    } else {
+      // likely an unchecked checkbox; Rails provides us with a hidden sibling
+      // in this case
+      var hidden  = 'input[type=hidden][name="' + $element.attr('name') + '"]',
+          $hidden = $element.siblings(hidden);
+
+      serialized = $hidden.add($method).serialize();
+    }
 
     // must only disable after serializing
     $element.prop('disabled', true);
@@ -136,7 +149,7 @@ function ajaxCommentForm(url) {
       url      : $form.attr('action'),
       type     : 'post',
       dataType : 'json',
-      data     : data
+      data     : serialized
     })
       .done(function(json) {
         clearAJAXFlash();
