@@ -64,7 +64,7 @@ module ApplicationHelper
   # Inserts a tag that produces a Font Awesome icon corresponding to `names`.
   #
   #   icon('fast-forward')
-  #   icon('play rotate-180')
+  #   icon('play flip-horizontal')
   #
   def icon(*names)
     content_tag :i, '', class: ['fa'].concat(names.map { |name| "fa-#{name}" }).join(' ')
