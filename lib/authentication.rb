@@ -68,8 +68,8 @@ module ActionController
       user.session_expiry   = DEFAULT_SESSION_EXPIRY.days.from_now
       user.save
       secure_cookies        = !local_request?
-      cookies[:user_id]     = { :value => user.id.to_s,     :secure => secure_cookies }
-      cookies[:session_key] = { :value => user.session_key, :secure => secure_cookies }
+      cookies[:user_id]     = { value: user.id.to_s,     secure: secure_cookies }
+      cookies[:session_key] = { value: user.session_key, secure: secure_cookies }
     end
 
     # Internal use only (see notes for #set_current_user method)
