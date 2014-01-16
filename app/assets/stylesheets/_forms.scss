@@ -1,5 +1,6 @@
 $form-padding: 10px;
 $focus-color: #fcfcfc;
+$focus-border-color: #dcedfe;
 
 .field-row {
   @include border-radius(3px);
@@ -13,10 +14,10 @@ $focus-color: #fcfcfc;
   padding-right: $form-padding;
 
   &.focused {
-    @include box-shadow(1px 1px 2px 0 tint($border-color, 50) inset,
-                        -1px -1px 2px 0 tint($border-color, 50) inset);
+    @include box-shadow(1px 1px 2px 0 $focus-border-color inset,
+                        -1px -1px 2px 0 $focus-border-color inset);
     background: $focus-color;
-    border-color: tint($border-color, 20);
+    border-color: $focus-border-color;
   }
 
   label {
