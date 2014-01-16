@@ -1,36 +1,20 @@
--@page_title = 'Edit topic'
-=breadcrumbs link_to('Forums', forums_path),
+- @page_title = 'Edit topic'
+= breadcrumbs link_to('Forums', forums_path),
   link_to(@forum.name, forum_path(@forum)),
   link_to(@topic.title, forum_topic_path(@forum, @topic)),
   'Edit'
-%h1.major=@page_title
+%h1.major= @page_title
 %div[@topic]
-  =render 'shared/error_messages', :model => @topic
-  =form_for @topic, :url => forum_topic_path(@forum, @topic) do |f|
-    %ul
-      %li
-        =f.label :title
-        =f.text_field :title
-      %li
-        =f.label :body, annotation('Body', wikitext_cheatsheet)
-        =f.text_area :body, :rows => 10
-      %li
-        =f.label :public, 'Public?'
-        =f.check_box :public
-      %li
-        =f.label :accepts_comments, 'Accepts comments?'
-        =f.check_box :accepts_comments
-      %li=f.submit
+  = render 'shared/error_messages', model: @topic
+  = form_for [@forum, @topic] do |f|
+    = f.text_field :title, required: true
+    = f.text_area :body, rows: 10, annotation: wikitext_cheatsheet, required: true
+    = f.check_box :public, label: 'Public?'
+    = f.check_box :accepts_comments, label: 'Accepts comments?'
+    = f.submit
   .links
-    =link_to 'show', @topic
-    =button_to_destroy_model @topic
-    -button_to_moderate_topic_as_ham @topic if @topic.awaiting_moderation?
+    = link_to 'show', @topic
+    = button_to_destroy_model @topic
+    - button_to_moderate_topic_as_ham @topic if @topic.awaiting_moderation?
 .links
-  =link_to 'back to topics awaiting moderation', topics_path
--#%h4
--#  Preview (#{link_to_update_preview})
--#  =observe_body
--#  =spinner_tag
--#  -# TODO: graceful non-JS fallback
--##preview=body_html
--#%p=link_to 'back', articles_path
+  = link_to 'back to topics awaiting moderation', topics_path
