@@ -25,6 +25,10 @@ $focus-border-color: #dcedfe;
     cursor: pointer;
   }
 
+  &.check-box {
+    @include user-select(none);
+  }
+
   label {
     display: block;
   }
