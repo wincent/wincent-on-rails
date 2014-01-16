@@ -1,30 +1,17 @@
-%h1.major=@page_title
-=render 'shared/error_messages', :model => @snippet
-=form_for @snippet do |f|
-  %ul
-    %li
-      =f.label :description, annotation('Description', 'optional')
-      =f.text_field :description
-    %li
-      =f.label :body
-      =f.text_area :body, :rows => 30
-    %li
-      =f.label :markup_type, 'Markup'
-      =f.select :markup_type, Snippet::MARKUP_TYPES
-    %li
-      =f.label :pending_tags, 'Tags'
-      =f.text_field :pending_tags
-    %li
-      =f.label :public
-      =f.check_box :public
-    %li
-      =f.label :accepts_comments
-      =f.check_box :accepts_comments
-    %li=f.submit
+%h1.major= @page_title
+= render 'shared/error_messages', model: @snippet
+= form_for @snippet do |f|
+  =f.text_field :description, annotation: 'optional'
+  =f.text_area :body, rows: 20, required: true
+  =f.select :markup_type, Snippet::MARKUP_TYPES, label: 'Markup'
+  =f.text_field :pending_tags, label: 'Tags'
+  =f.check_box :public
+  =f.check_box :accepts_comments
+  =f.submit
 %h2#preview_link.major Preview
 #ajax-flash
-#preview=render 'preview'
--content_for :javascript do
+#preview= render 'preview'
+- content_for :javascript do
   :javascript
     observeField({ 'kind':       'snippet',
                    'fieldName':  'body',
