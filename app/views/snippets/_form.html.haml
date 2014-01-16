@@ -1,13 +1,13 @@
 %h1.major= @page_title
 = render 'shared/error_messages', model: @snippet
 = form_for @snippet do |f|
-  =f.text_field :description, annotation: 'optional'
-  =f.text_area :body, rows: 20, required: true
-  =f.select :markup_type, Snippet::MARKUP_TYPES, label: 'Markup'
-  =f.text_field :pending_tags, label: 'Tags'
-  =f.check_box :public
-  =f.check_box :accepts_comments
-  =f.submit
+  = f.text_field :description, annotation: 'optional'
+  = f.text_area :body, rows: 20, required: true
+  = f.select :markup_type, Snippet::MARKUP_TYPES, label: 'Markup'
+  = f.text_field :pending_tags, label: 'Tags'
+  = f.check_box :public
+  = f.check_box :accepts_comments
+  = f.submit
 %h2#preview_link.major Preview
 #ajax-flash
 #preview= render 'preview'
