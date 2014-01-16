@@ -74,6 +74,13 @@ class User < ActiveRecord::Base
     self.passphrase_salt, self.passphrase_hash = salt, User.digest(passphrase, salt)
   end
 
+  def reset_passphrase!(new_passphrase, new_passphrase_confirmation)
+    self.passphrase              = new_passphrase
+    self.passphrase_confirmation = new_passphrase_confirmation
+    self.resetting_passphrase    = true
+    save
+  end
+
   def utterances_count
     # later on this will also include self.issues_count
     self.comments_count + self.topics_count

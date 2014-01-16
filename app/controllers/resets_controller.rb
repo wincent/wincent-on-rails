@@ -17,12 +17,12 @@ class ResetsController < ApplicationController
     else
       @reset = Reset.new
       flash[:error] = 'Invalid email address'
-      render :action => 'new'
+      render action: 'new'
     end
   end
 
   def show
-    redirect_to :action => 'edit'
+    redirect_to action: 'edit'
   end
 
   def edit
@@ -41,22 +41,21 @@ class ResetsController < ApplicationController
   end
 
   def update
-    raise ActiveRecord::RecordNotFound if @reset.nil? # likely attack, so no need for a friendly flash
+    # likely attack, so no need for a friendly flash
+    raise ActiveRecord::RecordNotFound if @reset.nil?
+
     if @reset.update_attributes params[:reset]
-      @user.passphrase              = params[:passphrase]
-      @user.passphrase_confirmation = params[:passphrase_confirmation]
-      @user.resetting_passphrase    = true
-      if @user.save
+      if @user.reset_passphrase!(@reset.passphrase, @reset.passphrase_confirmation)
         @reset.update_attribute(:completed_at, Time.now)
         flash[:notice] = 'Successfully updated passphrase'
-        set_current_user @user # auto-log in
-        redirect_to dashboard_path
-        return
+        # BUG: this auto-log-in doesn't work any more....
+        set_current_user(@user) # auto-log in
+        return redirect_to(dashboard_path)
       end
     end
 
     # reset or user not valid, try again
-    render :action => 'edit'
+    render action: 'edit'
   end
 
 private

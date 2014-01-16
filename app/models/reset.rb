@@ -15,17 +15,21 @@ require 'digest/sha1'
 class Reset < ActiveRecord::Base
   belongs_to            :email
   validates_presence_of :email
-  validates_presence_of :email_address, :on => :update
-  validates_each        :email_address, :on => :update do |reset, att, value|
+  validates_presence_of :email_address, :passphrase, :passphrase_confirmation,
+                         on: :update
+  validates_each        :email_address, on: :update do |reset, att, value|
     # guard against brute force attacks
     unless value == reset.email.address
       reset.errors.add(att, 'must match existing email on record')
     end
   end
+
+  validates_confirmation_of :passphrase, on: :update
+
   before_create         :set_secret_and_cutoff
 
-  attr_accessor         :email_address
-  attr_accessible       :email_address
+  attr_accessor         :email_address, :passphrase, :passphrase_confirmation
+  attr_accessible       :email_address, :passphrase, :passphrase_confirmation
 
   SECRET_SALT = '124f1e6487ab214cb155db238cf1765d9c972d35'
   def self.secret

@@ -1,18 +1,13 @@
--@page_title = 'Reset passphrase'
-=breadcrumbs @page_title
-%h1.major=@page_title
-=render 'shared/error_messages', :model => [@reset, @user]
-=form_for @reset do |f|
-  %ul
-    %li
-      =f.label :email_address,
-        annotation('Email address', 'confirm your identity')
-      =f.text_field :email_address
-    %li
-      =label_tag :passphrase, 'New passphrase'
-      =password_field_tag :passphrase
-    %li
-      =label_tag :passphrase_confirmation,
-        annotation('New passhrase again', 'confirm your new passphrase')
-      =password_field_tag :passphrase_confirmation
-    %li=f.submit 'Save changes'
+- @page_title = 'Reset passphrase'
+= breadcrumbs @page_title
+%h1.major= @page_title
+= render 'shared/error_messages', model: [@reset, @user]
+= form_for @reset, html: { autocomplete: 'off' } do |f|
+  = f.email_field :email_address,
+    annotation: 'confirm your identity',
+    required: true
+  = f.password_field :passphrase, label: 'New passhrase', required: true
+  = f.password_field :passphrase_confirmation,
+    label: 'New passphrase again',
+    annotation: 'confirm your new passphrase'
+  = f.submit 'Save changes'

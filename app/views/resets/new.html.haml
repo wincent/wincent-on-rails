@@ -1,12 +1,10 @@
--@page_title = 'Reset your passphrase'
-=breadcrumbs @page_title
-%h1.major=@page_title
-=form_for @reset do |f|
-  %ul
-    %li
-      =f.label :email_address,
-        annotation('Email address', 'an email will be sent to this address')
-      =f.text_field :email_address
-    %li=f.submit 'Reset passphrase'
+- @page_title = 'Reset your passphrase'
+= breadcrumbs @page_title
+%h1.major= @page_title
+= form_for @reset do |f|
+  = f.email_field :email_address,
+    annotation: 'an email will be sent to this address',
+    required: true
+  = f.submit 'Reset passphrase'
 .links
-  =link_to 'log in', login_path
+  = link_to 'log in', login_path
