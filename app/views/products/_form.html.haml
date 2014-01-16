@@ -1,7 +1,7 @@
 = render 'shared/error_messages', model: @product
 = form_for @product do |f|
-  = f.text_field :name
-  = f.text_field :permalink
+  = f.text_field :name, required: true
+  = f.text_field :permalink, required: true
   = f.text_field :category,
     annotation: 'Desktop, Developer, Other, Server'
   = f.check_box :hide_from_front_page, label: 'Hide from front page?'
