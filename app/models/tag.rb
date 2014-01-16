@@ -27,6 +27,11 @@ class Tag < ActiveRecord::Base
     (changes['name'] && changes['name'].first) || name
   end
 
+  # Make `link_to(tag, tag)` do something reasonable.
+  def to_s
+    name
+  end
+
   def self.find_with_tag_names *tag_names
     tag_names.reject! { |t| t.blank? }
     return [] if tag_names.empty?
