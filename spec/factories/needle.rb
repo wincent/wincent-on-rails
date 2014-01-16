@@ -1,5 +1,3 @@
-require File.expand_path('../factory_girl', File.dirname(__FILE__))
-
 FactoryGirl.define do
   factory :needle do
     # needles don't use real ActiveRecord associations, so don't even bother
