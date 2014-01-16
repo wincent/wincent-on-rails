@@ -1,13 +1,12 @@
--@page_title = 'New issue'
-=breadcrumbs link_to('Issues', issues_path), @page_title
-%h1.major=@page_title
-=render 'shared/error_messages', :model => @issue
+- @page_title = 'New issue'
+= breadcrumbs link_to('Issues', issues_path), @page_title
+%h1.major= @page_title
+= render 'shared/error_messages', model: @issue
 -if !logged_in?
-  =render 'shared/anonymous'
+  = render 'shared/anonymous'
 -elsif !current_user.verified?
-  =render 'shared/unverified'
+  = render 'shared/unverified'
 -# TODO: big fat search link to try and avoid duplicate reports
-=form_for @issue do |f|
-  =render 'issues/form', :f => f
+= render 'issues/form', issue: @issue
 .links
-  =link_to 'issues', issues_path
+  = link_to 'issues', issues_path

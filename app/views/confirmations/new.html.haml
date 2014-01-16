@@ -1,21 +1,21 @@
--@page_title = 'Confirm email'
-=breadcrumbs @page_title
+- @page_title = 'Confirm email'
+= breadcrumbs @page_title
 %h1.major Confirm your email address
-=form_for @confirmation do |f|
+= form_for @confirmation do |f|
   %p
     Select the email addresses you wish to confirm
     %br
     %span.annotation an email will be sent to each selected address
-  -for email in current_user.emails
+  - current_user.emails.each do |email|
     .email
-      -if email.verified?
-        =check_box_tag "emails[#{email.id}]", '1', false, :disabled => true
-      -else
-        =check_box_tag "emails[#{email.id}]", '1', true, :disabled => false
-      -if admin?
-        =link_to email.address, edit_user_email_path(current_user, email)
-      -else
-        =mail_to email.address
-      -if email.verified?
+      - if email.verified?
+        = check_box_tag "emails[#{email.id}]", '1', false, disabled: true
+      - else
+        = check_box_tag "emails[#{email.id}]", '1', true, disabled: false
+      - if admin?
+        = link_to email, edit_user_email_path(current_user, email)
+      - else
+        = mail_to email
+      - if email.verified?
         (already verified)
-  %p=f.submit 'Confirm email addresses'
+  %p= f.submit 'Confirm email addresses'

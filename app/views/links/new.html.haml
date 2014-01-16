@@ -1,15 +1,9 @@
--@page_title = 'New link'
-=breadcrumbs link_to('Links', links_path), @page_title
-%h1.major=@page_title
-=render 'shared/error_messages', :model => @link
-=form_for @link do |f|
-  %ul
-    %li
-      =f.label :uri, 'URI'
-      =f.text_field :uri
-    %li
-      =f.label :permalink, annotation('Permalink', 'optional')
-      =f.text_field :permalink
-    %li
-      =f.submit
-.links=link_to 'links index', links_path
+- @page_title = 'New link'
+= breadcrumbs link_to('Links', links_path), @page_title
+%h1.major= @page_title
+= render 'shared/error_messages', model: @link
+= form_for @link do |f|
+  = f.text_field :uri, label: 'URI'
+  = f.text_field :permalink, annotation: 'optional'
+  = f.submit
+.links= link_to 'links index', links_path

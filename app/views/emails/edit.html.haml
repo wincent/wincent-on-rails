@@ -1,21 +1,12 @@
--@page_title = @email.address
-=breadcrumbs link_to(@user.display_name, @user), @page_title
-%h1.major=@page_title
-=render 'shared/error_messages', :model => @email
-=form_for [@user, @email] do |f|
-  %ul
-    %li
-      =f.label :address
-      =f.text_field :address
-    %li
-      =f.label :verified, 'Verified?'
-      =f.check_box :verified
-    %li
-      =f.label :default, 'Default?'
-      =f.check_box :default
-    %li
-      =f.label :deleted, 'Deleted?'
-      =f.check_box :deleted
-    %li=f.submit
+- @page_title = @email.address
+= breadcrumbs link_to(@user, @user), @page_title
+%h1.major= @page_title
+= render 'shared/error_messages', model: @email
+= form_for [@user, @email] do |f|
+  = f.email_field :address
+  = f.check_box :verified, label: 'Verified?'
+  = f.check_box :default, label: 'Default?'
+  = f.check_box :deleted, label: 'Deleted?'
+  = f.submit
 .links
-  =link_to 'edit user', edit_user_path(@user)
+  = link_to 'edit user', edit_user_path(@user)
