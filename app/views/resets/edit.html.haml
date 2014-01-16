@@ -3,10 +3,8 @@
 %h1.major= @page_title
 = render 'shared/error_messages', model: [@reset, @user]
 = form_for @reset, html: { autocomplete: 'off' } do |f|
-  = f.email_field :email_address,
-    annotation: 'confirm your identity',
-    required: true
-  = f.password_field :passphrase, label: 'New passhrase', required: true
+  = f.email_field :email_address, annotation: 'confirm your identity'
+  = f.password_field :passphrase, label: 'New passhrase'
   = f.password_field :passphrase_confirmation,
     label: 'New passphrase again',
     annotation: 'confirm your new passphrase'

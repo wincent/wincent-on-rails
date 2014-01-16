@@ -3,9 +3,8 @@
 %h1.major= @page_title
 = render 'shared/error_messages', model: @user
 = form_for @user do |f|
-  = f.text_field :display_name,
-    annotation: 'what other users will see',
-    required: true
+  = f.text_field :display_name, annotation: 'what other users will see'
+
   - unless @user.emails.active.empty?
     -# TODO: radio buttons or similar UI here to select default?
     %fieldset.field-row

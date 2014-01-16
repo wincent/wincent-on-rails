@@ -1,8 +1,8 @@
 %h1 Login
 = form_for @session do |f|
   = f.hidden_field :original_uri
-  = f.email_field :email, label: 'Email address', required: true
-  = f.password_field :passphrase, required: true
+  = f.email_field :email, label: 'Email address'
+  = f.password_field :passphrase
   = f.submit 'Log in'
 .links
   = link_to 'Sign up', new_user_path

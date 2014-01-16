@@ -6,10 +6,8 @@
   = f.email_field :email,
     annotation: 'a confirmation email will be sent to this address',
     required: true
-  = f.text_field :display_name,
-    annotation: 'what other users will see',
-    required: true
-  = f.password_field :passphrase, required: true
+  = f.text_field :display_name, annotation: 'what other users will see'
+  = f.password_field :passphrase
   = f.password_field :passphrase_confirmation, required: true,
     label: 'Passhrase again',
     annotation: 'confirm your passphrase'

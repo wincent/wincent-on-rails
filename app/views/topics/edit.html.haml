@@ -7,8 +7,8 @@
 %div[@topic]
   = render 'shared/error_messages', model: @topic
   = form_for [@forum, @topic] do |f|
-    = f.text_field :title, required: true
-    = f.text_area :body, rows: 10, annotation: wikitext_cheatsheet, required: true
+    = f.text_field :title
+    = f.text_area :body, rows: 10, annotation: wikitext_cheatsheet
     = f.check_box :public, label: 'Public?'
     = f.check_box :accepts_comments, label: 'Accepts comments?'
     = f.submit

@@ -9,8 +9,8 @@
 - elsif !current_user.verified?
   = render 'shared/unverified'
 = form_for [@forum, @topic] do |f|
-  = f.text_field :title, required: true
-  = f.text_area :body, rows: 10, annotation: wikitext_cheatsheet, required: true
+  = f.text_field :title
+  = f.text_area :body, rows: 10, annotation: wikitext_cheatsheet
   - if admin?
     = f.label :pending_tags, 'Tags'
     = f.text_field :pending_tags, label: 'Tags'

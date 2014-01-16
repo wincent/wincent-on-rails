@@ -3,8 +3,7 @@
 %h1.major= @page_title
 = form_for @reset do |f|
   = f.email_field :email_address,
-    annotation: 'an email will be sent to this address',
-    required: true
+    annotation: 'an email will be sent to this address'
   = f.submit 'Reset passphrase'
 .links
   = link_to 'log in', login_path

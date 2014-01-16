@@ -1,8 +1,7 @@
 = f.select :kind, underscores_to_spaces(Issue::KIND).sort
 
 = f.text_field :summary,
-  annotation: 'a one-line summary of your issue',
-  required: true
+  annotation: 'a one-line summary of your issue'
 
 = f.select :product_id, content_tag(:option, '', value: '') +   |
   option_groups_from_collection_for_select(Product.categorized, |

@@ -2,7 +2,7 @@
 = render 'shared/error_messages', model: @snippet
 = form_for @snippet do |f|
   = f.text_field :description, annotation: 'optional'
-  = f.text_area :body, rows: 20, required: true
+  = f.text_area :body, rows: 20
   = f.select :markup_type, Snippet::MARKUP_TYPES, label: 'Markup'
   = f.text_field :pending_tags, label: 'Tags'
   = f.check_box :public

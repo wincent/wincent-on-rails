@@ -3,9 +3,9 @@
 %h1.major= @page_title
 = render 'shared/error_messages', model: @tag
 = form_for @tag do |f|
-  =f.text_field :name, required: true
-  =f.submit
+  = f.text_field :name
+  = f.submit
 .links
-  =link_to 'show', @tag
+  = link_to 'show', @tag
   -#=button_to_destroy_model @tag
-  =link_to 'all tags', tags_path
+  = link_to 'all tags', tags_path

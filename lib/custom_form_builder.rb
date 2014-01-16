@@ -20,6 +20,13 @@ class CustomFormBuilder < ActionView::Helpers::FormBuilder
       options    = args.extract_options!
       annotation = annotation(options.delete(:annotation))
       label_text = label_text(options.delete(:label) || attr.to_s.humanize)
+      validators = @object.class.validators_on(attr).map(&:class)
+
+      # automatically add `required: true` if validations indicate we should
+      if (validators & [ActiveRecord::Validations::PresenceValidator,
+                        ActiveModel::Validations::PresenceValidator]).any?
+        options.merge!(required: true)
+      end
 
       @template.content_tag(:div, class: "field-row #{row_class}") do
         @template.content_tag(:label) do
