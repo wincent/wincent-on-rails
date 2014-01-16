@@ -1,17 +1,9 @@
-#login_form
-  %h1 Login
-  =form_tag sessions_path do
-    =hidden_field_tag :original_uri, params[:original_uri]
-    %ul
-      %li
-        =label_tag :email, 'Email address'
-        =text_field_tag :email, params[:email]
-      %li
-        =label_tag :passphrase, 'Passphrase'
-        =password_field_tag :passphrase, params[:passphrase]
-      %li
-        =submit_tag 'Log in'
-        -# TODO: login via OpenID
+%h1 Login
+= form_for @session do |f|
+  = f.hidden_field :original_uri
+  = f.email_field :email, label: 'Email address', required: true
+  = f.password_field :passphrase, required: true
+  = f.submit 'Log in'
 .links
-  =link_to 'Sign up', new_user_path
-  =link_to 'Forgot your passphrase?', new_reset_path
+  = link_to 'Sign up', new_user_path
+  = link_to 'Forgot your passphrase?', new_reset_path

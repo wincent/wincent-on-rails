@@ -88,7 +88,7 @@ Wincent::Application.routes.draw do
   end
 
   resources :resets
-  resources :sessions
+  resources :sessions, only: %i[new create destroy]
 
   resources :snippets do
     resources :comments, only: %i[create new update]
