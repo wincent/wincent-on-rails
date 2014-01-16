@@ -20,6 +20,11 @@ $focus-border-color: #dcedfe;
     border-color: $focus-border-color;
   }
 
+  // make it more obvious that (almost) the entire field row is clickable
+  &.check-box *:hover {
+    cursor: pointer;
+  }
+
   label {
     display: block;
   }

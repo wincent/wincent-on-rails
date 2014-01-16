@@ -6,7 +6,7 @@ class CustomFormBuilder < ActionView::Helpers::FormBuilder
   # Overwrite the wrappable helper methods (text_field, select etc) to produce a
   # method that generates markup like this:
   #
-  #   <div class="field-row">
+  #   <div class="field-row text-field">
   #     <label for="issue_summary">
   #       <span class="label-text">Summary</span>
   #       <!-- superclass's original input here -->
@@ -15,12 +15,13 @@ class CustomFormBuilder < ActionView::Helpers::FormBuilder
   #   </div>
   #
   (WRAPPABLE_HELPERS + ADDITIONAL_HELPERS).each do |name|
+    row_class = name.to_s.tr('_', '-')
     define_method(name) do |attr, *args|
       options    = args.extract_options!
       annotation = annotation(options.delete(:annotation))
       label_text = label_text(options.delete(:label) || attr.to_s.humanize)
 
-      @template.content_tag(:div, class: 'field-row') do
+      @template.content_tag(:div, class: "field-row #{row_class}") do
         @template.content_tag(:label) do
           @template.safe_join([
             label_text,
