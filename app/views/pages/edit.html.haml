@@ -1,13 +1,11 @@
--@page_title = 'Edit page'
-=breadcrumbs link_to('Products', products_path),
-  link_to(@product.name, edit_product_path(@product)),
+- @page_title = 'Edit page'
+= breadcrumbs link_to('Products', products_path),
+  link_to(@product, edit_product_path(@product)),
   @page.title
-%h1.major Edit page
+%h1.major= @page_title
 %div[@page]
-  =render 'shared/error_messages', :model => @page
-  =form_for @page, :url => product_page_path(@product, @page) do |f|
-    =render 'form', :f => f
+  = render 'form', product: @product, page: @page
 .links
-  =link_to 'show page', embedded_product_page_path(@product, @page)
-  =link_to 'show product', product_path(@product)
-  =button_to_destroy_model product_page_path(@product, @page)
+  = link_to 'show page', embedded_product_page_path(@product, @page)
+  = link_to 'show product', product_path(@product)
+  = button_to_destroy_model product_page_path(@product, @page)

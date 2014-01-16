@@ -1,17 +1,8 @@
-%ul
-  %li
-    =f.label :title
-    =f.text_field :title
-  %li
-    =f.label :permalink
-    =f.text_field :permalink
-  %li
-    =f.label :body
-    =f.text_area :body, :rows => 30
-  %li
-    =f.label :markup_type, 'Markup'
-    =f.select :markup_type, Page::MARKUP_TYPES
-  %li
-    =f.label :front, 'Front page?'
-    =f.check_box :front
-  %li=f.submit
+= render 'shared/error_messages', model: page
+= form_for [product, page] do |f|
+  = f.text_field :title, required: true
+  = f.text_field :permalink, required: true
+  = f.text_area :body, rows: 30, required: true
+  = f.select :markup_type, Page::MARKUP_TYPES, label: 'Markup'
+  = f.check_box :front, label: 'Front page?'
+  = f.submit
