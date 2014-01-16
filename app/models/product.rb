@@ -20,6 +20,10 @@ class Product < ActiveRecord::Base
     all.group_by(&:category)
   end
 
+  def to_s
+    name
+  end
+
   def to_param
     (changes['permalink'] && changes['permalink'].first) || permalink
   end

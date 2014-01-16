@@ -46,6 +46,10 @@ class Forum < ActiveRecord::Base
     (changes['permalink'] && changes['permalink'].first) || permalink
   end
 
+  def to_s
+    name
+  end
+
 private
 
   def set_position

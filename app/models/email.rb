@@ -31,4 +31,8 @@ class Email < ActiveRecord::Base
   def to_param
     (changes['address'] && changes['address'].first) || address
   end
+
+  def to_s
+    address
+  end
 end
