@@ -1,33 +1,15 @@
-=render 'shared/error_messages', :model => @product
-=form_for @product do |f|
-  %ul
-    %li
-      =f.label :name
-      =f.text_field :name
-    %li
-      =f.label :permalink
-      =f.text_field :permalink
-    %li
-      -# TODO: AJAX outcomplete?
-      =f.label :category,
-        annotation('Category', 'Desktop, Developer, Other, Server')
-      =f.text_field :category
-    %li
-      =f.label :hide_from_front_page, 'Hide from front page?'
-      =f.check_box :hide_from_front_page
-    %li
-      =f.label :position, annotation('Position', 'integer')
-      =f.text_field :position
-    %li
-      =f.label :description, annotation('Description', 'optional, HTML')
-      =f.text_area :description
-    %li
-      =f.label :header, annotation('Header', 'optional, HTML')
-      =f.text_area :header
-    %li
-      =f.label :footer, annotation('Footer', 'optional, HTML')
-      =f.text_area :footer
-    %li
-      =f.label :bundle_identifier, annotation('Bundle identifier', 'optional')
-      =f.text_field :bundle_identifier
-    %li=f.submit
+= render 'shared/error_messages', model: @product
+= form_for @product do |f|
+  = f.text_field :name
+  = f.text_field :permalink
+  = f.text_field :category,
+    annotation: 'Desktop, Developer, Other, Server'
+  = f.check_box :hide_from_front_page, label: 'Hide from front page?'
+  = f.text_field :position, annotation: 'integer'
+  = f.text_area :description, annotation: 'optional, HTML'
+  = f.text_area :header, annotation: 'optional, HTML'
+  = f.text_area :footer, annotation: 'optional, HTML'
+  = f.text_field :bundle_identifier,
+    label: 'Bundle identifier',
+    annotation: 'optional'
+  = f.submit
