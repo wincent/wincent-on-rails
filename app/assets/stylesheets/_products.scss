@@ -180,7 +180,6 @@ dt img {
   background: black;
   @include border-radius(5px);
   @include opacity(0.5);
-  display:                none
   z-index: 5000;
 }
 
