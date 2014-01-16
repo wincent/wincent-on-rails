@@ -1,18 +1,13 @@
--@page_title = 'New forum'
-=breadcrumbs link_to('Forums', forums_path), @page_title
-%h1.major=@page_title
-=render 'shared/error_messages', :model => @forum
-=form_for @forum do |f|
-  %ul
-    %li
-      =f.label :name
-      =f.text_field :name
-    %li
-      =f.label :permalink, annotation('Permalink', 'leave blank to autogenerate')
-      =f.text_field :permalink
-    %li
-      =f.label :description, annotation('Description', 'optional')
-      =f.text_field :description
-    %li=f.submit
+- @page_title = 'New forum'
+= breadcrumbs link_to('Forums', forums_path), @page_title
+%h1.major= @page_title
+= render 'shared/error_messages', model: @forum
+= form_for @forum do |f|
+  = f.text_field :name
+  = f.text_field :permalink,
+    annotation: 'leave blank to autogenerate',
+    required: false
+  = f.text_field :description, annotation: 'optional'
+  = f.submit
 .links
-  =link_to 'forums index', forums_path
+  = link_to 'forums index', forums_path

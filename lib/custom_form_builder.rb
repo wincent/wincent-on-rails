@@ -25,7 +25,7 @@ class CustomFormBuilder < ActionView::Helpers::FormBuilder
       # automatically add `required: true` if validations indicate we should
       if (validators & [ActiveRecord::Validations::PresenceValidator,
                         ActiveModel::Validations::PresenceValidator]).any?
-        options.merge!(required: true)
+        options.reverse_merge!(required: true)
       end
 
       @template.content_tag(:div, class: "field-row #{row_class}") do
