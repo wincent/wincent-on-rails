@@ -164,22 +164,22 @@ module ApplicationHelper
     end
   end
 
-  def scaled_tag tag, type = nil
+  def scaled_tag(tag, type = nil)
     # NOTE: that we report the full taggings count here: may want to exclude taggables to which the user doesn't have access
-    path = type ? tag_path(tag, :type => type) : tag_path(tag)
-    link_to tag.name, path,
-      :style => "font-size: #{1 + tag.normalized_taggings_count * 1}em;",
-      :title => "#{item_count(tag.taggings_count)} tagged with '#{tag.name}'"
+    path = type ? tag_path(tag, type: type) : tag
+    link_to tag, path,
+      style: "font-size: #{1 + tag.normalized_taggings_count * 1}em;",
+      title: "#{item_count(tag.taggings_count)} tagged with '#{tag}'"
   end
 
   # given that the taggings count is wildly inaccurate here, not sure if I should use scaling here at all
   def scaled_filter_tag tag, tags
     tags  = [tags] unless tags.respond_to?(:collect)
-    base  = tags.collect(&:name).join(' ')
-    query = "#{base} #{tag.name}"
-    link_to tag.name, search_tags_path(:q => "#{query}"),
-      :style => "font-size: #{1 + tag.normalized_taggings_count * 1}em;",
-      :title => "show items tagged with: #{query}"
+    base  = tags.map(&:name).join(' ')
+    query = "#{base} #{tag}"
+    link_to tag, search_tags_path(q: "#{query}"),
+      style: "font-size: #{1 + tag.normalized_taggings_count * 1}em;",
+      title: "show items tagged with: #{query}"
   end
 
   # Convert key names from "feature_request" etc to "feature request".
