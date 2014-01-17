@@ -11,7 +11,7 @@ intention is to release it under
 == Site content ==
 
 Unless otherwise noted, all content published on the site by the site
-administator is Copyright 1997-2013 Wincent Colaiuta. This content includes
+administator is Copyright 1997-2014 Greg Hurrell. This content includes
 [/blog blog posts], [/wiki wiki articles], product pages, and most other
 material on the site unless otherwise labelled.
 
