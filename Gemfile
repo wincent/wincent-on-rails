@@ -28,6 +28,7 @@ group :development, :test do
   gem 'byebug'
   gem 'factory_girl_rails'
   gem 'jasmine'
+  gem 'pry-rails'
   gem 'rspec-rails'
   gem 'spring'
   gem 'spring-commands-rspec'

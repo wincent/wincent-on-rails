@@ -56,6 +56,7 @@ GEM
       ffi (~> 1.0, >= 1.0.11)
     chunky_png (1.2.9)
     closure-compiler (1.1.10)
+    coderay (1.1.0)
     columnize (0.3.6)
     compass (1.0.0.alpha.17)
       chunky_png (~> 1.2)
@@ -102,6 +103,7 @@ GEM
     mail (2.5.4)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
+    method_source (0.8.2)
     mime-types (1.25.1)
     mini_portile (0.5.2)
     minitest (5.2.0)
@@ -113,6 +115,12 @@ GEM
     polyglot (0.3.3)
     protected_attributes (1.0.5)
       activemodel (>= 4.0.1, < 5.0)
+    pry (0.9.12.4)
+      coderay (~> 1.0)
+      method_source (~> 0.8)
+      slop (~> 3.4)
+    pry-rails (0.3.2)
+      pry (>= 0.9.10)
     rack (1.5.2)
     rack-test (0.6.2)
       rack (>= 1.0)
@@ -166,6 +174,7 @@ GEM
       multi_json (~> 1.0)
       rubyzip (~> 1.0.0)
       websocket (~> 1.0.4)
+    slop (3.4.7)
     spring (1.0.0)
     spring-commands-rspec (1.0.1)
       spring (>= 0.9.1)
@@ -219,6 +228,7 @@ DEPENDENCIES
   mysql2
   nokogiri
   protected_attributes
+  pry-rails
   rails (= 4.1.0.beta1)
   rails-observers
   rake
