@@ -1,3 +1,5 @@
+require_relative '../support/sham.rb'
+
 FactoryGirl.define do
   factory :attachment do
     mime_type 'image/png'

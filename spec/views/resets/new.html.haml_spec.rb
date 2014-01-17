@@ -18,7 +18,7 @@ describe 'resets/new' do
   it 'renders new form' do
     render
     within("form[action='#{resets_path}'][method='post']") do |form|
-      form.should have_css('input#reset_email_address[name="reset[email_address]"][type="text"]')
+      form.should have_css('input#reset_email_address[name="reset[email_address]"][type="email"]')
       form.should have_css('input[name="commit"][type="submit"][value="Reset passphrase"]')
     end
   end

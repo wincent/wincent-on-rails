@@ -11,7 +11,7 @@ describe SessionsController do
     before do
       @user = User.make!
       stub(User).authenticate(anything, anything) { @user }
-      post 'create', :protocol => 'https'
+      post 'create', protocol: 'https'
     end
 
     it 'should flash a success notice' do
@@ -30,7 +30,7 @@ describe SessionsController do
   describe 'logging in with an invalid username or passphrase' do
     before do
       stub(User).authenticate(anything, anything) { nil }
-      post 'create', :protocol => 'https'
+      post 'create', protocol: 'https'
     end
 
     it 'should flash an error' do
@@ -45,7 +45,7 @@ describe SessionsController do
   describe 'logging out when previously logged in' do
     before do
       log_in_as User.make!
-      post 'destroy', :protocol => 'https'
+      post 'destroy', protocol: 'https'
     end
 
     it 'should flash a success notice' do
@@ -63,7 +63,7 @@ describe SessionsController do
 
   describe 'logging out when not previously logged in' do
     before do
-      post 'destroy', :protocol => 'https'
+      post 'destroy', protocol: 'https'
     end
 
     it 'should flash an error' do
@@ -82,25 +82,25 @@ describe SessionsController do
     end
 
     it 'should redirect to the user dashboard if no original uri supplied' do
-      post 'create', :protocol => 'https'
+      post 'create', protocol: 'https'
       response.should redirect_to(dashboard_path)
     end
 
-    it 'should redirect to if original uri supplied via session' do
+    it 'redirects to the original URI supplied via session' do
       session[:original_uri] = '/comments'
-      post 'create', :protocol => 'https'
+      post 'create', protocol: 'https'
       response.should redirect_to(comments_path)
     end
 
-    it 'should redirect to if original uri supplied via params' do
-      post 'create', :original_uri => '/comments', :protocol => 'https'
+    it 'redirects to the original URI supplied via params' do
+      post 'create', session: { original_uri: '/comments' }, protocol: 'https'
       response.should redirect_to(comments_path)
     end
 
     # was a bug were failing because even blank "original_uri" would redirect (to the root rather than the dashboard)
     it 'should redirect to the user dashboard if original uri is blank' do
       session[:original_uri] = ''
-      post 'create', :protocol => 'https'
+      post 'create', protocol: 'https'
       response.should redirect_to(dashboard_path)
     end
   end

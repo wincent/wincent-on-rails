@@ -1,3 +1,5 @@
+require_relative '../support/sham.rb'
+
 FactoryGirl.define do
   factory :page do
     title { Sham.random }

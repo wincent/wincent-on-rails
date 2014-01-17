@@ -5,7 +5,7 @@ describe IssuesController do
 
   describe '#search' do
     def do_get
-      get :search, :issue => { :summary => 'foo' }
+      get :search, issue: { summary: 'foo' }
     end
 
     # these tests are fairly weak at the moment because I don't want to start
@@ -35,7 +35,7 @@ describe IssuesController do
 
   describe '#show' do
     def do_get issue
-      get :show, :id => issue.id
+      get :show, id: issue.id
     end
 
     it 'should run the "find_prev_next" before filter' do
@@ -46,12 +46,12 @@ describe IssuesController do
 
   describe '#edit' do
     before do
-      @issue = Issue.make! :awaiting_moderation => false # this is the default example data anyway, but be explicit
+      @issue = Issue.make! awaiting_moderation: false # this is the default example data anyway, but be explicit
       log_in_as_admin
     end
 
     def do_get
-      get :edit, :id => @issue.id
+      get :edit, id: @issue.id
     end
 
     it 'should require administrator privileges' do
@@ -65,7 +65,7 @@ describe IssuesController do
     end
 
     it 'should be successful for issues awaiting moderation' do
-      @issue = Issue.make! :awaiting_moderation => true
+      @issue = Issue.make! awaiting_moderation: true
       do_get
       response.should be_success
     end
@@ -76,7 +76,7 @@ describe IssuesController do
     end
 
     it 'should render the edit template for issues awaiting modeartion' do
-      @issue = Issue.make! :awaiting_moderation => true
+      @issue = Issue.make! awaiting_moderation: true
       do_get
       response.should render_template('edit')
     end
@@ -89,9 +89,9 @@ describe IssuesController do
 
   describe '#create (html format)' do
     def do_post
-      post :create, :issue => {
-        :pending_tags => 'foo bar baz',
-        :summary      => 'necessary for validation...',
+      post :create, issue: {
+        pending_tags: 'foo bar baz',
+        summary:      'necessary for validation...',
       }
     end
 
@@ -114,12 +114,12 @@ describe IssuesController do
 
   describe '#update (html format)' do
     before do
-      @issue = Issue.make! :awaiting_moderation => true
+      @issue = Issue.make! awaiting_moderation: true
       log_in_as_admin
     end
 
     def do_put
-      put :update, :id => @issue.id, :issue => { :pending_tags => 'foo bar baz' }
+      put :update, id: @issue.id, issue: { pending_tags: 'foo bar baz' }
     end
 
     it 'should require administrator privileges' do
@@ -178,12 +178,12 @@ describe IssuesController do
 
   describe '#update (js format)' do
     before do
-      @issue = Issue.make! :awaiting_moderation => true
+      @issue = Issue.make! awaiting_moderation: true
       log_in_as_admin
     end
 
-    def do_put button = 'ham'
-      put :update, :id => @issue.id, :format => 'js', :button => button
+    def do_put(button = 'ham')
+      put :update, id: @issue.id, format: 'json', button: button
     end
 
     it 'should require administrator privileges' do
@@ -209,7 +209,7 @@ describe IssuesController do
     it 'unsets the "current_user" thread-local variable even if an exception is thrown' do
       log_in_as_admin
       record_not_found = Issue.make!.id + 1_000
-      get :edit, :id => record_not_found # raises RecordNotFound
+      get :edit, id: record_not_found # raises RecordNotFound
       Thread.current[:current_user].should be_nil
     end
   end

@@ -24,11 +24,11 @@ describe ResetsController do
   describe '#create' do
     context 'with a valid email address' do
       before do
-        @email = Email.make! :address => 'jessica@example.com'
+        @email = Email.make! address: 'jessica@example.com'
       end
 
       def do_post
-        post :create, :reset => { :email_address => 'jessica@example.com' }
+        post :create, reset: { email_address: 'jessica@example.com' }
       end
 
       it 'sends a reset message' do
@@ -44,7 +44,7 @@ describe ResetsController do
 
       context 'too many resets' do
         before do
-          6.times { Reset.make! :email => @email }
+          6.times { Reset.make! email: @email }
         end
 
         it 'shows a flash' do
@@ -56,7 +56,7 @@ describe ResetsController do
 
     context 'without a valid email address' do
       def do_post
-        post :create, :reset => { :email_address => 'unknown@example.com' }
+        post :create, reset: { email_address: 'unknown@example.com' }
       end
 
       it 'assigns a new reset' do
@@ -79,7 +79,7 @@ describe ResetsController do
 
   describe '#show' do
     it 'redirects to #edit' do
-      get :show, :id => 'foobar'
+      get :show, id: 'foobar'
       response.should redirect_to('/resets/foobar/edit')
     end
   end
@@ -88,7 +88,7 @@ describe ResetsController do
     let(:reset) { Reset.make! }
 
     def do_get
-      get :edit, :id => reset.secret
+      get :edit, id: reset.secret
     end
 
     it 'finds and assigns the reset' do
@@ -112,7 +112,7 @@ describe ResetsController do
     end
 
     context 'no reset token found' do
-      let(:reset) { Reset.make :secret => 'non-existent' }
+      let(:reset) { Reset.make secret: 'non-existent' }
 
       it 'shows a flash' do
         do_get
@@ -126,7 +126,7 @@ describe ResetsController do
     end
 
     context 'token already used' do
-      let(:reset) { Reset.make! :completed_at => 3.days.ago }
+      let(:reset) { Reset.make! completed_at: 3.days.ago }
 
       it 'shows a flash' do
         do_get
@@ -140,7 +140,7 @@ describe ResetsController do
     end
 
     context 'expired token' do
-      let(:reset) { Reset.make! :cutoff => 1.month.ago }
+      let(:reset) { Reset.make! cutoff: 1.month.ago }
 
       it 'shows a flash' do
         do_get
@@ -159,10 +159,12 @@ describe ResetsController do
 
     def do_put
       put :update,
-          :id => reset.secret,
-          :reset => { :email_address => reset.email.address },
-          :passphrase => 'helloworld',
-          :passphrase_confirmation => 'helloworld'
+          id: reset.secret,
+          reset: {
+            email_address:           reset.email.address,
+            passphrase:              'helloworld',
+            passphrase_confirmation: 'helloworld',
+          }
       reset.reload
     end
 
@@ -205,10 +207,12 @@ describe ResetsController do
     context 'reset invalid (incorrect email address)' do
       def do_put
         put :update,
-            :id => reset.secret,
-            :reset => { :email_address => 'nobody@example.com' },
-            :passphrase => 'helloworld',
-            :passphrase_confirmation => 'helloworld'
+            id: reset.secret,
+            reset: {
+              email_address:           'nobody@example.com',
+              passphrase:              'helloworld',
+              passphrase_confirmation: 'helloworld',
+            }
         reset.reload
       end
 
@@ -232,10 +236,10 @@ describe ResetsController do
     context 'user invalid (incorrect passphrase confirmation)' do
       def do_put
         put :update,
-            :id => reset.secret,
-            :reset => { :email_address => reset.email.address },
-            :passphrase => 'one thing',
-            :passphrase_confirmation => 'another thing'
+            id: reset.secret,
+            reset: { email_address: reset.email.address },
+            passphrase: 'one thing',
+            passphrase_confirmation: 'another thing'
         reset.reload
       end
 
@@ -260,7 +264,7 @@ describe ResetsController do
       # potentially should be a shared behavior this one, as it
       # is the standard record_not_found method from ApplicationController
       def do_put
-        put :update, :id => 'non-existent'
+        put :update, id: 'non-existent'
       end
 
       it 'shows a flash' do

@@ -1,3 +1,5 @@
+require_relative '../support/sham.rb'
+
 FactoryGirl.define do
   factory :product do
     # required attributes

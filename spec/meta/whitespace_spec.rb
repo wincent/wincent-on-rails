@@ -20,8 +20,11 @@ describe 'Source code files' do
   end
 
   around :each do |example|
-    GC.start # work around Ruby 2.1.0 bug
+    # work around Ruby 2.1.0 bug; have to GC periodically
+    $gc_bug_counter = 0 if $gc_bug_counter.nil?
     Dir.chdir(Rails.root) { example.run }
+    $gc_bug_counter += 1
+    GC.start if $gc_bug_counter % 10 == 0 # avoid slow-down by GC'ing only 1 in 10 times
   end
 
   def check_file file, regex

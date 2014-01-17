@@ -1,3 +1,5 @@
+require_relative '../support/sham.rb'
+
 # always return the same passphrase
 Sham.passphrase { |n| 'supersecret' }
 
