@@ -134,10 +134,7 @@ var TagWidget = React.createClass({
         this.refs.tagInput.getDOMNode().focus();
       }
 
-      this.setState({
-        tags: tags,
-        selectedPillIndex: index
-      });
+      this.setState({ tags: tags, selectedPillIndex: index });
 
       event.preventDefault(); // don't let back button perform page navigation
     }
