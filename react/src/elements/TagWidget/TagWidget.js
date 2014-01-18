@@ -101,7 +101,7 @@ var TagWidget = React.createClass({
         this.setState({ selectedPillIndex: this.state.tags.length - 1 });
 
         // can't just blur() the tagInput as we still need key events
-        this.getDOMNode().focus();
+        this.forceFocus();
       }
     } else if (typeof this.state.selectedPillIndex !== "undefined" &&
                 this.state.selectedPillIndex > 0) {
@@ -198,6 +198,15 @@ var TagWidget = React.createClass({
     }
   },
 
+  handleFocus: function(event) {
+    if (!this.forcingFocus) {
+      // likely we were tabbed into; forward focus to the TagInput
+      this.refs.tagInput.getDOMNode().focus();
+    } else {
+      this.forcingFocus = false;
+    }
+  },
+
   pushTag: function(newTag) {
     newTag = newTag
       .trim()
@@ -262,7 +271,7 @@ var TagWidget = React.createClass({
 
   handleTagSelect: function(name) {
     this.setState({ selectedPillIndex: this.state.tags.indexOf(name) });
-    this.getDOMNode().focus();
+    this.forceFocus();
   },
 
   handleTagDelete: function(name) {
@@ -270,6 +279,20 @@ var TagWidget = React.createClass({
     var tags = this.state.tags.slice(0);
     tags.splice(tags.indexOf(name), 1)
     this.setState({ tags: tags });
+  },
+
+  forceFocus: function() {
+    // This is somewhat of a nasty hack; sometimes we have to programmatically
+    // apply focus to the widget (for example, when we blur the TagInput, we
+    // need to keep focus on the TagWidget itself in order to continue receiving
+    // key events).
+    //
+    // We need a way of distinguishing between these artificial events and
+    // natural events due to things like tabbing into the TagWidget. We can't
+    // rely on setState followed by reading state in another handler, because of
+    // batching. Instead we have to set a flag property directly on this class.
+    this.forcingFocus = true;
+    this.getDOMNode().focus();
   },
 
   render: function() {
@@ -293,7 +316,8 @@ var TagWidget = React.createClass({
            onClick={this.handleClick}
            onDragStart={this.handleDragStart}
            onKeyDown={this.handleKeyDown}
-           onBlur={this.handleBlur}>
+           onBlur={this.handleBlur}
+           onFocus={this.handleFocus}>
         {tagPills}
         <input type="hidden"
                name={this.props.resourceName}

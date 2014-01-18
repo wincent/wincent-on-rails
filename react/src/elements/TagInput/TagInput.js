@@ -12,6 +12,12 @@ var BACKSPACE_KEY_CODE = 8;  // delete tag
 ReactStyle.addRules(TagInputStyleRules);
 
 var TagInput = React.createClass({
+  handleFocus: function(event) {
+    // don't let the event bubble up to TagWidget, otherwise it will try to send
+    // focus straight back to us due to its handleFocus implementation
+    event.stopPropagation();
+  },
+
   handleInput: function(event) {
     // resize dynamically
     var input    = event.target,
@@ -87,6 +93,7 @@ var TagInput = React.createClass({
     return (
       <input className={TagInputStyleRules.tagInput}
              type="text"
+             onFocus={this.handleFocus}
              onInput={this.handleInput}
              onKeyDown={this.handleKeyDown}
              onKeyUp={this.handleKeyUp}
