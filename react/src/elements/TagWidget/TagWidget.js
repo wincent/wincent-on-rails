@@ -59,7 +59,7 @@ var TagWidget = React.createClass({
         // candidate must match, and must not already be present in tags list
         return completion.indexOf(string) !== -1 &&
         this.state.tags.indexOf(completion) === -1;
-      }.bind(this));
+      }, this);
     }
   },
 
