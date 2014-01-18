@@ -21,12 +21,12 @@ ReactStyle.addRules(TagWidgetStyleRules);
 var TagWidget = React.createClass({
   getInitialState: function() {
     return {
-      tags:                    [],
-      availableCompletions:    [],
-      filteredCompletions:     [],
-      pending:                 [], // for styling purposes
-      autocompleteSelectedIdx: undefined,
-      duplicateTag:            undefined
+      tags:                       [],
+      availableCompletions:       [],
+      filteredCompletions:        [],
+      pending:                    [], // for styling purposes
+      selectedAutocompleteIndex:  undefined,
+      duplicateTag:               undefined
     };
   },
 
@@ -94,7 +94,7 @@ var TagWidget = React.createClass({
     var keyCode        = event.keyCode,
         completions    = this.state.filteredCompletions,
         maxSelectedIdx = completions.length - 1, // -1 if no completions
-        oldSelectedIdx = this.state.autocompleteSelectedIdx,
+        oldSelectedIdx = this.state.selectedAutocompleteIndex,
         newSelectedIdx;
 
     if (keyCode === ESCAPE_KEY_CODE) {
@@ -133,7 +133,7 @@ var TagWidget = React.createClass({
     }
 
     event.preventDefault();
-    this.setState({ autocompleteSelectedIdx: newSelectedIdx });
+    this.setState({ selectedAutocompleteIndex: newSelectedIdx });
   },
 
   pushTag: function(newTag) {
@@ -161,7 +161,7 @@ var TagWidget = React.createClass({
     }
 
     this.setState({
-      autocompleteSelectedIdx: undefined,
+      selectedAutocompleteIndex: undefined,
       filteredCompletions:     []
     });
   },
@@ -188,7 +188,7 @@ var TagWidget = React.createClass({
   // mouseEnter
   handleTagSelect: function(element) {
     var tagIdx = this.state.filteredCompletions.indexOf(element.innerHTML);
-    this.setState({ autocompleteSelectedIdx: tagIdx });
+    this.setState({ selectedAutocompleteIndex: tagIdx });
   },
 
   handleTagPop: function() {
@@ -228,7 +228,7 @@ var TagWidget = React.createClass({
                value={this.state.tags.join(" ")} />
         <TagInput ref="tagInput" onTagPop={this.handleTagPop} />
         <TagAutocomplete completions={this.state.filteredCompletions}
-                         selectedIdx={this.state.autocompleteSelectedIdx}
+                         selectedIdx={this.state.selectedAutocompleteIndex}
                          onTagPush={this.handleTagPush}
                          onTagSelect={this.handleTagSelect} />
       </div>
