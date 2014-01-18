@@ -98,8 +98,7 @@ var TagWidget = React.createClass({
         newSelectedIdx;
 
     if (keyCode === ESCAPE_KEY_CODE) {
-      var input = this.refs.tagInput.getDOMNode();
-      input.blur();
+      this.refs.tagInput.getDOMNode().blur();
       this.state.filteredCompletions = [];
     } else if (typeof oldSelectedIdx === "undefined" &&
         maxSelectedIdx >= 0 &&
