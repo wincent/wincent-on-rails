@@ -10,9 +10,14 @@ var React             = require("React"),
 ReactStyle.addRules(TagPillStyleRules);
 
 var TagPill = React.createClass({
+  handleClick: function(event) {
+    event.stopPropagation();
+    this.props.onTagSelect(this.props.name);
+  },
+
   handleDelete: function(event) {
-    event.preventDefault();
     this.props.onTagDelete(this.props.name);
+    return false;
   },
 
   handleDragStart: function(event) {
@@ -40,6 +45,7 @@ var TagPill = React.createClass({
     return (
       <span className={className}
             draggable="true"
+            onClick={this.handleClick}
             onDragStart={this.handleDragStart}
             onDragEnd={this.handleDragEnd}>
         {this.props.name}

@@ -244,7 +244,7 @@ var TagWidget = React.createClass({
 
   // callback invokved when someone "selects" an autocomplete suggestion via
   // mouseEnter
-  handleTagSelect: function(element) {
+  handleAutocompleteSelect: function(element) {
     var tagIdx = this.state.filteredCompletions.indexOf(element.innerHTML);
     this.setState({ selectedAutocompleteIndex: tagIdx });
   },
@@ -254,6 +254,11 @@ var TagWidget = React.createClass({
       this.clearDuplicateMarker();
       this.setState({ tags: this.state.tags.slice(0, -1) });
     }
+  },
+
+  handleTagSelect: function(name) {
+    this.setState({ selectedPillIndex: this.state.tags.indexOf(name) });
+    this.getDOMNode().focus();
   },
 
   handleTagDelete: function(name) {
@@ -273,6 +278,7 @@ var TagWidget = React.createClass({
                       isDuplicate={isDuplicate}
                       isPending={isPending}
                       isSelected={isSelected}
+                      onTagSelect={this.handleTagSelect}
                       onTagDelete={this.handleTagDelete} />;
     }, this);
 
@@ -292,7 +298,7 @@ var TagWidget = React.createClass({
         <TagAutocomplete completions={this.state.filteredCompletions}
                          selectedIdx={this.state.selectedAutocompleteIndex}
                          onTagPush={this.handleTagPush}
-                         onTagSelect={this.handleTagSelect} />
+                         onAutocompleteSelect={this.handleAutocompleteSelect} />
       </div>
     );
   },

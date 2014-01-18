@@ -41,7 +41,7 @@ var TagAutocomplete = React.createClass({
     // mouseEnter is actually better, but it also explains why things look a
     // little weird here: we have to "unpack" the native event below, and it
     // appears to be a mouseOut event under the covers
-    this.props.onTagSelect(event.nativeEvent.toElement);
+    this.props.onAutocompleteSelect(event.nativeEvent.toElement);
   },
 
   render: function() {
