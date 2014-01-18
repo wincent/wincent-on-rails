@@ -187,6 +187,13 @@ var TagWidget = React.createClass({
     this.setState({ selectedAutocompleteIndex: newSelectedIdx });
   },
 
+  handleBlur: function(event) {
+    if (typeof this.state.selectedPillIndex !== "undefined" &&
+        this.getDOMNode() === event.target) {
+      this.setState({ selectedPillIndex: undefined });
+    }
+  },
+
   pushTag: function(newTag) {
     newTag = newTag
       .trim()
@@ -275,7 +282,8 @@ var TagWidget = React.createClass({
            onChange={this.handleChange}
            onClick={this.handleClick}
            onDragStart={this.handleDragStart}
-           onKeyDown={this.handleKeyDown}>
+           onKeyDown={this.handleKeyDown}
+           onBlur={this.handleBlur}>
         {tagPills}
         <input type="hidden"
                name={this.props.resourceName}
