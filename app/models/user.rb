@@ -80,8 +80,8 @@ class User < ActiveRecord::Base
   end
 
   def utterances_count
-    # later on this will also include self.issues_count
-    self.comments_count + self.topics_count
+    # later on this will also include issues_count
+    comments_count + topics_count
   end
 
   def self.find_with_param! param
