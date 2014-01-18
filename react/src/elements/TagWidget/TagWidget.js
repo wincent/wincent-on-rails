@@ -21,6 +21,8 @@ var BACKSPACE_KEY_CODE = 8,  // delete selected pill
 
 ReactStyle.addRules(TagWidgetStyleRules);
 
+// The TagWidget provides tag "pilling" and autocomplete. It manages a related
+// set of subcomponents (TagInput, TagAutocomplete, TagPill).
 var TagWidget = React.createClass({
   getInitialState: function() {
     return {
@@ -63,6 +65,10 @@ var TagWidget = React.createClass({
     }
   },
 
+  // Remove the duplicate marker from a tag.
+  //
+  // If the user tries to add the same tag twice, we apply some styling to the
+  // previously added tag as a hint. This method removes that styling.
   clearDuplicateMarker: function() {
     if (this.state.duplicateTag) {
       this.setState({ duplicateTag: undefined });
@@ -94,6 +100,10 @@ var TagWidget = React.createClass({
     }
   },
 
+  // Pressing left will select the next pill to the left.
+  //
+  // If the cursor is not at the left of the input field (ie. not next to the
+  // pills), does nothing.
   handleLeftKeyDown: function(event) {
     var input = this.refs.tagInput.getDOMNode();
     if (input === event.target && input.selectionStart === 0) {
@@ -109,6 +119,9 @@ var TagWidget = React.createClass({
     }
   },
 
+  // Pressing right will select the next pill to the right.
+  //
+  // If no pill is selected, does nothing.
   handleRightKeyDown: function() {
     if (typeof this.state.selectedPillIndex !== "undefined") {
       if (this.state.selectedPillIndex < this.state.tags.length - 1) {
@@ -121,6 +134,9 @@ var TagWidget = React.createClass({
     }
   },
 
+  // Deletes any selected pill.
+  //
+  // Does nothing if no pill is selected.
   handleBackspaceKeyDown: function(event) {
     if (typeof this.state.selectedPillIndex !== "undefined") {
       var tags = this.state.tags.slice(0),
@@ -191,6 +207,7 @@ var TagWidget = React.createClass({
     this.setState({ selectedAutocompleteIndex: newSelectedIdx });
   },
 
+  // On losing focus, clear selection from seleted pill.
   handleBlur: function(event) {
     if (typeof this.state.selectedPillIndex !== "undefined" &&
         this.getDOMNode() === event.target) {
