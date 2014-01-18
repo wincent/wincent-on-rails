@@ -94,6 +94,55 @@ var TagWidget = React.createClass({
     }
   },
 
+  handleLeftKeyDown: function(event) {
+    var input = this.refs.tagInput.getDOMNode();
+    if (input === event.target && input.selectionStart === 0) {
+      if (this.state.tags.length) {
+        this.setState({ selectedPillIndex: this.state.tags.length - 1 });
+
+        // can't just blur() the tagInput as we still need key events
+        this.getDOMNode().focus();
+      }
+    } else if (typeof this.state.selectedPillIndex !== "undefined" &&
+                this.state.selectedPillIndex > 0) {
+      this.setState({ selectedPillIndex: this.state.selectedPillIndex - 1 });
+    }
+  },
+
+  handleRightKeyDown: function() {
+    if (typeof this.state.selectedPillIndex !== "undefined") {
+      if (this.state.selectedPillIndex < this.state.tags.length - 1) {
+        this.setState({ selectedPillIndex: this.state.selectedPillIndex + 1 });
+      } else {
+        this.setState({ selectedPillIndex: undefined });
+        this.refs.tagInput.getDOMNode().focus();
+      }
+      event.preventDefault();
+    }
+  },
+
+  handleBackspaceKeyDown: function(event) {
+    if (typeof this.state.selectedPillIndex !== "undefined") {
+      var tags = this.state.tags.slice(0),
+          index;
+      tags.splice(this.state.selectedPillIndex, 1)
+
+      if (this.state.selectedPillIndex < tags.length) {
+        index = this.state.selectedPillIndex;
+      } else {
+        // deleting the last tag
+        this.refs.tagInput.getDOMNode().focus();
+      }
+
+      this.setState({
+        tags: tags,
+        selectedPillIndex: index
+      });
+
+      event.preventDefault(); // don't let back button perform page navigation
+    }
+  },
+
   handleKeyDown: function(event) {
     var keyCode        = event.keyCode,
         completions    = this.state.filteredCompletions,
@@ -102,53 +151,11 @@ var TagWidget = React.createClass({
         newSelectedIdx;
 
     if (keyCode === LEFT_KEY_CODE) {
-      var input = this.refs.tagInput.getDOMNode();
-      if (input === event.target && input.selectionStart === 0) {
-        if (this.state.tags.length) {
-          newSelectedIdx = this.state.tags.length - 1;
-          this.setState({ selectedPillIndex: this.state.tags.length - 1 });
-
-          // can't just blur() the tagInput as we still need key events
-          this.getDOMNode().focus();
-        }
-      } else if (typeof this.state.selectedPillIndex !== "undefined" &&
-                 this.state.selectedPillIndex > 0) {
-        newSelectedIdx = this.state.selectedPillIndex - 1;
-        this.setState({ selectedPillIndex: this.state.selectedPillIndex - 1 });
-      }
-      return;
+      return this.handleLeftKeyDown(event);
     } else if (keyCode === RIGHT_KEY_CODE) {
-      if (typeof this.state.selectedPillIndex !== "undefined") {
-        if (this.state.selectedPillIndex < this.state.tags.length - 1) {
-          this.setState({ selectedPillIndex: this.state.selectedPillIndex + 1 });
-        } else {
-          this.setState({ selectedPillIndex: undefined });
-          this.refs.tagInput.getDOMNode().focus();
-        }
-        event.preventDefault();
-      }
-      return;
+      return this.handleRightKeyDown();
     } else if (keyCode === BACKSPACE_KEY_CODE) {
-      if (typeof this.state.selectedPillIndex !== "undefined") {
-        var tags = this.state.tags.slice(0),
-            index;
-        tags.splice(this.state.selectedPillIndex, 1)
-
-        if (this.state.selectedPillIndex < tags.length) {
-          index = this.state.selectedPillIndex;
-        } else {
-          // deleting the last tag
-          this.refs.tagInput.getDOMNode().focus();
-        }
-
-        this.setState({
-          tags: tags,
-          selectedPillIndex: index
-        });
-
-        event.preventDefault(); // don't let back button perform page navigation
-      }
-      return;
+      return this.handleBackspaceKeyDown(event);
     } else if (keyCode === ESCAPE_KEY_CODE) {
       this.refs.tagInput.getDOMNode().blur();
       this.state.filteredCompletions = [];
