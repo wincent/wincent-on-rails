@@ -7,6 +7,9 @@ var TagWidgetStyleRules = ReactStyle.create({
     border    : '1px solid #ddd',
     padding   : '2px',
     position  : 'relative'
+  },
+  '.tagWidget:focus' : {
+    outline : 0
   }
 });
 

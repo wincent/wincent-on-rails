@@ -62,7 +62,7 @@ var TagAutocomplete = React.createClass({
           </li>
         );
       }
-    }.bind(this));
+    }, this);
 
     var className = TagAutocompleteStyleRules.tagAutocomplete +
       (this.props.completions.length ? ' ' + TagAutocompleteStyleRules.active : '');

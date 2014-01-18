@@ -10,10 +10,13 @@ var React               = require("React"),
     TagPill             = require("../TagPill/TagPill"),
     TagWidgetStyleRules = require("../TagWidget/TagWidgetStyleRules");
 
-var TAB_KEY_CODE       = 9,  // accept autocomplete suggestion
+var BACKSPACE_KEY_CODE = 8,  // delete selected pill
+    TAB_KEY_CODE       = 9,  // accept autocomplete suggestion
     RETURN_KEY_CODE    = 13, // add tag/accept autocomplete suggestion
     ESCAPE_KEY_CODE    = 27, // blur input field/close autocomplete menu
+    LEFT_KEY_CODE      = 37, // select previous pill
     UP_KEY_CODE        = 38, // previous autocomplete suggestion
+    RIGHT_KEY_CODE     = 39, // select next pill
     DOWN_KEY_CODE      = 40; // next autocomplete suggestion
 
 ReactStyle.addRules(TagWidgetStyleRules);
@@ -26,6 +29,7 @@ var TagWidget = React.createClass({
       filteredCompletions:        [],
       pending:                    [], // for styling purposes
       selectedAutocompleteIndex:  undefined,
+      selectedPillIndex:          undefined,
       duplicateTag:               undefined
     };
   },
@@ -97,7 +101,55 @@ var TagWidget = React.createClass({
         oldSelectedIdx = this.state.selectedAutocompleteIndex,
         newSelectedIdx;
 
-    if (keyCode === ESCAPE_KEY_CODE) {
+    if (keyCode === LEFT_KEY_CODE) {
+      var input = this.refs.tagInput.getDOMNode();
+      if (input === event.target && input.selectionStart === 0) {
+        if (this.state.tags.length) {
+          newSelectedIdx = this.state.tags.length - 1;
+          this.setState({ selectedPillIndex: this.state.tags.length - 1 });
+
+          // can't just blur() the tagInput as we still need key events
+          this.getDOMNode().focus();
+        }
+      } else if (typeof this.state.selectedPillIndex !== "undefined" &&
+                 this.state.selectedPillIndex > 0) {
+        newSelectedIdx = this.state.selectedPillIndex - 1;
+        this.setState({ selectedPillIndex: this.state.selectedPillIndex - 1 });
+      }
+      return;
+    } else if (keyCode === RIGHT_KEY_CODE) {
+      if (typeof this.state.selectedPillIndex !== "undefined") {
+        if (this.state.selectedPillIndex < this.state.tags.length - 1) {
+          this.setState({ selectedPillIndex: this.state.selectedPillIndex + 1 });
+        } else {
+          this.setState({ selectedPillIndex: undefined });
+          this.refs.tagInput.getDOMNode().focus();
+        }
+        event.preventDefault();
+      }
+      return;
+    } else if (keyCode === BACKSPACE_KEY_CODE) {
+      if (typeof this.state.selectedPillIndex !== "undefined") {
+        var tags = this.state.tags.slice(0),
+            index;
+        tags.splice(this.state.selectedPillIndex, 1)
+
+        if (this.state.selectedPillIndex < tags.length) {
+          index = this.state.selectedPillIndex;
+        } else {
+          // deleting the last tag
+          this.refs.tagInput.getDOMNode().focus();
+        }
+
+        this.setState({
+          tags: tags,
+          selectedPillIndex: index
+        });
+
+        event.preventDefault(); // don't let back button perform page navigation
+      }
+      return;
+    } else if (keyCode === ESCAPE_KEY_CODE) {
       this.refs.tagInput.getDOMNode().blur();
       this.state.filteredCompletions = [];
     } else if (typeof oldSelectedIdx === "undefined" &&
@@ -205,18 +257,21 @@ var TagWidget = React.createClass({
   },
 
   render: function() {
-    var tagPills = this.state.tags.map(function(name) {
+    var tagPills = this.state.tags.map(function(name, i) {
       var isDuplicate = name === this.state.duplicateTag,
-          isPending   = this.state.pending.indexOf(name) !== -1;
+          isPending   = this.state.pending.indexOf(name) !== -1,
+          isSelected  = i === this.state.selectedPillIndex;
 
       return <TagPill name={name}
                       isDuplicate={isDuplicate}
                       isPending={isPending}
+                      isSelected={isSelected}
                       onTagDelete={this.handleTagDelete} />;
-    }.bind(this));
+    }, this);
 
     return (
-      <div className={TagWidgetStyleRules.tagWidget}
+      <div tabIndex="0"
+           className={TagWidgetStyleRules.tagWidget}
            onChange={this.handleChange}
            onClick={this.handleClick}
            onDragStart={this.handleDragStart}

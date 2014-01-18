@@ -34,6 +34,7 @@ var TagInput = React.createClass({
         // a series of keyDown starting at position > 0 (ie. because of pressing
         // and holding the backspace key)
         this.props.onTagPop();
+        event.preventDefault();
       }
     }
   },

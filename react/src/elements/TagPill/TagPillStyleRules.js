@@ -41,6 +41,9 @@ var TagPillStyleRules = ReactStyle.create({
   },
   '.tagPill.pending' : {
     opacity : '.5'
+  },
+  '.tagPill.selected' : {
+    borderColor : '#0f0'
   }
 });
 

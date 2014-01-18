@@ -33,6 +33,9 @@ var TagPill = React.createClass({
     if (this.props.isPending) {
       className += " " + TagPillStyleRules.pending;
     }
+    if (this.props.isSelected) {
+      className += " " + TagPillStyleRules.selected;
+    }
 
     return (
       <span className={className}
