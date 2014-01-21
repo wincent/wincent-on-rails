@@ -565,6 +565,13 @@ a.tags-link {
   font-size: .75em;
   color: #bbb;
 
+  &:before {
+    @include icon($fa-var-calendar);
+    display: inline-block;
+    margin-right: .25em;
+    text-decoration: none;
+  }
+
   a {
     color: #bbb;
     font-weight: normal;
