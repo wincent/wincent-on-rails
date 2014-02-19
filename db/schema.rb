@@ -16,10 +16,10 @@ ActiveRecord::Schema.define(version: 20140112024214) do
   create_table "articles", force: true do |t|
     t.string   "title"
     t.string   "redirect"
-    t.text     "body",              limit: 2147483647
-    t.boolean  "public",                               default: true
-    t.boolean  "accepts_comments",                     default: true
-    t.integer  "comments_count",                       default: 0
+    t.text     "body",              limit: 16777215
+    t.boolean  "public",                             default: true
+    t.boolean  "accepts_comments",                   default: true
+    t.integer  "comments_count",                     default: 0
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "last_commenter_id"
@@ -47,12 +47,12 @@ ActiveRecord::Schema.define(version: 20140112024214) do
   add_index "attachments", ["digest"], name: "index_attachments_on_digest", unique: true, using: :btree
 
   create_table "comments", force: true do |t|
-    t.text     "body",                limit: 2147483647
+    t.text     "body",                limit: 16777215
     t.integer  "user_id"
     t.integer  "commentable_id"
     t.string   "commentable_type"
-    t.boolean  "awaiting_moderation",                    default: true
-    t.boolean  "public",                                 default: true
+    t.boolean  "awaiting_moderation",                  default: true
+    t.boolean  "public",                               default: true
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -93,21 +93,21 @@ ActiveRecord::Schema.define(version: 20140112024214) do
   add_index "forums", ["permalink"], name: "index_forums_on_permalink", unique: true, using: :btree
 
   create_table "issues", force: true do |t|
-    t.integer  "kind",                                   default: 0
+    t.integer  "kind",                                 default: 0
     t.string   "summary"
-    t.boolean  "public",                                 default: true
+    t.boolean  "public",                               default: true
     t.integer  "user_id"
-    t.integer  "status",                                 default: 0
-    t.text     "description",         limit: 2147483647
-    t.boolean  "awaiting_moderation",                    default: true
-    t.integer  "comments_count",                         default: 0
+    t.integer  "status",                               default: 0
+    t.text     "description",         limit: 16777215
+    t.boolean  "awaiting_moderation",                  default: true
+    t.integer  "comments_count",                       default: 0
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "last_commenter_id"
     t.integer  "last_comment_id"
     t.datetime "last_commented_at"
     t.integer  "product_id"
-    t.boolean  "accepts_comments",                       default: true
+    t.boolean  "accepts_comments",                     default: true
   end
 
   create_table "links", force: true do |t|
@@ -170,10 +170,10 @@ ActiveRecord::Schema.define(version: 20140112024214) do
     t.string   "title"
     t.string   "permalink"
     t.text     "excerpt"
-    t.text     "body",              limit: 2147483647
-    t.boolean  "public",                               default: true
-    t.boolean  "accepts_comments",                     default: true
-    t.integer  "comments_count",                       default: 0
+    t.text     "body",              limit: 16777215
+    t.boolean  "public",                             default: true
+    t.boolean  "accepts_comments",                   default: true
+    t.integer  "comments_count",                     default: 0
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "last_commenter_id"
@@ -266,14 +266,14 @@ ActiveRecord::Schema.define(version: 20140112024214) do
 
   create_table "topics", force: true do |t|
     t.string   "title"
-    t.text     "body",                limit: 2147483647
+    t.text     "body",                limit: 16777215
     t.integer  "forum_id"
     t.integer  "user_id"
-    t.boolean  "public",                                 default: true
-    t.boolean  "accepts_comments",                       default: true
-    t.boolean  "awaiting_moderation",                    default: true
-    t.integer  "comments_count",                         default: 0
-    t.integer  "view_count",                             default: 0
+    t.boolean  "public",                               default: true
+    t.boolean  "accepts_comments",                     default: true
+    t.boolean  "awaiting_moderation",                  default: true
+    t.integer  "comments_count",                       default: 0
+    t.integer  "view_count",                           default: 0
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "last_commenter_id"
