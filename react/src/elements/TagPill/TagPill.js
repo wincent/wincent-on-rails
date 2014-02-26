@@ -43,11 +43,12 @@ var TagPill = React.createClass({
     }
 
     return (
-      <span className={className}
-            draggable="true"
-            onClick={this.handleClick}
-            onDragStart={this.handleDragStart}
-            onDragEnd={this.handleDragEnd}>
+      <span
+        className={className}
+        draggable="true"
+        onClick={this.handleClick}
+        onDragStart={this.handleDragStart}
+        onDragEnd={this.handleDragEnd}>
         {this.props.name}
         <a href="#" onClick={this.handleDelete}>&times;</a>
       </span>

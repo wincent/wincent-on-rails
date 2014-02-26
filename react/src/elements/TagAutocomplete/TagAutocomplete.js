@@ -48,10 +48,11 @@ var TagAutocomplete = React.createClass({
     var completions = this.props.completions.map(function(completion, i) {
       if (this.props.selectedIdx === i) {
         return (
-          <li className={TagAutocompleteStyleRules.selected}
-              onClick={this.handleClick}
-              onMouseEnter={this.handleMouseEnter}
-              ref="selected">
+          <li
+            className={TagAutocompleteStyleRules.selected}
+            onClick={this.handleClick}
+            onMouseEnter={this.handleMouseEnter}
+            ref="selected">
             {completion}
           </li>
         );
@@ -69,9 +70,7 @@ var TagAutocomplete = React.createClass({
 
     return (
       <div className={className}>
-        <ul>
-          {completions}
-        </ul>
+        <ul>{completions}</ul>
       </div>
     );
   }

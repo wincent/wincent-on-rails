@@ -94,14 +94,15 @@ var TagInput = React.createClass({
 
   render: function() {
     return (
-      <input className={TagInputStyleRules.tagInput}
-             type="text"
-             onFocus={this.handleFocus}
-             onInput={this.handleInput}
-             onKeyDown={this.handleKeyDown}
-             onKeyUp={this.handleKeyUp}
-             autoComplete="off">
-      </input>
+      <input
+        className={TagInputStyleRules.tagInput}
+        type="text"
+        onFocus={this.handleFocus}
+        onInput={this.handleInput}
+        onKeyDown={this.handleKeyDown}
+        onKeyUp={this.handleKeyUp}
+        autoComplete="off"
+      />
     );
   }
 });

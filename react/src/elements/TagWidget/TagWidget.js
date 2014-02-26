@@ -330,36 +330,45 @@ var TagWidget = React.createClass({
           isPending   = this.state.pending.indexOf(name) !== -1,
           isSelected  = i === this.state.selectedPillIndex;
 
-      return <TagPill name={name}
-                      isDuplicate={isDuplicate}
-                      isPending={isPending}
-                      isSelected={isSelected}
-                      onTagSelect={this.handleTagSelect}
-                      onTagDelete={this.handleTagDelete} />;
+      return (
+        <TagPill
+          name={name}
+          isDuplicate={isDuplicate}
+          isPending={isPending}
+          isSelected={isSelected}
+          onTagSelect={this.handleTagSelect}
+          onTagDelete={this.handleTagDelete}
+        />
+      );
     }, this);
 
     return (
-      <div tabIndex="0"
-           className={TagWidgetStyleRules.tagWidget}
-           onChange={this.handleChange}
-           onClick={this.handleClick}
-           onDragStart={this.handleDragStart}
-           onKeyDown={this.handleKeyDown}
-           onBlur={this.handleBlur}
-           onFocus={this.handleFocus}>
+      <div
+        tabIndex="0"
+        className={TagWidgetStyleRules.tagWidget}
+        onChange={this.handleChange}
+        onClick={this.handleClick}
+        onDragStart={this.handleDragStart}
+        onKeyDown={this.handleKeyDown}
+        onBlur={this.handleBlur}
+        onFocus={this.handleFocus}>
         {tagPills}
-        <input type="hidden"
-               name={this.props.resourceName}
-               value={this.state.tags.join(" ")} />
+        <input
+          type="hidden"
+          name={this.props.resourceName}
+          value={this.state.tags.join(" ")}
+        />
         <TagInput
           ref="tagInput"
           onTagPop={this.handleTagPop}
           onShiftTab={this.synthesizeShiftTabEvent}
         />
-        <TagAutocomplete completions={this.state.filteredCompletions}
-                         selectedIdx={this.state.selectedAutocompleteIndex}
-                         onTagPush={this.handleTagPush}
-                         onAutocompleteSelect={this.handleAutocompleteSelect} />
+        <TagAutocomplete
+          completions={this.state.filteredCompletions}
+          selectedIdx={this.state.selectedAutocompleteIndex}
+          onTagPush={this.handleTagPush}
+          onAutocompleteSelect={this.handleAutocompleteSelect}
+        />
       </div>
     );
   },
