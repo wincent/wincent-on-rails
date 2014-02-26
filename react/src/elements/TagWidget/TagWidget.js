@@ -219,7 +219,7 @@ var TagWidget = React.createClass({
     this.setState({ selectedAutocompleteIndex: newSelectedIdx });
   },
 
-  // On losing focus, clear selection from seleted pill.
+  // On losing focus, clear selection from selected pill.
   handleBlur: function(event) {
     if (typeof this.state.selectedPillIndex !== "undefined" &&
         this.getDOMNode() === event.target) {
