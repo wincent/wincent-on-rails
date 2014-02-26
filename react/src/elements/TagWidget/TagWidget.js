@@ -75,6 +75,18 @@ var TagWidget = React.createClass({
     }
   },
 
+  synthesizeShiftTabEvent: function() {
+    var event = document.createEvent('Events');
+    event.initEvent('keydown', true, true);
+    event.keyIdentifier = "U+0009";
+    event.keyCode = TAB_KEY_CODE;
+    event.which = TAB_KEY_CODE;
+    event.shiftKey = true;
+
+    this.forceFocus();
+    this.getDOMNode().dispatchEvent(event);
+  },
+
   handleClick: function(event) {
     // if outside of input area, focus input
     var tagInput = this.refs.tagInput.getDOMNode();
@@ -339,7 +351,11 @@ var TagWidget = React.createClass({
         <input type="hidden"
                name={this.props.resourceName}
                value={this.state.tags.join(" ")} />
-        <TagInput ref="tagInput" onTagPop={this.handleTagPop} />
+        <TagInput
+          ref="tagInput"
+          onTagPop={this.handleTagPop}
+          onShiftTab={this.synthesizeShiftTabEvent}
+        />
         <TagAutocomplete completions={this.state.filteredCompletions}
                          selectedIdx={this.state.selectedAutocompleteIndex}
                          onTagPush={this.handleTagPush}

@@ -7,7 +7,8 @@ var React              = require("React"),
     ReactStyle         = require("ReactStyle"),
     TagInputStyleRules = require("./TagInputStyleRules");
 
-var BACKSPACE_KEY_CODE = 8;  // delete tag
+var BACKSPACE_KEY_CODE = 8,  // delete tag
+    TAB_KEY_CODE       = 9;  // switches focus to previous element
 
 ReactStyle.addRules(TagInputStyleRules);
 
@@ -42,6 +43,8 @@ var TagInput = React.createClass({
         this.props.onTagPop();
         event.preventDefault();
       }
+    } else if (keyCode === TAB_KEY_CODE && event.shiftKey) {
+      this.props.onShiftTab();
     }
   },
 
