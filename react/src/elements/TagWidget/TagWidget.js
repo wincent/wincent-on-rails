@@ -75,7 +75,7 @@ var TagWidget = React.createClass({
     }
   },
 
-  synthesizeShiftTabEvent: function() {
+  onShiftTab: function() {
     var event = document.createEvent('Events');
     event.initEvent('keydown', true, true);
     event.keyIdentifier = "U+0009";
@@ -278,7 +278,7 @@ var TagWidget = React.createClass({
   },
 
   // callback invoked when someone clicks on an autocomplete suggestion
-  handleTagPush: function(newTag) {
+  onTagPush: function(newTag) {
     var input = this.refs.tagInput.getDOMNode();
     input.value = '';
     this.pushTag(newTag);
@@ -286,24 +286,24 @@ var TagWidget = React.createClass({
 
   // callback invokved when someone "selects" an autocomplete suggestion via
   // mouseEnter
-  handleAutocompleteSelect: function(element) {
+  onAutocompleteSelect: function(element) {
     var tagIdx = this.state.filteredCompletions.indexOf(element.innerHTML);
     this.setState({ selectedAutocompleteIndex: tagIdx });
   },
 
-  handleTagPop: function() {
+  onTagPop: function() {
     if (this.state.tags.length) {
       this.clearDuplicateMarker();
       this.setState({ tags: this.state.tags.slice(0, -1) });
     }
   },
 
-  handleTagSelect: function(name) {
+  onTagSelect: function(name) {
     this.setState({ selectedPillIndex: this.state.tags.indexOf(name) });
     this.forceFocus();
   },
 
-  handleTagDelete: function(name) {
+  onTagDelete: function(name) {
     this.clearDuplicateMarker();
     var tags = this.state.tags.slice(0);
     tags.splice(tags.indexOf(name), 1)
@@ -336,8 +336,8 @@ var TagWidget = React.createClass({
           isDuplicate={isDuplicate}
           isPending={isPending}
           isSelected={isSelected}
-          onTagSelect={this.handleTagSelect}
-          onTagDelete={this.handleTagDelete}
+          onTagSelect={this.onTagSelect}
+          onTagDelete={this.onTagDelete}
         />
       );
     }, this);
@@ -360,14 +360,14 @@ var TagWidget = React.createClass({
         />
         <TagInput
           ref="tagInput"
-          onTagPop={this.handleTagPop}
-          onShiftTab={this.synthesizeShiftTabEvent}
+          onTagPop={this.onTagPop}
+          onShiftTab={this.onShiftTab}
         />
         <TagAutocomplete
           completions={this.state.filteredCompletions}
           selectedIdx={this.state.selectedAutocompleteIndex}
-          onTagPush={this.handleTagPush}
-          onAutocompleteSelect={this.handleAutocompleteSelect}
+          onTagPush={this.onTagPush}
+          onAutocompleteSelect={this.onAutocompleteSelect}
         />
       </div>
     );
