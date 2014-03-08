@@ -1,10 +1,10 @@
 A new topic (<%= @topic.awaiting_moderation? ? '' : 'not '%>awaiting moderation) has been posted.
 
-Edit/moderate this topic:
-  <%= @topic_url %>
-
-Edit/moderate all topics:
-  <%= @moderation_url %>
+Edit/moderate: <%= @edit_topic_url %>
+<% unless @topic.awaiting_moderation? %>
+Show: <%= @topic_url %>
+<% end %>
+Moderation dashboard: <%= @moderation_url %>
 
 Title: <%= raw @topic.title %>
 

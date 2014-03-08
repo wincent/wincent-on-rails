@@ -1,13 +1,11 @@
 A new comment (<%= @comment.awaiting_moderation? ? '' : 'not '%>awaiting moderation) has been posted.
 
-Edit/moderate this comment:
-  <%= @edit_comment_url %>
+Edit/moderate: <%= @edit_comment_url %>
 <% unless @comment.awaiting_moderation? %>
-View comment in context:
-  <%= @comment_url %>
+Show: <%= @comment_url %>
 <% end %>
-Edit/moderate all comments:
-  <%= @moderation_url %>
+Modertion dashboard: <%= @moderation_url %>
+
 ---- Start comment body ----
 <%= raw @comment.body %>
 ---- End comment body ----

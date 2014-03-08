@@ -1,10 +1,10 @@
 A new issue (<%= @issue.awaiting_moderation? ? '' : 'not '%>awaiting moderation) has been posted.
 
-Edit/moderate this issue:
-  <%= @issue_url %>
-
-Edit/moderate all issues:
-  <%= @moderation_url %>
+Edit/moderate: <%= @edit_issue_url %>
+<% unless @issue.awaiting_moderation? %>
+Show: <%= @issue_url %>
+<% end %>
+Moderation dashboard: <%= @moderation_url %>
 
 Summary: <%= raw @issue.summary %>
 <% unless @issue.description.blank? %>
