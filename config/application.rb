@@ -26,7 +26,7 @@ module Wincent
       #{config.root}/lib
     )
     config.assets.enabled      = true
-    config.assets.version      = '1.0'
+    config.assets.version      = '2.0'
     config.encoding            = 'utf-8'
     config.filter_parameters  += [:passphrase]
     config.time_zone           = 'UTC'
