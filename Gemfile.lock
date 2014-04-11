@@ -172,7 +172,7 @@ GEM
       rubyzip (~> 1.0.0)
       websocket (~> 1.0.4)
     slop (3.4.7)
-    spring (1.0.0)
+    spring (1.1.2)
     spring-commands-rspec (1.0.1)
       spring (>= 0.9.1)
     sprockets (2.11.0)
