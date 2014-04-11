@@ -111,8 +111,17 @@ namespace :assets do
       Wincent::Application.config.assets.paths.map { |path| Pathname.new(path) }
     end
 
+    def config_paths
+      [
+        Rails.root + 'config/application.rb',
+        Rails.root + 'config/environments/production.rb',
+      ]
+    end
+
     def fingerprintable_paths
-      assets_paths.map { |path| path.relative_path_from(Rails.root) }
+      (assets_paths + config_paths).map do |path|
+        path.relative_path_from(Rails.root)
+      end
     end
 
     def fingerprint
