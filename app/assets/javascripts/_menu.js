@@ -42,7 +42,7 @@
         .on('click', this.handleMenuButtonClick.bind(this));
     },
 
-    handleMenuButtonClick: function(evt) {
+    handleMenuButtonClick: function(event) {
       this.toggle();
 
       // if app content is too short, don't want slideout animation to get cropped
@@ -66,7 +66,7 @@
       this.$viewport.removeClass('menu-open');
     },
 
-    handleTransitionEnd: function(evt) {
+    handleTransitionEnd: function(event) {
       // Work around some subtle WebKit bugs triggered by transition and
       // translateX. If we just remove the "menu-open" class we get broken
       // scrolling behavior and blank space to the right of the content area.
