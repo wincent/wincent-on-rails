@@ -19,9 +19,9 @@ class Post < ActiveRecord::Base
                           :accepts_comments, :pending_tags
   before_validation       :set_permalink
 
-  scope :public, -> { where(public: true) }
-  scope :recent, -> { public.order('created_at DESC') }
-  scope :page,   -> { limit(PAGE_SIZE) }
+  scope :published, -> { where(public: true) }
+  scope :recent,    -> { published.order('created_at DESC') }
+  scope :page,      -> { limit(PAGE_SIZE) }
 
   acts_as_taggable
   acts_as_searchable      attributes: %i[title excerpt body]

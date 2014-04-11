@@ -221,14 +221,14 @@ describe Forum do
       lambda { Forum.find_with_param!('non-existent') }.should raise_error(ActiveRecord::RecordNotFound)
     end
 
-    it 'works with the `public` scope (public forum)' do
-      Forum.public.find_with_param!('foo-bar').should == @forum
+    it 'works with the `published` scope (public forum)' do
+      Forum.published.find_with_param!('foo-bar').should == @forum
     end
 
-    it 'works without the `public` scope (private forum)' do
+    it 'works without the `publishd` scope (private forum)' do
       private_forum = Forum.make! name: 'baz', public: false
       Forum.find_with_param!('baz').should == private_forum
-      lambda { Forum.public.find_with_param!('baz') }.should raise_error(ActiveRecord::RecordNotFound)
+      lambda { Forum.published.find_with_param!('baz') }.should raise_error(ActiveRecord::RecordNotFound)
     end
   end
 

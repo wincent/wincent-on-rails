@@ -52,7 +52,7 @@ private
 
   def get_forum
     if public_only?
-      @forum = Forum.public.find_with_param! params[:id]
+      @forum = Forum.published.find_with_param! params[:id]
     else
       @forum = Forum.find_with_param! params[:id]
     end

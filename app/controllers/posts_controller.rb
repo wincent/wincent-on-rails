@@ -5,7 +5,7 @@ class PostsController < ApplicationController
   def index
     respond_to do |format|
       format.html {
-        @paginator = RestfulPaginator.new(params, Post.public.count, posts_path)
+        @paginator = RestfulPaginator.new(params, Post.published.count, posts_path)
         @posts     = Post.recent.includes(:tags).offset(@paginator.offset).page
       }
     end
@@ -74,13 +74,13 @@ private
     @post = if admin?
       Post.find_by_permalink(params[:id]) || Post.find(params[:id])
     else
-      Post.public.find_by_permalink(params[:id]) || Post.public.find(params[:id])
+      Post.published.find_by_permalink(params[:id]) || Post.published.find(params[:id])
     end
   rescue ActiveRecord::RecordNotFound
     # given permalink "foo" a request for "foo.js" will land here
     if params[:id] =~ /(.+)\.(js)\z/
       request.format = $~[2].to_sym
-      @post = Post.public.find_by_permalink($~[1]) || Post.public.find($~[1])
+      @post = Post.published.find_by_permalink($~[1]) || Post.published.find($~[1])
     end
     raise unless @post
   end

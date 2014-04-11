@@ -15,7 +15,7 @@ class Forum < ActiveRecord::Base
   attr_accessible         :name, :description, :permalink, :position, :public
   before_create           :set_position
 
-  scope :public, -> { where(public: true) }
+  scope :published, -> { where(public: true) }
   before_validation       :set_permalink
 
   def self.find_with_param!(param)
