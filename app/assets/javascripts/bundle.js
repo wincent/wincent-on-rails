@@ -1,35 +1,4 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-/** @jsx React.DOM */// Copyright 2014 Wincent Colaiuta. All rights reserved.
-//
-// Redistribution and use in source and binary forms, with or without
-// modification, are permitted provided that the following conditions are met:
-//
-// 1. Redistributions of source code must retain the above copyright notice,
-//    this list of conditions and the following disclaimer.
-// 2. Redistributions in binary form must reproduce the above copyright notice,
-//    this list of conditions and the following disclaimer in the documentation
-//    and/or other materials provided with the distribution.
-//
-// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-// AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-// IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-// ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDERS OR CONTRIBUTORS BE
-// LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
-// CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
-// SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
-// INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
-// CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
-// ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
-// POSSIBILITY OF SUCH DAMAGE.
-
-var Keys = {
-  ESCAPE: 27,
-  RETURN: 13
-};
-
-module.exports = Keys;
-
-},{}],2:[function(require,module,exports){
 /** @jsx React.DOM */// Copyright 2009-2014 Wincent Colaiuta. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -295,7 +264,7 @@ var Ajax = {
 
 module.exports = Ajax;
 
-},{"./Keys":1,"./escapeHTML":3,"jquery":8}],3:[function(require,module,exports){
+},{"./Keys":2,"./escapeHTML":5,"jquery":8}],2:[function(require,module,exports){
 /** @jsx React.DOM */// Copyright 2014 Wincent Colaiuta. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -319,51 +288,14 @@ module.exports = Ajax;
 // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 // POSSIBILITY OF SUCH DAMAGE.
 
-'use strict';
+var Keys = {
+  ESCAPE: 27,
+  RETURN: 13
+};
 
-function escapeHTML(html) {
-  return html
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;');
-}
+module.exports = Keys;
 
-module.exports = escapeHTML;
-
-},{}],4:[function(require,module,exports){
-/**
- * @jsx React.DOM
- */
-var React = require('react/addons');
-
-var cloneWithProps = React.addons.cloneWithProps;
-var cx = React.addons.classSet;
-
-var Thing = React.createClass({displayName: 'Thing',
-  render: function() {
-    // proof that JSX works
-    return cloneWithProps(React.DOM.span(null, "foo"), {});
-  }
-});
-
-// proof that ES6 transforms work:
-['A', 'b', 'c'].map(function(thing, idx)  {return thing + ':' + idx;});
-
-// actual, real code:
-window.Wincent = {};
-Wincent.Menu = require('./menu');
-Wincent.Spinner = require('./spinner');
-Wincent.Ajax = require('./ajax');
-
-// once all is done, these won't be global
-window.$ = require('jquery');
-window._ = require('underscore');
-
-// initializers:
-Wincent.Ajax.init();
-
-},{"./ajax":2,"./menu":5,"./spinner":6,"jquery":8,"react/addons":9,"underscore":159}],5:[function(require,module,exports){
+},{}],3:[function(require,module,exports){
 /** @jsx React.DOM */// Copyright 2013-2014 Wincent Colaiuta. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -449,7 +381,7 @@ var $ = require('jquery');
 
 module.exports = Menu;
 
-},{"jquery":8}],6:[function(require,module,exports){
+},{"jquery":8}],4:[function(require,module,exports){
 /** @jsx React.DOM */'use strict';
 
 var $ = require('jquery');
@@ -475,7 +407,6 @@ var SETTINGS = {
     lines  : 11,
     radius : 4,
     width  : 2
-//left: '100%' // was dabbling with this for form elements
   }
 };
 
@@ -494,13 +425,78 @@ var SETTINGS = {
     this.spinner.stop();
   };
 
-       
-          
-
 
 module.exports = Spinner;
 
-},{"jquery":8,"spin.js":158,"underscore":159}],7:[function(require,module,exports){
+},{"jquery":8,"spin.js":158,"underscore":159}],5:[function(require,module,exports){
+/** @jsx React.DOM */// Copyright 2014 Wincent Colaiuta. All rights reserved.
+//
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions are met:
+//
+// 1. Redistributions of source code must retain the above copyright notice,
+//    this list of conditions and the following disclaimer.
+// 2. Redistributions in binary form must reproduce the above copyright notice,
+//    this list of conditions and the following disclaimer in the documentation
+//    and/or other materials provided with the distribution.
+//
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+// AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+// IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+// ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDERS OR CONTRIBUTORS BE
+// LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+// CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+// SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+// INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+// CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+// ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+// POSSIBILITY OF SUCH DAMAGE.
+
+'use strict';
+
+function escapeHTML(html) {
+  return html
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+module.exports = escapeHTML;
+
+},{}],6:[function(require,module,exports){
+/**
+ * @jsx React.DOM
+ */
+var React = require('react/addons');
+
+var cloneWithProps = React.addons.cloneWithProps;
+var cx = React.addons.classSet;
+
+var Thing = React.createClass({displayName: 'Thing',
+  render: function() {
+    // proof that JSX works
+    return cloneWithProps(React.DOM.span(null, "foo"), {});
+  }
+});
+
+// proof that ES6 transforms work:
+['A', 'b', 'c'].map(function(thing, idx)  {return thing + ':' + idx;});
+
+// actual, real code:
+window.Wincent = {};
+Wincent.Menu = require('./Menu');
+Wincent.Spinner = require('./Spinner');
+Wincent.Ajax = require('./Ajax');
+
+// once all is done, these won't be global
+window.$ = require('jquery');
+window._ = require('underscore');
+
+// initializers:
+Wincent.Ajax.init();
+
+},{"./Ajax":1,"./Menu":3,"./Spinner":4,"jquery":8,"react/addons":9,"underscore":159}],7:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -30367,4 +30363,4 @@ module.exports = warning;
   }
 }).call(this);
 
-},{}]},{},[4])
+},{}]},{},[6])

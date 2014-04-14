@@ -18,9 +18,9 @@ var Thing = React.createClass({
 
 // actual, real code:
 window.Wincent = {};
-Wincent.Menu = require('./menu');
-Wincent.Spinner = require('./spinner');
-Wincent.Ajax = require('./ajax');
+Wincent.Menu = require('./Menu');
+Wincent.Spinner = require('./Spinner');
+Wincent.Ajax = require('./Ajax');
 
 // once all is done, these won't be global
 window.$ = require('jquery');
