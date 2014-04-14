@@ -22,13 +22,12 @@
 // POSSIBILITY OF SUCH DAMAGE.
 
 var $ = require('jquery');
+var Keys = require('./Keys');
+
 var escapeHTML = require('./escapeHTML');
 
 var AJAX = {
   init: function() {
-    var RETURN_KEY = 13,
-        ESCAPE_KEY = 27;
-
     $(document)
       .on('dblclick', '[data-editable]', function(event) {
         $el = $(this).addClass('editing');
@@ -41,7 +40,7 @@ var AJAX = {
         $el[0].contentEditable = 'false';
       })
       .on('keydown', '[data-editable]', function(event) {
-        if (event.keyCode === RETURN_KEY) {
+        if (event.keyCode === Keys.RETURN) {
           event.preventDefault();
           $el = $(this).blur();
           if ($el.html() !== $el.data('original-content')) {
@@ -71,7 +70,7 @@ var AJAX = {
                 $hidden.remove();
               });
           }
-        } else if (event.keyCode === ESCAPE_KEY) {
+        } else if (event.keyCode === Keys.ESCAPE) {
           $el = $(this).blur();
           $el.html($el.data('original-content'));
         }
