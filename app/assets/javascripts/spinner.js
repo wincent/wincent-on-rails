@@ -32,7 +32,7 @@ var SETTINGS = {
 class Spinner {
   constructor(targetSelector, size) {
     var $target = $(targetSelector),
-        options = _.extend({}, settings.base, settings[size]);
+        options = _.extend({}, SETTINGS.base, SETTINGS[size]);
 
     this.spinner = new SpinJS(options).spin($target[0]);
   }
