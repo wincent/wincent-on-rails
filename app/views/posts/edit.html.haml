@@ -11,7 +11,7 @@
   = link_to 'show', post_path(@post)
 - content_for :javascript do
   :javascript
-    observeField({ 'kind': 'post', 'fieldName': 'title', 'include': ['excerpt', 'body'], 'url': '#{posts_path}' });
-    observeField({ 'kind': 'post', 'fieldName': 'excerpt', 'include': ['title', 'body'], 'url': '#{posts_path}' });
-    observeField({ 'kind': 'post', 'fieldName': 'body', 'include': ['title', 'excerpt'], 'url': '#{posts_path}' });
-    setupPreviewLink({ 'kind': 'post', 'include': ['body', 'title', 'excerpt'], 'url': '#{posts_path}' });
+    Wincent.AJAX.observeField({ 'kind': 'post', 'fieldName': 'title', 'include': ['excerpt', 'body'], 'url': '#{posts_path}' });
+    Wincent.AJAX.observeField({ 'kind': 'post', 'fieldName': 'excerpt', 'include': ['title', 'body'], 'url': '#{posts_path}' });
+    Wincent.AJAX.observeField({ 'kind': 'post', 'fieldName': 'body', 'include': ['title', 'excerpt'], 'url': '#{posts_path}' });
+    Wincent.AJAX.setupPreviewLink({ 'kind': 'post', 'include': ['body', 'title', 'excerpt'], 'url': '#{posts_path}' });

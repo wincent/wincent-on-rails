@@ -13,6 +13,6 @@
   =link_to 'show', article_path(@article)
 - content_for :javascript do
   :javascript
-    observeField({ 'kind': 'article', 'fieldName': 'title', 'include': ['body'], 'url': '#{articles_path}' });
-    observeField({ 'kind': 'article', 'fieldName': 'body', 'include': ['title'], 'url': '#{articles_path}' });
-    setupPreviewLink({ 'kind': 'article', 'include': ['body', 'title'], 'url': '#{articles_path}' });
+    Wincent.AJAX.observeField({ 'kind': 'article', 'fieldName': 'title', 'include': ['body'], 'url': '#{articles_path}' });
+    Wincent.AJAX.observeField({ 'kind': 'article', 'fieldName': 'body', 'include': ['title'], 'url': '#{articles_path}' });
+    Wincent.AJAX.setupPreviewLink({ 'kind': 'article', 'include': ['body', 'title'], 'url': '#{articles_path}' });

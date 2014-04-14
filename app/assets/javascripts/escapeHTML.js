@@ -1,4 +1,4 @@
-// Copyright 2008-2014 Wincent Colaiuta. All rights reserved.
+// Copyright 2014 Wincent Colaiuta. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are met:
@@ -21,13 +21,14 @@
 // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 // POSSIBILITY OF SUCH DAMAGE.
 
-// browserify bundle:
+'use strict';
 
-//= require bundle
+function escapeHTML(html) {
+  return html
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
 
-// the rest (eventually, will die off):
-
-//= require git
-//= require products
-//= require trees
-//= require wincent
+module.exports = escapeHTML;

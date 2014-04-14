@@ -28,4 +28,4 @@
       the #{link_to 'forums', forums_path}.
 -content_for :javascript do
   :javascript
-    ajaxCommentForm('#{j new_article_comment_path(@article)}');
+    Wincent.AJAX.commentForm('#{j new_article_comment_path(@article)}');

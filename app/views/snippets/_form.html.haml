@@ -13,18 +13,26 @@
 #preview= render 'preview'
 - content_for :javascript do
   :javascript
-    observeField({ 'kind':       'snippet',
-                   'fieldName':  'body',
-                   'include':    ['description', 'markup_type'],
-                   'url':        '#{snippets_path}' });
-    observeField({ 'kind':       'snippet',
-                   'fieldName':  'description',
-                   'include':    ['body', 'markup_type'],
-                   'url':        '#{snippets_path}' });
-    observeField({ 'kind':       'snippet',
-                   'fieldName':  'markup_type',
-                   'include':    ['body', 'description'],
-                   'url':        '#{snippets_path}' });
-    setupPreviewLink({'kind':     'snippet',
-                      'include':  ['body', 'description', 'markup_type'],
-                      'url':      '#{snippets_path}' });
+    Wincent.AJAX.observeField({
+      kind:      'snippet',
+      fieldName: 'body',
+      include:   ['description', 'markup_type'],
+      url:       '#{snippets_path}'
+    });
+    Wincent.AJAX.observeField({
+      kind:      'snippet',
+      fieldName: 'description',
+      include:   ['body', 'markup_type'],
+      url:       '#{snippets_path}'
+    });
+    Wincent.AJAX.observeField({
+      kind:      'snippet',
+      fieldName: 'markup_type',
+      include:   ['body', 'description'],
+      url:       '#{snippets_path}'
+    });
+    Wincent.AJAX.setupPreviewLink({
+      kind:    'snippet',
+      include: ['body', 'description', 'markup_type'],
+      url:     '#{snippets_path}'
+    });
