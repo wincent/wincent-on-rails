@@ -15,3 +15,12 @@ var Thing = React.createClass({
 
 // proof that ES6 transforms work:
 ['A', 'b', 'c'].map((thing, idx) => thing + ':' + idx);
+
+// actual, real code:
+window.Wincent = {};
+Wincent.Menu = require('./menu');
+Wincent.Spinner = require('./spinner');
+
+// once all is done, these won't be global
+window.$ = require('jquery');
+window._ = require('underscore');
