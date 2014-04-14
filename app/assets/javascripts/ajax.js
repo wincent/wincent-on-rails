@@ -26,7 +26,7 @@ var Keys = require('./Keys');
 
 var escapeHTML = require('./escapeHTML');
 
-var AJAX = {
+var Ajax = {
   init: function() {
     $(document)
       .on('dblclick', '[data-editable]', function(event) {
@@ -60,10 +60,10 @@ var AJAX = {
               dataType : 'json'
             })
               .done(function(json) {
-                AJAX.clearFlash();
+                Ajax.clearFlash();
               })
               .fail(function(req) {
-                AJAX.insertFlash('error', req.responseText);
+                Ajax.insertFlash('error', req.responseText);
               })
               .always(function() {
                 spinner.stop();
@@ -106,7 +106,7 @@ var AJAX = {
         data     : serialized
       })
         .done(function(json) {
-          AJAX.clearFlash();
+          Ajax.clearFlash();
 
           if ($element.is('select')) {
             // make sure we can identify the selected option if a subsequent change
@@ -120,7 +120,7 @@ var AJAX = {
           }
         })
         .fail(function(req) {
-          AJAX.insertFlash('error', req.responseText);
+          Ajax.insertFlash('error', req.responseText);
 
           // revert element to initial state, if appropriate
           if ($element.is('input[type=checkbox]')) {
@@ -156,17 +156,17 @@ var AJAX = {
     var click = function() {
       $anchor.off('click').addClass('disabled');
       var spinner = new Wincent.Spinner(commentSelector, 'small');
-      AJAX.clearFlash();
+      Ajax.clearFlash();
       $.ajax({
         url       : url,
         type      : 'get',
         dataType  : 'html',
         success   : function(html) {
-          AJAX.clearFlash();
+          Ajax.clearFlash();
           $commentDiv.append(html).find('.links').hide();
         },
         error: function(req) {
-          AJAX.insertFlash('error', req.responseText);
+          Ajax.insertFlash('error', req.responseText);
           $anchor.on('click', click);
         },
         complete: function() {
@@ -197,10 +197,10 @@ var AJAX = {
           'data': data.join('&'),
           'success': function(html) {
             $('#preview').html(html).syntaxHighlight();
-            AJAX.clearFlash();
+            Ajax.clearFlash();
           },
           'error': function(req) {
-            AJAX.insertFlash('error', req.responseText);
+            Ajax.insertFlash('error', req.responseText);
           },
           'complete': function() { spinner.stop(); }
         });
@@ -215,10 +215,10 @@ var AJAX = {
         before = options['before'] || function() { $('#preview_spinner').show(); },
         success = options['success'] || function(html) {
           $('#preview').html(html).syntaxHighlight();
-          AJAX.clearFlash();
+          Ajax.clearFlash();
         },
         error = options['error'] || function(req) {
-          AJAX.insertFlash('error', req.responseText);
+          Ajax.insertFlash('error', req.responseText);
         },
         complete = options['complete'] || function() { $('#preview_spinner').hide(); };
 
@@ -258,4 +258,4 @@ var AJAX = {
   }
 };
 
-module.exports = AJAX;
+module.exports = Ajax;

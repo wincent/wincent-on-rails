@@ -14,7 +14,7 @@
     -unless @product.pages.empty?
       %tbody
         -for page in @product.pages
-          -# TODO: make all these in-place AJAX editors
+          -# TODO: make all these in-place Ajax editors
           %tr
             %td=page.title
             %td=page.permalink

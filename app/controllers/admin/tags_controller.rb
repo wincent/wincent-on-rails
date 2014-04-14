@@ -8,7 +8,7 @@ class Admin::TagsController < Admin::ApplicationController
 
   def show
     respond_to do |format|
-      format.js { # AJAX updates
+      format.js { # Ajax updates
         render :json => @tag.to_json(:only => [:name])
       }
     end
@@ -16,7 +16,7 @@ class Admin::TagsController < Admin::ApplicationController
 
   def update
     respond_to do |format|
-      format.js { # an AJAX update
+      format.js { # an Ajax update
         if @tag.update_attributes params[:tag]
           # don't use admin_tag_path here because we want to force the use of a
           # numeric id; url_for will keep us in admin namespace here
@@ -34,7 +34,7 @@ protected
 
   def find_tag
     # unlike in the non-admin tags controller, find using numeric id
-    # (for compatibility with the in-place-editing AJAX)
+    # (for compatibility with the in-place-editing Ajax)
     @tag = Tag.find params[:id]
   end
 end

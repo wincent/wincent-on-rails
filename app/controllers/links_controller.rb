@@ -32,7 +32,7 @@ class LinksController < ApplicationController
         Link.increment_counter :click_count, @link.id
         redirect_to @link.redirection_url, status: 303 # "See other", GET request
       }
-      format.js { # AJAX updates
+      format.js { # Ajax updates
         # don't leak out any more information than necessary
         render json: @link.to_json(only: %i[uri permalink])
       }
@@ -55,7 +55,7 @@ class LinksController < ApplicationController
         end
       end
 
-      format.js do # an AJAX update
+      format.js do # an Ajax update
         if @link.update_attributes params[:link]
           render json: {}
         else

@@ -9,7 +9,7 @@
 .links= link_to 'all posts', posts_path
 - content_for :javascript do
   :javascript
-    Wincent.AJAX.observeField({ 'kind': 'post', 'fieldName': 'title', 'include': ['excerpt', 'body'], 'url': '#{posts_path}' });
-    Wincent.AJAX.observeField({ 'kind': 'post', 'fieldName': 'excerpt', 'include': ['title', 'body'], 'url': '#{posts_path}' });
-    Wincent.AJAX.observeField({ 'kind': 'post', 'fieldName': 'body', 'include': ['title', 'excerpt'], 'url': '#{posts_path}' });
-    Wincent.AJAX.setupPreviewLink({ 'kind': 'post', 'include': ['body', 'title', 'excerpt'], 'url': '#{posts_path}' });
+    Wincent.Ajax.observeField({ 'kind': 'post', 'fieldName': 'title', 'include': ['excerpt', 'body'], 'url': '#{posts_path}' });
+    Wincent.Ajax.observeField({ 'kind': 'post', 'fieldName': 'excerpt', 'include': ['title', 'body'], 'url': '#{posts_path}' });
+    Wincent.Ajax.observeField({ 'kind': 'post', 'fieldName': 'body', 'include': ['title', 'excerpt'], 'url': '#{posts_path}' });
+    Wincent.Ajax.setupPreviewLink({ 'kind': 'post', 'include': ['body', 'title', 'excerpt'], 'url': '#{posts_path}' });

@@ -83,7 +83,7 @@ class CommentsController < ApplicationController
           @comment.moderate_as_ham!
           render :json => {}.to_json
         else
-          raise 'unrecognized AJAX action'
+          raise 'unrecognized Ajax action'
         end
       }
     end

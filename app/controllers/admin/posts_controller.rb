@@ -39,7 +39,7 @@ protected
 
   def find_post
     # unlike in the non-admin posts controller, find using numeric id
-    # (for compatibility with the in-place-editing AJAX)
+    # (for compatibility with the in-place-editing Ajax)
     @post = Post.find params[:id]
   end
 end

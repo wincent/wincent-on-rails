@@ -20,11 +20,11 @@ var Thing = React.createClass({
 window.Wincent = {};
 Wincent.Menu = require('./menu');
 Wincent.Spinner = require('./spinner');
-Wincent.AJAX = require('./ajax');
+Wincent.Ajax = require('./ajax');
 
 // once all is done, these won't be global
 window.$ = require('jquery');
 window._ = require('underscore');
 
 // initializers:
-Wincent.AJAX.init();
+Wincent.Ajax.init();

@@ -1,18 +1,18 @@
 (function() {
-  Wincent.AJAX.clearFlash();
+  Wincent.Ajax.clearFlash();
   <% if @comment.new_record? -%>
     <%# TODO: if there are validation errors, show them (only possible validation error is empty body) %>
-    Wincent.AJAX.insertFlash('error', 'Failed to add new comment');
+    Wincent.Ajax.insertFlash('error', 'Failed to add new comment');
   <% else -%>
     var links = $('#comment-form .links');
     links.siblings().hide();
     links.show().find('a').click(function() {
-      Wincent.AJAX.clearFlash();
+      Wincent.Ajax.clearFlash();
       links.hide().siblings().show();
       $('#comment-form textarea').val('');
     });
     <% if @comment.awaiting_moderation -%>
-      Wincent.AJAX.insertFlash('notice', 'Your comment has been queued for moderation');
+      Wincent.Ajax.insertFlash('notice', 'Your comment has been queued for moderation');
     <% else -%>
       $('#comments')
         .html('<%= escape_javascript(render @parent.comments.published) %>')

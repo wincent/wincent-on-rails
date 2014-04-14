@@ -13,25 +13,25 @@
 #preview= render 'preview'
 - content_for :javascript do
   :javascript
-    Wincent.AJAX.observeField({
+    Wincent.Ajax.observeField({
       kind:      'snippet',
       fieldName: 'body',
       include:   ['description', 'markup_type'],
       url:       '#{snippets_path}'
     });
-    Wincent.AJAX.observeField({
+    Wincent.Ajax.observeField({
       kind:      'snippet',
       fieldName: 'description',
       include:   ['body', 'markup_type'],
       url:       '#{snippets_path}'
     });
-    Wincent.AJAX.observeField({
+    Wincent.Ajax.observeField({
       kind:      'snippet',
       fieldName: 'markup_type',
       include:   ['body', 'description'],
       url:       '#{snippets_path}'
     });
-    Wincent.AJAX.setupPreviewLink({
+    Wincent.Ajax.setupPreviewLink({
       kind:    'snippet',
       include: ['body', 'description', 'markup_type'],
       url:     '#{snippets_path}'
