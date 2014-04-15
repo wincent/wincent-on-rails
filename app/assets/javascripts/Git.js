@@ -1,4 +1,4 @@
-// Copyright 2010-2013 Wincent Colaiuta. All rights reserved.
+// Copyright 2010-2014 Wincent Colaiuta. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are met:
@@ -21,30 +21,37 @@
 // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 // POSSIBILITY OF SUCH DAMAGE.
 
-(function() {
-  function toggle($el, other) {
-    if ($el.is(':visible')) {
-      $el.hide();
-    } else {
-      $el.show();
-    }
+'use strict';
 
-    if (other) { // 'next' or 'prev'
-      toggle($el[other]());
-    }
+var $ = require('jquery');
+
+function toggle($el, other) {
+  if ($el.is(':visible')) {
+    $el.hide();
+  } else {
+    $el.show();
   }
 
-  // clicking on the abbreviated subject shows the entire commit message
-  $('.commit .subject').
-    attr('title', 'click to view full commit message').
-    on('click', function(evt) {
-      evt.preventDefault();
-      toggle($(this), 'next');
-    });
+  if (other) { // 'next' or 'prev'
+    toggle($el[other]());
+  }
+}
 
-  // clicking on the full commit message toggles back to the abbreviated
-  $('pre.message').on('click', function(evt) {
-    evt.preventDefault();
-    toggle($(this), 'prev');
-  });
-})();
+var Git = {
+  init: function() {
+    $(document)
+      // clicking on the abbreviated subject shows the entire commit message
+      .on('click', '.commit .subject', function(event) {
+        event.preventDefault();
+        toggle($(this), 'next');
+      })
+
+      // clicking on the full commit message toggles back to the abbreviated
+      .on('click', '.commits pre.message', function(event) {
+        event.preventDefault();
+        toggle($(this), 'prev');
+      });
+  }
+}
+
+module.exports = Git;
