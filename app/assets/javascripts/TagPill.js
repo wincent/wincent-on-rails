@@ -1,13 +1,6 @@
-/**
- * @jsx React.DOM
- */
-"use strict";
+'use strict';
 
-var React             = require("React"),
-    ReactStyle        = require("ReactStyle"),
-    TagPillStyleRules = require("./TagPillStyleRules");
-
-ReactStyle.addRules(TagPillStyleRules);
+var React = require("React");
 
 var TagPill = React.createClass({
   handleClick: function(event) {
@@ -33,13 +26,13 @@ var TagPill = React.createClass({
   render: function() {
     var className = TagPillStyleRules.tagPill;
     if (this.props.isDuplicate) {
-      className += " " + TagPillStyleRules.duplicate;
+      className += ' ' + TagPillStyleRules.duplicate;
     }
     if (this.props.isPending) {
-      className += " " + TagPillStyleRules.pending;
+      className += ' ' + TagPillStyleRules.pending;
     }
     if (this.props.isSelected) {
-      className += " " + TagPillStyleRules.selected;
+      className += ' ' + TagPillStyleRules.selected;
     }
 
     return (

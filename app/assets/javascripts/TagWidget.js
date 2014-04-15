@@ -1,14 +1,10 @@
-/**
- * @jsx React.DOM
- */
-"use strict";
+'use strict';
 
-var React               = require("React"),
-    ReactStyle          = require("ReactStyle"),
-    TagAutocomplete     = require("../TagAutocomplete/TagAutocomplete"),
-    TagInput            = require("../TagInput/TagInput"),
-    TagPill             = require("../TagPill/TagPill"),
-    TagWidgetStyleRules = require("../TagWidget/TagWidgetStyleRules");
+var React = require('React');
+
+var TagAutocomplete = require('./TagAutocomplete');
+var TagInput = require('./TagInput');
+var TagPill = require('./TagPill');
 
 var BACKSPACE_KEY_CODE = 8,  // delete selected pill
     TAB_KEY_CODE       = 9,  // accept autocomplete suggestion
@@ -18,8 +14,6 @@ var BACKSPACE_KEY_CODE = 8,  // delete selected pill
     UP_KEY_CODE        = 38, // previous autocomplete suggestion
     RIGHT_KEY_CODE     = 39, // select next pill
     DOWN_KEY_CODE      = 40; // next autocomplete suggestion
-
-ReactStyle.addRules(TagWidgetStyleRules);
 
 // The TagWidget provides tag "pilling" and autocomplete. It manages a related
 // set of subcomponents (TagInput, TagAutocomplete, TagPill).
@@ -39,7 +33,7 @@ var TagWidget = React.createClass({
   componentDidMount: function() {
     // get available completions from the server
     var request = new XMLHttpRequest();
-    request.open("GET", "/tags.json");
+    request.open('GET', '/tags.json');
 
     request.onreadystatechange = function() {
       if (request.status === 200 && request.readyState === 4) {
@@ -54,7 +48,7 @@ var TagWidget = React.createClass({
 
   // Takes the available completions and filters them based on TagInput value
   filterCompletions: function(string) {
-    if (string === "") {
+    if (string === '') {
       return []; // don't show suggestions if user hasn't inputed anything
     } else {
       return this.state.availableCompletions.filter(function(completion) {
@@ -71,14 +65,14 @@ var TagWidget = React.createClass({
   // previously added tag as a hint. This method removes that styling.
   clearDuplicateMarker: function() {
     if (this.state.duplicateTag) {
-      this.setState({ duplicateTag: undefined });
+      this.setState({duplicateTag: undefined});
     }
   },
 
   onShiftTab: function() {
     var event = document.createEvent('Events');
     event.initEvent('keydown', true, true);
-    event.keyIdentifier = "U+0009";
+    event.keyIdentifier = 'U+0009';
     event.keyCode = TAB_KEY_CODE;
     event.which = TAB_KEY_CODE;
     event.shiftKey = true;
@@ -104,8 +98,8 @@ var TagWidget = React.createClass({
           newList = this.filterCompletions(tagInput.value);
 
       if (newList.length !== oldList.length ||
-          newList.some(function(string, idx) { return oldList[idx] !== string; })) {
-        this.setState({ filteredCompletions: newList });
+        newList.some((string, idx) => oldList[idx] !== string) {
+        this.setState({filteredCompletions: newList});
       }
 
       this.clearDuplicateMarker();
@@ -120,14 +114,14 @@ var TagWidget = React.createClass({
     var input = this.refs.tagInput.getDOMNode();
     if (input === event.target && input.selectionStart === 0) {
       if (this.state.tags.length) {
-        this.setState({ selectedPillIndex: this.state.tags.length - 1 });
+        this.setState({selectedPillIndex: this.state.tags.length - 1});
 
         // can't just blur() the tagInput as we still need key events
         this.forceFocus();
       }
-    } else if (typeof this.state.selectedPillIndex !== "undefined" &&
+    } else if (typeof this.state.selectedPillIndex !== 'undefined' &&
                 this.state.selectedPillIndex > 0) {
-      this.setState({ selectedPillIndex: this.state.selectedPillIndex - 1 });
+      this.setState({selectedPillIndex: this.state.selectedPillIndex - 1});
     }
   },
 
@@ -135,11 +129,11 @@ var TagWidget = React.createClass({
   //
   // If no pill is selected, does nothing.
   handleRightKeyDown: function() {
-    if (typeof this.state.selectedPillIndex !== "undefined") {
+    if (typeof this.state.selectedPillIndex !== 'undefined') {
       if (this.state.selectedPillIndex < this.state.tags.length - 1) {
-        this.setState({ selectedPillIndex: this.state.selectedPillIndex + 1 });
+        this.setState({selectedPillIndex: this.state.selectedPillIndex + 1});
       } else {
-        this.setState({ selectedPillIndex: undefined });
+        this.setState({selectedPillIndex: undefined});
         this.refs.tagInput.getDOMNode().focus();
       }
       event.preventDefault();
@@ -150,7 +144,7 @@ var TagWidget = React.createClass({
   //
   // Does nothing if no pill is selected.
   handleBackspaceKeyDown: function(event) {
-    if (typeof this.state.selectedPillIndex !== "undefined") {
+    if (typeof this.state.selectedPillIndex !== 'undefined') {
       var tags = this.state.tags.slice(0),
           index;
       tags.splice(this.state.selectedPillIndex, 1)
@@ -162,7 +156,7 @@ var TagWidget = React.createClass({
         this.refs.tagInput.getDOMNode().focus();
       }
 
-      this.setState({ tags: tags, selectedPillIndex: index });
+      this.setState({tags: tags, selectedPillIndex: index});
 
       event.preventDefault(); // don't let back button perform page navigation
     }
@@ -184,12 +178,12 @@ var TagWidget = React.createClass({
     } else if (keyCode === ESCAPE_KEY_CODE) {
       this.refs.tagInput.getDOMNode().blur();
       this.state.filteredCompletions = [];
-    } else if (typeof oldSelectedIdx === "undefined" &&
+    } else if (typeof oldSelectedIdx === 'undefined' &&
         maxSelectedIdx >= 0 &&
         (keyCode === DOWN_KEY_CODE || keyCode === TAB_KEY_CODE)) {
       // first time here, and there are completions available; select first
       newSelectedIdx = 0;
-    } else if (typeof oldSelectedIdx !== "undefined") {
+    } else if (typeof oldSelectedIdx !== 'undefined') {
         // we've been here before, and a completion is currently selected
         if (keyCode === UP_KEY_CODE && oldSelectedIdx > 0) {
           newSelectedIdx = oldSelectedIdx - 1;
@@ -216,14 +210,14 @@ var TagWidget = React.createClass({
     }
 
     event.preventDefault();
-    this.setState({ selectedAutocompleteIndex: newSelectedIdx });
+    this.setState({selectedAutocompleteIndex: newSelectedIdx});
   },
 
   // On losing focus, clear selection from selected pill.
   handleBlur: function(event) {
-    if (typeof this.state.selectedPillIndex !== "undefined" &&
+    if (typeof this.state.selectedPillIndex !== 'undefined' &&
         this.getDOMNode() === event.target) {
-      this.setState({ selectedPillIndex: undefined });
+      this.setState({selectedPillIndex: undefined});
     }
   },
 
@@ -248,7 +242,7 @@ var TagWidget = React.createClass({
     if (newTag.length) {
       if (this.state.tags.indexOf(newTag) === -1) {
         // tag is not a dupe
-        this.setState({ tags: this.state.tags.concat(newTag) });
+        this.setState({tags: this.state.tags.concat(newTag)});
 
         if (this.props.resourceURL) {
           // widget is attached to a saved resource; make an Ajax request now
@@ -256,7 +250,7 @@ var TagWidget = React.createClass({
         }
       } else {
         // tag is a dupe
-        this.setState({ duplicateTag: newTag });
+        this.setState({duplicateTag: newTag});
       }
     }
 
@@ -274,7 +268,7 @@ var TagWidget = React.createClass({
     setTimeout(function() {
       var pending = this.state.pending.slice(0);
       pending.splice(pending.indexOf(newTag), 1);
-      this.setState({ pending: pending });
+      this.setState({pending: pending});
     }.bind(this), 1000);
   },
 
@@ -289,18 +283,18 @@ var TagWidget = React.createClass({
   // mouseEnter
   onAutocompleteSelect: function(element) {
     var tagIdx = this.state.filteredCompletions.indexOf(element.innerHTML);
-    this.setState({ selectedAutocompleteIndex: tagIdx });
+    this.setState({selectedAutocompleteIndex: tagIdx});
   },
 
   onTagPop: function() {
     if (this.state.tags.length) {
       this.clearDuplicateMarker();
-      this.setState({ tags: this.state.tags.slice(0, -1) });
+      this.setState({tags: this.state.tags.slice(0, -1)});
     }
   },
 
   onTagSelect: function(name) {
-    this.setState({ selectedPillIndex: this.state.tags.indexOf(name) });
+    this.setState({selectedPillIndex: this.state.tags.indexOf(name)});
     this.forceFocus();
   },
 
@@ -308,7 +302,7 @@ var TagWidget = React.createClass({
     this.clearDuplicateMarker();
     var tags = this.state.tags.slice(0);
     tags.splice(tags.indexOf(name), 1)
-    this.setState({ tags: tags });
+    this.setState({tags: tags});
   },
 
   forceFocus: function() {
@@ -357,7 +351,7 @@ var TagWidget = React.createClass({
         <input
           type="hidden"
           name={this.props.resourceName}
-          value={this.state.tags.join(" ")}
+          value={this.state.tags.join(' ')}
         />
         <TagInput
           ref="tagInput"

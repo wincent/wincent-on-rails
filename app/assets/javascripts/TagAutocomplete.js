@@ -1,18 +1,11 @@
-/**
- * @jsx React.DOM
- */
-"use strict";
+'use strict';
 
-var React                     = require("React"),
-    ReactStyle                = require("ReactStyle"),
-    TagAutocompleteStyleRules = require("./TagAutocompleteStyleRules");
-
-ReactStyle.addRules(TagAutocompleteStyleRules);
+var React = require('React');
 
 var TagAutocomplete = React.createClass({
   componentDidUpdate: function() {
-    var menu      = this.getDOMNode(),
-        selection = this.refs && this.refs.selected && this.refs.selected.getDOMNode();
+    var menu      = this.getDOMNode();
+    var selection = this.refs && this.refs.selected && this.refs.selected.getDOMNode();
 
     if (selection) {
       // is selection off the bottom of the scrollable area?
