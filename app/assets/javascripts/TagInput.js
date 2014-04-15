@@ -2,8 +2,7 @@
 
 var React = require('React');
 
-var BACKSPACE_KEY_CODE = 8,  // delete tag
-    TAB_KEY_CODE       = 9;  // switches focus to previous element
+var Keys = require('./Keys');
 
 var TagInput = React.createClass({
   handleFocus: function(event) {
@@ -23,7 +22,7 @@ var TagInput = React.createClass({
     var keyCode = event.keyCode;
     var input   = this.getDOMNode();
 
-    if (keyCode === BACKSPACE_KEY_CODE) {
+    if (keyCode === Keys.BACKSPACE) {
       if (input.selectionStart !== 0 && input.selectionEnd !== 0) {
         this.pendingDeletion = true;
       } else if (input.selectionStart === 0 &&
@@ -36,7 +35,7 @@ var TagInput = React.createClass({
         this.props.onTagPop();
         event.preventDefault();
       }
-    } else if (keyCode === TAB_KEY_CODE && event.shiftKey) {
+    } else if (keyCode === Keys.TAB && event.shiftKey) {
       this.props.onShiftTab();
     }
   },
@@ -46,7 +45,7 @@ var TagInput = React.createClass({
     var input   = this.getDOMNode();
     var value   = input.value;
 
-    if (keyCode === BACKSPACE_KEY_CODE) {
+    if (keyCode === Keys.BACKSPACE) {
       // see note in the handleKeyDown() method for info about this special case
       this.pendingDeletion = false;
     }

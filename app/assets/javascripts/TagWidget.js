@@ -2,18 +2,10 @@
 
 var React = require('React');
 
+var Keys = require('./Keys');
 var TagAutocomplete = require('./TagAutocomplete');
 var TagInput = require('./TagInput');
 var TagPill = require('./TagPill');
-
-var BACKSPACE_KEY_CODE = 8,  // delete selected pill
-    TAB_KEY_CODE       = 9,  // accept autocomplete suggestion
-    RETURN_KEY_CODE    = 13, // add tag/accept autocomplete suggestion
-    ESCAPE_KEY_CODE    = 27, // blur input field/close autocomplete menu
-    LEFT_KEY_CODE      = 37, // select previous pill
-    UP_KEY_CODE        = 38, // previous autocomplete suggestion
-    RIGHT_KEY_CODE     = 39, // select next pill
-    DOWN_KEY_CODE      = 40; // next autocomplete suggestion
 
 // The TagWidget provides tag "pilling" and autocomplete. It manages a related
 // set of subcomponents (TagInput, TagAutocomplete, TagPill).
@@ -73,8 +65,8 @@ var TagWidget = React.createClass({
     var event = document.createEvent('Events');
     event.initEvent('keydown', true, true);
     event.keyIdentifier = 'U+0009';
-    event.keyCode = TAB_KEY_CODE;
-    event.which = TAB_KEY_CODE;
+    event.keyCode = Keys.TAB;
+    event.which = Keys.TAB;
     event.shiftKey = true;
 
     this.forceFocus();
@@ -169,27 +161,27 @@ var TagWidget = React.createClass({
         oldSelectedIdx = this.state.selectedAutocompleteIndex,
         newSelectedIdx;
 
-    if (keyCode === LEFT_KEY_CODE) {
+    if (keyCode === Keys.LEFT) {
       return this.handleLeftKeyDown(event);
-    } else if (keyCode === RIGHT_KEY_CODE) {
+    } else if (keyCode === Keys.RIGHT) {
       return this.handleRightKeyDown();
-    } else if (keyCode === BACKSPACE_KEY_CODE) {
+    } else if (keyCode === Keys.BACKSPACE) {
       return this.handleBackspaceKeyDown(event);
-    } else if (keyCode === ESCAPE_KEY_CODE) {
+    } else if (keyCode === Keys.ESCAPE) {
       this.refs.tagInput.getDOMNode().blur();
       this.state.filteredCompletions = [];
     } else if (typeof oldSelectedIdx === 'undefined' &&
         maxSelectedIdx >= 0 &&
-        (keyCode === DOWN_KEY_CODE || keyCode === TAB_KEY_CODE)) {
+        (keyCode === Keys.DOWN || keyCode === Keys.TAB)) {
       // first time here, and there are completions available; select first
       newSelectedIdx = 0;
     } else if (typeof oldSelectedIdx !== 'undefined') {
         // we've been here before, and a completion is currently selected
-        if (keyCode === UP_KEY_CODE && oldSelectedIdx > 0) {
+        if (keyCode === Keys.UP && oldSelectedIdx > 0) {
           newSelectedIdx = oldSelectedIdx - 1;
-        } else if (keyCode === DOWN_KEY_CODE && oldSelectedIdx < maxSelectedIdx) {
+        } else if (keyCode === Keys.DOWN && oldSelectedIdx < maxSelectedIdx) {
           newSelectedIdx = oldSelectedIdx + 1;
-        } else if (keyCode === RETURN_KEY_CODE || keyCode === TAB_KEY_CODE) {
+        } else if (keyCode === Keys.RETURN || keyCode === Keys.TAB) {
           // accept selected suggestion
           this.refs.tagInput.getDOMNode().value = '';
           this.pushTag(this.state.filteredCompletions[oldSelectedIdx]);
@@ -197,7 +189,7 @@ var TagWidget = React.createClass({
           // non-special keys are allowed to pass through
           return;
         }
-    } else if (keyCode === RETURN_KEY_CODE) {
+    } else if (keyCode === Keys.RETURN) {
       // no completions selected; add currently inputed text
       var input = this.refs.tagInput.getDOMNode(),
           value = input.value;
