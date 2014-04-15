@@ -1,0 +1,9 @@
+.tagWidget {
+  border: 1px solid #ddd;
+  padding: 2px;
+  position: relative;
+
+  &:focus {
+    outline : 0
+  }
+}

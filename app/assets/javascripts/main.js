@@ -6,20 +6,8 @@
 
 var React = require('react/addons');
 
-var cloneWithProps = React.addons.cloneWithProps;
-var cx = React.addons.classSet;
+var TagWidget = require('./TagWidget');
 
-var Thing = React.createClass({
-  render: function() {
-    // proof that JSX works
-    return cloneWithProps(<span>foo</span>, {});
-  }
-});
-
-// proof that ES6 transforms work:
-['A', 'b', 'c'].map((thing, idx) => thing + ':' + idx);
-
-// actual, real code:
 window.Wincent = {};
 Wincent.Menu = require('./Menu');
 Wincent.Spinner = require('./Spinner');

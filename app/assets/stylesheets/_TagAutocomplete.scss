@@ -1,0 +1,44 @@
+// show no more than 10 autocomplete entries at a time
+$visible_autocomplete_entries: 10;
+
+.tagAutocomplete {
+  background: #fff;
+  border: 1px solid #ddd;
+  box-shadow: 0 0 1px #ccc;
+  display: none;
+  left: 0;
+  max-height: percentage($visible_autocomplete_entries); // 1000%
+  overflow-y: scroll;
+  position: absolute;
+  top: 100%;
+  width: 100%;
+  z-index: 1;
+
+  &.active {
+    display: block;
+  }
+
+  ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  li {
+    @include user-select(none);
+    border-bottom: 1px solid #efefef;
+    padding: 5px;
+
+    &:last-child {
+      border: 0;
+    }
+
+    &.selected {
+      background: #efefef;
+    }
+
+    &:active {
+      background: #ddd;
+    }
+  }
+}

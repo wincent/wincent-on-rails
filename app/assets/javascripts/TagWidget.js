@@ -90,7 +90,7 @@ var TagWidget = React.createClass({
           newList = this.filterCompletions(tagInput.value);
 
       if (newList.length !== oldList.length ||
-        newList.some((string, idx) => oldList[idx] !== string) {
+        newList.some((string, idx) => oldList[idx] !== string)) {
         this.setState({filteredCompletions: newList});
       }
 
@@ -332,7 +332,7 @@ var TagWidget = React.createClass({
     return (
       <div
         tabIndex="0"
-        className={TagWidgetStyleRules.tagWidget}
+        className=".tagWidget"
         onChange={this.handleChange}
         onClick={this.handleClick}
         onDragStart={this.handleDragStart}

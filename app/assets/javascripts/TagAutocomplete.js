@@ -1,6 +1,12 @@
 'use strict';
 
-var React = require('React');
+var React = require('react/addons');
+
+var cx = React.addons.classSet;
+
+// keep in sync with _TagAutocomplete.scss
+// TODO: figure out how to share constants between Sass and broswerified JS
+var VISIBLE_AUTOCOMPLETE_ENTRIES = 10;
 
 var TagAutocomplete = React.createClass({
   componentDidUpdate: function() {
@@ -9,7 +15,7 @@ var TagAutocomplete = React.createClass({
 
     if (selection) {
       // is selection off the bottom of the scrollable area?
-      var count = TagAutocompleteStyleRules.VISIBLE_AUTOCOMPLETE_ENTRIES,
+      var count = VISIBLE_AUTOCOMPLETE_ENTRIES,
           delta = selection.offsetTop -
                   (menu.scrollTop + count * selection.clientHeight);
       if (delta > 0) {
@@ -42,7 +48,7 @@ var TagAutocomplete = React.createClass({
       if (this.props.selectedIdx === i) {
         return (
           <li
-            className={TagAutocompleteStyleRules.selected}
+            className=".TagAutocomplete.selected"
             onClick={this.handleClick}
             onMouseEnter={this.handleMouseEnter}
             ref="selected">
@@ -58,11 +64,13 @@ var TagAutocomplete = React.createClass({
       }
     }, this);
 
-    var className = TagAutocompleteStyleRules.tagAutocomplete +
-      (this.props.completions.length ? ' ' + TagAutocompleteStyleRules.active : '');
+    var classes = cx({
+      '.tagAutocomplete': true,
+      '.active': this.props.completions.length
+    });
 
     return (
-      <div className={className}>
+      <div className={classes}>
         <ul>{completions}</ul>
       </div>
     );

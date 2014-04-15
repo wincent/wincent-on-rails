@@ -1,0 +1,9 @@
+.tagInput {
+  border: 0;
+  margin: 5px 0; // matches TagPill border + vertical margins
+  text-transform: lowercase; // cheaper to do it in CSS than JS
+
+  &:focus {
+    outline: 0
+  }
+}

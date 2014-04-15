@@ -27,10 +27,10 @@ var TagPill = React.createClass({
 
   render: function() {
     var classes = cx({
-      TagPillStyleRules.tagPill: true,
-      TagPillStyleRules.duplicate: this.props.isDuplicate,
-      TagPillStyleRules.pending: this.props.isPending,
-      TagPillStyleRules.selected: this.props.isSelected
+      '.tagPill': true,
+      '.duplicate': this.props.isDuplicate,
+      '.pending': this.props.isPending,
+      '.selected': this.props.isSelected
     });
 
     return (

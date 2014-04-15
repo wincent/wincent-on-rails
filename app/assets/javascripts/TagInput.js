@@ -87,7 +87,7 @@ var TagInput = React.createClass({
   render: function() {
     return (
       <input
-        className={TagInputStyleRules.tagInput}
+        className=".tagInput"
         type="text"
         onFocus={this.handleFocus}
         onInput={this.handleInput}
