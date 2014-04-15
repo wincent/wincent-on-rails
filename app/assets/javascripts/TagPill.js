@@ -1,6 +1,8 @@
 'use strict';
 
-var React = require("React");
+var React = require('react/addons');
+
+var cx = React.addons.classSet;
 
 var TagPill = React.createClass({
   handleClick: function(event) {
@@ -24,20 +26,16 @@ var TagPill = React.createClass({
   },
 
   render: function() {
-    var className = TagPillStyleRules.tagPill;
-    if (this.props.isDuplicate) {
-      className += ' ' + TagPillStyleRules.duplicate;
-    }
-    if (this.props.isPending) {
-      className += ' ' + TagPillStyleRules.pending;
-    }
-    if (this.props.isSelected) {
-      className += ' ' + TagPillStyleRules.selected;
-    }
+    var classes = cx({
+      TagPillStyleRules.tagPill: true,
+      TagPillStyleRules.duplicate: this.props.isDuplicate,
+      TagPillStyleRules.pending: this.props.isPending,
+      TagPillStyleRules.selected: this.props.isSelected
+    });
 
     return (
       <span
-        className={className}
+        className={classes}
         draggable="true"
         onClick={this.handleClick}
         onDragStart={this.handleDragStart}
