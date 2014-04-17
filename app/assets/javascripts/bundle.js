@@ -1166,13 +1166,6 @@ window._ = require('underscore');
 Wincent.Ajax.init();
 Wincent.Git.init();
 
-// test of React
-debugger
-React.renderComponent(
-  TagWidget( {resourceURL:"/issues/1290/tags"} ),
-  $('#content')[0]
-);
-
 },{"./Ajax":1,"./Git":2,"./Menu":4,"./Spinner":5,"./TagWidget":9,"jquery":148,"react/addons":149,"underscore":299}],12:[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
