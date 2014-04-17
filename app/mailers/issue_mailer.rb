@@ -2,11 +2,12 @@ class IssueMailer < ActionMailer::Base
   default return_path: APP_CONFIG['support_email']
 
   def new_issue_alert issue
+    subject_prefix = '[ALERT] ' unless issue.awaiting_moderation?
     message = Message.create \
       related:        issue,
       to_header:      APP_CONFIG['admin_email'],
       from_header:    APP_CONFIG['support_email'],
-      subject_header: "new issue alert from #{APP_CONFIG['host']}",
+      subject_header: "#{subject_prefix}new issue on #{APP_CONFIG['host']}",
       incoming:       false
 
     @issue          = issue

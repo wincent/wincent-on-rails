@@ -2,11 +2,12 @@ class CommentMailer < ActionMailer::Base
   default return_path: APP_CONFIG['support_email']
 
   def new_comment_alert comment
+    subject_prefix = '[ALERT] ' unless comment.awaiting_moderation?
     message = Message.create \
       related:        comment,
       to_header:      APP_CONFIG['admin_email'],
       from_header:    APP_CONFIG['support_email'],
-      subject_header: "new comment alert from #{APP_CONFIG['host']}",
+      subject_header: "#{subject_prefix}new comment on #{APP_CONFIG['host']}",
       incoming:       false
 
     @comment          = comment

@@ -2,11 +2,12 @@ class TopicMailer < ActionMailer::Base
   default return_path: APP_CONFIG['support_email']
 
   def new_topic_alert topic
+    subject_prefix = '[ALERT] ' unless topic.awaiting_moderation?
     message = Message.create \
       related:        topic,
       to_header:      APP_CONFIG['admin_email'],
       from_header:    APP_CONFIG['support_email'],
-      subject_header: "new topic alert from #{APP_CONFIG['host']}",
+      subject_header: "#{subject_prefix}new topic on #{APP_CONFIG['host']}",
       incoming:       false
 
     @topic          = topic
