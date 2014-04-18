@@ -4,6 +4,51 @@ require 'pathname'
 require 'shellwords'
 
 namespace :assets do
+  namespace :browserify do
+    RELATIVE_BUNDLE_PATH = 'app/assets/javascripts/bundle.js'
+
+    desc 'Check if Browserify bundle is up-to-date for ${REF-HEAD}'
+    task check: :bundle do
+      Dir.chdir(assets_scratch_repo) do
+        `git diff --quiet -- #{RELATIVE_BUNDLE_PATH}`
+        if $?.success?
+          exit 0
+        else
+          copy_bundle
+          prompt
+          exit 1
+        end
+      end
+    end
+
+    desc 'Update Browserify bundle for ${REF-HEAD}'
+    task bundle: :environment do
+      purge_scratch_repo
+      prepare_scratch_repo
+      bundle
+    end
+
+    def bundle
+      Dir.chdir(assets_scratch_repo) do
+        run! 'npm run bundle'
+      end
+    end
+
+    def copy_bundle
+      FileUtils.cp(
+        assets_scratch_repo + RELATIVE_BUNDLE_PATH,
+        Rails.root + RELATIVE_BUNDLE_PATH
+      )
+    end
+
+    def prompt
+      puts 'Notice:',
+        "- The bundle at #{RELATIVE_BUNDLE_PATH} was updated",
+        '- You should now commit it and precompile assets',
+        "  (with `rake ref=#{ref} assets:deploy:store`)"
+    end
+  end
+
   namespace :deploy do
     desc 'Check if precompiled assets are available for ${REF-HEAD}'
     task check: :environment do
@@ -30,30 +75,13 @@ namespace :assets do
       puts tag # used by `script/deploy`
     end
 
-    def run!(command)
-      `#{command}`.tap do |result|
-        raise "#{command} failed" unless $?.success?
-      end
-    end
-
-    def assets_scratch_repo
-      Rails.root + 'tmp/assets'
-    end
-
-    def purge_scratch_repo
-      puts 'Removing scratch repo'
-      FileUtils.rm_rf(assets_scratch_repo)
-    end
-
-    def prepare_scratch_repo
+    def precompiled?
       Dir.chdir(Rails.root) do
-        dest = assets_scratch_repo.relative_path_from(Rails.root)
-        puts 'Cloning scratch repo'
-        run! [
-          "git clone -q . #{Shellwords.shellescape(dest)}",
-          "cd #{Shellwords.shellescape(dest)}",
-          "git checkout -q --detach #{Shellwords.shellescape(ref)}",
-        ].join(' && ')
+        # do we have the assets locally? failing that, can we fetch them?
+        `git rev-parse -q --verify #{tag} &> /dev/null ||
+          git fetch -q origin tag #{tag} &> /dev/null`
+
+        $?.success?
       end
     end
 
@@ -93,18 +121,14 @@ namespace :assets do
       end
     end
 
+    def ref_as_hash
+      run!("git rev-parse #{Shellwords.shellescape(ref)}").chomp
+    end
+
     def push
       Dir.chdir(assets_scratch_repo) do
         run! "git push upstream tag #{Shellwords.shellescape(tag)}"
       end
-    end
-
-    def ref
-      ENV['REF'] || 'HEAD'
-    end
-
-    def ref_as_hash
-      run!("git rev-parse #{Shellwords.shellescape(ref)}").chomp
     end
 
     def assets_paths
@@ -136,15 +160,36 @@ namespace :assets do
     def tag
       "assets-#{fingerprint}"
     end
+  end
 
-    def precompiled?
-      Dir.chdir(Rails.root) do
-        # do we have the assets locally? failing that, can we fetch them?
-        `git rev-parse -q --verify #{tag} &> /dev/null ||
-         git fetch -q origin tag #{tag} &> /dev/null`
-
-        $?.success?
-      end
+  def run!(command)
+    `#{command}`.tap do |result|
+      raise "#{command} failed" unless $?.success?
     end
+  end
+
+  def assets_scratch_repo
+    Rails.root + 'tmp/assets'
+  end
+
+  def purge_scratch_repo
+    puts 'Removing scratch repo'
+    FileUtils.rm_rf(assets_scratch_repo)
+  end
+
+  def prepare_scratch_repo
+    Dir.chdir(Rails.root) do
+      dest = assets_scratch_repo.relative_path_from(Rails.root)
+      puts 'Cloning scratch repo'
+      run! [
+        "git clone -q . #{Shellwords.shellescape(dest)}",
+        "cd #{Shellwords.shellescape(dest)}",
+        "git checkout -q --detach #{Shellwords.shellescape(ref)}",
+      ].join(' && ')
+    end
+  end
+
+  def ref
+    ENV['REF'] || 'HEAD'
   end
 end
