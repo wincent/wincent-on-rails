@@ -42,7 +42,7 @@ namespace :assets do
     end
 
     def prompt
-      puts 'Notice:',
+      STDERR.puts 'Notice:',
         "- The bundle at #{RELATIVE_BUNDLE_PATH} was updated",
         '- You should now commit it and precompile assets',
         "  (with `rake ref=#{ref} assets:deploy:store`)"
@@ -58,7 +58,7 @@ namespace :assets do
     desc 'Precompile and store assets for deployment ${REF-HEAD}'
     task store: :environment do
       if precompiled?
-        puts 'assets already precompiled; doing nothing'
+        STDERR.puts 'assets already precompiled; doing nothing'
       else
         purge_scratch_repo
         prepare_scratch_repo
@@ -173,14 +173,14 @@ namespace :assets do
   end
 
   def purge_scratch_repo
-    puts 'Removing scratch repo'
+    STDOUT.puts 'Removing scratch repo'
     FileUtils.rm_rf(assets_scratch_repo)
   end
 
   def prepare_scratch_repo
     Dir.chdir(Rails.root) do
       dest = assets_scratch_repo.relative_path_from(Rails.root)
-      puts 'Cloning scratch repo'
+      STDOUT.puts 'Cloning scratch repo'
       run! [
         "git clone -q . #{Shellwords.shellescape(dest)}",
         "cd #{Shellwords.shellescape(dest)}",

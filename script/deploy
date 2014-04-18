@@ -261,7 +261,7 @@ if [ -n "$DO_CHECK" ]; then
     LOCAL_REF=$REF
   fi
   p "  checking: Browserify bundle is up-to-date"
-  bin/rake REF=$LOCAL_REF assets:browserify:check || bail "bundle was out-of-date"
+  bin/rake REF=$LOCAL_REF assets:browserify:check > /dev/null || bail "bundle was out-of-date"
   p "  checking: precompiled assets are available"
   bin/rake REF=$LOCAL_REF assets:deploy:check || bail "precompiled assets are not available (run rake REF=$LOCAL_REF assets:deploy:store)"
   p "  checking: generated static HTML files up-to-date"
