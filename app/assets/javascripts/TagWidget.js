@@ -193,9 +193,10 @@ var TagWidget = React.createClass({
       // no completions selected; add currently inputed text
       var input = this.refs.tagInput.getDOMNode(),
           value = input.value;
-      this.pushTag(value);
+      if (this.pushTag(value)) {
+        event.preventDefault(); // prevent form submission
+      }
       input.value = '';
-      event.stopPropagation(); // prevent form submission
       return;
     } else {
       // no completions selected, not a special key, let it through
@@ -223,6 +224,9 @@ var TagWidget = React.createClass({
     }
   },
 
+  /**
+   * @returns true if a tag was actually pushed
+   */
   pushTag: function(newTag) {
     newTag = newTag
       .trim()
@@ -233,6 +237,7 @@ var TagWidget = React.createClass({
     // NOTE: might want to provide better feedback for the edge case where the
     // entire thing gets eaten
     if (newTag.length) {
+      var pushedTag = true;
       if (this.state.tags.indexOf(newTag) === -1) {
         // tag is not a dupe
         this.setState({tags: this.state.tags.concat(newTag)});
@@ -251,6 +256,8 @@ var TagWidget = React.createClass({
       selectedAutocompleteIndex: undefined,
       filteredCompletions:     []
     });
+
+    return pushedTag;
   },
 
   createTagging: function(newTag) {
