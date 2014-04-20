@@ -135,7 +135,7 @@ var TagWidget = React.createClass({
   // Deletes any selected pill.
   //
   // Does nothing if no pill is selected.
-  handleBackspaceKeyDown: function(event) {
+  handleDelete: function(event) {
     if (typeof this.state.selectedPillIndex !== 'undefined') {
       var tags = this.state.tags.slice(0),
           index;
@@ -150,7 +150,7 @@ var TagWidget = React.createClass({
 
       this.setState({tags: tags, selectedPillIndex: index});
 
-      event.preventDefault(); // don't let back button perform page navigation
+      event.preventDefault(); // don't let backspace perform page navigation
     }
   },
 
@@ -165,8 +165,8 @@ var TagWidget = React.createClass({
       return this.handleLeftKeyDown(event);
     } else if (keyCode === Keys.RIGHT) {
       return this.handleRightKeyDown();
-    } else if (keyCode === Keys.BACKSPACE) {
-      return this.handleBackspaceKeyDown(event);
+    } else if (keyCode === Keys.BACKSPACE || keyCode === Keys.DELETE) {
+      return this.handleDelete(event);
     } else if (keyCode === Keys.ESCAPE) {
       this.refs.tagInput.getDOMNode().blur();
       this.state.filteredCompletions = [];

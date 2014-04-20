@@ -25,6 +25,7 @@
 
 var Keys = {
   BACKSPACE: 8,
+  DELETE: 46,
   DOWN: 40,
   ESCAPE: 27,
   LEFT: 37,
