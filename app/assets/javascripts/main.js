@@ -1,21 +1,14 @@
-/**
- * @jsx React.DOM
- */
-
 'use strict';
 
-window.Wincent = {};
-Wincent.Ajax = require('./Ajax');
-Wincent.Git = require('./Git');
-Wincent.Menu = require('./Menu');
-Wincent.Spinner = require('./Spinner');
-Wincent.TagWidget = require('./TagWidget');
+var Wincent = {
+  Ajax: require('./Ajax'),
+  Articles: require('./Articles'),
+  Git: require('./Git'),
+  Menu: require('./Menu'),
+  Spinner: require('./Spinner')
+};
 
-// once all is done, these won't be global
-window.$ = require('jquery');
-window._ = require('underscore');
-window.React = require('react/addons');
-
-// initializers:
 Wincent.Ajax.init();
 Wincent.Git.init();
+
+module.exports = Wincent;

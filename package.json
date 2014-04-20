@@ -12,8 +12,8 @@
     "spin.js": "^2.0.0"
   },
   "scripts": {
-    "bundle": "browserify -o app/assets/javascripts/bundle.js --noparse=node_modules/jquery/dist/jquery.js --noparse=node_modules/underscore/underscore.js -r jquery -r underscore -r react/addons ./app/assets/javascripts/main.js -t [ reactify --everything --harmony ]",
-    "watch-js": "watchify -o app/assets/javascripts/bundle.js --noparse=node_modules/jquery/dist/jquery.js --noparse=node_modules/underscore/underscore.js -r jquery -r underscore -r react/addons ./app/assets/javascripts/main.js -t [ reactify --everything --harmony ]",
+    "bundle": "browserify -o app/assets/javascripts/bundle.js --noparse=node_modules/jquery/dist/jquery.js --noparse=node_modules/underscore/underscore.js -r jquery -r underscore -r react/addons -r ./app/assets/javascripts/main.js:wincent -t [ reactify --everything --harmony ]",
+    "watch-js": "watchify -o app/assets/javascripts/bundle.js --noparse=node_modules/jquery/dist/jquery.js --noparse=node_modules/underscore/underscore.js -r jquery -r underscore -r react/addons -r ./app/assets/javascripts/main.js:wincent -t [ reactify --everything --harmony ]",
     "start": "npm run watch-js"
   }
 }
