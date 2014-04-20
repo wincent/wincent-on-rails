@@ -326,6 +326,7 @@ var TagWidget = React.createClass({
 
       return (
         <TagPill
+          key={name}
           name={name}
           isDuplicate={isDuplicate}
           isPending={isPending}

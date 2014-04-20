@@ -49,6 +49,7 @@ var TagAutocomplete = React.createClass({
         return (
           <li
             className="TagAutocomplete selected"
+            key={completion}
             onClick={this.handleClick}
             onMouseEnter={this.handleMouseEnter}
             ref="selected">
@@ -57,7 +58,10 @@ var TagAutocomplete = React.createClass({
         );
       } else {
         return (
-          <li onClick={this.handleClick} onMouseEnter={this.handleMouseEnter}>
+          <li
+            key={completion}
+            onClick={this.handleClick}
+            onMouseEnter={this.handleMouseEnter}>
             {completion}
           </li>
         );
