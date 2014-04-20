@@ -4,6 +4,8 @@ var React = require('React');
 
 var Keys = require('./Keys');
 
+var escapeHTML = require('./escapeHTML');
+
 var TagInput = React.createClass({
   handleFocus: function(event) {
     // don't let the event bubble up to TagWidget, otherwise it will try to send
@@ -51,21 +53,12 @@ var TagInput = React.createClass({
     }
   },
 
-  // TODO: put this somewhere more general
-  escapeHTML: function(string) {
-    return string
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/'/g, '&quot;');
-  },
-
   getTextWidth: function(input) {
     // copy the input value to a hidden div with the same styling as the input,
     // then measure the width of that
     var hiddenDiv = document.createElement("div");
     var styles    = window.getComputedStyle(input);
-    var value     = this.escapeHTML(input.value + "w"); // 1-char of padding
+    var value     = escapeHTML(input.value + "w"); // 1-char of padding
 
     hiddenDiv.style.position      = 'absolute';
     hiddenDiv.style.left          = '-10000px';
