@@ -4,10 +4,6 @@
 
 'use strict';
 
-var React = require('react/addons');
-
-var TagWidget = require('./TagWidget');
-
 window.Wincent = {};
 Wincent.Menu = require('./Menu');
 Wincent.Spinner = require('./Spinner');

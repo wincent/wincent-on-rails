@@ -195,6 +195,7 @@ var TagWidget = React.createClass({
           value = input.value;
       this.pushTag(value);
       input.value = '';
+      event.stopPropagation(); // prevent form submission
       return;
     } else {
       // no completions selected, not a special key, let it through
@@ -254,7 +255,6 @@ var TagWidget = React.createClass({
 
   createTagging: function(newTag) {
     this.state.pending.push(newTag);
-    console.log("creating");
 
     // DEBUGGING: replace with actual Ajax request
     setTimeout(function() {
@@ -332,7 +332,7 @@ var TagWidget = React.createClass({
     return (
       <div
         tabIndex="0"
-        className=".tagWidget"
+        className="tagWidget"
         onChange={this.handleChange}
         onClick={this.handleClick}
         onDragStart={this.handleDragStart}

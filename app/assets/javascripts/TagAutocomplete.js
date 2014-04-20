@@ -48,7 +48,7 @@ var TagAutocomplete = React.createClass({
       if (this.props.selectedIdx === i) {
         return (
           <li
-            className=".TagAutocomplete.selected"
+            className="TagAutocomplete selected"
             onClick={this.handleClick}
             onMouseEnter={this.handleMouseEnter}
             ref="selected">
@@ -65,8 +65,8 @@ var TagAutocomplete = React.createClass({
     }, this);
 
     var classes = cx({
-      '.tagAutocomplete': true,
-      '.active': this.props.completions.length
+      'tagAutocomplete': true,
+      'active': this.props.completions.length
     });
 
     return (
