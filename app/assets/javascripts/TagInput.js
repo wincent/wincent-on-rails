@@ -82,6 +82,7 @@ var TagInput = React.createClass({
       <input
         className="tagInput"
         type="text"
+        name={this.props.name}
         onFocus={this.handleFocus}
         onInput={this.handleInput}
         onKeyDown={this.handleKeyDown}

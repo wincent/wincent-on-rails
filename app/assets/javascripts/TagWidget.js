@@ -349,15 +349,16 @@ var TagWidget = React.createClass({
         onBlur={this.handleBlur}
         onFocus={this.handleFocus}>
         {tagPills}
+        <TagInput
+          ref="tagInput"
+          name={this.props.resourceName}
+          onTagPop={this.onTagPop}
+          onShiftTab={this.onShiftTab}
+        />
         <input
           type="hidden"
           name={this.props.resourceName}
           value={this.state.tags.join(' ')}
-        />
-        <TagInput
-          ref="tagInput"
-          onTagPop={this.onTagPop}
-          onShiftTab={this.onShiftTab}
         />
         <TagAutocomplete
           completions={this.state.filteredCompletions}
