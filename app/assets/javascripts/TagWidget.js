@@ -12,7 +12,7 @@ var TagPill = require('./TagPill');
 var TagWidget = React.createClass({
   getInitialState: function() {
     return {
-      tags:                       [],
+      tags:                       (this.props.pendingTags || '').split(/ +/),
       availableCompletions:       [],
       filteredCompletions:        [],
       pending:                    [], // for styling purposes
@@ -23,6 +23,21 @@ var TagWidget = React.createClass({
   },
 
   componentDidMount: function() {
+    // For progressive enhancement, we render on the server-side with the text
+    // input last in the DOM, and without the tag pills visible:
+    //
+    //   <input type="hidden" value="pending tags here" name="article[pending_tags]" />
+    //   <input type="text" value="pending tags here" name="article[pending_tags]" />
+    //
+    // On the client side, if JS is turned off or broken, the user will be able
+    // to edit the value in the text input and submit the form.
+    //
+    // However, if JS is turned on and working, we'll land here in component did
+    // mount and we can detect that we're in a working environment and trigger a
+    // rerender, this time with tag pills, an empty text input, and the DOM
+    // order reversed:
+    this.setState({clientSideJSAvailable: true});
+
     // get available completions from the server
     var request = new XMLHttpRequest();
     request.open('GET', '/tags.json');
@@ -319,25 +334,51 @@ var TagWidget = React.createClass({
     this.getDOMNode().focus();
   },
 
+  _renderTagPills: function() {
+    // see notes on progressive enhancement in `componentDidMount()`
+    if (this.state.clientSideJSAvailable) {
+      return this.state.tags.map((name, i) => {
+        return (
+          <TagPill
+            key={name}
+            name={name}
+            isDuplicate={name === this.state.duplicateTag}
+            isPending={this.state.pending.indexOf(name) !== -1}
+            isSelected={i === this.state.selectedPillIndex}
+            onTagSelect={this.onTagSelect}
+            onTagDelete={this.onTagDelete}
+          />
+        );
+      }, this);
+    }
+  },
+
+  _renderInputs: function() {
+    // see notes on progressive enhancement in `componentDidMount()`
+    var pendingTags =
+      this.state.clientSideJSAvailable ? undefined : this.props.pendingTags;
+    var inputs = [
+      <TagInput
+        ref="tagInput"
+        name={this.props.resourceName}
+        onTagPop={this.onTagPop}
+        onShiftTab={this.onShiftTab}
+        value={pendingTags}
+      />
+    ];
+
+    inputs[this.state.clientSideJSAvailable ? 'push' : 'unshift'](
+      <input
+        type="hidden"
+        name={this.props.resourceName}
+        value={this.state.tags.join(' ')}
+      />
+    );
+
+    return inputs;
+  },
+
   render: function() {
-    var tagPills = this.state.tags.map(function(name, i) {
-      var isDuplicate = name === this.state.duplicateTag,
-          isPending   = this.state.pending.indexOf(name) !== -1,
-          isSelected  = i === this.state.selectedPillIndex;
-
-      return (
-        <TagPill
-          key={name}
-          name={name}
-          isDuplicate={isDuplicate}
-          isPending={isPending}
-          isSelected={isSelected}
-          onTagSelect={this.onTagSelect}
-          onTagDelete={this.onTagDelete}
-        />
-      );
-    }, this);
-
     return (
       <div
         tabIndex="0"
@@ -348,18 +389,8 @@ var TagWidget = React.createClass({
         onKeyDown={this.handleKeyDown}
         onBlur={this.handleBlur}
         onFocus={this.handleFocus}>
-        {tagPills}
-        <TagInput
-          ref="tagInput"
-          name={this.props.resourceName}
-          onTagPop={this.onTagPop}
-          onShiftTab={this.onShiftTab}
-        />
-        <input
-          type="hidden"
-          name={this.props.resourceName}
-          value={this.state.tags.join(' ')}
-        />
+        {this._renderTagPills()}
+        {this._renderInputs()}
         <TagAutocomplete
           completions={this.state.filteredCompletions}
           selectedIdx={this.state.selectedAutocompleteIndex}
