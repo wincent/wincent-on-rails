@@ -3,13 +3,15 @@
   "devDependencies": {
     "watchify": "^0.6.4",
     "browserify": "^3.41.0",
-    "reactify": "^0.11.0"
+    "reactify": "^0.11.0",
+    "grunt": "^0.4.4"
   },
   "dependencies": {
     "react": "^0.10.0",
     "underscore": "^1.6.0",
     "jquery": "^2.1.0",
-    "spin.js": "^2.0.0"
+    "spin.js": "^2.0.0",
+    "node-jsx": "^0.10.0"
   },
   "scripts": {
     "bundle": "browserify -o app/assets/javascripts/bundle.js --noparse=node_modules/jquery/dist/jquery.js --noparse=node_modules/underscore/underscore.js -r jquery -r underscore -r react/addons -r ./app/assets/javascripts/main.js:wincent -t [ reactify --everything --harmony ]",
