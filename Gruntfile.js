@@ -7,7 +7,7 @@ module.exports = function(grunt) {
       files: {
         expand: true,
         cwd: 'app/assets/javascripts',
-        src: ['**/*.js'],
+        src: ['**/*.js', 'bundle.js'],
         dest: 'server/build',
         ext: '.js',
         options: {
