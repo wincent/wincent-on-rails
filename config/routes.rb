@@ -138,10 +138,6 @@ Wincent::Application.routes.draw do
   get 'dashboard'       => 'dashboard#show'
   get 'heartbeat/ping'
 
-  # explicit extension here helps nginx send correct Content-Type
-  get 'js/:delegated'   => 'js#show',
-      :delegated        => %r{([a-z_]+/)+[a-z_]+\.js}
-
   get 'l/:id'           => 'links#show'
   get 'login'           => 'sessions#new'
   get 'logout'          => 'sessions#destroy'
