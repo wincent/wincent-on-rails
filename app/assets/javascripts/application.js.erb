@@ -21,6 +21,8 @@
 // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 // POSSIBILITY OF SUCH DAMAGE.
 
+'use strict';
+
 // browserify bundle:
 
 //= require bundle
@@ -31,7 +33,520 @@ window.$ = require('jquery');
 window._ = require('underscore');
 window.Wincent = require('wincent');
 
-// the rest (eventually, will die off):
+// the rest (eventually, will die off)
 
-//= require products
-//= require wincent
+var global_pending_lightbox_image = null;
+
+// set up lightbox
+function lightbox(thumbnail) {
+  // add "expand" widget
+  var $link = $(thumbnail).parent()
+    .wrap('<div class="lightbox-wrapper"></div>')
+    .prepend('<img class="widget expand" alt="expand" title="Click to enlarge" src="<%= asset_path 'dashboard-expand.png' %>" />');
+
+  // examine target href for type and params
+  var href = $link.attr('href');
+  thumbnail.image = !href.match(/\.mov(\?.*)?$/);
+  var params = {};
+  if (href.match(/(.+)\?(.+)$/)) {
+    href = RegExp.$1; // strip off query component
+    $.each(RegExp.$2.split('&'), function(idx, val) {
+      var key_value_pair = val.split('=');
+      params[key_value_pair[0]] = key_value_pair[1];
+    });
+  }
+
+  // for images, start preloading on mouseenter
+  if (thumbnail.image) {
+    $link.on('mouseenter', function() {
+      // will store the preloaded image as a property in the thumbnail DOM element
+      if (thumbnail.fullsized)
+          return; // already been here for this image
+      var image = $('<img />').attr('src', href);
+      image.thumbnail = $(thumbnail); // keep reference to "parent" thumbnail
+      image.attr('title', image.thumbnail.attr('title'));
+      $(image).on('load', function() {
+        image.loaded = true;
+        if (global_pending_lightbox_image == image) {
+          show_lightbox(image, true);
+        }
+      });
+      thumbnail.fullsized = image;
+    });
+  }
+  else {
+    // movie dimensions come from query string
+    // or if no query string, from image thumbnail
+    var width = parseInt(params['width'] || $link.width()),
+        height = parseInt(params['height'] || $link.height()) + 16, // plus 16 pixels for controls
+        movie = $('<object/>', {
+      classid: "clsid:02BF25D5-8C17-4B23-BC80-D3488ABDDC6B",
+      codebase: "http://www.apple.com/qtactivex/qtplugin.cab",
+      title: $(thumbnail).attr('title')
+      })
+    .attr({
+      width: width,   // must set these using attr()
+      height: height  // otherwise they get applied as CSS styles
+    })
+    .append($('<param/>', { name: 'src', value: href }))
+    .append($('<param/>', { name: 'autoplay', value: 'true' }))
+    .append($('<embed/>', {
+      src: href,
+      type: 'video/quicktime',
+      autoplay: 'true',
+      pluginspage: 'http://www.apple.com/quicktime/download/'
+    })
+    .attr({
+      width: width,   // must set these using attr()
+      height: height  // otherwise they get applied as CSS styles
+    }));
+    movie.thumbnail = $(thumbnail); // keep reference to "parent" thumbnail
+    thumbnail.fullsized = movie;
+  }
+
+  // show lightbox on click
+  var click = function(e) {
+    disable_expand_widgets();
+    if (e.data.tag.image) {
+      if (e.data.tag.fullsized.loaded)
+        show_lightbox(e.data.tag.fullsized, true);
+      else {
+        showSpinner();
+        global_pending_lightbox_image = e.data.tag.fullsized;
+      }
+    }
+    else
+      show_lightbox(e.data.tag.fullsized, false);
+    return false;
+  }
+  $link.on('click', { tag: thumbnail }, click);
+
+  function show_overlay() {
+    if (!$('#lightbox-overlay').length)
+      $('#content').prepend($('<div id="lightbox-overlay"></div>').on('click', function() {
+        hide_lightbox();
+      }));
+    $('#lightbox-overlay').fadeIn();
+  }
+
+  function hide_overlay() {
+    $('#lightbox-overlay').fadeOut('def');
+  }
+
+  function hide_lightbox() {
+    hide_overlay();
+    $('#lightbox-image-frame').fadeOut('def', function() {
+      $(this).remove();
+    });
+    enable_expand_widgets();
+  }
+
+  function show_lightbox(content, is_image) {
+    // if spinner on screen, hide it
+    $('#lightbox-spinner-frame').hide();
+    show_overlay();
+    $('#content').prepend(
+      $('<div id="lightbox-image-frame">' +
+        '<a href="#" title="Click to dismiss" onclick="return false;">' +
+        '<img class="widget close" src="<%= asset_path 'dashboard-close.png' %>" />' +
+        '</a>' +
+        '</div>')
+        .append(content)
+        .append('<div id="lightbox-caption"></div>'));
+
+    // for images, entire lightbox should be clickable to dismiss
+    // for movies, just the close widget
+    var $dismiss = is_image ?
+      $('#lightbox-image-frame') :
+      $('#lightbox-image-frame').find('a[href=#]'); // the close widget
+    $dismiss.on('click', hide_lightbox);
+
+    // update caption
+    $('#lightbox-caption').html(content.attr('title'));
+
+    // show QuickTime badge if appropriate
+    if (!is_image) {
+      $('#lightbox-caption').append('<br />' +
+        '<a href="http://www.apple.com/quicktime/download/">' +
+        '<img src="<%= asset_path 'quicktime.gif' %>"  alt="Get QuickTime">' +
+        '</a>');
+    }
+
+    // position lightbox relative to thumbnail before fading it in:
+    // - center horizontally relative to middle of document
+    // - center vertically relative to middle of thumbnail
+    var thumbnail_offset = content.thumbnail.offset(),
+        anchor_top = thumbnail_offset.top + content.thumbnail.height() / 2,
+        content_width = $('#lightbox-image-frame').width(),
+        content_height = $('#lightbox-image-frame').height(),
+        content_top = anchor_top - (content_height / 2);
+    if (content_top + content_height + 20 > $(document).height()) // allow 20px padding
+      content_top = $(document).height() - (content_height + 85);
+    if (content_top < 25)
+      content_top = 25;
+    var left = ($(document).width() / 2) - (content_width / 2);
+    if (left < 25)
+      left = 25;
+    $('#lightbox-image-frame').css({
+      top:  content_top + 'px',
+      left: left + 'px'
+    }).fadeIn('def');
+
+    // if possible, scroll so that lightbox is centered within viewport
+    var w_width = window.innerWidth,
+        w_height = window.innerHeight,
+        w_origin_x = window.pageXOffset,
+        w_origin_y = window.pageYOffset;
+    if (typeof w_width == 'undefined' ||
+        typeof w_height == 'undefined' ||
+        typeof w_origin_x == 'undefined' ||
+        typeof w_origin_y == 'undefined')
+      return;
+    var lightbox_center_x = left + content_width / 2,
+        lightbox_center_y = content_top + content_height / 2,
+        viewport_center_x = w_origin_x + w_width / 2,
+        viewport_center_y = w_origin_y + w_height / 2;
+    w_origin_x -= viewport_center_x - lightbox_center_x;
+    w_origin_y -= viewport_center_y - lightbox_center_y;
+    if (w_origin_x < 0)
+      w_origin_x = 0;
+    else if (w_origin_x + w_width > $(document).width())
+      w_origin_x = $(document).width() - w_width;
+    if (w_origin_y < 0)
+      w_origin_y = 0;
+    else if (w_origin_y + w_height > $(document).height())
+      w_origin_y = $(document).height() - w_height;
+    $('html,body')
+      .scrollLeft(w_origin_x)
+      .scrollTop(w_origin_y);
+  };
+
+  function showSpinner() {
+    if (!$('#lightbox-spinner-frame').length) {
+      // don't add frame more than once
+      $(document.body).append('<div id="lightbox-spinner-frame"></div>');
+      new Wincent.Spinner('#lightbox-spinner-frame', 'large');
+    }
+    $('#lightbox-spinner-frame').show();
+  };
+
+  function disable_expand_widgets() {
+    $('.widget.expand').each(function() {
+      $(this).removeClass('opaque').addClass('translucent');
+    });
+    $('.lightbox').each(function () {
+      $(this).parent().off('click').on('click', function() { return false; });
+    });
+  };
+
+  function enable_expand_widgets() {
+    $('.widget.expand').each(function() {
+      $(this).removeClass('translucent').addClass('opaque');
+    })
+    $('.lightbox').each(function() { $(this).parent().off('click').on('click', { tag: this }, click); });
+  };
+}
+
+$('.lightbox').each(function() {
+  lightbox(this);
+});
+
+(function() {
+  'use strict';
+
+  var getCookie = function(name) {
+    var cookies = document.cookie.split('; ');
+    for (var i = 0; i < cookies.length; i++) {
+      var c   = cookies[i],
+          pos = c.indexOf('='),
+          n   = c.substring(0, pos);
+      if (n === name) {
+        return c.substring(pos + 1);
+      }
+    }
+  }
+
+  // name (String), value (String or null), expiry (seconds or null)
+  var setCookie = function(name, value, expiry) {
+    var cookieString = escape(name) + '=' + escape(value || '') + ';'
+    if (expiry) {
+      var d = new Date();
+      d.setTime(d.getTime() + (1000 * parseInt(expiry)));
+      cookieString = cookieString + ' expires=' + d.toGMTString() + ';'
+    }
+    cookieString = cookieString + ' path=/;'
+    return document.cookie = cookieString;
+  }
+
+  var deleteCookie = function(name) {
+    // set value to empty and expiry to yesterday
+    return setCookie(name, null, -86400);
+  }
+
+  var setUpLoginLogoutLinks = function() {
+    if (getCookie('user_id')) {
+      $('#login').remove();
+    } else {
+      $('#logout').remove();
+    }
+  }
+
+  // TODO: live update these every 60 secs?
+  $.fn.relativizeDates = function() {
+    this.find('time[data-relative=true]')
+      .removeAttr('data-relative') // do this only once
+      .each(function(i) {
+      var result,
+          original  = this.innerHTML,
+          now       = new Date,
+          then      = new Date(Date.parse(original)),
+          dist      = now.getTime() - then.getTime(),
+          months    = [
+            'January',
+            'February',
+            'March',
+            'April',
+            'May',
+            'June',
+            'July',
+            'August',
+            'September',
+            'October',
+            'November',
+            'December'
+          ],
+          seconds = Math.round(dist / 1000);
+      if (seconds < 0) {
+        result = 'in the future';
+      }
+      else if (seconds === 0) {
+        result = 'now';
+      }
+      else if (seconds < 60) {
+        result = 'a few seconds ago';
+      }
+      else if (seconds < 120) {
+        result = 'a minute ago';
+      }
+      else if (seconds < 180) {
+        result = 'a couple of minutes ago';
+      }
+      else if (seconds < 300) { // 5 minutes
+        result = 'a few minutes ago';
+      }
+      else if (seconds < 3600) { // 60 minutes
+        result = Math.round(seconds / 60) + ' minutes ago';
+      }
+      else if (seconds < 7200) {
+        result = 'an hour ago';
+      }
+      else if (seconds < 86400) { // 24 hours
+        result = Math.round(seconds / 3600) + ' hours ago';
+      }
+      else {
+        var days = Math.round(seconds / 86400);
+        if (days === 1) {
+          result = 'yesterday';
+        }
+        else if (days <= 7) {
+          result = days + ' days ago';
+        }
+        else {
+          var weeks = Math.round(days / 7);
+          if (weeks === 1) {
+            result = 'a week ago';
+          }
+          else if (weeks <= 6) {
+            result = weeks + ' weeks ago';
+          }
+          else {
+            result = then.toLocaleDateString();
+          }
+        }
+      }
+      this.title = then.toLocaleString();
+      this.setAttribute('datetime', original);
+      this.innerHTML = result;
+    });
+
+    return this;
+  }
+
+  $.fn.syntaxHighlight = function()
+  {
+    var styles = {
+      // all languages inherit the "default" ruleset as a starting point
+      'default': [
+        ['skip-anchor',   /<a .+?a>/], // don't mangle anchor tags
+        ['skip-entities', /&\w+;/]     // or entities
+      ]
+    };
+
+    styles['c-syntax'] = styles['default'].concat([
+      ['preprocessor',    /^\s*#.*/m], // without m (multi-line) mode, ^ anchors at start of string
+      ['comment',         /\/\/.*|\/\*([^\*]|\*(?!\/))*\*\//],
+      ['string-literal',  /("(<a .+?a>|[^"\\]|\\.)*"|'([^'\\]|\\.)?')/],
+      ['keyword',         /\b(_Bool|bool|char|const|int|long|short|struct|typedef|unsigned|void)\b/],
+      ['statement',       /\b(break|case|continue|default|do|else|for|goto|if|return|sizeof|static|switch|while)\b/],
+      ['boolean',         /\b(true|false)\b/],
+      ['numeric-literal', /\b(0[xX][a-fA-F0-9]+|\d+(\.\d+f?)?)\b/]
+    ]);
+
+    // for Git diffs and patches
+    styles['diff-syntax'] = styles['default'].concat([
+      ['skip-header', /^(---|\+\+\+) .*/m],
+      ['deleted',     /^-.*/m],
+      ['added',       /^\+.*/m],
+      ['hunk-header', /^@@ -\d+(,\d+) \+\d+(,\d+) @@.*/m]
+    ]),
+
+    // Objective-C is based on C with some augmentations of existing rules
+    styles['objc-syntax'] = styles['default'].concat(styles['c-syntax'], [
+      ['keyword', /\bBOOL\b/],
+      ['boolean', /\b(YES|NO)\b/]
+    ]);
+
+    styles['ruby-syntax'] = styles['default'].concat([
+      ['comment',         /#.*/],
+      ['string-literal',  /("(<a .+?a>|[^"\\]|\\.)*"|'([^'\\]|\\.)*')/],
+      ['keyword',         /\b(begin|break|catch|class|continue|def|else|end|for|if|include|load|module|raise|redo|require|rescue|retry|then|throw|unless|until|while|yield)\b/],
+      ['statement',       /\b(private|protected|public)\b/],
+      ['boolean',         /\b(true|false)\b/],
+      ['constant',        /\b[A-Z][a-zA-Z0-9_]*\b/],
+      ['namespace',       /::/], // no CSS for this; just to stop false positives for the symbol rule
+      ['identifier',      /(\$|@{1,2})[a-z_][a-zA-Z0-9_]*\b/], // or to be zealous, add: |\b[a-z][a-zA-Z0-9_]*\b
+      ['symbol',          /:[a-zA-Z_][a-zA-Z0-9_]*\b/],
+      ['numeric-literal', /\b(0[xX][a-fA-F0-9]+(_[a-fA-F0-9]+)*|0[bB][0-1]+(_[0-1]+)*|[0-9]+(_[0-9]+)*(\.[0-9]+(_[0-9]+)*)?)\b/]
+    ]);
+
+    // syntax coloring for a transcript of a shell session
+    // for syntax coloring of a shell script see "bash-syntax"
+    styles['shell-syntax'] = styles['default'].concat([
+      ['prompt', /^[#\$] /m],
+      ['text',   /^.+?$/m] // no CSS
+    ]);
+
+    var highlightText = function(text, rules)
+    {
+      if (!rules)
+        return text;
+
+      var output    = '';
+      while (text !== '') {
+        // iterate through rules, leftmost match wins
+        // in case of tie, first matching rule wins (earlier rules have priority)
+        var leftmost  = null,
+            apply     = null;
+        for (var i = 0, max = rules.length; i < max; i++) {
+          var ruleName  = rules[i][0],
+              ruleRegex = rules[i][1],
+              match     = text.match(ruleRegex);
+          if (match && ((leftmost && match.index < leftmost) || !leftmost)) {
+            leftmost    = match.index;
+            match.rule  = ruleName;
+            apply       = match;
+            if (leftmost === 0) {
+              break;
+            }
+          }
+        }
+        if (apply) {
+          var start_span  = '<span class="' + apply.rule + '-syntax">',
+              end_span    = '</span>';
+          if (apply.rule.match(/^skip-/)) {
+            start_span = '';
+            end_span = '';
+          }
+          output = output + text.substring(0, apply.index) + start_span + apply[0] + end_span;
+          text = text.substring(apply.index + apply[0].length);
+        }
+        else {
+          output = output + text;
+          break;
+        }
+      }
+      return output;
+    }
+
+    this.find("pre[class$=syntax][class!=highlighted]").each(function(i) {
+      var rules   = styles[$(this).attr('class')],        // syntax highlighting
+          content = highlightText(this.innerHTML, rules),
+          span    = '<span class="line-number"></span>',  // line-numbering
+          lines   = content.split('\n');
+      this.innerHTML = span + lines.join('\n' + span);
+
+      // guard against repeated highlighting
+      $(this).addClass('highlighted');
+    });
+
+    return this;
+  };
+
+  var setUpSearchLink = function() {
+    $('#search-link').on('click', function(evt) {
+      evt.preventDefault();
+      var $searchBox = $('#search_box');
+      if ($searchBox.is(':visible')) {
+        $searchBox.hide();
+      } else if ($searchBox.length) {
+        $searchBox.show().trigger('focus');
+      }
+    });
+  }
+
+  // ready
+  setUpLoginLogoutLinks();
+  setUpSearchLink();
+
+  $('body')
+    .syntaxHighlight()
+    .relativizeDates();
+
+  $(document)
+    // set up "confirm" dialogs
+    .on('click', 'input[data-confirm]', function() {
+      return confirm($(this).data('confirm'));
+    })
+
+    // set up "remote" forms
+    // NOTE: these are only used by button_to_destroy_model, plus current comment form
+    .on('submit', 'form[data-remote]', function(event) {
+      var $form     = $(this),
+          $submits  = $form.find('input[type=submit]');
+      if ($submits.hasClass('disabled')) {
+        return false;
+      }
+      $submits.addClass('disabled');
+      $.ajax({
+        url: $form.attr('action') + '.js',
+        type: 'post',
+        data: $form.serialize(),
+        error: function() { alert('Form submission failed'); },
+        complete: function() { $submits.removeClass('disabled'); }
+      });
+      event.preventDefault();
+    })
+
+    // set up "popup" links
+    .on('click', 'a[data-popup]', function() {
+      window.open(this.href, null, $(this).data('popup'));
+      return false;
+    })
+
+    // set up custom form styles
+    // until we get level-4 CSS selectors (eg. parent `A! > B` selectors)
+    // this is the best we can do
+    .on('focus', '.field-row input, .field-row textarea', function() {
+      $(this).closest('.field-row').addClass('focused');
+    })
+    .on('blur', '.field-row input, .field-row textarea', function() {
+      $(this).closest('.field-row').removeClass('focused');
+    });
+
+  $.ajaxPrefilter(function(options, originalOptions, xhr) {
+    var token = $('meta[name="csrf-token"]').attr('content');
+    if (token) {
+      xhr.setRequestHeader('X-CSRF-Token', token);
+    }
+  });
+})();
