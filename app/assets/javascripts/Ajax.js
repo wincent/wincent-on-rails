@@ -9,16 +9,19 @@ var Ajax = {
   init: function() {
     $(document)
       .on('dblclick', '[data-editable]', function(event) {
+        var $el = $(event.currentTarget);
         $el = $(this).addClass('editing');
         $el.data('original-content', $el.html());
         $el[0].contentEditable = 'true';
         $el.focus();
       })
       .on('blur', '[data-editable]', function() {
+        var $el = $(event.currentTarget);
         $el = $(this).removeClass('editing');
         $el[0].contentEditable = 'false';
       })
       .on('keydown', '[data-editable]', function(event) {
+        var $el = $(event.currentTarget);
         if (event.keyCode === Keys.RETURN) {
           event.preventDefault();
           $el = $(this).blur();
