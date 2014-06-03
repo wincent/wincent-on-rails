@@ -30,6 +30,8 @@
 }
 
 #comments.bubbles {
+  padding-left: 0; // webkit override
+
   > li {
     @include comment-bubble(#f7f7f7, #cccccc);
     list-style-type: none;

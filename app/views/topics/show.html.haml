@@ -6,20 +6,15 @@
 %div[@topic]
   %ol#comments.boxed
     %li{ class: comment_class(@topic) }
-      %blockquote= @topic.body.w(base_heading_level: 1)
       %cite
         -# BUG: redundant(?) query here:
         -# SELECT `users`.* FROM `users` WHERE (`users`.`id` = 1) LIMIT 1
         = link_to_user @topic.user
-        - if @topic.user
-          %br
-          = pluralizing_count(@topic.user.utterances_count, 'post')
-        %br
         %span.when
           = link_to timeinfo(@topic, updated_string: false), forum_topic_path(@forum, @topic)
         - if admin?
-          %br
-          = link_to 'edit', edit_forum_topic_path(@forum, @topic)
+          = link_to 'edit', edit_forum_topic_path(@forum, @topic), class: 'edit'
+      %blockquote= @topic.body.w(base_heading_level: 1)
     = render @comments, locals: { base_heading_level: 1 }
 %h2.major Reply
 - if @topic.accepts_comments
