@@ -15,7 +15,7 @@
   =link_to 'wiki index', articles_path
 -if @article.accepts_comments? || @article.comments_count != 0
   %h2.major Comments
-  %ol#comments.bubbles
+  %ol#comments.boxed
     =render @comments
   %h2.major Add a comment
   -if @comment

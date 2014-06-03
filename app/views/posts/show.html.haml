@@ -16,7 +16,7 @@
 -if @post.accepts_comments? || @post.comments_count != 0
   -# TODO: likely able to extract this into a shared partial
   %h2.major Comments
-  %ol#comments.bubbles
+  %ol#comments.boxed
     =render @comments
   %h2.major Add a comment
   -if @comment
