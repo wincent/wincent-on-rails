@@ -22,7 +22,7 @@ ol#comments {
 
   > li {
     @include border-radius(4px);
-    @include comment-box(#f7f7f7, #cccccc);
+    @include comment-box(#fff, #ccc);
     list-style: none;
     padding: 0;
     white-space: nowrap;
@@ -55,16 +55,6 @@ ol#comments {
       .edit {
         float: right;
       }
-    }
-    &:nth-child(even) {
-      @include comment-box(#eaeaea, #cccccc);
-    }
-    &.admin {
-      // BUG: not used yet?
-      @include comment-box(white, #cccccc);
-    }
-    &.private {
-      @include comment-box(white, #cccccc);
     }
     &:target {
       background: $active-fragment-background-color;
