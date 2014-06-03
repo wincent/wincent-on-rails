@@ -1,37 +1,38 @@
-table {
-  width: 100%;
+table.issue-metadata {
+  margin: 1em 0;
+}
+
+.issue-metadata {
+  th {
+    font-size: small;
+    padding: 0 40px 0 16px;
+    text-align: left;
+  }
+
+  td {
+    font-size: small;
+    width: 100%
+  }
 }
 
 .issue {
-  table {
-    input[type=text] {
-      width: 100%;
+  &.private {
+    h1 {
+      position: relative;
+
+      &:after {
+        @include icon($fa-var-lock);
+        display: inline-block;
+        margin-left: .25em;
+        position: absolute;
+        right: 0;
+      }
     }
-    textarea {
-      width: 100%;
-    }
-  }
-  th {
-    padding: 1em;
-    vertical-align: top;
-    background: white;
-  }
-  th + td {
-    padding-top: -0.5em;
-    border-bottom: 1px solid #cccccc;
-    width: 85%;
   }
 }
 
-.issue.private {
-  h1 {
-    position: relative;
-  }
-  h1:after {
-    @include icon($fa-var-lock);
-    display: inline-block;
-    margin-left: 0.25em;
-    position: absolute;
-    right: 0;
-  }
+.issue-description-label {
+  font-size: small;
+  font-weight: bold;
+  border-bottom: 1px solid #eee;
 }

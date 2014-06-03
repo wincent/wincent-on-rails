@@ -1,13 +1,10 @@
--@page_title = "#{@issue.kind_string} \##{@issue.id.to_s}"
-%h1.major="#{@issue.kind_string} \##{@issue.id.to_s}"
-.prev-next
-  =link_to_prev_issue @prev
-  =link_to_next_issue @next
+- @page_title = "#{@issue.kind_string} \##{@issue.id.to_s}"
+%h1.major= "#{@issue.kind_string} \##{@issue.id.to_s}"
 %h2
   This issue is currently awaiting moderation
 .links
-  =link_to 'all issues', issues_path
-  -if admin?
-    =link_to 'edit', edit_issue_path(@issue)
-    -button_to_moderate_issue_as_ham @issue
-    =button_to_destroy_model @issue
+  = link_to 'all issues', issues_path
+  - if admin?
+    = link_to 'edit', edit_issue_path(@issue)
+    - button_to_moderate_issue_as_ham @issue
+    = button_to_destroy_model @issue

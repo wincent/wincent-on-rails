@@ -4,7 +4,6 @@ class IssuesController < ApplicationController
   before_filter     :find_issue,
                     except: %i[create destroy edit index new search show update]
   before_filter     :find_issue_awaiting_moderation, only: %i[edit show update]
-  before_filter     :find_prev_next, only: :show
   before_filter     :prepare_issue_for_search, only: %i[index search]
   around_filter     :current_user_wrapper
 
@@ -186,12 +185,6 @@ private
     else
       @issue = Issue.find params[:id]
     end
-  end
-
-  def find_prev_next
-    # 2 additional queries here, although could try using UNION to combine them into one
-    @prev   = Issue.where(default_access_options + ' AND id < ?', @issue.id).last
-    @next   = Issue.where(default_access_options + ' AND id > ?', @issue.id).first
   end
 
   def add_kind_scope_condition options

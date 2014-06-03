@@ -4,76 +4,68 @@
 =breadcrumbs link_to('Issues', issues_path),
   "#{@issue.kind_string.humanize} \##{@issue.id.to_s}"
 .issue(class="#{'private' unless @issue.public}" id="issue_#{@issue.id}")
-  %h1.major(class="#{@issue.kind_string.parameterize}")
-    #{@issue.kind_string.humanize} ##{@issue.id.to_s}
-  .prev-next
-    =link_to_prev_issue @prev
-    =link_to_next_issue @next
   -#
     Even though non-admins can't edit issues, they still get the form element,
     in order to keep the markup simple
   = form_for @issue, builder: Helpers::FormBuilder do |f|
-    %table
-      %tbody
-        %tr
-          %th Kind
-          %td
-            - if admin?
-              = f.select :kind,
-                  underscores_to_spaces(Issue::KIND).sort,
-                  {},
-                  'data-ajax' => true
-            - else
-              = @issue.kind_string
-        %tr
-          %th Summary
-          %td{ data: { name: 'issue[summary]', editable: admin? } }
-            = @issue.summary
-        %tr
-          %th Product
-          %td
-            - if admin?
-              %select{ 'name' => 'issue[product_id]', 'data-ajax' => true }
-                %option(value='')
-                = option_groups_from_collection_for_select Product.categorized,
-                    :last, :first, :id, :name, (@issue.product ? @issue.product.id : nil)
-            - else
-              = link_to_product_issues(@issue.product)
-        %tr
-          %th When
-          %td=timeinfo @issue
-        %tr
-          %th Status
-          %td
-            - if admin?
-              = f.select :status,
-                  underscores_to_spaces(Issue::STATUS).sort,
-                  {},
-                  'data-ajax' => true
-            - else
-              = @issue.status_string
-        %tr
-          %th Reporter
-          %td=link_to_user @issue.user
-        %tr
-          %th
-            Description
-            -if admin?
-              %br
-              =link_to 'edit', edit_issue_path(@issue)
-          %td
-            -if @issue.description.blank?
-              none
-            -else
-              =@issue.description.w :base_heading_level => 1
+    %h1.major(class="#{@issue.kind_string.parameterize}")
+      #{@issue.kind_string.humanize} ##{@issue.id.to_s}:
+      %span{ data: { name: 'issue[summary]', editable: admin? } }
+        = @issue.summary
+    %table.issue-metadata
+      %tr
+        %th Kind
+        %td
+          - if admin?
+            = f.select :kind,
+                underscores_to_spaces(Issue::KIND).sort,
+                {},
+                'data-ajax' => true
+          - else
+            = @issue.kind_string
+      %tr
+        %th Product
+        %td
+          - if admin?
+            %select{ 'name' => 'issue[product_id]', 'data-ajax' => true }
+              %option(value='')
+              = option_groups_from_collection_for_select Product.categorized,
+                  :last, :first, :id, :name, (@issue.product ? @issue.product.id : nil)
+          - else
+            = link_to_product_issues(@issue.product)
+      %tr
+        %th When
+        %td=timeinfo @issue
+      %tr
+        %th Status
+        %td
+          - if admin?
+            = f.select :status,
+                underscores_to_spaces(Issue::STATUS).sort,
+                {},
+                'data-ajax' => true
+          - else
+            = @issue.status_string
+      %tr
+        %th Reporter
+        %td=link_to_user @issue.user
         -if admin?
           %tr
             %th Public?
             %td= f.check_box :public, 'data-ajax' => true
-        %tr
-          %th Tags
-          %td{ data: { name: 'issue[pending_tags]', editable: admin? } }
-            = tag_links(@issue)
+      %tr
+        %th Tags
+        %td{ data: { name: 'issue[pending_tags]', editable: admin? } }
+          = tag_links(@issue)
+    .issue-description-label
+      Description
+      -if admin?
+        =link_to 'edit', edit_issue_path(@issue)
+    .issue-description-body
+      -if @issue.description.blank?
+        none
+      -else
+        =@issue.description.w :base_heading_level => 1
 %h2.major Comments
 %ol#comments.boxed
   =render @comments

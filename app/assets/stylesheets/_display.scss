@@ -88,6 +88,7 @@ pre {
   margin-top: 1em;
   overflow: auto;
   padding: 0 1em 1px;
+  white-space: pre;
 
   span.line-number {
     @include user-select(none);
@@ -163,14 +164,6 @@ pre {
   span.symbol-syntax {
     color: #fc8a0b;
   }
-}
-
-// for the benefit of Safari (Firefox is fine):
-// for super-wide pre spans inside tables Safari will grow the table as large as need be to avoid adding scrollbars to the pre
-// block; this has the unwanted side-effect of adding scrollbars to the window and making the rest of the text horribly
-// inconvenient to read
-table pre {
-  max-width: 640px;
 }
 
 code, pre, textarea, tt {
@@ -446,50 +439,51 @@ ul.pagination {
   }
 }
 
-// tables
-table {
+// tables - apply this class to opt-in to this generic table styling
+// (we don't want to target the table element itself)
+.table {
   font-size: small;
-}
 
-// tables with header cells on the left
-table tbody tr th {
-  text-align: right;
-}
+  // tables with header cells on the left
+  tbody tr th {
+    text-align: right;
+  }
 
-// tables with header cells along the top
-table thead tr th {
-  text-align: center;
-  border-bottom: 1px silver solid;
-  border-right: 1px silver solid;
-}
+  // tables with header cells along the top
+  thead tr th {
+    text-align: center;
+    border-bottom: 1px silver solid;
+    border-right: 1px silver solid;
+  }
 
-td, th {
-  padding: .5em;
-}
+  td, th {
+    padding: .5em;
+  }
 
-th {
-  background: #f7f7f7;
-}
+  th {
+    background: #f7f7f7;
+  }
 
-th.ascending a:after {
-  @include icon($fa-var-sort-desc);
-  display: inline-block;
-  margin-left: .25em;
-  text-decoration: none;
-}
+  th.ascending a:after {
+    @include icon($fa-var-sort-desc);
+    display: inline-block;
+    margin-left: .25em;
+    text-decoration: none;
+  }
 
-th.descending a:after {
-  @include icon($fa-var-sort-asc);
-  display: inline-block;
-  margin-left: .25em;
-  text-decoration: none;
-}
+  th.descending a:after {
+    @include icon($fa-var-sort-asc);
+    display: inline-block;
+    margin-left: .25em;
+    text-decoration: none;
+  }
 
-tr {
-  background: #f7f7f7;
+  tr {
+    background: #f7f7f7;
 
-  &:nth-child(even) {
-    background: #eaeaea;
+    &:nth-child(even) {
+      background: #eaeaea;
+    }
   }
 }
 
@@ -723,11 +717,6 @@ td.links {
     float: left;
     margin: 1em;
   }
-}
-
-.prev-next {
-  font-size: smaller;
-  text-align: right;
 }
 
 // live previews

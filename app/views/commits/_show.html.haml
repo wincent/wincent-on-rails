@@ -1,6 +1,6 @@
 %pre.message
   =@commit.message
-%table.meta
+%table.meta.table
   %tr.author
     %th author
     %td
@@ -21,7 +21,7 @@
         =link_to commit_abbrev(parent), repo_commit_path(@repo, :id => parent),
           :title => parent
 -@commit.diff.each_with_index do |change, idx|
-  %table.diff
+  %table.diff.table
     %caption
       =change[:path]
       -unless change[:binary]
