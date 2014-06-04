@@ -25,3 +25,7 @@
   = f.text_field :pending_tags, label: 'Tags' if admin?
 
   = f.submit
+
+- content_for :javascript do
+  :javascript
+    Wincent.Issues.init();

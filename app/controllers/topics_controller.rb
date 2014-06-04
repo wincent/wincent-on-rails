@@ -14,14 +14,13 @@ class TopicsController < ApplicationController
   end
 
   def create
-    # TODO: tagging support (admin sees tag fields in the UI, but they have no effect yet)
     if request.xhr? # live preview
       # TODO: hook up live preview in templates
       @title    = params[:title]   || ''
       @excerpt  = params[:excerpt] || ''
       render :partial => 'preview'
     else # normal request
-      @topic = @forum.topics.new(params[:topic])
+      @topic = @forum.topics.new(topic_params)
       @topic.user = current_user
       @topic.awaiting_moderation = !(admin? or logged_in_and_verified?)
       if @topic.save
@@ -59,9 +58,7 @@ class TopicsController < ApplicationController
     @topic = @forum.topics.find params[:id] # no restrictions
     respond_to do |format|
       format.html {
-        @topic.accepts_comments = params[:topic][:accepts_comments]
-        @topic.public           = params[:topic][:public]
-        if @topic.update_attributes params[:topic]
+        if @topic.update_attributes topic_params
           flash[:notice] = 'Successfully updated'
           redirect_to forum_topic_path(@forum, @topic)
         else
@@ -95,6 +92,12 @@ class TopicsController < ApplicationController
   end
 
 private
+
+  def topic_params
+    permitted = %i[title body]
+    permitted.concat(%i[pending_tags public accepts_comemnts]) if admin?
+    params.require(:topic).permit(*permitted)
+  end
 
   def public_only?
     !admin?

@@ -4,8 +4,12 @@ var Wincent = {
   Ajax: require('./Ajax'),
   Articles: require('./Articles'),
   Git: require('./Git'),
+  Issues: require('./Issues'),
   Menu: require('./Menu'),
-  Spinner: require('./Spinner')
+  Posts: require('./Posts'),
+  Snippets: require('./Snippets'),
+  Spinner: require('./Spinner'),
+  Topics: require('./Topics')
 };
 
 Wincent.Ajax.init();

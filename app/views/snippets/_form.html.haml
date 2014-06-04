@@ -13,6 +13,7 @@
 #preview= render 'preview'
 - content_for :javascript do
   :javascript
+    Wincent.Snippets.init();
     Wincent.Ajax.observeField({
       kind:      'snippet',
       fieldName: 'body',

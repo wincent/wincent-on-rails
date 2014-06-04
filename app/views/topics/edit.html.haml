@@ -9,6 +9,7 @@
   = form_for [@forum, @topic] do |f|
     = f.text_field :title
     = f.text_area :body, rows: 10, annotation: wikitext_cheatsheet
+    = f.text_field :pending_tags, label: 'Tags'
     = f.check_box :public, label: 'Public?'
     = f.check_box :accepts_comments, label: 'Accepts comments?'
     = f.submit
@@ -18,3 +19,6 @@
     - button_to_moderate_topic_as_ham @topic if @topic.awaiting_moderation?
 .links
   = link_to 'back to topics awaiting moderation', topics_path
+- content_for :javascript do
+  :javascript
+    Wincent.Topics.init();

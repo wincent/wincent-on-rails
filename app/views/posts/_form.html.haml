@@ -9,3 +9,7 @@
   = f.check_box  :public
   = f.check_box  :accepts_comments
   = f.submit
+
+- content_for :javascript do
+  :javascript
+    Wincent.Posts.init();

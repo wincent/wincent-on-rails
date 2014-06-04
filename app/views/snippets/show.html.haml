@@ -1,26 +1,26 @@
-=breadcrumbs link_to('Snippets', snippets_path), snippet_title(@snippet)
-%h1.major=snippet_title @snippet
+= breadcrumbs link_to('Snippets', snippets_path), snippet_title(@snippet)
+%h1.major= snippet_title @snippet
 %div[@snippet]
   .when
-    =timeinfo @snippet
+    = timeinfo @snippet
     by
-    =mail_to APP_CONFIG['admin_email'], APP_CONFIG['admin_name']
-  =@snippet.body_html base_heading_level: 1
+    = mail_to APP_CONFIG['admin_email'], APP_CONFIG['admin_name']
+  = @snippet.body_html base_heading_level: 1
 = render 'shared/tags', taggable: @snippet
 .links
-  =link_to 'all snippets', snippets_path
-  =link_to 'raw', snippet_path(@snippet, format: :txt)
--if @snippet.accepts_comments? || @snippet.comments_count != 0
+  = link_to 'all snippets', snippets_path
+  = link_to 'raw', snippet_path(@snippet, format: :txt)
+- if @snippet.accepts_comments? || @snippet.comments_count != 0
   %h2.major Comments
   %ol#comments.boxed
-    =render @comments
+    = render @comments
   %h2.major Add a comment
-  -if @comment
+  - if @comment
     #ajax-flash
     #comment-form
-      .links=link_to 'add a comment', new_snippet_comment_path(@snippet)
-  -else
+      .links= link_to 'add a comment', new_snippet_comment_path(@snippet)
+  - else
     %p Comments are now closed for this snippet. You can discuss it further in the #{link_to 'forums', forums_path}.
--content_for :javascript do
+- content_for :javascript do
   :javascript
     Wincent.Ajax.commentForm('#{new_snippet_comment_path @snippet.id}');

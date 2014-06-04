@@ -12,7 +12,7 @@ class Topic < ActiveRecord::Base
   validates_presence_of :title
   validates_presence_of :body
   validates_length_of   :body, maximum: 128 * 1024
-  attr_accessible       :title, :body
+  attr_accessible       :title, :body, :public, :pending_tags, :accepts_comments
   before_create         :set_last_comment_info
   acts_as_classifiable
   acts_as_searchable    attributes: [:title, :body]

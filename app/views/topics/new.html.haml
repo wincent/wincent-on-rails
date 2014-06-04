@@ -19,3 +19,6 @@
   = f.submit
 .links
   = link_to 'forums index', forums_path
+- content_for :javascript do
+  :javascript
+    Wincent.Topics.init();
