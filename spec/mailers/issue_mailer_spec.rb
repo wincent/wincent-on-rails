@@ -10,7 +10,7 @@ describe IssueMailer do
     end
 
     it 'sets the subject line' do
-      mail.subject.should =~ /new issue alert/
+      mail.subject.should =~ /new issue/
     end
 
     it 'is addressed to the site administrator' do

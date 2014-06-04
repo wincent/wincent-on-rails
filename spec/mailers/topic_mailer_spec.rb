@@ -10,7 +10,7 @@ describe TopicMailer do
     end
 
     it 'sets the subject line' do
-      mail.subject.should =~ /new topic alert/
+      mail.subject.should =~ /new topic/
     end
 
     it 'is addressed to the site administrator' do

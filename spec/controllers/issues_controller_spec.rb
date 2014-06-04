@@ -33,17 +33,6 @@ describe IssuesController do
     end
   end
 
-  describe '#show' do
-    def do_get issue
-      get :show, id: issue.id
-    end
-
-    it 'should run the "find_prev_next" before filter' do
-      mock(controller).find_prev_next
-      do_get Issue.make!
-    end
-  end
-
   describe '#edit' do
     before do
       @issue = Issue.make! awaiting_moderation: false # this is the default example data anyway, but be explicit
