@@ -15,8 +15,9 @@ var TagPill = require('./TagPill');
 // set of subcomponents (TagInput, TagAutocomplete, TagPill).
 var TagWidget = React.createClass({
   getInitialState: function() {
+    var tags = this.props.pendingTags ? this.props.pendingTags.split(/ +/) : [];
     return {
-      tags:                       (this.props.pendingTags || '').split(/ +/),
+      tags:                       tags,
       availableCompletions:       [],
       filteredCompletions:        [],
       pending:                    [], // for styling purposes
@@ -27,21 +28,6 @@ var TagWidget = React.createClass({
   },
 
   componentDidMount: function() {
-    // For progressive enhancement, we render on the server-side with the text
-    // input last in the DOM, and without the tag pills visible:
-    //
-    //   <input type="hidden" value="pending tags here" name="article[pending_tags]" />
-    //   <input type="text" value="pending tags here" name="article[pending_tags]" />
-    //
-    // On the client side, if JS is turned off or broken, the user will be able
-    // to edit the value in the text input and submit the form.
-    //
-    // However, if JS is turned on and working, we'll land here in component did
-    // mount and we can detect that we're in a working environment and trigger a
-    // rerender, this time with tag pills, an empty text input, and the DOM
-    // order reversed:
-    this.setState({clientSideJSAvailable: true});
-
     // get available completions from the server
     var request = new XMLHttpRequest();
     request.open('GET', '/tags.json');
@@ -339,35 +325,28 @@ var TagWidget = React.createClass({
   },
 
   _renderTagPills: function() {
-    // see notes on progressive enhancement in `componentDidMount()`
-    if (this.state.clientSideJSAvailable) {
-      return this.state.tags.map((name, i) => {
-        return (
-          <TagPill
-            key={name}
-            name={name}
-            isDuplicate={name === this.state.duplicateTag}
-            isPending={this.state.pending.indexOf(name) !== -1}
-            isSelected={i === this.state.selectedPillIndex}
-            onTagSelect={this.onTagSelect}
-            onTagDelete={this.onTagDelete}
-          />
-        );
-      }, this);
-    }
+    return this.state.tags.map((name, i) => {
+      return (
+        <TagPill
+          key={name}
+          name={name}
+          isDuplicate={name === this.state.duplicateTag}
+          isPending={this.state.pending.indexOf(name) !== -1}
+          isSelected={i === this.state.selectedPillIndex}
+          onTagSelect={this.onTagSelect}
+          onTagDelete={this.onTagDelete}
+        />
+      );
+    }, this);
   },
 
   _renderInputs: function() {
-    // see notes on progressive enhancement in `componentDidMount()`
-    var pendingTags =
-      this.state.clientSideJSAvailable ? undefined : this.props.pendingTags;
     var inputs = [
       <TagInput
         ref="tagInput"
         name={this.props.resourceName}
         onTagPop={this.onTagPop}
         onShiftTab={this.onShiftTab}
-        value={pendingTags}
       />
     ];
 

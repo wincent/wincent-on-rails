@@ -13,16 +13,6 @@ var Keys = require('./Keys');
 var escapeHTML = require('./escapeHTML');
 
 var TagInput = React.createClass({
-  getInitialState: function() {
-    return {
-      clientSideJSAvailable: false
-    };
-  },
-
-  componentDidMount: function() {
-    this.setState({clientSideJSAvailable: true});
-  },
-
   handleFocus: function(event) {
     // don't let the event bubble up to TagWidget, otherwise it will try to send
     // focus straight back to us due to its handleFocus implementation
@@ -94,10 +84,7 @@ var TagInput = React.createClass({
   },
 
   render: function() {
-    var classes = cx({
-      tagInput: true,
-      noJS: !this.state.clientSideJSAvailable
-    });
+    var classes = cx({tagInput: true});
 
     return (
       <input
