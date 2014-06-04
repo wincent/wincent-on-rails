@@ -15,7 +15,10 @@ var TagPill = require('./TagPill');
 // set of subcomponents (TagInput, TagAutocomplete, TagPill).
 var TagWidget = React.createClass({
   getInitialState: function() {
-    var tags = this.props.pendingTags ? this.props.pendingTags.split(/ +/) : [];
+    var tags =
+      this.props.pendingTags &&
+      this.props.pendingTags.trim().length &&
+      this.props.pendingTags.trim().split(/ +/) || [];
     return {
       tags:                       tags,
       availableCompletions:       [],
