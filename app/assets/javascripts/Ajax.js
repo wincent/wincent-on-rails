@@ -26,13 +26,14 @@ var Ajax = {
           event.preventDefault();
           $el = $(this).blur();
           if ($el.html() !== $el.data('original-content')) {
-            var $form   = $el.closest('form'),
-                $method = $form.find('input[name=_method]'),
-                spinner = new Wincent.Spinner($form, 'small'),
-                $hidden = $('<input>', {
+            var $form = $el.closest('form');
+            var $method = $form.find('input[name=_method]');
+            var spinner = new Wincent.Spinner($form, 'small');
+            var value = $el.text().replace('\u00a0', ' ').trim(); // nbsp
+            var $hidden = $('<input>', {
                   type: 'hidden',
                   name: $(this).data('name'),
-                  value: $el.text().trim()
+                  value: value
                 }).appendTo($form);
 
             $.ajax({
