@@ -18,6 +18,7 @@ ol#comments {
     list-style: none;
     padding: 0;
     white-space: nowrap;
+    word-break: break-word;
     > blockquote {
       margin: 0;
       white-space: normal;
@@ -48,6 +49,9 @@ ol#comments {
       .edit {
         float: right;
       }
+    }
+    pre {
+      word-break: normal;
     }
     &:target {
       background: $active-fragment-background-color;
