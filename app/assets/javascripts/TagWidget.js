@@ -341,24 +341,19 @@ var TagWidget = React.createClass({
   },
 
   _renderInputs: function() {
-    var inputs = [
+    return [
       <TagInput
         ref="tagInput"
         name={this.props.resourceName}
         onTagPop={this.onTagPop}
         onShiftTab={this.onShiftTab}
-      />
-    ];
-
-    inputs[this.state.clientSideJSAvailable ? 'push' : 'unshift'](
+      />,
       <input
         type="hidden"
         name={this.props.resourceName}
         value={this.state.tags.join(' ')}
       />
-    );
-
-    return inputs;
+    ];
   },
 
   render: function() {

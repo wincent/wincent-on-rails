@@ -13,11 +13,15 @@ var Articles = {
   init: function() {
     var $input = $('#article_pending_tags');
     if ($input.length) {
+      var val = $input.val().trim();
       var $div = $('<div />');
       $input.replaceWith($div);
 
       React.renderComponent(
-        <TagWidget resourceName="article[pending_tags]" />,
+        <TagWidget
+          pendingTags={val.length ? val : null}
+          resourceName="article[pending_tags]"
+        />,
         $div[0]
       );
     }

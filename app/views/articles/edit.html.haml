@@ -13,6 +13,7 @@
   =link_to 'show', article_path(@article)
 - content_for :javascript do
   :javascript
+    Wincent.Articles.init();
     Wincent.Ajax.observeField({ 'kind': 'article', 'fieldName': 'title', 'include': ['body'], 'url': '#{articles_path}' });
     Wincent.Ajax.observeField({ 'kind': 'article', 'fieldName': 'body', 'include': ['title'], 'url': '#{articles_path}' });
     Wincent.Ajax.setupPreviewLink({ 'kind': 'article', 'include': ['body', 'title'], 'url': '#{articles_path}' });

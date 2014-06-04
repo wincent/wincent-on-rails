@@ -6,8 +6,6 @@
 
 var React = require('react/addons');
 
-var cx = React.addons.classSet;
-
 var Keys = require('./Keys');
 
 var escapeHTML = require('./escapeHTML');
@@ -84,11 +82,9 @@ var TagInput = React.createClass({
   },
 
   render: function() {
-    var classes = cx({tagInput: true});
-
     return (
       <input
-        className={classes}
+        className="tagInput"
         type="text"
         name={this.props.name}
         onFocus={this.handleFocus}

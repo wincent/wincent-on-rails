@@ -1,4 +1,3 @@
-// beware: low specificity here, compared to standard form styling
 .tagInput {
   border: 0;
   margin: 5px 0; // matches TagPill border + vertical margins
@@ -7,4 +6,9 @@
   &:focus {
     outline: 0
   }
+}
+
+// must overcome specificity of standard form styling
+input[type=text].tagInput {
+  width: 2em;
 }
