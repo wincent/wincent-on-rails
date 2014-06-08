@@ -83,7 +83,7 @@ usage() {
   echo "         check    check dependencies and prerequisites"
   echo "        deploy    clone repo and deploy"
   echo "       disable    display a maintenance page"
-  echo "       migrate    migrate all databases"
+  echo "       migrate    migrate database"
   echo "        switch    update the symlink to point to the latest deployment"
   echo "       restart    restart cluster (changes go live)"
   echo "        enable    remove maintenance page"
@@ -350,10 +350,7 @@ if [ -n "$DO_DISABLE" ]; then
 fi
 
 if [ -n "$DO_MIGRATE" ]; then
-  # we migrate all databases, not just production, as a sanity check
   p "Processing command: migrate"
-  run rails "cd $DEPLOY/latest && bin/rake --silent RAILS_ENV=test db:migrate"
-  run rails "cd $DEPLOY/latest && bin/rake --silent RAILS_ENV=development db:migrate"
   run rails "cd $DEPLOY/latest && bin/rake --silent RAILS_ENV=migrations db:migrate"
   run rails "cd $DEPLOY/latest && bin/rake --silent RAILS_ENV=production db:schema:dump"
   run rails "cd $DEPLOY/latest && \
