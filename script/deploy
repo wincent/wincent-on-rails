@@ -282,7 +282,7 @@ if [ -n "$DO_CHECK" ]; then
   p "  checking: executables exist"
   run rails which gem git
   p "  checking: gem versions"
-  run rails gem specification --version 1.5.2 bundler
+  run rails gem specification --version 1.6.3 bundler
   p "  checking: local branch vs remote branch"
   git diff --exit-code --quiet $BRANCH origin/$BRANCH || \
     warn "local $BRANCH differs from remote origin/$BRANCH -- did you remember to 'git push'?"
