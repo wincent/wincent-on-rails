@@ -1157,7 +1157,9 @@ var injectTagWidget = function(modelName) {
 
 module.exports = injectTagWidget;
 
-},{"./TagWidget":13,"jquery":"HlZQrA","react/addons":"g51q1L"}],"u5vJAu":[function(require,module,exports){
+},{"./TagWidget":13,"jquery":"HlZQrA","react/addons":"g51q1L"}],"wincent":[function(require,module,exports){
+module.exports=require('u5vJAu');
+},{}],"u5vJAu":[function(require,module,exports){
 /** @jsx React.DOM */'use strict';
 
 var Wincent = {
@@ -1177,9 +1179,7 @@ Wincent.Git.init();
 
 module.exports = Wincent;
 
-},{"./Ajax":1,"./Articles":2,"./Git":3,"./Issues":4,"./Menu":6,"./Posts":7,"./Snippets":8,"./Spinner":9,"./Topics":14}],"wincent":[function(require,module,exports){
-module.exports=require('u5vJAu');
-},{}],19:[function(require,module,exports){
+},{"./Ajax":1,"./Articles":2,"./Git":3,"./Issues":4,"./Menu":6,"./Posts":7,"./Snippets":8,"./Spinner":9,"./Topics":14}],19:[function(require,module,exports){
 /** @jsx React.DOM *//**
  * Copyright 2013-2014 Facebook, Inc.
  *
