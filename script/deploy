@@ -2,6 +2,7 @@
 
 # deploy to:
 SERVER=mondatta.unixhosts.net
+REMOTE_BUNDLER_EXECUTABLE=/data/rails/bin/bundle
 DEPLOY=/data/rails/deploy
 ENVIRONMENT=production
 
@@ -320,9 +321,12 @@ if [ -n "$DO_DEPLOY" ]; then
   run rails "tar cpf - -C $CHECKOUT/tmp/assets . | \
              tar xpf - -C $CHECKOUT/public/assets"
   run rails "cd $CHECKOUT && \
-             bundle install --quiet --deployment --local \
-                            --path /data/rails/deploy/shared/bundle \
-                            --without test"
+             $REMOTE_BUNDLER_EXECUTABLE install \
+               --quiet \
+               --deployment \
+               --local \
+               --path $DEPLOY/shared/bundle \
+               --without test"
 fi
 
 if [ -n "$DO_DISABLE" ]; then
