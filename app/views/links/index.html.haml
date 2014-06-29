@@ -8,6 +8,7 @@
       = sortable_header_cell :id, 'Id'
       = sortable_header_cell :uri, 'URI'
       = sortable_header_cell :permalink, 'Permalink'
+      = sortable_header_cell :short_link, 'Short link'
       = sortable_header_cell :click_count, 'Click count'
       %th Actions
   - unless @links.empty?
@@ -25,6 +26,8 @@
             url: link_path(link.id),
             html: { data: { name: 'link[permalink]', editable: true } } do |f|
             = link.permalink
+        %td
+          = link_to link.short_link, link.short_link
         %td= link.click_count
         %td.links
           = link_to 'edit', edit_link_path(link.id)

@@ -30,6 +30,10 @@ class Link < ActiveRecord::Base
     url_for_link uri
   end
 
+  def short_link
+    'https://' + APP_CONFIG['short_link_host'] + '/' + ShortLink.encode(id)
+  end
+
   def to_param
     # pretty permalinks if available, otherwise fall back to id
     (changes['permalink'] && changes['permalink'].first) || self.permalink || self.id

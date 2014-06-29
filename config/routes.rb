@@ -145,5 +145,10 @@ Wincent::Application.routes.draw do
   get 'search'          => 'search#search'
   get 'support'         => 'support#index'
 
+  get ':id',
+    id: ShortLink::SHORT_LINK_REGEX,
+    constraints: { domain: APP_CONFIG['short_link_host'] },
+    to: 'short_links#show'
+
   root :to => 'posts#index'
 end
