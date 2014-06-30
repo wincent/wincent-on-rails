@@ -24,6 +24,7 @@ class Link < ActiveRecord::Base
                           :with => /\A[a-z0-9\-]*\z/,
                           :allow_nil => true,
                           :message => 'may only contain lowercase letters, numbers and hyphens'
+  before_save             :check_optional_attributes
   attr_accessible         :uri,       :permalink
 
   def redirection_url
@@ -36,6 +37,17 @@ class Link < ActiveRecord::Base
 
   def to_param
     # pretty permalinks if available, otherwise fall back to id
-    (changes['permalink'] && changes['permalink'].first) || self.permalink || self.id
+    (
+      (changes['permalink'] && changes['permalink'].first) ||
+      self.permalink ||
+      self.id
+    ).to_s
+  end
+
+private
+
+  def check_optional_attributes
+    # empty strings will cause `#button_to` to choke; make them nil instead
+    self.permalink = nil if permalink.blank?
   end
 end
