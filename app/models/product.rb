@@ -33,6 +33,6 @@ private
   def check_optional_attributes
     # empty strings for optional attributes will falsely trigger database-level
     # uniqueness constraints, so replace empty strings with nil
-    self.bundle_identifier = nil if self.bundle_identifier.blank?
+    self.bundle_identifier = nil if bundle_identifier.blank?
   end
 end
