@@ -13,6 +13,6 @@ private
   end
 
   def record_not_found
-    redirect_to APP_CONFIG[:protocol] + '://' + APP_CONFIG[:host]
+    redirect_to APP_CONFIG['protocol'] + '://' + APP_CONFIG['host']
   end
 end
