@@ -30,7 +30,7 @@ class LinksController < ApplicationController
       format.html {
         # TODO: extract into Link#hit! method
         Link.increment_counter :click_count, @link.id
-        redirect_to @link.redirection_url, status: 303 # "See other", GET request
+        redirect_to @link.redirection_url, status: 302
       }
       format.js { # Ajax updates
         # don't leak out any more information than necessary
