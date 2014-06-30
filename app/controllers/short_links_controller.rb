@@ -11,4 +11,8 @@ private
   def find_link
     @link = Link.find(ShortLink.decode(params[:id]))
   end
+
+  def record_not_found
+    redirect_to APP_CONFIG[:protocol] + '://' + APP_CONFIG[:host]
+  end
 end
