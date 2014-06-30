@@ -1,4 +1,9 @@
 Wincent::Application.routes.draw do
+  get ':id',
+    id: ShortLink::SHORT_LINK_REGEX,
+    constraints: { domain: APP_CONFIG['short_link_host'] },
+    to: 'short_links#show'
+
   # must explicitly allow period in the id part of the route
   # otherwise it will be classified as a route separator
   resources :articles, id: /[^\/]+/ , path: 'wiki' do
@@ -144,11 +149,6 @@ Wincent::Application.routes.draw do
   get 'misc/:action'    => 'misc'
   get 'search'          => 'search#search'
   get 'support'         => 'support#index'
-
-  get ':id',
-    id: ShortLink::SHORT_LINK_REGEX,
-    constraints: { domain: APP_CONFIG['short_link_host'] },
-    to: 'short_links#show'
 
   root :to => 'posts#index'
 end
