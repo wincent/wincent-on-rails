@@ -57,7 +57,7 @@
         %th Tags
         %td{ data: { name: 'issue[pending_tags]', editable: admin? } }
           = tag_links(@issue)
-    .issue-description-label
+    %h4.major
       Description
       -if admin?
         =link_to 'edit', edit_issue_path(@issue)
