@@ -66,13 +66,13 @@
         none
       -else
         =@issue.description.w :base_heading_level => 1
-%h2.major Comments
+%h4.major Comments
 %ol#comments.boxed
   =render @comments
   -# BUG: no edit links
   -# BUG: here we're using base heading level of 2 but in partial it is 1
   -# TODO: add a means of marking individual comments as private
-%h2.major Add a comment
+%h4.major Add a comment
 =render 'comments/form'
 .links
   =link_to 'all issues', issues_path

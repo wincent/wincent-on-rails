@@ -58,13 +58,19 @@ h1.major {
   }
 }
 
-h2.major {
-  border-bottom: 1px solid #ccc;
+h2,
+h3,
+h4,
+h5,
+h6 {
+  &.major {
+    border-bottom: 1px solid #ccc;
 
-  a:focus,
-  a:hover {
-    text-decoration: none;
-    color: #ee7714;
+    a:focus,
+    a:hover {
+      text-decoration: none;
+      color: #ee7714;
+    }
   }
 }
 
