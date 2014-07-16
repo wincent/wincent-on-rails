@@ -624,7 +624,7 @@ var TagInput = React.createClass({displayName: 'TagInput',
     hiddenDiv.style.fontSize      = styles['font-size'];
     hiddenDiv.style.fontWeight    = styles['font-weight'];
     hiddenDiv.style.letterSpacing = styles['letter-spacing'];
-    hiddenDiv.style.whitespace    = 'nowrap';
+    hiddenDiv.style.whiteSpace    = 'nowrap';
     hiddenDiv.innerHTML           = value.replace(/ /g, '&nbsp;');
 
     document.body.appendChild(hiddenDiv);
@@ -1157,9 +1157,7 @@ var injectTagWidget = function(modelName) {
 
 module.exports = injectTagWidget;
 
-},{"./TagWidget":13,"jquery":"HlZQrA","react/addons":"g51q1L"}],"wincent":[function(require,module,exports){
-module.exports=require('u5vJAu');
-},{}],"u5vJAu":[function(require,module,exports){
+},{"./TagWidget":13,"jquery":"HlZQrA","react/addons":"g51q1L"}],"u5vJAu":[function(require,module,exports){
 /** @jsx React.DOM */'use strict';
 
 var Wincent = {
@@ -1179,7 +1177,9 @@ Wincent.Git.init();
 
 module.exports = Wincent;
 
-},{"./Ajax":1,"./Articles":2,"./Git":3,"./Issues":4,"./Menu":6,"./Posts":7,"./Snippets":8,"./Spinner":9,"./Topics":14}],19:[function(require,module,exports){
+},{"./Ajax":1,"./Articles":2,"./Git":3,"./Issues":4,"./Menu":6,"./Posts":7,"./Snippets":8,"./Spinner":9,"./Topics":14}],"wincent":[function(require,module,exports){
+module.exports=require('u5vJAu');
+},{}],19:[function(require,module,exports){
 /** @jsx React.DOM *//**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -27687,12 +27687,12 @@ return jQuery;
 
 }));
 
+},{}],"react/addons":[function(require,module,exports){
+module.exports=require('g51q1L');
 },{}],"g51q1L":[function(require,module,exports){
 /** @jsx React.DOM */module.exports = require('./lib/ReactWithAddons');
 
-},{"./lib/ReactWithAddons":240}],"react/addons":[function(require,module,exports){
-module.exports=require('g51q1L');
-},{}],159:[function(require,module,exports){
+},{"./lib/ReactWithAddons":240}],159:[function(require,module,exports){
 module.exports=require(19)
 },{"./focusNode":271}],160:[function(require,module,exports){
 (function (process){
