@@ -77,3 +77,8 @@ $focus-border-color: #dcedfe;
   display: block;
   margin-top: 0;
 }
+
+// for spam-catching: http://davidwalsh.name/wordpress-comment-spam
+.website-address {
+  display: none;
+}

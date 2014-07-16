@@ -2,7 +2,9 @@ class ApplicationController < ActionController::Base
   include ERB::Util     # for h()
 
   before_filter         :log_in_before,
-                        :vary_xhr
+                        :vary_xhr,
+                        :trap_spam
+
   protect_from_forgery
   rescue_from           ActionController::ForbiddenError, with: :forbidden
   rescue_from           ActiveRecord::RecordNotFound, with: :record_not_found
@@ -111,5 +113,25 @@ protected
     #   https://code.google.com/p/chromium/issues/detail?id=94369
     #
     headers['Vary'] = 'X-Requested-With'
+  end
+
+  def trap_spam
+    return unless request.form_data?
+
+    if params.delete(:website_address).try(:present?)
+      if request.xhr?
+        # currently only comments#new.js will hit here
+        respond_to do |format|
+          format.html { head :ok }
+          format.js {
+            render text: "window.location = '#{root_path}'",
+                   content_type: 'text/javascript'
+          }
+        end
+      else
+        flash[:notice] = 'Your submission has been queued for moderation'
+        redirect_to root_path
+      end
+    end
   end
 end

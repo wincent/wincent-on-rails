@@ -8,7 +8,13 @@ ActiveSupport.on_load(:action_view) do
   ::ActionView::Helpers::FormHelper.class_eval do
     def form_for_with_custom(record, options = {}, &block)
       options[:builder] ||= CustomFormBuilder
-      form_for_without_custom(record, options, &block)
+
+      # append a field: http://stackoverflow.com/a/2112364
+      # for catching spam: http://davidwalsh.name/wordpress-comment-spam
+      form_for_without_custom(record, options) do |f|
+        concat(text_field_tag('website_address', '', class: 'website-address'))
+        proc.call(f)
+      end
     end
     alias_method_chain :form_for, :custom
 
