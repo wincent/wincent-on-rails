@@ -72,7 +72,7 @@ var TagInput = React.createClass({
     hiddenDiv.style.fontSize      = styles['font-size'];
     hiddenDiv.style.fontWeight    = styles['font-weight'];
     hiddenDiv.style.letterSpacing = styles['letter-spacing'];
-    hiddenDiv.style.whitespace    = 'nowrap';
+    hiddenDiv.style.whiteSpace    = 'nowrap';
     hiddenDiv.innerHTML           = value.replace(/ /g, '&nbsp;');
 
     document.body.appendChild(hiddenDiv);
