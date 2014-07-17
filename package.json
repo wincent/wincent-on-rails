@@ -1,7 +1,7 @@
 {
   "name": "wincent-dot-com",
   "devDependencies": {
-    "watchify": "^0.6.4",
+    "watchify": "^0.10.2",
     "browserify": "^4.2.1",
     "reactify": "^0.11.0",
     "grunt": "^0.4.5",
