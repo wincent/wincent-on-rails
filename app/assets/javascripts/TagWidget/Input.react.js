@@ -6,11 +6,11 @@
 
 var React = require('react/addons');
 
-var Keys = require('./Keys');
+var Keys = require('../Keys');
 
-var escapeHTML = require('./escapeHTML');
+var escapeHTML = require('../escapeHTML');
 
-var TagInput = React.createClass({
+var Input = React.createClass({
   handleFocus: function(event) {
     // don't let the event bubble up to TagWidget, otherwise it will try to send
     // focus straight back to us due to its handleFocus implementation
@@ -98,4 +98,4 @@ var TagInput = React.createClass({
   }
 });
 
-module.exports = TagInput;
+module.exports = Input;

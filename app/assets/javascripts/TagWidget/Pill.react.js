@@ -8,7 +8,7 @@ var React = require('react/addons');
 
 var cx = React.addons.classSet;
 
-var TagPill = React.createClass({
+var Pill = React.createClass({
   handleClick: function(event) {
     event.stopPropagation();
     this.props.onTagSelect(this.props.name);
@@ -51,4 +51,4 @@ var TagPill = React.createClass({
   }
 });
 
-module.exports = TagPill;
+module.exports = Pill;

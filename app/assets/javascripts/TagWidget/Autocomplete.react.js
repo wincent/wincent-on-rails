@@ -12,7 +12,7 @@ var cx = React.addons.classSet;
 // TODO: figure out how to share constants between Sass and broswerified JS
 var VISIBLE_AUTOCOMPLETE_ENTRIES = 10;
 
-var TagAutocomplete = React.createClass({
+var Autocomplete = React.createClass({
   componentDidUpdate: function() {
     var menu      = this.getDOMNode();
     var selection = this.refs && this.refs.selected && this.refs.selected.getDOMNode();
@@ -85,4 +85,4 @@ var TagAutocomplete = React.createClass({
   }
 });
 
-module.exports = TagAutocomplete;
+module.exports = Autocomplete;

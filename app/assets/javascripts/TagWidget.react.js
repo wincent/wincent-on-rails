@@ -7,12 +7,10 @@
 var React = require('React');
 
 var Keys = require('./Keys');
-var TagAutocomplete = require('./TagAutocomplete');
-var TagInput = require('./TagInput');
-var TagPill = require('./TagPill');
 
 // The TagWidget provides tag "pilling" and autocomplete. It manages a related
-// set of subcomponents (TagInput, TagAutocomplete, TagPill).
+// set of subcomponents (TagWidget.Input, TagWidget.Autocomplete,
+// TagWidget.Pill).
 var TagWidget = React.createClass({
   getInitialState: function() {
     var tags =
@@ -330,7 +328,7 @@ var TagWidget = React.createClass({
   _renderTagPills: function() {
     return this.state.tags.map((name, i) => {
       return (
-        <TagPill
+        <TagWidget.Pill
           key={name}
           name={name}
           isDuplicate={name === this.state.duplicateTag}
@@ -345,7 +343,7 @@ var TagWidget = React.createClass({
 
   _renderInputs: function() {
     return [
-      <TagInput
+      <TagWidget.Input
         ref="tagInput"
         name={this.props.resourceName}
         onTagPop={this.onTagPop}
@@ -372,7 +370,7 @@ var TagWidget = React.createClass({
         onFocus={this.handleFocus}>
         {this._renderTagPills()}
         {this._renderInputs()}
-        <TagAutocomplete
+        <TagWidget.Autocomplete
           completions={this.state.filteredCompletions}
           selectedIdx={this.state.selectedAutocompleteIndex}
           onTagPush={this.onTagPush}
@@ -382,5 +380,9 @@ var TagWidget = React.createClass({
     );
   },
 });
+
+TagWidget.Autocomplete = require('./TagWidget/Autocomplete.react');
+TagWidget.Input = require('./TagWidget/Input.react');
+TagWidget.Pill = require('./TagWidget/Pill.react');
 
 module.exports = TagWidget;

@@ -6,7 +6,7 @@
 
 var $ = require('jquery');
 var React = require('react/addons');
-var TagWidget = require('./TagWidget');
+var TagWidget = require('./TagWidget.react');
 
 /**
  * Temporary means of injecting this React widget into a rendered page.
