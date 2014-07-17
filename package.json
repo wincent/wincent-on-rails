@@ -8,7 +8,7 @@
     "grunt-react": "^0.8.2"
   },
   "dependencies": {
-    "react": "^0.11.0",
+    "react": "^0.14.0",
     "underscore": "^1.6.0",
     "jquery": "^2.1.0",
     "spin.js": "^2.0.0",
