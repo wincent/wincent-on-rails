@@ -270,6 +270,7 @@ a.mailto:after {
   line-height: 1.75em;
   margin: 0 auto;
   padding: .5em 2em 1em;
+  word-break: break-word;
 
   @include respond-to(desktop) {
     max-width: 960px;
