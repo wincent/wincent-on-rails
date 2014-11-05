@@ -270,7 +270,6 @@ a.mailto:after {
   line-height: 1.75em;
   margin: 0 auto;
   padding: .5em 2em 1em;
-  word-break: break-word;
 
   @include respond-to(desktop) {
     max-width: 960px;
@@ -592,6 +591,8 @@ a.tags-link {
 .post {
   @include margin-leader(3);
 
+  word-break: break-word;
+
   &:first-of-type {
     @include margin-leader(1);
   }
@@ -612,6 +613,10 @@ a.tags-link {
     margin-right: .25em;
     text-decoration: none;
   }
+}
+
+.article {
+  word-break: break-word;
 }
 
 @mixin button {
