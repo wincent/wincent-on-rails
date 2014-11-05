@@ -31,7 +31,7 @@ $padding:           10px;
   height: 100%;
   left: 0;
   opacity: 0;
-  overflow: scroll;
+  overflow-y: scroll;
   position: fixed;
   top: 0;
   z-index: 0;
@@ -149,7 +149,7 @@ $padding:           10px;
 }
 
 .menu-open {
-  .viewport {
+  &.viewport {
     overflow-x: hidden;
     width: 100%;
   }
@@ -157,7 +157,6 @@ $padding:           10px;
   .app {
     // tranform + translateX is faster than just setting left with a transition
     @include transform(translateX($menu-width));
-    overflow: scroll;
   }
 
   .menu {
