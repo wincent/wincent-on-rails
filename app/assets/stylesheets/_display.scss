@@ -596,6 +596,10 @@ a.tags-link {
   &:first-of-type {
     @include margin-leader(1);
   }
+
+  img {
+    max-width: 100%;
+  }
 }
 
 .info {
@@ -617,6 +621,10 @@ a.tags-link {
 
 .article {
   word-break: break-word;
+
+  img {
+    max-width: 100%;
+  }
 }
 
 @mixin button {
