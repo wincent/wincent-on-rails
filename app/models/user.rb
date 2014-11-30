@@ -57,8 +57,12 @@ class User < ActiveRecord::Base
   # but any of them can be used in combination with the passphrase to authenticate.
   # Returns the user instance on success.
   def self.authenticate email, passphrase
-    # TODO: prevent banned users from logging in
-    if (user = find_by_email email) && user.passphrase_hash == User.digest(passphrase, user.passphrase_salt)
+    user = find_by_email(email)
+    if (
+      user &&
+      !user.suspended &&
+      user.passphrase_hash == User.digest(passphrase, user.passphrase_salt)
+    )
       user # TODO: could later add last_login update here
     end
   end
