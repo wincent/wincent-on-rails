@@ -589,17 +589,17 @@ a.tags-link {
 
 // consider per-controller custom CSS for this kind of class
 .post {
-  @include margin-leader(2);
+  @include margin-leader(1);
 
   word-break: break-word;
-
-  &:first-of-type {
-    @include margin-leader(1);
-  }
 
   img {
     max-width: 100%;
   }
+}
+
+.post + .post {
+  @include margin-leader(2);
 }
 
 .info {
