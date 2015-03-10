@@ -282,12 +282,6 @@ a.mailto:after {
   .info {
     text-align: right;
   }
-
-  .post {
-    &:first-of-type {
-      @include margin-leader(1);
-    }
-  }
 }
 
 // CSS hacks
@@ -598,6 +592,10 @@ a.tags-link {
   @include margin-leader(2);
 
   word-break: break-word;
+
+  &:first-of-type {
+    @include margin-leader(1);
+  }
 
   img {
     max-width: 100%;
