@@ -1,8 +1,6 @@
 -@page_title = 'blog index'
 =breadcrumbs 'Blog'
 #posts
-  %h1.major Blog posts
-  =@paginator.pagination_links if @paginator
   -@posts.each do |post|
     .post
       %h2.major=link_to post.title, post_path(post)
