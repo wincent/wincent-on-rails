@@ -1,5 +1,5 @@
 =breadcrumbs link_to('Tags', tags_path), @tag.name
-%h1.major Tag: #{@tag.name}
+%h1.major ##{@tag.name}
 %h2.major
   =item_count @taggables.sum { |group| group.taggables.length }
   tagged with
