@@ -2,10 +2,6 @@ source 'https://rubygems.org'
 
 gem 'bundler'
 gem 'closure-compiler'
-
-# TODO: delete this line after non-pre release
-gem 'compass', '1.0.0.alpha.19'
-
 gem 'compass-rails'
 gem 'dalli'
 gem 'haml'
@@ -15,14 +11,7 @@ gem 'protected_attributes' # was in Rails core, extracted in 4.0
 gem 'rails'
 gem 'rails-observers' # was in Rails core, extracted in 4.0
 gem 'rake'
-
-# working around this issue with Sass:
-#   https://github.com/nex3/sass/issues/1028
-# by cherry-picking this commit from Sprockets:
-#   https://github.com/sstephenson/sprockets/commit/655f129fa910f7d46803fdc66d6
-# on top of the 2.11.0 release (2.12.0 and 2.12.1 are horribly broken)
-gem 'sprockets', path: 'vendor/gems/sprockets'
-
+gem 'sprockets'
 gem 'sass-rails'
 gem 'unicorn'
 gem 'wikitext'
