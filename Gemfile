@@ -41,7 +41,7 @@ end
 
 group :test do
   gem 'autotest-rails', require: nil
-  #gem 'capybara-webkit' # pending getting things building under Ruby 2.0.0 again
+  gem 'capybara-webkit'
   gem 'database_cleaner'
   gem 'launchy'
   gem 'mkdtemp'
