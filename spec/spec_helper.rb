@@ -25,9 +25,9 @@ RSpec.configure do |config|
   end
 
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
+  config.infer_spec_type_from_file_location!
   config.mock_framework = :rr
   config.use_transactional_fixtures = false
-  config.treat_symbols_as_metadata_keys_with_true_values = true # needed until RSpec 3
   config.include ControllerExampleGroupHelpers, type: :controller
   config.include GitSpecHelpers, example_group: {
     file_path: %r{\bspec/lib/git/},
