@@ -28,19 +28,19 @@ describe Topic do
 
     describe '#public' do
       it 'defaults to true' do
-        Topic.new.public.should be_true
+        Topic.new.public.should == true
       end
     end
 
     describe '#accepts_comments' do
       it 'defaults to true' do
-        Topic.new.accepts_comments.should be_true
+        Topic.new.accepts_comments.should == true
       end
     end
 
     describe '#awaiting_moderation' do
       it 'defaults to true' do
-        Topic.new.awaiting_moderation.should be_true
+        Topic.new.awaiting_moderation.should == true
       end
     end
 

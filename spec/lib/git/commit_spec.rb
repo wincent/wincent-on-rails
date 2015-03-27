@@ -9,7 +9,7 @@ describe Git::Commit do
 
     it 'returns an array of Commit objects' do
       commits.should be_kind_of(Array)
-      commits.all? { |commit| commit.kind_of?(Git::Commit) }.should be_true
+      commits.all? { |commit| commit.kind_of?(Git::Commit) }.should == true
       commits.should_not be_empty
     end
 
@@ -143,7 +143,7 @@ describe Git::Commit do
           end
           parents = Git::Commit.log(ref).first.parents
           parents.count.should == 2
-          parents.all? { |parent| parent.match(/\A[a-f0-9]{40}\z/) }.should be_true
+          parents.all? { |parent| parent.match(/\A[a-f0-9]{40}\z/) }.should == true
         end
       end
     end

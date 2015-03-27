@@ -236,13 +236,13 @@ describe Post do
 
   describe '#public' do
     it 'defaults to true' do
-      Post.new.public.should be_true
+      Post.new.public.should == true
     end
   end
 
   describe '#accepts_comments' do
     it 'defaults to true' do
-      Post.new.accepts_comments.should be_true
+      Post.new.accepts_comments.should == true
     end
   end
 

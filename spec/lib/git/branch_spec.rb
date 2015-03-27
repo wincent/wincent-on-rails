@@ -14,7 +14,7 @@ describe Git::Branch do
       branches = Git::Branch.all repo
       branches.should be_kind_of(Array)
       branches.should_not be_empty
-      branches.all? { |branch| branch.kind_of?(Git::Branch) }.should be_true
+      branches.all? { |branch| branch.kind_of?(Git::Branch) }.should == true
     end
   end
 

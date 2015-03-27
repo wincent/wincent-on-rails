@@ -170,11 +170,11 @@ describe ConfirmationsController do
       end
 
       it 'marks the associated email as verified' do
-        confirmation.email.verified.should be_true
+        confirmation.email.verified.should == true
       end
 
       it 'marks the associated user as verified' do
-        confirmation.email.user.verified.should be_true
+        confirmation.email.user.verified.should == true
       end
 
       it 'shows a flash' do

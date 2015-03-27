@@ -125,7 +125,7 @@ describe Git::Repo do
     it 'returns an array of Branch objects' do
       @branches.should be_kind_of(Array)
       @branches.should_not be_empty
-      @branches.all? { |branch| branch.kind_of?(Git::Branch) }.should be_true
+      @branches.all? { |branch| branch.kind_of?(Git::Branch) }.should == true
     end
   end
 
@@ -144,7 +144,7 @@ describe Git::Repo do
     it 'returns an array of Tag objects' do
       @tags.should be_kind_of(Array)
       @tags.should_not be_empty
-      @tags.all? { |tag| tag.kind_of?(Git::Tag) }.should be_true
+      @tags.all? { |tag| tag.kind_of?(Git::Tag) }.should == true
     end
   end
 end

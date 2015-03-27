@@ -52,13 +52,13 @@ describe Attachment do
 
   describe '#awaiting_moderation' do
     it 'defaults to true' do
-      Attachment.new.awaiting_moderation.should be_true
+      Attachment.new.awaiting_moderation.should == true
     end
   end
 
   describe '#public' do
     it 'defaults to true' do
-      Attachment.new.public.should be_true
+      Attachment.new.public.should == true
     end
   end
 

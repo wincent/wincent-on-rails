@@ -188,7 +188,7 @@ describe Forum do
 
   describe '#public' do
     it 'defaults to true' do
-      Forum.new.public.should be_true
+      Forum.new.public.should == true
     end
   end
 

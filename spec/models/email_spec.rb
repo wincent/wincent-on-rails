@@ -27,41 +27,41 @@ describe Email do
   describe 'deleted method' do
     it 'is considered deleted if it has a deletion date' do
       @email.deleted_at = Time.now
-      @email.deleted.should be_true
+      @email.deleted.should == true
     end
 
     it 'is considered not deleted if it does not have a deletion date' do
       @email.deleted_at = nil
-      @email.deleted.should_not be_true
+      @email.deleted.should_not == true
     end
   end
 
   describe 'deleted? method' do
     it 'is considered deleted if it has a deletion date' do
       @email.deleted_at = Time.now
-      @email.deleted?.should be_true
+      @email.deleted?.should == true
     end
 
     it 'is considered not deleted if it does not have a deletion date' do
       @email.deleted_at = nil
-      @email.deleted?.should_not be_true
+      @email.deleted?.should_not == true
     end
   end
 
   describe 'deleting' do
     it 'deletes if passed a parameter of true' do
       @email.deleted = true
-      @email.deleted?.should be_true
+      @email.deleted?.should == true
     end
 
     it 'deletes if passed a parameter of "1"' do
       @email.deleted = '1'
-      @email.deleted?.should be_true
+      @email.deleted?.should == true
     end
 
     it 'deletes if passed any "truthy" parameter other than "0"' do
       @email.deleted = 'foo'
-      @email.deleted?.should be_true
+      @email.deleted?.should == true
     end
 
     it 'records the deletion date' do
@@ -73,17 +73,17 @@ describe Email do
   describe 'undeleting' do
     it 'undeletes if passed a parameter of nil' do
       @email.deleted = nil
-      @email.deleted?.should_not be_true
+      @email.deleted?.should_not == true
     end
 
     it 'undeletes if passed a parameter of false' do
       @email.deleted = false
-      @email.deleted?.should_not be_true
+      @email.deleted?.should_not == true
     end
 
     it 'undeletes if passed a parameter of "0"' do
       @email.deleted = '0'
-      @email.deleted?.should_not be_true
+      @email.deleted?.should_not == true
     end
   end
 
@@ -118,7 +118,7 @@ describe Email do
 
   describe '#default' do
     it 'defaults to true' do
-      Email.new.default.should be_true
+      Email.new.default.should == true
     end
   end
 

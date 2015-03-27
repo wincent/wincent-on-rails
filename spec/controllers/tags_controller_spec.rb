@@ -153,14 +153,14 @@ describe TagsController do
       get :search, :q => '1 2 3 4 5 6 7 8 9 10 11'
       flash[:notice].any? do |notice|
         notice =~ /excess tags stripped/i
-      end.should be_true
+      end.should == true
     end
 
     it 'excludes non-existent tags' do
       get :search, :q => 'foo bar'
       flash[:notice].any? do |notice|
         notice =~ /non-existent tags excluded/i
-      end.should be_true
+      end.should == true
     end
 
     it 'finds and assigns tags' do

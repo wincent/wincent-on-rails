@@ -25,18 +25,18 @@ describe Git::Tag do
     it 'returns an Array of Tag objects' do
       tags.should be_kind_of(Array)
       tags.should_not be_empty
-      tags.all? { |tag| tag.kind_of?(Git::Tag) }.should be_true
+      tags.all? { |tag| tag.kind_of?(Git::Tag) }.should == true
     end
 
     it 'returns lightweight tags last' do
       tags.last.name.should == 'refs/tags/crazy-idea-WIP'
-      tags.last.lightweight.should be_true
+      tags.last.lightweight.should == true
     end
 
     it 'returns annotated tags in reverse chronological order' do
       tags.pop # remove the lightweight tag
       tags.map(&:name).should == %w(refs/tags/0.2 refs/tags/0.1)
-      tags.all? { |t| t.lightweight == false }.should be_true
+      tags.all? { |t| t.lightweight == false }.should == true
     end
   end
 

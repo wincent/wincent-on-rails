@@ -165,7 +165,7 @@ describe Product do
 
     describe '#hide_from_front_page' do
       it 'defaults to true' do
-        Product.new.hide_from_front_page.should be_true
+        Product.new.hide_from_front_page.should == true
       end
     end
   end

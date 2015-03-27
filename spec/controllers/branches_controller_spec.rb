@@ -116,7 +116,7 @@ describe BranchesController do
       assigns[:commits].should be_kind_of(Array)
       assigns[:commits].all? do |c|
         c.kind_of? Git::Commit
-      end.should be_true
+      end.should == true
     end
 
     it 'renders "branches/show"' do

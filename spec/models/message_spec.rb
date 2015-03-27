@@ -51,7 +51,7 @@ describe Message do
 
   describe '#incoming' do
     it 'defaults to true' do
-      Message.new.incoming.should be_true
+      Message.new.incoming.should == true
     end
   end
 

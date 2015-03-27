@@ -27,13 +27,13 @@ describe Comment do
 
   describe '#awaiting_moderation' do
     it 'defaults to true' do
-      Comment.new.awaiting_moderation.should be_true
+      Comment.new.awaiting_moderation.should == true
     end
   end
 
   describe '#public' do
     it 'defaults to true' do
-      Comment.new.public.should be_true
+      Comment.new.public.should == true
     end
   end
 

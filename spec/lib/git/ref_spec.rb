@@ -32,7 +32,7 @@ describe Git::Ref do
     it 'returns an array of Commit objects' do
       @ref.commits.should be_kind_of(Array)
       @ref.commits.should_not be_empty
-      @ref.commits.all? { |commit| commit.kind_of?(Git::Commit) }.should be_true
+      @ref.commits.all? { |commit| commit.kind_of?(Git::Commit) }.should == true
     end
 
     it 'returns at most 20 commits' do

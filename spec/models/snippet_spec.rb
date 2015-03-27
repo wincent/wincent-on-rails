@@ -22,7 +22,7 @@ describe Snippet do
   describe 'attributes' do
     describe '#accepts_comments' do
       it 'defaults to true' do
-        Snippet.new.accepts_comments.should be_true
+        Snippet.new.accepts_comments.should == true
       end
     end
 
@@ -88,7 +88,7 @@ describe Snippet do
 
     describe '#public' do
       it 'defaults to true' do
-        Snippet.new.public.should be_true
+        Snippet.new.public.should == true
       end
 
       it 'is accessible' do
@@ -105,7 +105,7 @@ describe Snippet do
 
     describe '#accepts_comments' do
       it 'defaults to true' do
-        Snippet.new.accepts_comments.should be_true
+        Snippet.new.accepts_comments.should == true
       end
     end
 
@@ -136,7 +136,7 @@ describe Snippet do
       end
 
       it 'returns an HTML safe string' do
-        snippet.body_html.html_safe?.should be_true
+        snippet.body_html.html_safe?.should == true
       end
 
       it 'transforms the body from wikitext into HTML' do
@@ -158,7 +158,7 @@ describe Snippet do
       end
 
       it 'returns an HTML safe string' do
-        snippet.body_html.html_safe?.should be_true
+        snippet.body_html.html_safe?.should == true
       end
 
       it 'escapes the body and wraps it in a "pre" block' do
@@ -173,7 +173,7 @@ describe Snippet do
       end
 
       it 'returns an HTML safe string' do
-        snippet.body_html.html_safe?.should be_true
+        snippet.body_html.html_safe?.should == true
       end
 
       it 'escapes the body and wraps it in a "pre.c-syntax" block' do
@@ -189,7 +189,7 @@ describe Snippet do
       end
 
       it 'returns an HTML safe string' do
-        snippet.body_html.html_safe?.should be_true
+        snippet.body_html.html_safe?.should == true
       end
 
       it 'escapes the body and wraps it in a "pre.diff-syntax" block' do
@@ -205,7 +205,7 @@ describe Snippet do
       end
 
       it 'returns an HTML safe string' do
-        snippet.body_html.html_safe?.should be_true
+        snippet.body_html.html_safe?.should == true
       end
 
       it 'escapes the body and wraps it in a "pre.objc-syntax" block' do
@@ -221,7 +221,7 @@ describe Snippet do
       end
 
       it 'returns an HTML safe string' do
-        snippet.body_html.html_safe?.should be_true
+        snippet.body_html.html_safe?.should == true
       end
 
       it 'escapes the body and wraps it in a "pre.ruby-syntax" block' do
@@ -237,7 +237,7 @@ describe Snippet do
       end
 
       it 'returns an HTML safe string' do
-        snippet.body_html.html_safe?.should be_true
+        snippet.body_html.html_safe?.should == true
       end
 
       it 'escapes the body and wraps it in a "pre.shell-syntax" block' do

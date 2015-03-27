@@ -38,7 +38,7 @@ describe Issue do
 
   describe '#public' do
     it 'defaults to true' do
-      Issue.new.public.should be_true
+      Issue.new.public.should == true
     end
   end
 
@@ -62,7 +62,7 @@ describe Issue do
 
   describe '#awaiting_moderation' do
     it 'defaults to true' do
-      Issue.new.awaiting_moderation.should be_true
+      Issue.new.awaiting_moderation.should == true
     end
   end
 
@@ -110,7 +110,7 @@ describe Issue do
 
   describe '#accepts_comments' do
     it 'defaults to true' do
-      Issue.new.accepts_comments.should be_true
+      Issue.new.accepts_comments.should == true
     end
   end
 end
