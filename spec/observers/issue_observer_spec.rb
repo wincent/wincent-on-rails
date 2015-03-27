@@ -6,7 +6,7 @@ describe IssueObserver do
     let(:issue)     { Issue.make :user => user }
 
     it 'delivers an alert after saving a new issue' do
-      mock(IssueMailer).new_issue_alert(issue).stub!.deliver
+      mock(IssueMailer).new_issue_alert(issue).stub!.deliver_now
       issue.save
     end
 
@@ -18,7 +18,7 @@ describe IssueObserver do
 
     it 'delivers an alert for anonymous issues' do
       issue = Issue.make :user => nil
-      mock(IssueMailer).new_issue_alert(issue).stub!.deliver
+      mock(IssueMailer).new_issue_alert(issue).stub!.deliver_now
       issue.save
     end
 

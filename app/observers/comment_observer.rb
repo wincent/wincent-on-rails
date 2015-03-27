@@ -6,7 +6,7 @@ class CommentObserver < ActiveRecord::Observer
 private
 
   def send_new_comment_alert comment
-    CommentMailer.new_comment_alert(comment).deliver
+    CommentMailer.new_comment_alert(comment).deliver_now
   rescue Exception => e
     Rails.logger.error \
       "CommentObserver#send_new_comment_alert for comment #{comment.id} " \

@@ -23,7 +23,7 @@ class Topic < ActiveRecord::Base
     # don't inform admin of his own topics
     return if user && user.superuser?
     begin
-      TopicMailer.new_topic_alert(self).deliver
+      TopicMailer.new_topic_alert(self).deliver_now
     rescue Exception => e
       logger.error "\nerror: Topic#send_new_topic_alert for topic #{self.id} failed due to exception #{e.class}: #{e}\n\n"
     end

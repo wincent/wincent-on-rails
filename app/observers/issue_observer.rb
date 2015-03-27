@@ -62,7 +62,7 @@ private
   end
 
   def send_new_issue_alert issue
-    IssueMailer.new_issue_alert(issue).deliver
+    IssueMailer.new_issue_alert(issue).deliver_now
   rescue Exception => e
     Rails.logger.error \
       "IssueObserver#send_new_issue_alert for issue #{issue.inspect} " \

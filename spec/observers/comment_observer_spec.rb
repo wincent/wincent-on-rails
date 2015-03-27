@@ -6,7 +6,7 @@ describe CommentObserver do
     let(:comment) { Comment.make :user => user }
 
     it 'delivers an alert after saving a new comment' do
-      mock(CommentMailer).new_comment_alert(comment).stub!.deliver
+      mock(CommentMailer).new_comment_alert(comment).stub!.deliver_now
       comment.save
     end
 
@@ -18,7 +18,7 @@ describe CommentObserver do
 
     it 'delivers an alert for anonymous comments' do
       comment = Comment.make :user => nil
-      mock(CommentMailer).new_comment_alert(comment).stub!.deliver
+      mock(CommentMailer).new_comment_alert(comment).stub!.deliver_now
       comment.save
     end
 

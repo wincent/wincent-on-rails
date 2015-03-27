@@ -67,7 +67,7 @@ describe ConfirmationsController do
         end
 
         it 'shows a flash on failure' do
-          stub.instance_of(Mail::Message).deliver { raise }
+          stub.instance_of(Mail::Message).deliver_now { raise }
           do_post
           flash[:error].first.should =~ /an error occurred/i
         end

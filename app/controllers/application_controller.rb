@@ -94,7 +94,7 @@ protected
     flash[:notice] = [] if flash[:notice].blank?
     recipient = mail.to.first
     error_msg = "An error occurred sending to #{h recipient}"
-    mail.deliver
+    mail.deliver_now
     flash[:notice] << "An email has been sent to #{h recipient}"
   rescue Net::SMTPFatalError
     flash[:error] << error_msg +

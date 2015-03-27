@@ -424,13 +424,13 @@ describe Topic, 'send_new_topic_alert callback' do
   end
 
   it 'should deliver a new topic alert for normal user topics' do
-    mock(TopicMailer).new_topic_alert(anything).stub!.deliver
+    mock(TopicMailer).new_topic_alert(anything).stub!.deliver_now
     @topic.save
   end
 
   it 'should deliver a new topic alert for anonymous topics' do
     topic = Topic.make user: nil
-    mock(TopicMailer).new_topic_alert(anything).stub!.deliver
+    mock(TopicMailer).new_topic_alert(anything).stub!.deliver_now
     topic.save
   end
 
