@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Linking do
-  describe Linking::LINK_REGEX do
+  describe 'Linking::LINK_REGEX' do
     it 'matches basic wiki links' do
       '[[foo bar]]'.should match(Linking::LINK_REGEX)
     end
@@ -24,7 +24,7 @@ describe Linking do
     end
   end
 
-  describe Linking::EXTERNAL_LINK_REGEX do
+  describe 'Linking::EXTERNAL_LINK_REGEX' do
     it 'matches HTTP URLs' do
       'http://example.com/'.should match(Linking::EXTERNAL_LINK_REGEX)
     end
@@ -43,7 +43,7 @@ describe Linking do
     end
   end
 
-  describe Linking::RELATIVE_PATH_REGEX do
+  describe 'Linking::RELATIVE_PATH_REGEX' do
     it 'matches relative paths' do
       '/foo/bar'.should match(Linking::RELATIVE_PATH_REGEX)
     end
