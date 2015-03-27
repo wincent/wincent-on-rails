@@ -55,7 +55,7 @@ describe Repo do
 
     describe '#public' do
       it 'defaults to false' do
-        Repo.new.public.should be_false
+        Repo.new.public.should == false
       end
 
       it 'is accessible' do

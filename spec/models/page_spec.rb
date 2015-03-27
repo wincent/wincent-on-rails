@@ -22,7 +22,7 @@ describe Page do
 
     describe '#front' do
       it 'defaults to false' do
-        Page.new.front.should be_false
+        Page.new.front.should == false
       end
     end
 

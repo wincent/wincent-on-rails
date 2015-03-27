@@ -124,7 +124,7 @@ describe Email do
 
   describe '#verified' do
     it 'defaults to false' do
-      Email.new.verified.should be_false
+      Email.new.verified.should == false
     end
   end
 
