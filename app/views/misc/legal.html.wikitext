@@ -2,7 +2,7 @@
 
 == Software ==
 
-The web application powering this site is Copyright 2007-2014 Greg Hurrell.
+The web application powering this site is Copyright 2007-2015 Greg Hurrell.
 At present the source code for the site is not publicly available but the
 intention is to release it under
 [/LICENSE.txt the simplified, 2-clause version of the BSD license]
@@ -11,7 +11,7 @@ intention is to release it under
 == Site content ==
 
 Unless otherwise noted, all content published on the site by the site
-administator is Copyright 1997-2014 Greg Hurrell. This content includes
+administator is Copyright 1997-2015 Greg Hurrell. This content includes
 [/blog blog posts], [/wiki wiki articles], product pages, and most other
 material on the site unless otherwise labelled.
 
