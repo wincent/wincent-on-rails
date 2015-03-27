@@ -141,12 +141,12 @@ describe Link do
 
     it 'uses id as param if permalink not available' do
       link = Link.make! :permalink => nil
-      link.to_param.should == link.id
+      link.to_param.should == link.id.to_s
     end
 
     context 'new record' do
       it 'returns nil' do
-        Link.new.to_param.should be_nil
+        Link.new.to_param.should == ''
       end
     end
 
