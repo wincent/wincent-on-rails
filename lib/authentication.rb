@@ -1,18 +1,5 @@
 require 'digest/sha2'
-
-# General utility methods intended for use from within both models and
-# controllers.
-module AuthenticationUtilities
-  # Return a psuedo-random base64-encoded string of +length+, suitable for
-  # storage in a database or cookie.
-  def self.random_base64_string length
-    blocks              = length / 4          # base64 outputs in blocks of 4 bytes
-    source_chars_needed = blocks * 3          # 3 source bytes needed for each output block
-    overflow            = length % 4          # extra bytes needed after last full block
-    source_chars_needed += 1 if overflow > 0  # create extra block if needed to handle overflow
-    [Array.new(source_chars_needed) { rand(256).chr }.join].pack('m').slice(0, length)
-  end
-end # module AuthenticationUtilities
+require 'securerandom'
 
 module ActionController
   module Authentication
@@ -20,7 +7,7 @@ module ActionController
 
     # TODO: allow user to adjust DEFAULT_SESSION_EXPIRY in their preferences?
     DEFAULT_SESSION_EXPIRY  = 7 # days
-    SESSION_KEY_LENGTH      = 32
+    SESSION_KEY_LENGTH      = 255
     LOCALHOST_ADDRESSES     = ['127.0.0.1', '::1'].freeze
 
     included do
@@ -134,7 +121,7 @@ module ActionController
 
     # Generate a random string for use as a session key.
     def random_session_key
-      AuthenticationUtilities::random_base64_string(SESSION_KEY_LENGTH)
+      SecureRandom::base64(SESSION_KEY_LENGTH)
     end
 
     # Redirect to the login page showing the supplied msg in the flash
@@ -159,7 +146,7 @@ module ActiveRecord
       PASSPHRASE_CHARS            = 'abcdefghjkmnpqrstuvwxyz23456789'.split(//)
       PASSPHRASE_CHARS_LENGTH     = PASSPHRASE_CHARS.length
       GENERATED_PASSPHRASE_LENGTH = 8
-      SALT_BYTES                  = 16
+      SALT_BYTES                  = 255
 
       # Returns a psuedo-random string of length letters and digits, excluding potentially ambiguous characters (0, O, 1, l, I).
       def random_string(length)
@@ -173,7 +160,7 @@ module ActiveRecord
 
       # Returns a psuedo-random salt string.
       def random_salt
-        AuthenticationUtilities::random_base64_string(SALT_BYTES)
+        SecureRandom::base64(SALT_BYTES)
       end
 
       # Returns a digest based on passphrase and salt.
