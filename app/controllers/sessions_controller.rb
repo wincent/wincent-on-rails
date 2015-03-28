@@ -12,7 +12,7 @@ class SessionsController < ApplicationController
     if user = @session.user
       set_current_user(user)
       flash[:notice] = 'Successfully logged in'
-      original_uri = @session.original_uri || session[:original_uri]
+      original_uri = @session.original_uri.presence || session[:original_uri]
       if original_uri.blank?
         redirect_to dashboard_path
       else
