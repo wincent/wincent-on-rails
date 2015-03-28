@@ -7,7 +7,7 @@ module ActionController
 
     # TODO: allow user to adjust DEFAULT_SESSION_EXPIRY in their preferences?
     DEFAULT_SESSION_EXPIRY  = 7 # days
-    SESSION_KEY_LENGTH      = 255
+    SESSION_KEY_LENGTH      = 128
     LOCALHOST_ADDRESSES     = ['127.0.0.1', '::1'].freeze
 
     included do
@@ -146,7 +146,7 @@ module ActiveRecord
       PASSPHRASE_CHARS            = 'abcdefghjkmnpqrstuvwxyz23456789'.split(//)
       PASSPHRASE_CHARS_LENGTH     = PASSPHRASE_CHARS.length
       GENERATED_PASSPHRASE_LENGTH = 8
-      SALT_BYTES                  = 255
+      SALT_BYTES                  = 128
 
       # Returns a psuedo-random string of length letters and digits, excluding potentially ambiguous characters (0, O, 1, l, I).
       def random_string(length)
