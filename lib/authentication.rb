@@ -150,7 +150,9 @@ module ActiveRecord
 
       # Returns a psuedo-random string of length letters and digits, excluding potentially ambiguous characters (0, O, 1, l, I).
       def random_string(length)
-        Array.new(length) { PASSPHRASE_CHARS[rand(PASSPHRASE_CHARS_LENGTH)] }.join
+        Array.new(length) do
+          PASSPHRASE_CHARS[SecureRandom::random_number(PASSPHRASE_CHARS_LENGTH)]
+        end.join
       end
 
       # Generates a psuedo-random passphrase string.
