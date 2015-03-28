@@ -1,4 +1,4 @@
-require 'digest/sha1'
+require 'securerandom'
 
 # Table fields:
 #
@@ -31,9 +31,8 @@ class Reset < ActiveRecord::Base
   attr_accessor         :email_address, :passphrase, :passphrase_confirmation
   attr_accessible       :email_address, :passphrase, :passphrase_confirmation
 
-  SECRET_SALT = '124f1e6487ab214cb155db238cf1765d9c972d35'
   def self.secret
-    Digest::SHA1.hexdigest(Time.now.to_s + rand.to_s + SECRET_SALT)
+    SecureRandom::hex(20)
   end
 
   def to_param
