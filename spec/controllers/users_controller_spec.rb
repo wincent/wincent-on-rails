@@ -95,7 +95,7 @@ describe UsersController do
       end
 
       it 'delivers the confirmation message' do
-        mock(controller).deliver is_a(Mail::Message)
+        mock(controller).deliver is_a(ActionMailer::MessageDelivery)
         do_post
       end
 

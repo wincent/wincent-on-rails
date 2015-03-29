@@ -33,7 +33,7 @@ describe ResetsController do
 
       it 'sends a reset message' do
         mock.proxy(ResetMailer).reset_message(is_a Reset)
-        mock(controller).deliver(is_a Mail::Message)
+        mock(controller).deliver(is_a ActionMailer::MessageDelivery)
         do_post
       end
 

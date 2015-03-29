@@ -57,7 +57,7 @@ describe ConfirmationsController do
 
         it 'sends a confirmation message' do
           mock.proxy(ConfirmationMailer).confirmation_message(is_a Confirmation)
-          mock(controller).deliver(is_a Mail::Message)
+          mock(controller).deliver(is_a ActionMailer::MessageDelivery)
           do_post
         end
 
@@ -67,7 +67,7 @@ describe ConfirmationsController do
         end
 
         it 'shows a flash on failure' do
-          stub.instance_of(Mail::Message).deliver_now { raise }
+          stub.instance_of(ActionMailer::MessageDelivery).deliver_now { raise }
           do_post
           flash[:error].first.should =~ /an error occurred/i
         end
