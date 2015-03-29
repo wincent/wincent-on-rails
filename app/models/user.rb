@@ -37,7 +37,7 @@ class User < ActiveRecord::Base
     record_in_database = User.find(model.id)
     if value.blank? # mimic validates_presence_of
       model.errors.add att, I18n.translate('activerecord.errors.messages')[:empty]
-    elsif User.digest(value, record_in_database.passphrase_salt) != record_in_database.passphrase_hash
+    elsif User.digest(value, record_in_database.passphrase_salt, record_in_database.hash_version) != record_in_database.passphrase_hash
       model.errors.add att, 'must match existing passphrase on record'
     end
   end
@@ -53,27 +53,32 @@ class User < ActiveRecord::Base
     Email.where(address: email).includes(:user).references(:user).first.try(:user)
   end
 
-  # User accounts may have multiple email addresses associated with them,
-  # but any of them can be used in combination with the passphrase to authenticate.
+  # User accounts may have multiple email addresses associated with them, but
+  # any of them can be used in combination with the passphrase to authenticate.
   # Returns the user instance on success.
   def self.authenticate email, passphrase
     user = find_by_email(email)
     if (
       user &&
       !user.suspended &&
-      user.passphrase_hash == User.digest(passphrase, user.passphrase_salt)
+      user.passphrase_hash == User.digest(passphrase, user.passphrase_salt, user.hash_version)
     )
+      if user.hash_version < User.digest_version
+        user.passphrase = passphrase # regens salt, rehashes with new version
+        user.save
+      end
       user # TODO: could later add last_login update here
     end
   end
 
-  # Stores a new passphrase_salt and combines it with passphrase to generate and store a new passphrase_hash.
-  # Does nothing if passphrase is blank.
+  # Stores a new passphrase_salt and combines it with passphrase to generate and
+  # store a new passphrase_hash. Does nothing if passphrase is blank.
   def passphrase= passphrase
     return if passphrase.blank?
     @passphrase = passphrase
     salt = User.random_salt
-    self.passphrase_salt, self.passphrase_hash = salt, User.digest(passphrase, salt)
+    self.passphrase_salt, self.passphrase_hash, self.hash_version =
+      salt, User.digest(passphrase, salt), User.digest_version
   end
 
   def reset_passphrase!(new_passphrase, new_passphrase_confirmation)

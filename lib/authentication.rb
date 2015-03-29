@@ -1,4 +1,6 @@
+require 'base64'
 require 'digest/sha2'
+require 'openssl'
 require 'securerandom'
 
 module ActionController
@@ -165,12 +167,37 @@ module ActiveRecord
         SecureRandom::base64(SALT_BYTES)
       end
 
+      # Returns the version number of the current digest scheme.
+      #
+      # This is a separate method rather than a constant so we can mock it in
+      # the test suite.
+      def digest_version
+        1
+      end
+
       # Returns a digest based on passphrase and salt.
-      # Note that this method must be called "digest" rather than "hash" to avoid overriding the built-in hash method.
-      def digest(passphrase, salt)
+      #
+      # Note that this method must be called "digest" rather than "hash" to
+      # avoid overriding the built-in hash method.
+      def digest(passphrase, salt, version = digest_version)
         raise ArgumentError, 'nil passphrase' if passphrase.nil?
         raise ArgumentError, 'nil salt' if salt.nil?
-        Digest::SHA256.hexdigest(passphrase + salt)
+
+        case version
+        when 0
+          Digest::SHA256.hexdigest(passphrase + salt)
+        when 1
+          Base64::encode64(
+            OpenSSL::PKCS5.pbkdf2_hmac_sha1(
+              passphrase,
+              salt,
+              10_000, # iterations
+              128     # key_len
+            )
+          )
+        else
+          raise ArgumentError, "Unknown digest version #{digest_version.inspect}"
+        end
       end
     end # module ClassMethods
   end # module Authentication

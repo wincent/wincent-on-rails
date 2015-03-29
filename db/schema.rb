@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140112024214) do
+ActiveRecord::Schema.define(version: 20150328224301) do
 
   create_table "articles", force: :cascade do |t|
     t.string   "title",             limit: 255
@@ -295,6 +295,7 @@ ActiveRecord::Schema.define(version: 20140112024214) do
     t.datetime "updated_at"
     t.integer  "comments_count",  limit: 4,   default: 0
     t.integer  "topics_count",    limit: 4,   default: 0
+    t.integer  "hash_version",    limit: 4,   default: 1
   end
 
   add_index "users", ["display_name"], name: "index_users_on_display_name", unique: true, using: :btree

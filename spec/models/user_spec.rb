@@ -42,7 +42,10 @@ describe User, 'authenticating' do
   before do
     @email      = "#{Sham.random}@example.com"
     @passphrase = Sham.random
-    @user       = User.make! passphrase: @passphrase, passphrase_confirmation: @passphrase
+    @user       = User.make!(
+      passphrase: @passphrase,
+      passphrase_confirmation: @passphrase
+    )
     @user.emails.create address: @email
   end
 
@@ -56,6 +59,34 @@ describe User, 'authenticating' do
 
   it 'should return the user if valid email and passphrase' do
     User.authenticate(@email, @passphrase).should == @user
+  end
+
+  it 'updates a version 0 passhrase digest to version 1' do
+    #  sanity check; confirm we start at version 1
+    expect(@user.passphrase_salt.length).to be > 128
+
+    # first we jump through some hoops to get it back into version 0 format
+    salt = User.random_salt
+    @user.passphrase_salt = salt
+    @user.passphrase_hash = User.digest(@passphrase, salt, 0)
+    @user.hash_version = 0
+    @user.passphrase
+    @user.save
+
+    # confirm that it really is in version 0 format
+    @user.reload
+    expect(@user.passphrase_hash).to match(/\A[a-f0-9]{64}\z/)
+    expect(@user.hash_version).to eq(0)
+
+    # the actual update
+    user = User.authenticate(@email, @passphrase)
+    expect(user).to eq(@user)
+
+    # confirm the version got bumped
+    hash = user.passphrase_hash
+    expect(hash.length).to be > 128
+    expect(Base64::encode64(Base64::decode64(hash))).to eq(hash)
+    expect(user.hash_version).to eq(1)
   end
 end
 
