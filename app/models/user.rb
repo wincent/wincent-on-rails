@@ -65,7 +65,7 @@ class User < ActiveRecord::Base
     )
       if user.hash_version < User.digest_version
         user.passphrase = passphrase # regens salt, rehashes with new version
-        user.save
+        user.save(validate: false) # skip old_passphrase validation
       end
       user # TODO: could later add last_login update here
     end
