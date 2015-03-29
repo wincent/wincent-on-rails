@@ -14,8 +14,7 @@ describe 'snippets/index' do
   end
 
   it 'shows pagination links' do
-    # once at top, once at bottom
-    @paginator = mock!.pagination_links.twice.subject
+    @paginator = mock!.pagination_links.subject
     render
   end
 
