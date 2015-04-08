@@ -25,7 +25,7 @@ module RSpec
         "expected mass assignment to #{self.keys_as_string} to succeed but it did not"
       end
 
-      def negative_failure_message
+      def failure_message_when_negated
         "expected mass assignment to #{self.keys_as_string} to fail but it did not"
       end
 

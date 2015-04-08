@@ -41,11 +41,11 @@ describe 'Source code files' do
       !@bad_lines.empty?
     end
 
-    failure_message_for_should do |given|
+    failure_message do |given|
       "expected #{given.inspect} to have trailing whitespace but it did not"
     end
 
-    failure_message_for_should_not do |given|
+    failure_message_when_negated do |given|
       "expected #{given.inspect} to not have trailing whitespace but " +
         "trailing whitespace found on line(s) #{@bad_lines.join(', ')}"
     end
@@ -57,11 +57,11 @@ describe 'Source code files' do
       !@bad_lines.empty?
     end
 
-    failure_message_for_should do |given|
+    failure_message do |given|
       "expected #{given.inspect} to contain tabs but it did not"
     end
 
-    failure_message_for_should_not do |given|
+    failure_message_when_negated do |given|
       "expected #{given.inspect} to not contain tabs but tabs found on " +
         "line(s) #{@bad_lines.join(', ')}"
     end
@@ -80,12 +80,12 @@ describe 'Source code files' do
       success
     end
 
-    failure_message_for_should do |given|
+    failure_message do |given|
       "expected #{given.inspect} to have a newline at the end of file but " +
         "it did not"
     end
 
-    failure_message_for_should_not do |given|
+    failure_message_when_negated do |given|
       "expected #{given.inspect} not to have a newline at the end of file " +
         "but it did"
     end

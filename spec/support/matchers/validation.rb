@@ -14,7 +14,7 @@ module RSpec
         "expected to fail validation with errors on #{@attribute} but was #{self.valid}; #{self.errors}"
       end
 
-      def negative_failure_message
+      def failure_message_when_negated
         "expected to pass validation with no errors on #{@attribute} but was #{self.valid}; #{self.errors}"
       end
 
