@@ -14,7 +14,7 @@ describe 'snippets/show.html.haml' do
 
   it 'shows the title' do
     render
-    rendered.should have_css('h1.major', text: 'bar')
+    expect(rendered).to have_css('h1.major', text: 'bar')
   end
 
   it 'shows the time information for the snippet' do
@@ -24,12 +24,12 @@ describe 'snippets/show.html.haml' do
 
   it 'shows a by-line' do
     render
-    rendered.should have_content("by #{APP_CONFIG['admin_name']}")
+    expect(rendered).to have_content("by #{APP_CONFIG['admin_name']}")
   end
 
   it 'shows the snippet body' do
     render
-    rendered.should have_content('foo')
+    expect(rendered).to have_content('foo')
   end
 
   it 'renders the "shared/tags" partial' do
@@ -40,23 +40,23 @@ describe 'snippets/show.html.haml' do
 
   it 'has a link to the snippets index' do
     render
-    rendered.should have_link('all snippets', href: '/snippets')
+    expect(rendered).to have_link('all snippets', href: '/snippets')
   end
 
   it 'has a link to the raw format for the snippet' do
     render
-    rendered.should have_link('raw', href: snippet_path(@snippet, format: :txt))
+    expect(rendered).to have_link('raw', href: snippet_path(@snippet, format: :txt))
   end
 
   context 'commenting open' do
     it 'displays the comment form' do
       render
-      rendered.should have_css('#comment-form')
+      expect(rendered).to have_css('#comment-form')
     end
 
     it 'has a submit button' do
       render
-      rendered.should have_link('add a comment',
+      expect(rendered).to have_link('add a comment',
                                 href: new_snippet_comment_path(@snippet))
     end
   end
@@ -68,12 +68,12 @@ describe 'snippets/show.html.haml' do
 
     it 'does not display a comment form' do
       render
-      rendered.should_not have_css('#comment-form')
+      expect(rendered).not_to have_css('#comment-form')
     end
 
     it 'provides a link to the forums' do
       render
-      rendered.should have_link('forums', href: '/forums')
+      expect(rendered).to have_link('forums', href: '/forums')
     end
   end
 end

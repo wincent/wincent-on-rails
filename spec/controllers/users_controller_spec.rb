@@ -16,17 +16,17 @@ describe UsersController do
       it 'finds and assigns users' do
         2.times { User.make! } # plus 1 admin user from log_in_as_admin
         do_request
-        assigns[:users].to_a.should =~ User.all
+        expect(assigns[:users].to_a).to match_array(User.all)
       end
 
       it 'renders users/index' do
         do_request
-        response.should render_template('users/index')
+        expect(response).to render_template('users/index')
       end
 
       it 'succeeds' do
         do_request
-        response.should be_success
+        expect(response).to be_success
       end
     end
   end
@@ -34,14 +34,14 @@ describe UsersController do
   describe '#new' do
     it 'assigns a new user' do
       get :new
-      assigns[:user].should be_kind_of(User)
-      assigns[:user].should be_new_record
+      expect(assigns[:user]).to be_kind_of(User)
+      expect(assigns[:user]).to be_new_record
     end
 
     it 'assigns a new email' do
       get :new
-      assigns[:email].should be_kind_of(Email)
-      assigns[:email].should be_new_record
+      expect(assigns[:email]).to be_kind_of(Email)
+      expect(assigns[:email]).to be_new_record
     end
 
     it 'associates the email with the user' do
@@ -51,12 +51,12 @@ describe UsersController do
 
     it 'renders users/new' do
       get :new
-      response.should render_template('users/new')
+      expect(response).to render_template('users/new')
     end
 
     it 'succeeds' do
       get :new
-      response.should be_success
+      expect(response).to be_success
     end
   end
 
@@ -80,13 +80,13 @@ describe UsersController do
 
     it 'assigns the new user' do
       do_post
-      assigns[:user].should be_kind_of(User)
+      expect(assigns[:user]).to be_kind_of(User)
     end
 
     context 'successful creation' do
       it 'creates a confirmation' do
         do_post
-        assigns[:user].emails.first.confirmations.size.should == 1
+        expect(assigns[:user].emails.first.confirmations.size).to eq(1)
       end
 
       it 'creates a confirmation message' do
@@ -101,15 +101,15 @@ describe UsersController do
 
       it 'redirects to /dashboard' do
         do_post
-        response.should redirect_to('/dashboard')
+        expect(response).to redirect_to('/dashboard')
       end
 
       it 'logs in automatically' do
         do_post
         user = assigns[:user]
-        user.session_expiry.should > Time.now
-        request.env['action_dispatch.cookies']['user_id'].should == user.id.to_s
-        request.env['action_dispatch.cookies']['session_key'].should == user.session_key
+        expect(user.session_expiry).to be > Time.now
+        expect(request.env['action_dispatch.cookies']['user_id']).to eq(user.id.to_s)
+        expect(request.env['action_dispatch.cookies']['session_key']).to eq(user.session_key)
       end
     end
 
@@ -121,11 +121,11 @@ describe UsersController do
         end
 
         it 'shows a flash' do
-          flash[:error].should =~ /failed to create/i
+          expect(flash[:error]).to match(/failed to create/i)
         end
 
         it 'renders users/new' do
-          response.should render_template('users/new')
+          expect(response).to render_template('users/new')
         end
       end
 
@@ -136,11 +136,11 @@ describe UsersController do
         end
 
         it 'shows a flash' do
-          flash[:error].should =~ /failed to create/i
+          expect(flash[:error]).to match(/failed to create/i)
         end
 
         it 'renders users/new' do
-          response.should render_template('users/new')
+          expect(response).to render_template('users/new')
         end
       end
     end
@@ -155,17 +155,17 @@ describe UsersController do
 
     it 'finds and assigns the user' do
       do_get
-      assigns[:user].should == user
+      expect(assigns[:user]).to eq(user)
     end
 
     it 'renders users/show' do
       do_get
-      response.should render_template('users/show')
+      expect(response).to render_template('users/show')
     end
 
     it 'succeeds' do
       do_get
-      response.should be_success
+      expect(response).to be_success
     end
   end
 
@@ -185,17 +185,17 @@ describe UsersController do
 
       it 'finds and assigns the user' do
         do_request
-        assigns[:user].should == user
+        expect(assigns[:user]).to eq(user)
       end
 
       it 'renders users/edit' do
         do_request
-        response.should render_template('users/edit')
+        expect(response).to render_template('users/edit')
       end
 
       it 'succeeds' do
         do_request
-        response.should be_success
+        expect(response).to be_success
       end
     end
 
@@ -206,7 +206,7 @@ describe UsersController do
 
       it 'succeeds' do
         do_request
-        response.should be_success
+        expect(response).to be_success
       end
     end
 
@@ -217,12 +217,12 @@ describe UsersController do
 
       it 'shows a flash' do
         do_request
-        flash[:notice].should =~ /not allowed to edit this user/
+        expect(flash[:notice]).to match(/not allowed to edit this user/)
       end
 
       it 'redirects to user#show' do
         do_request
-        response.should redirect_to(user)
+        expect(response).to redirect_to(user)
       end
     end
   end
@@ -259,12 +259,12 @@ describe UsersController do
 
       it 'shows a flash' do
         do_request
-        flash[:notice].should =~ /successfully updated/i
+        expect(flash[:notice]).to match(/successfully updated/i)
       end
 
       it 'redirects to #show' do
         do_request
-        response.should redirect_to(user.reload)
+        expect(response).to redirect_to(user.reload)
       end
 
       context 'failed update' do
@@ -275,12 +275,12 @@ describe UsersController do
 
         it 'shows a flash' do
           do_request
-          flash[:error].should =~ /update failed/i
+          expect(flash[:error]).to match(/update failed/i)
         end
 
         it 'renders users/edit' do
           do_request
-          response.should render_template('users/edit')
+          expect(response).to render_template('users/edit')
         end
       end
     end

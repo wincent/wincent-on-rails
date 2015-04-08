@@ -6,6 +6,6 @@ describe Word do
   end
 
   it "should be valid" do
-    @word.should be_valid
+    expect(@word).to be_valid
   end
 end

@@ -17,6 +17,6 @@ describe 'topics/show.html.haml' do
 
   it 'shows the topic title as a major heading' do
     render
-    rendered.should have_css('h1.major', text: @title)
+    expect(rendered).to have_css('h1.major', text: @title)
   end
 end

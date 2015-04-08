@@ -10,7 +10,7 @@ describe ProductsController do
 
     it 'is successful' do
       get :index
-      response.should be_success
+      expect(response).to be_success
     end
 
     it 'finds all products' do
@@ -21,12 +21,12 @@ describe ProductsController do
     it 'assigns found products, grouped by category' do
       stub(Product).front_page { @products }
       get :index
-      assigns[:products].should == { 'Excellent' => @products }
+      expect(assigns[:products]).to eq({ 'Excellent' => @products })
     end
 
     it 'renders the index template' do
       get :index
-      response.should render_template('index')
+      expect(response).to render_template('index')
     end
   end
 end

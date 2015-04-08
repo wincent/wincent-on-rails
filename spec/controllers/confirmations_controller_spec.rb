@@ -11,25 +11,25 @@ describe ConfirmationsController do
 
       it 'assigns a new confirmation object' do
         get :new
-        assigns[:confirmation].should be_kind_of(Confirmation)
-        assigns[:confirmation].should be_new_record
+        expect(assigns[:confirmation]).to be_kind_of(Confirmation)
+        expect(assigns[:confirmation]).to be_new_record
       end
 
       it 'renders the confirmations/new template' do
         get :new
-        response.should render_template('confirmations/new')
+        expect(response).to render_template('confirmations/new')
       end
 
       it 'succeeds' do
         get :new
-        response.should be_success
+        expect(response).to be_success
       end
     end
 
     context 'as an anonymous user' do
       it 'redirects to the login page' do
         get :new
-        response.should redirect_to('/login')
+        expect(response).to redirect_to('/login')
       end
     end
   end
@@ -51,8 +51,8 @@ describe ConfirmationsController do
         end
 
         it 'creates a confirmation' do
-          lambda { do_post }.
-            should change { @unverified.confirmations.count }.by(1)
+          expect { do_post }.
+            to change { @unverified.confirmations.count }.by(1)
         end
 
         it 'sends a confirmation message' do
@@ -63,13 +63,13 @@ describe ConfirmationsController do
 
         it 'shows a flash on success' do
           do_post
-          flash[:notice].first.should =~ /sent to #{@unverified.address}/
+          expect(flash[:notice].first).to match(/sent to #{@unverified.address}/)
         end
 
         it 'shows a flash on failure' do
           stub.instance_of(ActionMailer::MessageDelivery).deliver_now { raise }
           do_post
-          flash[:error].first.should =~ /an error occurred/i
+          expect(flash[:error].first).to match(/an error occurred/i)
         end
       end
 
@@ -91,14 +91,14 @@ describe ConfirmationsController do
 
       it 'redirects to the user profile' do
         post :create
-        response.should redirect_to(user_path @user)
+        expect(response).to redirect_to(user_path @user)
       end
     end
 
     context 'as an anonymous user' do
       it 'redirects to the login page' do
         post :create
-        response.should redirect_to('/login')
+        expect(response).to redirect_to('/login')
       end
     end
   end
@@ -120,12 +120,12 @@ describe ConfirmationsController do
 
       it 'redirects to /' do
         do_get
-        response.should redirect_to('/')
+        expect(response).to redirect_to('/')
       end
 
       it 'shows a flash' do
         do_get
-        flash[:error].should =~ /not found/
+        expect(flash[:error]).to match(/not found/)
       end
     end
 
@@ -134,12 +134,12 @@ describe ConfirmationsController do
 
       it 'redirects to /login' do
         do_get
-        response.should redirect_to('/login')
+        expect(response).to redirect_to('/login')
       end
 
       it 'shows a flash' do
         do_get
-        flash[:notice].should =~ /already confirmed/
+        expect(flash[:notice]).to match(/already confirmed/)
       end
     end
 
@@ -148,12 +148,12 @@ describe ConfirmationsController do
 
       it 'redirects to /' do
         do_get
-        response.should redirect_to('/')
+        expect(response).to redirect_to('/')
       end
 
       it 'shows a flash' do
         do_get
-        flash[:error].should =~ /expiry date has already passed/
+        expect(flash[:error]).to match(/expiry date has already passed/)
       end
     end
 
@@ -166,23 +166,23 @@ describe ConfirmationsController do
       end
 
       it 'sets completed_at' do
-        (confirmation.completed_at - Time.now).should< 1.second
+        expect(confirmation.completed_at - Time.now).tobe < 1.second
       end
 
       it 'marks the associated email as verified' do
-        confirmation.email.verified.should == true
+        expect(confirmation.email.verified).to eq(true)
       end
 
       it 'marks the associated user as verified' do
-        confirmation.email.user.verified.should == true
+        expect(confirmation.email.user.verified).to eq(true)
       end
 
       it 'shows a flash' do
-        flash[:notice].should =~ /successfully confirmed email/i
+        expect(flash[:notice]).to match(/successfully confirmed email/i)
       end
 
       it 'redirects to /dashboard' do
-        response.should redirect_to('/dashboard')
+        expect(response).to redirect_to('/dashboard')
       end
     end
   end

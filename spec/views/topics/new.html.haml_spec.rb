@@ -15,7 +15,7 @@ describe 'topics/new' do
 
     # was a bug (was only showing for admin user)
     it 'has a submit button' do
-      rendered.should have_css('input[type=submit]')
+      expect(rendered).to have_css('input[type=submit]')
     end
   end
 end

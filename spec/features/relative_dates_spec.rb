@@ -7,11 +7,11 @@ feature 'dynamic relative dates' do
 
   scenario 'viewing the wiki index with JavaScript enabled', :js do
     visit '/wiki'
-    page.should have_content('5 days ago')
+    expect(page).to have_content('5 days ago')
   end
 
   scenario 'viewing the wiki index without JavaScript' do
     visit '/wiki'
-    page.should_not have_content('5 days ago')
+    expect(page).not_to have_content('5 days ago')
   end
 end

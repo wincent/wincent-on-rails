@@ -10,8 +10,8 @@ describe 'links/index' do
 
   it 'renders list of links' do
     render
-    rendered.should have_css('tr>td', text: 'perma98')
-    rendered.should have_css('tr>td', text: 'perma99')
+    expect(rendered).to have_css('tr>td', text: 'perma98')
+    expect(rendered).to have_css('tr>td', text: 'perma99')
   end
 
   it 'uses sortable header cells' do

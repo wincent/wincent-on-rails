@@ -12,7 +12,7 @@ describe "/articles/new.html.haml" do
   it "should render new form" do
     #render "/articles/new.html.haml"
     pending
-    response.should have_tag("form[action=?][method=post]", articles_path) do
+    expect(response).to have_tag("form[action=?][method=post]", articles_path) do
     end
   end
 end

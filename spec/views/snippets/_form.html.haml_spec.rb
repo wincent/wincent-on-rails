@@ -15,7 +15,7 @@ describe 'snippets/_form' do
 
   it 'has a form' do
     render
-    rendered.should have_css("form[action='#{snippet_path(@snippet)}']")
+    expect(rendered).to have_css("form[action='#{snippet_path(@snippet)}']")
   end
 
   it 'renders the preview partial' do

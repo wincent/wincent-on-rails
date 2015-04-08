@@ -28,13 +28,13 @@ describe 'Factories' do
 
     describe "#{model_class}.make!" do
       it 'produces a valid instance' do
-        model_class.make!.should be_valid
+        expect(model_class.make!).to be_valid
       end
     end
 
     describe "#{model_class}.make" do
       it 'produces a valid instance' do
-        model_class.make.should be_valid
+        expect(model_class.make).to be_valid
       end
     end
   end

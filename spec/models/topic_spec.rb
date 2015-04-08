@@ -4,95 +4,95 @@ describe Topic do
   describe 'attributes' do
     describe '#title' do
       it 'defaults to nil' do
-        Topic.new.title.should be_nil
+        expect(Topic.new.title).to be_nil
       end
     end
 
     describe '#body' do
       it 'defaults to nil' do
-        Topic.new.body.should be_nil
+        expect(Topic.new.body).to be_nil
       end
     end
 
     describe '#forum_id' do
       it 'defaults to nil' do
-        Topic.new.forum_id.should be_nil
+        expect(Topic.new.forum_id).to be_nil
       end
     end
 
     describe '#user_id' do
       it 'defaults to nil' do
-        Topic.new.user_id.should be_nil
+        expect(Topic.new.user_id).to be_nil
       end
     end
 
     describe '#public' do
       it 'defaults to true' do
-        Topic.new.public.should == true
+        expect(Topic.new.public).to eq(true)
       end
     end
 
     describe '#accepts_comments' do
       it 'defaults to true' do
-        Topic.new.accepts_comments.should == true
+        expect(Topic.new.accepts_comments).to eq(true)
       end
     end
 
     describe '#awaiting_moderation' do
       it 'defaults to true' do
-        Topic.new.awaiting_moderation.should == true
+        expect(Topic.new.awaiting_moderation).to eq(true)
       end
     end
 
     describe '#comments_count' do
       it 'defaults to zero' do
-        Topic.new.comments_count.should be_zero
+        expect(Topic.new.comments_count).to be_zero
       end
     end
 
     describe '#view_count' do
       it 'defaults to zero' do
-        Topic.new.view_count.should be_zero
+        expect(Topic.new.view_count).to be_zero
       end
     end
 
     describe '#created_at' do
       it 'defaults to nil' do
-        Topic.new.created_at.should be_nil
+        expect(Topic.new.created_at).to be_nil
       end
     end
 
     describe '#updated_at' do
       it 'defaults to nil' do
-        Topic.new.updated_at.should be_nil
+        expect(Topic.new.updated_at).to be_nil
       end
     end
 
     describe '#last_commenter_id' do
       it 'defaults to nil' do
-        Topic.new.last_commenter_id.should be_nil
+        expect(Topic.new.last_commenter_id).to be_nil
       end
     end
 
     describe '#last_comment_id' do
       it 'defaults to nil' do
-        Topic.new.last_comment_id.should be_nil
+        expect(Topic.new.last_comment_id).to be_nil
       end
     end
 
     describe '#last_commented_at' do
       it 'defaults to nil' do
-        Topic.new.last_commented_at.should be_nil
+        expect(Topic.new.last_commented_at).to be_nil
       end
     end
   end
 
   it 'should be valid' do
-    Topic.make.should be_valid
+    expect(Topic.make).to be_valid
   end
 
   it 'should update timestamps for comment changes' do
-    Topic.update_timestamps_for_comment_changes?.should == true
+    expect(Topic.update_timestamps_for_comment_changes?).to eq(true)
   end
 
   # we test a value larger than the default MySQL TEXT size (65535)
@@ -100,9 +100,9 @@ describe Topic do
     # make sure the long body survives the round-trip from the db
     long_body = ('x' * 127 + ' ') * 1024
     topic = Topic.make! body: long_body
-    topic.body.length.should == long_body.length
+    expect(topic.body.length).to eq(long_body.length)
     topic.reload
-    topic.body.length.should == long_body.length
+    expect(topic.body.length).to eq(long_body.length)
   end
 
   it_has_behavior '#moderate_as_ham!' do
@@ -121,26 +121,26 @@ end
 
 describe Topic, 'validating the body' do
   it 'should require it to be present' do
-    Topic.make(body: nil).should fail_validation_for(:body)
+    expect(Topic.make(body: nil)).to fail_validation_for(:body)
   end
 
   it 'should complain if longer than 128k' do
     long_body = 'x' * (128 * 1024 + 100)
-    Topic.make(body: long_body).should fail_validation_for(:body)
+    expect(Topic.make(body: long_body)).to fail_validation_for(:body)
   end
 end
 
 describe Topic, 'creation' do
   it 'should default to being public' do
-    Topic.create.public.should == true
+    expect(Topic.create.public).to eq(true)
   end
 
   it 'should default to accepting comments' do
-    Topic.create.accepts_comments.should == true
+    expect(Topic.create.accepts_comments).to eq(true)
   end
 
   it 'should default to awaiting moderation' do
-    Topic.create.awaiting_moderation.should == true
+    expect(Topic.create.awaiting_moderation).to eq(true)
   end
 end
 
@@ -155,7 +155,7 @@ describe Topic, 'forum association' do
   end
 
   it 'should belong to a forum' do
-    @topic.forum.should == @forum
+    expect(@topic.forum).to eq(@forum)
   end
 
   it 'should employ a counter cache' do
@@ -163,7 +163,7 @@ describe Topic, 'forum association' do
     start = @forum.reload.topics_count
     add_topic
     stop  = @forum.reload.topics_count
-    (stop - start).should == 1
+    expect(stop - start).to eq(1)
   end
 end
 
@@ -171,7 +171,7 @@ describe Topic, 'user association' do
   it 'should belong to a user' do
     user  = User.make!
     topic = user.topics.new
-    topic.user.should == user
+    expect(topic.user).to eq(user)
   end
 end
 
@@ -186,11 +186,11 @@ describe Topic, '"last commenter" association' do
     @comment.user = @user
     @comment.save
     @comment.moderate_as_ham! # only here does the last commenter actually get set
-    @topic.reload.last_commenter.should == @user
+    expect(@topic.reload.last_commenter).to eq(@user)
   end
 
   it 'should return nil if no last commenter' do
-    @topic.last_commenter.should be_nil
+    expect(@topic.last_commenter).to be_nil
   end
 end
 
@@ -204,10 +204,10 @@ describe Topic, 'comments association' do
   end
 
   it 'should have many comments' do
-    lambda {
+    expect {
       10.times { add_comment }
       @topic.reload
-    }.should change(@topic.comments, :length).by(10)
+    }.to change(@topic.comments, :length).by(10)
   end
 
   it 'should order comments in ascending order by creation date' do
@@ -215,12 +215,12 @@ describe Topic, 'comments association' do
       comment = add_comment
       Comment.where(id: comment).update_all(['updated_at = ?', comment.id.days.from_now])
     end
-    @topic.comments.pluck(:id).should == Comment.order('created_at').pluck(:id)
+    expect(@topic.comments.pluck(:id)).to eq(Comment.order('created_at').pluck(:id))
   end
 
   it 'should destroy dependent comments when destroying' do
     10.times { add_comment }
-    lambda { @topic.destroy }.should change(Comment, :count).by(-10)
+    expect { @topic.destroy }.to change(Comment, :count).by(-10)
   end
 end
 
@@ -241,19 +241,19 @@ describe Topic, '"find_topics_for_forum" method' do
   end
 
   it 'should select the topic id' do
-    Topic.find_topics_for_forum(@forum).first.id.should == @topic.id
+    expect(Topic.find_topics_for_forum(@forum).first.id).to eq(@topic.id)
   end
 
   it 'should select the topic title' do
-    Topic.find_topics_for_forum(@forum).first.title.should == @topic.title
+    expect(Topic.find_topics_for_forum(@forum).first.title).to eq(@topic.title)
   end
 
   it 'should select the comments count' do
-    Topic.find_topics_for_forum(@forum).first.comments_count.should == @topic.comments_count
+    expect(Topic.find_topics_for_forum(@forum).first.comments_count).to eq(@topic.comments_count)
   end
 
   it 'should select the view count' do
-    Topic.find_topics_for_forum(@forum).first.view_count.should == @topic.view_count
+    expect(Topic.find_topics_for_forum(@forum).first.view_count).to eq(@topic.view_count)
   end
 
   it 'should select the update date' do
@@ -261,67 +261,67 @@ describe Topic, '"find_topics_for_forum" method' do
     # otherwise, Thu Apr 03 18:30:09 +0200 2008
     #        and Thu Apr 03 18:30:09 +0200 2008
     # might not be considered equal
-    Topic.find_topics_for_forum(@forum).first.updated_at.to_s.should == @topic.updated_at.to_s
+    expect(Topic.find_topics_for_forum(@forum).first.updated_at.to_s).to eq(@topic.updated_at.to_s)
   end
 
   it 'should select the last comment id (when available)' do
     comment = add_comment
-    Topic.find_topics_for_forum(@forum).first.last_comment_id.should == comment.id
+    expect(Topic.find_topics_for_forum(@forum).first.last_comment_id).to eq(comment.id)
   end
 
   it 'should select nil for the last comment id (when not available)' do
-    Topic.find_topics_for_forum(@forum).first.last_comment_id.should be_nil
+    expect(Topic.find_topics_for_forum(@forum).first.last_comment_id).to be_nil
   end
 
   it 'should select the last active user id (when a comment has been posted)' do
     # we're using find_by_sql here, so Rails returns a String, hence the to_i
     comment = add_comment user: @user
-    Topic.find_topics_for_forum(@forum).first.last_active_user_id.to_i.should == @user.id
+    expect(Topic.find_topics_for_forum(@forum).first.last_active_user_id.to_i).to eq(@user.id)
   end
 
   it 'should select the last active user id (when no comments have been posted)' do
     topic = Topic.make! user: @user, awaiting_moderation: false
-    Topic.find_topics_for_forum(topic.forum).first.last_active_user_id.to_i.should == @user.id
+    expect(Topic.find_topics_for_forum(topic.forum).first.last_active_user_id.to_i).to eq(@user.id)
   end
 
   it 'should return nil last active user id for anonymous commenters' do
     comment = add_comment user: nil
-    Topic.find_topics_for_forum(@forum).first.last_active_user_id.should == nil
+    expect(Topic.find_topics_for_forum(@forum).first.last_active_user_id).to eq(nil)
   end
 
   it 'should return nil last active user id for anonymous topic posters (nil)' do
     topic = Topic.make! user: nil, awaiting_moderation: false
-    Topic.find_topics_for_forum(topic.forum).first.last_active_user_id.should == nil
+    expect(Topic.find_topics_for_forum(topic.forum).first.last_active_user_id).to eq(nil)
   end
 
   it 'should select the last active user displayname (when a comment has been posted)' do
     comment = add_comment user: @user
-    Topic.find_topics_for_forum(@forum).first.last_active_user_display_name.should == @user.display_name
+    expect(Topic.find_topics_for_forum(@forum).first.last_active_user_display_name).to eq(@user.display_name)
   end
 
   it 'should select the last active user displayname (when no comments have been posted)' do
     topic = Topic.make! user: @user, awaiting_moderation: false
-    Topic.find_topics_for_forum(topic.forum).first.last_active_user_display_name.should == @user.display_name
+    expect(Topic.find_topics_for_forum(topic.forum).first.last_active_user_display_name).to eq(@user.display_name)
   end
 
   it 'should return nil last active user displayname for anonymous commenters' do
     comment = add_comment user: nil
-    Topic.find_topics_for_forum(@forum).first.last_active_user_display_name.should == nil
+    expect(Topic.find_topics_for_forum(@forum).first.last_active_user_display_name).to eq(nil)
   end
 
   it 'should return nil last active user displayname for anonymous topic posters' do
     topic = Topic.make! user: nil, awaiting_moderation: false
-    Topic.find_topics_for_forum(topic.forum).first.last_active_user_display_name.should == nil
+    expect(Topic.find_topics_for_forum(topic.forum).first.last_active_user_display_name).to eq(nil)
   end
 
   it 'should find only topics which have already passed moderation' do
     @topic.update_attribute(:awaiting_moderation, true)
-    Topic.find_topics_for_forum(@forum).should == []
+    expect(Topic.find_topics_for_forum(@forum)).to eq([])
   end
 
   it 'should find only topics which are public' do
     @topic.update_attribute(:public, false)
-    Topic.find_topics_for_forum(@forum).should == []
+    expect(Topic.find_topics_for_forum(@forum)).to eq([])
   end
 
   it 'should order the results by update date in descending order' do
@@ -331,12 +331,12 @@ describe Topic, '"find_topics_for_forum" method' do
       Topic.where(id: topic).update_all(['updated_at = ?', topic.id.days.from_now])
     end
     topic_ids = Topic.find_topics_for_forum(forum).collect(&:id)
-    topic_ids.should == topic_ids.sort.reverse
+    expect(topic_ids).to eq(topic_ids.sort.reverse)
   end
 
   it 'should include topics even if they have no comments' do
     @topic.comments.each(&:destroy)
-    Topic.find_topics_for_forum(@forum).length.should == 1
+    expect(Topic.find_topics_for_forum(@forum).length).to eq(1)
   end
 
   it 'should respect the offset and limit parameters' do
@@ -347,22 +347,22 @@ describe Topic, '"find_topics_for_forum" method' do
       topic_ids << topic.id
       Topic.where(id: topic).update_all(['updated_at = ?', topic.id.days.from_now])
     end
-    Topic.find_topics_for_forum(forum, 10, 30).collect(&:id).should == topic_ids.reverse[10..39] # 30 records
+    expect(Topic.find_topics_for_forum(forum, 10, 30).collect(&:id)).to eq(topic_ids.reverse[10..39]) # 30 records
   end
 
   it 'should default to an offset of 0' do
-    Topic.find_topics_for_forum(@forum).first.should == @topic
+    expect(Topic.find_topics_for_forum(@forum).first).to eq(@topic)
   end
 
   it 'should default to a limit of 20' do
     forum = Forum.make!
     100.times { Topic.make! forum: forum, awaiting_moderation: false }
-    Topic.find_topics_for_forum(forum).length.should == 20
+    expect(Topic.find_topics_for_forum(forum).length).to eq(20)
   end
 
   it 'should return nothing when there are no topics' do
     @forum.topics.delete_all
-    Topic.find_topics_for_forum(@forum).should == []
+    expect(Topic.find_topics_for_forum(@forum)).to eq([])
   end
 end
 
@@ -386,13 +386,13 @@ describe Topic, '"comments.published"' do
   end
 
   it 'should find all published comments' do
-    @topic.comments.published.to_a.should =~ [@comment1, @comment5]
+    expect(@topic.comments.published.to_a).to match_array([@comment1, @comment5])
   end
 
   it 'should order results by comment creation date in ascending order' do
     Comment.where(id: @comment1).update_all(['created_at = ?', 7.days.ago])
     Comment.where(id: @comment5).update_all(['created_at = ?', 3.days.ago])
-    @topic.comments.published.pluck(:id).should == [@comment1.id, @comment5.id]
+    expect(@topic.comments.published.pluck(:id)).to eq([@comment1.id, @comment5.id])
   end
 end
 
@@ -403,7 +403,7 @@ describe Topic, '"hit!" method' do
     start = topic.view_count
     topic.hit!
     stop = topic.reload.view_count
-    (stop - start).should == 1
+    expect(stop - start).to eq(1)
   end
 end
 
@@ -442,7 +442,7 @@ describe Topic, 'send_new_topic_alert callback' do
 
   it 'should rescue exceptions rather than dying' do
     stub(TopicMailer).new_topic_alert(anything) { raise 'fatal error!' }
-    lambda { @topic.save }.should_not raise_error
+    expect { @topic.save }.not_to raise_error
   end
 
   it 'should log an error message on failure' do

@@ -18,11 +18,11 @@ describe 'repos/new' do
 
   it 'has a form for the repo' do
     render
-    rendered.should have_css("form[method=post][action='/repos']")
+    expect(rendered).to have_css("form[method=post][action='/repos']")
   end
 
   it 'has a link to the repos index' do
     render
-    rendered.should have_link('index', href: '/repos')
+    expect(rendered).to have_link('index', href: '/repos')
   end
 end

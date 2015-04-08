@@ -48,7 +48,7 @@ describe Admin::ForumsController do
 
       it 'assigns found forum' do
         do_request
-        assigns[:forum].should == forum
+        expect(assigns[:forum]).to eq(forum)
       end
 
       it 'renders as JSON' do
@@ -59,11 +59,11 @@ describe Admin::ForumsController do
       it 'includes only name, description and position' do
         do_request
         json = JSON.parse(response.body)
-        json['forum'].should == {
+        expect(json['forum']).to eq({
           'name'        => forum.name,
           'description' => nil,
           'position'    => 0,
-        }
+        })
       end
     end
   end
@@ -91,17 +91,17 @@ describe Admin::ForumsController do
 
       it 'assigns found forum' do
         do_request
-        assigns[:forum].should == @forum
+        expect(assigns[:forum]).to eq(@forum)
       end
 
       it 'updates the forum attributes' do
         do_request
-        @forum.reload.description.should == 'foo'
+        expect(@forum.reload.description).to eq('foo')
       end
 
       it 'redirects to /admin/forums#show' do
         do_request
-        response.should redirect_to("/admin/forums/#{@forum.id}")
+        expect(response).to redirect_to("/admin/forums/#{@forum.id}")
       end
 
       context 'with invalid attributes' do
@@ -111,11 +111,11 @@ describe Admin::ForumsController do
         end
 
         it 'returns status 422' do
-          response.status.should == 422
+          expect(response.status).to eq(422)
         end
 
         it 'renders failure text' do
-          response.body.should match(/update failed/i)
+          expect(response.body).to match(/update failed/i)
         end
       end
     end

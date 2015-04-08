@@ -11,7 +11,7 @@ describe "/articles/edit.html.haml" do
   it "should render edit form" do
     #render "/articles/edit.html.haml"
     pending
-    response.should have_tag("form[action=#{article_path(@article)}][method=post]") do
+    expect(response).to have_tag("form[action=#{article_path(@article)}][method=post]") do
     end
   end
 end

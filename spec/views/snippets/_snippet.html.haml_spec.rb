@@ -11,7 +11,7 @@ describe 'snippets/_snippet' do
 
   it 'links to the snippet' do
     do_render
-    rendered.should have_link('Snippet', href: snippet_path(snippet))
+    expect(rendered).to have_link('Snippet', href: snippet_path(snippet))
   end
 
   it 'shows timeinfo for the snippet' do
@@ -21,12 +21,12 @@ describe 'snippets/_snippet' do
 
   it 'has a comment link' do
     do_render
-    rendered.
-      should have_link('comment', href: new_snippet_comment_path(snippet))
+    expect(rendered).
+      to have_link('comment', href: new_snippet_comment_path(snippet))
   end
 
   it 'shows the snippet body HTML' do
     do_render
-    rendered.should have_css('em', text: 'foo')
+    expect(rendered).to have_css('em', text: 'foo')
   end
 end

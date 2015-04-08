@@ -44,13 +44,13 @@ EMAIL
     end
 
     it 'should accept text/plain emails' do
-      lambda { SupportMailer.receive @email }.should_not raise_error
+      expect { SupportMailer.receive @email }.not_to raise_error
     end
 
     it 'should create a Message object' do
-      lambda {
+      expect {
         SupportMailer.receive @email
-      }.should change {
+      }.to change {
         # check for this specific message because a secondary message gets
         # sent out when we create a new ticket in the issue tracker
         Message.where(:message_id_header => @message_id).count
@@ -60,46 +60,46 @@ EMAIL
     it 'should should set the attribtues on the Message object' do
       SupportMailer.receive @email
       message = Message.where(:message_id_header => @message_id).first
-      message.subject_header.should == "Can't print"
-      message.in_reply_to_header.should be_nil
-      message.body.should =~ /Can you help me\?/
-      message.to_header.should == 'support@wincent.com'
-      message.from_header.should == 'win@wincent.com'
+      expect(message.subject_header).to eq("Can't print")
+      expect(message.in_reply_to_header).to be_nil
+      expect(message.body).to match(/Can you help me\?/)
+      expect(message.to_header).to eq('support@wincent.com')
+      expect(message.from_header).to eq('win@wincent.com')
     end
 
     it 'should create an Issue object' do
-      lambda {
+      expect {
         SupportMailer.receive @email
-      }.should change(Issue, :count).by(1)
+      }.to change(Issue, :count).by(1)
     end
 
     it 'should set the issue summary to the email subject header' do
       SupportMailer.receive @email
-      Issue.last.summary.should == "Can't print"
+      expect(Issue.last.summary).to eq("Can't print")
     end
 
     it 'should set the issue description to the email body' do
       SupportMailer.receive @email
-      Issue.last.description.should =~ /Can you help me\?/
+      expect(Issue.last.description).to match(/Can you help me\?/)
     end
 
     # TODO: change this; we'll create a non-confirmed user account for such users
     it 'should leave the issue as anonymous for emails from unregistered users' do
       SupportMailer.receive @email
-      Issue.last.user.should be_nil
+      expect(Issue.last.user).to be_nil
     end
 
     # BUG: possible security issue here because emails are so easily spoofed
     it 'should assign issue ownership to the user for emails from registered users' do
       email = Email.make! :address => 'win@wincent.com'
       SupportMailer.receive @email
-      Issue.last.user.should == email.user
+      expect(Issue.last.user).to eq(email.user)
     end
 
     it 'should set the issue as the "related" model for the Message record' do
       SupportMailer.receive @email
       message = Message.where(:message_id_header => @message_id).first
-      message.related.should == Issue.last
+      expect(message.related).to eq(Issue.last)
     end
   end
 end
@@ -107,35 +107,35 @@ end
 describe SupportMailer, 'regressions' do
   it 'should handle incoming mails without valid "To" headers' do
     pending 'Under Rails 3 bad emails cause an exception before we even reach our receive() method'
-    lambda {
+    expect {
       SupportMailer.receive sample_email('real/dodgy-to-header')
-    }.should_not raise_error
+    }.not_to raise_error
   end
 
   it 'should handle incoming mails without "To" headers' do
     pending 'Under Rails 3 bad emails cause an exception before we even reach our receive() method'
-    lambda {
+    expect {
       SupportMailer.receive sample_email('fake/no-to-header')
-    }.should_not raise_error
+    }.not_to raise_error
   end
 
   it 'should handle incoming mails without valid "From" headers' do
     pending 'Under Rails 3 bad emails cause an exception before we even reach our receive() method'
-    lambda {
+    expect {
       SupportMailer.receive sample_email('fake/dodgy-from-header')
-    }.should_not raise_error
+    }.not_to raise_error
   end
 
   it 'should handle incoming mails without "From" headers' do
     pending 'Under Rails 3 bad emails cause an exception before we even reach our receive() method'
-    lambda {
+    expect {
       SupportMailer.receive sample_email('fake/no-from-header')
-    }.should_not raise_error
+    }.not_to raise_error
   end
 
   it 'should keep the new_issue_from_message method private' do
-    lambda {
+    expect {
       SupportMailer.new_issue_from_message
-    }.should raise_error(NoMethodError)
+    }.to raise_error(NoMethodError)
   end
 end

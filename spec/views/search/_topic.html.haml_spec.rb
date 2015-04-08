@@ -12,25 +12,25 @@ describe 'search/_topic' do
 
   it 'shows the result number' do
     do_render
-    rendered.should have_content(@result_number.to_s)
+    expect(rendered).to have_content(@result_number.to_s)
   end
 
   it 'uses the topic title as link text' do
     do_render
-    rendered.should have_link(@topic.title)
+    expect(rendered).to have_link(@topic.title)
   end
 
   # was a bug
   it 'escapes HTML special characters in the topic summary' do
     @topic = Topic.make! title: '<em>foo</em>'
     do_render
-    rendered.should match('&lt;em&gt;foo&lt;/em&gt;')
-    rendered.should_not have_css('em', text: 'foo')
+    expect(rendered).to match('&lt;em&gt;foo&lt;/em&gt;')
+    expect(rendered).not_to have_css('em', text: 'foo')
   end
 
   it 'links to the topic' do
     do_render
-    rendered.should have_link(@topic.title, href: topic_path(@topic))
+    expect(rendered).to have_link(@topic.title, href: topic_path(@topic))
   end
 
   it 'shows the timeinfo for the topic' do

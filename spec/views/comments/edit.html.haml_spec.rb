@@ -12,12 +12,12 @@ describe 'comments/edit' do
 
   it 'has a div for the comment' do
     render
-    rendered.should have_css("\#comment_#{@comment.id}")
+    expect(rendered).to have_css("\#comment_#{@comment.id}")
   end
 
   it 'has a show button' do
     render
-    rendered.should have_link('show', href: comment_path(@comment))
+    expect(rendered).to have_link('show', href: comment_path(@comment))
   end
 
   it 'has a destroy button' do
@@ -40,11 +40,11 @@ describe 'comments/edit' do
 
   it 'has a link back to the list of comments awaiting moderation' do
     render
-    rendered.should have_link('comments', href: comments_path)
+    expect(rendered).to have_link('comments', href: comments_path)
   end
 
   it 'has a link back to the administrator dashboard' do
     render
-    rendered.should have_link('administrator dashboard', href: admin_dashboard_path)
+    expect(rendered).to have_link('administrator dashboard', href: admin_dashboard_path)
   end
 end

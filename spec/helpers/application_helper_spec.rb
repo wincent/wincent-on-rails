@@ -20,7 +20,7 @@ describe ApplicationHelper, 'timeinfo method' do
     date = 2.days.ago
     mock(@model).created_at { date }
     mock(@model).updated_at { date }
-    timeinfo(@model).should =~ /#{Regexp.escape date.xmlschema}/
+    expect(timeinfo(@model)).to match(/#{Regexp.escape date.xmlschema}/)
   end
 
   it 'returns just the creation date if update and creation date are the same (fuzzy match)' do
@@ -28,8 +28,8 @@ describe ApplicationHelper, 'timeinfo method' do
     later_date    = (2.days + 1.hour).ago
     mock(@model).created_at { earlier_date }
     mock(@model).updated_at { later_date }
-    earlier_date.distance_in_words.should == later_date.distance_in_words # check our assumption about fuzzy equality
-    timeinfo(@model).should =~ /#{Regexp.escape earlier_date.xmlschema}/
+    expect(earlier_date.distance_in_words).to eq(later_date.distance_in_words) # check our assumption about fuzzy equality
+    expect(timeinfo(@model)).to match(/#{Regexp.escape earlier_date.xmlschema}/)
   end
 
   it 'returns both creation and edit date if different' do
@@ -37,10 +37,10 @@ describe ApplicationHelper, 'timeinfo method' do
     later_date    = 1.hour.ago
     mock(@model).created_at { earlier_date }
     mock(@model).updated_at { later_date }
-    earlier_date.distance_in_words.should_not == later_date.distance_in_words # check our assumption about inequality
+    expect(earlier_date.distance_in_words).not_to eq(later_date.distance_in_words) # check our assumption about inequality
     info = timeinfo(@model)
-    info.should =~ /Created.+#{Regexp.escape earlier_date.xmlschema}/
-    info.should =~ /updated.+#{Regexp.escape later_date.xmlschema}/
+    expect(info).to match(/Created.+#{Regexp.escape earlier_date.xmlschema}/)
+    expect(info).to match(/updated.+#{Regexp.escape later_date.xmlschema}/)
   end
 
   it 'allows you to override the "updated" string' do
@@ -50,8 +50,8 @@ describe ApplicationHelper, 'timeinfo method' do
     mock(@model).created_at { earlier_date }
     mock(@model).updated_at { later_date }
     info = timeinfo(@model, updated_string: 'edited')
-    info.should =~ /Created.+#{Regexp.escape earlier_date.xmlschema}/
-    info.should =~ /edited.+#{Regexp.escape later_date.xmlschema}/
+    expect(info).to match(/Created.+#{Regexp.escape earlier_date.xmlschema}/)
+    expect(info).to match(/edited.+#{Regexp.escape later_date.xmlschema}/)
   end
 
   it 'does not show the "updated" date at all if "updated_string" is set to false' do
@@ -60,25 +60,25 @@ describe ApplicationHelper, 'timeinfo method' do
     mock(@model).created_at { earlier_date }
     mock(@model).updated_at { later_date }
     info = timeinfo @model, updated_string: false
-    info.should =~ /#{Regexp.escape earlier_date.xmlschema}/
-    info.should_not =~ /#{Regexp.escape later_date.xmlschema}/
+    expect(info).to match(/#{Regexp.escape earlier_date.xmlschema}/)
+    expect(info).not_to match(/#{Regexp.escape later_date.xmlschema}/)
   end
 end
 
 describe ApplicationHelper, 'underscores_to_spaces method' do
   it 'should return an array of name/id pairs' do
     hash = { 'foo' => 1, 'bar' => 2 }
-    underscores_to_spaces(hash).should =~ [['foo', 1], ['bar', 2]]
+    expect(underscores_to_spaces(hash)).to match_array([['foo', 1], ['bar', 2]])
   end
 
   it 'should convert underscores to spaces' do
     hash = { 'foo_bar' => 1, 'baz_bar' => 2 }
-    underscores_to_spaces(hash).should =~ [['foo bar', 1], ['baz bar', 2]]
+    expect(underscores_to_spaces(hash)).to match_array([['foo bar', 1], ['baz bar', 2]])
   end
 
   it 'should convert symbol-based keys to strings' do
     hash = { foo: 1, bar: 2 }
-    underscores_to_spaces(hash).should =~ [['foo', 1], ['bar', 2]]
+    expect(underscores_to_spaces(hash)).to match_array([['foo', 1], ['bar', 2]])
   end
 end
 
@@ -110,48 +110,48 @@ describe ApplicationHelper do
 
   describe '#breadcrumbs' do
     it 'returns an HTML-safe string' do
-      breadcrumbs('foo').should be_html_safe
+      expect(breadcrumbs('foo')).to be_html_safe
     end
 
     it 'escapes non-HTML-safe strings' do
-      breadcrumbs('"foo"').should match(/&quot;foo&quot;/)
+      expect(breadcrumbs('"foo"')).to match(/&quot;foo&quot;/)
     end
 
     # was a regression, introduced in the move from Rails 3.0.1 to 3.0.3
     it 'does not escape links' do
       # link_to returns HTML-safe strings, so mimic it
-      breadcrumbs('<a href="/foo">'.html_safe, 'bar').should match(%r{<a href="/foo">})
+      expect(breadcrumbs('<a href="/foo">'.html_safe, 'bar')).to match(%r{<a href="/foo">})
     end
 
     # was a regression, introduced in the move from Rails 3.0.1 to 3.0.3
     it 'does not inappropriately escape "raquo" entities' do
-      breadcrumbs('foo').should match(/&raquo;/)
+      expect(breadcrumbs('foo')).to match(/&raquo;/)
     end
   end
 
   describe '#commit_abbrev' do
     it 'returns the first 16 characters of the hash' do
-      commit_abbrev('1234abcd1234abcd999999999999999999999999').
-        should == '1234abcd1234abcd'
+      expect(commit_abbrev('1234abcd1234abcd999999999999999999999999')).
+        to eq('1234abcd1234abcd')
     end
   end
 
   describe '#commit_abbrev_with_tooltip' do
     it 'returns the first 16 characters of the hash with a tooltip' do
-      commit_abbrev_with_tooltip('1234abcd1234abcd999999999999999999999999').
-        should == '<span title="1234abcd1234abcd999999999999999999999999">1234abcd1234abcd</span>'
+      expect(commit_abbrev_with_tooltip('1234abcd1234abcd999999999999999999999999')).
+        to eq('<span title="1234abcd1234abcd999999999999999999999999">1234abcd1234abcd</span>')
     end
   end
 
   describe '#commit_author_time' do
     it 'returns the UTC time wrapped in a "relative-date" span' do
-      commit_author_time(first_commit).should == '<span class="relative-date">2007-10-05 11:06:44 UTC</span>'
+      expect(commit_author_time(first_commit)).to eq('<span class="relative-date">2007-10-05 11:06:44 UTC</span>')
     end
   end
 
   describe '#commit_committer_time' do
     it 'returns the UTC time wrapped in a "relative-date" span' do
-      commit_committer_time(first_commit).should == '<span class="relative-date">2007-10-05 11:06:44 UTC</span>'
+      expect(commit_committer_time(first_commit)).to eq('<span class="relative-date">2007-10-05 11:06:44 UTC</span>')
     end
   end
 
@@ -159,17 +159,17 @@ describe ApplicationHelper do
     it 'works with articles' do
       article = Article.make!
       link = link_to(article.title, article_path(article))
-      link_to_model(article).should == link
+      expect(link_to_model(article)).to eq(link)
     end
 
     it 'works with issues' do
       issue = Issue.make!
-      link_to_model(issue).should == link_to(issue.summary, issue_path(issue))
+      expect(link_to_model(issue)).to eq(link_to(issue.summary, issue_path(issue)))
     end
 
     it 'works with posts' do
       post = Post.make!
-      link_to_model(post).should == link_to(post.title, post_path(post))
+      expect(link_to_model(post)).to eq(link_to(post.title, post_path(post)))
     end
 
     context 'with a snippet' do
@@ -177,14 +177,14 @@ describe ApplicationHelper do
 
       # TODO: in next Capybara release use selector-based tests here
       it 'links to the snippet' do
-        link_to_model(snippet).should include(snippet_path(snippet))
+        expect(link_to_model(snippet)).to include(snippet_path(snippet))
       end
 
       context 'description is available' do
         let(:snippet) { Snippet.make! description: 'foobar' }
 
         it 'uses the snippet title' do
-          link_to_model(snippet).should =~ /foobar/
+          expect(link_to_model(snippet)).to match(/foobar/)
         end
       end
     end
@@ -192,51 +192,51 @@ describe ApplicationHelper do
     it 'works with topics' do
       topic = Topic.make!
       link = link_to(topic.title, topic_path(topic))
-      link_to_model(topic).should == link
+      expect(link_to_model(topic)).to eq(link)
     end
 
     # was a bug
     it 'escapes HTML special characters (such as in issue summaries)' do
       issue = Issue.make! summary: '<em>foo</em>'
-      link_to_model(issue).should_not =~ /<em>/
+      expect(link_to_model(issue)).not_to match(/<em>/)
     end
   end
 
   describe '#wikitext_truncate_and_strip' do
     it 'strips out wikitext markup' do
-      wikitext_truncate_and_strip("''fun''").should == 'fun' # quotes are gone
+      expect(wikitext_truncate_and_strip("''fun''")).to eq('fun') # quotes are gone
     end
 
     it 'truncates long output' do
-      wikitext_truncate_and_strip('long long long', length: 10).
-        should == 'long lo...'
+      expect(wikitext_truncate_and_strip('long long long', length: 10)).
+        to eq('long lo...')
     end
 
     it 'marks output as HTML-safe' do
       output = wikitext_truncate_and_strip 'foo & bar'
-      output.should be_html_safe        # it is marked as safe
-      output.should == 'foo &amp; bar'  # and it really is safe
+      expect(output).to be_html_safe        # it is marked as safe
+      expect(output).to eq('foo &amp; bar')  # and it really is safe
     end
 
     it 'applies any custom "omission" option' do
       output = wikitext_truncate_and_strip 'foo, bar, baz, bing, bong',
         length: 18, omission: '[snip]'
-      output.should == 'foo, bar, ba[snip]'
+      expect(output).to eq('foo, bar, ba[snip]')
     end
 
     context 'truncation which cuts an entity in half' do
       it 'removes the mangled entity' do
         output = wikitext_truncate_and_strip 'foo, bar & baz', length: 14
-        output.should == 'foo, bar ...' # safe output
-        output.should be_html_safe      # and marked as such
+        expect(output).to eq('foo, bar ...') # safe output
+        expect(output).to be_html_safe      # and marked as such
       end
     end
 
     context 'truncation which leaves entities intact' do
       it 'marks the output as HTML safe' do
         output = wikitext_truncate_and_strip 'foo & bar etc', length: 15
-        output.should == 'foo &amp; ba...'  # safe output
-        output.should be_html_safe          # and marked as such
+        expect(output).to eq('foo &amp; ba...')  # safe output
+        expect(output).to be_html_safe          # and marked as such
       end
     end
   end

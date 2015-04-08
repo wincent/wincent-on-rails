@@ -20,23 +20,23 @@ describe 'forums/edit' do
     render
     puts response.body
     within("form[action='#{forum_path(@forum)}']") do |form|
-      form.should have_css('input[name=_method][value=patch]')
-      form.should have_css("input[type=text][name='forum[name]']")
-      form.should have_css("input[type=text][name='forum[permalink]']")
-      form.should have_css("input[type=text][name='forum[description]']")
-      form.should have_css("input[type=text][name='forum[position]']")
-      form.should have_css("input[type=checkbox][name='forum[public]']")
-      form.should have_css('input[type=submit][value="Update Forum"]')
+      expect(form).to have_css('input[name=_method][value=patch]')
+      expect(form).to have_css("input[type=text][name='forum[name]']")
+      expect(form).to have_css("input[type=text][name='forum[permalink]']")
+      expect(form).to have_css("input[type=text][name='forum[description]']")
+      expect(form).to have_css("input[type=text][name='forum[position]']")
+      expect(form).to have_css("input[type=checkbox][name='forum[public]']")
+      expect(form).to have_css('input[type=submit][value="Update Forum"]')
     end
   end
 
   it 'has a "show" link' do
     render
-    rendered.should have_link('show', href: forum_path(@forum))
+    expect(rendered).to have_link('show', href: forum_path(@forum))
   end
 
   it 'has an "all forums" link' do
     render
-    rendered.should have_link('all forums', href: '/forums')
+    expect(rendered).to have_link('all forums', href: '/forums')
   end
 end

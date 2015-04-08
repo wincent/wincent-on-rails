@@ -16,7 +16,7 @@ describe 'dashboard/show' do
     end
 
     it 'provides a link to the admin dashboard' do
-      rendered.should have_link('Admin dashboard', href: admin_dashboard_path)
+      expect(rendered).to have_link('Admin dashboard', href: admin_dashboard_path)
     end
   end
 
@@ -29,7 +29,7 @@ describe 'dashboard/show' do
     end
 
     it 'does not provide a link to the admin dashboard' do
-      rendered.should_not have_css("a[href='#{admin_dashboard_path}']")
+      expect(rendered).not_to have_css("a[href='#{admin_dashboard_path}']")
     end
   end
 end

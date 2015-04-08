@@ -8,11 +8,11 @@ describe 'tags/show' do
 
   it 'has an "all tags" link' do
     render
-    rendered.should have_css('.links a[href="/tags"]')
+    expect(rendered).to have_css('.links a[href="/tags"]')
   end
 
   it 'has a "tag search" link' do
     render
-    rendered.should have_css('.links a[href="/tags/search"]')
+    expect(rendered).to have_css('.links a[href="/tags/search"]')
   end
 end

@@ -8,8 +8,8 @@ describe 'links/new' do
   it 'renders new form' do
     render
     within("form[method=post][action='#{links_path}']") do |form|
-      form.should have_css('input#link_uri[name="link[uri]"]')
-      form.should have_css('input#link_permalink[name="link[permalink]"]')
+      expect(form).to have_css('input#link_uri[name="link[uri]"]')
+      expect(form).to have_css('input#link_permalink[name="link[permalink]"]')
     end
   end
 end

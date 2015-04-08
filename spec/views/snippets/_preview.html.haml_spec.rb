@@ -13,6 +13,6 @@ describe 'snippets/_preview' do
 
   it 'shows the snippet body HTML' do
     render
-    rendered.should have_css('em', text: 'foo')
+    expect(rendered).to have_css('em', text: 'foo')
   end
 end

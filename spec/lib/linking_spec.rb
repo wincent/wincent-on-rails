@@ -3,58 +3,58 @@ require 'spec_helper'
 describe Linking do
   describe 'Linking::LINK_REGEX' do
     it 'matches basic wiki links' do
-      '[[foo bar]]'.should match(Linking::LINK_REGEX)
+      expect('[[foo bar]]').to match(Linking::LINK_REGEX)
     end
 
     it 'captures the subpattern inside the brackets' do
       '[[foo bar]]'.match(Linking::LINK_REGEX)
-      $~[1].should == 'foo bar'
+      expect($~[1]).to eq('foo bar')
     end
 
     it 'ignores leading and trailing whitespace' do
-      '   [[foo bar]]   '.should match(Linking::LINK_REGEX)
+      expect('   [[foo bar]]   ').to match(Linking::LINK_REGEX)
     end
 
     it 'does not match when link contains an underscore' do
-      '[[foo_bar]]'.should_not match(Linking::LINK_REGEX)
+      expect('[[foo_bar]]').not_to match(Linking::LINK_REGEX)
     end
 
     it 'does not match when link contains a forward slash' do
-      '[[foo/bar]]'.should_not match(Linking::LINK_REGEX)
+      expect('[[foo/bar]]').not_to match(Linking::LINK_REGEX)
     end
   end
 
   describe 'Linking::EXTERNAL_LINK_REGEX' do
     it 'matches HTTP URLs' do
-      'http://example.com/'.should match(Linking::EXTERNAL_LINK_REGEX)
+      expect('http://example.com/').to match(Linking::EXTERNAL_LINK_REGEX)
     end
 
     it 'matches HTTPS URLs' do
-      'https://example.com/'.should match(Linking::EXTERNAL_LINK_REGEX)
+      expect('https://example.com/').to match(Linking::EXTERNAL_LINK_REGEX)
     end
 
     it 'ignores leading and trailing whitspace' do
-      '   http://example.com/   '.should match(Linking::EXTERNAL_LINK_REGEX)
+      expect('   http://example.com/   ').to match(Linking::EXTERNAL_LINK_REGEX)
     end
 
     it 'captures the URL subpattern' do
       '   http://example.com/   '.match(Linking::EXTERNAL_LINK_REGEX)
-      $~[1].should == 'http://example.com/'
+      expect($~[1]).to eq('http://example.com/')
     end
   end
 
   describe 'Linking::RELATIVE_PATH_REGEX' do
     it 'matches relative paths' do
-      '/foo/bar'.should match(Linking::RELATIVE_PATH_REGEX)
+      expect('/foo/bar').to match(Linking::RELATIVE_PATH_REGEX)
     end
 
     it 'ignores leading and trailing whitespace' do
-      '  /foo/bar  '.should match(Linking::RELATIVE_PATH_REGEX)
+      expect('  /foo/bar  ').to match(Linking::RELATIVE_PATH_REGEX)
     end
 
     it 'captures the path subpattern' do
       '  /foo/bar  '.match(Linking::RELATIVE_PATH_REGEX)
-      $~[1].should == '/foo/bar'
+      expect($~[1]).to eq('/foo/bar')
     end
   end
 
@@ -62,14 +62,14 @@ describe Linking do
     include Linking
 
     it 'is a private method' do
-      private_methods.should include(:url_for_link)
+      expect(private_methods).to include(:url_for_link)
     end
 
     context 'with an internal (wiki) link' do
       let(:link) { '[[foo bar]]' }
 
       it 'returns the wiki article path' do
-        url_for_link(link).should == '/wiki/foo_bar'
+        expect(url_for_link(link)).to eq('/wiki/foo_bar')
       end
     end
 
@@ -77,7 +77,7 @@ describe Linking do
       let(:link) { 'http://example.com/' }
 
       it 'returns the URL' do
-        url_for_link(link).should == 'http://example.com/'
+        expect(url_for_link(link)).to eq('http://example.com/')
       end
     end
 
@@ -85,7 +85,7 @@ describe Linking do
       let(:link) { '/foo/bar' }
 
       it 'returns the path' do
-        url_for_link(link).should == '/foo/bar'
+        expect(url_for_link(link)).to eq('/foo/bar')
       end
     end
 
@@ -93,7 +93,7 @@ describe Linking do
       let(:link) { nil }
 
       it 'returns nil' do
-        url_for_link(link).should be_nil
+        expect(url_for_link(link)).to be_nil
       end
     end
 
@@ -101,7 +101,7 @@ describe Linking do
       let(:link) { '--> click! <--' }
 
       it 'returns nil' do
-        url_for_link(link).should be_nil
+        expect(url_for_link(link)).to be_nil
       end
     end
   end

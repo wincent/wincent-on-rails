@@ -19,15 +19,15 @@ describe 'tags/edit' do
   it 'has a form for the tag' do
     render
     within("form[action='#{tag_path(@tag)}']") do |form|
-      form.should have_css('input[name=_method][value=patch]')
-      form.should have_css('input[type="text"][name="tag[name]"]')
-      form.should have_css('input[type=submit][value="Update Tag"]')
+      expect(form).to have_css('input[name=_method][value=patch]')
+      expect(form).to have_css('input[type="text"][name="tag[name]"]')
+      expect(form).to have_css('input[type=submit][value="Update Tag"]')
     end
   end
 
   it 'has a "show" link' do
     render
-    rendered.should have_link('show', href: tag_path(@tag))
+    expect(rendered).to have_link('show', href: tag_path(@tag))
   end
 
   it 'has a "destroy" link' do
@@ -38,6 +38,6 @@ describe 'tags/edit' do
 
   it 'has an "all tags" link' do
     render
-    rendered.should have_link('all tags', href: '/tags')
+    expect(rendered).to have_link('all tags', href: '/tags')
   end
 end

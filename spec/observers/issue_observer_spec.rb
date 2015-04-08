@@ -30,7 +30,7 @@ describe IssueObserver do
 
     it 'rescues exceptions rather than dying' do
       mock(IssueMailer).new_issue_alert(issue) { raise 'fatal error!' }
-      lambda { issue.save }.should_not raise_error
+      expect { issue.save }.not_to raise_error
     end
 
     it 'logs an error message on failure' do
@@ -44,7 +44,7 @@ describe IssueObserver do
     let(:issue) { Issue.make! }
 
     it 'does not add an annotation to new records' do
-      issue.comments.length.should == 0
+      expect(issue.comments.length).to eq(0)
     end
 
     it 'adds an annotation for summary changes' do
@@ -53,9 +53,9 @@ describe IssueObserver do
       issue.summary = new
       issue.save
       body = issue.comments.first.body
-      body.should =~ /Summary.*changed:/
-      body.should =~ /From:.*#{old}/
-      body.should =~ /To:.*#{new}/
+      expect(body).to match(/Summary.*changed:/)
+      expect(body).to match(/From:.*#{old}/)
+      expect(body).to match(/To:.*#{new}/)
     end
 
     it 'adds an annotation for kind changes' do
@@ -63,9 +63,9 @@ describe IssueObserver do
       issue.kind = Issue::KIND[:feature_request]
       issue.save
       body = issue.comments.first.body
-      body.should =~ /Kind.*changed:/
-      body.should =~ /From:.*bug/
-      body.should =~ /To:.*feature request/
+      expect(body).to match(/Kind.*changed:/)
+      expect(body).to match(/From:.*bug/)
+      expect(body).to match(/To:.*feature request/)
     end
 
     it 'adds an annotation for status changes' do
@@ -73,9 +73,9 @@ describe IssueObserver do
       issue.status = Issue::STATUS[:closed]
       issue.save
       body = issue.comments.first.body
-      body.should =~ /Status.*changed:/
-      body.should =~ /From:.*open/
-      body.should =~ /To:.*closed/
+      expect(body).to match(/Status.*changed:/)
+      expect(body).to match(/From:.*open/)
+      expect(body).to match(/To:.*closed/)
     end
 
     it 'adds an annotation for public changes' do
@@ -83,9 +83,9 @@ describe IssueObserver do
       issue.public = false
       issue.save
       body = issue.comments.first.body
-      body.should =~ /Public.*changed:/
-      body.should =~ /From:.*true/
-      body.should =~ /To:.*false/
+      expect(body).to match(/Public.*changed:/)
+      expect(body).to match(/From:.*true/)
+      expect(body).to match(/To:.*false/)
     end
 
     it 'adds an annotation for product changes' do
@@ -94,9 +94,9 @@ describe IssueObserver do
       issue.product_id = new.id
       issue.save
       body = issue.comments.first.body
-      body.should =~ /Product.*changed:/
-      body.should =~ /From:.*#{old.name}/
-      body.should =~ /To:.*#{new.name}/
+      expect(body).to match(/Product.*changed:/)
+      expect(body).to match(/From:.*#{old.name}/)
+      expect(body).to match(/To:.*#{new.name}/)
     end
 
     it 'adds an annotation for tag changes' do
@@ -104,15 +104,15 @@ describe IssueObserver do
       issue.pending_tags = 'bar'
       issue.save
       body = issue.comments.first.body
-      body.should =~ /Tags.*changed:/
-      body.should =~ /From:.*foo/
-      body.should =~ /To:.*bar/
+      expect(body).to match(/Tags.*changed:/)
+      expect(body).to match(/From:.*foo/)
+      expect(body).to match(/To:.*bar/)
     end
 
     it 'does not add an annotation for description changes' do
       issue.description = "fixed user's non-wikitext markup"
       issue.save
-      issue.comments.should be_empty
+      expect(issue.comments).to be_empty
     end
 
     it 'collapses multiple annotations into a single comment' do
@@ -125,19 +125,19 @@ describe IssueObserver do
       issue.summary = new_summary = Sham.random
       issue.save
       body = issue.comments.first.body
-      body.should =~ /Summary.*changed:/
-      body.should =~ /From:.*#{old_summary}/
-      body.should =~ /To:.*#{new_summary}/
-      body.should =~ /Tags.*changed:/
-      body.should =~ /From:.*foo/
-      body.should =~ /To:.*bar/
+      expect(body).to match(/Summary.*changed:/)
+      expect(body).to match(/From:.*#{old_summary}/)
+      expect(body).to match(/To:.*#{new_summary}/)
+      expect(body).to match(/Tags.*changed:/)
+      expect(body).to match(/From:.*foo/)
+      expect(body).to match(/To:.*bar/)
     end
 
     it 'creates anonymous annotations for changes made outside of controller actions' do
       # although in practice we never want to make changes outside of the controller
       issue.summary = Sham.random
       issue.save
-      issue.comments.first.user_id.should be_nil
+      expect(issue.comments.first.user_id).to be_nil
     end
 
     describe 'moderation' do
@@ -145,7 +145,7 @@ describe IssueObserver do
 
       it 'produces no annotation' do
         issue.moderate_as_ham!
-        issue.comments.should be_empty
+        expect(issue.comments).to be_empty
       end
     end
   end

@@ -8,6 +8,6 @@ describe 'posts/index' do
   # was a bug
   it 'does not have nested <p> tags' do
     render
-    rendered.should_not match(/<p>\w*<p>/)
+    expect(rendered).not_to match(/<p>\w*<p>/)
   end
 end

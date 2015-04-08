@@ -18,24 +18,24 @@ shared_examples_for 'commentable' do
     Timecop.travel(0) { @now = add_comment }
     Timecop.travel(10) { @future = add_comment }
     Timecop.travel(-20) { @past = add_comment }
-    commentable.comments.should == [@past, @now, @future]
+    expect(commentable.comments).to eq([@past, @now, @future])
   end
 
   describe '#published' do
     it 'finds all published comments' do
       published = add_comment :awaiting_moderation => false, :public => true
-      commentable.comments.published.to_a.should =~ [published]
+      expect(commentable.comments.published.to_a).to match_array([published])
     end
 
     it 'does not find unmoderated comments' do
       add_comment :awaiting_moderation => true,  :public => true
       add_comment :awaiting_moderation => true,  :public => false
-      commentable.comments.published.to_a.should == []
+      expect(commentable.comments.published.to_a).to eq([])
     end
 
     it 'does not find private comments' do
       add_comment :awaiting_moderation => false, :public => false
-      commentable.comments.published.to_a.should == []
+      expect(commentable.comments.published.to_a).to eq([])
     end
   end
 
@@ -44,17 +44,17 @@ shared_examples_for 'commentable' do
       # "unmoderated" means :awaiting_moderation => true
       unmoderated_public   = add_comment :awaiting_moderation => true,  :public => true
       unmoderated_private  = add_comment :awaiting_moderation => true,  :public => false
-      commentable.comments.unmoderated.to_a.should =~ [unmoderated_public, unmoderated_private]
+      expect(commentable.comments.unmoderated.to_a).to match_array([unmoderated_public, unmoderated_private])
     end
 
     it 'does not find published comments' do
       add_comment :awaiting_moderation => false, :public => true
-      commentable.comments.unmoderated.to_a.should == []
+      expect(commentable.comments.unmoderated.to_a).to eq([])
     end
 
     it 'does not find private comments' do
       add_comment :awaiting_moderation => false, :public => false
-      commentable.comments.unmoderated.to_a.should == []
+      expect(commentable.comments.unmoderated.to_a).to eq([])
     end
   end
 
@@ -124,42 +124,42 @@ shared_examples_for 'commentable (updating timestamps for comment changes)' do
 
   context 'a comment is added and not held for moderation (ie. an admin comment)' do
     it 'uses the comment timestamp to update the commentable timestamp' do
-      commentable.comments.should be_empty
+      expect(commentable.comments).to be_empty
       add_comment :awaiting_moderation => false
-      commentable.updated_at.should be_within(1).of(@comment.updated_at)
+      expect(commentable.updated_at).to be_within(1).of(@comment.updated_at)
     end
   end
 
   context 'a comment is added and held for moderation' do
     it 'uses the commentable timestamp, irrespective of the timestamp(s) on the comment' do
-      commentable.comments.should be_empty
+      expect(commentable.comments).to be_empty
       start_date = commentable.updated_at
       add_comment :awaiting_moderation => true
-      commentable.updated_at.should be_within(1).of(start_date)
+      expect(commentable.updated_at).to be_within(1).of(start_date)
     end
   end
 
   context 'a comment is moderated as ham' do
     it 'uses the comment timestamp to update the commentable timestamp' do
-      commentable.comments.should be_empty
+      expect(commentable.comments).to be_empty
       start_date = commentable.updated_at
       Timecop.travel(10) { add_comment :awaiting_moderation => true }
-      commentable.updated_at.should be_within(1).of(start_date)
+      expect(commentable.updated_at).to be_within(1).of(start_date)
       @comment.moderate_as_ham!
-      commentable.reload.updated_at.should be_within(1).of(@comment.updated_at)
+      expect(commentable.reload.updated_at).to be_within(1).of(@comment.updated_at)
     end
   end
 
   context 'a ham comment is later destroyed' do
     it 'uses the comment timestamp to update the commentable timestamp' do
-      commentable.comments.should be_empty
+      expect(commentable.comments).to be_empty
       start_date = commentable.updated_at
       Timecop.travel(10) { add_comment :awaiting_moderation => true }
-      commentable.updated_at.should be_within(1).of(start_date)
+      expect(commentable.updated_at).to be_within(1).of(start_date)
       @comment.moderate_as_ham!
-      commentable.reload.updated_at.should be_within(1).of(@comment.updated_at)
+      expect(commentable.reload.updated_at).to be_within(1).of(@comment.updated_at)
       @comment.destroy
-      commentable.reload.updated_at.should be_within(1).of(start_date)
+      expect(commentable.reload.updated_at).to be_within(1).of(start_date)
     end
   end
 end
@@ -173,43 +173,43 @@ shared_examples_for 'commentable (not updating timestamps for comment changes)' 
 
   context 'a comment is added and not helf for moderation (ie. an admin comment)' do
     it 'uses the commentable timestamp, irrespective of the timestamp(s) on the comment' do
-      commentable.comments.should be_empty
+      expect(commentable.comments).to be_empty
       start_date = commentable.updated_at
       Timecop.travel(10) { add_comment :awaiting_moderation => false }
-      commentable.updated_at.should be_within(1).of(start_date)
+      expect(commentable.updated_at).to be_within(1).of(start_date)
     end
   end
 
   context 'a comment is added and held for moderation' do
     it 'uses the commentable timestamp, irrespective of the timestamp(s) on the comment' do
-      commentable.comments.should be_empty
+      expect(commentable.comments).to be_empty
       start_date = commentable.updated_at
       Timecop.travel(10) { add_comment :awaiting_moderation => true }
-      commentable.updated_at.should be_within(1).of(start_date)
+      expect(commentable.updated_at).to be_within(1).of(start_date)
     end
   end
 
   context 'a comment is moderated as ham' do
     it 'uses the commentable timestamp, irrespective of the timestamp(s) on the comment' do
-      commentable.comments.should be_empty
+      expect(commentable.comments).to be_empty
       start_date = commentable.updated_at
       Timecop.travel(10) { add_comment :awaiting_moderation => true }
-      commentable.updated_at.should be_within(1).of(start_date)
+      expect(commentable.updated_at).to be_within(1).of(start_date)
       @comment.moderate_as_ham!
-      commentable.reload.updated_at.should be_within(1).of(start_date)
+      expect(commentable.reload.updated_at).to be_within(1).of(start_date)
     end
   end
 
   context 'a ham comment is later destroyed' do
     it 'uses the commentable timestamp, irrespective of the timestamp(s) on the comment' do
-      commentable.comments.should be_empty
+      expect(commentable.comments).to be_empty
       start_date = commentable.updated_at
       Timecop.travel(10) { add_comment :awaiting_moderation => true }
-      commentable.updated_at.should be_within(1).of(start_date)
+      expect(commentable.updated_at).to be_within(1).of(start_date)
       @comment.moderate_as_ham!
-      commentable.reload.updated_at.should be_within(1).of(start_date)
+      expect(commentable.reload.updated_at).to be_within(1).of(start_date)
       @comment.destroy
-      commentable.reload.updated_at.should be_within(1).of(start_date)
+      expect(commentable.reload.updated_at).to be_within(1).of(start_date)
     end
   end
 end

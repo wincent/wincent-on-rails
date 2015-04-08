@@ -15,12 +15,12 @@ describe Admin::IssuesController do
 
     it 'renders the index template' do
       get :index
-      response.should render_template('index')
+      expect(response).to render_template('index')
     end
 
     it 'is successful' do
       get :index
-      response.should be_success
+      expect(response).to be_success
     end
 
     # was a bug: https://wincent.com/issues/1100

@@ -204,12 +204,12 @@ describe ActiveRecord::Acts::Taggable do
   describe 'getting a list of tag name(s)' do
     it 'returns an array of tag names' do
       model.tag 'foo bar baz'
-      model.tag_names.should =~ ['bar', 'baz', 'foo']
+      expect(model.tag_names).to match_array(['bar', 'baz', 'foo'])
     end
 
     context 'no tags' do
       it 'returns an empty array' do
-        model.tag_names.should == []
+        expect(model.tag_names).to eq([])
       end
     end
   end

@@ -12,25 +12,25 @@ describe 'search/_post' do
 
   it 'shows the result number' do
     do_render
-    rendered.should have_content(@result_number.to_s)
+    expect(rendered).to have_content(@result_number.to_s)
   end
 
   it 'uses the post title as link text' do
     do_render
-    rendered.should have_link(@post.title)
+    expect(rendered).to have_link(@post.title)
   end
 
   # was a bug
   it 'escapes HTML special characters in the post title' do
     @post = Post.make! title: '<em>foo</em>'
     do_render
-    rendered.should match('&lt;em&gt;foo&lt;/em&gt;')
-    rendered.should_not have_css('em', text: 'foo')
+    expect(rendered).to match('&lt;em&gt;foo&lt;/em&gt;')
+    expect(rendered).not_to have_css('em', text: 'foo')
   end
 
   it 'links to the post' do
     do_render
-    rendered.should have_link(@post.title, href: post_path(@post))
+    expect(rendered).to have_link(@post.title, href: post_path(@post))
   end
 
   it 'shows the timeinfo for the post' do

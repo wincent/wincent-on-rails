@@ -10,27 +10,27 @@ describe 'issues/search/create' do
 
   it 'has an "all issues" link' do
     render
-    rendered.should have_link('all issues', href: issues_path)
+    expect(rendered).to have_link('all issues', href: issues_path)
   end
 
   it 'has a "search again" link' do
     render
-    rendered.should have_link('search again')
+    expect(rendered).to have_link('search again')
   end
 
   it 'hides the search div upon initial display' do
     render
-    rendered.should have_css('div#issue_search', visible: false)
+    expect(rendered).to have_css('div#issue_search', visible: false)
   end
 
   it 'has a "new issue" link' do
     render
-    rendered.should have_link('open a ticket', href: new_issue_path)
+    expect(rendered).to have_link('open a ticket', href: new_issue_path)
   end
 
   it 'has a "support overview" link' do
     render
-    rendered.should have_link('support overview', href: support_path)
+    expect(rendered).to have_link('support overview', href: support_path)
   end
 
   it 'renders the search form partial' do

@@ -16,29 +16,29 @@ describe Git::CommandError do
     end
 
     it 'includes the class name in the message' do
-      @error.message.should =~ /Git::CommandError/
+      expect(@error.message).to match(/Git::CommandError/)
     end
 
     it 'sets the message based on the command arguments' do
-      @error.message.should =~ /git show-ref --crazy-argument/
+      expect(@error.message).to match(/git show-ref --crazy-argument/)
     end
 
     it 'sets the result' do
-      @error.result.should_not be_nil
+      expect(@error.result).not_to be_nil
     end
 
     describe '#result' do
       it 'responds to #stdout' do
-        @error.result.stdout.should be_kind_of(String)
+        expect(@error.result.stdout).to be_kind_of(String)
       end
 
       it 'responds to #stderr' do
-        @error.result.stderr.should be_kind_of(String)
-        @error.result.stderr.length.should > 0
+        expect(@error.result.stderr).to be_kind_of(String)
+        expect(@error.result.stderr.length).to be > 0
       end
 
       it 'responds to #status' do
-        @error.result.status.should_not == 0
+        expect(@error.result.status).not_to eq(0)
       end
     end
   end

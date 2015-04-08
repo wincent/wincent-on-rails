@@ -31,7 +31,7 @@ describe ForumsHelper do
       end
 
       it 'returns "no activity"' do
-        timeinfo_for_forum(forum).should == 'no activity'
+        expect(timeinfo_for_forum(forum)).to eq('no activity')
       end
     end
 
@@ -49,7 +49,7 @@ describe ForumsHelper do
 
       it 'returns a distance in words' do
         # could get either of these on a slow run, so accept either
-        timeinfo_for_forum(forum).should =~ /\A(now|a few seconds ago)\z/
+        expect(timeinfo_for_forum(forum)).to match(/\A(now|a few seconds ago)\z/)
       end
     end
   end

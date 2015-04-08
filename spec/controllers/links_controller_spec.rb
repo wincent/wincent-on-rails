@@ -16,7 +16,7 @@ describe LinksController do
 
     it 'redirects to the corresponding URL' do
       get :show, :id => 'foo'
-      response.should redirect_to('/wiki/foo')
+      expect(response).to redirect_to('/wiki/foo')
     end
   end
 
@@ -34,7 +34,7 @@ describe LinksController do
 
     it 'redirects to the corresponding URL' do
       get :show, :id => @link.id
-      response.should redirect_to('/wiki/bar')
+      expect(response).to redirect_to('/wiki/bar')
     end
   end
 
@@ -54,17 +54,17 @@ describe LinksController do
 
       it 'finds and assigns the link' do
         do_request
-        assigns[:link].should == link
+        expect(assigns[:link]).to eq(link)
       end
 
       it 'renders links/edit' do
         do_request
-        response.should render_template('links/edit')
+        expect(response).to render_template('links/edit')
       end
 
       it 'succeeds' do
         do_request
-        response.should be_success
+        expect(response).to be_success
       end
     end
   end
@@ -86,23 +86,23 @@ describe LinksController do
 
       it 'finds and assigns the link' do
         do_request
-        assigns[:link].should == link
+        expect(assigns[:link]).to eq(link)
       end
 
       it 'updates the attributes' do
         do_request
-        assigns[:link].uri.should == 'http://example.com/'
-        assigns[:link].permalink.should == 'foo'
+        expect(assigns[:link].uri).to eq('http://example.com/')
+        expect(assigns[:link].permalink).to eq('foo')
       end
 
       it 'shows a flash' do
         do_request
-        flash[:notice].should =~ /successfully updated/i
+        expect(flash[:notice]).to match(/successfully updated/i)
       end
 
       it 'redirects to /links' do
         do_request
-        response.should redirect_to('/links')
+        expect(response).to redirect_to('/links')
       end
 
       context 'failed updated' do
@@ -112,12 +112,12 @@ describe LinksController do
 
         it 'shows a flash' do
           do_request
-          flash[:error].should =~ /update failed/i
+          expect(flash[:error]).to match(/update failed/i)
         end
 
         it 'renders links/edit' do
           do_request
-          response.should render_template('links/edit')
+          expect(response).to render_template('links/edit')
         end
       end
     end

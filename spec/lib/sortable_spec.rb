@@ -19,15 +19,15 @@ describe ActionView::Helpers::SortableHelper do
     end
 
     it 'returns a "th" cell' do
-      @cell.should have_css('th')
+      expect(@cell).to have_css('th')
     end
 
     it 'returns returns a link' do
-      @cell.should have_css('th a')
+      expect(@cell).to have_css('th a')
     end
 
     it 'uses the specified link text' do
-      @cell.should have_css('th a', text: 'bar')
+      expect(@cell).to have_css('th a', text: 'bar')
     end
   end
 end

@@ -11,13 +11,13 @@ feature 'commenting on a wiki article with "strange" characters' do
 
   scenario 'a title with "strange" characters (AJAX)', :js do
     visit @article_path
-    page.should_not have_css("form[action='#{@comment_path}']")
+    expect(page).not_to have_css("form[action='#{@comment_path}']")
     click_link 'add a comment' # form pulled down via AJAX
-    page.should have_css("form[action='#{@comment_path}']")
+    expect(page).to have_css("form[action='#{@comment_path}']")
   end
 
   scenario 'a title with "strange" characters (no JavaScript)' do
     visit @new_comment_path
-    page.should have_css("form[action='#{@comment_path}']")
+    expect(page).to have_css("form[action='#{@comment_path}']")
   end
 end

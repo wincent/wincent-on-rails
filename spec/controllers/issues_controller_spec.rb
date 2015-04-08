@@ -29,7 +29,7 @@ describe IssuesController do
 
     it 'finds all applicable issues' do
       do_get
-      assigns[:issues].should be_kind_of(Array)
+      expect(assigns[:issues]).to be_kind_of(Array)
     end
   end
 
@@ -56,23 +56,23 @@ describe IssuesController do
     it 'should be successful for issues awaiting moderation' do
       @issue = Issue.make! awaiting_moderation: true
       do_get
-      response.should be_success
+      expect(response).to be_success
     end
 
     it 'should be successful for issues not awaiting moderation' do
       do_get
-      response.should be_success
+      expect(response).to be_success
     end
 
     it 'should render the edit template for issues awaiting modeartion' do
       @issue = Issue.make! awaiting_moderation: true
       do_get
-      response.should render_template('edit')
+      expect(response).to render_template('edit')
     end
 
     it 'should render the edit template for issues not awaiting modeartion' do
       do_get
-      response.should render_template('edit')
+      expect(response).to render_template('edit')
     end
   end
 
@@ -88,7 +88,7 @@ describe IssuesController do
       it 'sets tags' do
         log_in_as_admin
         do_post
-        assigns(:issue).tag_names.should =~ %w[foo bar baz]
+        expect(assigns(:issue).tag_names).to match_array(%w[foo bar baz])
       end
     end
 
@@ -131,7 +131,7 @@ describe IssuesController do
       stub(@issue).save { true }
       stub(Issue).find { @issue }
       do_put
-      flash[:notice].should =~ /Successfully updated/
+      expect(flash[:notice]).to match(/Successfully updated/)
     end
 
     it 'should redirect to the issue path on success for comments not awaiting moderation' do
@@ -139,7 +139,7 @@ describe IssuesController do
       stub(@issue).save { true }
       stub(Issue).find { @issue }
       do_put
-      response.should redirect_to(issue_url @issue)
+      expect(response).to redirect_to(issue_url @issue)
     end
 
     it 'should redirect to the list of issues awaiting moderation on success for comments that are awaiting moderation' do
@@ -147,21 +147,21 @@ describe IssuesController do
       stub(@issue).save { true }
       stub(Issue).find { @issue }
       do_put
-      response.should redirect_to(admin_issues_path)
+      expect(response).to redirect_to(admin_issues_path)
     end
 
     it 'should show an error on failure' do
       stub(@issue).save { false }
       stub(Issue).find { @issue }
       do_put
-      flash[:error].should =~ /Update failed/
+      expect(flash[:error]).to match(/Update failed/)
     end
 
     it 'should render the edit template again on failure' do
       stub(@issue).save { false }
       stub(Issue).find { @issue }
       do_put
-      response.should render_template('edit')
+      expect(response).to render_template('edit')
     end
   end
 
@@ -199,7 +199,7 @@ describe IssuesController do
       log_in_as_admin
       record_not_found = Issue.make!.id + 1_000
       get :edit, id: record_not_found # raises RecordNotFound
-      Thread.current[:current_user].should be_nil
+      expect(Thread.current[:current_user]).to be_nil
     end
   end
 end

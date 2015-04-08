@@ -15,29 +15,29 @@ describe Admin::DashboardController do
     it 'gets the count of comments awaiting moderation' do
       mock(Comment).where(conditions).mock!.count { 100 }
       get :show
-      assigns[:comment_count].should == 100
+      expect(assigns[:comment_count]).to eq(100)
     end
 
     it 'gets the count of issues awaiting moderation' do
       mock(Issue).where(conditions).mock!.count { 200 }
       get :show
-      assigns[:issue_count].should == 200
+      expect(assigns[:issue_count]).to eq(200)
     end
 
     it 'gets the count of topics awaiting moderation' do
       mock(Topic).where(conditions).mock!.count { 300 }
       get :show
-      assigns[:topic_count].should == 300
+      expect(assigns[:topic_count]).to eq(300)
     end
 
     it 'renders the show template' do
       get :show
-      response.should render_template('show')
+      expect(response).to render_template('show')
     end
 
     it 'is successful' do
       get :show
-      response.should be_success
+      expect(response).to be_success
     end
   end
 end

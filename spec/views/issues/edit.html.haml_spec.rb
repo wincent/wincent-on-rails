@@ -10,7 +10,7 @@ describe 'issues/edit' do
 
   it 'should have a div for the issue' do
     render
-    rendered.should have_css("\#issue_#{@issue.id}")
+    expect(rendered).to have_css("\#issue_#{@issue.id}")
   end
 
   it 'should render the form partial' do
@@ -20,7 +20,7 @@ describe 'issues/edit' do
 
   it 'should have a "show" link' do
     render
-    rendered.should have_link('show', href: issue_path(@issue))
+    expect(rendered).to have_link('show', href: issue_path(@issue))
   end
 
   it 'should have a destroy button' do
@@ -43,12 +43,12 @@ describe 'issues/edit' do
 
   it 'should have a link back to the list of issues awaiting moderation' do
     render
-    rendered.should have_link('issues awaiting moderation',
+    expect(rendered).to have_link('issues awaiting moderation',
                               href: admin_issues_path)
   end
 
   it 'should have a link to the list of public isues' do
     render
-    rendered.should have_link('public issues index', href: issues_path)
+    expect(rendered).to have_link('public issues index', href: issues_path)
   end
 end

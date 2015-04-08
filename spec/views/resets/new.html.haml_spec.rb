@@ -12,25 +12,25 @@ describe 'resets/new' do
 
   it 'sets up a heading' do
     render
-    rendered.should have_css('h1', text: 'Reset your passphrase')
+    expect(rendered).to have_css('h1', text: 'Reset your passphrase')
   end
 
   it 'renders new form' do
     render
     within("form[action='#{resets_path}'][method='post']") do |form|
-      form.should have_css('input#reset_email_address[name="reset[email_address]"][type="email"]')
-      form.should have_css('input[name="commit"][type="submit"][value="Reset passphrase"]')
+      expect(form).to have_css('input#reset_email_address[name="reset[email_address]"][type="email"]')
+      expect(form).to have_css('input[name="commit"][type="submit"][value="Reset passphrase"]')
     end
   end
 
   it 'advises the user that an email will be sent' do
     render
-    rendered.should have_content('an email will be sent to this address')
+    expect(rendered).to have_content('an email will be sent to this address')
   end
 
   it 'shows a link back to the login form' do
     render
-    rendered.should have_link('log in', href: login_path)
+    expect(rendered).to have_link('log in', href: login_path)
   end
 
   context 'with an invalid record' do

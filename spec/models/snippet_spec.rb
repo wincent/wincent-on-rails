@@ -22,108 +22,108 @@ describe Snippet do
   describe 'attributes' do
     describe '#accepts_comments' do
       it 'defaults to true' do
-        Snippet.new.accepts_comments.should == true
+        expect(Snippet.new.accepts_comments).to eq(true)
       end
     end
 
     describe '#description' do
       it 'defaults to nil' do
-        Snippet.new.description.should be_nil
+        expect(Snippet.new.description).to be_nil
       end
 
       it 'is accessible' do
         snippet = Snippet.make :description => 'foo'
-        snippet.should allow_mass_assignment_of :description => 'bar'
+        expect(snippet).to allow_mass_assignment_of :description => 'bar'
       end
     end
 
     describe '#markup_type' do
       it 'defaults to zero (wikitext)' do
-        Snippet.new.markup_type.should == Snippet::MarkupType::WIKITEXT
+        expect(Snippet.new.markup_type).to eq(Snippet::MarkupType::WIKITEXT)
       end
 
       it 'must be a valid markup type' do
         bad_markup_type = Snippet::MARKUP_TYPES.values.max * 2
-        Snippet.make(:markup_type => bad_markup_type).
-          should fail_validation_for(:markup_type)
+        expect(Snippet.make(:markup_type => bad_markup_type)).
+          to fail_validation_for(:markup_type)
       end
 
       it 'is accessible' do
         snippet = Snippet.make :markup_type => Snippet::MarkupType::WIKITEXT
-        snippet.should allow_mass_assignment_of \
+        expect(snippet).to allow_mass_assignment_of \
           :markup_type => Snippet::MarkupType::PLAINTEXT
       end
     end
 
     describe '#body' do
       it 'defaults to nil' do
-        Snippet.new.body.should be_nil
+        expect(Snippet.new.body).to be_nil
       end
 
       it 'must not be nil' do
-        Snippet.make(:body => nil).should fail_validation_for(:body)
+        expect(Snippet.make(:body => nil)).to fail_validation_for(:body)
       end
 
       it 'must not be blank' do
-        Snippet.make(:body => '').should fail_validation_for(:body)
+        expect(Snippet.make(:body => '')).to fail_validation_for(:body)
       end
 
       it 'is accessible' do
         snippet = Snippet.make :body => 'foo'
-        snippet.should allow_mass_assignment_of :body => 'bar'
+        expect(snippet).to allow_mass_assignment_of :body => 'bar'
       end
     end
 
     describe '#created_at' do
       it 'defaults to nil' do
-        Snippet.new.created_at.should be_nil
+        expect(Snippet.new.created_at).to be_nil
       end
     end
 
     describe '#updated_at' do
       it 'defaults to nil' do
-        Snippet.new.updated_at.should be_nil
+        expect(Snippet.new.updated_at).to be_nil
       end
     end
 
     describe '#public' do
       it 'defaults to true' do
-        Snippet.new.public.should == true
+        expect(Snippet.new.public).to eq(true)
       end
 
       it 'is accessible' do
         snippet = Snippet.make :public => true
-        snippet.should allow_mass_assignment_of :public => false
+        expect(snippet).to allow_mass_assignment_of :public => false
       end
     end
 
     describe '#comments_count' do
       it 'defaults to zero' do
-        Snippet.new.comments_count.should be_zero
+        expect(Snippet.new.comments_count).to be_zero
       end
     end
 
     describe '#accepts_comments' do
       it 'defaults to true' do
-        Snippet.new.accepts_comments.should == true
+        expect(Snippet.new.accepts_comments).to eq(true)
       end
     end
 
     describe '#last_commenter_id' do
       it 'defaults to nil' do
-        Snippet.new.last_commenter_id.should be_nil
+        expect(Snippet.new.last_commenter_id).to be_nil
       end
     end
 
     describe '#last_comment_id' do
       it 'defaults to nil' do
-        Snippet.new.last_comment_id.should be_nil
+        expect(Snippet.new.last_comment_id).to be_nil
       end
     end
 
     describe '#last_commented_at' do
       it 'defaults to nil' do
-        Snippet.new.last_commented_at.should be_nil
+        expect(Snippet.new.last_commented_at).to be_nil
       end
     end
   end
@@ -136,17 +136,17 @@ describe Snippet do
       end
 
       it 'returns an HTML safe string' do
-        snippet.body_html.html_safe?.should == true
+        expect(snippet.body_html.html_safe?).to eq(true)
       end
 
       it 'transforms the body from wikitext into HTML' do
-        snippet.body_html.should == "<h1>hey</h1>\n"
+        expect(snippet.body_html).to eq("<h1>hey</h1>\n")
       end
 
       context 'with options' do
         it 'passes options through to the wikitext translator' do
-          snippet.body_html(:base_heading_level => 2).
-            should == "<h3>hey</h3>\n"
+          expect(snippet.body_html(:base_heading_level => 2)).
+            to eq("<h3>hey</h3>\n")
         end
       end
     end
@@ -158,11 +158,11 @@ describe Snippet do
       end
 
       it 'returns an HTML safe string' do
-        snippet.body_html.html_safe?.should == true
+        expect(snippet.body_html.html_safe?).to eq(true)
       end
 
       it 'escapes the body and wraps it in a "pre" block' do
-        snippet.body_html.should == "<pre>fun &amp; games</pre>\n"
+        expect(snippet.body_html).to eq("<pre>fun &amp; games</pre>\n")
       end
     end
 
@@ -173,12 +173,12 @@ describe Snippet do
       end
 
       it 'returns an HTML safe string' do
-        snippet.body_html.html_safe?.should == true
+        expect(snippet.body_html.html_safe?).to eq(true)
       end
 
       it 'escapes the body and wraps it in a "pre.c-syntax" block' do
-        snippet.body_html.
-          should == %Q{<pre class="c-syntax">shits &amp; giggles</pre>\n}
+        expect(snippet.body_html).
+          to eq(%Q{<pre class="c-syntax">shits &amp; giggles</pre>\n})
       end
     end
 
@@ -189,12 +189,12 @@ describe Snippet do
       end
 
       it 'returns an HTML safe string' do
-        snippet.body_html.html_safe?.should == true
+        expect(snippet.body_html.html_safe?).to eq(true)
       end
 
       it 'escapes the body and wraps it in a "pre.diff-syntax" block' do
-        snippet.body_html.
-          should == %Q{<pre class="diff-syntax">foo &amp; bar</pre>\n}
+        expect(snippet.body_html).
+          to eq(%Q{<pre class="diff-syntax">foo &amp; bar</pre>\n})
       end
     end
 
@@ -205,12 +205,12 @@ describe Snippet do
       end
 
       it 'returns an HTML safe string' do
-        snippet.body_html.html_safe?.should == true
+        expect(snippet.body_html.html_safe?).to eq(true)
       end
 
       it 'escapes the body and wraps it in a "pre.objc-syntax" block' do
-        snippet.body_html.
-          should == %Q{<pre class="objc-syntax">1 &gt; 0</pre>\n}
+        expect(snippet.body_html).
+          to eq(%Q{<pre class="objc-syntax">1 &gt; 0</pre>\n})
       end
     end
 
@@ -221,12 +221,12 @@ describe Snippet do
       end
 
       it 'returns an HTML safe string' do
-        snippet.body_html.html_safe?.should == true
+        expect(snippet.body_html.html_safe?).to eq(true)
       end
 
       it 'escapes the body and wraps it in a "pre.ruby-syntax" block' do
-        snippet.body_html.
-          should == %Q{<pre class="ruby-syntax">0 &lt; 1</pre>\n}
+        expect(snippet.body_html).
+          to eq(%Q{<pre class="ruby-syntax">0 &lt; 1</pre>\n})
       end
     end
 
@@ -237,12 +237,12 @@ describe Snippet do
       end
 
       it 'returns an HTML safe string' do
-        snippet.body_html.html_safe?.should == true
+        expect(snippet.body_html.html_safe?).to eq(true)
       end
 
       it 'escapes the body and wraps it in a "pre.shell-syntax" block' do
-        snippet.body_html.
-          should == %Q{<pre class="shell-syntax">1 &amp; 2</pre>\n}
+        expect(snippet.body_html).
+          to eq(%Q{<pre class="shell-syntax">1 &amp; 2</pre>\n})
       end
     end
 

@@ -94,15 +94,15 @@ describe 'Source code files' do
   Wincent::SOURCE_FILES.each do |file|
     describe file do
       it 'contains no trailing whitespace' do
-        file.should_not have_trailing_whitespace
+        expect(file).not_to have_trailing_whitespace
       end
 
       it 'contains no tabs' do
-        file.should_not contain_tabs
+        expect(file).not_to contain_tabs
       end
 
       it 'has a newline at the end' do
-        file.should have_newline_at_end_of_file
+        expect(file).to have_newline_at_end_of_file
       end
     end
   end

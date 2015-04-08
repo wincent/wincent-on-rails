@@ -9,7 +9,7 @@ describe 'issues/show' do
 
   it 'should show breadcrumbs' do
     render
-    rendered.should have_css('div#breadcrumbs',
+    expect(rendered).to have_css('div#breadcrumbs',
                              text: "#{@issue.kind_string.humanize} \##{@issue.id}")
   end
 
@@ -23,11 +23,11 @@ describe 'issues/show' do
     end
 
     it 'should show an edit link' do
-      rendered.should have_link('edit', href: edit_issue_path(@issue))
+      expect(rendered).to have_link('edit', href: edit_issue_path(@issue))
     end
 
     it 'should show a destroy link' do
-      rendered.should match(/destroy/) # not sure how best to test this, so this is a cheap stand-in for now
+      expect(rendered).to match(/destroy/) # not sure how best to test this, so this is a cheap stand-in for now
     end
   end
 
@@ -41,12 +41,12 @@ describe 'issues/show' do
     end
 
     it 'should not show an edit link' do
-      rendered.should_not have_css("a[href='#{edit_issue_path(@issue)}']")
+      expect(rendered).not_to have_css("a[href='#{edit_issue_path(@issue)}']")
     end
 
     it 'should not show a destroy link' do
       # not sure how best to test this, so this is a cheap stand-in for now
-      rendered.should_not have_content('destroy')
+      expect(rendered).not_to have_content('destroy')
     end
   end
 
@@ -59,7 +59,7 @@ describe 'issues/show' do
 
     it 'should show "none"' do
       render
-      rendered.should have_content('Description none')
+      expect(rendered).to have_content('Description none')
     end
   end
 end

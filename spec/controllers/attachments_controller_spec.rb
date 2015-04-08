@@ -9,12 +9,12 @@ describe AttachmentsController do
 
     it 'should be successful' do
       do_get :as_admin
-      response.should be_success
+      expect(response).to be_success
     end
 
     it 'should redirect non-admin users' do
       do_get
-      response.should redirect_to(login_path)
+      expect(response).to redirect_to(login_path)
     end
   end
 end

@@ -30,7 +30,7 @@ describe CommentObserver do
 
     it 'rescues exceptions rather than dying' do
       mock(CommentMailer).new_comment_alert(comment) { raise 'fatal error!' }
-      lambda { comment.save }.should_not raise_error
+      expect { comment.save }.not_to raise_error
     end
 
     it 'logs an error message on failure' do

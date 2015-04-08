@@ -54,46 +54,46 @@ describe Git::Repo do
   describe '#git' do
     it 'allows other objects to run "git" commands in the repo' do
       repo = Git::Repo.new scratch_repo
-      repo.git('log').stdout.should =~ /Initial import/i
+      expect(repo.git('log').stdout).to match(/Initial import/i)
     end
   end
 
   describe '#path' do
     it 'returns a Pathname instance' do
-      Git::Repo.new(scratch_repo).path.should be_kind_of(Pathname)
+      expect(Git::Repo.new(scratch_repo).path).to be_kind_of(Pathname)
     end
 
     context 'bare repo' do
       it 'returns the path passed in to #new' do
         path = bare_scratch_repo
-        Git::Repo.new(path).path.to_s.should == path
+        expect(Git::Repo.new(path).path.to_s).to eq(path)
       end
     end
 
     context 'non-bare repo' do
       it 'returns the path passed in to #new' do
         path = scratch_repo
-        Git::Repo.new(path).path.to_s.should == path
+        expect(Git::Repo.new(path).path.to_s).to eq(path)
       end
     end
   end
 
   describe '#git_dir' do
     it 'returns a Pathname instance' do
-      Git::Repo.new(scratch_repo).git_dir.should be_kind_of(Pathname)
+      expect(Git::Repo.new(scratch_repo).git_dir).to be_kind_of(Pathname)
     end
 
     context 'bare repo' do
       it 'returns the path passed in to #new' do
         path = bare_scratch_repo
-        Git::Repo.new(path).git_dir.to_s.should == path
+        expect(Git::Repo.new(path).git_dir.to_s).to eq(path)
       end
     end
 
     context 'non-bare repo' do
       it 'returns the path to the .git directory inside the repo' do
         path = scratch_repo
-        Git::Repo.new(path).git_dir.to_s.should == "#{path}/.git"
+        expect(Git::Repo.new(path).git_dir.to_s).to eq("#{path}/.git")
       end
     end
   end
@@ -104,11 +104,11 @@ describe Git::Repo do
     end
 
     it 'returns a Ref object' do
-      @repo.head.should be_kind_of(Git::Ref)
+      expect(@repo.head).to be_kind_of(Git::Ref)
     end
 
     specify 'the returned object matches the current HEAD' do
-      @repo.head.name.should == 'HEAD'
+      expect(@repo.head.name).to eq('HEAD')
     end
   end
 
@@ -123,9 +123,9 @@ describe Git::Repo do
     end
 
     it 'returns an array of Branch objects' do
-      @branches.should be_kind_of(Array)
-      @branches.should_not be_empty
-      @branches.all? { |branch| branch.kind_of?(Git::Branch) }.should == true
+      expect(@branches).to be_kind_of(Array)
+      expect(@branches).not_to be_empty
+      expect(@branches.all? { |branch| branch.kind_of?(Git::Branch) }).to eq(true)
     end
   end
 
@@ -142,9 +142,9 @@ describe Git::Repo do
     end
 
     it 'returns an array of Tag objects' do
-      @tags.should be_kind_of(Array)
-      @tags.should_not be_empty
-      @tags.all? { |tag| tag.kind_of?(Git::Tag) }.should == true
+      expect(@tags).to be_kind_of(Array)
+      expect(@tags).not_to be_empty
+      expect(@tags.all? { |tag| tag.kind_of?(Git::Tag) }).to eq(true)
     end
   end
 end

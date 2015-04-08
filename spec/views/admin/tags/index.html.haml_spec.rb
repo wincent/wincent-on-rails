@@ -12,14 +12,14 @@ describe 'admin/tags/index' do
     it 'has a sortable header cell for the "name" column' do
       render
       within('th a', text: 'Name') do |link|
-        link[:href].should match('sort=name')
+        expect(link[:href]).to match('sort=name')
       end
     end
 
     it 'has a sortable header cell for the "taggings count" column' do
       render
       within('th a', text: 'Taggings count') do |link|
-        link[:href].should match('sort=taggings_count')
+        expect(link[:href]).to match('sort=taggings_count')
       end
     end
   end

@@ -11,23 +11,23 @@ describe TagsController do
 
     it 'finds and assigns tags' do
       get :index
-      assigns[:tags].to_a.should =~ [@foo, @bar, @baz]
+      expect(assigns[:tags].to_a).to match_array([@foo, @bar, @baz])
     end
 
     it 'does not find or assign tags with no taggings' do
       tag = Tag.make! :name => 'orphan'
       get :index
-      assigns[:tags].should_not include(tag)
+      expect(assigns[:tags]).not_to include(tag)
     end
 
     it 'orders tags by name' do
       get :index
-      assigns[:tags].to_a.should == [@bar, @baz, @foo]
+      expect(assigns[:tags].to_a).to eq([@bar, @baz, @foo])
     end
 
     it 'renders tags/index' do
       get :index
-      response.should render_template('tags/index')
+      expect(response).to render_template('tags/index')
     end
   end
 
@@ -42,7 +42,7 @@ describe TagsController do
 
     it 'finds and assigns the tag' do
       do_get
-      assigns[:tag].should == @tag
+      expect(assigns[:tag]).to eq(@tag)
     end
 
     it 'finds and assigns grouped taggables' do
@@ -72,17 +72,17 @@ describe TagsController do
 
       it 'finds and assigns the tag' do
         do_request
-        assigns[:tag].should == tag
+        expect(assigns[:tag]).to eq(tag)
       end
 
       it 'renders tags/edit' do
         do_request
-        response.should render_template('tags/edit')
+        expect(response).to render_template('tags/edit')
       end
 
       it 'succeeds' do
         do_request
-        response.should be_success
+        expect(response).to be_success
       end
     end
   end
@@ -107,22 +107,22 @@ describe TagsController do
 
       it 'finds and assigns the tag' do
         do_request
-        assigns[:tag].should == tag
+        expect(assigns[:tag]).to eq(tag)
       end
 
       it 'updates the attributes' do
         do_request
-        assigns[:tag].name.should == 'foo'
+        expect(assigns[:tag].name).to eq('foo')
       end
 
       it 'shows a flash' do
         do_request
-        flash[:notice].should =~ /successfully updated/i
+        expect(flash[:notice]).to match(/successfully updated/i)
       end
 
       it 'redirects to #show' do
         do_request
-        response.should redirect_to('/tags/foo')
+        expect(response).to redirect_to('/tags/foo')
       end
 
       context 'failed update' do
@@ -132,12 +132,12 @@ describe TagsController do
 
         it 'shows a flash' do
           do_request
-          flash[:error].should =~ /update failed/i
+          expect(flash[:error]).to match(/update failed/i)
         end
 
         it 'renders #edit' do
           do_request
-          response.should render_template('tags/edit')
+          expect(response).to render_template('tags/edit')
         end
       end
     end
@@ -151,40 +151,40 @@ describe TagsController do
 
     it 'trims excess tags (more than 10)' do
       get :search, :q => '1 2 3 4 5 6 7 8 9 10 11'
-      flash[:notice].any? do |notice|
+      expect(flash[:notice].any? do |notice|
         notice =~ /excess tags stripped/i
-      end.should == true
+      end).to eq(true)
     end
 
     it 'excludes non-existent tags' do
       get :search, :q => 'foo bar'
-      flash[:notice].any? do |notice|
+      expect(flash[:notice].any? do |notice|
         notice =~ /non-existent tags excluded/i
-      end.should == true
+      end).to eq(true)
     end
 
     it 'finds and assigns tags' do
       mock.proxy(Tagging).grouped_taggables_for_tag_names ['foo'], anything, anything
       get :search, :q => 'foo'
-      assigns[:tags][:found].should == [@tag]
+      expect(assigns[:tags][:found]).to eq([@tag])
     end
 
     it 'finds and assigns taggables' do
       mock.proxy(Tagging).grouped_taggables_for_tag_names ['foo'], anything, anything
       get :search, :q => 'foo'
-      assigns[:taggables].should_not be_nil # too lazy to actually spec this
+      expect(assigns[:taggables]).not_to be_nil # too lazy to actually spec this
     end
 
     it 'finds and assigns reachable tags' do
       mock(Tag).tags_reachable_from_tags([@tag]) { :reachables }
       get :search, :q => 'foo'
-      assigns[:reachable_tags].should == :reachables
+      expect(assigns[:reachable_tags]).to eq(:reachables)
     end
 
     context 'no params' do
       it 'renders tags/search' do
         get :search
-        response.should render_template 'tags/search'
+        expect(response).to render_template 'tags/search'
       end
     end
   end

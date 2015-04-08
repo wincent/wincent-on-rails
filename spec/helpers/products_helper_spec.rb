@@ -9,13 +9,13 @@ describe ProductsHelper do
 
     context 'product only, no page' do
       it 'returns the product name' do
-        product_page_title(@product, nil).should == 'foo'
+        expect(product_page_title(@product, nil)).to eq('foo')
       end
     end
 
     context 'product and page' do
       it 'joins product name and page title' do
-        product_page_title(@product, @page).should == 'foo: bar'
+        expect(product_page_title(@product, @page)).to eq('foo: bar')
       end
     end
   end

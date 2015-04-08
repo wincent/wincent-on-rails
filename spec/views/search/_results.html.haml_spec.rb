@@ -42,7 +42,7 @@ describe 'search/_results' do
 
     it 'has a "new search" link' do
       render
-      rendered.should have_link('new search', href: '/search')
+      expect(rendered).to have_link('new search', href: '/search')
     end
   end
 
@@ -63,7 +63,7 @@ describe 'search/_results' do
     end
 
     it 'does not choke on the nil placeholders' do
-      lambda { render }.should_not raise_error
+      expect { render }.not_to raise_error
     end
   end
 
@@ -75,7 +75,7 @@ describe 'search/_results' do
 
     it 'displays "no results"' do
       render
-      rendered.should have_content('No results')
+      expect(rendered).to have_content('No results')
     end
   end
 
@@ -88,9 +88,9 @@ describe 'search/_results' do
 
     it 'displays a "more results" form button' do
       render
-      rendered.should have_css("form[action='/search'] input[type=hidden][name=offset][value='#{@offset + 20}']")
-      rendered.should have_css('form[action="/search"] input[type=submit][value="more results..."]')
-      rendered.should have_css('form[action="/search"] input[type=hidden][name=q][value="foo"]')
+      expect(rendered).to have_css("form[action='/search'] input[type=hidden][name=offset][value='#{@offset + 20}']")
+      expect(rendered).to have_css('form[action="/search"] input[type=submit][value="more results..."]')
+      expect(rendered).to have_css('form[action="/search"] input[type=hidden][name=q][value="foo"]')
     end
   end
 end

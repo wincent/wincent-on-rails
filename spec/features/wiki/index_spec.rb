@@ -3,8 +3,8 @@ require 'spec_helper'
 feature 'the wiki index' do
   scenario 'no articles in the wiki' do
     visit '/wiki'
-    page.should have_content('Recently updated')
-    page.should have_content('Top tags')
+    expect(page).to have_content('Recently updated')
+    expect(page).to have_content('Top tags')
   end
 
   scenario 'several articles in the wiki' do
@@ -12,9 +12,9 @@ feature 'the wiki index' do
     Article.make! :title => 'bar'
     Article.make! :title => 'baz'
     visit '/wiki'
-    page.should have_content('Recently updated')
-    page.should have_content('foo')
-    page.should have_content('bar')
-    page.should have_content('baz')
+    expect(page).to have_content('Recently updated')
+    expect(page).to have_content('foo')
+    expect(page).to have_content('bar')
+    expect(page).to have_content('baz')
   end
 end

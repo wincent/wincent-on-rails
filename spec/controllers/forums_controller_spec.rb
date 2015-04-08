@@ -17,17 +17,17 @@ describe ForumsController do
 
       it 'finds and assigns the forum' do
         do_request
-        assigns[:forum].should == forum
+        expect(assigns[:forum]).to eq(forum)
       end
 
       it 'renders forums/edit' do
         do_request
-        response.should render_template('forums/edit')
+        expect(response).to render_template('forums/edit')
       end
 
       it 'succeeds' do
         do_request
-        response.should be_success
+        expect(response).to be_success
       end
     end
   end
@@ -49,23 +49,23 @@ describe ForumsController do
 
       it 'finds and assigns the forum' do
         do_request
-        assigns[:forum].should == forum
+        expect(assigns[:forum]).to eq(forum)
       end
 
       it 'updates the attributes' do
         do_request
-        assigns[:forum].name.should == 'foo'
-        assigns[:forum].permalink.should == 'bar'
+        expect(assigns[:forum].name).to eq('foo')
+        expect(assigns[:forum].permalink).to eq('bar')
       end
 
       it 'shows a flash' do
         do_request
-        flash[:notice].should =~ /successfully updated/i
+        expect(flash[:notice]).to match(/successfully updated/i)
       end
 
       it 'redirects to #show' do
         do_request
-        response.should redirect_to('/forums/bar')
+        expect(response).to redirect_to('/forums/bar')
       end
 
       context 'failed update' do
@@ -75,12 +75,12 @@ describe ForumsController do
 
         it 'shows a flash' do
           do_request
-          flash[:error].should =~ /update failed/i
+          expect(flash[:error]).to match(/update failed/i)
         end
 
         it 'renders forums/edit' do
           do_request
-          response.should render_template('forums/edit')
+          expect(response).to render_template('forums/edit')
         end
       end
     end

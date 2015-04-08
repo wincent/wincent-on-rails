@@ -16,24 +16,24 @@ describe Paginator do
   end
 
   it 'should filter "action" from the parameter hash' do
-    @paginator.pagination_links.should_not =~ /action/
+    expect(@paginator.pagination_links).not_to match(/action/)
   end
 
   it 'should filter "controller" from the parameter hash' do
-    @paginator.pagination_links.should_not =~ /controller/
+    expect(@paginator.pagination_links).not_to match(/controller/)
   end
 
   it 'should filter "protocol" from the parameter hash' do
-    @paginator.pagination_links.should_not =~ /protocol/
+    expect(@paginator.pagination_links).not_to match(/protocol/)
   end
 
   it 'should preserve protocol from URL' do
-    @paginator.pagination_links.should =~ /https/
+    expect(@paginator.pagination_links).to match(/https/)
   end
 
   it 'should preserve other parameters' do
-    @paginator.pagination_links.should =~ /sort/
-    @paginator.pagination_links.should =~ /order/
+    expect(@paginator.pagination_links).to match(/sort/)
+    expect(@paginator.pagination_links).to match(/order/)
   end
 
   it 'should preserve nested parameter hashes'

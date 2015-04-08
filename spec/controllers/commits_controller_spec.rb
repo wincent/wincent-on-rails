@@ -10,7 +10,7 @@ describe CommitsController do
 
     it 'finds and assigns the repo' do
       do_request
-      assigns[:repo].should == repo
+      expect(assigns[:repo]).to eq(repo)
     end
 
     context 'private repo' do
@@ -18,12 +18,12 @@ describe CommitsController do
 
       it 'shows a flash' do
         do_request
-        flash[:error].should =~ /not found/
+        expect(flash[:error]).to match(/not found/)
       end
 
       it 'redirects to repos#index' do
         do_request
-        response.should redirect_to(repos_path)
+        expect(response).to redirect_to(repos_path)
       end
     end
 
@@ -32,18 +32,18 @@ describe CommitsController do
 
       it 'shows a flash' do
         do_request
-        flash[:error].should =~ /not found/
+        expect(flash[:error]).to match(/not found/)
       end
 
       it 'redirects to repos#index' do
         do_request
-        response.should redirect_to(repos_path)
+        expect(response).to redirect_to(repos_path)
       end
     end
 
     it 'redirects to the repo commit listing' do
       do_request
-      response.should redirect_to(repo_path(repo) + '#commits')
+      expect(response).to redirect_to(repo_path(repo) + '#commits')
     end
   end
 
@@ -58,7 +58,7 @@ describe CommitsController do
 
     it 'finds and assigns the repo' do
       do_request
-      assigns[:repo].should == repo
+      expect(assigns[:repo]).to eq(repo)
     end
 
     context 'private repo' do
@@ -66,12 +66,12 @@ describe CommitsController do
 
       it 'shows a flash' do
         do_request
-        flash[:error].should =~ /not found/
+        expect(flash[:error]).to match(/not found/)
       end
 
       it 'redirects to repos#index' do
         do_request
-        response.should redirect_to(repos_path)
+        expect(response).to redirect_to(repos_path)
       end
     end
 
@@ -80,19 +80,19 @@ describe CommitsController do
 
       it 'shows a flash' do
         do_request
-        flash[:error].should =~ /not found/
+        expect(flash[:error]).to match(/not found/)
       end
 
       it 'redirects to repos#index' do
         do_request
-        response.should redirect_to(repos_path)
+        expect(response).to redirect_to(repos_path)
       end
     end
 
     it 'finds and assigns the commit' do
       do_request
-      assigns[:commit].should be_kind_of(Git::Commit)
-      assigns[:commit].commit.should == @commit
+      expect(assigns[:commit]).to be_kind_of(Git::Commit)
+      expect(assigns[:commit].commit).to eq(@commit)
     end
 
     context 'non-existent commit' do
@@ -102,18 +102,18 @@ describe CommitsController do
 
       it 'shows a flash' do
         do_request
-        flash[:error].should =~ /not found/
+        expect(flash[:error]).to match(/not found/)
       end
 
       it 'redirects to repos#show' do
         do_request
-        response.should redirect_to(repo_path(repo))
+        expect(response).to redirect_to(repo_path(repo))
       end
     end
 
     it 'renders "commits/show"' do
       do_request
-      response.should render_template('commits/show')
+      expect(response).to render_template('commits/show')
     end
   end
 end

@@ -8,16 +8,16 @@ describe Git::Commit do
     let(:commits) { Git::Commit.log ref }
 
     it 'returns an array of Commit objects' do
-      commits.should be_kind_of(Array)
-      commits.all? { |commit| commit.kind_of?(Git::Commit) }.should == true
-      commits.should_not be_empty
+      expect(commits).to be_kind_of(Array)
+      expect(commits.all? { |commit| commit.kind_of?(Git::Commit) }).to eq(true)
+      expect(commits).not_to be_empty
     end
 
     context 'empty repo' do
       it 'returns an empty array' do
         pending # repo.head fails because of git show-ref --head exit status 1
         repo = Git::Repo.new empty_repo
-        repo.head.log.should == []
+        expect(repo.head.log).to eq([])
       end
     end
   end
@@ -32,19 +32,19 @@ describe Git::Commit do
     end
 
     it 'returns a commit object' do
-      @commit.should be_kind_of(Git::Commit)
+      expect(@commit).to be_kind_of(Git::Commit)
     end
 
     specify 'returned commit matches requested SHA-1' do
-      @commit.commit.should == @head
+      expect(@commit.commit).to eq(@head)
     end
 
     specify 'returned commit has a reference to its repo' do
-      @commit.repo.should == @repo
+      expect(@commit.repo).to eq(@repo)
     end
 
     specify 'returned commit specifies no associted ref' do
-      @commit.ref.should == nil
+      expect(@commit.ref).to eq(nil)
     end
 
     context 'unreachable commit' do
@@ -71,9 +71,9 @@ describe Git::Commit do
       let(:commit) { Git::Commit.commit_with_hash abbrev, @repo }
 
       it 'stores the full 40-character hash' do
-        abbrev.length.should == 8
-        commit.commit.length.should == 40
-        commit.commit.should == @head
+        expect(abbrev.length).to eq(8)
+        expect(commit.commit.length).to eq(40)
+        expect(commit.commit).to eq(@head)
       end
     end
 
@@ -82,8 +82,8 @@ describe Git::Commit do
       let(:commit) { Git::Commit.commit_with_hash sha1, @repo }
 
       it 'stores a downcased hash' do
-        sha1.should =~ /[A-F]/ # sanity check first
-        commit.commit.should == commit.commit.downcase
+        expect(sha1).to match(/[A-F]/) # sanity check first
+        expect(commit.commit).to eq(commit.commit.downcase)
       end
     end
   end
@@ -93,19 +93,19 @@ describe Git::Commit do
 
     describe '#commit' do
       it 'is a 40-character SHA-1 hash' do
-        commit.commit.should =~ /\A[a-f0-9]{40}\z/
+        expect(commit.commit).to match(/\A[a-f0-9]{40}\z/)
       end
     end
 
     describe '#tree' do
       it 'is a 40-character SHA-1 hash' do
-        commit.tree.should =~ /\A[a-f0-9]{40}\z/
+        expect(commit.tree).to match(/\A[a-f0-9]{40}\z/)
       end
     end
 
     describe '#parents' do
       it 'returns an array' do
-        commit.parents.should be_kind_of(Array)
+        expect(commit.parents).to be_kind_of(Array)
       end
 
       context 'normal commit' do
@@ -117,14 +117,14 @@ describe Git::Commit do
             `git commit -m "add secret sauce"`
           end
           parents = Git::Commit.log(ref).first.parents
-          parents.count.should == 1
-          parents.first.should =~ /\A[a-f0-9]{40}\z/
+          expect(parents.count).to eq(1)
+          expect(parents.first).to match(/\A[a-f0-9]{40}\z/)
         end
       end
 
       context 'root commit' do
         it 'returns an empty array' do
-          Git::Commit.log(ref).last.parents.should == []
+          expect(Git::Commit.log(ref).last.parents).to eq([])
         end
       end
 
@@ -142,54 +142,54 @@ describe Git::Commit do
             `git merge topic`
           end
           parents = Git::Commit.log(ref).first.parents
-          parents.count.should == 2
-          parents.all? { |parent| parent.match(/\A[a-f0-9]{40}\z/) }.should == true
+          expect(parents.count).to eq(2)
+          expect(parents.all? { |parent| parent.match(/\A[a-f0-9]{40}\z/) }).to eq(true)
         end
       end
     end
 
     describe '#author' do
       it 'returns a Git::Author instance' do
-        commit.author.should be_kind_of(Git::Author)
+        expect(commit.author).to be_kind_of(Git::Author)
       end
 
       it 'has a name' do
-        commit.author.name.should be_kind_of(String)
-        commit.author.name.length.should > 0
+        expect(commit.author.name).to be_kind_of(String)
+        expect(commit.author.name.length).to be > 0
       end
 
       it 'has an email' do
-        commit.author.email.should =~ /.+@.+/
+        expect(commit.author.email).to match(/.+@.+/)
       end
 
       it 'has a timestamp' do
-        commit.author.time.should be_kind_of(Time)
+        expect(commit.author.time).to be_kind_of(Time)
       end
     end
 
     describe '#committer' do
       it 'returns a Git::Committer instance' do
-        commit.committer.should be_kind_of(Git::Committer)
+        expect(commit.committer).to be_kind_of(Git::Committer)
       end
 
       it 'has a name' do
-        commit.committer.name.should be_kind_of(String)
-        commit.committer.name.length.should > 0
+        expect(commit.committer.name).to be_kind_of(String)
+        expect(commit.committer.name.length).to be > 0
       end
 
       it 'has an email' do
-        commit.committer.email.should =~ /.+@.+/
+        expect(commit.committer.email).to match(/.+@.+/)
       end
 
       it 'has a timestamp' do
-        commit.committer.time.should be_kind_of(Time)
+        expect(commit.committer.time).to be_kind_of(Time)
       end
     end
 
     describe '#encoding' do
       context 'no encoding' do
         it 'is nil' do
-          commit.encoding.should be_nil
+          expect(commit.encoding).to be_nil
         end
       end
 
@@ -202,14 +202,14 @@ describe Git::Commit do
             `git commit -m "encoded message"`
           end
           encoding = Git::Commit.log(ref).first.encoding
-          encoding.should == 'ISO-8859-1'
+          expect(encoding).to eq('ISO-8859-1')
         end
       end
     end
 
     describe '#message' do
       it 'returns the commit log message' do
-        commit.message.should == 'initial import'
+        expect(commit.message).to eq('initial import')
       end
 
       context 'with Signed-off-by: line' do
@@ -220,8 +220,8 @@ describe Git::Commit do
             `git commit -s -m "more foo"`
           end
           message = Git::Commit.log(ref).first.message
-          message.should =~ /more foo\n\n/
-          message.should =~ /Signed-off-by: .+\.+/
+          expect(message).to match(/more foo\n\n/)
+          expect(message).to match(/Signed-off-by: .+\.+/)
         end
       end
     end
@@ -229,7 +229,7 @@ describe Git::Commit do
     describe '#subject' do
       context 'a single-line commit log message' do
         it 'returns the entire commit log message' do
-          commit.subject.should == 'initial import'
+          expect(commit.subject).to eq('initial import')
         end
       end
 
@@ -240,27 +240,27 @@ describe Git::Commit do
             `git add file`
             `git commit -m "invasive changes\n\nbut necessary ones"`
           end
-          commit.subject.should == 'invasive changes'
+          expect(commit.subject).to eq('invasive changes')
         end
       end
     end
 
     describe '#ref' do
       it 'returns the associated reference' do
-        commit.ref.should == ref
+        expect(commit.ref).to eq(ref)
       end
 
       context 'no associated reference' do
         it 'returns nil' do
           commit = Git::Commit.commit_with_hash repo.head.sha1, repo
-          commit.ref.should be_nil
+          expect(commit.ref).to be_nil
         end
       end
     end
 
     describe '#repo' do
       it 'returns the associated repo' do
-        commit.repo.should == repo
+        expect(commit.repo).to eq(repo)
       end
     end
   end
@@ -277,107 +277,107 @@ describe Git::Commit do
     let(:diff) { repo.head.commits.first.diff }
 
     it 'returns an array of changes' do
-      diff.should be_kind_of(Array)
+      expect(diff).to be_kind_of(Array)
     end
 
     describe 'changes array' do
       it 'contains one hash per changed file' do
-        diff.length.should == 1
-        diff.first.should be_kind_of(Hash)
+        expect(diff.length).to eq(1)
+        expect(diff.first).to be_kind_of(Hash)
       end
 
       describe 'changed file hash' do
         let(:hash) { diff.first }
 
         specify 'added attribute indicates number of added lines' do
-          hash[:added].should == 1
+          expect(hash[:added]).to eq(1)
         end
 
         specify 'deleted attribute indicates number of deleted lines' do
-          hash[:deleted].should == 0
+          expect(hash[:deleted]).to eq(0)
         end
 
         specify 'path attribute indicates changed path' do
-          hash[:path].should == 'file'
+          expect(hash[:path]).to eq('file')
         end
 
         specify 'hunks attribute is an array of changed hunks' do
-          hash[:hunks].should be_kind_of(Array)
+          expect(hash[:hunks]).to be_kind_of(Array)
         end
 
         describe 'hunks array' do
           let(:hunks) { hash[:hunks] }
 
           it 'contains one hunk object per changed hunk' do
-            hunks.length.should == 1
-            hunks.first.should be_kind_of(Git::Hunk)
+            expect(hunks.length).to eq(1)
+            expect(hunks.first).to be_kind_of(Git::Hunk)
           end
 
           describe 'hunk' do
             let(:hunk) { hunks.first }
 
             it 'records the preimage start' do
-              hunk.preimage_start.should == 1
+              expect(hunk.preimage_start).to eq(1)
             end
 
             it 'records the preimage length' do
-              hunk.preimage_length.should == 1
+              expect(hunk.preimage_length).to eq(1)
             end
 
             it 'records the postimage start' do
-              hunk.postimage_start.should == 1
+              expect(hunk.postimage_start).to eq(1)
             end
 
             it 'records the postimage length' do
-              hunk.postimage_length.should == 2
+              expect(hunk.postimage_length).to eq(2)
             end
 
             it 'records an array of lines' do
-              hunk.lines.should be_kind_of(Array)
+              expect(hunk.lines).to be_kind_of(Array)
             end
 
             describe 'lines array' do
               let(:lines) { hunk.lines }
 
               it 'contains a context line' do
-                lines.first.should be_kind_of(Git::Hunk::Line)
-                lines.first.kind.should == :context
+                expect(lines.first).to be_kind_of(Git::Hunk::Line)
+                expect(lines.first.kind).to eq(:context)
               end
 
               describe 'context line' do
                 let(:line) { lines.first }
 
                 it 'records its preimage line number' do
-                  line.preimage_line_number.should == 1
+                  expect(line.preimage_line_number).to eq(1)
                 end
 
                 it 'records its postimage line number' do
-                  line.postimage_line_number.should == 1
+                  expect(line.postimage_line_number).to eq(1)
                 end
 
                 it 'records an array of line segments' do
-                  line.segments.should == [[:context, 'foo']]
+                  expect(line.segments).to eq([[:context, 'foo']])
                 end
               end
 
               it 'contains an addition line' do
-                lines[1].should be_kind_of(Git::Hunk::Line)
-                lines[1].kind.should == :added
+                expect(lines[1]).to be_kind_of(Git::Hunk::Line)
+                expect(lines[1].kind).to eq(:added)
               end
 
               describe 'addition line' do
                 let(:line) { lines[1] }
 
                 it 'has a nil preimage line number' do
-                  line.preimage_line_number.should be_nil
+                  expect(line.preimage_line_number).to be_nil
                 end
 
                 it 'records its postimage line number' do
-                  line.postimage_line_number.should == 2
+                  expect(line.postimage_line_number).to eq(2)
                 end
 
                 it 'records an array of line segments' do
-                  line.segments.should == [[:added, 'stuff']]
+                  expect(line.segments).to eq([[:added, 'stuff']])
                 end
               end
             end

@@ -6,18 +6,18 @@ describe ResetsController do
   describe '#new' do
     it 'assigns a new reset' do
       get :new
-      assigns[:reset].should be_kind_of(Reset)
-      assigns[:reset].should be_new_record
+      expect(assigns[:reset]).to be_kind_of(Reset)
+      expect(assigns[:reset]).to be_new_record
     end
 
     it 'renders the resets/new template' do
       get :new
-      response.should render_template('resets/new')
+      expect(response).to render_template('resets/new')
     end
 
     it 'succeeds' do
       get :new
-      response.should be_success
+      expect(response).to be_success
     end
   end
 
@@ -39,7 +39,7 @@ describe ResetsController do
 
       it 'redirects to /login' do
         do_post
-        response.should redirect_to('/login')
+        expect(response).to redirect_to('/login')
       end
 
       context 'too many resets' do
@@ -49,7 +49,7 @@ describe ResetsController do
 
         it 'shows a flash' do
           do_post
-          flash[:error].should =~ /exceeded the resets limit/
+          expect(flash[:error]).to match(/exceeded the resets limit/)
         end
       end
     end
@@ -61,18 +61,18 @@ describe ResetsController do
 
       it 'assigns a new reset' do
         do_post
-        assigns[:reset].should be_kind_of(Reset)
-        assigns[:reset].should be_new_record
+        expect(assigns[:reset]).to be_kind_of(Reset)
+        expect(assigns[:reset]).to be_new_record
       end
 
       it 'shows a flash' do
         do_post
-        flash[:error].should =~ /invalid email address/i
+        expect(flash[:error]).to match(/invalid email address/i)
       end
 
       it 'renders resets/new' do
         do_post
-        response.should render_template('resets/new')
+        expect(response).to render_template('resets/new')
       end
     end
   end
@@ -80,7 +80,7 @@ describe ResetsController do
   describe '#show' do
     it 'redirects to #edit' do
       get :show, id: 'foobar'
-      response.should redirect_to('/resets/foobar/edit')
+      expect(response).to redirect_to('/resets/foobar/edit')
     end
   end
 
@@ -93,22 +93,22 @@ describe ResetsController do
 
     it 'finds and assigns the reset' do
       do_get
-      assigns(:reset).should == reset
+      expect(assigns(:reset)).to eq(reset)
     end
 
     it 'finds and assigns the user' do
       do_get
-      assigns(:user).should == reset.email.user
+      expect(assigns(:user)).to eq(reset.email.user)
     end
 
     it 'renders resets/edit' do
       do_get
-      response.should render_template('resets/edit')
+      expect(response).to render_template('resets/edit')
     end
 
     it 'succeeds' do
       do_get
-      response.should be_success
+      expect(response).to be_success
     end
 
     context 'no reset token found' do
@@ -116,12 +116,12 @@ describe ResetsController do
 
       it 'shows a flash' do
         do_get
-        flash[:error].should =~ /token not found/
+        expect(flash[:error]).to match(/token not found/)
       end
 
       it 'redirects to /' do
         do_get
-        response.should redirect_to('/')
+        expect(response).to redirect_to('/')
       end
     end
 
@@ -130,12 +130,12 @@ describe ResetsController do
 
       it 'shows a flash' do
         do_get
-        flash[:notice].should =~ /token already used/
+        expect(flash[:notice]).to match(/token already used/)
       end
 
       it 'redirects to /login' do
         do_get
-        response.should redirect_to('/login')
+        expect(response).to redirect_to('/login')
       end
     end
 
@@ -144,12 +144,12 @@ describe ResetsController do
 
       it 'shows a flash' do
         do_get
-        flash[:error].should =~ /expiry date has already passed/
+        expect(flash[:error]).to match(/expiry date has already passed/)
       end
 
       it 'redirects to /' do
         do_get
-        response.should redirect_to('/')
+        expect(response).to redirect_to('/')
       end
     end
   end
@@ -170,38 +170,38 @@ describe ResetsController do
 
     it 'finds and assigns reset' do
       do_put
-      assigns[:reset].should == reset
+      expect(assigns[:reset]).to eq(reset)
     end
 
     it 'finds and assigns user' do
       do_put
-      assigns[:user].should == reset.email.user
+      expect(assigns[:user]).to eq(reset.email.user)
     end
 
     it 'sets the new passphrase' do
       do_put
-      User.authenticate(reset.email.address, 'helloworld').
-        should == reset.email.user
+      expect(User.authenticate(reset.email.address, 'helloworld')).
+        to eq(reset.email.user)
     end
 
     it 'sets completed_at' do
       do_put
-      (reset.completed_at - Time.now).should < 1.second
+      expect(reset.completed_at - Time.now).to be < 1.second
     end
 
     it 'shows a flash' do
       do_put
-      flash[:notice].should =~ /updated passphrase/
+      expect(flash[:notice]).to match(/updated passphrase/)
     end
 
     it 'logs in' do
       do_put
-      controller.send(:current_user).should == reset.email.user
+      expect(controller.send(:current_user)).to eq(reset.email.user)
     end
 
     it 'redirects to the user dashboard' do
       do_put
-      response.should redirect_to('/dashboard')
+      expect(response).to redirect_to('/dashboard')
     end
 
     context 'reset invalid (incorrect email address)' do
@@ -218,18 +218,18 @@ describe ResetsController do
 
       it 'does not set completed_at' do
         do_put
-        reset.completed_at.should be_nil
+        expect(reset.completed_at).to be_nil
       end
 
       it 'does not reset the passphrase' do
         do_put
-        User.authenticate(reset.email.address, 'helloworld').
-          should_not == reset.email.user
+        expect(User.authenticate(reset.email.address, 'helloworld')).
+          not_to eq(reset.email.user)
       end
 
       it 'renders resets/edit' do
         do_put
-        response.should render_template('resets/edit')
+        expect(response).to render_template('resets/edit')
       end
     end
 
@@ -245,18 +245,18 @@ describe ResetsController do
 
       it 'does not set completed_at' do
         do_put
-        reset.completed_at.should be_nil
+        expect(reset.completed_at).to be_nil
       end
 
       it 'does not reset the passphrase' do
         do_put
-        User.authenticate(reset.email.address, 'one thing').
-          should_not == reset.email.user
+        expect(User.authenticate(reset.email.address, 'one thing')).
+          not_to eq(reset.email.user)
       end
 
       it 'render resets/edit' do
         do_put
-        response.should render_template('resets/edit')
+        expect(response).to render_template('resets/edit')
       end
     end
 
@@ -271,12 +271,12 @@ describe ResetsController do
         do_put
         # BUG: in test environment, any flash set in the record_not_found
         # method will not hit the cookie flash
-        flash[:error].should =~ /not found/
+        expect(flash[:error]).to match(/not found/)
       end
 
       it 'redirects to /' do
         do_put
-        response.should redirect_to('/')
+        expect(response).to redirect_to('/')
       end
     end
   end

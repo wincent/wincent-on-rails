@@ -10,7 +10,7 @@ describe BranchesController do
 
     it 'finds and assigns repo' do
       do_request
-      assigns[:repo].should == repo
+      expect(assigns[:repo]).to eq(repo)
     end
 
     context 'private repo' do
@@ -18,12 +18,12 @@ describe BranchesController do
 
       it 'shows a flash' do
         do_request
-        flash[:error].should =~ /not found/
+        expect(flash[:error]).to match(/not found/)
       end
 
       it 'redirects to repos#index' do
         do_request
-        response.should redirect_to(repos_path)
+        expect(response).to redirect_to(repos_path)
       end
     end
 
@@ -32,18 +32,18 @@ describe BranchesController do
 
       it 'shows a flash' do
         do_request
-        flash[:error].should =~ /not found/
+        expect(flash[:error]).to match(/not found/)
       end
 
       it 'redirects to repos#index' do
         do_request
-        response.should redirect_to(repos_path)
+        expect(response).to redirect_to(repos_path)
       end
     end
 
     it 'redirects to the repo branch listing' do
       do_request
-      response.should redirect_to(repo_path(repo) + '#branches')
+      expect(response).to redirect_to(repo_path(repo) + '#branches')
     end
   end
 
@@ -58,7 +58,7 @@ describe BranchesController do
 
     it 'finds and assigns repo' do
       do_request
-      assigns[:repo].should == repo
+      expect(assigns[:repo]).to eq(repo)
     end
 
     context 'private repo' do
@@ -66,12 +66,12 @@ describe BranchesController do
 
       it 'shows a flash' do
         do_request
-        flash[:error].should =~ /not found/
+        expect(flash[:error]).to match(/not found/)
       end
 
       it 'redirects to repos#index' do
         do_request
-        response.should redirect_to(repos_path)
+        expect(response).to redirect_to(repos_path)
       end
     end
 
@@ -80,19 +80,19 @@ describe BranchesController do
 
       it 'shows a flash' do
         do_request
-        flash[:error].should =~ /not found/
+        expect(flash[:error]).to match(/not found/)
       end
 
       it 'redirects to repos#index' do
         do_request
-        response.should redirect_to(repos_path)
+        expect(response).to redirect_to(repos_path)
       end
     end
 
     it 'finds and assigns the branch' do
       do_request
-      assigns[:branch].should be_kind_of(Git::Branch)
-      assigns[:branch].name.should == 'refs/heads/master'
+      expect(assigns[:branch]).to be_kind_of(Git::Branch)
+      expect(assigns[:branch].name).to eq('refs/heads/master')
     end
 
     context 'non-existent branch' do
@@ -102,26 +102,26 @@ describe BranchesController do
 
       it 'shows a flash' do
         do_request
-        flash[:error].should =~ /not found/
+        expect(flash[:error]).to match(/not found/)
       end
 
       it 'redirects to repos#show' do
         do_request
-        response.should redirect_to(repo_path(repo))
+        expect(response).to redirect_to(repo_path(repo))
       end
     end
 
     it 'assigns the commits on the branch' do
       do_request
-      assigns[:commits].should be_kind_of(Array)
-      assigns[:commits].all? do |c|
+      expect(assigns[:commits]).to be_kind_of(Array)
+      expect(assigns[:commits].all? do |c|
         c.kind_of? Git::Commit
-      end.should == true
+      end).to eq(true)
     end
 
     it 'renders "branches/show"' do
       do_request
-      response.should render_template('branches/show')
+      expect(response).to render_template('branches/show')
     end
   end
 end

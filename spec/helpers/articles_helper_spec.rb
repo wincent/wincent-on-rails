@@ -4,7 +4,7 @@ describe ArticlesHelper do
   describe '#redirected_from' do
     context 'with no article' do
       it 'returns nil' do
-        helper.redirected_from.should be_nil
+        expect(helper.redirected_from).to be_nil
       end
     end
 
@@ -21,12 +21,12 @@ describe ArticlesHelper do
         end
 
         it 'reports the article title' do
-          helper.redirected_from.should == '<p>(Redirected from foo)</p>'
+          expect(helper.redirected_from).to eq('<p>(Redirected from foo)</p>')
         end
 
         it 'escapes the article title' do
           @redirected_from = Article.make! :title => '<this>'
-          helper.redirected_from.should == '<p>(Redirected from &lt;this&gt;)</p>'
+          expect(helper.redirected_from).to eq('<p>(Redirected from &lt;this&gt;)</p>')
         end
       end
 
@@ -37,11 +37,11 @@ describe ArticlesHelper do
 
         it 'includes an edit link' do
           expected = '<p>(Redirected from foo [<a href="/wiki/foo/edit">edit</a>])</p>'
-          helper.redirected_from.should == expected
+          expect(helper.redirected_from).to eq(expected)
         end
 
         it 'returns an HTML-safe string' do
-          helper.redirected_from.should be_html_safe
+          expect(helper.redirected_from).to be_html_safe
         end
       end
     end

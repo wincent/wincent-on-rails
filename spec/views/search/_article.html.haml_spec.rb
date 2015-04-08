@@ -12,12 +12,12 @@ describe 'search/_article' do
 
   it 'shows the result number' do
     do_render
-    rendered.should have_content(@result_number.to_s)
+    expect(rendered).to have_content(@result_number.to_s)
   end
 
   it 'uses the article title as link text' do
     do_render
-    rendered.should have_link(@article.title)
+    expect(rendered).to have_link(@article.title)
   end
 
   # was a bug
@@ -25,13 +25,13 @@ describe 'search/_article' do
     # we don't put </em> in the title because slashes are not allowed
     @article = Article.make! title: '<em>foo'
     do_render
-    rendered.should match('&lt;em&gt;foo')
-    rendered.should_not match('<em>foo')
+    expect(rendered).to match('&lt;em&gt;foo')
+    expect(rendered).not_to match('<em>foo')
   end
 
   it 'links to the article' do
     do_render
-    rendered.should have_link(@article.title, href: article_path(@article))
+    expect(rendered).to have_link(@article.title, href: article_path(@article))
   end
 
   it 'shows the timeinfo for the article' do

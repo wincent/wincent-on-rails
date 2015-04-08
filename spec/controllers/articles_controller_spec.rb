@@ -10,7 +10,7 @@ describe ArticlesController do
     it 'assigns the paginator' do
       stub.proxy(RestfulPaginator).new.with_any_args { |double| @paginator = double }
       get :index
-      assigns[:paginator].should == @paginator
+      expect(assigns[:paginator]).to eq(@paginator)
     end
 
     it 'finds recent articles' do
@@ -21,7 +21,7 @@ describe ArticlesController do
     it 'assigns found articles' do
       articles = [Article.make!]
       get :index
-      assigns[:articles].should == articles
+      expect(assigns[:articles]).to eq(articles)
     end
 
     it 'finds top tags' do
@@ -33,17 +33,17 @@ describe ArticlesController do
       tags = [Tag.make!]
       stub(Article).find_top_tags { tags }
       get :index
-      assigns[:tags].should == tags
+      expect(assigns[:tags]).to eq(tags)
     end
 
     it 'succeeds' do
       get :index
-      response.should be_success
+      expect(response).to be_success
     end
 
     it 'renders the index template' do
       get :index
-      response.should render_template('index')
+      expect(response).to render_template('index')
     end
   end
 
@@ -56,20 +56,20 @@ describe ArticlesController do
 
       it 'assigns the article' do
         get :show, :id => 'foo'
-        assigns[:article].should == @article
+        expect(assigns[:article]).to eq(@article)
       end
 
       it 'assigns existing comments' do
         get :show, :id => 'foo'
-        assigns[:comments].to_a.should =~ @comments
+        expect(assigns[:comments].to_a).to match_array(@comments)
       end
 
       context 'comments allowed' do
         it 'assigns a new comment' do
           get :show, :id => 'foo'
-          assigns[:comment].should be_kind_of(Comment)
-          assigns[:comment].commentable.should == @article
-          assigns[:comment].should be_new_record
+          expect(assigns[:comment]).to be_kind_of(Comment)
+          expect(assigns[:comment].commentable).to eq(@article)
+          expect(assigns[:comment]).to be_new_record
         end
       end
 
@@ -77,18 +77,18 @@ describe ArticlesController do
         it 'does not assign a new comment' do
           Article.make! :title => 'baz', :accepts_comments => false
           get :show, :id => 'baz'
-          assigns[:comment].should be_nil
+          expect(assigns[:comment]).to be_nil
         end
       end
 
       it 'succeeds' do
         get :show, :id => 'foo'
-        response.should be_success
+        expect(response).to be_success
       end
 
       it 'renders the show template' do
         get :show, :id => 'foo'
-        response.should render_template('show')
+        expect(response).to render_template('show')
       end
 
       context 'redirecting from another article' do
@@ -99,12 +99,12 @@ describe ArticlesController do
         end
 
         it 'assigns redirection info' do
-          assigns[:redirected_from].should == @redirected_from
+          expect(assigns[:redirected_from]).to eq(@redirected_from)
         end
 
         it 'clears redirection info' do
-          session[:redirected_from].should be_nil
-          session[:redirection_count].should == 0
+          expect(session[:redirected_from]).to be_nil
+          expect(session[:redirection_count]).to eq(0)
         end
       end
 
@@ -118,7 +118,7 @@ describe ArticlesController do
 
         it 'redirects' do
           get :show, :id => 'bar'
-          response.should redirect_to('http://example.com/bar')
+          expect(response).to redirect_to('http://example.com/bar')
         end
       end
 
@@ -133,17 +133,17 @@ describe ArticlesController do
         it 'increments the redirection count' do
           session[:redirection_count] = 2
           get :show, :id => 'bar'
-          session[:redirection_count].should == 3
+          expect(session[:redirection_count]).to eq(3)
         end
 
         it 'records the originating article' do
           get :show, :id => 'bar'
-          session[:redirected_from].should == 'bar'
+          expect(session[:redirected_from]).to eq('bar')
         end
 
         it 'redirects' do
           get :show, :id => 'bar'
-          response.should redirect_to('/wiki/foo')
+          expect(response).to redirect_to('/wiki/foo')
         end
 
         describe 'detecting a redirection loop' do
@@ -153,18 +153,18 @@ describe ArticlesController do
 
           it 'clears the direction info' do
             get :show, :id => 'bar'
-            session[:redirected_from].should be_nil
-            session[:redirection_count].should == 0
+            expect(session[:redirected_from]).to be_nil
+            expect(session[:redirection_count]).to eq(0)
           end
 
           it 'shows a flash' do
             get :show, :id => 'bar'
-            flash[:error].should =~ /too many redirections/i
+            expect(flash[:error]).to match(/too many redirections/i)
           end
 
           it 'redirects to #index' do
             get :show, :id => 'bar'
-            response.should redirect_to('/wiki')
+            expect(response).to redirect_to('/wiki')
           end
         end
       end
@@ -178,12 +178,12 @@ describe ArticlesController do
       context 'as a normal user' do
         it 'redirects to /wiki' do
           get :show, :id => 'bar'
-          response.should redirect_to('/wiki')
+          expect(response).to redirect_to('/wiki')
         end
 
         it 'shows a flash' do
           get :show, :id => 'bar'
-          flash[:error].should =~ /forbidden/
+          expect(flash[:error]).to match(/forbidden/)
         end
       end
 
@@ -194,7 +194,7 @@ describe ArticlesController do
 
         it 'succeeds' do
           get :show, :id => 'bar'
-          response.should be_success
+          expect(response).to be_success
         end
       end
     end
@@ -203,12 +203,12 @@ describe ArticlesController do
       context 'as a normal user' do
         it 'redirects to /wiki' do
           get :show, :id => 'moot'
-          response.should redirect_to('/wiki')
+          expect(response).to redirect_to('/wiki')
         end
 
         it 'shows a flash' do
           get :show, :id => 'moot'
-          flash[:error].should =~ /not found/
+          expect(flash[:error]).to match(/not found/)
         end
       end
 
@@ -217,12 +217,12 @@ describe ArticlesController do
 
         it 'redirects to /wiki/new' do
           get :show, :id => 'moot'
-          response.should redirect_to('/wiki/new')
+          expect(response).to redirect_to('/wiki/new')
         end
 
         it 'shows a flash' do
           get :show, :id => 'moot'
-          flash[:notice].should =~ /article not found: create it\?/
+          expect(flash[:notice]).to match(/article not found: create it\?/)
         end
       end
     end
@@ -240,7 +240,7 @@ describe ArticlesController do
         target = 'https://example.com/'
         Article.make! :title => title, :redirect => target, :body => ''
         get :show, :id => title
-        response.should redirect_to(target)
+        expect(response).to redirect_to(target)
       end
     end
   end
@@ -253,27 +253,27 @@ describe ArticlesController do
 
       it 'assigns a new article' do
         get :new
-        assigns[:article].should be_kind_of(Article)
-        assigns[:article].should be_new_record
+        expect(assigns[:article]).to be_kind_of(Article)
+        expect(assigns[:article]).to be_new_record
       end
 
       it 'takes params from the session' do
         session[:new_article_params] = { :title => 'foo' }
         get :new
-        assigns[:article].title.should == 'foo'
+        expect(assigns[:article].title).to eq('foo')
       end
 
       it 'clears the session params' do
         session[:new_article_params] = { :title => 'foo' }
         get :new
-        session[:new_article_params].should be_nil
+        expect(session[:new_article_params]).to be_nil
       end
     end
 
     context 'non-admin access' do
       it 'redirects to the login page' do
         get :new
-        response.should redirect_to('/login')
+        expect(response).to redirect_to('/login')
       end
     end
   end
@@ -287,15 +287,15 @@ describe ArticlesController do
       context 'AJAX request' do
         it 'assigns a new article' do
           xhr :post, :create, :title => 'foo', :body => 'bar'
-          assigns[:article].should be_kind_of(Article)
-          assigns[:article].title.should == 'foo'
-          assigns[:article].body.should == 'bar'
-          assigns[:article].should be_new_record
+          expect(assigns[:article]).to be_kind_of(Article)
+          expect(assigns[:article].title).to eq('foo')
+          expect(assigns[:article].body).to eq('bar')
+          expect(assigns[:article]).to be_new_record
         end
 
         it 'renders the preview partial' do
           xhr :post, :create, :title => 'foo', :body => 'bar'
-          response.should render_template(:partial => '_preview')
+          expect(response).to render_template(:partial => '_preview')
         end
       end
 
@@ -303,24 +303,24 @@ describe ArticlesController do
         it 'creates a new article' do
           post :create, :article => { :title => 'foo', :body => 'bar' }
           article = Article.last
-          article.title.should == 'foo'
-          article.body.should == 'bar'
+          expect(article.title).to eq('foo')
+          expect(article.body).to eq('bar')
         end
 
         it 'assigns the new article' do
           post :create, :article => { :title => 'foo', :body => 'bar' }
-          assigns[:article].should == Article.last
+          expect(assigns[:article]).to eq(Article.last)
         end
 
         it 'redirects to the article' do
           post :create, :article => { :title => 'foo', :body => 'bar' }
           article = Article.last
-          response.should redirect_to(article_path(article))
+          expect(response).to redirect_to(article_path(article))
         end
 
         it 'shows a flash' do
           post :create, :article => { :title => 'foo', :body => 'bar' }
-          flash[:notice].should =~ /created new article/
+          expect(flash[:notice]).to match(/created new article/)
         end
 
         context 'article with invalid params' do
@@ -329,17 +329,17 @@ describe ArticlesController do
           end
 
           it 'assigns the article' do
-            assigns[:article].should be_kind_of(Article)
-            assigns[:article].title.should == 'foo'
-            assigns[:article].should be_new_record
+            expect(assigns[:article]).to be_kind_of(Article)
+            expect(assigns[:article].title).to eq('foo')
+            expect(assigns[:article]).to be_new_record
           end
 
           it 'shows an error flash' do
-            flash[:error].should =~ /failed to create/i
+            expect(flash[:error]).to match(/failed to create/i)
           end
 
           it 'renders the #new template' do
-            response.should render_template('new')
+            expect(response).to render_template('new')
           end
         end
       end
@@ -348,7 +348,7 @@ describe ArticlesController do
     context 'non-admin access' do
       it 'redirects to the login page' do
         post :create, :article => { :title => 'foo', :body => 'bar' }
-        response.should redirect_to('/login')
+        expect(response).to redirect_to('/login')
       end
     end
   end
@@ -362,23 +362,23 @@ describe ArticlesController do
 
       it 'assigns the article' do
         get :edit, :id => 'foo'
-        assigns[:article].should == @article
+        expect(assigns[:article]).to eq(@article)
       end
 
       it 'renders the #edit template' do
         get :edit, :id => 'foo'
-        response.should render_template('edit')
+        expect(response).to render_template('edit')
       end
 
       context 'non-existent article' do
         it 'redirects to /wiki/new' do
           get :edit, :id => 'moot'
-          response.should redirect_to('/wiki/new')
+          expect(response).to redirect_to('/wiki/new')
         end
 
         it 'shows a flash' do
           get :edit, :id => 'moot'
-          flash[:notice].should =~ /article not found: create it\?/
+          expect(flash[:notice]).to match(/article not found: create it\?/)
         end
       end
     end
@@ -386,7 +386,7 @@ describe ArticlesController do
     context 'non-admin access' do
       it 'redirects to the login page' do
         get :edit, :id => 'unimportant'
-        response.should redirect_to('/login')
+        expect(response).to redirect_to('/login')
       end
     end
   end
@@ -400,12 +400,12 @@ describe ArticlesController do
     context 'as a normal user' do
       it 'redirects to /login' do
         put :update, @params
-        response.should redirect_to('/login')
+        expect(response).to redirect_to('/login')
       end
 
       it 'shows a flash' do
         put :update, @params
-        flash[:notice].should =~ /requires administrator privileges/
+        expect(flash[:notice]).to match(/requires administrator privileges/)
       end
     end
 
@@ -416,17 +416,17 @@ describe ArticlesController do
 
       it 'updates the article' do
         put :update, @params
-        Article.find_by_title!('foo').body.should == 'bar'
+        expect(Article.find_by_title!('foo').body).to eq('bar')
       end
 
       it 'redirects to #show' do
         put :update, @params
-        response.should redirect_to('/wiki/foo')
+        expect(response).to redirect_to('/wiki/foo')
       end
 
       it 'shows a flash' do
         put :update, @params
-        flash[:notice].should =~ /successfully updated/i
+        expect(flash[:notice]).to match(/successfully updated/i)
       end
 
       context 'with invalid attributes' do
@@ -439,12 +439,12 @@ describe ArticlesController do
 
         it 'shows an error flash' do
           put :update, @params
-          flash[:error].should =~ /update failed/i
+          expect(flash[:error]).to match(/update failed/i)
         end
 
         it 'renders #edit' do
           put :update, @params
-          response.should render_template('edit')
+          expect(response).to render_template('edit')
         end
       end
     end

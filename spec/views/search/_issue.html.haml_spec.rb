@@ -12,25 +12,25 @@ describe 'search/_issue' do
 
   it 'shows the result number' do
     do_render
-    rendered.should have_content(@result_number.to_s)
+    expect(rendered).to have_content(@result_number.to_s)
   end
 
   it 'uses the issue summary as link text' do
     do_render
-    rendered.should have_link(@issue.summary)
+    expect(rendered).to have_link(@issue.summary)
   end
 
   # was a bug
   it 'escapes HTML special characters in the issue summary' do
     @issue = Issue.make! summary: '<em>foo</em>'
     do_render
-    rendered.should match('&lt;em&gt;foo&lt;/em&gt')
-    rendered.should_not have_css('em', text: 'foo')
+    expect(rendered).to match('&lt;em&gt;foo&lt;/em&gt')
+    expect(rendered).not_to have_css('em', text: 'foo')
   end
 
   it 'links to the issue' do
     do_render
-    rendered.should have_link(@issue.summary, issue_path(@issue))
+    expect(rendered).to have_link(@issue.summary, issue_path(@issue))
   end
 
   it 'shows the timeinfo for the issue' do
@@ -41,18 +41,18 @@ describe 'search/_issue' do
   it 'shows the issue kind' do
     mock(@issue).kind_string { 'le bug' }
     do_render
-    rendered.should have_content('le bug')
+    expect(rendered).to have_content('le bug')
   end
 
   it 'shows the issue status' do
     mock(@issue).status_string { 'cerrado' }
     do_render
-    rendered.should have_content('cerrado')
+    expect(rendered).to have_content('cerrado')
   end
 
   it 'gets the issue description' do
     do_render
-    rendered.should have_content("can't print")
+    expect(rendered).to have_content("can't print")
   end
 
   it 'truncates the issue description to 240 characters' do

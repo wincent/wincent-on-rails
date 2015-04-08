@@ -3,13 +3,13 @@ require 'base64'
 shared_examples_for 'redirect_to_login' do
   it 'stores the original URI in the session' do
     do_request
-    session[:original_uri].should_not be_blank
-    session[:original_uri].should == response.request.fullpath
+    expect(session[:original_uri]).not_to be_blank
+    expect(session[:original_uri]).to eq(response.request.fullpath)
   end
 
   it 'redirects to /login' do
     do_request
-    response.should redirect_to('/login')
+    expect(response).to redirect_to('/login')
   end
 end
 
@@ -18,19 +18,19 @@ shared_examples_for 'require_admin' do
 
   it 'shows a flash' do
     do_request
-    flash[:notice].should =~ /requires administrator privileges/
+    expect(flash[:notice]).to match(/requires administrator privileges/)
   end
 end
 
 shared_examples_for 'require_admin (non-HTML)' do
   it 'returns status 403 (forbidden)' do
     do_request
-    response.status.should == 403
+    expect(response.status).to eq(403)
   end
 
   it 'renders "forbidden" test' do
     do_request
-    response.body.should match(/forbidden/i)
+    expect(response.body).to match(/forbidden/i)
   end
 end
 
@@ -39,7 +39,7 @@ shared_examples_for 'require_user' do
 
   it 'shows a flash' do
     do_request
-    flash[:notice].should =~ /must be logged in to access/
+    expect(flash[:notice]).to match(/must be logged in to access/)
   end
 end
 
@@ -76,19 +76,19 @@ shared_examples_for 'ActiveRecord::Authentication' do
       digests = %w(salt1 salt2 salt3).map do |salt|
         subject.digest 'passphrase', salt
       end
-      digests.uniq.length.should == 3
+      expect(digests.uniq.length).to eq(3)
     end
 
     it 'returns different digests for varying passphrases' do
       digests = %w(pass1 pass2 pass3).map do |pass|
         subject.digest pass, 'salt'
       end
-      digests.uniq.length.should == 3
+      expect(digests.uniq.length).to eq(3)
     end
 
     it 'is idempotent (unchanging) for a given passphrase/salt pair' do
       pass, salt = 'pass', 'salt'
-      subject.digest(pass, salt).should == subject.digest(pass, salt)
+      expect(subject.digest(pass, salt)).to eq(subject.digest(pass, salt))
     end
 
     describe 'version 0' do
@@ -97,7 +97,7 @@ shared_examples_for 'ActiveRecord::Authentication' do
       end
 
       it 'returns a SHA256 digest (64-character string in hex notation)' do
-        subject.digest('foo', 'bar').should =~ /\A[a-f0-9]{64}\z/
+        expect(subject.digest('foo', 'bar')).to match(/\A[a-f0-9]{64}\z/)
       end
 
       it 'can be forced to use a later version' do

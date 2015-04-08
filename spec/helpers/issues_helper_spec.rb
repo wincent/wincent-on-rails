@@ -5,14 +5,14 @@ describe IssuesHelper do
     context 'no "issue" param' do
       it 'returns nil' do
         stub(helper).params { {} }
-        helper.search_info.should be_nil
+        expect(helper.search_info).to be_nil
       end
     end
 
     context 'single criterion' do
       it 'returns a description of the criterion' do
         stub(helper).params {{ :issue => { :kind => '2' }}}
-        helper.search_info.should == 'Currently showing only issues with kind: support ticket'
+        expect(helper.search_info).to eq('Currently showing only issues with kind: support ticket')
       end
     end
 
@@ -25,7 +25,7 @@ describe IssuesHelper do
           :status => '2',
           :summary => 'bar'
         }}}
-        helper.search_info.should == "Currently showing only issues with product: foo, kind: feature request, status: closed, matching text: bar"
+        expect(helper.search_info).to eq("Currently showing only issues with product: foo, kind: feature request, status: closed, matching text: bar")
       end
     end
   end

@@ -6,83 +6,83 @@ describe Article do
     # make sure the long body survives the round-trip from the db
     long_body = ('x' * 127 + ' ') * 1024
     article = Article.make! body: long_body
-    article.body.length.should == long_body.length
+    expect(article.body.length).to eq(long_body.length)
     article.reload
-    article.body.length.should == long_body.length
+    expect(article.body.length).to eq(long_body.length)
   end
 
   it 'copes with really long words' do
     pending 'too lazy to fix for now'
     long_body = 'x' * 128 * 1024 # the Needle model will barf here
     article = Article.make! body: long_body
-    article.body.length.should == long_body.length
+    expect(article.body.length).to eq(long_body.length)
     article.reload
-    article.body.length.should == long_body.length
+    expect(article.body.length).to eq(long_body.length)
   end
 
   describe '#title' do
     it 'defaults to nil' do
-      Article.new.title.should be_nil
+      expect(Article.new.title).to be_nil
     end
   end
 
   describe '#redirect' do
     it 'defaults to nil' do
-      Article.new.redirect.should be_nil
+      expect(Article.new.redirect).to be_nil
     end
   end
 
   describe '#body' do
     it 'defaults to nil' do
-      Article.new.body.should be_nil
+      expect(Article.new.body).to be_nil
     end
   end
 
   describe '#public' do
     it 'defaults to true' do
-      Article.new.public.should == true
+      expect(Article.new.public).to eq(true)
     end
   end
 
   describe '#accepts_comments' do
     it 'defaults to true' do
-      Article.new.accepts_comments.should == true
+      expect(Article.new.accepts_comments).to eq(true)
     end
   end
 
   describe '#comments_count' do
     it 'defaults to 0' do
-      Article.new.comments_count.should == 0
+      expect(Article.new.comments_count).to eq(0)
     end
   end
 
   describe '#created_at' do
     it 'defaults to nil' do
-      Article.new.created_at.should be_nil
+      expect(Article.new.created_at).to be_nil
     end
   end
 
   describe '#updated_at' do
     it 'defaults to nil' do
-      Article.new.updated_at.should be_nil
+      expect(Article.new.updated_at).to be_nil
     end
   end
 
   describe '#last_commenter_id' do
     it 'defaults to nil' do
-      Article.new.last_commenter_id.should be_nil
+      expect(Article.new.last_commenter_id).to be_nil
     end
   end
 
   describe '#last_comment_id' do
     it 'defaults to nil' do
-      Article.new.last_comment_id.should be_nil
+      expect(Article.new.last_comment_id).to be_nil
     end
   end
 
   describe '#last_commented_at' do
     it 'defaults to nil' do
-      Article.new.last_commented_at.should be_nil
+      expect(Article.new.last_commented_at).to be_nil
     end
   end
 end
@@ -93,133 +93,133 @@ describe Article, 'creation' do
   end
 
   it 'should default to being public' do
-    @article.public.should == true
+    expect(@article.public).to eq(true)
   end
 
   it 'should default to accepting comments' do
-    @article.accepts_comments.should == true
+    expect(@article.accepts_comments).to eq(true)
   end
 end
 
 describe Article, 'comments association' do
   it 'should respond to the comments message' do
-    Article.make!.comments.should == []
+    expect(Article.make!.comments).to eq([])
   end
 end
 
 # :title, :redirect, :body, :public, :accepts_comments, :pending_tags
 describe Article, 'accessible attributes' do
   it 'should allow mass-assignment to the title' do
-    Article.make.should allow_mass_assignment_of(title: Sham.random)
+    expect(Article.make).to allow_mass_assignment_of(title: Sham.random)
   end
 
   it 'should allow mass-assignment to the redirect' do
-    Article.make.should allow_mass_assignment_of(body: "[[#{Sham.random}]]")
+    expect(Article.make).to allow_mass_assignment_of(body: "[[#{Sham.random}]]")
   end
 
   it 'should allow mass-assignment to the body' do
-    Article.make.should allow_mass_assignment_of(body: Sham.random)
+    expect(Article.make).to allow_mass_assignment_of(body: Sham.random)
   end
 
   it 'should allow mass-assignment to the public attribute' do
-    Article.make(public: false).should allow_mass_assignment_of(public: true)
+    expect(Article.make(public: false)).to allow_mass_assignment_of(public: true)
   end
 
   it 'should allow mass-assignment to the "accepts comments" attribute' do
-    Article.make(accepts_comments: false).should allow_mass_assignment_of(accepts_comments: true)
+    expect(Article.make(accepts_comments: false)).to allow_mass_assignment_of(accepts_comments: true)
   end
 
   it 'should allow mass-assignment to the "pending tags" attribute' do
-    Article.make.should allow_mass_assignment_of(pending_tags: 'foo bar baz')
+    expect(Article.make).to allow_mass_assignment_of(pending_tags: 'foo bar baz')
   end
 end
 
 describe Article, 'validating the title' do
   it 'should require it to be present' do
-     Article.make(title: nil).should fail_validation_for(:title)
+     expect(Article.make(title: nil)).to fail_validation_for(:title)
   end
 
   it 'should require it to be unique' do
     title = Sham.random
-    Article.make!(title: title).should be_valid
-    Article.make(title: title).should fail_validation_for(:title)
+    expect(Article.make!(title: title)).to be_valid
+    expect(Article.make(title: title)).to fail_validation_for(:title)
   end
 
   it 'should disallow underscores' do
-    article = Article.make(title: 'foo_bar').should fail_validation_for(:title)
+    article = expect(Article.make(title: 'foo_bar')).to fail_validation_for(:title)
   end
 end
 
 describe Article, 'validating the redirect' do
   it 'should require it to be present if the body is absent' do
-    Article.make(redirect: nil, body: nil).should fail_validation_for(:redirect)
+    expect(Article.make(redirect: nil, body: nil)).to fail_validation_for(:redirect)
   end
 
   it 'should accept an HTTP URL' do
-    Article.make(redirect: 'http://example.com').should_not fail_validation_for(:redirect)
+    expect(Article.make(redirect: 'http://example.com')).not_to fail_validation_for(:redirect)
   end
 
   it 'should accept an HTTPS URL' do
-    Article.make(redirect: 'https://example.com').should_not fail_validation_for(:redirect)
+    expect(Article.make(redirect: 'https://example.com')).not_to fail_validation_for(:redirect)
   end
 
   it 'should accept relative URLs' do
-    Article.make(redirect: '/forums').should_not fail_validation_for(:redirect)
+    expect(Article.make(redirect: '/forums')).not_to fail_validation_for(:redirect)
   end
 
   it 'should accept a [[wikitext]] title' do
-    Article.make(redirect: '[[foo bar]]').should_not fail_validation_for(:redirect)
+    expect(Article.make(redirect: '[[foo bar]]')).not_to fail_validation_for(:redirect)
   end
 
   it 'should ignore leading whitespace' do
-    Article.make(redirect: '   http://example.com').should_not fail_validation_for(:redirect)
-    Article.make(redirect: '   https://example.com').should_not fail_validation_for(:redirect)
-    Article.make(redirect: '   /forums').should_not fail_validation_for(:redirect)
-    Article.make(redirect: '   [[foo bar]]').should_not fail_validation_for(:redirect)
+    expect(Article.make(redirect: '   http://example.com')).not_to fail_validation_for(:redirect)
+    expect(Article.make(redirect: '   https://example.com')).not_to fail_validation_for(:redirect)
+    expect(Article.make(redirect: '   /forums')).not_to fail_validation_for(:redirect)
+    expect(Article.make(redirect: '   [[foo bar]]')).not_to fail_validation_for(:redirect)
   end
 
   it 'should ignore trailing whitespace' do
-    Article.make(redirect: 'http://example.com   ').should_not fail_validation_for(:redirect)
-    Article.make(redirect: 'https://example.com   ').should_not fail_validation_for(:redirect)
-    Article.make(redirect: '/forums   ').should_not fail_validation_for(:redirect)
-    Article.make(redirect: '[[foo bar]]   ').should_not fail_validation_for(:redirect)
+    expect(Article.make(redirect: 'http://example.com   ')).not_to fail_validation_for(:redirect)
+    expect(Article.make(redirect: 'https://example.com   ')).not_to fail_validation_for(:redirect)
+    expect(Article.make(redirect: '/forums   ')).not_to fail_validation_for(:redirect)
+    expect(Article.make(redirect: '[[foo bar]]   ')).not_to fail_validation_for(:redirect)
   end
 
   it 'should reject FTP URLs' do
-    Article.make(redirect: 'ftp://example.com/').should fail_validation_for(:redirect)
+    expect(Article.make(redirect: 'ftp://example.com/')).to fail_validation_for(:redirect)
   end
 
   it 'should reject external wikitext links' do
-    Article.make(redirect: '[http://example.com/ link text]').should fail_validation_for(:redirect)
+    expect(Article.make(redirect: '[http://example.com/ link text]')).to fail_validation_for(:redirect)
   end
 
   it 'should reject everything else' do
-    Article.make(redirect: 'hello world').should fail_validation_for(:redirect)
+    expect(Article.make(redirect: 'hello world')).to fail_validation_for(:redirect)
   end
 end
 
 describe Article, 'validating the body' do
   it 'should require it to be present if the redirect is absent' do
-    Article.make(redirect: nil, body: nil).should fail_validation_for(:body)
+    expect(Article.make(redirect: nil, body: nil)).to fail_validation_for(:body)
   end
 
   it 'should complain if longer than 128k' do
     long_body = 'x' * (128 * 1024 + 100)
-    Article.make(body: long_body).should fail_validation_for(:body)
+    expect(Article.make(body: long_body)).to fail_validation_for(:body)
   end
 end
 
 describe Article, 'smart capitalization' do
   it 'should capitalize the first word only' do
-    Article.smart_capitalize('foo bar').should == 'Foo bar'
+    expect(Article.smart_capitalize('foo bar')).to eq('Foo bar')
   end
 
   it 'should leave other words untouched' do
-    Article.smart_capitalize('foo IBM').should == 'Foo IBM'
+    expect(Article.smart_capitalize('foo IBM')).to eq('Foo IBM')
   end
 
   it 'should not capitalize if the first word already contains capitals' do
-    Article.smart_capitalize('WOPublic bar').should == 'WOPublic bar'
+    expect(Article.smart_capitalize('WOPublic bar')).to eq('WOPublic bar')
   end
 end
 
@@ -241,13 +241,13 @@ describe Article do
 
     context 'with no user param' do
       it 'finds public articles' do
-        Article.find_with_param!('foo').should == @public
+        expect(Article.find_with_param!('foo')).to eq(@public)
       end
 
       it 'raises ActionController::ForbiddenError for private articles' do
-        lambda {
+        expect {
           Article.find_with_param! 'bar'
-        }.should raise_error(ActionController::ForbiddenError)
+        }.to raise_error(ActionController::ForbiddenError)
       end
     end
 
@@ -257,13 +257,13 @@ describe Article do
       end
 
       it 'finds public articles' do
-        Article.find_with_param!('foo', @user).should == @public
+        expect(Article.find_with_param!('foo', @user)).to eq(@public)
       end
 
       it 'raises ActionController::ForbiddenError for private articles' do
-        lambda {
+        expect {
           Article.find_with_param! 'bar', @user
-        }.should raise_error(ActionController::ForbiddenError)
+        }.to raise_error(ActionController::ForbiddenError)
       end
     end
 
@@ -273,11 +273,11 @@ describe Article do
       end
 
       it 'finds public articles' do
-        Article.find_with_param!('foo', @user).should == @public
+        expect(Article.find_with_param!('foo', @user)).to eq(@public)
       end
 
       it 'finds private articles' do
-        Article.find_with_param!('bar', @user).should == @private
+        expect(Article.find_with_param!('bar', @user)).to eq(@private)
       end
     end
   end
@@ -285,27 +285,27 @@ describe Article do
   describe '#redirection_url' do
     context 'with no redirect' do
       it 'returns nil' do
-        Article.make!(redirect: nil).redirection_url.should be_nil
+        expect(Article.make!(redirect: nil).redirection_url).to be_nil
       end
     end
 
     context 'with blank redirect' do
       it 'returns nil' do
-        Article.make!(redirect: '').redirection_url.should be_nil
-        Article.make!(redirect: '  ').redirection_url.should be_nil
+        expect(Article.make!(redirect: '').redirection_url).to be_nil
+        expect(Article.make!(redirect: '  ').redirection_url).to be_nil
       end
     end
 
     context 'with internal wiki link' do
       it 'returns a relative path' do
         article = Article.make! redirect: '[[foo]]', body: ''
-        article.redirection_url.should == '/wiki/foo'
+        expect(article.redirection_url).to eq('/wiki/foo')
       end
 
       context 'with excess whitespace' do
         it 'trims the excess' do
           article = Article.make! redirect: '  [[foo]]  ', body: ''
-          article.redirection_url.should == '/wiki/foo'
+          expect(article.redirection_url).to eq('/wiki/foo')
         end
       end
     end
@@ -313,13 +313,13 @@ describe Article do
     context 'with HTTP URL' do
       it 'returns the full URL' do
         article = Article.make! redirect: 'http://example.com/', body: ''
-        article.redirection_url.should == 'http://example.com/'
+        expect(article.redirection_url).to eq('http://example.com/')
       end
 
       context 'with excess whitespace' do
         it 'trims the excess' do
           article = Article.make! redirect: '  http://example.com/  ', body: ''
-          article.redirection_url.should == 'http://example.com/'
+          expect(article.redirection_url).to eq('http://example.com/')
         end
       end
     end
@@ -327,13 +327,13 @@ describe Article do
     context 'with HTTPS URL' do
       it 'returns the full URL' do
         article = Article.make! redirect: 'https://example.com/', body: ''
-        article.redirection_url.should == 'https://example.com/'
+        expect(article.redirection_url).to eq('https://example.com/')
       end
 
       context 'with excess whitespace' do
         it 'trims the excess' do
           article = Article.make! redirect: '  https://example.com/  ', body: ''
-          article.redirection_url.should == 'https://example.com/'
+          expect(article.redirection_url).to eq('https://example.com/')
         end
       end
     end
@@ -341,13 +341,13 @@ describe Article do
     context 'with relative path' do
       it 'returns a relative path' do
         article = Article.make! redirect: '/issues/10', body: ''
-        article.redirection_url.should == '/issues/10'
+        expect(article.redirection_url).to eq('/issues/10')
       end
 
       context 'with excess whitespace' do
         it 'trims the excess' do
           article = Article.make! redirect: '  /issues/10  ', body: ''
-          article.redirection_url.should == '/issues/10'
+          expect(article.redirection_url).to eq('/issues/10')
         end
       end
     end
@@ -357,7 +357,7 @@ describe Article do
       it 'returns nil' do
         article = Article.make redirect: '---> fun!', body: ''
         article.save validate: false
-        article.redirection_url.should be_nil
+        expect(article.redirection_url).to be_nil
       end
     end
   end
@@ -365,19 +365,19 @@ describe Article do
   describe '#to_param' do
     it 'uses the title as the param' do
       title = Sham.random
-      Article.make(title: title).to_param.should == title
+      expect(Article.make(title: title).to_param).to eq(title)
     end
 
     it 'converts spaces into underscores' do
       title = 'foo bar'
-      Article.make(title: title).to_param.should == title.gsub(' ', '_')
+      expect(Article.make(title: title).to_param).to eq(title.gsub(' ', '_'))
     end
 
     context 'dirty record' do
       it 'uses the old title as param' do
         article = Article.make! title: 'foo'
         article.title = 'bar'
-        article.to_param.should == 'foo'
+        expect(article.to_param).to eq('foo')
       end
     end
   end

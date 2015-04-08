@@ -8,11 +8,11 @@ describe Git::Ref do
 
   describe '::head' do
     it 'returns a Ref instance' do
-      @ref.should be_kind_of(Git::Ref)
+      expect(@ref).to be_kind_of(Git::Ref)
     end
 
     specify 'returned objects matches HEAD' do
-      @ref.name.should == 'HEAD'
+      expect(@ref.name).to eq('HEAD')
     end
   end
 
@@ -30,13 +30,13 @@ describe Git::Ref do
     end
 
     it 'returns an array of Commit objects' do
-      @ref.commits.should be_kind_of(Array)
-      @ref.commits.should_not be_empty
-      @ref.commits.all? { |commit| commit.kind_of?(Git::Commit) }.should == true
+      expect(@ref.commits).to be_kind_of(Array)
+      expect(@ref.commits).not_to be_empty
+      expect(@ref.commits.all? { |commit| commit.kind_of?(Git::Commit) }).to eq(true)
     end
 
     it 'returns at most 20 commits' do
-      @ref.commits.size.should <= 20
+      expect(@ref.commits.size).to be <= 20
     end
   end
 end

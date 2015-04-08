@@ -15,16 +15,16 @@ describe 'products/index' do
   end
 
   it 'renders list of products' do
-    rendered.should have_css('h3', text: 'Synergy')
-    rendered.should have_css('h3', text: 'Synergy Advance')
+    expect(rendered).to have_css('h3', text: 'Synergy')
+    expect(rendered).to have_css('h3', text: 'Synergy Advance')
   end
 
   it 'shows category headings' do
-    rendered.should have_css('h2', text: 'Consumer products')
+    expect(rendered).to have_css('h2', text: 'Consumer products')
   end
 
   it 'shows description HTML' do
-    rendered.should have_css('p', text: 'An iTunes controller')
-    rendered.should have_css('p', text: 'An improved iTunes accessory')
+    expect(rendered).to have_css('p', text: 'An iTunes controller')
+    expect(rendered).to have_css('p', text: 'An improved iTunes accessory')
   end
 end

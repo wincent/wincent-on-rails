@@ -6,7 +6,7 @@ describe SearchController do
   describe '#search' do
     it 'assigns the offset for use by the view' do
       get :search, :q => 'foo', :offset => '5'
-      assigns[:offset].should == 5
+      expect(assigns[:offset]).to eq(5)
     end
 
     it 'finds using the query string' do
@@ -27,7 +27,7 @@ describe SearchController do
     it 'assigns the found models for use by the view' do
       stub(Needle).find_with_query_string(anything, anything) { :search_results }
       get :search, :q => 'foo'
-      assigns[:models].should == :search_results
+      expect(assigns[:models]).to eq(:search_results)
     end
   end
 end

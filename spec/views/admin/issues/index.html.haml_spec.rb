@@ -9,12 +9,12 @@ describe 'admin/issues/index' do
 
   it 'has an "all issues" link' do
     render
-    rendered.should have_link('public issues index', href: issues_path)
+    expect(rendered).to have_link('public issues index', href: issues_path)
   end
 
   it 'has a "refresh" link' do
     render
-    rendered.should have_link('refresh', href: admin_issues_path)
+    expect(rendered).to have_link('refresh', href: admin_issues_path)
   end
 
   it 'has a "destroy" button for each issue' do

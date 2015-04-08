@@ -12,21 +12,21 @@ describe 'admin/posts/index' do
     it 'has a sortable header cell for the "title" column' do
       render
       within('th a', text: 'Title') do |link|
-        link[:href].should match('sort=title')
+        expect(link[:href]).to match('sort=title')
       end
     end
 
     it 'has a sortable header cell for the "permalink" column' do
       render
       within('th a', text: 'Permalink') do |link|
-        link[:href].should match('sort=permalink')
+        expect(link[:href]).to match('sort=permalink')
       end
     end
 
     it 'has a sortable header cell for the "when" column' do
       render
       within('th a', text: 'When') do |link|
-        link[:href].should match('sort=created_at')
+        expect(link[:href]).to match('sort=created_at')
       end
     end
   end

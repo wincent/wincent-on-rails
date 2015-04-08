@@ -4,19 +4,19 @@ describe ReposController do
   describe '#index' do
     it 'renders repos/index' do
       get :index
-      response.should render_template('repos/index')
+      expect(response).to render_template('repos/index')
     end
 
     it 'succeeds' do
       get :index
-      response.should be_success
+      expect(response).to be_success
     end
 
     it 'finds and assigns public repos' do
       repo  = Repo.make! :public => true
       other = Repo.make! :public => false
       get :index
-      assigns[:repos].should == [repo]
+      expect(assigns[:repos]).to eq([repo])
     end
   end
 
@@ -34,18 +34,18 @@ describe ReposController do
 
       it 'assigns a new repo instance' do
         do_request
-        assigns[:repo].should be_kind_of(Repo)
-        assigns[:repo].should be_new_record
+        expect(assigns[:repo]).to be_kind_of(Repo)
+        expect(assigns[:repo]).to be_new_record
       end
 
       it 'renders repos/new' do
         do_request
-        response.should render_template('repos/new')
+        expect(response).to render_template('repos/new')
       end
 
       it 'succeeds' do
         do_request
-        response.should be_success
+        expect(response).to be_success
       end
     end
   end
@@ -72,16 +72,16 @@ describe ReposController do
         end
 
         it 'creates a new repo record' do
-          assigns[:repo].should be_kind_of(Repo)
-          assigns[:repo].should_not be_new_record
+          expect(assigns[:repo]).to be_kind_of(Repo)
+          expect(assigns[:repo]).not_to be_new_record
         end
 
         it 'shows a flash' do
-          flash[:notice].should =~ /successfully created/i
+          expect(flash[:notice]).to match(/successfully created/i)
         end
 
         it 'redirects to #show' do
-          response.should redirect_to(repo_path(assigns[:repo]))
+          expect(response).to redirect_to(repo_path(assigns[:repo]))
         end
       end
 
@@ -92,16 +92,16 @@ describe ReposController do
         end
 
         it 'assigns a new repo instance' do
-          assigns[:repo].should be_kind_of(Repo)
-          assigns[:repo].should be_new_record
+          expect(assigns[:repo]).to be_kind_of(Repo)
+          expect(assigns[:repo]).to be_new_record
         end
 
         it 'shows a flash' do
-          flash[:error].should =~ /failed to create/i
+          expect(flash[:error]).to match(/failed to create/i)
         end
 
         it 'renders #new' do
-          response.should render_template('repos/new')
+          expect(response).to render_template('repos/new')
         end
       end
     end
@@ -112,28 +112,28 @@ describe ReposController do
 
     it 'finds and assigns the repo' do
       get :show, :id => repo.to_param
-      assigns[:repo].should == repo
+      expect(assigns[:repo]).to eq(repo)
     end
 
     it 'renders "repos/show"' do
       get :show, :id => repo.to_param
-      response.should render_template('repos/show')
+      expect(response).to render_template('repos/show')
     end
 
     it 'succeeds' do
       get :show, :id => repo.to_param
-      response.should be_success
+      expect(response).to be_success
     end
 
     context 'non-existent repo' do
       it 'redirects to #index' do
         get :show, :id => 50_000
-        response.should redirect_to('/repos')
+        expect(response).to redirect_to('/repos')
       end
 
       it 'shows a flash' do
         get :show, :id => 50_000
-        flash[:error].should =~ /not found/i
+        expect(flash[:error]).to match(/not found/i)
       end
     end
 
@@ -142,12 +142,12 @@ describe ReposController do
 
       it 'redirects to #index' do
         get :show, :id => repo.to_param
-        response.should redirect_to('/repos')
+        expect(response).to redirect_to('/repos')
       end
 
       it 'shows a flash' do
         get :show, :id => repo.to_param
-        flash[:error].should =~ /not found/i
+        expect(flash[:error]).to match(/not found/i)
       end
     end
   end
@@ -168,28 +168,28 @@ describe ReposController do
 
       it 'finds and assigns the repo' do
         get :edit, :id => repo.to_param
-        assigns[:repo].should == repo
+        expect(assigns[:repo]).to eq(repo)
       end
 
       it 'renders "repos/edit"' do
         get :edit, :id => repo.to_param
-        response.should render_template('repos/edit')
+        expect(response).to render_template('repos/edit')
       end
 
       it 'succeeds' do
         get :edit, :id => repo.to_param
-        response.should be_success
+        expect(response).to be_success
       end
 
       context 'non-existent repo' do
         it 'redirects to #index' do
           get :edit, :id => 50_000
-          response.should redirect_to('/repos')
+          expect(response).to redirect_to('/repos')
         end
 
         it 'edits a flash' do
           get :edit, :id => 50_000
-          flash[:error].should =~ /not found/i
+          expect(flash[:error]).to match(/not found/i)
         end
       end
 
@@ -198,12 +198,12 @@ describe ReposController do
 
         it 'redirects to #index' do
           get :edit, :id => repo.to_param
-          response.should redirect_to('/repos')
+          expect(response).to redirect_to('/repos')
         end
 
         it 'shows a flash' do
           get :edit, :id => repo.to_param
-          flash[:error].should =~ /not found/i
+          expect(flash[:error]).to match(/not found/i)
         end
       end
     end
@@ -232,23 +232,23 @@ describe ReposController do
 
       it 'finds and assigns the repo' do
         do_request
-        assigns[:repo].should == repo.reload
+        expect(assigns[:repo]).to eq(repo.reload)
       end
 
       context 'successful update' do
         it 'shows a flash' do
           do_request
-          flash[:notice].should =~ /successfully updated/i
+          expect(flash[:notice]).to match(/successfully updated/i)
         end
 
         it 'redirects to #show' do
           do_request
-          response.should redirect_to(repo_path(repo))
+          expect(response).to redirect_to(repo_path(repo))
         end
 
         it 'updates the instance' do
           do_request
-          repo.reload.name.should == 'new and improved'
+          expect(repo.reload.name).to eq('new and improved')
         end
       end
 
@@ -259,12 +259,12 @@ describe ReposController do
 
         it 'shows a flash' do
           do_request
-          flash[:error].should =~ /update failed/i
+          expect(flash[:error]).to match(/update failed/i)
         end
 
         it 'renders #edit' do
           do_request
-          response.should render_template('repos/edit')
+          expect(response).to render_template('repos/edit')
         end
       end
     end
@@ -293,12 +293,12 @@ describe ReposController do
 
       it 'redirects to #index' do
         do_request
-        response.should redirect_to(repos_path)
+        expect(response).to redirect_to(repos_path)
       end
 
       it 'shows a flash' do
         do_request
-        flash[:notice].should =~ /successfully destroyed/i
+        expect(flash[:notice]).to match(/successfully destroyed/i)
       end
 
       context 'non-existent repo' do
@@ -308,12 +308,12 @@ describe ReposController do
 
         it 'redirects to #index' do
           do_request
-          response.should redirect_to(repos_path)
+          expect(response).to redirect_to(repos_path)
         end
 
         it 'shows a flash' do
           do_request
-          flash[:error].should =~ /not found/i
+          expect(flash[:error]).to match(/not found/i)
         end
       end
     end

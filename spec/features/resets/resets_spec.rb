@@ -9,7 +9,7 @@ feature 'resetting my passphrase' do
     visit '/resets/new'
     fill_in 'Email address', :with => 'joe@example.com'
     click_button 'Reset passphrase'
-    page.should have_content('email has been sent to joe@example.com')
+    expect(page).to have_content('email has been sent to joe@example.com')
   end
 
   scenario 'hitting the reset limit', :js do
@@ -18,6 +18,6 @@ feature 'resetting my passphrase' do
       fill_in 'Email address', :with => 'joe@example.com'
       click_button 'Reset passphrase'
     end
-    page.should have_content('exceeded the resets limit')
+    expect(page).to have_content('exceeded the resets limit')
   end
 end

@@ -26,12 +26,12 @@ describe CommentsController do
 
       it 'is successful' do
         do_get
-        response.should be_success
+        expect(response).to be_success
       end
 
       it 'renders the edit template' do
         do_get
-        response.should render_template('edit')
+        expect(response).to render_template('edit')
       end
     end
 
@@ -45,8 +45,8 @@ describe CommentsController do
       it 'denies access to the "edit" action' do
         log_in
         get :edit, id: @comment.id
-        response.should redirect_to(login_path)
-        flash[:notice].should =~ /requires administrator privileges/
+        expect(response).to redirect_to(login_path)
+        expect(flash[:notice]).to match(/requires administrator privileges/)
       end
     end
 
@@ -59,8 +59,8 @@ describe CommentsController do
       # but the effort is minimal, so it doesn't hurt to err on the safe side
       it 'denies access to the "edit" action' do
         get :edit, id: @comment.id
-        response.should redirect_to(login_path)
-        flash[:notice].should =~ /requires administrator privileges/
+        expect(response).to redirect_to(login_path)
+        expect(flash[:notice]).to match(/requires administrator privileges/)
       end
     end
   end
@@ -87,7 +87,7 @@ describe CommentsController do
 
       it 'finds the comment and assign it to an instance variable' do
         do_put
-        assigns[:comment].should == @comment
+        expect(assigns[:comment]).to eq(@comment)
       end
 
       it 'updates the comment' do
@@ -100,14 +100,14 @@ describe CommentsController do
         stub(@comment).save { true }
         stub(Comment).find() { @comment }
         do_put
-        flash[:notice].should =~ /Successfully updated/
+        expect(flash[:notice]).to match(/Successfully updated/)
       end
 
       it 'redirects to the comment path on success for comments not awaiting moderation' do
         stub(@comment).save { true }
         stub(Comment).find() { @comment }
         do_put
-        response.should redirect_to(controller.send(:nested_comment_path, @comment))
+        expect(response).to redirect_to(controller.send(:nested_comment_path, @comment))
       end
 
       it 'redirects to the list of comments awaiting moderation on success for comments that are awaiting moderation' do
@@ -115,21 +115,21 @@ describe CommentsController do
         stub(@comment).save { true }
         stub(Comment).find() { @comment }
         do_put
-        response.should redirect_to(comments_path)
+        expect(response).to redirect_to(comments_path)
       end
 
       it 'shows an error on failure' do
         stub(@comment).save { false }
         stub(Comment).find() { @comment }
         do_put
-        flash[:error].should =~ /Update failed/
+        expect(flash[:error]).to match(/Update failed/)
       end
 
       it 'renders the edit template again on failure' do
         stub(@comment).save { false }
         stub(Comment).find() { @comment }
         do_put
-        response.should render_template('edit')
+        expect(response).to render_template('edit')
       end
     end
   end
@@ -145,11 +145,11 @@ describe CommentsController do
       end
 
       it 'is not successful' do
-        response.should_not be_success
+        expect(response).not_to be_success
       end
 
       it 'returns a 403 status' do
-        response.status.should == 403
+        expect(response.status).to eq(403)
       end
     end
   end

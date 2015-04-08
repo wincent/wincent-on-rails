@@ -5,93 +5,93 @@ describe Repo do
   describe 'attributes' do
     describe '#name' do
       it 'defaults to nil' do
-        Repo.new.name.should be_nil
+        expect(Repo.new.name).to be_nil
       end
 
       it 'is accessible' do
-        Repo.make.should allow_mass_assignment_of(:name => 'hello')
+        expect(Repo.make).to allow_mass_assignment_of(:name => 'hello')
       end
     end
 
     describe '#permalink' do
       it 'defaults to nil' do
-        Repo.new.permalink.should be_nil
+        expect(Repo.new.permalink).to be_nil
       end
 
       it 'is accessible' do
-        Repo.make.should allow_mass_assignment_of(:permalink => 'world')
+        expect(Repo.make).to allow_mass_assignment_of(:permalink => 'world')
       end
     end
 
     describe '#path' do
       it 'defaults to nil' do
-        Repo.new.path.should be_nil
+        expect(Repo.new.path).to be_nil
       end
 
       it 'is accessible' do
-        Repo.make.should allow_mass_assignment_of(:path => '/new/path')
+        expect(Repo.make).to allow_mass_assignment_of(:path => '/new/path')
       end
     end
 
     describe '#description' do
       it 'defaults to nil' do
-        Repo.new.description.should be_nil
+        expect(Repo.new.description).to be_nil
       end
 
       it 'is accessible' do
-        Repo.make.should allow_mass_assignment_of(:description => 'a repo')
+        expect(Repo.make).to allow_mass_assignment_of(:description => 'a repo')
       end
     end
 
     describe '#product_id' do
       it 'defaults to nil' do
-        Repo.new.product_id.should be_nil
+        expect(Repo.new.product_id).to be_nil
       end
 
       it 'is accessible' do
-        Repo.make.should allow_mass_assignment_of(:product_id => Product.make!.id)
+        expect(Repo.make).to allow_mass_assignment_of(:product_id => Product.make!.id)
       end
     end
 
     describe '#public' do
       it 'defaults to false' do
-        Repo.new.public.should == false
+        expect(Repo.new.public).to eq(false)
       end
 
       it 'is accessible' do
-        Repo.make(:public => false).should allow_mass_assignment_of(:public => true)
+        expect(Repo.make(:public => false)).to allow_mass_assignment_of(:public => true)
       end
     end
 
     describe '#created_at' do
       it 'defaults to nil' do
-        Repo.new.created_at.should be_nil
+        expect(Repo.new.created_at).to be_nil
       end
     end
 
     describe '#updated_at' do
       it 'defaults to nil' do
-        Repo.new.updated_at.should be_nil
+        expect(Repo.new.updated_at).to be_nil
       end
     end
 
     describe '#clone_url' do
       it 'defaults to nil' do
-        Repo.new.clone_url.should be_nil
+        expect(Repo.new.clone_url).to be_nil
       end
 
       it 'is accessible' do
-        Repo.make.should allow_mass_assignment_of(:clone_url => 'git://git.example.com/new.git')
+        expect(Repo.make).to allow_mass_assignment_of(:clone_url => 'git://git.example.com/new.git')
       end
     end
 
     describe '#rw_clone_url' do
       it 'defaults to nil' do
-        Repo.new.rw_clone_url.should be_nil
+        expect(Repo.new.rw_clone_url).to be_nil
       end
 
       it 'is accessible' do
-        Repo.make.should allow_mass_assignment_of(:rw_clone_url => 'git://git.example.com/new.git')
+        expect(Repo.make).to allow_mass_assignment_of(:rw_clone_url => 'git://git.example.com/new.git')
       end
     end
   end
@@ -100,20 +100,20 @@ describe Repo do
     describe 'clone_url attribute' do
       it 'must be unique' do
         Repo.make! :clone_url => 'git.example.com:/foo.git'
-        Repo.make(:clone_url => 'git.example.com:/foo.git').
-          should fail_validation_for(:clone_url)
+        expect(Repo.make(:clone_url => 'git.example.com:/foo.git')).
+          to fail_validation_for(:clone_url)
       end
 
       it 'does not fail uniqueness validation for nil values' do
         Repo.make! :clone_url => nil
-        Repo.make!(:clone_url => nil).
-          should_not fail_validation_for(:clone_url)
+        expect(Repo.make!(:clone_url => nil)).
+          not_to fail_validation_for(:clone_url)
       end
 
       it 'does not fail uniqueness validation for blank values' do
         Repo.make! :clone_url => ''
-        Repo.make!(:clone_url => '').
-          should_not fail_validation_for(:clone_url)
+        expect(Repo.make!(:clone_url => '')).
+          not_to fail_validation_for(:clone_url)
       end
 
       it 'has a database-level constraint to guard against race conditions' do
@@ -128,12 +128,12 @@ describe Repo do
 
     describe 'name attribute' do
       it 'must be present' do
-        Repo.make(:name => nil).should fail_validation_for(:name)
+        expect(Repo.make(:name => nil)).to fail_validation_for(:name)
       end
 
       it 'must be unique' do
         Repo.make! :name => 'foo'
-        Repo.make(:name => 'foo').should fail_validation_for(:name)
+        expect(Repo.make(:name => 'foo')).to fail_validation_for(:name)
       end
 
       it 'has a database-level constraint to guard against race conditions' do
@@ -148,12 +148,12 @@ describe Repo do
 
     describe 'permalink attribute' do
       it 'must be present' do
-        Repo.make(:permalink => nil).should fail_validation_for(:permalink)
+        expect(Repo.make(:permalink => nil)).to fail_validation_for(:permalink)
       end
 
       it 'must be unique' do
         Repo.make! :permalink => 'foo'
-        Repo.make(:permalink => 'foo').should fail_validation_for(:permalink)
+        expect(Repo.make(:permalink => 'foo')).to fail_validation_for(:permalink)
       end
 
       it 'has a database-level constraint to guard against race conditions' do
@@ -168,29 +168,29 @@ describe Repo do
 
     describe 'path attribute' do
       it 'must be present' do
-        Repo.make(:path => nil).should fail_validation_for(:path)
+        expect(Repo.make(:path => nil)).to fail_validation_for(:path)
       end
 
       it 'must be unique' do
         repo = Repo.make!
-        Repo.make(:path => repo.path).should fail_validation_for(:path)
+        expect(Repo.make(:path => repo.path)).to fail_validation_for(:path)
       end
 
       it 'must exist on disk' do
-        Repo.make(:path => '/unlikely/to/exist').
-          should fail_validation_for(:path)
+        expect(Repo.make(:path => '/unlikely/to/exist')).
+          to fail_validation_for(:path)
       end
 
       it 'must be readable' do
         path = Pathname.new Dir.mkdtemp
         path.chmod 0000
-        Repo.make(path: path.to_s).
-          should fail_validation_for(:path)
+        expect(Repo.make(path: path.to_s)).
+          to fail_validation_for(:path)
       end
 
       it 'must be a Git repository' do
-        Repo.make(:path => Dir.mkdtemp).
-          should fail_validation_for(:path)
+        expect(Repo.make(:path => Dir.mkdtemp)).
+          to fail_validation_for(:path)
       end
 
       it 'has a database-level constraint to guard against race conditions' do
@@ -203,11 +203,11 @@ describe Repo do
       end
 
       specify 'RAILS_ROOT is valid' do
-        Repo.make(path: Rails.root.to_s).should_not fail_validation_for(:path)
+        expect(Repo.make(path: Rails.root.to_s)).not_to fail_validation_for(:path)
       end
 
       specify '"non-pathy string!" is not valid' do
-        Repo.make(path: 'non-pathy string!').should fail_validation_for(:path)
+        expect(Repo.make(path: 'non-pathy string!')).to fail_validation_for(:path)
       end
     end
 
@@ -215,14 +215,14 @@ describe Repo do
       it 'must be unique' do
         product = Product.make!
         Repo.make! :product_id => product.id
-        Repo.make(:product_id => product.id).
-          should fail_validation_for(:product_id)
+        expect(Repo.make(:product_id => product.id)).
+          to fail_validation_for(:product_id)
       end
 
       it 'does not fail uniqueness validation for nil values' do
         Repo.make! :product_id => nil
-        Repo.make(:product_id => nil).
-          should_not fail_validation_for(:product_id)
+        expect(Repo.make(:product_id => nil)).
+          not_to fail_validation_for(:product_id)
       end
 
       it 'has a database-level constraint to guard against race conditions' do
@@ -239,20 +239,20 @@ describe Repo do
     describe 'rw_clone_url attribute' do
       it 'must be unique' do
         Repo.make! :rw_clone_url => 'git.example.com:/foo.git'
-        Repo.make(:rw_clone_url => 'git.example.com:/foo.git').
-          should fail_validation_for(:rw_clone_url)
+        expect(Repo.make(:rw_clone_url => 'git.example.com:/foo.git')).
+          to fail_validation_for(:rw_clone_url)
       end
 
       it 'does not fail uniqueness validation for nil values' do
         Repo.make! :rw_clone_url => nil
-        Repo.make!(:rw_clone_url => nil).
-          should_not fail_validation_for(:rw_clone_url)
+        expect(Repo.make!(:rw_clone_url => nil)).
+          not_to fail_validation_for(:rw_clone_url)
       end
 
       it 'does not fail uniqueness validation for blank values' do
         Repo.make! :rw_clone_url => ''
-        Repo.make!(:rw_clone_url => '').
-          should_not fail_validation_for(:rw_clone_url)
+        expect(Repo.make!(:rw_clone_url => '')).
+          not_to fail_validation_for(:rw_clone_url)
       end
 
       it 'has a database-level constraint to guard against race conditions' do
@@ -272,11 +272,11 @@ describe Repo do
       it 'belongs to a product' do
         product = Product.make!
         repo = Repo.make!(:product => product)
-        repo.product.should == product
+        expect(repo.product).to eq(product)
       end
 
       it 'does not complain if the product is not present' do
-        Repo.make!(:product => nil).should be_valid
+        expect(Repo.make!(:product => nil)).to be_valid
       end
     end
   end
@@ -285,7 +285,7 @@ describe Repo do
     it 'returns public repos' do
       repo  = Repo.make! :public => true
       other = Repo.make! :public => false
-      Repo.published.to_a.should == [repo]
+      expect(Repo.published.to_a).to eq([repo])
     end
   end
 
@@ -293,7 +293,7 @@ describe Repo do
     context 'new record' do
       it 'returns the permalink' do
         repo = Repo.make :permalink => 'foo'
-        repo.to_param.should == 'foo'
+        expect(repo.to_param).to eq('foo')
       end
     end
 
@@ -301,7 +301,7 @@ describe Repo do
       it 'returns the old permalink' do
         repo = Repo.make! :permalink => 'foo'
         repo.permalink = 'bar'
-        repo.to_param.should == 'foo'
+        expect(repo.to_param).to eq('foo')
       end
     end
   end

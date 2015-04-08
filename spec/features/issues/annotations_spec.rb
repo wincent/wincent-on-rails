@@ -7,8 +7,8 @@ feature 'annotations for changes to issue metadata' do
     visit edit_issue_path(issue)
     fill_in 'issue[summary]', :with => 'bar'
     click_button 'Update Issue'
-    page.should have_content('Summary changed')
-    page.should have_content('From: foo')
-    page.should have_content('To: bar')
+    expect(page).to have_content('Summary changed')
+    expect(page).to have_content('From: foo')
+    expect(page).to have_content('To: bar')
   end
 end

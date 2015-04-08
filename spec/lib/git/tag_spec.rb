@@ -23,20 +23,20 @@ describe Git::Tag do
     let(:tags) { Git::Tag.all @repo }
 
     it 'returns an Array of Tag objects' do
-      tags.should be_kind_of(Array)
-      tags.should_not be_empty
-      tags.all? { |tag| tag.kind_of?(Git::Tag) }.should == true
+      expect(tags).to be_kind_of(Array)
+      expect(tags).not_to be_empty
+      expect(tags.all? { |tag| tag.kind_of?(Git::Tag) }).to eq(true)
     end
 
     it 'returns lightweight tags last' do
-      tags.last.name.should == 'refs/tags/crazy-idea-WIP'
-      tags.last.lightweight.should == true
+      expect(tags.last.name).to eq('refs/tags/crazy-idea-WIP')
+      expect(tags.last.lightweight).to eq(true)
     end
 
     it 'returns annotated tags in reverse chronological order' do
       tags.pop # remove the lightweight tag
-      tags.map(&:name).should == %w(refs/tags/0.2 refs/tags/0.1)
-      tags.all? { |t| t.lightweight == false }.should == true
+      expect(tags.map(&:name)).to eq(%w(refs/tags/0.2 refs/tags/0.1))
+      expect(tags.all? { |t| t.lightweight == false }).to eq(true)
     end
   end
 
@@ -45,19 +45,19 @@ describe Git::Tag do
 
     describe '#repo' do
       it 'returns a reference to the containing repository' do
-        tag.repo.should == @repo
+        expect(tag.repo).to eq(@repo)
       end
     end
 
     describe '#name' do
       it 'returns the full ref name of the tag' do
-        tag.name.should =~ %r{\Arefs/tags/[A-Za-z0-9\-.]+\z}
+        expect(tag.name).to match(%r{\Arefs/tags/[A-Za-z0-9\-.]+\z})
       end
     end
 
     describe '#sha1' do
       it 'returns the 40-character SHA-1 hash of the tag' do
-        tag.sha1.should =~ /[a-f0-9]{40}/
+        expect(tag.sha1).to match(/[a-f0-9]{40}/)
       end
     end
   end

@@ -6,12 +6,12 @@ describe SnippetsController do
   describe '#index' do
     it 'succeeds' do
       get :index
-      response.should be_success
+      expect(response).to be_success
     end
 
     it 'renders the #index template' do
       get :index
-      response.should render_template('index')
+      expect(response).to render_template('index')
     end
 
     it 'uses a restful paginator' do
@@ -21,29 +21,29 @@ describe SnippetsController do
 
     it 'assigns to the @paginator instance variable' do
       get :index
-      assigns[:paginator].should be_kind_of(RestfulPaginator)
+      expect(assigns[:paginator]).to be_kind_of(RestfulPaginator)
     end
 
     it 'informs the paginator of the total number of records' do
       3.times { Snippet.make! }                   # these will be counted
       2.times { Snippet.make! :public => false }  # but these will not
       get :index
-      assigns[:paginator].count.should == 3
+      expect(assigns[:paginator].count).to eq(3)
     end
 
     it 'tells the paginator to use the /snippets path for link generation' do
       get :index
-      assigns[:paginator].path_or_url.should == snippets_path
+      expect(assigns[:paginator].path_or_url).to eq(snippets_path)
     end
 
     it 'configures the paginator to paginate in groups of 10' do
       get :index
-      assigns[:paginator].limit.should == 10
+      expect(assigns[:paginator].limit).to eq(10)
     end
 
     it 'shows the first page by default' do
       get :index
-      assigns[:paginator].offset.should == 0
+      expect(assigns[:paginator].offset).to eq(0)
     end
 
     it 'finds recent snippets' do
@@ -60,7 +60,7 @@ describe SnippetsController do
     it 'assigns found snippets' do
       snippet = Snippet.make!
       get :index
-      assigns[:snippets].should == [snippet]
+      expect(assigns[:snippets]).to eq([snippet])
     end
   end
 
@@ -78,18 +78,18 @@ describe SnippetsController do
 
       it 'assigns a new snippet instance' do
         do_request
-        assigns[:snippet].should be_kind_of(Snippet)
-        assigns[:snippet].should be_new_record
+        expect(assigns[:snippet]).to be_kind_of(Snippet)
+        expect(assigns[:snippet]).to be_new_record
       end
 
       it 'renders snippets/new' do
         do_request
-        response.should render_template('snippets/new')
+        expect(response).to render_template('snippets/new')
       end
 
       it 'succeeds' do
         do_request
-        response.should be_success
+        expect(response).to be_success
       end
     end
   end
@@ -117,16 +117,16 @@ describe SnippetsController do
           end
 
           it 'creates a new snippet record' do
-            assigns[:snippet].should be_kind_of(Snippet)
-            assigns[:snippet].should_not be_new_record
+            expect(assigns[:snippet]).to be_kind_of(Snippet)
+            expect(assigns[:snippet]).not_to be_new_record
           end
 
           it 'shows a flash' do
-            flash[:notice].should =~ /successfully created/i
+            expect(flash[:notice]).to match(/successfully created/i)
           end
 
           it 'redirects to #show' do
-            response.should redirect_to(snippet_path(assigns[:snippet]))
+            expect(response).to redirect_to(snippet_path(assigns[:snippet]))
           end
         end
 
@@ -137,16 +137,16 @@ describe SnippetsController do
           end
 
           it 'assigns a new snippet instance' do
-            assigns[:snippet].should be_kind_of(Snippet)
-            assigns[:snippet].should be_new_record
+            expect(assigns[:snippet]).to be_kind_of(Snippet)
+            expect(assigns[:snippet]).to be_new_record
           end
 
           it 'shows a flash' do
-            flash[:error].should =~ /failed to create/i
+            expect(flash[:error]).to match(/failed to create/i)
           end
 
           it 'renders #new' do
-            response.should render_template('snippets/new')
+            expect(response).to render_template('snippets/new')
           end
         end
       end
@@ -173,19 +173,19 @@ describe SnippetsController do
         end
 
         it 'succeeds' do
-          response.should be_success
+          expect(response).to be_success
         end
 
         it 'assigns a new snippet instance' do
-          assigns[:snippet].should be_kind_of(Snippet)
-          assigns[:snippet].should be_new_record
-          assigns[:snippet].body.should == 'foo'
-          assigns[:snippet].description.should == 'bar'
-          assigns[:snippet].markup_type.should == 0
+          expect(assigns[:snippet]).to be_kind_of(Snippet)
+          expect(assigns[:snippet]).to be_new_record
+          expect(assigns[:snippet].body).to eq('foo')
+          expect(assigns[:snippet].description).to eq('bar')
+          expect(assigns[:snippet].markup_type).to eq(0)
         end
 
         it 'renders the "snippets/_preview" partial' do
-          response.should render_template('snippets/_preview')
+          expect(response).to render_template('snippets/_preview')
         end
       end
     end
@@ -200,18 +200,18 @@ describe SnippetsController do
 
     it 'succeeds' do
       do_request
-      response.should be_success
+      expect(response).to be_success
     end
 
     it 'finds and assigns the snippet' do
       do_request
-      assigns[:snippet].should == snippet
+      expect(assigns[:snippet]).to eq(snippet)
     end
 
     context 'with no comments' do
       it 'finds and assigns no comments' do
         do_request
-        assigns[:comments].should == []
+        expect(assigns[:comments]).to eq([])
       end
     end
 
@@ -220,13 +220,13 @@ describe SnippetsController do
         published = Comment.make! :commentable => snippet
         omitted   = Comment.make! :commentable => snippet, :public => false
         do_request
-        assigns[:comments].should == [published]
+        expect(assigns[:comments]).to eq([published])
       end
     end
 
     it 'renders "snippets/show"' do
       do_request
-      response.should render_template('snippets/show')
+      expect(response).to render_template('snippets/show')
     end
 
     it 'should page-cache the output'
@@ -234,7 +234,7 @@ describe SnippetsController do
     context 'non-existent snippet' do
       it 'redirects to #index' do
         get :show, :id => '1200400'
-        response.should redirect_to(snippets_path)
+        expect(response).to redirect_to(snippets_path)
       end
     end
 
@@ -243,7 +243,7 @@ describe SnippetsController do
 
       it 'redirects to #index' do
         do_request
-        response.should redirect_to(snippets_path)
+        expect(response).to redirect_to(snippets_path)
       end
     end
   end
@@ -264,23 +264,23 @@ describe SnippetsController do
 
       it 'succeeds' do
         do_request
-        response.should be_success
+        expect(response).to be_success
       end
 
       it 'finds and assigns the snippet instance' do
         do_request
-        assigns[:snippet].should == snippet
+        expect(assigns[:snippet]).to eq(snippet)
       end
 
       it 'renders "snippets/edit"' do
         do_request
-        response.should render_template('snippets/edit')
+        expect(response).to render_template('snippets/edit')
       end
 
       context 'non-existent snippet' do
         it 'redirects to #index' do
           get :edit, :id => '1324187'
-          response.should redirect_to(snippets_path)
+          expect(response).to redirect_to(snippets_path)
         end
       end
     end
@@ -309,23 +309,23 @@ describe SnippetsController do
 
       it 'finds and assigns the snippet' do
         do_request
-        assigns[:snippet].should == snippet.reload
+        expect(assigns[:snippet]).to eq(snippet.reload)
       end
 
       context 'successful update' do
         it 'shows a flash' do
           do_request
-          flash[:notice].should =~ /successfully updated/i
+          expect(flash[:notice]).to match(/successfully updated/i)
         end
 
         it 'redirects to #show' do
           do_request
-          response.should redirect_to(snippet_path(snippet))
+          expect(response).to redirect_to(snippet_path(snippet))
         end
 
         it 'updates the instance' do
           do_request
-          snippet.reload.body.should == 'fancy new body'
+          expect(snippet.reload.body).to eq('fancy new body')
         end
       end
 
@@ -336,12 +336,12 @@ describe SnippetsController do
 
         it 'shows a flash' do
           do_request
-          flash[:error].should =~ /update failed/i
+          expect(flash[:error]).to match(/update failed/i)
         end
 
         it 'renders #edit' do
           do_request
-          response.should render_template('snippets/edit')
+          expect(response).to render_template('snippets/edit')
         end
       end
     end
@@ -370,12 +370,12 @@ describe SnippetsController do
 
       it 'redirects to #index' do
         do_request
-        response.should redirect_to(snippets_path)
+        expect(response).to redirect_to(snippets_path)
       end
 
       it 'shows a flash' do
         do_request
-        flash[:notice].should =~ /successfully destroyed/i
+        expect(flash[:notice]).to match(/successfully destroyed/i)
       end
 
       context 'non-existent snippet' do
@@ -385,12 +385,12 @@ describe SnippetsController do
 
         it 'redirects to #index' do
           do_request
-          response.should redirect_to(snippets_path)
+          expect(response).to redirect_to(snippets_path)
         end
 
         it 'shows a flash' do
           do_request
-          flash[:error].should =~ /not found/i
+          expect(flash[:error]).to match(/not found/i)
         end
       end
     end

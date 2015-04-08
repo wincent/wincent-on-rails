@@ -19,18 +19,18 @@ describe 'snippets/edit' do
 
   it 'has a #show link' do
     render
-    rendered.should have_link('show', href: snippet_path(@snippet))
+    expect(rendered).to have_link('show', href: snippet_path(@snippet))
   end
 
   it 'has a destroy button' do
     render
-    rendered.should have_css('.links ' +
+    expect(rendered).to have_css('.links ' +
       "form[action='#{snippet_path(@snippet)}'] " +
       'input[name=_method][value=delete]')
   end
 
   it 'has an #index link' do
     render
-    rendered.should have_link('all snippets', href: '/snippets')
+    expect(rendered).to have_link('all snippets', href: '/snippets')
   end
 end

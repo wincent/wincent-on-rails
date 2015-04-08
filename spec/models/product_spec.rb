@@ -2,44 +2,44 @@ require 'spec_helper'
 
 describe Product, 'validating the name' do
   it 'should require it to be present' do
-    Product.make(:name => nil).should fail_validation_for(:name)
+    expect(Product.make(:name => nil)).to fail_validation_for(:name)
   end
 
   it 'should require it to be unique' do
     name = Sham.random
-    Product.make!(:name => name).should be_valid
-    Product.make(:name => name).should fail_validation_for(:name)
+    expect(Product.make!(:name => name)).to be_valid
+    expect(Product.make(:name => name)).to fail_validation_for(:name)
   end
 end
 
 describe Product, 'validating the permalink' do
   it 'should require it to be present' do
-    Product.make(:permalink => nil).should fail_validation_for(:permalink)
+    expect(Product.make(:permalink => nil)).to fail_validation_for(:permalink)
   end
 
   it 'should require it to be unique' do
     permalink = Sham.random
-    Product.make!(:permalink => permalink).should be_valid
-    Product.make(:permalink => permalink).should fail_validation_for(:permalink)
+    expect(Product.make!(:permalink => permalink)).to be_valid
+    expect(Product.make(:permalink => permalink)).to fail_validation_for(:permalink)
   end
 end
 
 describe Product, 'validating the bundle identifier' do
   it 'should not require it to be present' do
     product = Product.make!(:bundle_identifier => nil)
-    product.should_not fail_validation_for(:bundle_identifier)
+    expect(product).not_to fail_validation_for(:bundle_identifier)
   end
 
   it 'should require it to be unique ' do
     bundle_id = "com.wincent.#{Sham.random}"
-    Product.make!(:bundle_identifier => bundle_id).should be_valid
+    expect(Product.make!(:bundle_identifier => bundle_id)).to be_valid
     product = Product.make(:bundle_identifier => bundle_id)
-    product.should fail_validation_for(:bundle_identifier)
+    expect(product).to fail_validation_for(:bundle_identifier)
   end
 
   it 'should permit multiple products with no bundle identifier' do
-    2.times { Product.make!(:bundle_identifier => nil).should be_valid }
-    2.times { Product.make!(:bundle_identifier => '').should be_valid }
+    2.times { expect(Product.make!(:bundle_identifier => nil)).to be_valid }
+    2.times { expect(Product.make!(:bundle_identifier => '')).to be_valid }
   end
 end
 
@@ -48,7 +48,7 @@ describe Product, 'default scope' do
     c1 = Product.make! :category => 'consumer', :position => 10
     s1 = Product.make! :category => 'server', :position => 3
     d1 = Product.make! :category => 'developer', :position => 6
-    Product.all.should == [c1, d1, s1]
+    expect(Product.all).to eq([c1, d1, s1])
   end
 
   it 'should return products in position order within each category' do
@@ -61,7 +61,7 @@ describe Product, 'default scope' do
     d1 = Product.make! :category => 'developer', :position => 6
     d2 = Product.make! :category => 'developer', :position => 8
     d3 = Product.make! :category => 'developer', :position => 1
-    Product.all.should == [c3, c1, c2, d3, d1, d2, s2, s1, s3]
+    expect(Product.all).to eq([c3, c1, c2, d3, d1, d2, s2, s1, s3])
   end
 end
 
@@ -80,20 +80,20 @@ describe Product, 'categorized method' do
     m2 = Product.make! :position => 1, :hide_from_front_page => false  # nil/no category
     m3 = Product.make! :position => 2, :hide_from_front_page => false  # nil/no category
     products = Product.categorized
-    products.keys.should == [nil, 'consumer', 'developer', 'server']
-    products[nil].should == [m2, m3, m1]
-    products['consumer'].should == [c3, c1, c2]
-    products['developer'].should == [d3, d1, d2]
-    products['server'].should == [s2, s1, s3]
+    expect(products.keys).to eq([nil, 'consumer', 'developer', 'server'])
+    expect(products[nil]).to eq([m2, m3, m1])
+    expect(products['consumer']).to eq([c3, c1, c2])
+    expect(products['developer']).to eq([d3, d1, d2])
+    expect(products['server']).to eq([s2, s1, s3])
   end
 
   it 'includes all products, even those hidden from front page' do
     p1 = Product.make! :category => 'consumer', :hide_from_front_page => false
     p2 = Product.make! :category => 'server'
     products = Product.categorized
-    products.keys.should == ['consumer', 'server']
-    products['consumer'].should == [p1]
-    products['server'].should == [p2]
+    expect(products.keys).to eq(['consumer', 'server'])
+    expect(products['consumer']).to eq([p1])
+    expect(products['server']).to eq([p2])
   end
 end
 
@@ -105,79 +105,79 @@ describe Product do
   describe 'attributes' do
     describe '#name' do
       it 'defaults to nil' do
-        Product.new.name.should be_nil
+        expect(Product.new.name).to be_nil
       end
     end
 
     describe '#permalink' do
       it 'defaults to nil' do
-        Product.new.permalink.should be_nil
+        expect(Product.new.permalink).to be_nil
       end
     end
 
     describe '#description' do
       it 'defaults to nil' do
-        Product.new.description.should be_nil
+        expect(Product.new.description).to be_nil
       end
     end
 
     describe '#created_at' do
       it 'defaults to nil' do
-        Product.new.created_at.should be_nil
+        expect(Product.new.created_at).to be_nil
       end
     end
 
     describe '#updated_at' do
       it 'defaults to nil' do
-        Product.new.updated_at.should be_nil
+        expect(Product.new.updated_at).to be_nil
       end
     end
 
     describe '#bundle_identifier' do
       it 'defaults to nil' do
-        Product.new.bundle_identifier.should be_nil
+        expect(Product.new.bundle_identifier).to be_nil
       end
     end
 
     describe '#header' do
       it 'defaults to nil' do
-        Product.new.header.should be_nil
+        expect(Product.new.header).to be_nil
       end
     end
 
     describe '#footer' do
       it 'defaults to nil' do
-        Product.new.footer.should be_nil
+        expect(Product.new.footer).to be_nil
       end
     end
 
     describe '#position' do
       it 'defaults to nil' do
-        Product.new.position.should be_nil
+        expect(Product.new.position).to be_nil
       end
     end
 
     describe '#category' do
       it 'defaults to nil' do
-        Product.new.category.should be_nil
+        expect(Product.new.category).to be_nil
       end
     end
 
     describe '#hide_from_front_page' do
       it 'defaults to true' do
-        Product.new.hide_from_front_page.should == true
+        expect(Product.new.hide_from_front_page).to eq(true)
       end
     end
   end
 
   describe '#to_param' do
     it 'returns the permalink' do
-      Product.make!(:permalink => 'foo').to_param.should == 'foo'
+      expect(Product.make!(:permalink => 'foo').to_param).to eq('foo')
     end
 
     context 'new record' do
       it 'returns nil' do
-        Product.new.to_param.should be_nil
+        expect(Product.new.to_param).to be_nil
       end
     end
 
@@ -185,7 +185,7 @@ describe Product do
       it 'returns the old (in the database) permalink' do
         product = Product.make! :permalink => 'foo'
         product.permalink = 'bar'
-        product.to_param.should == 'foo'
+        expect(product.to_param).to eq('foo')
       end
     end
   end
