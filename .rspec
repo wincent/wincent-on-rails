@@ -1,4 +1,2 @@
 --colour
 -I .
--r spec/support/growl_formatter
--f RSpec::Core::Formatters::GrowlFormatter
