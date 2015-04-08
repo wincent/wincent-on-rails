@@ -12,7 +12,6 @@ describe ForumsHelper do
           # pseudo-attribute added by the Topic.find_topics_for_forum method.
           topic = Topic.make!(user: User.make!)
           topics = Topic.find_topics_for_forum(topic.forum)
-          pending "Rails 4.1 appears to break url_for(model) and therefore link_to(model), but only in the spec suite"
           expect do
             link_to_user_for_topic topics.first
           end.to_not raise_error
