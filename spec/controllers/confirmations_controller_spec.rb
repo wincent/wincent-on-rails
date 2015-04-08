@@ -166,7 +166,7 @@ describe ConfirmationsController do
       end
 
       it 'sets completed_at' do
-        expect(confirmation.completed_at - Time.now).tobe < 1.second
+        expect(confirmation.completed_at - Time.now).to be < 1.second
       end
 
       it 'marks the associated email as verified' do
