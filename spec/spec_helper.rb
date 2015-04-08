@@ -29,9 +29,7 @@ RSpec.configure do |config|
   config.mock_framework = :rr
   config.use_transactional_fixtures = false
   config.include ControllerExampleGroupHelpers, type: :controller
-  config.include GitSpecHelpers, example_group: {
-    file_path: %r{\bspec/lib/git/},
-  }
+  config.include GitSpecHelpers, file_path: %r{\bspec/lib/git/}
   config.include FeatureExampleGroupHelpers, type: :feature
   config.include ViewExampleGroupHelpers, type: :view
 end
