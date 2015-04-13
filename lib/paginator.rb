@@ -48,7 +48,7 @@ private
   def params_for_page page
     params = @additional_params.clone
     params.unshift "page=#{page}" if page > 1
-    params = params.join('&').gsub('&', '&amp;')
+    params = params.join('&')
     params.empty? ? '' : "?#{params}"
   end
 
