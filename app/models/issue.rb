@@ -61,6 +61,10 @@ class Issue < ActiveRecord::Base
     Issue.string_for_kind kind
   end
 
+  def closed?
+    status == STATUS[:closed]
+  end
+
   def self.update_timestamps_for_comment_changes?
     true
   end
