@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150414002415) do
+ActiveRecord::Schema.define(version: 20150414010714) do
 
   create_table "articles", force: :cascade do |t|
     t.string   "title",             limit: 255
@@ -97,7 +97,7 @@ ActiveRecord::Schema.define(version: 20150414002415) do
     t.string   "summary",             limit: 255
     t.boolean  "public",              limit: 1,        default: true
     t.integer  "user_id",             limit: 4
-    t.integer  "status",              limit: 4,        default: 0
+    t.integer  "status",              limit: 4,        default: 1
     t.text     "description",         limit: 16777215
     t.boolean  "awaiting_moderation", limit: 1,        default: true
     t.integer  "comments_count",      limit: 4,        default: 0
