@@ -1,5 +1,6 @@
 class Issue < ActiveRecord::Base
-  STATUS      = Hash.new(0).merge!(new: 0, open: 1, closed: 2).freeze
+  # NOTE: We used to use "new" (0) as a separate status, but simplified it away.
+  STATUS      = Hash.new(0).merge!(open: 1, closed: 2).freeze
   STATUS_MAP  = STATUS.invert.freeze
   KIND        = Hash.new(0).merge!(bug: 0, feature_request: 1, support_ticket: 2, feedback: 3).freeze
   KIND_MAP    = KIND.invert.freeze
