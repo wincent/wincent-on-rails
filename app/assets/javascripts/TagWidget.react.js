@@ -1,13 +1,21 @@
 'use strict';
 
-var React = require('react/addons');
+import Autocomplete from './TagWidget/Autocomplete.react';
+import Input from './TagWidget/Input.react';
+import Keys from './Keys';
+import Pill from './TagWidget/Pill.react';
+import React from 'react/addons';
 
-var Keys = require('./Keys');
+/**
+ * The TagWidget provides tag "pilling" and autocomplete. It manages a
+ * related set of subcomponents (TagWidget.Input, TagWidget.Autocomplete,
+ * TagWidget.Pill).
+ */
+export default class TagWidget extends React.Component {
+  static Autocomplete = Autocomplete;
+  static Input = Input;
+  static Pill = Pill;
 
-// The TagWidget provides tag "pilling" and autocomplete. It manages a related
-// set of subcomponents (TagWidget.Input, TagWidget.Autocomplete,
-// TagWidget.Pill).
-class TagWidget extends React.Component {
   constructor(props) {
     super(props);
     var tags =
@@ -369,8 +377,3 @@ class TagWidget extends React.Component {
   }
 }
 
-TagWidget.Autocomplete = require('./TagWidget/Autocomplete.react');
-TagWidget.Input = require('./TagWidget/Input.react');
-TagWidget.Pill = require('./TagWidget/Pill.react');
-
-module.exports = TagWidget;

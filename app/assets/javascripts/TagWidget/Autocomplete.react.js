@@ -1,6 +1,6 @@
 'use strict';
 
-var React = require('react/addons');
+import React from 'react/addons';
 
 var cx = React.addons.classSet;
 
@@ -8,7 +8,7 @@ var cx = React.addons.classSet;
 // TODO: figure out how to share constants between Sass and broswerified JS
 var VISIBLE_AUTOCOMPLETE_ENTRIES = 10;
 
-class Autocomplete extends React.Component {
+export default class Autocomplete extends React.Component {
   componentDidUpdate() {
     var menu      = React.findDOMNode(this);
     var selection = this._selected && React.findDOMNode(this._selected);
@@ -80,5 +80,3 @@ class Autocomplete extends React.Component {
     );
   }
 }
-
-module.exports = Autocomplete;

@@ -1,12 +1,12 @@
 'use strict';
 
-var React = require('react/addons');
+import React from 'react/addons';
 
-var Keys = require('../Keys');
+import Keys from '../Keys';
 
-var escapeHTML = require('../escapeHTML');
+import escapeHTML from '../escapeHTML';
 
-class Input extends React.Component {
+export default class Input extends React.Component {
   handleFocus(event) {
     // don't let the event bubble up to TagWidget, otherwise it will try to send
     // focus straight back to us due to its handleFocus implementation
@@ -93,5 +93,3 @@ class Input extends React.Component {
     );
   }
 }
-
-module.exports = Input;

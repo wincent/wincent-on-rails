@@ -16,8 +16,8 @@
   },
   "scripts": {
     "serverify": "grunt",
-    "bundle": "browserify -o app/assets/javascripts/bundle.js --noparse=node_modules/jquery/dist/jquery.js --noparse=node_modules/underscore/underscore.js -r jquery -r underscore -r react/addons -r ./app/assets/javascripts/main.js:wincent -t babelify",
-    "watch-js": "watchify -v -d -o app/assets/javascripts/bundle.js --noparse=node_modules/jquery/dist/jquery.js --noparse=node_modules/underscore/underscore.js -r jquery -r underscore -r react/addons -r ./app/assets/javascripts/main.js:wincent -t babelify",
+    "bundle": "browserify -o app/assets/javascripts/bundle.js --noparse=node_modules/jquery/dist/jquery.js --noparse=node_modules/underscore/underscore.js -r jquery -r underscore -r react/addons -r ./app/assets/javascripts/main.js:wincent -t [ babelify --optional es7.classProperties ]",
+    "watch-js": "watchify -v -d -o app/assets/javascripts/bundle.js --noparse=node_modules/jquery/dist/jquery.js --noparse=node_modules/underscore/underscore.js -r jquery -r underscore -r react/addons -r ./app/assets/javascripts/main.js:wincent -t [ babelify --optional es7.classProperties ]",
     "start": "npm run watch-js"
   }
 }

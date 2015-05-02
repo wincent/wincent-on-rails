@@ -1,10 +1,10 @@
 'use strict';
 
-var React = require('react/addons');
+import React from 'react/addons';
 
 var cx = React.addons.classSet;
 
-class Pill extends React.Component {
+export default class Pill extends React.Component {
   handleClick(event) {
     event.stopPropagation();
     this.props.onTagSelect(this.props.name);
@@ -46,5 +46,3 @@ class Pill extends React.Component {
     );
   }
 }
-
-module.exports = Pill;
