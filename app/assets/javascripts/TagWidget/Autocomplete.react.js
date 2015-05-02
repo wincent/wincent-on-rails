@@ -5,26 +5,26 @@ import cx from 'classnames';
 
 // keep in sync with _TagAutocomplete.scss
 // TODO: figure out how to share constants between Sass and broswerified JS
-var VISIBLE_AUTOCOMPLETE_ENTRIES = 10;
+const VISIBLE_AUTOCOMPLETE_ENTRIES = 10;
 
 export default class Autocomplete extends React.Component {
   componentDidUpdate() {
-    var menu      = React.findDOMNode(this);
-    var selection = this._selected && React.findDOMNode(this._selected);
+    const menu = React.findDOMNode(this);
+    const selection = this._selected && React.findDOMNode(this._selected);
 
     if (selection) {
       // is selection off the bottom of the scrollable area?
-      var count = VISIBLE_AUTOCOMPLETE_ENTRIES,
-          delta = selection.offsetTop -
+      const count = VISIBLE_AUTOCOMPLETE_ENTRIES;
+      const bottomDelta = selection.offsetTop -
                   (menu.scrollTop + count * selection.clientHeight);
-      if (delta > 0) {
-        menu.scrollTop += (delta + selection.clientHeight);
+      if (bottomDelta > 0) {
+        menu.scrollTop += (bottomDelta + selection.clientHeight);
       }
 
       // is selection off the top of the scrollable area?
-      delta = menu.scrollTop - selection.offsetTop;
-      if (delta > 0) {
-        menu.scrollTop -= delta;
+      const topDelta = menu.scrollTop - selection.offsetTop;
+      if (topDelta > 0) {
+        menu.scrollTop -= topDelta;
       }
     }
   }
@@ -43,7 +43,7 @@ export default class Autocomplete extends React.Component {
   }
 
   render() {
-    var completions = this.props.completions.map(function(completion, i) {
+    const completions = this.props.completions.map(function(completion, i) {
       if (this.props.selectedIdx === i) {
         return (
           <li
@@ -67,7 +67,7 @@ export default class Autocomplete extends React.Component {
       }
     }, this);
 
-    var classes = cx({
+    const classes = cx({
       'tagAutocomplete': true,
       'active': this.props.completions.length
     });

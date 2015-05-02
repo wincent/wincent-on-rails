@@ -18,24 +18,24 @@ export default class TagWidget extends React.Component {
 
   constructor(props) {
     super(props);
-    var tags =
+    const tags =
       props.pendingTags &&
       props.pendingTags.trim().length &&
       props.pendingTags.trim().split(/ +/) || [];
     this.state = {
-      tags:                       tags,
-      availableCompletions:       [],
-      filteredCompletions:        [],
-      pending:                    [], // for styling purposes
-      selectedAutocompleteIndex:  undefined,
-      selectedPillIndex:          undefined,
-      duplicateTag:               undefined,
+      availableCompletions: [],
+      duplicateTag: undefined,
+      filteredCompletions: [],
+      pending: [], // for styling purposes
+      selectedAutocompleteIndex: undefined,
+      selectedPillIndex: undefined,
+      tags,
     };
   }
 
   componentDidMount() {
     // get available completions from the server
-    var request = new XMLHttpRequest();
+    const request = new XMLHttpRequest();
     request.open('GET', '/tags.json');
 
     request.onreadystatechange = () => {
@@ -73,7 +73,7 @@ export default class TagWidget extends React.Component {
   }
 
   onShiftTab() {
-    var event = document.createEvent('Events');
+    const event = document.createEvent('Events');
     event.initEvent('keydown', true, true);
     event.keyIdentifier = 'U+0009';
     event.keyCode = Keys.TAB;
@@ -86,7 +86,7 @@ export default class TagWidget extends React.Component {
 
   handleClick(event) {
     // if outside of input area, focus input
-    var tagInput = React.findDOMNode(this._tagInput);
+    const tagInput = React.findDOMNode(this._tagInput);
     if (event.target !== tagInput) {
       tagInput.focus();
     }
@@ -95,10 +95,10 @@ export default class TagWidget extends React.Component {
   // re-filter the autocomplete list on any input,
   // clear duplicate indicator
   handleChange(event) {
-    var tagInput = React.findDOMNode(this._tagInput);
+    const tagInput = React.findDOMNode(this._tagInput);
     if (event.target === tagInput) {
-      var oldList = this.state.filteredCompletions,
-          newList = this.filterCompletions(tagInput.value);
+      const oldList = this.state.filteredCompletions;
+      const newList = this.filterCompletions(tagInput.value);
 
       if (newList.length !== oldList.length ||
         newList.some((string, idx) => oldList[idx] !== string)) {
@@ -114,7 +114,7 @@ export default class TagWidget extends React.Component {
   // If the cursor is not at the left of the input field (ie. not next to the
   // pills), does nothing.
   handleLeftKeyDown(event) {
-    var input = React.findDOMNode(this._tagInput);
+    const input = React.findDOMNode(this._tagInput);
     if (input === event.target && input.selectionStart === 0) {
       if (this.state.tags.length) {
         this.setState({selectedPillIndex: this.state.tags.length - 1});
@@ -148,8 +148,8 @@ export default class TagWidget extends React.Component {
   // Does nothing if no pill is selected.
   handleDelete(event) {
     if (typeof this.state.selectedPillIndex !== 'undefined') {
-      var tags = this.state.tags.slice(0),
-          index;
+      const tags = this.state.tags.slice(0);
+      let index;
       tags.splice(this.state.selectedPillIndex, 1)
 
       if (this.state.selectedPillIndex < tags.length) {
@@ -166,11 +166,11 @@ export default class TagWidget extends React.Component {
   }
 
   handleKeyDown(event) {
-    var keyCode        = event.keyCode,
-        completions    = this.state.filteredCompletions,
-        maxSelectedIdx = completions.length - 1, // -1 if no completions
-        oldSelectedIdx = this.state.selectedAutocompleteIndex,
-        newSelectedIdx;
+    const keyCode = event.keyCode;
+    const completions = this.state.filteredCompletions;
+    const maxSelectedIdx = completions.length - 1; // -1 if no completions
+    const oldSelectedIdx = this.state.selectedAutocompleteIndex;
+    let newSelectedIdx;
 
     if (keyCode === Keys.LEFT) {
       return this.handleLeftKeyDown(event);
@@ -202,8 +202,8 @@ export default class TagWidget extends React.Component {
         }
     } else if (keyCode === Keys.RETURN) {
       // no completions selected; add currently inputed text
-      var input = React.findDOMNode(this._tagInput),
-          value = input.value;
+      const input = React.findDOMNode(this._tagInput);
+      const value = input.value;
       if (this.pushTag(value)) {
         event.preventDefault(); // prevent form submission
       }
@@ -239,6 +239,8 @@ export default class TagWidget extends React.Component {
    * @returns true if a tag was actually pushed
    */
   pushTag(newTag) {
+    let pushedTag;
+
     newTag = newTag
       .trim()
       .toLowerCase()
@@ -249,7 +251,7 @@ export default class TagWidget extends React.Component {
     // NOTE: might want to provide better feedback for the edge case where the
     // entire thing gets eaten
     if (newTag.length) {
-      var pushedTag = true;
+      pushedTag = true;
       if (this.state.tags.indexOf(newTag) === -1) {
         // tag is not a dupe
         this.setState({tags: this.state.tags.concat(newTag)});
@@ -277,15 +279,15 @@ export default class TagWidget extends React.Component {
 
     // DEBUGGING: replace with actual Ajax request
     setTimeout(() => {
-      var pending = this.state.pending.slice(0);
+      const pending = this.state.pending.slice(0);
       pending.splice(pending.indexOf(newTag), 1);
-      this.setState({pending: pending});
+      this.setState({pending});
     }, 1000);
   }
 
   // callback invoked when someone clicks on an autocomplete suggestion
   onTagPush(newTag) {
-    var input = React.findDOMNode(this._tagInput);
+    const input = React.findDOMNode(this._tagInput);
     input.value = '';
     this.pushTag(newTag);
   }
@@ -293,7 +295,7 @@ export default class TagWidget extends React.Component {
   // callback invokved when someone "selects" an autocomplete suggestion via
   // mouseEnter
   onAutocompleteSelect(element) {
-    var tagIdx = this.state.filteredCompletions.indexOf(element.innerHTML);
+    const tagIdx = this.state.filteredCompletions.indexOf(element.innerHTML);
     this.setState({selectedAutocompleteIndex: tagIdx});
   }
 
@@ -311,9 +313,9 @@ export default class TagWidget extends React.Component {
 
   onTagDelete(name) {
     this.clearDuplicateMarker();
-    var tags = this.state.tags.slice(0);
+    const tags = this.state.tags.slice(0);
     tags.splice(tags.indexOf(name), 1)
-    this.setState({tags: tags});
+    this.setState({tags});
   }
 
   forceFocus() {

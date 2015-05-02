@@ -25,7 +25,7 @@ export default class Pill extends React.Component {
   }
 
   render() {
-    var classes = cx({
+    const classes = cx({
       duplicate: this.props.isDuplicate,
       pending: this.props.isPending,
       selected: this.props.isSelected,

@@ -9,10 +9,10 @@ import TagWidget from './TagWidget.react';
  * Will most likely change once we have server-side rendering.
  */
 export default function injectTagWidget(modelName) {
-  var input = document.getElementById(modelName + '_pending_tags');
+  const input = document.getElementById(modelName + '_pending_tags');
   if (input) {
-    var pendingTags = input.value;
-    var div = document.createElement('div');
+    const pendingTags = input.value;
+    const div = document.createElement('div');
     input.parentNode.replaceChild(div, input);
 
     React.render(
