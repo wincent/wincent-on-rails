@@ -33,13 +33,13 @@ var TagWidget = React.createClass({
     var request = new XMLHttpRequest();
     request.open('GET', '/tags.json');
 
-    request.onreadystatechange = function() {
+    request.onreadystatechange = () => {
       if (request.status === 200 && request.readyState === 4) {
         this.setState({
           availableCompletions: JSON.parse(request.responseText)
         });
       }
-    }.bind(this);
+    };
 
     request.send();
   },
@@ -271,11 +271,11 @@ var TagWidget = React.createClass({
     this.state.pending.push(newTag);
 
     // DEBUGGING: replace with actual Ajax request
-    setTimeout(function() {
+    setTimeout(() => {
       var pending = this.state.pending.slice(0);
       pending.splice(pending.indexOf(newTag), 1);
       this.setState({pending: pending});
-    }.bind(this), 1000);
+    }, 1000);
   },
 
   // callback invoked when someone clicks on an autocomplete suggestion
