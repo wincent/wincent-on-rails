@@ -14,8 +14,8 @@ var VISIBLE_AUTOCOMPLETE_ENTRIES = 10;
 
 var Autocomplete = React.createClass({
   componentDidUpdate: function() {
-    var menu      = this.getDOMNode();
-    var selection = this.refs && this.refs.selected && this.refs.selected.getDOMNode();
+    var menu      = React.findDOMNode(this);
+    var selection = this._selected && React.findDOMNode(this._selected);
 
     if (selection) {
       // is selection off the bottom of the scrollable area?
@@ -56,7 +56,7 @@ var Autocomplete = React.createClass({
             key={completion}
             onClick={this.handleClick}
             onMouseEnter={this.handleMouseEnter}
-            ref="selected">
+            ref={ref => this._selected = ref}>
             {completion}
           </li>
         );

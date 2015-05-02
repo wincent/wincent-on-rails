@@ -76,12 +76,12 @@ var TagWidget = React.createClass({
     event.shiftKey = true;
 
     this.forceFocus();
-    this.getDOMNode().dispatchEvent(event);
+    React.findDOMNode(this).dispatchEvent(event);
   },
 
   handleClick: function(event) {
     // if outside of input area, focus input
-    var tagInput = this.refs.tagInput.getDOMNode();
+    var tagInput = React.findDOMNode(this._tagInput);
     if (event.target !== tagInput) {
       tagInput.focus();
     }
@@ -90,7 +90,7 @@ var TagWidget = React.createClass({
   // re-filter the autocomplete list on any input,
   // clear duplicate indicator
   handleChange: function(event) {
-    var tagInput = this.refs.tagInput.getDOMNode();
+    var tagInput = React.findDOMNode(this._tagInput);
     if (event.target === tagInput) {
       var oldList = this.state.filteredCompletions,
           newList = this.filterCompletions(tagInput.value);
@@ -109,7 +109,7 @@ var TagWidget = React.createClass({
   // If the cursor is not at the left of the input field (ie. not next to the
   // pills), does nothing.
   handleLeftKeyDown: function(event) {
-    var input = this.refs.tagInput.getDOMNode();
+    var input = React.findDOMNode(this._tagInput);
     if (input === event.target && input.selectionStart === 0) {
       if (this.state.tags.length) {
         this.setState({selectedPillIndex: this.state.tags.length - 1});
@@ -132,7 +132,7 @@ var TagWidget = React.createClass({
         this.setState({selectedPillIndex: this.state.selectedPillIndex + 1});
       } else {
         this.setState({selectedPillIndex: undefined});
-        this.refs.tagInput.getDOMNode().focus();
+        React.findDOMNode(this._tagInput).focus();
       }
       event.preventDefault();
     }
@@ -151,7 +151,7 @@ var TagWidget = React.createClass({
         index = this.state.selectedPillIndex;
       } else {
         // deleting the last tag
-        this.refs.tagInput.getDOMNode().focus();
+        React.findDOMNode(this._tagInput).focus();
       }
 
       this.setState({tags: tags, selectedPillIndex: index});
@@ -174,7 +174,7 @@ var TagWidget = React.createClass({
     } else if (keyCode === Keys.BACKSPACE || keyCode === Keys.DELETE) {
       return this.handleDelete(event);
     } else if (keyCode === Keys.ESCAPE) {
-      this.refs.tagInput.getDOMNode().blur();
+      React.findDOMNode(this._tagInput).blur();
       this.state.filteredCompletions = [];
     } else if (typeof oldSelectedIdx === 'undefined' &&
         maxSelectedIdx >= 0 &&
@@ -189,7 +189,7 @@ var TagWidget = React.createClass({
           newSelectedIdx = oldSelectedIdx + 1;
         } else if (keyCode === Keys.RETURN || keyCode === Keys.TAB) {
           // accept selected suggestion
-          this.refs.tagInput.getDOMNode().value = '';
+          React.findDOMNode(this._tagInput).value = '';
           this.pushTag(this.state.filteredCompletions[oldSelectedIdx]);
         } else {
           // non-special keys are allowed to pass through
@@ -197,7 +197,7 @@ var TagWidget = React.createClass({
         }
     } else if (keyCode === Keys.RETURN) {
       // no completions selected; add currently inputed text
-      var input = this.refs.tagInput.getDOMNode(),
+      var input = React.findDOMNode(this._tagInput),
           value = input.value;
       if (this.pushTag(value)) {
         event.preventDefault(); // prevent form submission
@@ -216,7 +216,7 @@ var TagWidget = React.createClass({
   // On losing focus, clear selection from selected pill.
   handleBlur: function(event) {
     if (typeof this.state.selectedPillIndex !== 'undefined' &&
-        this.getDOMNode() === event.target) {
+        React.findDOMNode(this) === event.target) {
       this.setState({selectedPillIndex: undefined});
     }
   },
@@ -224,7 +224,7 @@ var TagWidget = React.createClass({
   handleFocus: function(event) {
     if (!this.forcingFocus) {
       // likely we were tabbed into; forward focus to the TagInput
-      this.refs.tagInput.getDOMNode().focus();
+      React.findDOMNode(this._tagInput).focus();
     } else {
       this.forcingFocus = false;
     }
@@ -280,7 +280,7 @@ var TagWidget = React.createClass({
 
   // callback invoked when someone clicks on an autocomplete suggestion
   onTagPush: function(newTag) {
-    var input = this.refs.tagInput.getDOMNode();
+    var input = React.findDOMNode(this._tagInput);
     input.value = '';
     this.pushTag(newTag);
   },
@@ -322,7 +322,7 @@ var TagWidget = React.createClass({
     // rely on setState followed by reading state in another handler, because of
     // batching. Instead we have to set a flag property directly on this class.
     this.forcingFocus = true;
-    this.getDOMNode().focus();
+    React.findDOMNode(this).focus();
   },
 
   _renderTagPills: function() {
@@ -355,7 +355,7 @@ var TagWidget = React.createClass({
           name={this.props.resourceName}
           onShiftTab={this.onShiftTab}
           onTagPop={this.onTagPop}
-          ref="tagInput"
+          ref={ref => this._tagInput = ref}
         />
         <input
           name={this.props.resourceName}

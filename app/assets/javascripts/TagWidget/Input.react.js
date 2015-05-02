@@ -26,7 +26,7 @@ var Input = React.createClass({
 
   handleKeyDown: function(event) {
     var keyCode = event.keyCode;
-    var input   = this.getDOMNode();
+    var input   = React.findDOMNode(this);
 
     if (keyCode === Keys.BACKSPACE) {
       if (input.selectionStart !== 0 && input.selectionEnd !== 0) {
@@ -48,7 +48,7 @@ var Input = React.createClass({
 
   handleKeyUp: function(event) {
     var keyCode = event.keyCode;
-    var input   = this.getDOMNode();
+    var input   = React.findDOMNode(this);
     var value   = input.value;
 
     if (keyCode === Keys.BACKSPACE) {
