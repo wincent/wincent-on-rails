@@ -1,18 +1,18 @@
 {
   "name": "wincent-dot-com",
   "devDependencies": {
-    "browserify": "^4.2.3",
+    "browserify": "^10.0.0",
     "grunt": "^0.4.5",
-    "grunt-react": "^0.8.4",
-    "reactify": "^0.14.0",
-    "watchify": "^0.10.2"
+    "grunt-react": "^0.12.2",
+    "reactify": "^1.1.0",
+    "watchify": "^3.2.1"
   },
   "dependencies": {
-    "jquery": "^2.1.1",
-    "node-jsx": "^0.10.0",
-    "react": "^0.11.2",
-    "spin.js": "^2.0.1",
-    "underscore": "^1.7.0"
+    "jquery": "^2.1.4",
+    "node-jsx": "^0.13.3",
+    "react": "^0.13.2",
+    "spin.js": "^2.1.0",
+    "underscore": "^1.8.3"
   },
   "scripts": {
     "serverify": "grunt",
