@@ -31,10 +31,10 @@ var Pill = React.createClass({
 
   render: function() {
     var classes = cx({
-      tagPill: true,
       duplicate: this.props.isDuplicate,
       pending: this.props.isPending,
-      selected: this.props.isSelected
+      selected: this.props.isSelected,
+      tagPill: true,
     });
 
     return (
@@ -42,8 +42,8 @@ var Pill = React.createClass({
         className={classes}
         draggable="true"
         onClick={this.handleClick}
-        onDragStart={this.handleDragStart}
-        onDragEnd={this.handleDragEnd}>
+        onDragEnd={this.handleDragEnd}
+        onDragStart={this.handleDragStart}>
         {this.props.name}
         <a href="#" onClick={this.handleDelete}>&times;</a>
       </span>

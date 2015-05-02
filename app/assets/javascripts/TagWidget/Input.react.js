@@ -84,14 +84,14 @@ var Input = React.createClass({
   render: function() {
     return (
       <input
+        autoComplete="off"
         className="tagInput"
-        type="text"
         name={this.props.name}
         onFocus={this.handleFocus}
         onInput={this.handleInput}
         onKeyDown={this.handleKeyDown}
         onKeyUp={this.handleKeyUp}
-        autoComplete="off"
+        type="text"
         value={this.props.value}
       />
     );
