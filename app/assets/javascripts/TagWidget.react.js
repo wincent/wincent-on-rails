@@ -4,7 +4,7 @@
 
 'use strict';
 
-var React = require('React');
+var React = require('react/addons');
 
 var Keys = require('./Keys');
 
