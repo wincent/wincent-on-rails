@@ -4,7 +4,7 @@ import Autocomplete from './TagWidget/Autocomplete.react';
 import Input from './TagWidget/Input.react';
 import Keys from './Keys';
 import Pill from './TagWidget/Pill.react';
-import React from 'react/addons';
+import React from 'react';
 
 /**
  * The TagWidget provides tag "pilling" and autocomplete. It manages a

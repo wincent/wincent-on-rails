@@ -1,8 +1,7 @@
 'use strict';
 
-import React from 'react/addons';
-
-var cx = React.addons.classSet;
+import React from 'react';
+import cx from 'classnames';
 
 export default class Pill extends React.Component {
   handleClick(event) {

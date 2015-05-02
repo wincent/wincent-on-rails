@@ -1,8 +1,7 @@
 'use strict';
 
-import React from 'react/addons';
-
-var cx = React.addons.classSet;
+import React from 'react';
+import cx from 'classnames';
 
 // keep in sync with _TagAutocomplete.scss
 // TODO: figure out how to share constants between Sass and broswerified JS

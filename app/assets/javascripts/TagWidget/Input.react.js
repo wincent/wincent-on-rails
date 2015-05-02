@@ -1,9 +1,7 @@
 'use strict';
 
-import React from 'react/addons';
-
 import Keys from '../Keys';
-
+import React from 'react';
 import escapeHTML from '../escapeHTML';
 
 export default class Input extends React.Component {
