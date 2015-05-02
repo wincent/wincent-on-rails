@@ -55,7 +55,6 @@ The web application depends on or makes use of a number of open source projects:
 ** [http://nginx.org/ nginx]
 ** [http://unicorn.bogomips.org/ Unicorn]
 ** [http://www.vim.org/ Vim]
-** [https://github.com/burke/zeus Zeus]
 
 === Graphics ===
 
