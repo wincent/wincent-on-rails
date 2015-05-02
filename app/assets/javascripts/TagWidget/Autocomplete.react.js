@@ -50,8 +50,8 @@ class Autocomplete extends React.Component {
           <li
             className="TagAutocomplete selected"
             key={completion}
-            onClick={this.handleClick}
-            onMouseEnter={this.handleMouseEnter}
+            onClick={this.handleClick.bind(this)}
+            onMouseEnter={this.handleMouseEnter.bind(this)}
             ref={ref => this._selected = ref}>
             {completion}
           </li>
@@ -60,8 +60,8 @@ class Autocomplete extends React.Component {
         return (
           <li
             key={completion}
-            onClick={this.handleClick}
-            onMouseEnter={this.handleMouseEnter}>
+            onClick={this.handleClick.bind(this)}
+            onMouseEnter={this.handleMouseEnter.bind(this)}>
             {completion}
           </li>
         );
