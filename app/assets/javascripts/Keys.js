@@ -1,6 +1,6 @@
 'use strict';
 
-var Keys = {
+export default {
   BACKSPACE: 8,
   DELETE: 46,
   DOWN: 40,
@@ -9,7 +9,5 @@ var Keys = {
   RETURN: 13,
   RIGHT: 39,
   TAB: 9,
-  UP: 38
+  UP: 38,
 };
-
-module.exports = Keys;

@@ -1,11 +1,9 @@
 'use strict';
 
-var injectTagWidget = require('./injectTagWidget');
+import injectTagWidget from './injectTagWidget';
 
-var Topics = {
-  init: function() {
+export default {
+  init() {
     injectTagWidget('topic');
   }
 };
-
-module.exports = Topics;
