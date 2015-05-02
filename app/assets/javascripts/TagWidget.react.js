@@ -326,35 +326,17 @@ var TagWidget = React.createClass({
   },
 
   _renderTagPills: function() {
-    return this.state.tags.map((name, i) => {
-      return (
-        <TagWidget.Pill
-          key={name}
-          name={name}
-          isDuplicate={name === this.state.duplicateTag}
-          isPending={this.state.pending.indexOf(name) !== -1}
-          isSelected={i === this.state.selectedPillIndex}
-          onTagSelect={this.onTagSelect}
-          onTagDelete={this.onTagDelete}
-        />
-      );
-    }, this);
-  },
-
-  _renderInputs: function() {
-    return [
-      <TagWidget.Input
-        ref="tagInput"
-        name={this.props.resourceName}
-        onTagPop={this.onTagPop}
-        onShiftTab={this.onShiftTab}
-      />,
-      <input
-        type="hidden"
-        name={this.props.resourceName}
-        value={this.state.tags.join(' ')}
+    return this.state.tags.map((name, i) => (
+      <TagWidget.Pill
+        key={name}
+        name={name}
+        isDuplicate={name === this.state.duplicateTag}
+        isPending={this.state.pending.indexOf(name) !== -1}
+        isSelected={i === this.state.selectedPillIndex}
+        onTagSelect={this.onTagSelect}
+        onTagDelete={this.onTagDelete}
       />
-    ];
+    ));
   },
 
   render: function() {
@@ -369,7 +351,17 @@ var TagWidget = React.createClass({
         onBlur={this.handleBlur}
         onFocus={this.handleFocus}>
         {this._renderTagPills()}
-        {this._renderInputs()}
+        <TagWidget.Input
+          ref="tagInput"
+          name={this.props.resourceName}
+          onTagPop={this.onTagPop}
+          onShiftTab={this.onShiftTab}
+        />
+        <input
+          type="hidden"
+          name={this.props.resourceName}
+          value={this.state.tags.join(' ')}
+        />
         <TagWidget.Autocomplete
           completions={this.state.filteredCompletions}
           selectedIdx={this.state.selectedAutocompleteIndex}
