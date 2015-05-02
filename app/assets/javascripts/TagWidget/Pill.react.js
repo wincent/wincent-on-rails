@@ -8,28 +8,28 @@ var React = require('react/addons');
 
 var cx = React.addons.classSet;
 
-var Pill = React.createClass({
-  handleClick: function(event) {
+class Pill extends React.Component {
+  handleClick(event) {
     event.stopPropagation();
     this.props.onTagSelect(this.props.name);
-  },
+  }
 
-  handleDelete: function(event) {
+  handleDelete(event) {
     this.props.onTagDelete(this.props.name);
-    return false;
-  },
+    event.preventDefault();
+  }
 
-  handleDragStart: function(event) {
+  handleDragStart(event) {
     // will require a shim for this; see:
     // https://developer.mozilla.org/en-US/docs/DOM/element.classList
     event.target.classList.add(TagPillStyleRules.dragging);
-  },
+  }
 
-  handleDragEnd: function(event) {
+  handleDragEnd(event) {
     event.target.classList.remove(TagPillStyleRules.dragging);
-  },
+  }
 
-  render: function() {
+  render() {
     var classes = cx({
       duplicate: this.props.isDuplicate,
       pending: this.props.isPending,
@@ -41,14 +41,14 @@ var Pill = React.createClass({
       <span
         className={classes}
         draggable="true"
-        onClick={this.handleClick}
-        onDragEnd={this.handleDragEnd}
-        onDragStart={this.handleDragStart}>
+        onClick={this.handleClick.bind(this)}
+        onDragEnd={this.handleDragEnd.bind(this)}
+        onDragStart={this.handleDragStart.bind(this)}>
         {this.props.name}
-        <a href="#" onClick={this.handleDelete}>&times;</a>
+        <a href="#" onClick={this.handleDelete.bind(this)}>&times;</a>
       </span>
     );
   }
-});
+}
 
 module.exports = Pill;

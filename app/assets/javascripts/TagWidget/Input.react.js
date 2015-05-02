@@ -10,21 +10,21 @@ var Keys = require('../Keys');
 
 var escapeHTML = require('../escapeHTML');
 
-var Input = React.createClass({
-  handleFocus: function(event) {
+class Input extends React.Component {
+  handleFocus(event) {
     // don't let the event bubble up to TagWidget, otherwise it will try to send
     // focus straight back to us due to its handleFocus implementation
     event.stopPropagation();
-  },
+  }
 
-  handleInput: function(event) {
+  handleInput(event) {
     // resize dynamically
     var input    = event.target;
     var newWidth = this.getTextWidth(input);
     input.style.width = newWidth + 'px';
-  },
+  }
 
-  handleKeyDown: function(event) {
+  handleKeyDown(event) {
     var keyCode = event.keyCode;
     var input   = React.findDOMNode(this);
 
@@ -44,9 +44,9 @@ var Input = React.createClass({
     } else if (keyCode === Keys.TAB && event.shiftKey) {
       this.props.onShiftTab();
     }
-  },
+  }
 
-  handleKeyUp: function(event) {
+  handleKeyUp(event) {
     var keyCode = event.keyCode;
     var input   = React.findDOMNode(this);
     var value   = input.value;
@@ -55,9 +55,9 @@ var Input = React.createClass({
       // see note in the handleKeyDown() method for info about this special case
       this.pendingDeletion = false;
     }
-  },
+  }
 
-  getTextWidth: function(input) {
+  getTextWidth(input) {
     // copy the input value to a hidden div with the same styling as the input,
     // then measure the width of that
     var hiddenDiv = document.createElement("div");
@@ -79,23 +79,23 @@ var Input = React.createClass({
     var width = hiddenDiv.clientWidth;
     document.body.removeChild(hiddenDiv);
     return width;
-  },
+  }
 
-  render: function() {
+  render() {
     return (
       <input
         autoComplete="off"
         className="tagInput"
         name={this.props.name}
-        onFocus={this.handleFocus}
-        onInput={this.handleInput}
-        onKeyDown={this.handleKeyDown}
-        onKeyUp={this.handleKeyUp}
+        onFocus={this.handleFocus.bind(this)}
+        onInput={this.handleInput.bind(this)}
+        onKeyDown={this.handleKeyDown.bind(this)}
+        onKeyUp={this.handleKeyUp.bind(this)}
         type="text"
         value={this.props.value}
       />
     );
   }
-});
+}
 
 module.exports = Input;

@@ -12,8 +12,8 @@ var cx = React.addons.classSet;
 // TODO: figure out how to share constants between Sass and broswerified JS
 var VISIBLE_AUTOCOMPLETE_ENTRIES = 10;
 
-var Autocomplete = React.createClass({
-  componentDidUpdate: function() {
+class Autocomplete extends React.Component {
+  componentDidUpdate() {
     var menu      = React.findDOMNode(this);
     var selection = this._selected && React.findDOMNode(this._selected);
 
@@ -32,22 +32,22 @@ var Autocomplete = React.createClass({
         menu.scrollTop -= delta;
       }
     }
-  },
+  }
 
-  handleClick: function(event) {
+  handleClick(event) {
     this.props.onTagPush(event.target.innerHTML);
-  },
+  }
 
-  handleMouseEnter: function(event) {
+  handleMouseEnter(event) {
     // at the moment React supports mouseEnter but not mouseOver (see:
     // https://github.com/facebook/react/issues/340); this is fine, as
     // mouseEnter is actually better, but it also explains why things look a
     // little weird here: we have to "unpack" the native event below, and it
     // appears to be a mouseOut event under the covers
     this.props.onAutocompleteSelect(event.nativeEvent.toElement);
-  },
+  }
 
-  render: function() {
+  render() {
     var completions = this.props.completions.map(function(completion, i) {
       if (this.props.selectedIdx === i) {
         return (
@@ -83,6 +83,6 @@ var Autocomplete = React.createClass({
       </div>
     );
   }
-});
+}
 
 module.exports = Autocomplete;
