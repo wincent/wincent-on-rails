@@ -1,10 +1,10 @@
 {
   "name": "wincent-dot-com",
   "devDependencies": {
+    "babelify": "^6.0.2",
     "browserify": "^10.0.0",
     "grunt": "^0.4.5",
     "grunt-react": "^0.12.2",
-    "reactify": "^1.1.0",
     "watchify": "^3.2.1"
   },
   "dependencies": {
@@ -16,8 +16,8 @@
   },
   "scripts": {
     "serverify": "grunt",
-    "bundle": "browserify -o app/assets/javascripts/bundle.js --noparse=node_modules/jquery/dist/jquery.js --noparse=node_modules/underscore/underscore.js -r jquery -r underscore -r react/addons -r ./app/assets/javascripts/main.js:wincent -t [ reactify --everything --harmony ]",
-    "watch-js": "watchify -v -d -o app/assets/javascripts/bundle.js --noparse=node_modules/jquery/dist/jquery.js --noparse=node_modules/underscore/underscore.js -r jquery -r underscore -r react/addons -r ./app/assets/javascripts/main.js:wincent -t [ reactify --everything --harmony ]",
+    "bundle": "browserify -o app/assets/javascripts/bundle.js --noparse=node_modules/jquery/dist/jquery.js --noparse=node_modules/underscore/underscore.js -r jquery -r underscore -r react/addons -r ./app/assets/javascripts/main.js:wincent -t babelify",
+    "watch-js": "watchify -v -d -o app/assets/javascripts/bundle.js --noparse=node_modules/jquery/dist/jquery.js --noparse=node_modules/underscore/underscore.js -r jquery -r underscore -r react/addons -r ./app/assets/javascripts/main.js:wincent -t babelify",
     "start": "npm run watch-js"
   }
 }
