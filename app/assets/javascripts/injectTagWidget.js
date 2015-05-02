@@ -4,7 +4,6 @@
 
 'use strict';
 
-var $ = require('jquery');
 var React = require('react/addons');
 var TagWidget = require('./TagWidget.react');
 
@@ -13,21 +12,21 @@ var TagWidget = require('./TagWidget.react');
  *
  * Will most likely change once we have server-side rendering.
  */
-var injectTagWidget = function(modelName) {
-  var $input = $(`#${modelName}_pending_tags`);
-  if ($input.length) {
-    var val = $input.val();
-    var $div = $('<div />');
-    $input.replaceWith($div);
+function injectTagWidget(modelName) {
+  var input = document.getElementById(modelName + '_pending_tags');
+  if (input) {
+    var pendingTags = input.value;
+    var div = document.createElement('div');
+    input.parentNode.replaceChild(div, input);
 
     React.render(
       <TagWidget
-        pendingTags={val}
+        pendingTags={pendingTags}
         resourceName={`${modelName}[pending_tags]`}
       />,
-      $div[0]
+      div
     );
   }
-};
+}
 
 module.exports = injectTagWidget;
