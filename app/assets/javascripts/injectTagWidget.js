@@ -20,7 +20,7 @@ var injectTagWidget = function(modelName) {
     var $div = $('<div />');
     $input.replaceWith($div);
 
-    React.renderComponent(
+    React.render(
       <TagWidget
         pendingTags={val}
         resourceName={`${modelName}[pending_tags]`}
