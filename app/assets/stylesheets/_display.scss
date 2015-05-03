@@ -458,17 +458,17 @@ ul.pagination {
 
   // tables with header cells along the top
   thead tr th {
-    text-align: center;
-    border-bottom: 1px silver solid;
-    border-right: 1px silver solid;
+    background: #fff;
+    border-bottom: 2px silver solid;
+    text-align: left;
+
+    a {
+      color: #000;
+    }
   }
 
   td, th {
     padding: .5em;
-  }
-
-  th {
-    background: #f7f7f7;
   }
 
   th.ascending a:after {
@@ -486,10 +486,10 @@ ul.pagination {
   }
 
   tr {
-    background: #fefefe;
+    border-bottom: 1px silver solid;
 
-    &:nth-child(even) {
-      background: #fcfcfc;
+    &:nth-child(odd) {
+      background: #f9f9f9;
     }
   }
 }
