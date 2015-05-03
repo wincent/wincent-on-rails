@@ -190,7 +190,6 @@ nav.global {
     a {
       color: white;
       display: table-cell;
-      font-weight: bold;
       height: $navbar-height;
       padding-left: 5px;
       text-decoration: none;
@@ -289,7 +288,6 @@ a#logout {
   @include adjust-font-size-to($small);
   color: #fff;
   display: table-cell;
-  font-weight: bold;
   height: $navbar-height;
   padding: 0 1em;
   vertical-align: middle;
