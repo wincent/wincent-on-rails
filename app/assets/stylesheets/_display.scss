@@ -461,6 +461,7 @@ ul.pagination {
     background: #fff;
     border-bottom: 2px silver solid;
     text-align: left;
+    white-space: nowrap;
 
     a {
       color: #000;
@@ -471,11 +472,18 @@ ul.pagination {
     padding: .5em;
   }
 
+  // even when not sorting, make sure we reserve space for a sort indicator
+  th a:after {
+    @include icon($fa-var-sort-desc);
+    visibility: hidden;
+  }
+
   th.ascending a:after {
     @include icon($fa-var-sort-desc);
     display: inline-block;
     margin-left: .25em;
     text-decoration: none;
+    visibility: inherit;
   }
 
   th.descending a:after {
@@ -483,6 +491,7 @@ ul.pagination {
     display: inline-block;
     margin-left: .25em;
     text-decoration: none;
+    visibility: inherit;
   }
 
   tr {
