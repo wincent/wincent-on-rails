@@ -355,6 +355,10 @@ div.column {
   margin: 1em;
   padding: 1em 1em 1em 36px;
 
+  a {
+    text-decoration: underline;
+  }
+
   ul {
     margin: 0;
   }
@@ -366,22 +370,19 @@ div.column {
 
 #error,
 .error {
-  background: #f9b8be;
-  border: 1px solid #b77d74;
+  background: #f2dede;
+  border: 1px solid #ebccd1;
+  color: #a94442;
 }
 
 #notice,
 .notice {
-  background: #72a384;
-  border: 1px solid #72a384;
+  background: #dff0d8;
+  border: 1px solid #d6e9c6;
+  color: #3c763d;
 }
 
 // Ajax
-
-// subtle error feedack for failed Ajax requests
-.ajax_error {
-  background: #f9b8be;
-}
 
 [data-editable]:not(.editing):hover {
   outline: 1px dashed silver;
