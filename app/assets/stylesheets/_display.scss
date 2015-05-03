@@ -373,6 +373,10 @@ div.column {
   background: #f2dede;
   border: 1px solid #ebccd1;
   color: #a94442;
+
+  a {
+    color: #843534;
+  }
 }
 
 #notice,
@@ -380,6 +384,10 @@ div.column {
   background: #dff0d8;
   border: 1px solid #d6e9c6;
   color: #3c763d;
+
+  a {
+    color: #2b542c;
+  }
 }
 
 // Ajax
