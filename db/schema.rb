@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150414010714) do
+ActiveRecord::Schema.define(version: 20150504033657) do
 
   create_table "articles", force: :cascade do |t|
     t.string   "title",             limit: 255
@@ -243,6 +243,15 @@ ActiveRecord::Schema.define(version: 20150414010714) do
     t.integer  "last_comment_id",   limit: 4
     t.datetime "last_commented_at"
   end
+
+  create_table "tag_mappings", force: :cascade do |t|
+    t.string   "tag_name",           limit: 255, null: false
+    t.string   "canonical_tag_name", limit: 255, null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "tag_mappings", ["tag_name", "canonical_tag_name"], name: "index_tag_mappings_on_tag_name_and_canonical_tag_name", unique: true, using: :btree
 
   create_table "taggings", force: :cascade do |t|
     t.integer  "tag_id",        limit: 4

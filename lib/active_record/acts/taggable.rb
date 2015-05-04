@@ -100,8 +100,9 @@ module ActiveRecord
 
       private
 
-        # Return a normalized list of tags (tag names are lower-cased and
-        # duplicates are removed) based on the input.
+        # Return a normalized list of tags (tag names are lower-cased,
+        # canonicalized [via a TagMapping look-up], and duplicates are removed)
+        # based on the input.
         #
         # Expects an array of strings containing whitespace-delimited tag
         # names.
@@ -113,8 +114,12 @@ module ActiveRecord
         #
         # The input array may contain nested arrays.
         def parse_tag_list args
+          mappings = TagMapping.mappings
           args.flatten.inject([]) do |list, tags|
-            list + tags.downcase.strip.split(/\s+/)
+            canonical_tags = tags.downcase.strip.split(/\s+/).map do |tag|
+              mappings[tag].presence || tag
+            end
+            list + canonical_tags
           end.uniq
         end
 
