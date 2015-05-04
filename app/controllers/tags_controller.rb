@@ -78,6 +78,10 @@ private
   end
 
   def get_tag
-    @tag = Tag.find_by_name(params[:id]) || Tag.find(params[:id])
+    # "soft" redirect (ie. don't actually change the URL or reload the page)
+    # for tags that don't match their canonical version
+    name = TagMapping.mappings[params[:id]].presence || params[:id]
+
+    @tag = Tag.find_by_name(name) || Tag.find(params[:id])
   end
 end
