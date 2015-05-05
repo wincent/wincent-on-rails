@@ -58,15 +58,14 @@
             = link_to 'log out', logout_path, id: 'logout'
         #content-wrapper
           #content
-            -# BUG: i'm seeing a lot of flash messages as array literals
-            - if flash[:notice]
-              #notice
+            - Array(flash[:notice]).each do |message|
+              .notice
                 %i.fa.fa-info-circle
-                = raw flash[:notice]
-            - if flash[:error]
-              #error
+                = raw message
+            - Array(flash[:error]).each do |message|
+              .error
                 %i.fa.fa-exclamation-circle
-                = raw flash[:error]
+                = raw message
 
             -# BUG: this is a bit of kludge so that we don't have to define a
             -# separate layout just to get breadcrumbs on our wikitext pages
