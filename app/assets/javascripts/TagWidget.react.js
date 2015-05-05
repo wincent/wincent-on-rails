@@ -12,6 +12,7 @@ import React from 'react';
  * TagWidget.Pill).
  */
 export default class TagWidget extends React.Component {
+  // TODO: probably just move all this out again
   static Autocomplete = Autocomplete;
   static Input = Input;
   static Pill = Pill;
@@ -45,6 +46,17 @@ export default class TagWidget extends React.Component {
         });
       }
     };
+
+    // TODO: check available space
+    // if amount below us (ie. to edge of viewport) is less than THRESHOLD
+    // then check amount above us; if it's more, flip (ie. appear on top,
+    // reverse listing)
+    // in both cases, once we've choosen a place, limit size to available space
+    // and scroll within menu if needed (note we already have a max-height in
+    // place, although it doesn't work perfectly
+    // finally, use potentially matchmedia events or resize event and or scroll events to adjust as
+    // we go; will almost certainly want to throttle, and only listen when
+    // autocomplete is actually visible
 
     request.send();
   }
@@ -379,3 +391,7 @@ export default class TagWidget extends React.Component {
   }
 }
 
+// TODO: when autocomplete menu is visible, clicking outside it should close it
+// (doc-level click handler)
+// TODO: bug; some edge cases exists where we end up trying to call trim() on
+// undefined

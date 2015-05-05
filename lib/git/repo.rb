@@ -54,6 +54,7 @@ module Git
     # if it returns a non-zero exit status.
     #
     # Mnemonic: "raise git"
+    # TODO: rename to git!
     def r_git *params
       result = git *params
       raise Git::CommandError.new_with_result(result) unless result.success?

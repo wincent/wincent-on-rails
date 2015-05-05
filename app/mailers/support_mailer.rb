@@ -69,3 +69,16 @@ private
     message.related = issue # saved by caller
   end
 end
+
+# TODO: store all emails in database for later inspection
+# use "in_reply_to" attribute to figure out what ticket the reply belongs to
+# if not set, fall back to scanning headers using regex... see if message id turns up that way
+# if that fails, fall back to looking for "ticket #12" or whatever in subject line
+# autocreate user accounts on first email? -> not sure about this as if we send out a confirmation... spam could trigger
+# false positives...
+# need new column in user table: to indicate how created (manual sign up, incoming email, other)
+# hold ALL tickets/comments for moderation to guard against spam (even ones apparently "from" win@wincent.com?)
+# could eventually allow _signed_ messages through without moderation
+# and if we don't want to rely on GPG (or whatever), a "secret" token might suffice for now
+# seeing as we can't trust clients to hit "reply" and we could lose the "in-reply-to" info,
+# must have a way of moving comments from one issue to another...

@@ -238,6 +238,7 @@ module ApplicationHelper
     )
   end
 
+  # TODO: unobtrusive
   def button_to_moderate_model_as_ham model, url
     form_id = "#{model.class.to_s.downcase}_#{model.id}_ham_form"
     haml_tag :form, { :id => form_id, :style => 'display:inline;' } do

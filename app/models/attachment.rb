@@ -48,6 +48,7 @@ class Attachment < ActiveRecord::Base
 
 private
 
+  # TODO: consider using SecureRandom::uuid for this instead
   @@counter = 0
   def prepare_digest
     time = Time.now

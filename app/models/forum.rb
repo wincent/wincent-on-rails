@@ -25,6 +25,9 @@ class Forum < ActiveRecord::Base
   end
 
   def self.find_all
+    # TODO: investigate code smell here; adding these virtual (non-db
+    # attributes) via a join here may be a bad thing, and should consider
+    # storing real attributes in the db via callbacks
     find_by_sql <<-SQL
       SELECT forums.id, forums.name, forums.permalink,
              forums.description, forums.topics_count,

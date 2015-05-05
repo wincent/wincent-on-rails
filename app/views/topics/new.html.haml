@@ -8,6 +8,7 @@
   = render 'shared/anonymous'
 - elsif !current_user.verified?
   = render 'shared/unverified'
+- # TODO: share form code between new/edit using a _form partial
 = form_for [@forum, @topic] do |f|
   = f.text_field :title
   = f.text_area :body, rows: 10, annotation: wikitext_cheatsheet

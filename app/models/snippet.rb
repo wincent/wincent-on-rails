@@ -8,6 +8,8 @@
 #   boolean  "public",            :default => true
 #   integer  "comments_count",    :default => 0
 #   boolean  "accepts_comments",  :default => true
+#
+# TODO: make this model searchable like the other ones
 class Snippet < ActiveRecord::Base
   module MarkupType
     # base types

@@ -35,6 +35,8 @@ class Menu {
   }
 
   open() {
+    // TODO: add overflow: hidden to body; remove it on close (prevents
+    // scrolling, at least on Chrome...)
     this.$menu.removeClass('hide');
     this.$viewport.addClass('menu-open').removeClass('menu-closed');
   }

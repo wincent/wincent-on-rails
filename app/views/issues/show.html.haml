@@ -55,6 +55,7 @@
             %td= f.check_box :public, 'data-ajax' => true
       %tr
         %th Tags
+        -# BUG: this won't work, as we end up submitting "a" tags as well as plaintext, which won't pass validation
         %td{ data: { name: 'issue[pending_tags]', editable: admin? } }
           = tag_links(@issue)
     %h4.major
@@ -69,9 +70,8 @@
 %h4.major Comments
 %ol#comments.boxed
   =render @comments
-  -# BUG: no edit links
+  -# BUG: no edit links in the comments partials
   -# BUG: here we're using base heading level of 2 but in partial it is 1
-  -# TODO: add a means of marking individual comments as private
 %h4.major Add a comment
 =render 'comments/form'
 .links

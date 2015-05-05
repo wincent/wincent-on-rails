@@ -1,3 +1,4 @@
+// TODO: don't use hsl here; use Sass or Compass instead
 .tagPill {
   @include user-select(none);
   background: hsl(230, 21.4%, 94.5%); // #eeeff4

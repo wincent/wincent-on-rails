@@ -54,6 +54,8 @@ describe TagsController do
       mock(Tag).tags_reachable_from_tags @tag
       do_get
     end
+
+    # TODO: spec for soft-redirects of TagMapping entries
   end
 
   describe '#edit' do

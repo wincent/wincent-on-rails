@@ -40,6 +40,9 @@ class Spinner {
   stop() {
     this.spinner.stop();
   }
+
+  // TODO: make this "declarative" data-spinner="large"?
+  // still need to decide when to trigger it
 }
 
 module.exports = Spinner;

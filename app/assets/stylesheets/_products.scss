@@ -32,6 +32,11 @@
     border-bottom: 1px solid silver;
     float: left;
     margin: 0 32px 10px 10px;
+    // TODO: make this responsive...
+    // maybe a combination of % and min-width as first cut?
+    // eg. icon min width 128 px, %
+    // media queries as fall back (start shrinking icon)
+    // lightbox will be obviously broken
     width: 510px;
   }
   .icon {

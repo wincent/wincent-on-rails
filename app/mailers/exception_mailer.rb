@@ -36,6 +36,9 @@ private
     lines.shift # drop first line "---"
     lines.map { |line| "  #{line}" }.join("\n")
   rescue Exception => e
+    # BUG: we always get here, check:
+    #   actionpack-#{version}/lib/action_dispatch/middleware/templates/rescues/_request_and_response.erb
+    # for how to do this
     "  [exception '#{e.message}' raised while trying to prettify env]"
   end
 end

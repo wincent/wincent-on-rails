@@ -78,6 +78,11 @@ $focus-border-color: #dcedfe;
   margin-top: 0;
 }
 
+// TODO: needs updating (and should apply to row, not input)
+//input.field_with_errors, textarea.field_with_errors {
+//  border: 4px solid #f9b8be;
+//}
+
 // for spam-catching: http://davidwalsh.name/wordpress-comment-spam
 .website-address {
   display: none;

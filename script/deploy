@@ -1,5 +1,18 @@
 #!/bin/sh
 
+# TODO: write some docs on how assets are handled...
+# to check out during deploy, do:
+#
+#   git read-tree -u --prefix=public/assets the-sha1
+#
+# confirmed this works with .gitignore trick
+#
+# note: in order to keep old assets, would have to go back to having a
+# shared directory and copy the new assets over into that
+# would be ok for running unicorns (they read the manifest at boot, I
+# believe); but would mean a symlink-rollback wouldn't work 100%; i
+# don't use those though, so I thik I'm ok.
+
 # deploy to:
 SERVER=mondatta.unixhosts.net
 REMOTE_BUNDLER_EXECUTABLE=/data/rails/bin/bundle
@@ -57,6 +70,7 @@ run() {
   set -e
 }
 
+# TODO: add rollback command, and keep "previous" symlink on host up to date
 usage() {
   echo "Usage:"
   echo "  $0 [options] command..."

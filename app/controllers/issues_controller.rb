@@ -105,6 +105,9 @@ class IssuesController < ApplicationController
           render json: {}
         else
           if @issue.update_attributes(issue_params)
+            # TODO: have it return a substitutable element? (for example, when we
+            # edit pending tags, get links back instead of just keeping the raw
+            # text in there)
             render json: {}
           else
             render text:   "Update failed: #{@issue.flashable_error_string}",

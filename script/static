@@ -36,6 +36,8 @@ class View
   end
 end
 
+# TODO: teach static to insert latest application.css URL
+
 APP_CONFIG = YAML.load_file 'config/app_config.yml'
 template = View.new ARGV[0]
 template.output = template.render

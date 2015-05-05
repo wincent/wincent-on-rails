@@ -46,10 +46,12 @@ class Repo < ActiveRecord::Base
   validates_uniqueness_of :name, :path, :permalink
   validates_format_of :path, :with => %r{\A(/([a-z0-9._-]+))+\z}i,
     :message => 'must have format "/foo/bar/baz"'
+  # TODO: validates_format_of :permalink
   validate :check_path_is_valid_git_repo
   attr_accessible :clone_url, :description, :name, :path, :permalink,
     :product_id, :public, :rw_clone_url
 
+  # TODO: order alphabetically by default? (alternative is to order in the controller)
   scope :published, -> { where(public: true) }
 
   def to_param

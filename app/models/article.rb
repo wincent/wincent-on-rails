@@ -29,6 +29,8 @@ class Article < ActiveRecord::Base
   attr_accessible         :title, :redirect, :body, :public, :accepts_comments, :pending_tags
   acts_as_searchable      attributes: %i[title body]
   acts_as_taggable
+  # TODO: acts_as_versioned attributes: %i[title redirect body]
+
 
   scope :published, -> { where(public: true) }
   scope :recent,    -> { published.order('updated_at DESC').limit(10) }
@@ -38,6 +40,7 @@ class Article < ActiveRecord::Base
   def self.find_with_param! param, user = nil
     article = find_by_title! deparametrize(param)
     if !article.public? && (!user || !user.superuser?)
+      # TODO: smell here: controller exception raised from model layer
       raise ActionController::ForbiddenError
     end
     article

@@ -37,7 +37,7 @@ class Issue < ActiveRecord::Base
 
     unless params[:summary].blank?
       t = finder.arel_table
-      like = "%#{params[:summary]}%"
+      like = "%#{params[:summary]}%" # TODO[fixme]: user here can pass '%', not that it matters
       finder = finder.where(t[:summary].matches(like).or(t[:description].matches(like)))
     end
     finder

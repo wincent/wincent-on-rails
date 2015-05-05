@@ -59,6 +59,8 @@ var Ajax = {
         }
       });
 
+    // TODO: add data-spinner attribute to specify selector which should have
+    // spinner
     $(document).on('change', 'input[data-ajax], select[data-ajax]', function(event) {
       var $element   = $(event.currentTarget),
           serialized = $element.serialize(),
@@ -132,6 +134,7 @@ var Ajax = {
       .empty();
   },
 
+  // TODO: this is classic replace.js right here, most of which can be deleted
   commentForm: function(url) {
     var commentSelector = '#comment-form',
         $commentDiv = $(commentSelector),

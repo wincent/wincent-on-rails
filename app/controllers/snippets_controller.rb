@@ -38,6 +38,7 @@ class SnippetsController < ApplicationController
   end
 
   def show
+    # BUG: this comments association is not a lazy ActiveRelation query like I had hoped
     @comments = @snippet.comments.published
     respond_to do |format|
       format.html {
