@@ -54,6 +54,8 @@ var Ajax = {
       }
     });
 
+    // TODO: add data-spinner attribute to specify selector which should have
+    // spinner
     $(document).on('change', 'input[data-ajax], select[data-ajax]', function (event) {
       var $element = $(event.currentTarget),
           serialized = $element.serialize(),
@@ -119,6 +121,7 @@ var Ajax = {
     }).empty();
   },
 
+  // TODO: this is classic replace.js right here, most of which can be deleted
   commentForm: function commentForm(url) {
     var commentSelector = '#comment-form',
         $commentDiv = $(commentSelector),
@@ -376,6 +379,8 @@ var Menu = (function () {
   }, {
     key: 'open',
     value: function open() {
+      // TODO: add overflow: hidden to body; remove it on close (prevents
+      // scrolling, at least on Chrome...)
       this.$menu.removeClass('hide');
       this.$viewport.addClass('menu-open').removeClass('menu-closed');
     }
@@ -502,6 +507,10 @@ var Spinner = (function () {
     value: function stop() {
       this.spinner.stop();
     }
+
+    // TODO: make this "declarative" data-spinner="large"?
+    // still need to decide when to trigger it
+
   }]);
 
   return Spinner;
@@ -590,6 +599,17 @@ var TagWidget = (function (_React$Component) {
           });
         }
       };
+
+      // TODO: check available space
+      // if amount below us (ie. to edge of viewport) is less than THRESHOLD
+      // then check amount above us; if it's more, flip (ie. appear on top,
+      // reverse listing)
+      // in both cases, once we've choosen a place, limit size to available space
+      // and scroll within menu if needed (note we already have a max-height in
+      // place, although it doesn't work perfectly
+      // finally, use potentially matchmedia events or resize event and or scroll events to adjust as
+      // we go; will almost certainly want to throttle, and only listen when
+      // autocomplete is actually visible
 
       request.send();
     }
@@ -960,6 +980,8 @@ var TagWidget = (function (_React$Component) {
     }
   }], [{
     key: 'Autocomplete',
+
+    // TODO: probably just move all this out again
     value: _Autocomplete2['default'],
     enumerable: true
   }, {
@@ -977,6 +999,11 @@ var TagWidget = (function (_React$Component) {
 
 exports['default'] = TagWidget;
 module.exports = exports['default'];
+
+// TODO: when autocomplete menu is visible, clicking outside it should close it
+// (doc-level click handler)
+// TODO: bug; some edge cases exists where we end up trying to call trim() on
+// undefined
 
 },{"./Keys":5,"./TagWidget/Autocomplete.react":11,"./TagWidget/Input.react":12,"./TagWidget/Pill.react":13,"react":"react"}],11:[function(require,module,exports){
 'use strict';
