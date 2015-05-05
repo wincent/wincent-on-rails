@@ -563,8 +563,11 @@ div.column {
 }
 
 ul.taggables {
-  list-style-type: none;
   padding: 0;
+
+  li {
+    list-style-type: none;
+  }
 }
 
 a.tags-link {
