@@ -3,7 +3,7 @@ require 'spec_helper'
 describe ConfirmationMailer do
   describe 'confirmation message' do
     before do
-      @administrator  = 'win@wincent.com'
+      @administrator  = 'greg@hurrell.net'
       @support        = 'support@wincent.com'
       @confirmation   = Confirmation.make!
       @mail           = ConfirmationMailer.confirmation_message @confirmation

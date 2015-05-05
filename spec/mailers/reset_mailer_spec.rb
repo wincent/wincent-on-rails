@@ -3,7 +3,7 @@ require 'spec_helper'
 describe ResetMailer do
   describe 'reset message' do
     before do
-      @administrator  = 'win@wincent.com'
+      @administrator  = 'greg@hurrell.net'
       @support        = 'support@wincent.com'
       @reset          = Reset.make!
       @recipient      = @reset.email.address
