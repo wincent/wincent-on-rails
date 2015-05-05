@@ -1,3 +1,5 @@
+# Provides a mapping from a tag name to a canonical tag name.
+#
 # No UI for this for now; just console:
 #
 #   TagMapping.alias('mac.os.x', 'os.x') # alias old -> canonical
@@ -6,6 +8,13 @@
 #
 #   TagMapping.canonicalize!
 #
+# Note: if you just want to rename a tag, you can do so at: /admin/tags (but
+# beware, you may incur broken links if you do this). In general, renaming is
+# appropriate for stuff which is just plain wrong; mapping will be what you want
+# for stuff that should redirect permanently, or for which you expect new
+# taggings will need to be auto-corrected in the future.
+#
+# For more context, see the original issue: https://wincent.com/issues/1303
 class TagMapping < ActiveRecord::Base
   attr_accessible :canonical_tag_name, :tag_name
 
