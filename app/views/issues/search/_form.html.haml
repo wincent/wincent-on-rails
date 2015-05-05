@@ -1,22 +1,20 @@
 -# NOTE: this adds a few hundred bytes and a db query to each page load, may consider loading this via Ajax
 %h2.major Search
 %span.annotation all fields are optional
-%form{ 'accept-charset' => 'UTF-8', :action => search_issues_path, :method => :get }
-  %ul
-    %li
-      =label_tag 'issue_product_id', 'Product'
-      %select#issue_product_id(name='issue[product_id]')
-        %option(value='')
-        =option_groups_from_collection_for_select Product.categorized,
-          :last, :first, :id, :name, (@issue.product ? @issue.product.id : nil)
-    %li
-      =label_tag 'issue_kind', 'Kind'
-      =select_tag 'issue[kind]', kind_options_for_select, :include_blank => true
-    %li
-      =label_tag 'issue_status', 'Status'
-      =select_tag 'issue[status]', status_options_for_select, :include_blank => true
-    %li
-      =label_tag 'issue_summary', 'Search for'
-      =text_field_tag 'issue[summary]'
-    %li
-      %input(type='submit' value='Search')
+
+-# use `enforce_utf8: false` to keep ugly utf8 query param out of GET URL
+-# use `honey_pot: false` to keep our anti-spam `website_address` query param out of GET URL
+= form_for @issue, class: '', enforce_utf8: false, honey_pot: false, method: 'get', url: search_issues_path do |f|
+
+  = f.select :product_id,
+    option_groups_from_collection_for_select(Product.categorized, :last, :first, :id, :name, (@issue.product.try(:id))),
+    include_blank: true
+
+  = f.select :kind, underscores_to_spaces(Issue::KIND).sort, include_blank: true
+
+  = f.select :status, underscores_to_spaces(Issue::STATUS).sort, include_blank: true
+
+  = f.text_field :summary, label: 'Search for', required: false
+
+  -# nil name to suppress commit=Search appearing in GET URL
+  = f.submit 'Search', name: nil

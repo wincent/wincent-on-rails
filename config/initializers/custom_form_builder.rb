@@ -12,7 +12,9 @@ ActiveSupport.on_load(:action_view) do
       # append a field: http://stackoverflow.com/a/2112364
       # for catching spam: http://davidwalsh.name/wordpress-comment-spam
       form_for_without_custom(record, options) do |f|
-        concat(text_field_tag('website_address', '', class: 'website-address'))
+        if options[:honey_pot] != false
+          concat(text_field_tag('website_address', '', class: 'website-address'))
+        end
         proc.call(f)
       end
     end
