@@ -10,6 +10,7 @@ class ArticleObserver < ActiveRecord::Observer
     @known_links = nil # not too worried about the thundering herd here
   end
 
+  # Handles both updates of existing records and new record creations.
   def after_save(article)
     @known_links = nil # not too worried about the thundering herd here
   end
