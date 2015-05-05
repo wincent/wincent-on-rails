@@ -3,7 +3,6 @@
   -@page_title = @forum.name
   %h1.major=@page_title
   %h2=@forum.description unless @forum.description.blank?
-  =@paginator.pagination_links if @paginator
   %table.table
     %thead
       %tr

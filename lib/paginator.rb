@@ -28,10 +28,14 @@ class Paginator
     raise ActiveRecord::RecordNotFound if @offset > @count
   end
 
-  # Displaying x-y of z | << First | < Previous | Next > | Last >>
+  # Previous | 1 | 2 | ... | 32 | 33 | 34 | 35 |[36]| Next
+  # Previous |[1]| 2 | 3 | 4 | 5 | ... | 35 | 36 | Next
+  # Previous | 1 | 2 | ... | 14 | 15 |[16]| 17 | 18 | ... | 35 | 36 | Next
+  # Previous | 1 | 2 | ... | 5 | 6 |[7]| 8 | 9 | ... | 35 | 36 | Next
+  # Previous | 1 | 2 | 3 | 4 | 5 |[6]| 7 | 8 | ... | 35 | 36 | Next
   def pagination_links
     # don't bother trying to use safe_concat here; too much hoop-jumping
-    items = [label_text, first_link, prev_link, next_link, last_link]
+    items = [prev_link] + numbered_links + [next_link]
     content_tag :ul, items.join.html_safe, class: 'pagination'
   end
 
@@ -45,6 +49,40 @@ private
   include ActionView::Helpers::TextHelper   # for #safe_concat
   include ActionView::Helpers::UrlHelper    # for #link_to
 
+  def numbered_links
+    page_numbers = (1..last_page_number).to_a
+
+    if @page <= last_page_number - 6
+      # insert ellipsis between @page + 2 and 2-from-the-end
+      page_numbers[(@page + 2)...-2] = nil
+    end
+
+    if @page > 6
+      # insert ellipsis between "2" and @page - 2
+      page_numbers[2...(@page - 3)] = nil
+    end
+
+    page_numbers.map do |number|
+      if number.nil?
+        item('&hellip;'.html_safe, class: 'disabled') # ellipsis
+      elsif number == @page
+        item(number, class: 'current')
+      else
+        item(number, target: "#{@path_or_url}#{params_for_page(number)}")
+      end
+    end
+  end
+
+  def item(text, options)
+    content_tag :li, class: (options[:class] if options.has_key?(:class)) do
+      if options.has_key?(:target)
+        link_to text, options[:target]
+      else
+        content_tag :span, text
+      end
+    end
+  end
+
   def params_for_page page
     params = @additional_params.clone
     params.unshift "page=#{page}" if page > 1
@@ -56,31 +94,12 @@ private
     @offset == 0
   end
 
+  def last_page_number
+    (@count / @limit.to_f).ceil
+  end
+
   def on_last_page?
-    @offset >= @count - @limit
-  end
-
-  def upper_offset
-    upper_limit = @offset + @limit
-    upper_limit > @count ? @count : upper_limit
-  end
-
-  def label_text
-    upper = upper_offset
-    lower = @offset < upper ? @offset + 1 : @offset # @offset is zero-based, so adjust up by 1 if we can
-    label = 'Displaying %s-%s of %s:' % [lower, upper, count].map { |n| number_with_delimiter(n) }
-    content_tag :li, label
-  end
-
-  def first_link
-    content_tag :li, class: ('disabled' if on_first_page?) do
-      link_text, klass = 'First', 'first'
-      if on_first_page?
-        content_tag :span, link_text, class: klass
-      else
-        link_to link_text, "#{@path_or_url}#{params_for_page 1}", class: klass
-      end
-    end
+    @page == last_page_number
   end
 
   # This and method and its counterpart use rel="prev"/rel="next" as advised by
@@ -108,18 +127,6 @@ private
       else
         link_to link_text, "#{@path_or_url}#{params_for_page(@page + 1)}",
           rel: 'next',
-          class: klass
-      end
-    end
-  end
-
-  def last_link
-    content_tag :li, class: ('disabled' if on_last_page?) do
-      link_text, klass = 'Last', 'last'
-      if on_last_page?
-        content_tag :span, link_text, class: klass
-      else
-        link_to link_text, "#{@path_or_url}#{params_for_page (@count / @limit.to_f).ceil}",
           class: klass
       end
     end

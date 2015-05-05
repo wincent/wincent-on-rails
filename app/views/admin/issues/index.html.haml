@@ -1,7 +1,6 @@
 -@page_title = 'Issue moderation'
 =breadcrumbs link_to('Dashboard', admin_dashboard_path), @page_title
 %h1.major=@page_title
-=@paginator.pagination_links if @paginator
 -for issue in @issues
   %div[issue]
     %h2

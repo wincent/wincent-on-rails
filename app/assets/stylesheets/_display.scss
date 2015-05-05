@@ -400,59 +400,80 @@ div.column {
 
 // pagination
 
-ul.pagination {
+.pagination {
+  @include user-select(none);
   font-size: .75em;
   list-style-type: none;
   margin: 0;
   padding: 0;
-  text-align: right;
+  text-align: center;
 
-  li {
-    display: inline-block;
-    padding: 0 5px;
-
-    &:first-child {
-      display: none; // hide meta data on small screens
-      padding: 0;
-
-      @include respond-to(small-tablet) {
-        display: inline-block;
-      }
-    }
-
-    &:last-child {
-      padding-right: 0;
-    }
-  }
-
-  .first:before {
-    @include icon($fa-var-fast-backward);
-  }
-
-  .last:after {
-    @include icon($fa-var-fast-forward);
-  }
-
-  .prev:before {
-    @include fa-icon-flip(-1, 1, 0);
-    @include icon($fa-var-play);
-  }
-
-  .next:after {
-    @include icon($fa-var-play);
-  }
-
-  .first:before,
-  .last:after,
-  .prev:before,
-  .next:after {
-    display: inline-block;
-    margin: 0 2px;
+  a {
     text-decoration: none;
   }
 
+  li:first-child {
+    border-radius: 5px 0 0 5px;
+    margin-left: 0;
+  }
+
+  li:last-child {
+    border-radius: 0 5px 5px 0;
+  }
+
+  li {
+    border: 1px solid $border-color;
+    display: inline-block;
+
+    // want border on four sides of each link (for better highlighting) so need
+    // negative margin to avoid having two 1px borders sitting next to each
+    // other creating the appearance of an ugly 2px border
+    margin-left: -1px;
+    padding: 0;
+
+    &:focus,
+    &:hover {
+      background-color: #e7e7e7;
+      border-color: #e5e5e5;
+    }
+
+    > a,
+    > span {
+      color: $button-color;
+      padding: 5px 10px;
+    }
+  }
+
+  .current {
+    background-color: $button-color;
+    border-color: $button-color;
+    cursor: pointer;
+
+    &:focus,
+    &:hover {
+      background-color: $button-color; // override li:{focus,hover}
+      border-color: $button-color; // override li:{focus,hover}
+    }
+
+    span {
+      color: #fff; // override li > span
+    }
+  }
+
   .disabled {
-    color: gray;
+    background-color: #fafafa;
+    cursor: default;
+
+    a,
+    span {
+      color: #d3d3d3; // override li > {a,span}
+    }
+
+    &:focus,
+    &:hover {
+      background-color: #fafafa; // override li:{focus,hover}
+      border-color: $border-color; // override li:{focus,hover}
+    }
   }
 }
 
@@ -509,6 +530,10 @@ ul.pagination {
 
     &:nth-child(odd) {
       background: #f9f9f9;
+    }
+
+    &:last-child {
+      border-bottom: 0;
     }
   }
 }
@@ -651,7 +676,7 @@ a.tags-link {
 
 @mixin button {
   @include border-radius(5px);
-  background: #007d9a;
+  background: $button-color;
   border-bottom: 1px solid rgba(0, 0, 0, .25);
   border: 0;
   box-sizing: border-box;
