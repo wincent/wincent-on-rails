@@ -91,6 +91,8 @@ module ActiveRecord
           # @pending_tags nil means "no change", "" means "destroy all"
           return if @pending_tags.nil?
           current = tag_names
+
+          # TODO: make this order-insensitive
           return if @pending_tags == current.join(' ') # nothing to do
           pending = parse_tag_list @pending_tags.split
           (pending - current).each { |t| tag t }
