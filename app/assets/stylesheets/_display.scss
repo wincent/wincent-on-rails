@@ -347,8 +347,6 @@ div.column {
 
 // flashes
 
-#error,
-#notice,
 .error,
 .notice {
   @include border-radius(3px);
@@ -369,7 +367,6 @@ div.column {
   }
 }
 
-#error,
 .error {
   background: #f2dede;
   border: 1px solid #ebccd1;
@@ -380,7 +377,6 @@ div.column {
   }
 }
 
-#notice,
 .notice {
   background: #dff0d8;
   border: 1px solid #d6e9c6;
