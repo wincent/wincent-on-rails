@@ -183,8 +183,10 @@ textarea {
 }
 
 code, tt {
-  color: #660000;
-  padding: 0 .1em;
+  background: #fafafa;
+  border: 1px dashed #f0f0f0;
+  color: #fdf6e3;
+  padding: 4px .25em;
 }
 
 blockquote {
