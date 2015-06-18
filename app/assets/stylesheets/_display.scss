@@ -82,6 +82,13 @@ p, li {
   color: #666;
 }
 
+// We sometimes need to wrap link bodies inside "p" tags in order to work around
+// bugs in -webkit-line-clamp, so make sure we don't override link styling.
+p.clamp-wrapper {
+  color: inherit;
+  margin: inherit;
+}
+
 li {
   list-style: disc;
   margin-top: .5em;
@@ -473,6 +480,14 @@ div.column {
       border-color: $border-color; // override li:{focus,hover}
     }
   }
+}
+
+.clamp {
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  display: -webkit-box;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 // tables - apply this class to opt-in to this generic table styling
