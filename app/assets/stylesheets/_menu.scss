@@ -46,7 +46,7 @@ $padding:           10px;
   color: #ccc;
   display: inline-block;
   float: left;
-  font-size: $navbar-height;
+  font-size: $navbar-height - 6px;
   height: $navbar-height;
   line-height: $navbar-height;
   margin: 0;
