@@ -48,7 +48,7 @@ $padding:           10px;
   float: left;
   font-size: $navbar-height;
   height: $navbar-height;
-  line-height: $navbar-height - 8px;
+  line-height: $navbar-height;
   margin: 0;
   text-align: center;
   width: $navbar-height;
@@ -200,6 +200,7 @@ nav.global {
 
 .navbar-links {
   @include adjust-font-size-to($small);
+  -webkit-padding-start: 0;
   display: none;
   margin: 0;
 

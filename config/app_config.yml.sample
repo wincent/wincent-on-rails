@@ -7,7 +7,6 @@ shortlink:
   protocol: http
 admin_email: greg@hurrell.net
 admin_name: Greg Hurrell
-google_web_fonts: https://fonts.googleapis.com/css?family=Inconsolata:400,700|Open+Sans:400italic,700italic,400,700|Yanone+Kaffeesatz:400,700
 support_email: support@wincent.com
 support_password: supersecret
 session_key: _wincent_on_rails_session

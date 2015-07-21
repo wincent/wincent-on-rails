@@ -27,6 +27,7 @@ $visible_autocomplete_entries: 10;
   li {
     @include user-select(none);
     border-bottom: 1px solid #efefef;
+    margin-top: 0; // override top-level .5em
     padding: 5px;
 
     &:last-child {
