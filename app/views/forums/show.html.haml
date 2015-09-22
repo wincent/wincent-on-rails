@@ -25,6 +25,5 @@
                   forum_topic_path(@forum, topic) + "\#comment_#{topic.last_comment_id}"
               -else
                 =link_to raw('view &raquo;'), forum_topic_path(@forum, topic)
-  =@paginator.pagination_links if @paginator
 .links
   =link_to 'all forums', forums_path
