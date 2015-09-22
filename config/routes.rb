@@ -147,7 +147,7 @@ Wincent::Application.routes.draw do
   get 'login'           => 'sessions#new'
   get 'logout'          => 'sessions#destroy'
   get 'misc/:action'    => 'misc'
-  get 'search'          => 'search#search'
+  get 'search', to: redirect('https://www.google.com/#q=site:wincent.com')
   get 'support', to: redirect('/issues')
 
   root :to => 'posts#index'
