@@ -28,11 +28,6 @@ describe 'issues/search/create' do
     expect(rendered).to have_link('open a ticket', href: new_issue_path)
   end
 
-  it 'has a "support overview" link' do
-    render
-    expect(rendered).to have_link('support overview', href: support_path)
-  end
-
   it 'renders the search form partial' do
     mock(view).render 'issues/search/form'
     render
