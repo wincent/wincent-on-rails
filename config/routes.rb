@@ -148,7 +148,7 @@ Wincent::Application.routes.draw do
   get 'logout'          => 'sessions#destroy'
   get 'misc/:action'    => 'misc'
   get 'search'          => 'search#search'
-  get 'support'         => 'issues#index'
+  get 'support', to: redirect('/issues')
 
   root :to => 'posts#index'
 end
