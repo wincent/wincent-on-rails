@@ -48,7 +48,7 @@
             %li{ class: navbar_selected?('blog') }= link_to 'Blog', posts_path
             %li{ class: navbar_selected?('wiki') }= link_to 'Wiki', articles_path
             %li{ class: navbar_selected?('forums') }= link_to 'Forums', forums_path
-            %li{ class: navbar_selected?('support') }= link_to 'Support', support_path
+            %li{ class: navbar_selected?('issues') }= link_to 'Issues', issues_path
             %li{ class: navbar_selected?('search') }
               = link_to 'Search', search_path, id: 'search-link'
               %form(id='search' accept-charset='UTF-8' action=search_path method='get')
@@ -90,7 +90,7 @@
               %li= link_to 'Blog', posts_path
               %li= link_to 'Wiki', articles_path
               %li= link_to 'Forums', forums_path
-              %li= link_to 'Support', support_path
+              %li= link_to 'Issues', issues_path
               %li= link_to 'Snippets', snippets_path
           %section
             %h2 Products
