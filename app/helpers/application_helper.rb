@@ -40,8 +40,8 @@ module ApplicationHelper
       false
     when ForumsController
       item == 'forums'
-    when IssuesController, SupportController
-      item == 'support'
+    when IssuesController
+      item == 'issues'
     when ProductsController
       item == 'products'
     when SearchController
