@@ -16,19 +16,6 @@ describe TopicsController do
     # as #new is not implemented, this gets routed to #show
     specify { expect(get: '/topics/new').to route_to('topics#show', id: 'new') }
 
-    describe 'comments' do
-      # only #new, #create and #update are implemented while nested
-      specify { expect(get: '/topics/123/comments/new').to route_to('comments#new', topic_id: '123') }
-      specify { expect(post: '/topics/123/comments').to route_to('comments#create', topic_id: '123') }
-      specify { expect(put: '/topics/123/comments/456').to route_to('comments#update', topic_id: '123', id: '456') }
-
-      # all other RESTful actions are no-ops
-      specify { expect(get: '/topics/123/comments').to_not be_routable }
-      specify { expect(get: '/topics/123/comments/456').to_not be_routable }
-      specify { expect(get: '/topics/123/comments/456/edit').to_not be_routable }
-      specify { expect(delete: '/topics/123/comments/456').to_not be_routable }
-    end
-
     describe 'helpers' do
       let(:topic) { Topic.stub }
 
@@ -42,10 +29,6 @@ describe TopicsController do
 
       describe 'topic_comments_path' do
         specify { expect(topic_comments_path(topic)).to eq("/topics/#{topic.id}/comments") }
-      end
-
-      describe 'new_topic_comment_path' do
-        specify { expect(new_topic_comment_path(topic)).to eq("/topics/#{topic.id}/comments/new") }
       end
     end
   end

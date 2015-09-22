@@ -6,8 +6,6 @@
       %th Forum
       %th Topics
       %th Last active
-      -if admin?
-        %th Actions
   -unless @forums.empty?
     %tbody
       - @forums.each do |forum|
@@ -22,9 +20,3 @@
           %td
             =timeinfo_for_forum forum
             =link_to_topic_for_forum forum
-          -if admin?
-            %td
-              =link_to 'edit', edit_forum_path(forum)
--if admin?
-  .links
-    =link_to 'new forum', new_forum_path

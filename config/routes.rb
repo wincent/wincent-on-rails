@@ -17,8 +17,8 @@ Wincent::Application.routes.draw do
   resources :comments, except: %i[create new update]
   resources :confirmations, path: 'confirm'
 
-  resources :forums do
-    resources :topics, except: :index
+  resources :forums, only: %i[index show] do
+    resources :topics, only: %[show]
   end
 
   resources :issues do
@@ -114,13 +114,7 @@ Wincent::Application.routes.draw do
 
   # use some shallow routes for convenience and to avoid some N+1 select
   # problems
-  resources :topics, only: %i[destroy index show] do
-    # and we nest this one here rather than under forums -> topics
-    # to simplify form URL generation (ie. we can just call
-    #   form_for [@comment.commentable, @comment]
-    # everywhere
-    resources :comments, only: %i[create new update]
-  end
+  resources :topics, only: %i[show]
 
   resources :tweets, only: %i[index show], path: 'twitter'
 
@@ -133,7 +127,6 @@ Wincent::Application.routes.draw do
   # looks different for admin users so we provide a separate admin interface
   # for some resources
   namespace :admin do
-    resources :forums, only: %i[index show update]
     resources :issues
     resources :posts
     resources :tags

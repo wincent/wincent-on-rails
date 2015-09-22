@@ -10,7 +10,7 @@ module ForumsHelper
   def link_to_topic_for_forum forum
     return if forum.last_topic_id.nil?
     link_to 'view &raquo;'.html_safe,
-      "#{forum_topics_path forum}/#{forum.last_topic_id}"
+      "#{forum_path forum}/topics/#{forum.last_topic_id}"
   end
 
   def timeinfo_for_forum forum

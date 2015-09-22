@@ -27,6 +27,4 @@
                 =link_to raw('view &raquo;'), forum_topic_path(@forum, topic)
   =@paginator.pagination_links if @paginator
 .links
-  =link_to 'new topic', new_forum_topic_path(@forum)
   =link_to 'all forums', forums_path
-  =link_to 'new forum', new_forum_path if admin?

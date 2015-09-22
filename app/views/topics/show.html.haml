@@ -12,18 +12,10 @@
         = link_to_user @topic.user
         %span.when
           = link_to timeinfo(@topic, updated_string: false), forum_topic_path(@forum, @topic)
-        - if admin?
-          = link_to 'edit', edit_forum_topic_path(@forum, @topic), class: 'edit'
       %blockquote= @topic.body.w(base_heading_level: 1)
     = render @comments, locals: { base_heading_level: 1 }
 %h2.major Reply
-- if @topic.accepts_comments
-  -# BUG: redundant queries when form rendered:
-  -# SELECT `topics`.* FROM `topics` WHERE (`topics`.`id` = 1) LIMIT 1
-  -# SELECT `forums`.* FROM `forums` WHERE (`forums`.`id` = 1) LIMIT 1
-  = render 'comments/form'
-- else
-  %p This topic is now closed.
+%p This topic is now closed.
 .links
   = link_to 'topic index', forum_path(@forum)
   - if admin?
