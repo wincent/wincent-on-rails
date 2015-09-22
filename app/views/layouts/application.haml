@@ -49,10 +49,6 @@
             %li{ class: navbar_selected?('wiki') }= link_to 'Wiki', articles_path
             %li{ class: navbar_selected?('forums') }= link_to 'Forums', forums_path
             %li{ class: navbar_selected?('issues') }= link_to 'Issues', issues_path
-            %li{ class: navbar_selected?('search') }
-              = link_to 'Search', search_path, id: 'search-link'
-              %form(id='search' accept-charset='UTF-8' action=search_path method='get')
-                = text_field_tag :q, params[:q], size: 20, id: :search_box, style: 'display:none;'
           #login-logout
             = link_to 'log in', login_path, id: 'login'
             = link_to 'log out', logout_path, id: 'logout'
@@ -81,9 +77,6 @@
             %li= link_to 'legal', '/misc/legal'
       .menu.hide
         .menu-inner
-          %section.search
-            %form(accept-charset='UTF-8' action=search_path method='get')
-              = text_field_tag :q, params[:q],  placeholder: 'Search'
           %section
             %h2 Menu
             %ul

@@ -81,9 +81,8 @@ private
     <<-NOTICE
       This article is over 1 year old <em>(to check for a more recent resource
       see the <a href="#{articles_path}">wiki</a> index, the
-      <a href="#{tags_path}">tag cloud</a>, the
-      <a href="#{search_tags_path}">tag search</a>,
-      or the <a href="#{search_path}">search</a> page)</em>
+      <a href="#{tags_path}">tag cloud</a>, or the
+      <a href="#{search_tags_path}">tag search</a> page)</em>
     NOTICE
   end
 

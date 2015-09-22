@@ -44,8 +44,6 @@ module ApplicationHelper
       item == 'issues'
     when ProductsController
       item == 'products'
-    when SearchController
-      item == 'search'
     when TopicsController
       item == 'forums'
     when PostsController

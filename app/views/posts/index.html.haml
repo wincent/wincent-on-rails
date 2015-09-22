@@ -23,5 +23,4 @@
               post_path(post, anchor: 'comments'), class: 'comments-link'
         = link_to icon('tags'), tags_path, class: 'tags-link'
         = tag_links(post)
-  -# TODO: add search box here
   =@paginator.pagination_links if @paginator

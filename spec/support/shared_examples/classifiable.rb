@@ -19,12 +19,4 @@ shared_examples_for '#moderate_as_ham!' do
     model.moderate_as_ham!
     expect(model.class.find(model.id).updated_at.to_s).to eq(model.updated_at.to_s)
   end
-
-  it 'updates the full-text search index if appropriate' do
-    count = Needle.where(:model_class => model.class.to_s,
-                         :model_id    => model.id).count
-    expect(count).to eq(0)
-    mock(model).update_needles if model.class.private_method_defined?(:update_needles)
-    model.moderate_as_ham!
-  end
 end

@@ -24,7 +24,6 @@ class Post < ActiveRecord::Base
   scope :page,      -> { limit(PAGE_SIZE) }
 
   acts_as_taggable
-  acts_as_searchable      attributes: %i[title excerpt body]
 
   def suggested_permalink
     # iconv can't be trusted to behave the same across platforms, so don't use

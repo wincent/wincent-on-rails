@@ -457,21 +457,8 @@ $('.lightbox').each(function() {
     return this;
   };
 
-  var setUpSearchLink = function() {
-    $('#search-link').on('click', function(evt) {
-      evt.preventDefault();
-      var $searchBox = $('#search_box');
-      if ($searchBox.is(':visible')) {
-        $searchBox.hide();
-      } else if ($searchBox.length) {
-        $searchBox.show().trigger('focus');
-      }
-    });
-  }
-
   // ready
   setUpLoginLogoutLinks();
-  setUpSearchLink();
 
   $('body')
     .syntaxHighlight()

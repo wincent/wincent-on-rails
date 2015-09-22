@@ -23,7 +23,6 @@ class Issue < ActiveRecord::Base
 
   acts_as_classifiable
   acts_as_taggable
-  acts_as_searchable      attributes: [:summary, :description]
 
   # Takes un untrusted hash of search parameters and constructs an
   # ActiveRelation query. The calling controller should pass in the appropriate

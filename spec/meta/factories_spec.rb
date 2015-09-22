@@ -12,7 +12,6 @@ describe 'Factories' do
     Link
     Message
     Monitorship
-    Needle
     Page
     Post
     Product

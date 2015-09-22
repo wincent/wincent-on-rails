@@ -18,7 +18,6 @@ class Page < ActiveRecord::Base
                           :in => MARKUP_TYPES.values,
                           :message => 'not a valid markup type'
   attr_accessible         :title, :permalink, :body, :markup_type, :front
-  # TODO: acts_as_searchable :attributes => [:body, :title] (will require HTML tokenization)
 
   def to_param
     (changes['permalink'] && changes['permalink'].first) || permalink

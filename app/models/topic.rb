@@ -15,7 +15,6 @@ class Topic < ActiveRecord::Base
   attr_accessible       :title, :body, :public, :pending_tags, :accepts_comments
   before_create         :set_last_comment_info
   acts_as_classifiable
-  acts_as_searchable    attributes: [:title, :body]
   acts_as_taggable
   set_callback          :create, :after, :send_new_topic_alert
 

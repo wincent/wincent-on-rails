@@ -13,7 +13,6 @@ class Product < ActiveRecord::Base
   attr_accessible         :category, :name, :permalink, :position,
     :bundle_identifier, :description, :footer, :header,
     :hide_from_front_page
-  # TODO: acts_as_searchable :attributes => [:footer, :header] (will require HTML tokenization)
 
   # Returns ordered hash of all products organized by categories
   def self.categorized

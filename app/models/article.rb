@@ -27,7 +27,6 @@ class Article < ActiveRecord::Base
   validates_length_of     :body, maximum: 128 * 1024, allow_blank: true
   validate                :check_redirect_and_body
   attr_accessible         :title, :redirect, :body, :public, :accepts_comments, :pending_tags
-  acts_as_searchable      attributes: %i[title body]
   acts_as_taggable
   # TODO: acts_as_versioned attributes: %i[title redirect body]
 
