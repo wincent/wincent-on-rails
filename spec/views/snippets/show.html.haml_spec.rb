@@ -70,5 +70,10 @@ describe 'snippets/show.html.haml' do
       render
       expect(rendered).not_to have_css('#comment-form')
     end
+
+    it 'provides a link to the forums' do
+      render
+      expect(rendered).to have_link('forums', href: '/forums')
+    end
   end
 end

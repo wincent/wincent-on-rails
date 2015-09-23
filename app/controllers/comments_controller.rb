@@ -118,6 +118,8 @@ private
       @parent = Post.find_by_permalink! parent
     elsif parent = params[:snippet_id]
       @parent = Snippet.find parent
+    elsif parent = params[:topic_id]
+      @parent = Topic.find parent
     end
 
     if !@parent.accepts_comments
@@ -141,12 +143,13 @@ private
   # URL to the comment nested in the context of its parent (resources), including an anchor.
   # NOTE: this method is dog slow if called in an "N + 1 SELECT" situation
   def nested_comment_path comment
-    # Article, Issue, Post, Snippet
     commentable = comment.commentable
     anchor      = "comment_#{comment.id}"
-    polymorphic_path commentable, :anchor => anchor
-  rescue NameError
-    # Probably a deleted class, like Topic.
-    raise ActiveRecord::RecordNotFound
+    case commentable
+    when Topic
+      forum_topic_path commentable.forum, commentable, :anchor => anchor
+    else # Article, Issue, Post, Snippet
+      polymorphic_path commentable, :anchor => anchor
+    end
   end
 end

@@ -3,8 +3,8 @@ module CommentsHelper
     button_to_moderate_model_as_ham comment, polymorphic_path([comment.commentable, comment])
   end
 
-  # Return an appropriate class for commentish (eg. a comment instance), based
-  # on whether it belongs to a superuser or is private.
+  # Return an appropriate class for commentish (a comment or topic
+  # instance), based on whether it belongs to a superuser or is private.
   def comment_class(commentish)
     'comment'.tap do |css_class|
       css_class << ' admin' if commentish.user.try(:superuser?)

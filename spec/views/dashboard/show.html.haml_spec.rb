@@ -3,6 +3,7 @@ require 'spec_helper'
 describe 'dashboard/show' do
   before do
     @issues = []
+    @topics = []
     @comments = []
   end
 

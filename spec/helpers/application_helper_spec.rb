@@ -189,6 +189,12 @@ describe ApplicationHelper do
       end
     end
 
+    it 'works with topics' do
+      topic = Topic.make!
+      link = link_to(topic.title, topic_path(topic))
+      expect(link_to_model(topic)).to eq(link)
+    end
+
     # was a bug
     it 'escapes HTML special characters (such as in issue summaries)' do
       issue = Issue.make! summary: '<em>foo</em>'

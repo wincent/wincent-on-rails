@@ -110,9 +110,17 @@ shared_examples_for 'commentable' do
   # TODO: also check that last_commenter field is correctly updated
 end
 
-# ie. issues
+# ie. issues, forum topics
 shared_examples_for 'commentable (updating timestamps for comment changes)' do
   include SharedCommentableExampleHelpers
+
+  # BUG: topic and issue work differently, can't use the same spec for both
+  # this is probably codesmell, the fact that I have to write different tests
+  # once again i'm thinking about whether topic should have no "body" element and just a "comment" object attached from the start
+  #it 'has a nil timestamp when there are no comments' do
+  #  commentable.comments.should be_empty
+  #  commentable.last_commented_at.to_s.should == commentable.updated_at.to_s
+  #end
 
   context 'a comment is added and not held for moderation (ie. an admin comment)' do
     it 'uses the comment timestamp to update the commentable timestamp' do

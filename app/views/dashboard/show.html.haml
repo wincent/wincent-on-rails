@@ -17,6 +17,22 @@
           %td=link_to "#{issue.kind_string} \##{issue.id}", issue_path(issue)
           %td=truncate issue.summary, :length => 60
           %td=timeinfo issue
+%h2.major My recent forum topics
+-if @topics.empty?
+  %p None.
+-else
+  %table.table
+    %thead
+      %tr
+        %th Forum
+        %th Topic
+        %th When
+    %tbody
+      - @topics.each do |topic|
+        %tr.topic(id="topic_#{topic.id}")
+          %td=link_to topic.forum.name, forum_path(topic.forum)
+          %td=link_to topic.title, forum_topic_path(topic.forum, topic)
+          %td=timeinfo topic
 %h2.major My recent comments
 -if @comments.empty?
   %p None.

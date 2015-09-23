@@ -38,10 +38,14 @@ module ApplicationHelper
       item == 'wiki'
     when CommentsController
       false
+    when ForumsController
+      item == 'forums'
     when IssuesController
       item == 'issues'
     when ProductsController
       item == 'products'
+    when TopicsController
+      item == 'forums'
     when PostsController
       item == 'blog'
     else
@@ -119,7 +123,12 @@ module ApplicationHelper
     pluralizing_count number, 'item'
   end
 
-  # used in user#show etc
+  # declared here because used by both Forums and Topics controllers
+  def topic_count number
+    pluralizing_count number, 'topic'
+  end
+
+  # used in user#show, topic#show etc
   def comment_count number
     pluralizing_count number, 'comment'
   end
@@ -193,7 +202,7 @@ module ApplicationHelper
   end
 
   # Use whenever an item might be posted by an anonymous (nil) user;
-  # comments, issues and so forth.
+  # comments, topics, issues and so forth.
   def link_to_user(user)
     user ? link_to(user, user) : 'anonymous'
   end
@@ -207,7 +216,7 @@ module ApplicationHelper
     when NilClass
       # could get here for an orphaned comment (shouldn't happen)
       'deleted record'
-    else # Article, Post
+    else # Article, Post, Topic
       link_to model.title, model
     end
   end

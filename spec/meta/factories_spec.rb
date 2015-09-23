@@ -7,6 +7,7 @@ describe 'Factories' do
     Comment
     Confirmation
     Email
+    Forum
     Issue
     Link
     Message
@@ -19,6 +20,7 @@ describe 'Factories' do
     Snippet
     Tag
     Tagging
+    Topic
     User
     Word
   ].map(&:constantize).each do |model_class|

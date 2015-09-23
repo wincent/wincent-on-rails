@@ -6,6 +6,7 @@ class User < ActiveRecord::Base
   has_many                  :emails, dependent: :destroy
   has_many                  :issues
   has_many                  :monitorships, dependent: :destroy
+  has_many                  :topics
 
   attr_reader               :passphrase
   attr_accessor             :passphrase_confirmation, :old_passphrase, :email, :resetting_passphrase
@@ -89,7 +90,7 @@ class User < ActiveRecord::Base
 
   def utterances_count
     # later on this will also include issues_count
-    comments_count
+    comments_count + topics_count
   end
 
   def self.find_with_param! param

@@ -155,7 +155,7 @@ describe Article, 'validating the redirect' do
   end
 
   it 'should accept relative URLs' do
-    expect(Article.make(redirect: '/blog')).not_to fail_validation_for(:redirect)
+    expect(Article.make(redirect: '/forums')).not_to fail_validation_for(:redirect)
   end
 
   it 'should accept a [[wikitext]] title' do
@@ -165,14 +165,14 @@ describe Article, 'validating the redirect' do
   it 'should ignore leading whitespace' do
     expect(Article.make(redirect: '   http://example.com')).not_to fail_validation_for(:redirect)
     expect(Article.make(redirect: '   https://example.com')).not_to fail_validation_for(:redirect)
-    expect(Article.make(redirect: '   /blog')).not_to fail_validation_for(:redirect)
+    expect(Article.make(redirect: '   /forums')).not_to fail_validation_for(:redirect)
     expect(Article.make(redirect: '   [[foo bar]]')).not_to fail_validation_for(:redirect)
   end
 
   it 'should ignore trailing whitespace' do
     expect(Article.make(redirect: 'http://example.com   ')).not_to fail_validation_for(:redirect)
     expect(Article.make(redirect: 'https://example.com   ')).not_to fail_validation_for(:redirect)
-    expect(Article.make(redirect: '/blog   ')).not_to fail_validation_for(:redirect)
+    expect(Article.make(redirect: '/forums   ')).not_to fail_validation_for(:redirect)
     expect(Article.make(redirect: '[[foo bar]]   ')).not_to fail_validation_for(:redirect)
   end
 
