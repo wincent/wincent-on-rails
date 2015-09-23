@@ -28,7 +28,6 @@
               html: { data: { name: 'forum[description]', editable: true } } do |f|
               = forum.description
           %td.links
-            = link_to 'edit', edit_forum_path(forum.id)
             = link_to 'view', forum_path(forum.id)
 %p.links
   =link_to 'new', new_forum_path

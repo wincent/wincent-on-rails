@@ -65,17 +65,6 @@ feature 'validation errors combined with permalink modifications' do
     expect(page).to have_content('valid@example.com')
   end
 
-  scenario 'editing a forum', :js do
-    visit edit_forum_path(Forum.make!)
-    fill_in 'Permalink', :with => '_' # invalid!
-    click_button 'Update Forum'
-    expect(page).to have_content('Permalink must contain')
-
-    fill_in 'Permalink', :with => 'foo'
-    click_button 'Update Forum'
-    expect(page).to have_content('Successfully updated')
-  end
-
   scenario 'editing a page', :js do
     product = Product.make!
     visit edit_product_page_path(product, Page.make!(:product => product))

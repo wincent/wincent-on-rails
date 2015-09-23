@@ -18,5 +18,3 @@
 %p This topic is now closed.
 .links
   = link_to 'topic index', forum_path(@forum)
-  - if admin?
-    = link_to 'edit topic', edit_forum_topic_path(@forum, @topic)
