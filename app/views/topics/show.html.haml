@@ -2,6 +2,8 @@
   link_to(@forum.name, forum_path(@forum)),
   @topic.title
 - @page_title = @topic.title
+- content_for(:title) do
+  = @page_title
 %h1.major= @page_title
 %div[@topic]
   %ol#comments.boxed

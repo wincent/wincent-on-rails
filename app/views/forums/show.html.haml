@@ -1,6 +1,7 @@
 =breadcrumbs link_to('Forums', forums_path), @forum.name
+- content_for(:title) do
+  = @page_title = @forum.name
 #forum
-  -@page_title = @forum.name
   %h1.major=@page_title
   %h2=@forum.description unless @forum.description.blank?
   %table.table
