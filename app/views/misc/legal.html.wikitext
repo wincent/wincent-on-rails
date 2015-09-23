@@ -20,7 +20,6 @@ users, such as:
 
 * tickets submitted by users to the [/issues issue tracker]
 * user comments on [/blog blog posts], [/wiki wiki articles] or [/issues tickets]
-* [/forums forum topics] and replies posted by users
 
 == Third-parties ==
 
