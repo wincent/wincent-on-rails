@@ -145,5 +145,8 @@ private
     commentable = comment.commentable
     anchor      = "comment_#{comment.id}"
     polymorphic_path commentable, :anchor => anchor
+  rescue NameError
+    # Probably a deleted class, like Topic.
+    raise ActiveRecord::RecordNotFound
   end
 end
