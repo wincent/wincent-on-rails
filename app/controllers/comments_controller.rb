@@ -141,11 +141,9 @@ private
   # URL to the comment nested in the context of its parent (resources), including an anchor.
   # NOTE: this method is dog slow if called in an "N + 1 SELECT" situation
   def nested_comment_path comment
+    # Article, Issue, Post, Snippet
     commentable = comment.commentable
     anchor      = "comment_#{comment.id}"
-    case commentable
-    else # Article, Issue, Post, Snippet
-      polymorphic_path commentable, :anchor => anchor
-    end
+    polymorphic_path commentable, :anchor => anchor
   end
 end
