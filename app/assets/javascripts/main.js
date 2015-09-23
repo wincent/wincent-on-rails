@@ -13,7 +13,6 @@ var Wincent = {
   Posts: require('./Posts'),
   Snippets: require('./Snippets'),
   Spinner: require('./Spinner'),
-  Topics: require('./Topics')
 };
 
 Wincent.Ajax.init();
