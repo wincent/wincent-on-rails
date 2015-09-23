@@ -17,10 +17,6 @@ Wincent::Application.routes.draw do
   resources :comments, except: %i[create new update]
   resources :confirmations, path: 'confirm'
 
-  resources :forums, only: %i[index show] do
-    resources :topics, only: %[show]
-  end
-
   resources :issues do
     resources :comments, only: %i[create new update]
     collection do
@@ -111,10 +107,6 @@ Wincent::Application.routes.draw do
       get :search
     end
   end
-
-  # use some shallow routes for convenience and to avoid some N+1 select
-  # problems
-  resources :topics, only: %i[show]
 
   resources :tweets, only: %i[index show], path: 'twitter'
 

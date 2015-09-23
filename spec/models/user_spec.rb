@@ -248,12 +248,6 @@ describe User do
     end
   end
 
-  describe '#topics_count' do
-    it 'defaults to 0' do
-      expect(User.new.topics_count).to eq(0)
-    end
-  end
-
   describe '#to_param' do
     context 'new record' do
       it 'returns nil' do

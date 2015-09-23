@@ -118,8 +118,6 @@ private
       @parent = Post.find_by_permalink! parent
     elsif parent = params[:snippet_id]
       @parent = Snippet.find parent
-    elsif parent = params[:topic_id]
-      @parent = Topic.find parent
     end
 
     if !@parent.accepts_comments
@@ -146,8 +144,6 @@ private
     commentable = comment.commentable
     anchor      = "comment_#{comment.id}"
     case commentable
-    when Topic
-      forum_topic_path commentable.forum, commentable, :anchor => anchor
     else # Article, Issue, Post, Snippet
       polymorphic_path commentable, :anchor => anchor
     end

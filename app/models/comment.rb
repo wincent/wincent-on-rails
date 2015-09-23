@@ -28,9 +28,8 @@ protected
   # method commentable classes can control whether their timestamps get
   # updated whenever new comments are created or destroyed.
   #
-  # For example, an Issue or a (forum) Topic should be considered
-  # "updated" whenever a new comment is added, but a Post or Article
-  # should not.
+  # For example, an Issue or should be considered "updated" whenever a new
+  # comment is added, but a Post or Article should not.
   def update_timestamps_for_changes?
     klass = commentable.class
     if klass.respond_to? :update_timestamps_for_comment_changes?

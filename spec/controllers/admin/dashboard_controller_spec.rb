@@ -24,12 +24,6 @@ describe Admin::DashboardController do
       expect(assigns[:issue_count]).to eq(200)
     end
 
-    it 'gets the count of topics awaiting moderation' do
-      mock(Topic).where(conditions).mock!.count { 300 }
-      get :show
-      expect(assigns[:topic_count]).to eq(300)
-    end
-
     it 'renders the show template' do
       get :show
       expect(response).to render_template('show')

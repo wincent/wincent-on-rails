@@ -25,8 +25,7 @@
       .links=link_to 'add a comment', new_post_comment_path(@post)
   -else
     %p
-      Comments are now closed for this post. You can discuss it further in
-      the #{link_to 'forums', forums_path}.
+      Comments are now closed for this post.
 -content_for :javascript do
   :javascript
     Wincent.Ajax.commentForm('#{new_post_comment_path @post}');
