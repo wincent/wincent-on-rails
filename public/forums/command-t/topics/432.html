@@ -3,6 +3,7 @@
 <head>
 <meta content='text/html;charset=UTF-8' http-equiv='Content-Type'>
 <title>
+Mappings clash with vim-surround
 
 &middot; wincent.com
 </title>
@@ -45,7 +46,7 @@
 <li class='comment' id='comment_6274'>
 <cite>
 <a href="/users/guns">guns</a>
-<span class='when'><a href="/comments/6274"><time data-relative="true">2010-09-13T11:09:00Z</time></a></span>
+<span class='when'><a href="#comment_6274"><time data-relative="true">2010-09-13T11:09:00Z</time></a></span>
 </cite>
 <blockquote><p>I guess I should have read the link called <code>wikitext markup</code> before I posted... the inconsistent coloring above is from quoting with backtick-singlequote.</p>
 </blockquote>
@@ -53,7 +54,7 @@
 <li class='comment admin' id='comment_6275'>
 <cite>
 <a href="/users/greg-hurrell">Greg Hurrell</a>
-<span class='when'><a href="/comments/6275"><time data-relative="true">2010-09-13T11:36:23Z</time></a></span>
+<span class='when'><a href="#comment_6275"><time data-relative="true">2010-09-13T11:36:23Z</time></a></span>
 </cite>
 <blockquote><p>(Edited your post to fix your markup.)</p>
 <p>I'm a vim-surround user too and haven't seen what you describe, so it must be something local to your set-up. I just tried to reproduce it and typing &quot;css&quot; at the Command-T prompt just searches for &quot;css&quot;.</p>
@@ -64,7 +65,7 @@
 <li class='comment' id='comment_6276'>
 <cite>
 <a href="/users/guns">guns</a>
-<span class='when'><a href="/comments/6276"><time data-relative="true">2010-09-13T17:15:57Z</time></a></span>
+<span class='when'><a href="#comment_6276"><time data-relative="true">2010-09-13T17:15:57Z</time></a></span>
 </cite>
 <blockquote><p>So the problem is my own :(. Sorry to bring it to your door. If you don't mind taking a moment to help though, here is my <code>.vimrc</code>:</p>
 <p><a href="http://github.com/guns/nerv-guns/blob/guns/etc/user.vimrc" class="external">http://github.com/guns/nerv-guns/blob/guns/etc/user.vimrc</a></p>
@@ -78,7 +79,7 @@
 <li class='comment' id='comment_6277'>
 <cite>
 <a href="/users/guns">guns</a>
-<span class='when'><a href="/comments/6277"><time data-relative="true">2010-09-13T17:27:42Z</time></a></span>
+<span class='when'><a href="#comment_6277"><time data-relative="true">2010-09-13T17:27:42Z</time></a></span>
 </cite>
 <blockquote><p>Oh! I found it.</p>
 <p>I have <code>set notimeout</code>, because I like emacs-style mappings and am annoyed when vim times out my incantations.</p>
@@ -89,7 +90,7 @@
 <li class='comment admin' id='comment_6278'>
 <cite>
 <a href="/users/greg-hurrell">Greg Hurrell</a>
-<span class='when'><a href="/comments/6278"><time data-relative="true">2010-09-13T20:12:29Z</time></a></span>
+<span class='when'><a href="#comment_6278"><time data-relative="true">2010-09-13T20:12:29Z</time></a></span>
 </cite>
 <blockquote><p>Instead of setting <code>notimeout</code>, have you considered setting a high <code>timeoutlen</code>?</p>
 <p>I have a hunch that that might fix the problem you're seeing without breaking your Emacs-style mappings (I could be wrong though, it's just a hunch).</p>
@@ -100,7 +101,7 @@
 <li class='comment' id='comment_6279'>
 <cite>
 <a href="/users/guns">guns</a>
-<span class='when'><a href="/comments/6279"><time data-relative="true">2010-09-13T20:35:41Z</time></a></span>
+<span class='when'><a href="#comment_6279"><time data-relative="true">2010-09-13T20:35:41Z</time></a></span>
 </cite>
 <blockquote><p>Thanks for your help! I decided to just patch in the timeout setting for the match window just like you did for timeoutlen. Works perfectly, and seems like an appropriate addition.</p>
 <p>Thanks for your awesome plugin!</p>
@@ -157,7 +158,7 @@ index 93af32f..c15016a 100644
 <li class='comment admin' id='comment_6280'>
 <cite>
 <a href="/users/greg-hurrell">Greg Hurrell</a>
-<span class='when'><a href="/comments/6280"><time data-relative="true">2010-09-13T20:55:56Z</time></a></span>
+<span class='when'><a href="#comment_6280"><time data-relative="true">2010-09-13T20:55:56Z</time></a></span>
 </cite>
 <blockquote><p>Thanks for the patch. Looks sane enough. I can't really see any drawbacks to applying it, so will do so tomorrow.</p>
 </blockquote>
@@ -165,7 +166,7 @@ index 93af32f..c15016a 100644
 <li class='comment' id='comment_6502'>
 <cite>
 anonymous
-<span class='when'><a href="/comments/6502"><time data-relative="true">2010-12-02T00:32:47Z</time></a></span>
+<span class='when'><a href="#comment_6502"><time data-relative="true">2010-12-02T00:32:47Z</time></a></span>
 </cite>
 <blockquote><p>I run into this problem as well and discovered another bug. If you open the command-T and midstream decide to cancel (CTRL-C, i.e., not to open a file), the settings are never restored. Since the settings are saved and timeoutlen is changed to 0, after I cancel,  my mappings don't work anymore (cuz the timeout len is still 0 and never restored to my original set value). Can you issue a patch for that? Thanks. Rick </p>
 </blockquote>
@@ -173,7 +174,7 @@ anonymous
 <li class='comment admin' id='comment_6504'>
 <cite>
 <a href="/users/greg-hurrell">Greg Hurrell</a>
-<span class='when'><a href="/comments/6504"><time data-relative="true">2010-12-02T08:20:40Z</time></a></span>
+<span class='when'><a href="#comment_6504"><time data-relative="true">2010-12-02T08:20:40Z</time></a></span>
 </cite>
 <blockquote><p><code>timeoutlen</code> already is saved and restored (see <a href="http://git.wincent.com/command-t.git/blob/40ba35c2debaa66c1a6d6aec1208693c67f6d1ab:/ruby/command-t/settings.rb" class="external">the settings.rb file</a>).</p>
 <p>Can you explain why or how it is not being restored?</p>

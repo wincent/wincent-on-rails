@@ -3,6 +3,7 @@
 <head>
 <meta content='text/html;charset=UTF-8' http-equiv='Content-Type'>
 <title>
+Synergy memory usage
 
 &middot; wincent.com
 </title>
@@ -47,7 +48,7 @@
 <li class='comment admin' id='comment_505'>
 <cite>
 <a href="/users/greg-hurrell">Greg Hurrell</a>
-<span class='when'><a href="/comments/505"><time data-relative="true">2006-10-24T05:22:24Z</time></a></span>
+<span class='when'><a href="#comment_505"><time data-relative="true">2006-10-24T05:22:24Z</time></a></span>
 </cite>
 <blockquote><p>There is an old, now closed bug report for Synergy's memory usage here:</p>
 <p><a href="http://wincent.com/a/support/bugs/show_bug.cgi?id=21" class="external">http://wincent.com/a/support/bugs/show_bug.cgi?id=21</a></p>
@@ -91,7 +92,7 @@
 <li class='comment' id='comment_506'>
 <cite>
 <a href="/users/geoff2">geoff2</a>
-<span class='when'><a href="/comments/506"><time data-relative="true">2006-10-24T10:28:42Z</time></a></span>
+<span class='when'><a href="#comment_506"><time data-relative="true">2006-10-24T10:28:42Z</time></a></span>
 </cite>
 <blockquote><p>Thanks for the reply, Wincent. I had run leaks and had noticed that it wasn't leaking memory. But I still am wondering about the memory usage, and while I know the system can allocate memory just fine on its own, there is still a 10-35 second pause while all the programs that at times use up a lot of memory while the system is idle (yours, GrowlHelperApp, MenuCalendarClock iCal) page out.</p>
 <p>When you say album covers are being cached in memory, when are they being cached? As I mentioned, when the memory usage spiked, I wasn't using Synergy, and iTunes wasn't even running. Is Synergy retrieving album images even then?</p>
@@ -100,7 +101,7 @@
 <li class='comment admin' id='comment_507'>
 <cite>
 <a href="/users/greg-hurrell">Greg Hurrell</a>
-<span class='when'><a href="/comments/507"><time data-relative="true">2006-10-24T11:09:39Z</time></a></span>
+<span class='when'><a href="#comment_507"><time data-relative="true">2006-10-24T11:09:39Z</time></a></span>
 </cite>
 <blockquote><p>There are two times when Synergy can obtain a new cover:</p>
 <p>1. When iTunes starts playing a new track and has a cover for the track</p>
@@ -112,7 +113,7 @@
 <li class='comment' id='comment_508'>
 <cite>
 <a href="/users/geoff2">geoff2</a>
-<span class='when'><a href="/comments/508"><time data-relative="true">2006-11-13T16:31:46Z</time></a></span>
+<span class='when'><a href="#comment_508"><time data-relative="true">2006-11-13T16:31:46Z</time></a></span>
 </cite>
 <blockquote><p>Thanks for the responses.</p>
 <p>To clarify, I'm not concerned about the virtual memory usage, but the real memory usage. And I just launched Synergy 3.1b with album cover display turned off, iTunes running but no music playing, and after several hours it's up to using &gt; 200 MB of real memory. (I know it's a beta, but thought it might still be relevant.) As I work I'm getting memory paged to and from disk all the time, and I can't help but think that some of it is due to Synergy's large memory use.</p>

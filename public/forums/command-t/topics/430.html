@@ -3,6 +3,7 @@
 <head>
 <meta content='text/html;charset=UTF-8' http-equiv='Content-Type'>
 <title>
+&lt;C-s&gt; or &lt;C-CR&gt; seem to freeze vim...
 
 &middot; wincent.com
 </title>
@@ -45,7 +46,7 @@ anonymous
 <li class='comment admin' id='comment_6138'>
 <cite>
 <a href="/users/greg-hurrell">Greg Hurrell</a>
-<span class='when'><a href="/comments/6138"><time data-relative="true">2010-08-25T11:12:00Z</time></a></span>
+<span class='when'><a href="#comment_6138"><time data-relative="true">2010-08-25T11:12:00Z</time></a></span>
 </cite>
 <blockquote><p>The difference is most likely explained by a discrepancy in the terminal settings on the different machines (different terminals can send key presses in different ways). If you compare <code>:set term?</code> on the different machines you might see different terminals.</p>
 <p>The other things which might be different are the <code>'timeout'</code>, <code>ttimeout'</code>, <code>'timeoutlen'</code> and <code>'ttimeoutlen'</code> settings. (See the Vim help for those.)</p>
@@ -55,7 +56,7 @@ anonymous
 <li class='comment' id='comment_6139'>
 <cite>
 anonymous
-<span class='when'><a href="/comments/6139"><time data-relative="true">2010-08-25T11:31:10Z</time></a></span>
+<span class='when'><a href="#comment_6139"><time data-relative="true">2010-08-25T11:31:10Z</time></a></span>
 </cite>
 <blockquote><p>Thanks much for the help!</p>
 <p>I run urxvt with the same config files on both linux boxes, in theory all the config files are source controlled so they should match but... reality and theory are often worlds apart :)  I will look into urxvt config on both machines and read up on those vim help settings when I get home and can access linux box #2, the broken one (at work atm)!</p>
@@ -67,7 +68,7 @@ anonymous
 <li class='comment admin' id='comment_6140'>
 <cite>
 <a href="/users/greg-hurrell">Greg Hurrell</a>
-<span class='when'><a href="/comments/6140"><time data-relative="true">2010-08-25T11:35:17Z</time></a></span>
+<span class='when'><a href="#comment_6140"><time data-relative="true">2010-08-25T11:35:17Z</time></a></span>
 </cite>
 <blockquote><p>Well it's not really a &quot;fault&quot; of the terminal. That's just the way terminals work. For example, on mine when I press the &quot;up&quot; key it actually sends that as an escape sequence (<code>ESC-O a</code>); you can imagine how Vim interprets that... See <code>:h term.txt</code>, and particularly <code>:h xterm-cursor-keys</code> for more info on the subject.</p>
 </blockquote>
@@ -75,7 +76,7 @@ anonymous
 <li class='comment' id='comment_6211'>
 <cite>
 anonymous
-<span class='when'><a href="/comments/6211"><time data-relative="true">2010-09-03T21:03:43Z</time></a></span>
+<span class='when'><a href="#comment_6211"><time data-relative="true">2010-09-03T21:03:43Z</time></a></span>
 </cite>
 <blockquote><p>I'm having the same problems as the OP but am trying to avoid remapping all of the builtin commands.</p>
 <p>I have the same issue Wincent describes in that my terminal (well technically tmux, the teminal multiplexer) sends &lt;Up&gt; as &lt;Esc&gt;-OA. I've tried setting</p>
@@ -88,7 +89,7 @@ set timeoutlen=100</pre>
 <li class='comment admin' id='comment_6212'>
 <cite>
 <a href="/users/greg-hurrell">Greg Hurrell</a>
-<span class='when'><a href="/comments/6212"><time data-relative="true">2010-09-03T23:24:52Z</time></a></span>
+<span class='when'><a href="#comment_6212"><time data-relative="true">2010-09-03T23:24:52Z</time></a></span>
 </cite>
 <blockquote><p>Well, 99% of the time I'm in MacVim which has no weird terminal issues.</p>
 <p>The other 1% of the time I'm in the <a href="/wiki/Mac_OS_X">Mac OS X</a> <a href="/wiki/Terminal">Terminal</a>, which advertises itself as <code>xterm-color</code>, which means that instead of <code>&lt;Esc&gt;</code> I dismiss with <code>&lt;C-c&gt;</code>.</p>
@@ -102,7 +103,7 @@ endif</pre>
 <li class='comment' id='comment_6213'>
 <cite>
 anonymous
-<span class='when'><a href="/comments/6213">Created <time data-relative="true">2010-09-03T23:55:47Z</time>, edited <time data-relative="true">2010-09-04T08:52:57Z</time></a></span>
+<span class='when'><a href="#comment_6213">Created <time data-relative="true">2010-09-03T23:55:47Z</time>, edited <time data-relative="true">2010-09-04T08:52:57Z</time></a></span>
 </cite>
 <blockquote><p>Well it turns out that I had misunderstood the purpose of the command-t mappings settings. I thought that the idea was to allow you to create an alternative mapping i.e. so that if &lt;Up&gt; does not work then you can use, say, &lt;C-u&gt; instead. I realise now that the purpose is to allow you to enter the sequence that the term actually sends.</p>
 <p>I've added <code>let g:CommandTSelectPrevMap=['&lt;C-p&gt;', '&lt;C-k&gt;', '&lt;Esc&gt;OA', '&lt;Up&gt;']</code> to my vimrc which allows me to use the &lt;Up&gt; to scroll through the options which is what I wanted to achieve.</p>

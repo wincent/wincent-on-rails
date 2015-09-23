@@ -3,6 +3,7 @@
 <head>
 <meta content='text/html;charset=UTF-8' http-equiv='Content-Type'>
 <title>
+Could not load the C extension Symbol not found: _rb_cObject
 
 &middot; wincent.com
 </title>
@@ -81,7 +82,7 @@ L/usr/local/Cellar/ruby-enterprise-edition/2011.03/lib
 <li class='comment admin' id='comment_6873'>
 <cite>
 <a href="/users/greg-hurrell">Greg Hurrell</a>
-<span class='when'><a href="/comments/6873"><time data-relative="true">2011-05-16T16:47:17Z</time></a></span>
+<span class='when'><a href="#comment_6873"><time data-relative="true">2011-05-16T16:47:17Z</time></a></span>
 </cite>
 <blockquote><p>Probably a mismatch between the version of Ruby used to build Command-T, and the version used when building Vim.</p>
 <p>Looks like it can't find the library at runtime, perhaps because your Vim links statically against the static version of the library, and the extension is trying to load it dynamically. Don't know whether there is some other build flag you could have supplied to avoid this, or if it's a consequence of using REE.</p>

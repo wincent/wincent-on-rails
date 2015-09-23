@@ -3,6 +3,7 @@
 <head>
 <meta content='text/html;charset=UTF-8' http-equiv='Content-Type'>
 <title>
+Version 0.9 &quot;use relative paths&quot; fix does not work for Windows ?
 
 &middot; wincent.com
 </title>
@@ -54,7 +55,7 @@ anonymous
 <li class='comment admin' id='comment_6464'>
 <cite>
 <a href="/users/greg-hurrell">Greg Hurrell</a>
-<span class='when'><a href="/comments/6464"><time data-relative="true">2010-11-23T11:11:51Z</time></a></span>
+<span class='when'><a href="#comment_6464"><time data-relative="true">2010-11-23T11:11:51Z</time></a></span>
 </cite>
 <blockquote><p>Here's the commit which actually implemented the relative-path thing:</p>
 <ul>
@@ -68,7 +69,7 @@ anonymous
 <li class='comment' id='comment_6465'>
 <cite>
 anonymous
-<span class='when'><a href="/comments/6465"><time data-relative="true">2010-11-23T11:32:20Z</time></a></span>
+<span class='when'><a href="#comment_6465"><time data-relative="true">2010-11-23T11:32:20Z</time></a></span>
 </cite>
 <blockquote><p>Thank you for this immediate answer :)</p>
 <p>Output from the command is a path with '\' as a separator. However, I looked at the commit and tried removing the trailing '/' in relative_path_under_working_directory from my controller.rb but it doesn't seem to the trick.</p>
@@ -77,7 +78,7 @@ anonymous
 <li class='comment admin' id='comment_6466'>
 <cite>
 <a href="/users/greg-hurrell">Greg Hurrell</a>
-<span class='when'><a href="/comments/6466"><time data-relative="true">2010-11-23T11:53:51Z</time></a></span>
+<span class='when'><a href="#comment_6466"><time data-relative="true">2010-11-23T11:53:51Z</time></a></span>
 </cite>
 <blockquote><p>Well, <em>removing</em> it wouldn't be enough, you'd have to <em>replace</em> it with a backslash. Have you tried that?</p>
 <p>(I imagine you'll have to specify it as &quot;\\&quot; otherwise it will be treated as an escape character.)</p>
@@ -86,7 +87,7 @@ anonymous
 <li class='comment' id='comment_6467'>
 <cite>
 anonymous
-<span class='when'><a href="/comments/6467"><time data-relative="true">2010-11-23T12:14:55Z</time></a></span>
+<span class='when'><a href="#comment_6467"><time data-relative="true">2010-11-23T12:14:55Z</time></a></span>
 </cite>
 <blockquote><p>Yep, I tried :(</p>
 <p>I don't no anything about ruby. Am I supposed to run 'ruby extconf.rb' and 'make' after any changes to controller.rb ? Or a vim reload should do the trick ?</p>
@@ -95,7 +96,7 @@ anonymous
 <li class='comment admin' id='comment_6468'>
 <cite>
 <a href="/users/greg-hurrell">Greg Hurrell</a>
-<span class='when'><a href="/comments/6468"><time data-relative="true">2010-11-23T14:17:43Z</time></a></span>
+<span class='when'><a href="#comment_6468"><time data-relative="true">2010-11-23T14:17:43Z</time></a></span>
 </cite>
 <blockquote><p>Just quit and restart Vim. Only changes to the C code would require a <code>make</code>.</p>
 </blockquote>
@@ -103,7 +104,7 @@ anonymous
 <li class='comment' id='comment_6469'>
 <cite>
 anonymous
-<span class='when'><a href="/comments/6469"><time data-relative="true">2010-11-23T14:45:04Z</time></a></span>
+<span class='when'><a href="#comment_6469"><time data-relative="true">2010-11-23T14:45:04Z</time></a></span>
 </cite>
 <blockquote><p>Is there anyway I could print the value of 'path' and the result of 'path.index([...])' from the function ? That could help us understanding.</p>
 </blockquote>
@@ -111,7 +112,7 @@ anonymous
 <li class='comment admin' id='comment_6470'>
 <cite>
 <a href="/users/greg-hurrell">Greg Hurrell</a>
-<span class='when'><a href="/comments/6470"><time data-relative="true">2010-11-23T16:46:14Z</time></a></span>
+<span class='when'><a href="#comment_6470"><time data-relative="true">2010-11-23T16:46:14Z</time></a></span>
 </cite>
 <blockquote><p>You can use the <code>:ruby</code> command to evaluate the result of any Ruby expression, although in this case simply logging the paths to a file might be the easiest.</p>
 <p>I don't know where temp files live on Windows but editing the method to read something like the following may work (not tested, just typed into browser):</p>
@@ -129,7 +130,7 @@ end</pre>
 <li class='comment' id='comment_6471'>
 <cite>
 anonymous
-<span class='when'><a href="/comments/6471"><time data-relative="true">2010-11-23T16:53:50Z</time></a></span>
+<span class='when'><a href="#comment_6471"><time data-relative="true">2010-11-23T16:53:50Z</time></a></span>
 </cite>
 <blockquote><p>Yep that's it : 'path' variable is a '/' separated path while #{VIM::pwd} is a '\' separated path...</p>
 </blockquote>
@@ -137,7 +138,7 @@ anonymous
 <li class='comment admin' id='comment_6472'>
 <cite>
 <a href="/users/greg-hurrell">Greg Hurrell</a>
-<span class='when'><a href="/comments/6472"><time data-relative="true">2010-11-23T17:03:58Z</time></a></span>
+<span class='when'><a href="#comment_6472"><time data-relative="true">2010-11-23T17:03:58Z</time></a></span>
 </cite>
 <blockquote><p>The discrepancy is probably because <code>path</code> is coming from Ruby-land (the result of a call to <code>File.expand_path</code>) and <code>pwd</code> is coming from Vim-land (the result of evaluating Vim's <code>getcwd()</code> function).</p>
 <p>Not really sure what the best way to tackle this is. As an experiment, can you tell me if the following correctly converts the backslash &quot;pwd&quot; into the forwardslash equivalent?</p>
@@ -147,7 +148,7 @@ anonymous
 <li class='comment' id='comment_6473'>
 <cite>
 anonymous
-<span class='when'><a href="/comments/6473"><time data-relative="true">2010-11-24T07:19:30Z</time></a></span>
+<span class='when'><a href="#comment_6473"><time data-relative="true">2010-11-24T07:19:30Z</time></a></span>
 </cite>
 <blockquote><p>This command outputs the path with '/' as a separator.</p>
 <p>I fixed the issue with :</p>
@@ -159,7 +160,7 @@ anonymous
 <li class='comment admin' id='comment_6474'>
 <cite>
 <a href="/users/greg-hurrell">Greg Hurrell</a>
-<span class='when'><a href="/comments/6474"><time data-relative="true">2010-11-24T13:48:52Z</time></a></span>
+<span class='when'><a href="#comment_6474"><time data-relative="true">2010-11-24T13:48:52Z</time></a></span>
 </cite>
 <blockquote><p>Thanks for the report. I believe this change won't break existing behavior on non-Windows platforms, so I'll test it out here and incorporate it in the next release if it proves to be ok.</p>
 </blockquote>
@@ -167,7 +168,7 @@ anonymous
 <li class='comment admin' id='comment_6476'>
 <cite>
 <a href="/users/greg-hurrell">Greg Hurrell</a>
-<span class='when'><a href="/comments/6476"><time data-relative="true">2010-11-26T16:19:42Z</time></a></span>
+<span class='when'><a href="#comment_6476"><time data-relative="true">2010-11-26T16:19:42Z</time></a></span>
 </cite>
 <blockquote><p>Ok, I've incorporated the fix and will be pushing out a release (1.0) shortly.</p>
 </blockquote>
@@ -175,7 +176,7 @@ anonymous
 <li class='comment' id='comment_9968'>
 <cite>
 <a href="/users/jason0x43">jason0x43</a>
-<span class='when'><a href="/comments/9968"><time data-relative="true">2012-08-20T12:56:10Z</time></a></span>
+<span class='when'><a href="#comment_9968"><time data-relative="true">2012-08-20T12:56:10Z</time></a></span>
 </cite>
 <blockquote><p>I'm using command-t with Ruby 1.9.2 and Vim 7.3 on Windows. I ended up having to add a file expansion to the input path to </p>
 <pre>relative_path_under_working_directory</pre>

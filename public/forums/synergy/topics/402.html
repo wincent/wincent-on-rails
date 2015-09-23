@@ -3,6 +3,7 @@
 <head>
 <meta content='text/html;charset=UTF-8' http-equiv='Content-Type'>
 <title>
+Synergy not loading at startup
 
 &middot; wincent.com
 </title>
@@ -46,7 +47,7 @@
 <li class='comment' id='comment_4144'>
 <cite>
 <a href="/users/zoomaddict">ZoomAddict</a>
-<span class='when'><a href="/comments/4144"><time data-relative="true">2009-01-31T13:17:20Z</time></a></span>
+<span class='when'><a href="#comment_4144"><time data-relative="true">2009-01-31T13:17:20Z</time></a></span>
 </cite>
 <blockquote><p>Didn't find the cause but poked around the website and found this workaround which works:</p>
 <p>---------- &quot;Launch Synergy at login&quot; checkbox in the Preference Pane no longer works for Synergy Classic. The workaround is to navigate to ~/Library/PreferencePanes/Synergy.prefPane, ctrl+click, choose Show Package Contents from the contextual menu, navigate to Contents/Resources/Synergy and drag this icon to the Startup Items in the Accounts preference pane. ----------</p>
@@ -56,7 +57,7 @@
 <li class='comment admin' id='comment_4145'>
 <cite>
 <a href="/users/greg-hurrell">Greg Hurrell</a>
-<span class='when'><a href="/comments/4145"><time data-relative="true">2009-01-31T13:19:17Z</time></a></span>
+<span class='when'><a href="#comment_4145"><time data-relative="true">2009-01-31T13:19:17Z</time></a></span>
 </cite>
 <blockquote><p>The unchecking &quot;Launch at login&quot;, &quot;Apply&quot;, rechecking, &quot;Apply&quot; should have worked.</p>
 <p>If you want to try adding it manually to the startup items the item you have to add is not <code>~/Library/PreferencePanes/Synergy.prefPane</code> but <code>~/Library/PreferencePanes/Synergy.prefPane/Contents/Resources/Synergy.app</code>.</p>
@@ -66,7 +67,7 @@
 <li class='comment admin' id='comment_4146'>
 <cite>
 <a href="/users/greg-hurrell">Greg Hurrell</a>
-<span class='when'><a href="/comments/4146"><time data-relative="true">2009-01-31T13:24:29Z</time></a></span>
+<span class='when'><a href="#comment_4146"><time data-relative="true">2009-01-31T13:24:29Z</time></a></span>
 </cite>
 <blockquote><p>The &quot;not launching at login&quot; issue has come up a few times over the years (Synergy first came out in 2002, remember). Occasionally in an OS upgrade things would change in some subtle way and it would stop working. I don't think there were any &quot;bugs&quot; as such in the way Synergy added itself to the login items, but over the years I <em>have</em> had to implement a <em>lot</em> of workarounds to make sure that it got added when required.</p>
 <p>It's actually been surprisingly complicated for what should be such a simple feature.</p>
@@ -76,7 +77,7 @@
 <li class='comment' id='comment_4452'>
 <cite>
 anonymous
-<span class='when'><a href="/comments/4452"><time data-relative="true">2009-04-16T13:34:20Z</time></a></span>
+<span class='when'><a href="#comment_4452"><time data-relative="true">2009-04-16T13:34:20Z</time></a></span>
 </cite>
 <blockquote><p>MacBook Pro (Unibody) 10.5.6</p>
 <p>Synergy does not autostart for me. And has not, over multiple machines (I have a PPC desktop, and another standard MacBook Pro) all on 10.5.6</p>
@@ -86,7 +87,7 @@ anonymous
 <li class='comment admin' id='comment_4454'>
 <cite>
 <a href="/users/greg-hurrell">Greg Hurrell</a>
-<span class='when'><a href="/comments/4454"><time data-relative="true">2009-04-16T15:03:15Z</time></a></span>
+<span class='when'><a href="#comment_4454"><time data-relative="true">2009-04-16T15:03:15Z</time></a></span>
 </cite>
 <blockquote><p>Most likely stale entries in your login items. Please see my previous comments above for how to force those settings to be refreshed (basically boils down to 'The unchecking &quot;Launch at login&quot;, &quot;Apply&quot;, rechecking, &quot;Apply&quot;').</p>
 </blockquote>
@@ -94,7 +95,7 @@ anonymous
 <li class='comment' id='comment_4841'>
 <cite>
 anonymous
-<span class='when'><a href="/comments/4841"><time data-relative="true">2009-08-05T11:57:28Z</time></a></span>
+<span class='when'><a href="#comment_4841"><time data-relative="true">2009-08-05T11:57:28Z</time></a></span>
 </cite>
 <blockquote><p>Same thing here, with a new install of 10.5 on a MacBookPro unibody. I tried the unchecking/checking &quot;Launch at Startup&quot; thing to no avail. I've now added Synergy.app to the login items as described above, and will see what happens at the next startup. </p>
 </blockquote>
@@ -102,7 +103,7 @@ anonymous
 <li class='comment admin' id='comment_4848'>
 <cite>
 <a href="/users/greg-hurrell">Greg Hurrell</a>
-<span class='when'><a href="/comments/4848"><time data-relative="true">2009-08-06T07:41:28Z</time></a></span>
+<span class='when'><a href="#comment_4848"><time data-relative="true">2009-08-06T07:41:28Z</time></a></span>
 </cite>
 <blockquote><p>I think the important thing to note here is that it's not enough to just uncheck then recheck; you actually have to click &quot;Apply&quot; after each.</p>
 </blockquote>
@@ -110,7 +111,7 @@ anonymous
 <li class='comment' id='comment_4855'>
 <cite>
 <a href="/users/fuga">Fuga</a>
-<span class='when'><a href="/comments/4855"><time data-relative="true">2009-08-11T22:18:31Z</time></a></span>
+<span class='when'><a href="#comment_4855"><time data-relative="true">2009-08-11T22:18:31Z</time></a></span>
 </cite>
 <blockquote><p>OS X 10.5.7 Synergy 3.4</p>
 <p>No Apply button option. it's there but not clickable/active. Not on any of the tabs.</p>
@@ -119,7 +120,7 @@ anonymous
 <li class='comment admin' id='comment_4862'>
 <cite>
 <a href="/users/greg-hurrell">Greg Hurrell</a>
-<span class='when'><a href="/comments/4862"><time data-relative="true">2009-08-14T06:25:50Z</time></a></span>
+<span class='when'><a href="#comment_4862"><time data-relative="true">2009-08-14T06:25:50Z</time></a></span>
 </cite>
 <blockquote><p>It should become active as soon as you actually make a change to one of the preferences. If you change nothing then there is nothing to apply, so the button remains inactive.</p>
 </blockquote>
@@ -127,7 +128,7 @@ anonymous
 <li class='comment' id='comment_4863'>
 <cite>
 <a href="/users/fuga">Fuga</a>
-<span class='when'><a href="/comments/4863"><time data-relative="true">2009-08-14T16:46:07Z</time></a></span>
+<span class='when'><a href="#comment_4863"><time data-relative="true">2009-08-14T16:46:07Z</time></a></span>
 </cite>
 <blockquote><p>Oh, I just ticked the Start button. Nevertheless I just did the add to login items thing. Thanks again for Synergy. I keep trying them all but keep with Synergy.</p>
 </blockquote>

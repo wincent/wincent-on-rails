@@ -3,6 +3,7 @@
 <head>
 <meta content='text/html;charset=UTF-8' http-equiv='Content-Type'>
 <title>
+Use a menu rather than a buffer?
 
 &middot; wincent.com
 </title>
@@ -45,7 +46,7 @@
 <li class='comment admin' id='comment_6727'>
 <cite>
 <a href="/users/greg-hurrell">Greg Hurrell</a>
-<span class='when'><a href="/comments/6727"><time data-relative="true">2011-02-20T14:41:49Z</time></a></span>
+<span class='when'><a href="#comment_6727"><time data-relative="true">2011-02-20T14:41:49Z</time></a></span>
 </cite>
 <blockquote><p>I don't actually know how FuzzyFinder is doing that overlay thing. I have noticed, however, that it seems to be quite slow and flakey, so I am not sure if it is exactly the model to emulate. I would be interested, however, in knowing exactly how it does it.</p>
 <p>The buffer trick that Command-T uses is modelled on the same technique used in Lusty Explorer. As I note in the readme, this is the first Vim plug-in I've made, so I studied Lusty Explorer for tips on how to get a lot of basic stuff done, as it is a good example of a fairly large and complex plug-in written in Ruby.</p>
@@ -54,7 +55,7 @@
 <li class='comment' id='comment_6728'>
 <cite>
 <a href="/users/marcus">Marcus</a>
-<span class='when'><a href="/comments/6728"><time data-relative="true">2011-02-21T19:27:28Z</time></a></span>
+<span class='when'><a href="#comment_6728"><time data-relative="true">2011-02-21T19:27:28Z</time></a></span>
 </cite>
 <blockquote><p>Thanks for your reply. I'll look at FuzzyFinder and see how he does the overlay. I haven't found it to be flakey, but it does feel slower. I am not sure if that's a product of the menu style being used to show results or something else going on.</p>
 </blockquote>
@@ -62,7 +63,7 @@
 <li class='comment' id='comment_6800'>
 <cite>
 <a href="/users/david-lee">David Lee</a>
-<span class='when'><a href="/comments/6800"><time data-relative="true">2011-04-12T05:53:05Z</time></a></span>
+<span class='when'><a href="#comment_6800"><time data-relative="true">2011-04-12T05:53:05Z</time></a></span>
 </cite>
 <blockquote><p>It might just be that fuzzyfinder_textmate is slow at retrieving the results. Rendering a menu might be just as fast as using a buffer.</p>
 </blockquote>
@@ -70,7 +71,7 @@
 <li class='comment' id='comment_9951'>
 <cite>
 anonymous
-<span class='when'><a href="/comments/9951"><time data-relative="true">2012-08-10T22:16:18Z</time></a></span>
+<span class='when'><a href="#comment_9951"><time data-relative="true">2012-08-10T22:16:18Z</time></a></span>
 </cite>
 <blockquote><p>Any updates? Would be really glad to have that.</p>
 </blockquote>
@@ -78,7 +79,7 @@ anonymous
 <li class='comment admin' id='comment_9953'>
 <cite>
 <a href="/users/greg-hurrell">Greg Hurrell</a>
-<span class='when'><a href="/comments/9953"><time data-relative="true">2012-08-11T18:46:35Z</time></a></span>
+<span class='when'><a href="#comment_9953"><time data-relative="true">2012-08-11T18:46:35Z</time></a></span>
 </cite>
 <blockquote><p>The current buffer-based solution works well for me, and represents a fairly large part of the logic in the code base, so I haven't spent any time looking at alternative implementations.</p>
 <p>If somebody is sufficiently interested in the idea, it would be up to him or her to whip it up. I'd be happy to look at patches, although any patch that I would apply would probably have to support both methods, keeping the buffer-based method as the default, as the user base is probably pretty used to it by now.</p>

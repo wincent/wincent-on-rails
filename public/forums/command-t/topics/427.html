@@ -3,6 +3,7 @@
 <head>
 <meta content='text/html;charset=UTF-8' http-equiv='Content-Type'>
 <title>
+command-t.vim could not load the C extension  
 
 &middot; wincent.com
 </title>
@@ -43,7 +44,7 @@ anonymous
 <li class='comment admin' id='comment_5952'>
 <cite>
 <a href="/users/greg-hurrell">Greg Hurrell</a>
-<span class='when'><a href="/comments/5952"><time data-relative="true">2010-07-29T13:41:04Z</time></a></span>
+<span class='when'><a href="#comment_5952"><time data-relative="true">2010-07-29T13:41:04Z</time></a></span>
 </cite>
 <blockquote><p>Can you please paste the output of the <code>ruby extconf.rb</code> and <code>make</code> steps of the installation, and also the output of <code>vim --version</code>?</p>
 </blockquote>
@@ -51,7 +52,7 @@ anonymous
 <li class='comment' id='comment_5954'>
 <cite>
 anonymous
-<span class='when'><a href="/comments/5954"><time data-relative="true">2010-07-30T06:31:49Z</time></a></span>
+<span class='when'><a href="#comment_5954"><time data-relative="true">2010-07-30T06:31:49Z</time></a></span>
 </cite>
 <blockquote><p>Hi,</p>
 <p>i have the exact same problem as the original poster. Everything seems to install fine, but &lt;leader&gt;t fails with &quot;command-t.vim could not load the C extension&quot; Here&#x00b4;s my system info:</p>
@@ -101,7 +102,7 @@ cc -dynamic -bundle -undefined suppress -flat_namespace -o ext.bundle ext.o matc
 <li class='comment admin' id='comment_5955'>
 <cite>
 <a href="/users/greg-hurrell">Greg Hurrell</a>
-<span class='when'><a href="/comments/5955"><time data-relative="true">2010-07-30T10:43:22Z</time></a></span>
+<span class='when'><a href="#comment_5955"><time data-relative="true">2010-07-30T10:43:22Z</time></a></span>
 </cite>
 <blockquote><p>It looks to me like the last step of you <code>make</code> isn't actually linking to Ruby at all. Compare your <code>-ldl -lobjc</code> with mine:</p>
 <pre>cc -arch i386 -arch x86_64 -pipe -bundle -undefined dynamic_lookup -o ext.bundle ext.o match.o matcher.o -L. -L/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib -L. -arch i386 -arch x86_64     -lruby  -lpthread -ldl</pre>
@@ -112,7 +113,7 @@ cc -dynamic -bundle -undefined suppress -flat_namespace -o ext.bundle ext.o matc
 <li class='comment' id='comment_5956'>
 <cite>
 anonymous
-<span class='when'><a href="/comments/5956"><time data-relative="true">2010-07-30T11:14:36Z</time></a></span>
+<span class='when'><a href="#comment_5956"><time data-relative="true">2010-07-30T11:14:36Z</time></a></span>
 </cite>
 <blockquote><p>Hi there,</p>
 <p>thank you very much for looking into this!</p>
@@ -308,7 +309,7 @@ CFLAGS += -std=c99 -Wall -Wextra -Wno-unused-parameter
 <li class='comment admin' id='comment_5957'>
 <cite>
 <a href="/users/greg-hurrell">Greg Hurrell</a>
-<span class='when'><a href="/comments/5957"><time data-relative="true">2010-07-30T11:32:09Z</time></a></span>
+<span class='when'><a href="#comment_5957"><time data-relative="true">2010-07-30T11:32:09Z</time></a></span>
 </cite>
 <blockquote><p>Not sure if this sheds much light on the subject, but here are the differences between my <code>Makefile</code> and yours (well, comparing all lines containing the string &quot;lib&quot;):</p>
 <pre>--- /Users/wincent/tmp/mine.txt&#x0009;2010-07-30 17:22:30.000000000 +0200
@@ -372,7 +373,7 @@ CFLAGS += -std=c99 -Wall -Wextra -Wno-unused-parameter
 <li class='comment' id='comment_5964'>
 <cite>
 <a href="/users/alan">Alan</a>
-<span class='when'><a href="/comments/5964"><time data-relative="true">2010-08-03T20:32:44Z</time></a></span>
+<span class='when'><a href="#comment_5964"><time data-relative="true">2010-08-03T20:32:44Z</time></a></span>
 </cite>
 <blockquote><p>I had the same problem after pulling the git repo into .vim/bundle and running rake make with (rvm) 1.9.2. </p>
 <p>I tried adding -lruby-static and then rerunning make, but it didn't seem to help.</p>
@@ -382,7 +383,7 @@ CFLAGS += -std=c99 -Wall -Wextra -Wno-unused-parameter
 <li class='comment admin' id='comment_5966'>
 <cite>
 <a href="/users/greg-hurrell">Greg Hurrell</a>
-<span class='when'><a href="/comments/5966"><time data-relative="true">2010-08-04T01:53:27Z</time></a></span>
+<span class='when'><a href="#comment_5966"><time data-relative="true">2010-08-04T01:53:27Z</time></a></span>
 </cite>
 <blockquote><p>Most likely it worked because your Vim was linked against 1.8.7 and not 1.9.2. Command-T has to link against the same Ruby otherwise Vim won't be able to load it.</p>
 </blockquote>
@@ -390,7 +391,7 @@ CFLAGS += -std=c99 -Wall -Wextra -Wno-unused-parameter
 <li class='comment' id='comment_6113'>
 <cite>
 anonymous
-<span class='when'><a href="/comments/6113"><time data-relative="true">2010-08-22T13:33:46Z</time></a></span>
+<span class='when'><a href="#comment_6113"><time data-relative="true">2010-08-22T13:33:46Z</time></a></span>
 </cite>
 <blockquote><p>I also had  the same problem. Doing what Alan mentioned the above post helped resolving it. I use snow leopard 10.6.4 + macvim 7.3(latest avaiable ) + ruby 1.8.7</p>
 </blockquote>
@@ -398,7 +399,7 @@ anonymous
 <li class='comment' id='comment_6117'>
 <cite>
 anonymous
-<span class='when'><a href="/comments/6117"><time data-relative="true">2010-08-23T01:56:27Z</time></a></span>
+<span class='when'><a href="#comment_6117"><time data-relative="true">2010-08-23T01:56:27Z</time></a></span>
 </cite>
 <blockquote><p>I have the same error. The extconf.rb and make perform same as above without errors. Running the two commands, I get:</p>
 <pre>% ruby -r ~/.vim/ruby/command-t/ext -e 'p CommandT::Match.methods'
@@ -410,7 +411,7 @@ anonymous
 <li class='comment admin' id='comment_6121'>
 <cite>
 <a href="/users/greg-hurrell">Greg Hurrell</a>
-<span class='when'><a href="/comments/6121"><time data-relative="true">2010-08-23T05:45:04Z</time></a></span>
+<span class='when'><a href="#comment_6121"><time data-relative="true">2010-08-23T05:45:04Z</time></a></span>
 </cite>
 <blockquote><p>The &quot;no suitable image found&quot; sounds like a 32-bit/64-bit mismatch to me (ie. Vim built as 32-bit executable, Command-T as 64-bit, or vice versa). You should be able to compare the Vim compilation and linker flags (visible in <code>vim --version</code>)  with the flags shown during the Command-T build (<code>make</code>) and you'll see if there is a discrepancy there.</p>
 <p>My guess is that you're on Mac OS X (from the <code>/Users/</code> home directory); you on Leopard or Snow Leopard? And does your machine have a 64-bit processor?</p>
@@ -419,7 +420,7 @@ anonymous
 <li class='comment' id='comment_7369'>
 <cite>
 anonymous
-<span class='when'><a href="/comments/7369">Created <time data-relative="true">2012-01-12T17:09:45Z</time>, edited <time data-relative="true">2012-01-14T16:46:53Z</time></a></span>
+<span class='when'><a href="#comment_7369">Created <time data-relative="true">2012-01-12T17:09:45Z</time>, edited <time data-relative="true">2012-01-14T16:46:53Z</time></a></span>
 </cite>
 <blockquote><p>Hi!</p>
 <p>I had the same problem, with OSX Snow Leopard, MacVim 7.3. I found a solution:</p>
@@ -436,7 +437,7 @@ $ sudo make install</pre>
 <li class='comment' id='comment_7503'>
 <cite>
 anonymous
-<span class='when'><a href="/comments/7503"><time data-relative="true">2012-04-07T11:17:45Z</time></a></span>
+<span class='when'><a href="#comment_7503"><time data-relative="true">2012-04-07T11:17:45Z</time></a></span>
 </cite>
 <blockquote><p>changing to i386 gets command-t to work for me on mac os x lion</p>
 <p>however during make a warning is thrown: ld: warning: ignoring file /Users/asjf/.rvm/rubies/ruby-1.8.7-p352/lib/libruby.dylib, file was built for unsupported file format which is not the architecture being linked (i386)</p>
@@ -446,7 +447,7 @@ anonymous
 <li class='comment' id='comment_7527'>
 <cite>
 anonymous
-<span class='when'><a href="/comments/7527">Created <time data-relative="true">2012-05-04T19:56:16Z</time>, edited <time data-relative="true">2012-05-28T00:54:13Z</time></a></span>
+<span class='when'><a href="#comment_7527">Created <time data-relative="true">2012-05-04T19:56:16Z</time>, edited <time data-relative="true">2012-05-28T00:54:13Z</time></a></span>
 </cite>
 <blockquote><p>Hello, I'm also having these issues, using MacVim on OS 10.7 with Pathogen.  So far, none of the posts here have helped.</p>
 <pre>$ mvim --version
@@ -497,7 +498,7 @@ ruby 1.8.7 (2011-02-18 patchlevel 334) [i686-darwin11.1.0], MBARI 0x6770, Ruby E
 <li class='comment admin' id='comment_7530'>
 <cite>
 <a href="/users/greg-hurrell">Greg Hurrell</a>
-<span class='when'><a href="/comments/7530"><time data-relative="true">2012-05-28T00:58:30Z</time></a></span>
+<span class='when'><a href="#comment_7530"><time data-relative="true">2012-05-28T00:58:30Z</time></a></span>
 </cite>
 <blockquote><p>The output shows that your MacVim is linking against the system Ruby, yet you've built Command-T using REE.</p>
 <p>In a nutshell, you need to make sure that both Vim and Command-T are compiled using the same Ruby. Please see <a href="http://git.wincent.com/command-t.git/blob/HEAD:/doc/command-t.txt#l205" class="external">the docs</a> for more details.</p>
@@ -506,7 +507,7 @@ ruby 1.8.7 (2011-02-18 patchlevel 334) [i686-darwin11.1.0], MBARI 0x6770, Ruby E
 <li class='comment' id='comment_9693'>
 <cite>
 <a href="/users/emu">emu</a>
-<span class='when'><a href="/comments/9693"><time data-relative="true">2012-07-25T21:58:28Z</time></a></span>
+<span class='when'><a href="#comment_9693"><time data-relative="true">2012-07-25T21:58:28Z</time></a></span>
 </cite>
 <blockquote><p>Alright, I'm having these issues, too. I've attempted everything here to no avail. I'm a bit of a noob, so please bear with me. I'm on OS X 10.7 and using Pathogen. I'm trying to use Command-T as a submodule of my dotfiles directory, if that makes a difference.</p>
 <pre>$ mvim --version
@@ -562,7 +563,7 @@ For more information type:    :help command-t</pre>
 <li class='comment' id='comment_9728'>
 <cite>
 <a href="/users/emu">emu</a>
-<span class='when'><a href="/comments/9728"><time data-relative="true">2012-07-26T15:22:15Z</time></a></span>
+<span class='when'><a href="#comment_9728"><time data-relative="true">2012-07-26T15:22:15Z</time></a></span>
 </cite>
 <blockquote><p>I fixed my own problem. Here's what I think was happening. Let me know if I'm wrong.</p>
 <p>I was using RVM's 1.8.7 instead of OS X's 1.8.7. I entirely disabled RVM to compile Command-T, and it worked. I know next to nothing about Ruby, and even less about RVM. That was my problem, I think.</p>
@@ -571,7 +572,7 @@ For more information type:    :help command-t</pre>
 <li class='comment' id='comment_10070'>
 <cite>
 anonymous
-<span class='when'><a href="/comments/10070">Created <time data-relative="true">2012-12-27T11:01:56Z</time>, edited <time data-relative="true">2012-12-29T05:36:18Z</time></a></span>
+<span class='when'><a href="#comment_10070">Created <time data-relative="true">2012-12-27T11:01:56Z</time>, edited <time data-relative="true">2012-12-29T05:36:18Z</time></a></span>
 </cite>
 <blockquote><p>i had the same problem, it's clearly a version issue of OS X ruby, RVM Ruby and MACVIM Ruby version.</p>
 <p>What i did to solve the problem:</p>

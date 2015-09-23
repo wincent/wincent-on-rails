@@ -3,6 +3,7 @@
 <head>
 <meta content='text/html;charset=UTF-8' http-equiv='Content-Type'>
 <title>
+Trouble Installing on OS X Lion
 
 &middot; wincent.com
 </title>
@@ -55,7 +56,7 @@ ld: warning: ignoring file matcher.o, file was built for unsupported file format
 <li class='comment admin' id='comment_6980'>
 <cite>
 <a href="/users/greg-hurrell">Greg Hurrell</a>
-<span class='when'><a href="/comments/6980"><time data-relative="true">2011-07-23T21:43:55Z</time></a></span>
+<span class='when'><a href="#comment_6980"><time data-relative="true">2011-07-23T21:43:55Z</time></a></span>
 </cite>
 <blockquote><p>I've built successfully using the system Ruby. Haven't tried with <a href="/wiki/RVM">RVM</a> on <a href="/wiki/Lion">Lion</a>.</p>
 <p>It's important that you use the same version of Ruby that was used when building Vim itself. If you use <a href="/wiki/MacVim">MacVim</a>, that generally means the system Ruby (unless you built MacVim yourself from source, which isn't currently advisable right now if you're on Lion, based on what I've read on the MacVim Google group).</p>
@@ -64,7 +65,7 @@ ld: warning: ignoring file matcher.o, file was built for unsupported file format
 <li class='comment' id='comment_6993'>
 <cite>
 anonymous
-<span class='when'><a href="/comments/6993"><time data-relative="true">2011-07-28T08:21:12Z</time></a></span>
+<span class='when'><a href="#comment_6993"><time data-relative="true">2011-07-28T08:21:12Z</time></a></span>
 </cite>
 <blockquote><p>I had pretty much the same problem. Use ruby 1.9.2p180 on Lion (rvm use system will give you that), than do &quot;make clean&quot; (i had some old compiled files that were cousing a problem) and make. I use macvim snapshot 61. Works like a charm :) Good luck!</p>
 </blockquote>
@@ -72,7 +73,7 @@ anonymous
 <li class='comment admin' id='comment_6994'>
 <cite>
 <a href="/users/greg-hurrell">Greg Hurrell</a>
-<span class='when'><a href="/comments/6994"><time data-relative="true">2011-07-29T03:15:27Z</time></a></span>
+<span class='when'><a href="#comment_6994"><time data-relative="true">2011-07-29T03:15:27Z</time></a></span>
 </cite>
 <blockquote><p>It sounds incorrect that <code>rvm use system</code> would give you Ruby 1.9.2, as the system Ruby on <a href="/wiki/Lion">Lion</a> is still 1.8.7:</p>
 <pre class="ruby-syntax">$ which ruby

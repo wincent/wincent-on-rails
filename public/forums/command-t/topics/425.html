@@ -3,6 +3,7 @@
 <head>
 <meta content='text/html;charset=UTF-8' http-equiv='Content-Type'>
 <title>
+VIM stopped working after installing Command-T even though Ruby 1.8.x is installed.
 
 &middot; wincent.com
 </title>
@@ -49,7 +50,7 @@ vim: symbol lookup error: /home/siddhion/.vim/ruby/command-t/ext.so: undefined s
 <li class='comment admin' id='comment_5887'>
 <cite>
 <a href="/users/greg-hurrell">Greg Hurrell</a>
-<span class='when'><a href="/comments/5887"><time data-relative="true">2010-07-17T05:19:37Z</time></a></span>
+<span class='when'><a href="#comment_5887"><time data-relative="true">2010-07-17T05:19:37Z</time></a></span>
 </cite>
 <blockquote><p>First up, to unbreak Vim:</p>
 <p>You can see a list of all the files <a href="http://git.wincent.com/command-t.git/tree/HEAD" class="external">here</a>. So to uninstall you'd need to change to your <code>~/.vim</code> directory and do:</p>
@@ -99,7 +100,7 @@ create_makefile('ext')</pre>
 <li class='comment' id='comment_5888'>
 <cite>
 anonymous
-<span class='when'><a href="/comments/5888"><time data-relative="true">2010-07-17T12:58:04Z</time></a></span>
+<span class='when'><a href="#comment_5888"><time data-relative="true">2010-07-17T12:58:04Z</time></a></span>
 </cite>
 <blockquote><p>so command-t will not work with out Ruby 1.8.7 being the chosen Ruby version. You see I am using RVM to be able to select between different versions of Ruby. I plan on developing in Ruby 1.9.1 primarily for some time. </p>
 <p>So before I try to fix Command-T I should explain my situation a bit more in detail.</p>
@@ -110,7 +111,7 @@ anonymous
 <li class='comment' id='comment_5889'>
 <cite>
 <a href="/users/adam-siddhi">adam siddhi</a>
-<span class='when'><a href="/comments/5889"><time data-relative="true">2010-07-17T13:01:14Z</time></a></span>
+<span class='when'><a href="#comment_5889"><time data-relative="true">2010-07-17T13:01:14Z</time></a></span>
 </cite>
 <blockquote><p>So you are saying that before I install Command-T that I will need Ruby 1.8.7 to be my system Ruby version? </p>
 <p>Will using RVM to switch to Ruby 1.9.1 affect the ability to use Command-T and VIM even if Ruby 1.8.7 is my system Ruby version?</p>
@@ -120,7 +121,7 @@ anonymous
 <li class='comment admin' id='comment_5890'>
 <cite>
 <a href="/users/greg-hurrell">Greg Hurrell</a>
-<span class='when'><a href="/comments/5890"><time data-relative="true">2010-07-17T13:09:50Z</time></a></span>
+<span class='when'><a href="#comment_5890"><time data-relative="true">2010-07-17T13:09:50Z</time></a></span>
 </cite>
 <blockquote><p>No, you don't have to change your system Ruby.</p>
 <p>You just need to ensure that the version of Ruby you use to build the Command-T extension is the same version that was used when Vim was built. Once you've built the extension you can do whatever you want with your system Ruby. Vim doesn't care about your system Ruby, it only cares about the one it was built against (which most likely was 1.8).</p>
@@ -133,7 +134,7 @@ anonymous
 <li class='comment' id='comment_5891'>
 <cite>
 <a href="/users/adam-siddhi">adam siddhi</a>
-<span class='when'><a href="/comments/5891"><time data-relative="true">2010-07-17T16:45:16Z</time></a></span>
+<span class='when'><a href="#comment_5891"><time data-relative="true">2010-07-17T16:45:16Z</time></a></span>
 </cite>
 <blockquote><p>I removed Command-T but deleted the /.vim/doc folder by accident. oops. </p>
 <p>Anyways, </p>
@@ -173,7 +174,7 @@ Linking: gcc   -L. -Wl,-Bsymbolic-functions -rdynamic -Wl,-export-dynamic  -Wl,-
 <li class='comment admin' id='comment_5892'>
 <cite>
 <a href="/users/greg-hurrell">Greg Hurrell</a>
-<span class='when'><a href="/comments/5892"><time data-relative="true">2010-07-17T17:08:35Z</time></a></span>
+<span class='when'><a href="#comment_5892"><time data-relative="true">2010-07-17T17:08:35Z</time></a></span>
 </cite>
 <blockquote><p>So you can see in there there it was built and linked with these flags:</p>
 <pre>-I/usr/lib/ruby/1.8/i486-linux 
@@ -185,7 +186,7 @@ Linking: gcc   -L. -Wl,-Bsymbolic-functions -rdynamic -Wl,-export-dynamic  -Wl,-
 <li class='comment' id='comment_5893'>
 <cite>
 anonymous
-<span class='when'><a href="/comments/5893"><time data-relative="true">2010-07-17T23:45:48Z</time></a></span>
+<span class='when'><a href="#comment_5893"><time data-relative="true">2010-07-17T23:45:48Z</time></a></span>
 </cite>
 <blockquote><p>Yes I see this but can't believe it since I installed Ruby 1.8.x after installing VIM. Before installing Ruby I had Ruby 1.9.1 installed. Could it be that Ruby 1.8 was pre-installed with my Xubuntu 10.04 OS I wonder. </p>
 <p>In anycase, I will tell RVM to use system ruby and then re-install Command-T. </p>
@@ -197,7 +198,7 @@ anonymous
 <li class='comment' id='comment_6536'>
 <cite>
 anonymous
-<span class='when'><a href="/comments/6536"><time data-relative="true">2010-12-18T11:30:41Z</time></a></span>
+<span class='when'><a href="#comment_6536"><time data-relative="true">2010-12-18T11:30:41Z</time></a></span>
 </cite>
 <blockquote><p>for non rvm users</p>
 <p>reinstall command-t using ruby1.8 compiler this time</p>

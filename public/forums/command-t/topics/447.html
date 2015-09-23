@@ -3,6 +3,7 @@
 <head>
 <meta content='text/html;charset=UTF-8' http-equiv='Content-Type'>
 <title>
+ESC and other mappings not working
 
 &middot; wincent.com
 </title>
@@ -84,7 +85,7 @@ sr/lib -ltcl8.4 -lieee -lruby1.8 -lrt -lm</pre>
 <li class='comment admin' id='comment_6531'>
 <cite>
 <a href="/users/greg-hurrell">Greg Hurrell</a>
-<span class='when'><a href="/comments/6531"><time data-relative="true">2010-12-16T21:27:02Z</time></a></span>
+<span class='when'><a href="#comment_6531"><time data-relative="true">2010-12-16T21:27:02Z</time></a></span>
 </cite>
 <blockquote><p>A very similar question came up in the <a href="/forums/command-t/topics/446">last topic</a>. Quoting here what I said there:</p>
 <blockquote>
@@ -101,7 +102,7 @@ sr/lib -ltcl8.4 -lieee -lruby1.8 -lrt -lm</pre>
 <li class='comment' id='comment_6532'>
 <cite>
 <a href="/users/bobpaul">bobpaul</a>
-<span class='when'><a href="/comments/6532"><time data-relative="true">2010-12-16T22:36:31Z</time></a></span>
+<span class='when'><a href="#comment_6532"><time data-relative="true">2010-12-16T22:36:31Z</time></a></span>
 </cite>
 <blockquote><p>I guess I didn't think that applied since the asker said &quot;Doesn't happen in xterm&quot; and arrow keys work fine. Your ruby code is grabbing the escape sequences before vim handles them? I guess I would have expected that if vim knew the escape key for &lt;C-s&gt; then your plugin would only have to know &lt;C-s&gt;.</p>
 <p>For others with this issue... I've solved the &lt;ESC&gt; portion by adding the following to my ~/.vimrc:</p>
@@ -119,7 +120,7 @@ stty -ixon
 <li class='comment admin' id='comment_6533'>
 <cite>
 <a href="/users/greg-hurrell">Greg Hurrell</a>
-<span class='when'><a href="/comments/6533"><time data-relative="true">2010-12-17T08:47:35Z</time></a></span>
+<span class='when'><a href="#comment_6533"><time data-relative="true">2010-12-17T08:47:35Z</time></a></span>
 </cite>
 <blockquote><p>No, the Ruby code isn't grabbing anything before Vim handles it; quite the opposite: the Ruby code only sees what Vim's mappings decide to let through to it.</p>
 <p>So, as you've seen, if mappings aren't getting through it's basically always a result of the way a particular terminal sends the corresponding escape sequences. (This is why GUI-based Vims like gVim and MacVim never have mapping problems, because there is no intermediate terminal there to screw things up.)</p>

@@ -3,6 +3,7 @@
 <head>
 <meta content='text/html;charset=UTF-8' http-equiv='Content-Type'>
 <title>
+Problems under MacVim Snapshot 52
 
 &middot; wincent.com
 </title>
@@ -51,7 +52,7 @@ For more information type:    :help command-t  </pre>
 <li class='comment admin' id='comment_5698'>
 <cite>
 <a href="/users/greg-hurrell">Greg Hurrell</a>
-<span class='when'><a href="/comments/5698"><time data-relative="true">2010-06-17T16:30:40Z</time></a></span>
+<span class='when'><a href="#comment_5698"><time data-relative="true">2010-06-17T16:30:40Z</time></a></span>
 </cite>
 <blockquote><p>I'm using snapshot 52 here so I don't think it's necessarily a problem with that.</p>
 <p>You can see which version of Ruby MacVim was linked against by doing:</p>
@@ -72,7 +73,7 @@ cc -arch i386 -arch x86_64 -pipe -bundle -undefined dynamic_lookup -o ext.bundle
 <li class='comment' id='comment_5710'>
 <cite>
 anonymous
-<span class='when'><a href="/comments/5710"><time data-relative="true">2010-06-18T14:47:48Z</time></a></span>
+<span class='when'><a href="#comment_5710"><time data-relative="true">2010-06-18T14:47:48Z</time></a></span>
 </cite>
 <blockquote><p>Hello,</p>
 <p>From running :ruby p RUBY_VERSION, I get:</p>
@@ -89,7 +90,7 @@ anonymous
 <li class='comment admin' id='comment_5711'>
 <cite>
 <a href="/users/greg-hurrell">Greg Hurrell</a>
-<span class='when'><a href="/comments/5711"><time data-relative="true">2010-06-18T18:56:37Z</time></a></span>
+<span class='when'><a href="#comment_5711"><time data-relative="true">2010-06-18T18:56:37Z</time></a></span>
 </cite>
 <blockquote><p>Seems that the most likely cause of the crash is the incompatibility between the version of Ruby linked against by VIM and the version used to compile the extension.</p>
 <p>I'll bet that if you remove the MacPorts stuff from your <code>PATH</code> temporarily in order to build the extension that it will work.</p>
@@ -107,7 +108,7 @@ $ export PATH=$OLD_PATH</pre>
 <li class='comment' id='comment_5713'>
 <cite>
 anonymous
-<span class='when'><a href="/comments/5713"><time data-relative="true">2010-06-18T20:56:29Z</time></a></span>
+<span class='when'><a href="#comment_5713"><time data-relative="true">2010-06-18T20:56:29Z</time></a></span>
 </cite>
 <blockquote><p>When I removed everything having to do with MacPorts from my path, ruby extconf.rb was unable to find ruby.h</p>
 <p>I installed rvm yesterday (after this whole issue started), so I tried installing ruby 1.8.6 through that and compiling the plugin so that the versions would match. I go the same result however, with Stable working and the Snapshot broken.  It doesn't make any sense to me though because both version of MacVim say they're running 1.8.6, so I don't know why one would work and one wouldn't.</p>
@@ -117,7 +118,7 @@ anonymous
 <li class='comment admin' id='comment_5714'>
 <cite>
 <a href="/users/greg-hurrell">Greg Hurrell</a>
-<span class='when'><a href="/comments/5714"><time data-relative="true">2010-06-19T03:44:12Z</time></a></span>
+<span class='when'><a href="#comment_5714"><time data-relative="true">2010-06-19T03:44:12Z</time></a></span>
 </cite>
 <blockquote><p>I think I read that in one of the recent snapshots Bj&#x00f6;rn changed to doing 64-bit builds or something, especially with respect to Snow Leopard or something (can't remember the exact details). It might be worth looking at the snapshot release notes but I have to go away for the weekend so I can't do that right now.</p>
 <p>So it might be a 32-bit vs 64-bit thing. What kind of machine you running on? Is it a 64-bit one (eg. recent iMac?) or an older 32-bit one.</p>
@@ -126,7 +127,7 @@ anonymous
 <li class='comment admin' id='comment_5716'>
 <cite>
 <a href="/users/greg-hurrell">Greg Hurrell</a>
-<span class='when'><a href="/comments/5716"><time data-relative="true">2010-06-20T12:50:25Z</time></a></span>
+<span class='when'><a href="#comment_5716"><time data-relative="true">2010-06-20T12:50:25Z</time></a></span>
 </cite>
 <blockquote><p>Ok, back again.</p>
 <p>The three latest release announcements, as far as I can tell:</p>
@@ -156,7 +157,7 @@ anonymous
 <li class='comment' id='comment_5729'>
 <cite>
 anonymous
-<span class='when'><a href="/comments/5729"><time data-relative="true">2010-06-21T16:22:51Z</time></a></span>
+<span class='when'><a href="#comment_5729"><time data-relative="true">2010-06-21T16:22:51Z</time></a></span>
 </cite>
 <blockquote><p>Alright well I'm pretty stuck on what's going on here... I have been putting off upgrading to Snow Leopard, but it seems this might be fixed by doing so.  I'll just use stable until then.</p>
 <p>Thanks for your help!</p>
@@ -165,7 +166,7 @@ anonymous
 <li class='comment admin' id='comment_5730'>
 <cite>
 <a href="/users/greg-hurrell">Greg Hurrell</a>
-<span class='when'><a href="/comments/5730"><time data-relative="true">2010-06-21T17:20:50Z</time></a></span>
+<span class='when'><a href="#comment_5730"><time data-relative="true">2010-06-21T17:20:50Z</time></a></span>
 </cite>
 <blockquote><p>Yeah, sorry I couldn't give you a definitive answer.</p>
 <p>I still believe the most likely cause is a mismatch. One last thing you could try is actually building MacVim from source. Might be opening a can of worms, but it would be one way of ensuring that the version of Ruby MacVim links against is the same version that the Command-T extension links against when you compile it.</p>

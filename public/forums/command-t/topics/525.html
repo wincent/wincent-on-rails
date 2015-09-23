@@ -3,6 +3,7 @@
 <head>
 <meta content='text/html;charset=UTF-8' http-equiv='Content-Type'>
 <title>
+async search and index
 
 &middot; wincent.com
 </title>
@@ -45,7 +46,7 @@ anonymous
 <li class='comment admin' id='comment_10021'>
 <cite>
 <a href="/users/greg-hurrell">Greg Hurrell</a>
-<span class='when'><a href="/comments/10021"><time data-relative="true">2012-10-26T06:29:15Z</time></a></span>
+<span class='when'><a href="#comment_10021"><time data-relative="true">2012-10-26T06:29:15Z</time></a></span>
 </cite>
 <blockquote><p>It's not doing any indexing, as such, beyond reading the file hierarchy the first time it is displayed and caching it in memory. I've spent quite a bit of time thinking about data structures that would allow me to trade some space for time, doing some up-front processing in order to deliver faster searches subsequently. To date, I haven't found anything viable.</p>
 <p>Back in ancient history, Command-T used to use a linear algorithm for scoring and matching. In mid-2010 it switched to an algorithm which is quadratic in the worst case, but tends to give much more intuitive results (see <a href="/issues/1598">issue #1598</a>).</p>
@@ -56,7 +57,7 @@ anonymous
 <li class='comment' id='comment_10023'>
 <cite>
 anonymous
-<span class='when'><a href="/comments/10023"><time data-relative="true">2012-10-26T11:48:28Z</time></a></span>
+<span class='when'><a href="#comment_10023"><time data-relative="true">2012-10-26T11:48:28Z</time></a></span>
 </cite>
 <blockquote><p>Thanks for your quick reply. I understand it's reading the file hierarchy only - what I meant is: is that done in a separate thread? Would it be possible for the ruby script to have two threads - one that works with vim, updates UI and so on, and the other thread that receives requests for file lists, matching, sorting/scoring, etc. This way the UI would not block at all, we would have results &quot;instantly&quot;. You could send smaller sets of results to the UI, in batches, as the file hierarchy reading goes further.</p>
 <p>I really like how fast Sublime Text 2 is - it works very well with 70k files.</p>
@@ -68,7 +69,7 @@ anonymous
 <li class='comment admin' id='comment_10024'>
 <cite>
 <a href="/users/greg-hurrell">Greg Hurrell</a>
-<span class='when'><a href="/comments/10024"><time data-relative="true">2012-10-27T08:52:47Z</time></a></span>
+<span class='when'><a href="#comment_10024"><time data-relative="true">2012-10-27T08:52:47Z</time></a></span>
 </cite>
 <blockquote><p>Right. Vim itself is single-threaded, so while it is possible to do threading in a plug-in (ie. something like Command-T, written in Ruby, or something in Python) it does feel a bit risky, as it may interact poorly with code in Vim which is operating under the assumption that it is the only thing running.</p>
 <p>I actually think the way to get Command-T to be responsive with that number of files isn't threading; it's just going back to the much-faster-but-not-quite-as-good linear scoring algorithm of old. A configuration option, perhaps.</p>

@@ -3,6 +3,7 @@
 <head>
 <meta content='text/html;charset=UTF-8' http-equiv='Content-Type'>
 <title>
+Missing, &quot;un-indexed&quot; files
 
 &middot; wincent.com
 </title>
@@ -43,7 +44,7 @@ anonymous
 <li class='comment admin' id='comment_6760'>
 <cite>
 <a href="/users/greg-hurrell">Greg Hurrell</a>
-<span class='when'><a href="/comments/6760"><time data-relative="true">2011-03-25T04:57:55Z</time></a></span>
+<span class='when'><a href="#comment_6760"><time data-relative="true">2011-03-25T04:57:55Z</time></a></span>
 </cite>
 <blockquote><p>It may be ignored by your <code>'wildignore'</code> setting (see the docs), but perhaps the most likely explanation is that you're hitting the file-count limit, which defaults to 10,000 files.</p>
 <p>On a larger project, anything after the 10,000th file won't be indexed. You can raise the limit with something like this from inside Vim:</p>
@@ -55,7 +56,7 @@ anonymous
 <li class='comment' id='comment_6761'>
 <cite>
 anonymous
-<span class='when'><a href="/comments/6761"><time data-relative="true">2011-03-25T16:37:36Z</time></a></span>
+<span class='when'><a href="#comment_6761"><time data-relative="true">2011-03-25T16:37:36Z</time></a></span>
 </cite>
 <blockquote><p>Sweet!  Turns out .hg/ had about 17k files in it (!), so i put it in wildignore, and that seems to have done it.  Thanks!</p>
 </blockquote>

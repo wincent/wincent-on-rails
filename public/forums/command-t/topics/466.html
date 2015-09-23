@@ -3,6 +3,7 @@
 <head>
 <meta content='text/html;charset=UTF-8' http-equiv='Content-Type'>
 <title>
+Does Command-T support wildcards?
 
 &middot; wincent.com
 </title>
@@ -46,7 +47,7 @@ anonymous
 <li class='comment admin' id='comment_6791'>
 <cite>
 <a href="/users/greg-hurrell">Greg Hurrell</a>
-<span class='when'><a href="/comments/6791"><time data-relative="true">2011-04-07T04:04:15Z</time></a></span>
+<span class='when'><a href="#comment_6791"><time data-relative="true">2011-04-07T04:04:15Z</time></a></span>
 </cite>
 <blockquote><p>There is no need to use explicit wildcards as when you type:</p>
 <pre>FileShouldContainThis</pre>
@@ -58,7 +59,7 @@ anonymous
 <li class='comment' id='comment_6793'>
 <cite>
 anonymous
-<span class='when'><a href="/comments/6793"><time data-relative="true">2011-04-09T17:20:09Z</time></a></span>
+<span class='when'><a href="#comment_6793"><time data-relative="true">2011-04-09T17:20:09Z</time></a></span>
 </cite>
 <blockquote><p>Sure, I noticed that after some use. However, because of this way of matching I usually get things that I don't want as top hit even when I type full file name.</p>
 <p>I work on a large (over 3 million lines of code) project with over 57,000 relevant files (and up to 3 times as many build artifacts that I don't need to search), and having matches be greedy is not desirable. Also, command-T starts getting slow if CommanTMaxFiles is set over 20,000 files (I set it to 100,000 and rather extensive wildignore filter which helps but the initial scan is then much slower). </p>
@@ -68,7 +69,7 @@ anonymous
 <li class='comment admin' id='comment_6795'>
 <cite>
 <a href="/users/greg-hurrell">Greg Hurrell</a>
-<span class='when'><a href="/comments/6795"><time data-relative="true">2011-04-09T22:28:30Z</time></a></span>
+<span class='when'><a href="#comment_6795"><time data-relative="true">2011-04-09T22:28:30Z</time></a></span>
 </cite>
 <blockquote><blockquote>
 <p>However, because of this way of matching I usually get things that I don't want as top hit even when I type full file name.</p>
@@ -80,7 +81,7 @@ anonymous
 <li class='comment' id='comment_6796'>
 <cite>
 anonymous
-<span class='when'><a href="/comments/6796"><time data-relative="true">2011-04-10T13:31:29Z</time></a></span>
+<span class='when'><a href="#comment_6796"><time data-relative="true">2011-04-10T13:31:29Z</time></a></span>
 </cite>
 <blockquote><p>Yes, but that does not work because the files are in the same path and have same file part names:</p>
 <pre>./a/b/c/d/e/f/TestResult.js
@@ -93,7 +94,7 @@ anonymous
 <li class='comment admin' id='comment_6797'>
 <cite>
 <a href="/users/greg-hurrell">Greg Hurrell</a>
-<span class='when'><a href="/comments/6797"><time data-relative="true">2011-04-10T23:40:14Z</time></a></span>
+<span class='when'><a href="#comment_6797"><time data-relative="true">2011-04-10T23:40:14Z</time></a></span>
 </cite>
 <blockquote><p>The entire design of the plug-in is predicated on the fact that you know where the stuff you're looking for is.</p>
 <p>When I wrote it, there were already various plug-ins out there that do exactly what you describe (ie. &quot;file-centric&quot; opening of files). The whole reason I wrote Command-T was that I wasn't satisified with this approach and I wanted a way to quickly open files using a &quot;path-centric&quot; mentality.</p>

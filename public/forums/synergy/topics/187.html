@@ -3,6 +3,7 @@
 <head>
 <meta content='text/html;charset=UTF-8' http-equiv='Content-Type'>
 <title>
+Floater - Does not smoothly expand to show track
 
 &middot; wincent.com
 </title>
@@ -45,7 +46,7 @@
 <li class='comment admin' id='comment_542'>
 <cite>
 <a href="/users/greg-hurrell">Greg Hurrell</a>
-<span class='when'><a href="/comments/542"><time data-relative="true">2006-11-27T07:08:00Z</time></a></span>
+<span class='when'><a href="#comment_542"><time data-relative="true">2006-11-27T07:08:00Z</time></a></span>
 </cite>
 <blockquote><p>Strange. No animation? What happens? Does it just jump there in one go? Or does it appear at already the right width? Or is there an animation, but it's not smooth?</p>
 <p>Does the same thing happen when you try from inside another user account (just to rule out account-local causes)?</p>
@@ -54,7 +55,7 @@
 <li class='comment' id='comment_543'>
 <cite>
 <a href="/users/mikej">mikej</a>
-<span class='when'><a href="/comments/543"><time data-relative="true">2006-11-28T13:29:58Z</time></a></span>
+<span class='when'><a href="#comment_543"><time data-relative="true">2006-11-28T13:29:58Z</time></a></span>
 </cite>
 <blockquote><p>It appears with the album art, then instead of smoothly expanding to the right to show the track name, it just jumps to the end. I created a test user account and it behaves normally with the smooth scrolling, so it must be something to do with my profile, though I have no idea what.</p>
 </blockquote>
@@ -62,7 +63,7 @@
 <li class='comment admin' id='comment_544'>
 <cite>
 <a href="/users/greg-hurrell">Greg Hurrell</a>
-<span class='when'><a href="/comments/544"><time data-relative="true">2006-11-29T02:47:17Z</time></a></span>
+<span class='when'><a href="#comment_544"><time data-relative="true">2006-11-29T02:47:17Z</time></a></span>
 </cite>
 <blockquote><p>Well you've already tried the obvious steps (trashing the prefs, re-installing) so that rules out a couple of typical problem sources (corrupt files).</p>
 <p>My next suspect would be something that you have installed and running under your normal account that produces the problem. Perhaps something that competes too heavily for resources.</p>
@@ -72,7 +73,7 @@
 <li class='comment' id='comment_545'>
 <cite>
 <a href="/users/mikej">mikej</a>
-<span class='when'><a href="/comments/545"><time data-relative="true">2006-12-10T07:14:24Z</time></a></span>
+<span class='when'><a href="#comment_545"><time data-relative="true">2006-12-10T07:14:24Z</time></a></span>
 </cite>
 <blockquote><p>I figured out what it was - I had used Onyx to set the display of sheets to faster than normal, and it seems that the floater uses that setting in some way also. I set it back to Normal and all is well again.</p>
 </blockquote>
@@ -80,7 +81,7 @@
 <li class='comment admin' id='comment_546'>
 <cite>
 <a href="/users/greg-hurrell">Greg Hurrell</a>
-<span class='when'><a href="/comments/546"><time data-relative="true">2006-12-10T07:43:31Z</time></a></span>
+<span class='when'><a href="#comment_546"><time data-relative="true">2006-12-10T07:43:31Z</time></a></span>
 </cite>
 <blockquote><p>Ah very interesting!</p>
 <p>At a hunch, Onyx is probably doing some black magic with the NSWindow &quot;setFrame:display:animate:&quot; method and possibly the &quot;animationResizeTime&quot; method as well. It *might* be possible to work around this providing a user-settable resize time, but I don't know how Onyx works nor how deeply it injects itself into the system.</p>

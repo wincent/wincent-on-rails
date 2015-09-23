@@ -3,6 +3,7 @@
 <head>
 <meta content='text/html;charset=UTF-8' http-equiv='Content-Type'>
 <title>
+Getting 'stack level too deep' errors and segmentation faults
 
 &middot; wincent.com
 </title>
@@ -105,7 +106,7 @@ gcc -shared -o ext.so match.o matcher.o ext.o -L. -L/usr/lib64 -Wl,-R/usr/lib64 
 <li class='comment admin' id='comment_6944'>
 <cite>
 <a href="/users/greg-hurrell">Greg Hurrell</a>
-<span class='when'><a href="/comments/6944"><time data-relative="true">2011-06-25T23:50:44Z</time></a></span>
+<span class='when'><a href="#comment_6944"><time data-relative="true">2011-06-25T23:50:44Z</time></a></span>
 </cite>
 <blockquote><p>The scoring algorithm is recursive, so it is conceivable that it could potentially exceed the stack depth limit, but I've never seen it myself nor had any reports of it until now. (You'd need very deeply nested folder hierarchies with very long path lengths to get that far, I would think).</p>
 <p>Any idea how deeply nested the directory hierarchy is where you're trying this, and how long the paths are? (In practice, you're unlikely to hit the limit anyway, as there is a default max-depth of 10 that will stop Command-T from scanning once it drills down too deep anyway.)</p>
@@ -114,7 +115,7 @@ gcc -shared -o ext.so match.o matcher.o ext.o -L. -L/usr/lib64 -Wl,-R/usr/lib64 
 <li class='comment' id='comment_6945'>
 <cite>
 <a href="/users/ast">ast</a>
-<span class='when'><a href="/comments/6945"><time data-relative="true">2011-06-26T05:28:39Z</time></a></span>
+<span class='when'><a href="#comment_6945"><time data-relative="true">2011-06-26T05:28:39Z</time></a></span>
 </cite>
 <blockquote><p>It doesn't seem to depend on the amount of nested levels of directories. I've just tried to test it in ruby/command-t directory, which only has one level of subdirectories and had the same result. And, btw, it also segfaults sometimes when typing, but I can't find the reliable way of reproducing it. Something must be really wrong with my environment...</p>
 <p>Although I've tried to compile Vim with switches like was described in one of topics and also had this problem when ran ./src/vim from source directory after compilation.</p>
@@ -123,7 +124,7 @@ gcc -shared -o ext.so match.o matcher.o ext.o -L. -L/usr/lib64 -Wl,-R/usr/lib64 
 <li class='comment' id='comment_6946'>
 <cite>
 <a href="/users/ast">ast</a>
-<span class='when'><a href="/comments/6946"><time data-relative="true">2011-06-26T05:37:41Z</time></a></span>
+<span class='when'><a href="#comment_6946"><time data-relative="true">2011-06-26T05:37:41Z</time></a></span>
 </cite>
 <blockquote><p>I've also tried to increase maximum stack size limit as described <a href="http://dalibornasevic.com/posts/5-ruby-stack-level-too-deep-systemstackerror" class="external">here</a>, bit it had no effect.</p>
 </blockquote>
@@ -131,7 +132,7 @@ gcc -shared -o ext.so match.o matcher.o ext.o -L. -L/usr/lib64 -Wl,-R/usr/lib64 
 <li class='comment admin' id='comment_6947'>
 <cite>
 <a href="/users/greg-hurrell">Greg Hurrell</a>
-<span class='when'><a href="/comments/6947"><time data-relative="true">2011-06-26T07:36:55Z</time></a></span>
+<span class='when'><a href="#comment_6947"><time data-relative="true">2011-06-26T07:36:55Z</time></a></span>
 </cite>
 <blockquote><p>I know a buggy version of Vim shipped with Ubuntu 11.04, although you say you're on OpenSUSE. Where'd you get your version of Vim from?</p>
 </blockquote>
@@ -139,7 +140,7 @@ gcc -shared -o ext.so match.o matcher.o ext.o -L. -L/usr/lib64 -Wl,-R/usr/lib64 
 <li class='comment' id='comment_6948'>
 <cite>
 <a href="/users/ast">ast</a>
-<span class='when'><a href="/comments/6948"><time data-relative="true">2011-06-26T10:40:09Z</time></a></span>
+<span class='when'><a href="#comment_6948"><time data-relative="true">2011-06-26T10:40:09Z</time></a></span>
 </cite>
 <blockquote><p>It's Vim that comes with OS (<a href="http://download.opensuse.org/distribution/11.4/repo/oss/suse/x86_64/vim-7.3-5.3.x86_64.rpm" class="external">rpm</a>). And the one that I've tried to compile is from official Mercurial <a href="https://vim.googlecode.com/hg/" class="external">repo</a>.</p>
 </blockquote>
@@ -147,7 +148,7 @@ gcc -shared -o ext.so match.o matcher.o ext.o -L. -L/usr/lib64 -Wl,-R/usr/lib64 
 <li class='comment' id='comment_6964'>
 <cite>
 <a href="/users/ast">ast</a>
-<span class='when'><a href="/comments/6964"><time data-relative="true">2011-07-02T06:21:04Z</time></a></span>
+<span class='when'><a href="#comment_6964"><time data-relative="true">2011-07-02T06:21:04Z</time></a></span>
 </cite>
 <blockquote><p>The trick was in installing Command-T into standard directory. Previously I installed it using <a href="http://www.vim.org/scripts/script.php?script_id=2905" class="external">VAM</a> into ~/.vim-plugins/Command-T directory. Once I installed it into ~/.vim using Vimball it started working. The drawback of this is that I'll have to update Command-T manually. But it works, and I like it more then FuzzyFinder so far. Thanks you :)</p>
 </blockquote>

@@ -3,6 +3,7 @@
 <head>
 <meta content='text/html;charset=UTF-8' http-equiv='Content-Type'>
 <title>
+not matching correctly?
 
 &middot; wincent.com
 </title>
@@ -47,7 +48,7 @@ anonymous
 <li class='comment admin' id='comment_6094'>
 <cite>
 <a href="/users/greg-hurrell">Greg Hurrell</a>
-<span class='when'><a href="/comments/6094"><time data-relative="true">2010-08-18T16:34:48Z</time></a></span>
+<span class='when'><a href="#comment_6094"><time data-relative="true">2010-08-18T16:34:48Z</time></a></span>
 </cite>
 <blockquote><p>First, you shouldn't bother typing slashes like you do in your <code>test/unit/</code> example. Typing <code>testunit</code> would work just as well. (And in fact, typing fewer characters like just <code>test</code> or even <code>tu</code> will probably get you there faster anyway.)</p>
 <p>Secondly, Command-T looks at the entire path for possible matches, so it's not going to show you only matches from under the <code>test/unit/</code> directory, but from anywhere in the project root. If you want to scope things just to the <code>test/unit/</code> directory you can either launch Command-T with an explicit path argument (eg. <code>:CommandT test/unit</code>) or, preferably, get in the habit of using a character or two from each segment of the path. For example, to open <code>test/unit/audit/patriot_act_audit_test</code> you might type <code>testaudpatact</code> or perhaps <code>patactaudtest</code>. Depending on the number of files in your project you may find that you can use considerably less characters too.</p>

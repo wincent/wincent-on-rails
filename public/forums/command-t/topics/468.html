@@ -3,6 +3,7 @@
 <head>
 <meta content='text/html;charset=UTF-8' http-equiv='Content-Type'>
 <title>
+have_header('ruby.h') failing even though ruby.h exists
 
 &middot; wincent.com
 </title>
@@ -43,7 +44,7 @@ anonymous
 <li class='comment admin' id='comment_6807'>
 <cite>
 <a href="/users/greg-hurrell">Greg Hurrell</a>
-<span class='when'><a href="/comments/6807"><time data-relative="true">2011-04-15T15:54:02Z</time></a></span>
+<span class='when'><a href="#comment_6807"><time data-relative="true">2011-04-15T15:54:02Z</time></a></span>
 </cite>
 <blockquote><p>Check out the <a href="http://www.ruby-doc.org/stdlib/libdoc/mkmf/rdoc/index.html" class="external">mkmf documentation</a>. mkmf is what's used to generate the Makefile.</p>
 <p>Usually, it finds whatever is needed in the standard places, but you may be able to hack the <code>extconf.rb</code> file and use the <code>find_header</code> method to tell it to look in a particular place.</p>
@@ -52,7 +53,7 @@ anonymous
 <li class='comment' id='comment_6845'>
 <cite>
 anonymous
-<span class='when'><a href="/comments/6845"><time data-relative="true">2011-05-02T18:16:02Z</time></a></span>
+<span class='when'><a href="#comment_6845"><time data-relative="true">2011-05-02T18:16:02Z</time></a></span>
 </cite>
 <blockquote><p>I fixed the issue. Turns out, Fedora 15 doesn't have gcc installed by default, so that was the problem, but the error messages weren't helpful at all in figuring that out.</p>
 </blockquote>

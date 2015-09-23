@@ -3,6 +3,7 @@
 <head>
 <meta content='text/html;charset=UTF-8' http-equiv='Content-Type'>
 <title>
+Some album artwork not showing in 1.8
 
 &middot; wincent.com
 </title>
@@ -44,7 +45,7 @@
 <li class='comment' id='comment_293'>
 <cite>
 <a href="/users/magnetikal">Magnetikal</a>
-<span class='when'><a href="/comments/293"><time data-relative="true">2005-04-15T05:13:21Z</time></a></span>
+<span class='when'><a href="#comment_293"><time data-relative="true">2005-04-15T05:13:21Z</time></a></span>
 </cite>
 <blockquote><p>Nix that last part - I just saw you've already fixed the &quot;no space&quot; bug for the next release.</p>
 </blockquote>
@@ -52,7 +53,7 @@
 <li class='comment admin' id='comment_294'>
 <cite>
 <a href="/users/greg-hurrell">Greg Hurrell</a>
-<span class='when'><a href="/comments/294"><time data-relative="true">2005-04-15T15:18:11Z</time></a></span>
+<span class='when'><a href="#comment_294"><time data-relative="true">2005-04-15T15:18:11Z</time></a></span>
 </cite>
 <blockquote><p>There is a bug report for this open in the bug database:</p>
 <p><a href="http://wincent.com/a/support/bugs/show_bug.cgi?id=173" class="external">http://wincent.com/a/support/bugs/show_bug.cgi?id=173</a></p>
@@ -61,7 +62,7 @@
 <li class='comment' id='comment_295'>
 <cite>
 <a href="/users/david">David</a>
-<span class='when'><a href="/comments/295"><time data-relative="true">2005-04-15T17:20:07Z</time></a></span>
+<span class='when'><a href="#comment_295"><time data-relative="true">2005-04-15T17:20:07Z</time></a></span>
 </cite>
 <blockquote><p>About this bug; Synergy will not find the artwork under this new scheme in the case where the songs on the album have different composers it seems. Each time a song plays, the group essentially has a different name: Band(composer 1) Band(composer 2) I've been waiting all day for art to be found again, and it's only failing where this composer info is being shown. (It also doesn't make sense to look for new artwork for every song on a track.)</p>
 </blockquote>
@@ -69,7 +70,7 @@
 <li class='comment admin' id='comment_296'>
 <cite>
 <a href="/users/greg-hurrell">Greg Hurrell</a>
-<span class='when'><a href="/comments/296"><time data-relative="true">2005-04-16T07:08:17Z</time></a></span>
+<span class='when'><a href="#comment_296"><time data-relative="true">2005-04-16T07:08:17Z</time></a></span>
 </cite>
 <blockquote><p>You're right that it doesn't make sense to look for new artwork for every song on an album. This is a problem that Synergy has always had. How does it know &quot;what is an album&quot;? It can only assume that if a track has the same album title and the same artist then it is the same album. This has caused problems for compilation albums because the artists are often different. In this case, Synergy should ignore the artist name and perform the comparison on the basis of album name only.</p>
 <p>But there are other problems with that idea because some people have different art embedded in tracks even though they are in the same album... For this reason I am going to implement some preferences in Synergy Advance so people can choose how their art gets managed (ie. the strategy used for identify what is an album).</p>

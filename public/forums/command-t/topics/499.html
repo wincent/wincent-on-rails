@@ -3,6 +3,7 @@
 <head>
 <meta content='text/html;charset=UTF-8' http-equiv='Content-Type'>
 <title>
+Ubuntu Command-T is installed but crashes VIM every time I try to envoke it
 
 &middot; wincent.com
 </title>
@@ -57,7 +58,7 @@ gcc -shared -o ext.so ext.o match.o matcher.o -L. -L/usr/lib -L. -Wl,-Bsymbolic-
 <li class='comment admin' id='comment_7346'>
 <cite>
 <a href="/users/greg-hurrell">Greg Hurrell</a>
-<span class='when'><a href="/comments/7346"><time data-relative="true">2011-12-24T08:11:41Z</time></a></span>
+<span class='when'><a href="#comment_7346"><time data-relative="true">2011-12-24T08:11:41Z</time></a></span>
 </cite>
 <blockquote><p>Looks to be miscompiled. Rather than repeating myself, I'll just refer you to my comments on <a href="/forums/command-t/topics/494">this forum topic</a>.</p>
 <p>The <code>yanking_history_v2.txt</code> file is unrelated to <a href="/wiki/Command-T">Command-T</a>. Most likely some other plug-in is not cleaning up after itself when <a href="/wiki/Vim">Vim</a> crashes.</p>
@@ -66,7 +67,7 @@ gcc -shared -o ext.so ext.o match.o matcher.o -L. -L/usr/lib -L. -Wl,-Bsymbolic-
 <li class='comment' id='comment_7377'>
 <cite>
 <a href="/users/globalkeith">globalkeith</a>
-<span class='when'><a href="/comments/7377"><time data-relative="true">2012-01-15T20:00:42Z</time></a></span>
+<span class='when'><a href="#comment_7377"><time data-relative="true">2012-01-15T20:00:42Z</time></a></span>
 </cite>
 <blockquote><p>Thanks! I've had a look at the thread you suggest but beyond describing what the problem is, do you have any suggestions how I can resolve it and get this working on my machine? </p>
 </blockquote>
@@ -74,7 +75,7 @@ gcc -shared -o ext.so ext.o match.o matcher.o -L. -L/usr/lib -L. -Wl,-Bsymbolic-
 <li class='comment' id='comment_7378'>
 <cite>
 <a href="/users/globalkeith">globalkeith</a>
-<span class='when'><a href="/comments/7378"><time data-relative="true">2012-01-15T22:35:39Z</time></a></span>
+<span class='when'><a href="#comment_7378"><time data-relative="true">2012-01-15T22:35:39Z</time></a></span>
 </cite>
 <blockquote><p>Ok, so I have tried installing a fresh version of Mint 12 (Ubuntu), with a freshly compiled version of vim, straight from <a href="https://vim.googlecode.com/hg/" class="external">https://vim.googlecode.com/hg/</a> with ruby support (with a brand new install of ruby 1.9.2p290 using rbenv/ruby-build), and I'm still getting the same problem. </p>
 <p>Could you explain how I can debug this, to uncover what/where the problem is?</p>
@@ -83,7 +84,7 @@ gcc -shared -o ext.so ext.o match.o matcher.o -L. -L/usr/lib -L. -Wl,-Bsymbolic-
 <li class='comment admin' id='comment_7379'>
 <cite>
 <a href="/users/greg-hurrell">Greg Hurrell</a>
-<span class='when'><a href="/comments/7379"><time data-relative="true">2012-01-16T04:43:56Z</time></a></span>
+<span class='when'><a href="#comment_7379"><time data-relative="true">2012-01-16T04:43:56Z</time></a></span>
 </cite>
 <blockquote><p>Nothing beyond the usual advice to make sure you build Command-T using the same version of Ruby that your copy of Vim was linked against at build time.</p>
 <p>If you want further tips, I suggest you post a full transcript showing the steps you took to build both Command-T and Vim. I might be able to spot a mistake.</p>

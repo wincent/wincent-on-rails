@@ -3,6 +3,7 @@
 <head>
 <meta content='text/html;charset=UTF-8' http-equiv='Content-Type'>
 <title>
+Characters entered do not match file list
 
 &middot; wincent.com
 </title>
@@ -51,7 +52,7 @@
 <li class='comment admin' id='comment_9114'>
 <cite>
 <a href="/users/greg-hurrell">Greg Hurrell</a>
-<span class='when'><a href="/comments/9114"><time data-relative="true">2012-07-16T04:16:35Z</time></a></span>
+<span class='when'><a href="#comment_9114"><time data-relative="true">2012-07-16T04:16:35Z</time></a></span>
 </cite>
 <blockquote><p>Have you got a screenshot showing the match listing when something unexpected happens?</p>
 <p>My guess is that the files do match, but in the fuzzy sense (ie. the characters are not consecutive in the matched files), and that is what is producing the confusion.</p>
@@ -60,7 +61,7 @@
 <li class='comment' id='comment_9159'>
 <cite>
 <a href="/users/andrew-vit">Andrew Vit</a>
-<span class='when'><a href="/comments/9159"><time data-relative="true">2012-07-16T19:09:11Z</time></a></span>
+<span class='when'><a href="#comment_9159"><time data-relative="true">2012-07-16T19:09:11Z</time></a></span>
 </cite>
 <blockquote><p>I'm used to TextMate and similar fuzzy matchers, so yes I'm certain of this. Here's a couple screenshots: </p>
 <ul>
@@ -74,7 +75,7 @@
 <li class='comment admin' id='comment_9336'>
 <cite>
 <a href="/users/greg-hurrell">Greg Hurrell</a>
-<span class='when'><a href="/comments/9336"><time data-relative="true">2012-07-19T04:34:40Z</time></a></span>
+<span class='when'><a href="#comment_9336"><time data-relative="true">2012-07-19T04:34:40Z</time></a></span>
 </cite>
 <blockquote><p>It's hard to imagine what might cause this. What are you using to provide the custom status  line? I'm wondering if it might be hooking into Command-T in such a way that it's introducing the odd behavior.</p>
 </blockquote>
@@ -82,7 +83,7 @@
 <li class='comment' id='comment_9338'>
 <cite>
 <a href="/users/andrew-vit">Andrew Vit</a>
-<span class='when'><a href="/comments/9338"><time data-relative="true">2012-07-19T05:49:35Z</time></a></span>
+<span class='when'><a href="#comment_9338"><time data-relative="true">2012-07-19T05:49:35Z</time></a></span>
 </cite>
 <blockquote><p>The statusline is from <a href="https://github.com/Lokaltog/vim-powerline/" class="external">vim-powerline</a>. I tried clearing out my .vimrc completely and pointing pathogen to a stripped bundle directory containing only command-t, leaving just:</p>
 <pre>   set nocompatible
@@ -94,7 +95,7 @@
 <li class='comment' id='comment_9344'>
 <cite>
 <a href="/users/andrew-vit">Andrew Vit</a>
-<span class='when'><a href="/comments/9344">Created <time data-relative="true">2012-07-19T07:47:35Z</time>, edited <time data-relative="true">2012-07-20T07:29:42Z</time></a></span>
+<span class='when'><a href="#comment_9344">Created <time data-relative="true">2012-07-19T07:47:35Z</time>, edited <time data-relative="true">2012-07-20T07:29:42Z</time></a></span>
 </cite>
 <blockquote><p>So I tried clearing out my MacVim and Command-T installation and starting from scratch. Recompiling both under 1.9.3-p1.9.4 (rvm) led to a SEGV when starting :CommandT. There are a few warnings in the Command-T compiler, I'm not sure if any of this is relevant:</p>
 <pre>
@@ -139,7 +140,7 @@ Press ENTER or type command to continue
 <li class='comment admin' id='comment_9404'>
 <cite>
 <a href="/users/greg-hurrell">Greg Hurrell</a>
-<span class='when'><a href="/comments/9404"><time data-relative="true">2012-07-20T07:30:34Z</time></a></span>
+<span class='when'><a href="#comment_9404"><time data-relative="true">2012-07-20T07:30:34Z</time></a></span>
 </cite>
 <blockquote><p>FWIW, the symlink should definitely not be a problem (I also have a symlink for my <code>~/.vim</code>). To my eye the compilation warnings under 1.9.x look harmless enough. Glad you got it sorted out in the end.</p>
 </blockquote>

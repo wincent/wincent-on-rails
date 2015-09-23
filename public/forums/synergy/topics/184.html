@@ -3,6 +3,7 @@
 <head>
 <meta content='text/html;charset=UTF-8' http-equiv='Content-Type'>
 <title>
+3.1b seeded to beta testers
 
 &middot; wincent.com
 </title>
@@ -44,7 +45,7 @@
 <li class='comment' id='comment_516'>
 <cite>
 <a href="/users/neilio">neilio</a>
-<span class='when'><a href="/comments/516"><time data-relative="true">2006-11-13T12:45:12Z</time></a></span>
+<span class='when'><a href="#comment_516"><time data-relative="true">2006-11-13T12:45:12Z</time></a></span>
 </cite>
 <blockquote><p>I'm getting some weird issues with the Audioscrobbler support. When the track changes, I see this in the console:</p>
 <p>Current track cannot be submitted because it is not a regular file</p>
@@ -55,7 +56,7 @@
 <li class='comment admin' id='comment_517'>
 <cite>
 <a href="/users/greg-hurrell">Greg Hurrell</a>
-<span class='when'><a href="/comments/517"><time data-relative="true">2006-11-13T13:30:20Z</time></a></span>
+<span class='when'><a href="#comment_517"><time data-relative="true">2006-11-13T13:30:20Z</time></a></span>
 </cite>
 <blockquote><p>As the message indicates, Synergy isn't submitting it because it thinks it is not a regular file. Now the question is, why does it think that?</p>
 <p>You'll need to check what kind of notifications iTunes is sending for those tracks. I've put together a tiny tool called &quot;itnl&quot; (iTunes Notification Logger) which you can run from the Terminal and it will print out the notifications that iTunes is sending.</p>
@@ -69,7 +70,7 @@
 <li class='comment' id='comment_518'>
 <cite>
 <a href="/users/neilio">neilio</a>
-<span class='when'><a href="/comments/518"><time data-relative="true">2006-11-13T16:43:51Z</time></a></span>
+<span class='when'><a href="#comment_518"><time data-relative="true">2006-11-13T16:43:51Z</time></a></span>
 </cite>
 <blockquote><p>Here's what I get when I run itnl: Quote:*************************************************** Notification received 2006-11-13 16:41:55 -0500:</p>
 <pre>   Name: com.apple.iTunes.playerInfo
@@ -92,7 +93,7 @@
 <li class='comment admin' id='comment_519'>
 <cite>
 <a href="/users/greg-hurrell">Greg Hurrell</a>
-<span class='when'><a href="/comments/519"><time data-relative="true">2006-11-13T17:51:12Z</time></a></span>
+<span class='when'><a href="#comment_519"><time data-relative="true">2006-11-13T17:51:12Z</time></a></span>
 </cite>
 <blockquote><p>Well, looks like the problem is that there is no &quot;location&quot; field, so Synergy has no way of knowing that it's a regular file. Compare that with a notification for a file playing from the local hard disk:</p>
 <p>Code:Notification received 2006-11-13 23:49:38 +0100:</p>
@@ -116,7 +117,7 @@
 <li class='comment' id='comment_520'>
 <cite>
 <a href="/users/heavyboots">heavyboots</a>
-<span class='when'><a href="/comments/520"><time data-relative="true">2006-11-28T12:43:05Z</time></a></span>
+<span class='when'><a href="#comment_520"><time data-relative="true">2006-11-28T12:43:05Z</time></a></span>
 </cite>
 <blockquote><p>Hi Wincent,</p>
 <p>Just found another audioscrobbler &quot;issue&quot; although it's not really a bug so much as a grievance caused by using two machines with one audioscrobbler account. I have a home machine and a work machine, which I use in alternating order. It appears that Synergy cannot successfully report music usage from either machine until I manually re-login from the System Prefs panel by editing the audioscrobbler settings and just clicking Save. Then all of a sudden all my tracks come flooding in.</p>
@@ -127,7 +128,7 @@
 <li class='comment admin' id='comment_521'>
 <cite>
 <a href="/users/greg-hurrell">Greg Hurrell</a>
-<span class='when'><a href="/comments/521"><time data-relative="true">2006-11-28T13:32:17Z</time></a></span>
+<span class='when'><a href="#comment_521"><time data-relative="true">2006-11-28T13:32:17Z</time></a></span>
 </cite>
 <blockquote><p>Can you please turn on logging as described in the beta announcement:</p>
 <p><a href="http://lists.wincent.com/pipermail/synergy-beta/2006-November/000003.html" class="external">http://lists.wincent.com/pipermail/synergy-beta/2006-November/000003.html</a></p>
@@ -138,7 +139,7 @@
 <li class='comment admin' id='comment_522'>
 <cite>
 <a href="/users/greg-hurrell">Greg Hurrell</a>
-<span class='when'><a href="/comments/522"><time data-relative="true">2006-11-28T13:54:49Z</time></a></span>
+<span class='when'><a href="#comment_522"><time data-relative="true">2006-11-28T13:54:49Z</time></a></span>
 </cite>
 <blockquote><p>I've opened a feature request for the &quot;Force login&quot; menu item:</p>
 <p><a href="http://wincent.com/a/support/bugs/show_bug.cgi?id=512" class="external">http://wincent.com/a/support/bugs/show_bug.cgi?id=512</a></p>
@@ -147,7 +148,7 @@
 <li class='comment' id='comment_523'>
 <cite>
 <a href="/users/heavyboots">heavyboots</a>
-<span class='when'><a href="/comments/523"><time data-relative="true">2006-11-29T15:01:09Z</time></a></span>
+<span class='when'><a href="#comment_523"><time data-relative="true">2006-11-29T15:01:09Z</time></a></span>
 </cite>
 <blockquote><p>Originally Posted By: WincentColaiutaAs for having to manually re-edit the settings, I should think that stopping and starting Synergy would be an easy way to force a handshake in the meantime. </p>
 <p>Thanks for the quick response, Wincent. I didn't stop/start Synergy because I was afraid that would flush the queue? I figured better safe than sorry. </p>
@@ -158,7 +159,7 @@
 <li class='comment admin' id='comment_524'>
 <cite>
 <a href="/users/greg-hurrell">Greg Hurrell</a>
-<span class='when'><a href="/comments/524"><time data-relative="true">2006-11-29T20:25:27Z</time></a></span>
+<span class='when'><a href="#comment_524"><time data-relative="true">2006-11-29T20:25:27Z</time></a></span>
 </cite>
 <blockquote><p>That's true, if you stop Synergy you will lose whatever was in the submission queue. But I think that pretty much any change you make to the preferences while Synergy is running will cause everything to refresh as soon as you click &quot;Apply&quot;; and that explains why Synergy &quot;noticed&quot; you'd enabled logging and also renogiated the handshake.</p>
 <p>If you can capture the console output that occurs when your seeing the submission backlog problem let me know.</p>
@@ -167,7 +168,7 @@
 <li class='comment' id='comment_525'>
 <cite>
 <a href="/users/heavyboots">heavyboots</a>
-<span class='when'><a href="/comments/525"><time data-relative="true">2006-11-30T23:23:40Z</time></a></span>
+<span class='when'><a href="#comment_525"><time data-relative="true">2006-11-30T23:23:40Z</time></a></span>
 </cite>
 <blockquote><p>Busy day! With regards to the queue, it is in fact retained and uploaded after I &quot;re-save&quot; if I use that method to get Synergy to log in again. Unfortunately that isn't captured in this session as I had to log out to fix a font issue almost immediately after I started using iTunes... It sounds like I could basically hit apply anywhere though? That's good to know.</p>
 <p>Here's the console output. First I unpause, then I switch tracks so it will try and submit to Last.fm faster. And finally after a couple of tracks I had to do a quick logout so the interesting console output ends for today.</p>
@@ -178,7 +179,7 @@
 <li class='comment admin' id='comment_526'>
 <cite>
 <a href="/users/greg-hurrell">Greg Hurrell</a>
-<span class='when'><a href="/comments/526"><time data-relative="true">2006-12-01T06:37:23Z</time></a></span>
+<span class='when'><a href="#comment_526"><time data-relative="true">2006-12-01T06:37:23Z</time></a></span>
 </cite>
 <blockquote><p>Ok, thanks for that. We can see that Audioscrobbler is returning &quot;BADAUTH&quot; which means that it rejects the username and password. So that's confirmation of your suspicion that it is doing some kind of IP-based check or similar.</p>
 <p>So looks like the workaround for this issue will be the &quot;Force re-login&quot; thing that's already been added to the database here:</p>
@@ -189,7 +190,7 @@
 <li class='comment' id='comment_527'>
 <cite>
 <a href="/users/heavyboots">heavyboots</a>
-<span class='when'><a href="/comments/527"><time data-relative="true">2006-12-04T13:41:53Z</time></a></span>
+<span class='when'><a href="#comment_527"><time data-relative="true">2006-12-04T13:41:53Z</time></a></span>
 </cite>
 <blockquote><p>Hmmm, unfortunately the lines are pasted exactly as they show in the console for me. Here's another sample, but I don't think it's going to help. EDIT: I searched by time too and these are the only messages from that time that have anything to do with Synergy, so there's nothing hidden by the filter in the Console that I wasn't seeing either.</p>
 <p>Quote:006-12-01 18:02:06.643 Synergy[1827] Audioscrobbler: Starting connection attempt 2006-12-01 18:02:06.643 Synergy[1827] Audioscrobbler: Waiting for submission response 2006-12-01 18:02:07.386 Synergy[1827] Audioscrobbler: Connection to Audioscrobbler did finish loading (response received) 2006-12-01 18:02:07.386 Synergy[1827] Audioscrobbler: Received an INTERVAL directive 2006-12-01 18:02:07.386 Synergy[1827] Audioscrobbler: Storing interval value: 1 2006-12-01 18:02:07.386 Synergy[1827] Audioscrobbler: Processing submission response 2006-12-01 18:02:07.386 Synergy[1827] Audioscrobbler: Received BADAUTH response 2006-12-01 18:39:49.730 Synergy[1827] Audioscrobbler: Received notification from iTunes 2006-12-01 18:39:49.730 Synergy[1827] Audioscrobbler: Received notification of playing status 2006-12-01 18:39:49.730 Synergy[1827] Audioscrobbler: Track information: { 2006-12-01 18:39:49.730 Synergy[1827] Audioscrobbler: This track appears to be a new submission 2006-12-01 18:39:49.730 Synergy[1827] Audioscrobbler: Cancelling previously existing submission timer, if any 2006-12-01 18:39:49.730 Synergy[1827] Audioscrobbler: Setting up new submission timer (126 seconds) 2006-12-01 18:41:55.730 Synergy[1827] Audioscrobbler: Submission timer fired; will double-check that current track position matches expected value 2006-12-01 18:41:55.731 Synergy[1827] Audioscrobbler: Position matches, will submit to Audioscrobbler 2006-12-01 18:41:55.731 Synergy[1827] Audioscrobbler: Adding song to submission queue; song infomation: { 2006-12-01 18:41:55.731 Synergy[1827] Audioscrobbler: Enqueuing object: { 2006-12-01 18:41:55.731 Synergy[1827] Audioscrobbler: Number of items currently on the queue: 2 2006-12-01 18:41:55.731 Synergy[1827] Audioscrobbler: Queue was non-empty, but not ready to submit: not processing item 2006-12-01 18:44:03.188 Synergy[1827] Audioscrobbler: Received notification from iTunes 2006-12-01 18:44:03.188 Synergy[1827] Audioscrobbler: Received notification of playing status 2006-12-01 18:44:03.188 Synergy[1827] Audioscrobbler: Track information: { 2006-12-01 18:44:03.188 Synergy[1827] Audioscrobbler: This track appears to be a new submission 2006-12-01 18:44:03.188 Synergy[1827] Audioscrobbler: Cancelling previously existing submission timer, if any 2006-12-01 18:44:03.188 Synergy[1827] Audioscrobbler: Setting up new submission timer (135 seconds) 2006-12-01 18:46:18.188 Synergy[1827] Audioscrobbler: Submission timer fired; will double-check that current track position matches expected value</p>
@@ -200,7 +201,7 @@
 <li class='comment admin' id='comment_528'>
 <cite>
 <a href="/users/greg-hurrell">Greg Hurrell</a>
-<span class='when'><a href="/comments/528"><time data-relative="true">2006-12-04T13:50:58Z</time></a></span>
+<span class='when'><a href="#comment_528"><time data-relative="true">2006-12-04T13:50:58Z</time></a></span>
 </cite>
 <blockquote><p>The 3.1 beta expired today. The final (non-beta) release is available for download:</p>
 <p><a href="http://wincent.com/download.php?item=Synergy.dmg" class="external">http://wincent.com/download.php?item=Synergy.dmg</a></p>
@@ -215,7 +216,7 @@
 <li class='comment' id='comment_529'>
 <cite>
 <a href="/users/heavyboots">heavyboots</a>
-<span class='when'><a href="/comments/529"><time data-relative="true">2006-12-04T14:07:32Z</time></a></span>
+<span class='when'><a href="#comment_529"><time data-relative="true">2006-12-04T14:07:32Z</time></a></span>
 </cite>
 <blockquote><p>Okay, thanks for all the support and the lightening quick responses. Synergy is still one of my all-time favorites OS X apps ever in case I hadn't mentioned that before! </p>
 <p>As for the Console, I looked one more time--this time specifically for lines with braces. Here's what it looks like with fully braced info. Sadly, there is not additional info in the BADAUTH area though.</p>
@@ -268,7 +269,7 @@
 <li class='comment admin' id='comment_530'>
 <cite>
 <a href="/users/greg-hurrell">Greg Hurrell</a>
-<span class='when'><a href="/comments/530"><time data-relative="true">2006-12-04T14:10:38Z</time></a></span>
+<span class='when'><a href="#comment_530"><time data-relative="true">2006-12-04T14:10:38Z</time></a></span>
 </cite>
 <blockquote><p>Well, looks like we'll just have to implement a &quot;try a few times but not too many&quot; kind of policy with respect to BADAUTH responses...</p>
 </blockquote>

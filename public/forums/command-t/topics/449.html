@@ -3,6 +3,7 @@
 <head>
 <meta content='text/html;charset=UTF-8' http-equiv='Content-Type'>
 <title>
+Command-T Crashes On Second Use
 
 &middot; wincent.com
 </title>
@@ -47,7 +48,7 @@ Vim: Finished.</pre>
 <li class='comment' id='comment_6556'>
 <cite>
 <a href="/users/wavded">wavded</a>
-<span class='when'><a href="/comments/6556"><time data-relative="true">2011-01-06T18:15:13Z</time></a></span>
+<span class='when'><a href="#comment_6556"><time data-relative="true">2011-01-06T18:15:13Z</time></a></span>
 </cite>
 <blockquote><p>Looks like it varies, I can't put my finger on it.  Sometimes its twice, sometimes I can use it longer.  If I type fast it seems to crash more than if I wait for it to populate.. but even that could be a sketchy observation.  Sorry, wish I had better tests for you.</p>
 </blockquote>
@@ -55,7 +56,7 @@ Vim: Finished.</pre>
 <li class='comment admin' id='comment_6558'>
 <cite>
 <a href="/users/greg-hurrell">Greg Hurrell</a>
-<span class='when'><a href="/comments/6558"><time data-relative="true">2011-01-06T18:53:01Z</time></a></span>
+<span class='when'><a href="#comment_6558"><time data-relative="true">2011-01-06T18:53:01Z</time></a></span>
 </cite>
 <blockquote><p>There are a couple of theories on why this kind of crash might be produced.</p>
 <p>One is that there are some bugs in Vim 7.3's Ruby support, and that dropping back to 7.2 fixes the problem.</p>
@@ -74,7 +75,7 @@ Vim: Finished.</pre>
 <li class='comment' id='comment_6561'>
 <cite>
 anonymous
-<span class='when'><a href="/comments/6561"><time data-relative="true">2011-01-07T00:56:06Z</time></a></span>
+<span class='when'><a href="#comment_6561"><time data-relative="true">2011-01-07T00:56:06Z</time></a></span>
 </cite>
 <blockquote><p>Thanks for your feedback Wincent.  I upgraded to Vim 7.3 on Ubuntu through a PPA which seems to have compiled with the system Ruby, here's the line in vim --version:</p>
 <pre>GEFILE64_SOURCE=1  -I/usr/lib/ruby/1.8/i686-linux -DRUBY_VERSION=18 </pre>
@@ -86,7 +87,7 @@ anonymous
 <li class='comment admin' id='comment_6562'>
 <cite>
 <a href="/users/greg-hurrell">Greg Hurrell</a>
-<span class='when'><a href="/comments/6562"><time data-relative="true">2011-01-07T07:21:57Z</time></a></span>
+<span class='when'><a href="#comment_6562"><time data-relative="true">2011-01-07T07:21:57Z</time></a></span>
 </cite>
 <blockquote><p>Can you post the full output of <code>vim --version</code> and the full output of your <code>ruby extconf.rb &amp;&amp; make</code> from the Command-T build?</p>
 </blockquote>
@@ -94,7 +95,7 @@ anonymous
 <li class='comment' id='comment_6563'>
 <cite>
 <a href="/users/jonathan">Jonathan</a>
-<span class='when'><a href="/comments/6563"><time data-relative="true">2011-01-07T16:45:04Z</time></a></span>
+<span class='when'><a href="#comment_6563"><time data-relative="true">2011-01-07T16:45:04Z</time></a></span>
 </cite>
 <blockquote><p>Hi everyone, having a similar problem. Command-T built and works in Vim the first time, but when invoking for a second time it segfaults. Os is ubuntu 10.04, ruby version is 1.8.7, Vim is 7.3. Ruby and Vim installed from ppas (e.g. as binary not compiled from source).</p>
 <p>vim --version: </p>
@@ -143,7 +144,7 @@ gcc -shared -o ext.so ext.o matcher.o match.o -L. -L/usr/lib -L. -Wl,-Bsymbolic-
 <li class='comment admin' id='comment_6565'>
 <cite>
 <a href="/users/greg-hurrell">Greg Hurrell</a>
-<span class='when'><a href="/comments/6565"><time data-relative="true">2011-01-07T20:00:14Z</time></a></span>
+<span class='when'><a href="#comment_6565"><time data-relative="true">2011-01-07T20:00:14Z</time></a></span>
 </cite>
 <blockquote><p>As far as I can tell there are no glaring discrepancies here between the Ruby-related flags used at link time, so one thing you could try would be building Vim from source so that you can have more control over exactly what flags are passed in.</p>
 <p>It might be related to a known bug in Vim 7.3's &quot;largefile&quot; support (see <a href="/issues/1617">ticket #1617</a>), although if that's true, this is the first time it's actually caused a crash. To find out if it's the case, you'd build Vim from source using a <code>configure</code> line something like this:</p>
@@ -160,7 +161,7 @@ gcc -shared -o ext.so ext.o matcher.o match.o -L. -L/usr/lib -L. -Wl,-Bsymbolic-
 <li class='comment' id='comment_6571'>
 <cite>
 <a href="/users/wavded">wavded</a>
-<span class='when'><a href="/comments/6571"><time data-relative="true">2011-01-08T21:05:23Z</time></a></span>
+<span class='when'><a href="#comment_6571"><time data-relative="true">2011-01-08T21:05:23Z</time></a></span>
 </cite>
 <blockquote><p>vim version is: I doubled checked with the author of the binary and it was compiled using the default ruby.</p>
 <pre>VIM - Vi IMproved 7.3 (2010 Aug 15, compiled Oct  2 2010 10:59:19)
@@ -198,7 +199,7 @@ Linking: gcc   -L. -Wl,-Bsymbolic-functions -rdynamic -Wl,-export-dynamic  -Wl,-
 <li class='comment' id='comment_6576'>
 <cite>
 <a href="/users/wavded">wavded</a>
-<span class='when'><a href="/comments/6576"><time data-relative="true">2011-01-10T23:03:47Z</time></a></span>
+<span class='when'><a href="#comment_6576"><time data-relative="true">2011-01-10T23:03:47Z</time></a></span>
 </cite>
 <blockquote><p>I ended up reverting to Vim 7.2 (default Ubuntu 10.10) package, I can live without 7.3 features for the time being.  I hope this gets resolved.  Hopefully 11.04 will come prepackaged with 7.3.</p>
 </blockquote>
@@ -206,7 +207,7 @@ Linking: gcc   -L. -Wl,-Bsymbolic-functions -rdynamic -Wl,-export-dynamic  -Wl,-
 <li class='comment' id='comment_6595'>
 <cite>
 <a href="/users/wavded">wavded</a>
-<span class='when'><a href="/comments/6595"><time data-relative="true">2011-01-25T04:37:26Z</time></a></span>
+<span class='when'><a href="#comment_6595"><time data-relative="true">2011-01-25T04:37:26Z</time></a></span>
 </cite>
 <blockquote><p>Just to follow up on this post.  I built vim from source with the configuration options Wincent had specified above (minus the largefile one) and it worked great, haven't had any crashes.</p>
 </blockquote>
@@ -214,7 +215,7 @@ Linking: gcc   -L. -Wl,-Bsymbolic-functions -rdynamic -Wl,-export-dynamic  -Wl,-
 <li class='comment' id='comment_7080'>
 <cite>
 anonymous
-<span class='when'><a href="/comments/7080"><time data-relative="true">2011-09-04T23:45:08Z</time></a></span>
+<span class='when'><a href="#comment_7080"><time data-relative="true">2011-09-04T23:45:08Z</time></a></span>
 </cite>
 <blockquote><p>Installed vim from source and things worked perfectly. :) </p>
 </blockquote>

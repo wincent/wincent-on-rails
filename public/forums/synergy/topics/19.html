@@ -3,6 +3,7 @@
 <head>
 <meta content='text/html;charset=UTF-8' http-equiv='Content-Type'>
 <title>
+[bug] Separate global menu
 
 &middot; wincent.com
 </title>
@@ -43,7 +44,7 @@ anonymous
 <li class='comment admin' id='comment_61'>
 <cite>
 <a href="/users/greg-hurrell">Greg Hurrell</a>
-<span class='when'><a href="/comments/61"><time data-relative="true">2004-03-25T20:47:24Z</time></a></span>
+<span class='when'><a href="#comment_61"><time data-relative="true">2004-03-25T20:47:24Z</time></a></span>
 </cite>
 <blockquote><p>I can't reproduce that here. Are you sure that you don't have an older version of Synergy installed on your system somewhere? It's possible you installed the new one into ~/Library/PreferencePanes/ and left an older copy behind in /Library/PreferencePanes/...</p>
 </blockquote>
@@ -51,7 +52,7 @@ anonymous
 <li class='comment' id='comment_62'>
 <cite>
 anonymous
-<span class='when'><a href="/comments/62"><time data-relative="true">2004-03-27T08:03:40Z</time></a></span>
+<span class='when'><a href="#comment_62"><time data-relative="true">2004-03-27T08:03:40Z</time></a></span>
 </cite>
 <blockquote><p>Nope, all I can find is v1.0a7 in ~/Library/PreferencePanes. Nothing installed in /Library (as I would expect since I used your automatic installer). Not a big deal so I'll wait and see if it persists across the next version.</p>
 </blockquote>
@@ -59,7 +60,7 @@ anonymous
 <li class='comment admin' id='comment_63'>
 <cite>
 <a href="/users/greg-hurrell">Greg Hurrell</a>
-<span class='when'><a href="/comments/63"><time data-relative="true">2004-03-28T06:39:00Z</time></a></span>
+<span class='when'><a href="#comment_63"><time data-relative="true">2004-03-28T06:39:00Z</time></a></span>
 </cite>
 <blockquote><p>Quote: Nope, all I can find is v1.0a7 in ~/Library/PreferencePanes. Nothing installed in /Library (as I would expect since I used your automatic installer). Not a big deal so I'll wait and see if it persists across the next version. </p>
 <p>You could also email me your preferences file (to <a href="mailto:win@wincent.org" class="mailto">win@wincent.org</a>) and I will take a look at it. The file is ~/Library/Preferences/org.wincent.Synergy.plist.</p>
@@ -68,7 +69,7 @@ anonymous
 <li class='comment' id='comment_64'>
 <cite>
 anonymous
-<span class='when'><a href="/comments/64"><time data-relative="true">2004-03-28T19:10:57Z</time></a></span>
+<span class='when'><a href="#comment_64"><time data-relative="true">2004-03-28T19:10:57Z</time></a></span>
 </cite>
 <blockquote><p>Sent you my prefs file. Hope there's a clue in there somewhere.</p>
 </blockquote>
@@ -76,7 +77,7 @@ anonymous
 <li class='comment admin' id='comment_65'>
 <cite>
 <a href="/users/greg-hurrell">Greg Hurrell</a>
-<span class='when'><a href="/comments/65"><time data-relative="true">2004-03-28T20:03:22Z</time></a></span>
+<span class='when'><a href="#comment_65"><time data-relative="true">2004-03-28T20:03:22Z</time></a></span>
 </cite>
 <blockquote><p>I tried your preferences file here and the problem occurred, so I immediately knew that we were dealing with a corrupt preferences file.</p>
 <p>I've found the garbled entry, corrected it, and now it works.</p>

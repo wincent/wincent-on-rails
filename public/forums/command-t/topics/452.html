@@ -3,6 +3,7 @@
 <head>
 <meta content='text/html;charset=UTF-8' http-equiv='Content-Type'>
 <title>
+wildignore in macvim
 
 &middot; wincent.com
 </title>
@@ -45,7 +46,7 @@
 <li class='comment' id='comment_6594'>
 <cite>
 <a href="/users/nick-carter">Nick Carter</a>
-<span class='when'><a href="/comments/6594"><time data-relative="true">2011-01-24T19:54:57Z</time></a></span>
+<span class='when'><a href="#comment_6594"><time data-relative="true">2011-01-24T19:54:57Z</time></a></span>
 </cite>
 <blockquote><p>Seems I needed to add this to an autocommand, which I've done. I do see out/ results, but they're further down the list which is good enough for now.</p>
 </blockquote>
@@ -53,7 +54,7 @@
 <li class='comment admin' id='comment_6598'>
 <cite>
 <a href="/users/greg-hurrell">Greg Hurrell</a>
-<span class='when'><a href="/comments/6598"><time data-relative="true">2011-01-25T14:54:18Z</time></a></span>
+<span class='when'><a href="#comment_6598"><time data-relative="true">2011-01-25T14:54:18Z</time></a></span>
 </cite>
 <blockquote><p>Yep, <code>:set wildignore+=out/**</code> should definitely work.</p>
 <p>Can you post the contents of your <code>~/.vimrc</code> and also the output of <code>:set wildignore?</code></p>
@@ -62,7 +63,7 @@
 <li class='comment' id='comment_6599'>
 <cite>
 <a href="/users/nick-carter">Nick Carter</a>
-<span class='when'><a href="/comments/6599"><time data-relative="true">2011-01-25T19:47:02Z</time></a></span>
+<span class='when'><a href="#comment_6599"><time data-relative="true">2011-01-25T19:47:02Z</time></a></span>
 </cite>
 <blockquote><p>Contents follow. This is from my work machine, which is slightly different from the one at home and which I haven't gotten CommandT working on yet:</p>
 <pre>color vilight
@@ -95,7 +96,7 @@ set guioptions=&quot;&quot;</pre>
 <li class='comment admin' id='comment_6603'>
 <cite>
 <a href="/users/greg-hurrell">Greg Hurrell</a>
-<span class='when'><a href="/comments/6603"><time data-relative="true">2011-01-25T22:11:49Z</time></a></span>
+<span class='when'><a href="#comment_6603"><time data-relative="true">2011-01-25T22:11:49Z</time></a></span>
 </cite>
 <blockquote><p>Not sure if <code>'wildignore'</code> affects <code>:vim</code> searches or not. Perhaps it does.</p>
 <p>In any case, You can test the effect of your <code>'wildignore'</code> setting by calling the <code>expand()</code> function.</p>

@@ -3,6 +3,7 @@
 <head>
 <meta content='text/html;charset=UTF-8' http-equiv='Content-Type'>
 <title>
+Horizontal split does not work
 
 &middot; wincent.com
 </title>
@@ -45,7 +46,7 @@ anonymous
 <li class='comment admin' id='comment_10140'>
 <cite>
 <a href="/users/greg-hurrell">Greg Hurrell</a>
-<span class='when'><a href="/comments/10140"><time data-relative="true">2013-02-14T05:18:32Z</time></a></span>
+<span class='when'><a href="#comment_10140"><time data-relative="true">2013-02-14T05:18:32Z</time></a></span>
 </cite>
 <blockquote><p>Are you using <a href="/wiki/Vim">Vim</a> in the terminal? It's possible the terminal itself is intercepting the <code>&lt;C-s&gt;</code> key sequence and not passing it through to Vim. <code>&lt;C-s&gt;</code> by default suspends the terminal and <code>&lt;C-q&gt;</code> resumes it (see <a href="http://en.wikipedia.org/wiki/Software_flow_control" class="external">the Wikipedia article on flow control</a> for more details).</p>
 <p>Likewise, <code>&lt;C-CR&gt;</code> is never passed down to programs running inside the terminal; they simply don't see it.</p>
@@ -54,7 +55,7 @@ anonymous
 <li class='comment' id='comment_10141'>
 <cite>
 anonymous
-<span class='when'><a href="/comments/10141"><time data-relative="true">2013-02-14T15:44:03Z</time></a></span>
+<span class='when'><a href="#comment_10141"><time data-relative="true">2013-02-14T15:44:03Z</time></a></span>
 </cite>
 <blockquote><p>Thank you. That was the missing hint.</p>
 <pre class="shell-syntax">$ stty stop undef &amp;&amp; stty start undef</pre>

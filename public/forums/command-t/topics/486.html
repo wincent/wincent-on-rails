@@ -3,6 +3,7 @@
 <head>
 <meta content='text/html;charset=UTF-8' http-equiv='Content-Type'>
 <title>
+horizontal split window not working with command-t
 
 &middot; wincent.com
 </title>
@@ -47,7 +48,7 @@
 <li class='comment admin' id='comment_7153'>
 <cite>
 <a href="/users/greg-hurrell">Greg Hurrell</a>
-<span class='when'><a href="/comments/7153"><time data-relative="true">2011-10-09T05:14:58Z</time></a></span>
+<span class='when'><a href="#comment_7153"><time data-relative="true">2011-10-09T05:14:58Z</time></a></span>
 </cite>
 <blockquote><p>I believe this is depends on what <code>TERM</code> you are using.</p>
 <p>If you are using a graphical client like <a href="/wiki/MacVim">MacVim</a> then all the mappings will work out of the box, but if you are using <a href="/wiki/Vim">Vim</a> in the terminal, it is possible that some of the default mappings won't work because your key presses end up getting mapped to escape sequences and other weirdness may happen.</p>
@@ -58,7 +59,7 @@
 <li class='comment' id='comment_7180'>
 <cite>
 <a href="/users/karl-baum">Karl Baum</a>
-<span class='when'><a href="/comments/7180"><time data-relative="true">2011-10-19T16:32:43Z</time></a></span>
+<span class='when'><a href="#comment_7180"><time data-relative="true">2011-10-19T16:32:43Z</time></a></span>
 </cite>
 <blockquote><p>Hi Wincent.  I was able to get it working with this setting in my .vimrc.local</p>
 <p>let g:CommandTAcceptSelectionSplitMap=['&lt;CR&gt;', '&lt;C-g&gt;']</p>
@@ -70,7 +71,7 @@
 <li class='comment' id='comment_7353'>
 <cite>
 <a href="/users/roovo">roovo</a>
-<span class='when'><a href="/comments/7353"><time data-relative="true">2011-12-31T11:41:06Z</time></a></span>
+<span class='when'><a href="#comment_7353"><time data-relative="true">2011-12-31T11:41:06Z</time></a></span>
 </cite>
 <blockquote><p>I've just hit the same issue (using iTerm2 on OSX Lion).  The solution I've found (to getting the &lt;C-s&gt; combination working) is to put:</p>
 <p>stty -ixon</p>
@@ -81,7 +82,7 @@
 <li class='comment' id='comment_13120'>
 <cite>
 anonymous
-<span class='when'><a href="/comments/13120"><time data-relative="true">2015-06-12T14:10:48Z</time></a></span>
+<span class='when'><a href="#comment_13120"><time data-relative="true">2015-06-12T14:10:48Z</time></a></span>
 </cite>
 <blockquote><p>Solved: You dont need to modify anything in your .vimrc to use ctrl + s with command-t. The only thing you need to do is to add this to your ~/.bashrc :</p>
 <p>stty -ixon</p>

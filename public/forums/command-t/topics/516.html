@@ -3,6 +3,7 @@
 <head>
 <meta content='text/html;charset=UTF-8' http-equiv='Content-Type'>
 <title>
+Open in Horizontal Split Crashes vim on Ubuntu Server
 
 &middot; wincent.com
 </title>
@@ -72,7 +73,7 @@ Compilation: gcc -c -I. -Iproto -DHAVE_CONFIG_H     -g -O2 -fstack-protector --p
 <li class='comment admin' id='comment_7551'>
 <cite>
 <a href="/users/greg-hurrell">Greg Hurrell</a>
-<span class='when'><a href="/comments/7551"><time data-relative="true">2012-06-13T15:19:43Z</time></a></span>
+<span class='when'><a href="#comment_7551"><time data-relative="true">2012-06-13T15:19:43Z</time></a></span>
 </cite>
 <blockquote><p><code>&lt;CTRL-s&gt;</code> has special meaning to the terminal, suspending all terminal input until you issue a corresponding <code>&lt;CTRL-q&gt;</code>. You can turn off the suspension behavior using <code>stty -ixon</code> (ie. directly at the command line or in your <code>.bash_profile</code>/<code>.zshrc</code> etc).</p>
 <p>See <code>man stty</code> for more details, or google for &quot;XON/XOFF flow control&quot;.</p>

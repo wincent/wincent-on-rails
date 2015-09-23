@@ -3,6 +3,7 @@
 <head>
 <meta content='text/html;charset=UTF-8' http-equiv='Content-Type'>
 <title>
+Command T not working on fairly fresh MacVim installation
 
 &middot; wincent.com
 </title>
@@ -97,7 +98,7 @@ cc -arch i386 -arch x86_64 -pipe -bundle -undefined dynamic_lookup -o ext.bundle
 <li class='comment admin' id='comment_6548'>
 <cite>
 <a href="/users/greg-hurrell">Greg Hurrell</a>
-<span class='when'><a href="/comments/6548"><time data-relative="true">2011-01-06T11:30:29Z</time></a></span>
+<span class='when'><a href="#comment_6548"><time data-relative="true">2011-01-06T11:30:29Z</time></a></span>
 </cite>
 <blockquote><p>Rather odd, as your <code>vim --version</code> output clearly indicates that your Vim wasn't compiled with Ruby support (ie. the <code>-ruby</code>).</p>
 <p>Every build of MacVim I've ever tried has had Ruby support, which you can see as <code>+ruby</code> in the <code>:version</code> output and also see <code>-framework Ruby</code> in the linking flags, something which your output omits.</p>
@@ -107,7 +108,7 @@ cc -arch i386 -arch x86_64 -pipe -bundle -undefined dynamic_lookup -o ext.bundle
 <li class='comment' id='comment_6551'>
 <cite>
 anonymous
-<span class='when'><a href="/comments/6551"><time data-relative="true">2011-01-06T12:28:32Z</time></a></span>
+<span class='when'><a href="#comment_6551"><time data-relative="true">2011-01-06T12:28:32Z</time></a></span>
 </cite>
 <blockquote><p>Thanks for the reply- I guess I must have just scanned and seen the word ruby and thought it was ok. </p>
 <p>I am fairly sure that I tried to compile with Ruby support, but something didn't go according to plan.  I'll try it again.</p>
@@ -117,7 +118,7 @@ anonymous
 <li class='comment' id='comment_6552'>
 <cite>
 anonymous
-<span class='when'><a href="/comments/6552"><time data-relative="true">2011-01-06T12:44:15Z</time></a></span>
+<span class='when'><a href="#comment_6552"><time data-relative="true">2011-01-06T12:44:15Z</time></a></span>
 </cite>
 <blockquote><p>OK I grabbed the version of MacVim from here <a href="http://code.google.com/p/macvim/" class="external">http://code.google.com/p/macvim/</a></p>
 <p>I just dropped it into my /Applications directory.</p>
@@ -162,7 +163,7 @@ level/CORE -lperl -lm -lutil -lc -framework Python   -framework Ruby
 <li class='comment admin' id='comment_6553'>
 <cite>
 <a href="/users/greg-hurrell">Greg Hurrell</a>
-<span class='when'><a href="/comments/6553"><time data-relative="true">2011-01-06T12:57:22Z</time></a></span>
+<span class='when'><a href="#comment_6553"><time data-relative="true">2011-01-06T12:57:22Z</time></a></span>
 </cite>
 <blockquote><p>It's not <code>:t</code> but <code>&lt;Leader&gt;t</code>.</p>
 <p>So it depends on what you've set your leader key as. I use <code>,</code> so for me I bring up Command-T with <code>,t</code>. I think the default leader is <code>\</code> unless you override it, so in that case you'd bring it up with <code>\t</code>.</p>
@@ -173,7 +174,7 @@ level/CORE -lperl -lm -lutil -lc -framework Python   -framework Ruby
 <li class='comment' id='comment_6554'>
 <cite>
 anonymous
-<span class='when'><a href="/comments/6554"><time data-relative="true">2011-01-06T13:02:50Z</time></a></span>
+<span class='when'><a href="#comment_6554"><time data-relative="true">2011-01-06T13:02:50Z</time></a></span>
 </cite>
 <blockquote><p>Ah ok- I was being dumb and hammering :t instead of \t</p>
 <p>So much to learn!  Sorry to have wasted your time, and thank you so much for your help!</p>

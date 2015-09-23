@@ -3,6 +3,7 @@
 <head>
 <meta content='text/html;charset=UTF-8' http-equiv='Content-Type'>
 <title>
+Synergy 3.1.1b release
 
 &middot; wincent.com
 </title>
@@ -43,7 +44,7 @@
 <li class='comment' id='comment_590'>
 <cite>
 <a href="/users/heavyboots">heavyboots</a>
-<span class='when'><a href="/comments/590"><time data-relative="true">2007-03-19T01:52:17Z</time></a></span>
+<span class='when'><a href="#comment_590"><time data-relative="true">2007-03-19T01:52:17Z</time></a></span>
 </cite>
 <blockquote><p>Hi Wincent,</p>
 <p>I suppose I'll know in a week, but just out of curiosity, did you implement some sort of login retry for Audio Scrobbler in 3.1.1b?</p>
@@ -54,7 +55,7 @@
 <li class='comment admin' id='comment_591'>
 <cite>
 <a href="/users/greg-hurrell">Greg Hurrell</a>
-<span class='when'><a href="/comments/591"><time data-relative="true">2007-03-19T07:32:27Z</time></a></span>
+<span class='when'><a href="#comment_591"><time data-relative="true">2007-03-19T07:32:27Z</time></a></span>
 </cite>
 <blockquote><p>Not yet, but I think I'll implement it before the next beta comes out.</p>
 <p>If you have a log showing what happens when they require a new login (messages printed to the console), please send/post it because it will help me know exactly what'll be required.</p>
@@ -64,7 +65,7 @@
 <li class='comment' id='comment_592'>
 <cite>
 <a href="/users/heavyboots">heavyboots</a>
-<span class='when'><a href="/comments/592"><time data-relative="true">2007-03-19T19:26:27Z</time></a></span>
+<span class='when'><a href="#comment_592"><time data-relative="true">2007-03-19T19:26:27Z</time></a></span>
 </cite>
 <blockquote><p>Well, yes. But I always forget for a couple extra days!  Typically I remember to re-login every 9 days, so by that time I have a huge cached backlog for Synergy to report. And if I quit Synergy, don't I lose the cache?</p>
 <p>At any rate, I'll post the log once I get back home tonight.</p>
@@ -74,7 +75,7 @@
 <li class='comment admin' id='comment_593'>
 <cite>
 <a href="/users/greg-hurrell">Greg Hurrell</a>
-<span class='when'><a href="/comments/593"><time data-relative="true">2007-03-19T21:06:54Z</time></a></span>
+<span class='when'><a href="#comment_593"><time data-relative="true">2007-03-19T21:06:54Z</time></a></span>
 </cite>
 <blockquote><p>Yes, you do unfortunately lose the cache.</p>
 <p>I think when Leopard comes out I will finally drop support for Jaguar and possibly even require Tiger. Then I could easily use Core Data (Tiger-only) to keep a persistent store of that stuff.</p>
@@ -83,7 +84,7 @@
 <li class='comment' id='comment_594'>
 <cite>
 <a href="/users/heavyboots">heavyboots</a>
-<span class='when'><a href="/comments/594"><time data-relative="true">2007-03-19T23:46:55Z</time></a></span>
+<span class='when'><a href="#comment_594"><time data-relative="true">2007-03-19T23:46:55Z</time></a></span>
 </cite>
 <blockquote><p>Okay, here's the log for the time it happens. Basically, it just comes back BADAUTH out of the blue. (There's lots of entries right above this that are submitting fine.) From this point, Synergy just starts queueing but not submitting any more.</p>
 <p>&nbsp;Quote:2007-03-17 20:41:40.542 Synergy[215] Audioscrobbler: Starting connection attempt 2007-03-17 20:41:40.543 Synergy[215] Audioscrobbler: Waiting for submission response 2007-03-17 20:41:40.994 Synergy[215] Audioscrobbler: Connection to Audioscrobbler did finish loading (response received) 2007-03-17 20:41:40.994 Synergy[215] Audioscrobbler: Received an INTERVAL directive 2007-03-17 20:41:40.994 Synergy[215] Audioscrobbler: Storing interval value: 1 2007-03-17 20:41:40.994 Synergy[215] Audioscrobbler: Processing submission response 2007-03-17 20:41:40.994 Synergy[215] Audioscrobbler: Received BADAUTH response 2007-03-17 20:44:32.839 Synergy[215] Audioscrobbler: Received notification from iTunes 2007-03-17 20:44:32.839 Synergy[215] Audioscrobbler: Received notification of playing status 2007-03-17 20:44:32.839 Synergy[215] Audioscrobbler: Track information: {</p>
@@ -111,7 +112,7 @@
 <li class='comment admin' id='comment_595'>
 <cite>
 <a href="/users/greg-hurrell">Greg Hurrell</a>
-<span class='when'><a href="/comments/595"><time data-relative="true">2007-03-20T06:50:51Z</time></a></span>
+<span class='when'><a href="#comment_595"><time data-relative="true">2007-03-20T06:50:51Z</time></a></span>
 </cite>
 <blockquote><p>Excellent. That's just the information I needed.</p>
 </blockquote>
@@ -119,7 +120,7 @@
 <li class='comment admin' id='comment_596'>
 <cite>
 <a href="/users/greg-hurrell">Greg Hurrell</a>
-<span class='when'><a href="/comments/596"><time data-relative="true">2007-03-21T07:44:34Z</time></a></span>
+<span class='when'><a href="#comment_596"><time data-relative="true">2007-03-21T07:44:34Z</time></a></span>
 </cite>
 <blockquote><p>Ok, I've now implemented an auto-retry in response to receiving a &quot;BADAUTH&quot; from last.fm. It will retry up to three times before giving up. After a successful handshake the failure counter will be reset back to zero. Hopefully this means that you can run Synergy for weeks on end without ever having to manually re-login.</p>
 <p>If you'd like to try it out, please check out this nightly build:</p>
@@ -129,7 +130,7 @@
 <li class='comment admin' id='comment_597'>
 <cite>
 <a href="/users/greg-hurrell">Greg Hurrell</a>
-<span class='when'><a href="/comments/597"><time data-relative="true">2007-03-26T04:38:53Z</time></a></span>
+<span class='when'><a href="#comment_597"><time data-relative="true">2007-03-26T04:38:53Z</time></a></span>
 </cite>
 <blockquote><p>3.1.1 is now officially out:</p>
 <p><a href="http://wincent.com/a/news/archives/2007/03/synergy_311_now.php" class="external">http://wincent.com/a/news/archives/2007/03/synergy_311_now.php</a></p>
@@ -138,7 +139,7 @@
 <li class='comment' id='comment_598'>
 <cite>
 <a href="/users/heavyboots">heavyboots</a>
-<span class='when'><a href="/comments/598"><time data-relative="true">2007-03-27T00:49:21Z</time></a></span>
+<span class='when'><a href="#comment_598"><time data-relative="true">2007-03-27T00:49:21Z</time></a></span>
 </cite>
 <blockquote><p>Well dang, I didn't get to test the fix in time! I appreciate the time you put in, but I have bad news. </p>
 <p>Firstly, it appears I lied when I said that last.fm was allowing multiple logins. It's still a factor and I apologize for having concluded otherwise prematurely.</p>
@@ -207,7 +208,7 @@
 <li class='comment admin' id='comment_599'>
 <cite>
 <a href="/users/greg-hurrell">Greg Hurrell</a>
-<span class='when'><a href="/comments/599"><time data-relative="true">2007-03-27T09:18:58Z</time></a></span>
+<span class='when'><a href="#comment_599"><time data-relative="true">2007-03-27T09:18:58Z</time></a></span>
 </cite>
 <blockquote><p>Ok, thanks for bringing this to my attention. I've made one other change that should force a re-try in this circumstance.</p>
 <p>Give this nightly build a try if you'd like:</p>
@@ -217,7 +218,7 @@
 <li class='comment' id='comment_600'>
 <cite>
 <a href="/users/heavyboots">heavyboots</a>
-<span class='when'><a href="/comments/600"><time data-relative="true">2007-03-28T00:43:56Z</time></a></span>
+<span class='when'><a href="#comment_600"><time data-relative="true">2007-03-28T00:43:56Z</time></a></span>
 </cite>
 <blockquote><p>That did the trick! I triggered some sort of spam protection during testing (by playing from two places simultaneously), but it works so I am officially a happy camper.</p>
 <p>Thanks so much!</p>
@@ -226,7 +227,7 @@
 <li class='comment admin' id='comment_601'>
 <cite>
 <a href="/users/greg-hurrell">Greg Hurrell</a>
-<span class='when'><a href="/comments/601"><time data-relative="true">2007-03-28T05:25:39Z</time></a></span>
+<span class='when'><a href="#comment_601"><time data-relative="true">2007-03-28T05:25:39Z</time></a></span>
 </cite>
 <blockquote><p>Glad to hear it works! Thanks for confirming.</p>
 </blockquote>
