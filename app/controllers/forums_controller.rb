@@ -1,6 +1,6 @@
 class ForumsController < ApplicationController
   before_filter :get_forum, :only => [ :show ]
-
+  layout 'static'
 
   def index
     @forums = Forum.find_all

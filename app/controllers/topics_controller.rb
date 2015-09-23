@@ -1,6 +1,7 @@
 class TopicsController < ApplicationController
   before_filter :get_forum
   before_filter :get_topic
+  layout 'static'
 
   def show
     @comments = @topic.comments.published # public, not awaiting moderation
