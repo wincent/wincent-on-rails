@@ -47,7 +47,6 @@
                     %li= link_to 'Wikitext', '/products/wikitext', title: 'Fast wikitext-to-HTML translator'
             %li{ class: navbar_selected?('blog') }= link_to 'Blog', posts_path
             %li{ class: navbar_selected?('wiki') }= link_to 'Wiki', articles_path
-            %li{ class: navbar_selected?('forums') }= link_to 'Forums', forums_path
             %li{ class: navbar_selected?('issues') }= link_to 'Issues', issues_path
           #login-logout
             = link_to 'log in', login_path, id: 'login'
@@ -82,7 +81,6 @@
             %ul
               %li= link_to 'Blog', posts_path
               %li= link_to 'Wiki', articles_path
-              %li= link_to 'Forums', forums_path
               %li= link_to 'Issues', issues_path
               %li= link_to 'Snippets', snippets_path
           %section
