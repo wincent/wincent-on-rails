@@ -14,7 +14,6 @@ describe 'Factories' do
     Page
     Post
     Product
-    Repo
     Reset
     Snippet
     Tag

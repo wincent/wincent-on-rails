@@ -44,49 +44,8 @@ Wincent::Application.routes.draw do
   get 'products/:id/:page_id' => 'products#show',
       :as => 'embedded_product_page'
 
-  resources :repos do
-    # Git branch names can include pretty much anything, including slashes
-    # and crazy stuff like leading dashes, but we adopt a more restrictive
-    # model here: we insist that the branch name begin with a letter, a
-    # number or an underscore, and the remainder of the branch name may be
-    # any number of letters, numbers, underscores, hyphens, slashes or
-    # periods.
-    #
-    # Note that this is way more liberal than most Rails resources, so it
-    # means we can't do stuff like edit branches, but that's fine as they
-    # are effectively a read-only resource.
-    resources :branches,
-              id:   %r{[a-z0-9_][a-z0-9./_-]*}i,
-              only: %i[index show]
-
-    # Git is effectively a content-addressable storage system, so we could
-    # retrieve blobs by the SHA-1 hash only; however, for a better user
-    # experience we address blobs using the format "[commit-ish]:[path]", which
-    # will yield URLs like:
-    #
-    #  https://wincent.com/repos/command-t/blobs/master:Gemfile
-    #  https://wincent.com/repos/command-t/blobs/HEAD:Gemfile.lock
-    #  https://wincent.com/repos/command-t/blobs/86e87abcd25:doc/command-t.txt
-    #
-    # This approach is similar to the one taken by Gitweb, and different from
-    # GitHub (which uses the format "{blob,tree}/[commit-ish]/[path]"); I'd
-    # prefer not to go down that route and have to disambiguate branch names
-    # with slashes in them.
-    resources :blobs, id: %r{[^:]+:[^:]+}, only: :show, format: false
-
-    resources :commits, id: /[a-f0-9]{4,40}/, only: %i[index show]
-
-    # See comments on the blobs resource above about why we're using this :id
-    # format. The only difference from the blob format is that the path is
-    # optional, in which case it defaults to the root of the tree.
-    resources :trees, id: %r{[^:]+(:[^:]+)}, only: :show, format: false
-
-    # can't use "resources :tags", as we already have a TagsController
-    resources :git_tags,
-              path: 'tags',
-              id:   %r{[a-z0-9_][a-z0-9./_-]*}i,
-              only: %i[index show]
-  end
+  get 'repos', to: redirect('https://github.com/wincent')
+  get 'repos/*rest', to: redirect('https://github.com/wincent')
 
   resources :resets
   resources :sessions, only: %i[new create destroy]

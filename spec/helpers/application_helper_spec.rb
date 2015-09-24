@@ -101,13 +101,6 @@ describe ApplicationHelper do
   # (for example, #content_tag and #link_to) work regardless
   include ::ERB::Util
 
-  let(:first_commit) {
-    # any spec using this will break if we ever rewrite history,
-    # or try running from outside the context of a Git repo; still,
-    # it is the easiest way to test certain methods
-    Git::Repo.new(Rails.root).commit '94617f2ce7d67db3b8033c1955c08594c9f90aef'
-  }
-
   describe '#breadcrumbs' do
     it 'returns an HTML-safe string' do
       expect(breadcrumbs('foo')).to be_html_safe
@@ -126,32 +119,6 @@ describe ApplicationHelper do
     # was a regression, introduced in the move from Rails 3.0.1 to 3.0.3
     it 'does not inappropriately escape "raquo" entities' do
       expect(breadcrumbs('foo')).to match(/&raquo;/)
-    end
-  end
-
-  describe '#commit_abbrev' do
-    it 'returns the first 16 characters of the hash' do
-      expect(commit_abbrev('1234abcd1234abcd999999999999999999999999')).
-        to eq('1234abcd1234abcd')
-    end
-  end
-
-  describe '#commit_abbrev_with_tooltip' do
-    it 'returns the first 16 characters of the hash with a tooltip' do
-      expect(commit_abbrev_with_tooltip('1234abcd1234abcd999999999999999999999999')).
-        to eq('<span title="1234abcd1234abcd999999999999999999999999">1234abcd1234abcd</span>')
-    end
-  end
-
-  describe '#commit_author_time' do
-    it 'returns the UTC time wrapped in a "relative-date" span' do
-      expect(commit_author_time(first_commit)).to eq('<span class="relative-date">2007-10-05 11:06:44 UTC</span>')
-    end
-  end
-
-  describe '#commit_committer_time' do
-    it 'returns the UTC time wrapped in a "relative-date" span' do
-      expect(commit_committer_time(first_commit)).to eq('<span class="relative-date">2007-10-05 11:06:44 UTC</span>')
     end
   end
 

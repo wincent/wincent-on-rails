@@ -20,15 +20,12 @@
 @import 'mixins';
 @import 'modular';
 @import 'comment-boxes';
-@import 'commit-logs';
 @import 'display';
 @import 'forms';
 @import 'menu';
 
 // per-controller styles
-@import 'commits';
 @import 'dashboard';
-@import 'git_tags';
 @import 'issues';
 @import 'products';
 @import 'searches';

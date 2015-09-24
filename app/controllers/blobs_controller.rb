@@ -1,2 +1,0 @@
-class BlobsController < ApplicationController
-end
