@@ -19,7 +19,6 @@ describe 'Factories' do
     Tag
     Tagging
     User
-    Word
   ].map(&:constantize).each do |model_class|
 
     describe "#{model_class}.make!" do
