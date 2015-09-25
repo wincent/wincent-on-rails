@@ -9,8 +9,6 @@ module ApplicationHelper
       item == 'wiki'
     when CommentsController
       false
-    when ProductsController
-      item == 'products'
     when PostsController
       item == 'blog'
     else
