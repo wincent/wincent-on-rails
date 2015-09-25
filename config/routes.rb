@@ -16,8 +16,7 @@ Wincent::Application.routes.draw do
   resources :comments, except: %i[create new update]
   resources :confirmations, path: 'confirm'
 
-  resources :issues do
-    resources :comments, only: %i[create new update]
+  resources :issues, only: %i[index show] do
     collection do
       get :search
       get 'page/:page' => 'issues#index', :page => %r{\d+}

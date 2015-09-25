@@ -82,18 +82,6 @@ describe ApplicationHelper, 'underscores_to_spaces method' do
   end
 end
 
-describe ApplicationHelper, '"button_to_moderate_issue_as_ham" method' do
-  include ApplicationHelper
-  before do
-    @issue = Issue.make!
-  end
-
-  it 'should call the "button_to_moderate_model_as_ham" method' do
-    mock(self).button_to_moderate_model_as_ham(@issue, issue_path(@issue))
-    button_to_moderate_issue_as_ham @issue
-  end
-end
-
 describe ApplicationHelper do
   # required in Rails 3.1, not sure why it wasn't before; without it,
   # these specs fail when the #breadcrumbs method calls h() from

@@ -1,6 +1,4 @@
 -@page_title = "#{@issue.kind_string.humanize} \##{@issue.id.to_s}: #{@issue.summary}"
--if admin?
-  #ajax-flash
 =breadcrumbs link_to('Issues', issues_path),
   "#{@issue.kind_string.humanize} \##{@issue.id.to_s}"
 .issue(class="#{'private' unless @issue.public}" id="issue_#{@issue.id}")
@@ -16,52 +14,28 @@
       %tr
         %th Kind
         %td
-          - if admin?
-            = f.select :kind,
-                underscores_to_spaces(Issue::KIND).sort,
-                {},
-                'data-ajax' => true
-          - else
-            = @issue.kind_string
+          = @issue.kind_string
       %tr
         %th Product
         %td
-          - if admin?
-            %select{ 'name' => 'issue[product_id]', 'data-ajax' => true }
-              %option(value='')
-              = option_groups_from_collection_for_select Product.categorized,
-                  :last, :first, :id, :name, (@issue.product ? @issue.product.id : nil)
-          - else
-            = link_to_product_issues(@issue.product)
+          = link_to_product_issues(@issue.product)
       %tr
         %th When
         %td=timeinfo @issue
       %tr
         %th Status
         %td
-          - if admin?
-            = f.select :status,
-                underscores_to_spaces(Issue::STATUS).sort,
-                {},
-                'data-ajax' => true
-          - else
-            = @issue.status_string
+          = @issue.status_string
       %tr
         %th Reporter
         %td=link_to_user @issue.user
-        -if admin?
-          %tr
-            %th Public?
-            %td= f.check_box :public, 'data-ajax' => true
       %tr
         %th Tags
         -# BUG: this won't work, as we end up submitting "a" tags as well as plaintext, which won't pass validation
-        %td{ data: { name: 'issue[pending_tags]', editable: admin? } }
+        %td{ data: { name: 'issue[pending_tags]', editable: false } }
           = tag_links(@issue)
     %h4.major
       Description
-      -if admin?
-        =link_to 'edit', edit_issue_path(@issue)
     .issue-description-body
       -if @issue.description.blank?
         none
@@ -73,12 +47,9 @@
   -# BUG: no edit links in the comments partials
   -# BUG: here we're using base heading level of 2 but in partial it is 1
 %h4.major Add a comment
-=render 'comments/form'
+%p Comments are now closed for this issue.
 .links
   =link_to 'all issues', issues_path
   =link_to "all #{@issue.product.name} issues", issues_path(:product => @issue.product.name) if @issue.product
   =link_to "all #{@issue.status_string.downcase} issues", issues_path(:status => @issue.status_string)
   =link_to "all #{@issue.kind_string.pluralize.downcase}", issues_path(:kind => @issue.kind_string)
-  -if admin?
-    =link_to 'edit', edit_issue_path(@issue)
-    =button_to_destroy_model @issue

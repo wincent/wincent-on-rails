@@ -1,10 +1,5 @@
 %li{ class: comment_class(comment), id: "comment_#{comment.id}" }
   %cite
     = link_to_user comment.user
-    - if controller.send(:_layout) == 'static'
-      %span.when= link_to timeinfo(comment, updated_string: 'edited'), "#comment_#{comment.id}"
-    - else
-      %span.when= link_to timeinfo(comment, updated_string: 'edited'), comment
-      - if admin?
-        = link_to 'edit', edit_comment_path(comment), class: 'edit'
+    %span.when= link_to timeinfo(comment, updated_string: 'edited'), "#comment_#{comment.id}"
   %blockquote= comment.body.w(base_heading_level: local_assigns.fetch(:base_heading_level, 2))

@@ -3,8 +3,6 @@
 .links
   = link_to 'show all issues', issues_path
   = link_to 'search', search_issues_path
-  = link_to 'open a ticket', new_issue_path,
-    title: "Don't forget to search first before opening a ticket"
 #issue_search(style='display:none;')
   = render 'issues/search/form'
 .annotation= scope_info

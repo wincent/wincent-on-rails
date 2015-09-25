@@ -13,24 +13,6 @@ describe 'issues/show' do
                              text: "#{@issue.kind_string.humanize} \##{@issue.id}")
   end
 
-  context 'viewed by an administrator' do
-    before do
-      @issue    = Issue.make!
-      @comments = []
-      @comment  = @issue.comments.new
-      stub(view).admin? { true }
-      render
-    end
-
-    it 'should show an edit link' do
-      expect(rendered).to have_link('edit', href: edit_issue_path(@issue))
-    end
-
-    it 'should show a destroy link' do
-      expect(rendered).to match(/destroy/) # not sure how best to test this, so this is a cheap stand-in for now
-    end
-  end
-
   context 'viewed by a normal user' do
     before do
       @issue    = Issue.make!

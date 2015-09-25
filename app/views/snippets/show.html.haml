@@ -15,12 +15,4 @@
   %ol#comments.boxed
     = render @comments
   %h2.major Add a comment
-  - if @comment
-    #ajax-flash
-    #comment-form
-      .links= link_to 'add a comment', new_snippet_comment_path(@snippet)
-  - else
-    %p Comments are now closed for this snippet.
-- content_for :javascript do
-  :javascript
-    Wincent.Ajax.commentForm('#{new_snippet_comment_path @snippet.id}');
+  %p Comments are now closed for this snippet.

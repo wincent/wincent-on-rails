@@ -8,17 +8,6 @@ describe 'issues/_issues' do
     @issues = Array.new(4) { Issue.make! }
   end
 
-  it 'shows the kind string for each issue'
-  it 'links to a kind-scoped search from the kind string'
-  it 'shows the id number for each issue'
-  it 'shows the product for each issue'
-  it 'links to a product-scoped search from the product string'
-  it 'shows the summary for each issue'
-  it 'likes to the issue "show" page from the summary text'
-  it 'shows the status string for each issue'
-  it 'links to a status-scope search from the status string'
-  it 'shows the timestamp information for each issue'
-
   describe 'regressions' do
     it 'has a sortable header cell for the "id" column' do
       render

@@ -7,8 +7,6 @@
       = sortable_header_cell :status, 'Status'
       = sortable_header_cell :kind, 'Kind'
       = sortable_header_cell :updated_at, 'When'
-      - if admin?
-        = sortable_header_cell :public, 'Public?'
   - unless @issues.empty?
     %tbody
       - @issues.each do |issue|
@@ -30,6 +28,4 @@
               issues_path(kind: issue.kind_string.capitalize),
               title: "show all #{issue.kind_string.pluralize}"
           %td= timeinfo issue
-          -if admin?
-            %td= issue.public? ? icon('check') : icon('lock')
 = @paginator.pagination_links if @paginator

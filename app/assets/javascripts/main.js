@@ -8,7 +8,6 @@ var Wincent = {
   Ajax: require('./Ajax'),
   Articles: require('./Articles'),
   Git: require('./Git'),
-  Issues: require('./Issues'),
   Menu: require('./Menu'),
   Posts: require('./Posts'),
   Snippets: require('./Snippets'),

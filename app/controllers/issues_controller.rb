@@ -1,40 +1,11 @@
 class IssuesController < ApplicationController
-  before_filter     :require_admin, except: %i[create index new search show]
   before_filter     :find_product, only: :index
-  before_filter     :find_issue,
-                    except: %i[create destroy edit index new search show update]
-  before_filter     :find_issue_awaiting_moderation, only: %i[edit show update]
+  before_filter     :find_issue_awaiting_moderation, only: :show
   before_filter     :prepare_issue_for_search, only: %i[index search]
-  around_filter     :current_user_wrapper
 
   acts_as_sortable  by: %i[public kind id product_id summary status updated_at],
                     default: :updated_at,
                     descending: true
-
-  def new
-    # normally "kind" defaults to "bug report"
-    # but check for overrides; this allows incoming links straight to "support tickets" etc
-    attributes = {}
-    attributes[:kind] = Issue::KIND[params[:kind].downcase.gsub(/ +/, '_').to_sym] unless params[:kind].blank?
-    @issue = Issue.new attributes
-  end
-
-  def create
-    @issue = Issue.new(issue_params)
-    @issue.user = current_user
-    @issue.awaiting_moderation = !(admin? or logged_in_and_verified?)
-    if @issue.save
-      if logged_in_and_verified?
-        flash[:notice] = 'Successfully created new issue'
-      else
-        flash[:notice] = 'Successfully submitted issue (awaiting moderation)'
-      end
-      redirect_to @issue
-    else
-      flash[:error] = 'Failed to create new issue'
-      render :action => 'new'
-    end
-  end
 
   def index
     # set up options and add possible params that can be used to limit the scope of the search
@@ -63,72 +34,10 @@ class IssuesController < ApplicationController
         if @issue.awaiting_moderation?
           render :action => 'awaiting_moderation'
         else
-          @comments = if admin?
-            @issue.comments.where(:awaiting_moderation => false)
-          else
-            @issue.comments.published # public, not awaiting moderation
-          end
+          @comments = @issue.comments.published # public, not awaiting moderation
           @comment = @issue.comments.new
         end
       }
-      format.js {
-        visible = [:pending_tags, :product_id, :public, :status, :summary]
-        methods = :pending_tags # not a real attribute
-        render :json => @issue.to_json(:only => visible, :methods => methods)
-      }
-    end
-  end
-
-  # Admin only.
-  def edit
-    render
-  end
-
-  # Admin only.
-  def update
-    respond_to do |format|
-      format.html {
-        if @issue.update_attributes(issue_params)
-          flash[:notice] = 'Successfully updated'
-          redirect_to (@issue.awaiting_moderation ? admin_issues_path : @issue)
-        else
-          flash[:error] = 'Update failed'
-          render action: 'edit'
-        end
-      }
-
-      format.json {
-        # I don't really like this special case but it seems to be the only
-        # way to classify as ham without updating the record timestamp
-        if params[:button] == 'ham'
-          @issue.moderate_as_ham!
-          render json: {}
-        else
-          if @issue.update_attributes(issue_params)
-            # TODO: have it return a substitutable element? (for example, when we
-            # edit pending tags, get links back instead of just keeping the raw
-            # text in there)
-            render json: {}
-          else
-            render text:   "Update failed: #{@issue.flashable_error_string}",
-                   status: 422
-          end
-        end
-      }
-    end
-  end
-
-  # Admin only.
-  def destroy
-    # TODO: mark issues as deleted_at rather than really destroying them
-    @issue = Issue.find params[:id]
-    @issue.destroy
-    respond_to do |format|
-      format.html {
-        flash[:notice] = 'Issue destroyed'
-        redirect_to issues_path
-      }
-      format.js
     end
   end
 
@@ -148,18 +57,8 @@ class IssuesController < ApplicationController
 
 private
 
-  def issue_params
-    permitted = %i[description kind product_id public status summary]
-    permitted << :pending_tags if admin?
-    params.require(:issue).permit(*permitted)
-  end
-
   def find_product
     @product = Product.find_by_name(params[:product]) if params[:product]
-  end
-
-  def find_issue
-    @issue = Issue.where(default_access_options).find params[:id]
   end
 
   # This simplifies our search form, and allows it to "remember" search params
@@ -169,17 +68,6 @@ private
     options[:status] = nil unless options.has_key?(:status) # suppress default
     options[:kind] = nil unless options.has_key?(:kind)     # suppress default
     @issue = Issue.new options
-  end
-
-  # model will need to know current user for annotations
-  # I would prefer to pass this info down into the model explicitly, but I don't control all the
-  # sites where models are created (for example, the in-place editor field plug-in)
-  # http://www.zorched.net/2007/05/29/making-session-data-available-to-models-in-ruby-on-rails/
-  def current_user_wrapper
-    Thread.current[:current_user] = current_user
-    yield
-  ensure
-    Thread.current[:current_user] = nil
   end
 
   def find_issue_awaiting_moderation

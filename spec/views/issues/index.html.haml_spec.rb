@@ -23,11 +23,6 @@ describe 'issues/index' do
     expect(rendered).to have_css('div#issue_search', visible: false)
   end
 
-  it 'has a "new issue" link' do
-    render
-    expect(rendered).to have_link('open a ticket', href: new_issue_path)
-  end
-
   it 'renders the search form partial' do
     mock(view).render 'issues/search/form'
     render
