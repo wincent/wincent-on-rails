@@ -1,16 +1,3 @@
 = breadcrumbs 'Issues'
 %h1.major Issues
-.links
-  = link_to 'show all issues', issues_path
-  = link_to 'search', search_issues_path
-#issue_search(style='display:none;')
-  = render 'issues/search/form'
-.annotation= scope_info
 = render 'issues/issues'
-- content_for :javascript do
-  :javascript
-    $('a[href="#{search_issues_path}"]').on('click', function(event) {
-      event.preventDefault();
-      $('#issue_search').toggle();
-      $('#issue_summary').focus();
-    });

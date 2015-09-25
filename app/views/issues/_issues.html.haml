@@ -1,12 +1,12 @@
 %table.table
   %thead
     %tr
-      = sortable_header_cell :id, '#'
-      = sortable_header_cell :summary, 'Summary'
-      = sortable_header_cell :product_id, 'Product'
-      = sortable_header_cell :status, 'Status'
-      = sortable_header_cell :kind, 'Kind'
-      = sortable_header_cell :updated_at, 'When'
+      %th #
+      %th Summary
+      %th Product
+      %th Status
+      %th Kind
+      %th When
   - unless @issues.empty?
     %tbody
       - @issues.each do |issue|
@@ -17,15 +17,9 @@
               issue_path(issue),
               class: 'clamp',
               title: issue.summary
-          %td= link_to(issue.product.name,
-            issues_path(product: issue.product.name),
-            title: "show all issues for #{issue.product.name}") if issue.product
-          %td= link_to issue.status_string,
-            issues_path(status: issue.status_string),
-            title: "show all #{issue.status_string.downcase} issues"
+          %td= issue.product.name if issue.product
+          %td= issue.status_string
           %td{class: issue.kind_string.parameterize}
-            = link_to issue.kind_string,
-              issues_path(kind: issue.kind_string.capitalize),
-              title: "show all #{issue.kind_string.pluralize}"
+            = issue.kind_string
           %td= timeinfo issue
 = @paginator.pagination_links if @paginator

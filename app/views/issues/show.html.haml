@@ -18,7 +18,7 @@
       %tr
         %th Product
         %td
-          = link_to_product_issues(@issue.product)
+          = @issue.product.try(:name) || 'no product'
       %tr
         %th When
         %td=timeinfo @issue
@@ -44,12 +44,6 @@
 %h4.major Comments
 %ol#comments.boxed
   =render @comments
-  -# BUG: no edit links in the comments partials
   -# BUG: here we're using base heading level of 2 but in partial it is 1
 %h4.major Add a comment
 %p Comments are now closed for this issue.
-.links
-  =link_to 'all issues', issues_path
-  =link_to "all #{@issue.product.name} issues", issues_path(:product => @issue.product.name) if @issue.product
-  =link_to "all #{@issue.status_string.downcase} issues", issues_path(:status => @issue.status_string)
-  =link_to "all #{@issue.kind_string.pluralize.downcase}", issues_path(:kind => @issue.kind_string)
