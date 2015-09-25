@@ -57,7 +57,7 @@ EMAIL
       }.by(1)
     end
 
-    it 'should should set the attribtues on the Message object' do
+    it 'should should set the attributes on the Message object' do
       SupportMailer.receive @email
       message = Message.where(:message_id_header => @message_id).first
       expect(message.subject_header).to eq("Can't print")
