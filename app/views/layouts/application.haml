@@ -19,39 +19,9 @@
           %ul.navbar-links
             %li{ class: navbar_selected?('products') }
               = link_to 'Products', products_path
-              - unless @suppress_menu
-                %ul.products
-                  %li.product-category
-                    %h3 Desktop products
-                    %ul
-                      %li= link_to 'Synergy', '/products/synergy', title: 'Simple and effective iTunes controller'
-                      %li= link_to 'WinSwitch', 'http://www.wincent.com/a/products/winswitch/', title: "Enhanced replacement for Apple's Fast User Switching menu"
-                  %li.product-category
-                    %h3 Developer products
-                    %ul
-                      %li= link_to 'atosym', 'http://www.wincent.com/a/products/atosym/', title: 'Address-to-symbol conversion for the DWARF format'
-                      %li= link_to 'Clipper', '/products/clipper', title: 'Local and remote clipboard access inside Vim, tmux and the shell'
-                      %li= link_to 'Command-T', '/products/command-t', title: 'Fast file navigation for Vim'
-                      %li= link_to 'Hextrapolate', 'http://www.wincent.com/a/products/hextrapolate/', title: 'Convenient number conversion tool'
-                      %li= link_to 'Install', 'http://www.wincent.com/a/products/install/', title: 'Simple and powerful deployment solution'
-                      %li= link_to 'Walrus', '/products/walrus', title: 'Object-oriented templating system'
-                      %li= link_to 'Walrat', '/products/walrat', title: 'Ruby Packrat parser generator'
-                      %li= link_to 'Wincent Login Tool', 'http://git.wincent.com/login-tool.git', title: 'Command-line management of login items'
-                      %li= link_to 'Wincent Strings Utility', 'http://www.wincent.com/a/products/wincent-strings-util/', title: 'Localization tool'
-                      %li= link_to 'WOPublic', 'http://git.wincent.com/WOPublic.git', title: 'BSD-licensed Objective-C source code'
-                      %li= link_to 'WOTest', 'http://www.wincent.com/a/products/wotest/', title: 'Objective-C Unit Testing framework'
-                  %li.product-category
-                    %h3 Server products
-                    %ul
-                      %li= link_to 'Bansshee', 'http://www.wincent.com/a/products/bansshee/', title: 'Defense against SSH dictionary attacks'
-                      %li= link_to 'Wikitext', '/products/wikitext', title: 'Fast wikitext-to-HTML translator'
             %li{ class: navbar_selected?('blog') }= link_to 'Blog', posts_path
             %li{ class: navbar_selected?('wiki') }= link_to 'Wiki', articles_path
             %li{ class: navbar_selected?('issues') }= link_to 'Issues', issues_path
-          - unless @suppress_session_links
-            #login-logout
-              = link_to 'log in', login_path, id: 'login'
-              = link_to 'log out', logout_path, id: 'logout'
         #content-wrapper
           #content
             - Array(flash[:notice]).each do |message|
@@ -84,14 +54,6 @@
               %li= link_to 'Wiki', articles_path
               %li= link_to 'Issues', issues_path
               %li= link_to 'Snippets', snippets_path
-          - unless @suppress_menu
-            %section
-              %h2 Products
-              %ul
-                %li= link_to 'Synergy', '/products/synergy', title: 'Simple and effective iTunes controller'
-                %li= link_to 'Command-T', '/products/command-t', title: 'Fast file navigation for Vim'
-                %li= link_to 'Wikitext', '/products/wikitext', title: 'Fast wikitext-to-HTML translator'
-                %li= link_to 'All products', products_path
 
     -# TODO: think about doing something like this: https://www.igvita.com/2014/05/20/script-injected-async-scripts-considered-harmful/
     = javascript_include_tag 'application'#, async: true

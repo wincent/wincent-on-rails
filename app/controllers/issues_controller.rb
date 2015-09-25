@@ -2,7 +2,6 @@ class IssuesController < ApplicationController
   before_filter :find_product, only: :index
   before_filter :find_issue_awaiting_moderation, only: :show
   before_filter :flash_deprecation_notice
-  before_filter :set_layout_options
 
   def index
     options = default_access_options # defined in ApplicationController
@@ -35,11 +34,6 @@ private
       'You are viewing an historical archive of past issues. ' +
       'Please report new issues to the appropriate project issue tracker on ' +
       '<a href="https://github.com/wincent?tab=repositories">GitHub</a>.'
-  end
-
-  def set_layout_options
-    @suppress_session_links = true
-    @suppress_menu = true
   end
 
   def find_product
