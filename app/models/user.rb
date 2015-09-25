@@ -5,7 +5,6 @@ class User < ActiveRecord::Base
   has_many                  :comments
   has_many                  :emails, dependent: :destroy
   has_many                  :issues
-  has_many                  :monitorships, dependent: :destroy
 
   attr_reader               :passphrase
   attr_accessor             :passphrase_confirmation, :old_passphrase, :email, :resetting_passphrase

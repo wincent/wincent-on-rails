@@ -9,7 +9,6 @@ describe 'Factories' do
     Issue
     Link
     Message
-    Monitorship
     Page
     Post
     Product
