@@ -25,6 +25,7 @@ Wincent::Application.routes.draw do
   end
 
   resources :products, only: %i[index show]
+  get 'products/:id/:page_id' => 'products#show'
 
   get 'repos', to: redirect('https://github.com/wincent')
   get 'repos/*rest', to: redirect('https://github.com/wincent')
