@@ -99,11 +99,6 @@ describe UsersController do
         do_post
       end
 
-      it 'redirects to /dashboard' do
-        do_post
-        expect(response).to redirect_to('/dashboard')
-      end
-
       it 'logs in automatically' do
         do_post
         user = assigns[:user]

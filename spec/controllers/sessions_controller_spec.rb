@@ -21,10 +21,6 @@ describe SessionsController do
     it 'should set the current user' do
       expect(current_user).to eq(@user)
     end
-
-    it 'should redirect to the user dashboard' do
-      expect(response).to redirect_to(dashboard_path)
-    end
   end
 
   describe 'logging in with an invalid username or passphrase' do
@@ -81,11 +77,6 @@ describe SessionsController do
       stub(User).authenticate(anything, anything) { @user }
     end
 
-    it 'should redirect to the user dashboard if no original uri supplied' do
-      post 'create', protocol: 'https'
-      expect(response).to redirect_to(dashboard_path)
-    end
-
     it 'redirects to the original URI supplied via session' do
       session[:original_uri] = '/comments'
       post 'create', protocol: 'https'
@@ -95,13 +86,6 @@ describe SessionsController do
     it 'redirects to the original URI supplied via params' do
       post 'create', session: { original_uri: '/comments' }, protocol: 'https'
       expect(response).to redirect_to(comments_path)
-    end
-
-    # was a bug were failing because even blank "original_uri" would redirect (to the root rather than the dashboard)
-    it 'should redirect to the user dashboard if original uri is blank' do
-      session[:original_uri] = ''
-      post 'create', protocol: 'https'
-      expect(response).to redirect_to(dashboard_path)
     end
   end
 end

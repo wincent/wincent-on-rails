@@ -14,7 +14,7 @@ class SessionsController < ApplicationController
       flash[:notice] = 'Successfully logged in'
       original_uri = @session.original_uri.presence || session[:original_uri]
       if original_uri.blank?
-        redirect_to dashboard_path
+        redirect_to root_path
       else
         session[:original_uri] = nil
         redirect_to original_uri

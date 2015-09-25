@@ -61,18 +61,7 @@ Wincent::Application.routes.draw do
     resources :emails, id: /[^\/]+/
   end
 
-  # although conditionally inlining admin functionality in the standard
-  # resources is elegant it makes page caching difficult because the page
-  # looks different for admin users so we provide a separate admin interface
-  # for some resources
-  namespace :admin do
-    resources :issues
-    resources :posts
-    resources :tags
-    get 'dashboard' => 'dashboard#show'
-  end
-
-  get 'dashboard'       => 'dashboard#show'
+  get 'dashboard', to: redirect('/')
   get 'heartbeat/ping'
 
   get 'l/:id'           => 'links#show'
