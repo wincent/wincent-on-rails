@@ -18,7 +18,7 @@
           %h1= link_to 'Wincent', root_path
           %ul.navbar-links
             %li{ class: navbar_selected?('products') }
-              = link_to 'Products', products_path
+              = link_to 'Products', '/products'
             %li{ class: navbar_selected?('blog') }= link_to 'Blog', posts_path
             %li{ class: navbar_selected?('wiki') }= link_to 'Wiki', articles_path
             %li{ class: navbar_selected?('issues') }= link_to 'Issues', '/issues'
