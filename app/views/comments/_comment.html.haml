@@ -1,4 +1,4 @@
-%li{ class: comment_class(comment), id: "comment_#{comment.id}" }
+%li{ id: "comment_#{comment.id}" }
   %cite
     = link_to_user comment.user
     %span.when= link_to timeinfo(comment, updated_string: 'edited'), "#comment_#{comment.id}"

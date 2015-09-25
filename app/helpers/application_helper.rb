@@ -140,12 +140,6 @@ module ApplicationHelper
       title: "show items tagged with: #{query}"
   end
 
-  # Convert key names from "feature_request" etc to "feature request".
-  # Again, for use in pop-up menus in forms.
-  def underscores_to_spaces options
-    options.collect { |k,v| [k.to_s.gsub('_', ' '), v] }
-  end
-
   def breadcrumbs *crumbs
     content_tag :div, :id => 'breadcrumbs' do
       [link_to('Home', root_path), *crumbs].map do |crumb|

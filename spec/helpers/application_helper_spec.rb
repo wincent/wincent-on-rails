@@ -65,23 +65,6 @@ describe ApplicationHelper, 'timeinfo method' do
   end
 end
 
-describe ApplicationHelper, 'underscores_to_spaces method' do
-  it 'should return an array of name/id pairs' do
-    hash = { 'foo' => 1, 'bar' => 2 }
-    expect(underscores_to_spaces(hash)).to match_array([['foo', 1], ['bar', 2]])
-  end
-
-  it 'should convert underscores to spaces' do
-    hash = { 'foo_bar' => 1, 'baz_bar' => 2 }
-    expect(underscores_to_spaces(hash)).to match_array([['foo bar', 1], ['baz bar', 2]])
-  end
-
-  it 'should convert symbol-based keys to strings' do
-    hash = { foo: 1, bar: 2 }
-    expect(underscores_to_spaces(hash)).to match_array([['foo', 1], ['bar', 2]])
-  end
-end
-
 describe ApplicationHelper do
   # required in Rails 3.1, not sure why it wasn't before; without it,
   # these specs fail when the #breadcrumbs method calls h() from

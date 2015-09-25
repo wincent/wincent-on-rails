@@ -4,15 +4,12 @@ describe 'Factories' do
   %w[
     Article
     Comment
-    Confirmation
     Email
     Issue
     Link
-    Message
     Page
     Post
     Product
-    Reset
     Snippet
     Tag
     Tagging
