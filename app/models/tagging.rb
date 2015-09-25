@@ -78,11 +78,16 @@ private
     taggings.each_key do |key|
       group = OpenStruct.new
       group.name = key.to_s.downcase
-      group.taggables = key.constantize.
-        where(:id => taggings[key].collect(&:taggable_id).uniq).
-        order('updated_at DESC').select do |taggable|
-        # filter out tagged items which user shouldn't have access to
-        accessible taggable, user
+      klass = key.constantize rescue nil # beware deleted classes like Issue
+      if klass
+        group.taggables = klass.
+          where(:id => taggings[key].collect(&:taggable_id).uniq).
+          order('updated_at DESC').select do |taggable|
+          # filter out tagged items which user shouldn't have access to
+          accessible taggable, user
+        end
+      else
+        group.taggables = []
       end
       if type && group.name == type.to_s.downcase
         # make sure prioritized type appears first
