@@ -7,18 +7,15 @@ Wincent::Application.routes.draw do
   # must explicitly allow period in the id part of the route
   # otherwise it will be classified as a route separator
   resources :articles, id: /[^\/]+/ , path: 'wiki' do
-    resources :comments, only: %i[create new update]
     collection do
       get 'page/:page' => 'articles#index', :page => %r{\d+}
     end
   end
 
   resources :comments, except: %i[create new update]
-  resources :confirmations, path: 'confirm'
 
   resources :issues, only: %i[index show] do
     collection do
-      get :search
       get 'page/:page' => 'issues#index', :page => %r{\d+}
     end
   end
@@ -28,7 +25,6 @@ Wincent::Application.routes.draw do
   # must explicitly allow period in the id part of the route otherwise it
   # will be classified as a route separator
   resources :posts, path: 'blog', id: /[a-z0-9\-\.]+/ do
-    resources :comments, only: %i[create new update]
     collection do
       get 'page/:page' => 'posts#index', :page => %r{\d+}
     end
@@ -49,7 +45,6 @@ Wincent::Application.routes.draw do
   resources :sessions, only: %i[new create destroy]
 
   resources :snippets do
-    resources :comments, only: %i[create new update]
     collection do
       get 'page/:page' => 'snippets#index', :page => %r{\d+}
     end
