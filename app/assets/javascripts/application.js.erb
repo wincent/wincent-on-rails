@@ -460,25 +460,6 @@ $('.lightbox').each(function() {
       return confirm($(this).data('confirm'));
     })
 
-    // set up "remote" forms
-    // NOTE: these are only used by button_to_destroy_model, plus current comment form
-    .on('submit', 'form[data-remote]', function(event) {
-      var $form     = $(this),
-          $submits  = $form.find('input[type=submit]');
-      if ($submits.hasClass('disabled')) {
-        return false;
-      }
-      $submits.addClass('disabled');
-      $.ajax({
-        url: $form.attr('action') + '.js',
-        type: 'post',
-        data: $form.serialize(),
-        error: function() { alert('Form submission failed'); },
-        complete: function() { $submits.removeClass('disabled'); }
-      });
-      event.preventDefault();
-    })
-
     // set up "popup" links
     .on('click', 'a[data-popup]', function() {
       window.open(this.href, null, $(this).data('popup'));

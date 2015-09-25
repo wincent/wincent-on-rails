@@ -117,11 +117,6 @@ describe ApplicationHelper do
       expect(link_to_model(article)).to eq(link)
     end
 
-    it 'works with issues' do
-      issue = Issue.make!
-      expect(link_to_model(issue)).to eq(link_to(issue.summary, issue_path(issue)))
-    end
-
     it 'works with posts' do
       post = Post.make!
       expect(link_to_model(post)).to eq(link_to(post.title, post_path(post)))

@@ -14,12 +14,6 @@ Wincent::Application.routes.draw do
 
   resources :comments, except: %i[create new update]
 
-  resources :issues, only: %i[index show] do
-    collection do
-      get 'page/:page' => 'issues#index', :page => %r{\d+}
-    end
-  end
-
   resources :links
 
   # must explicitly allow period in the id part of the route otherwise it

@@ -4,7 +4,6 @@ class User < ActiveRecord::Base
 
   has_many                  :comments
   has_many                  :emails, dependent: :destroy
-  has_many                  :issues
 
   attr_reader               :passphrase
   attr_accessor             :passphrase_confirmation, :old_passphrase, :email, :resetting_passphrase
@@ -87,7 +86,6 @@ class User < ActiveRecord::Base
   end
 
   def utterances_count
-    # later on this will also include issues_count
     comments_count
   end
 

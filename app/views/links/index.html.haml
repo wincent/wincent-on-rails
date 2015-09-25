@@ -31,7 +31,5 @@
         %td= link.click_count
         %td.links
           = link_to 'edit', edit_link_path(link.id)
-          -# BUG: this line blows up for links without permalinks
-          = button_to_destroy_model link, remote: true
 .links
   = link_to 'new link', new_link_path

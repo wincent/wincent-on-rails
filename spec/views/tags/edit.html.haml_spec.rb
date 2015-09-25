@@ -30,12 +30,6 @@ describe 'tags/edit' do
     expect(rendered).to have_link('show', href: tag_path(@tag))
   end
 
-  it 'has a "destroy" link' do
-    pending 'implementation of tags#destroy action in controller'
-    mock(view).button_to_destroy_model @tag
-    render
-  end
-
   it 'has an "all tags" link' do
     render
     expect(rendered).to have_link('all tags', href: '/tags')

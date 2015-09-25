@@ -21,7 +21,7 @@
               = link_to 'Products', products_path
             %li{ class: navbar_selected?('blog') }= link_to 'Blog', posts_path
             %li{ class: navbar_selected?('wiki') }= link_to 'Wiki', articles_path
-            %li{ class: navbar_selected?('issues') }= link_to 'Issues', issues_path
+            %li{ class: navbar_selected?('issues') }= link_to 'Issues', '/issues'
         #content-wrapper
           #content
             - Array(flash[:notice]).each do |message|
@@ -52,7 +52,7 @@
             %ul
               %li= link_to 'Blog', posts_path
               %li= link_to 'Wiki', articles_path
-              %li= link_to 'Issues', issues_path
+              %li= link_to 'Issues', '/issues'
               %li= link_to 'Snippets', snippets_path
 
     -# TODO: think about doing something like this: https://www.igvita.com/2014/05/20/script-injected-async-scripts-considered-harmful/

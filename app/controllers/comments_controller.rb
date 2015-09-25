@@ -20,12 +20,12 @@ private
   # URL to the comment nested in the context of its parent (resources), including an anchor.
   # NOTE: this method is dog slow if called in an "N + 1 SELECT" situation
   def nested_comment_path comment
-    # Article, Issue, Post, Snippet
+    # Article, Post, Snippet
     commentable = comment.commentable
     anchor      = "comment_#{comment.id}"
     polymorphic_path commentable, :anchor => anchor
   rescue NameError
-    # Probably a deleted class, like Topic.
+    # Probably a deleted class, like Topic, Issue.
     raise ActiveRecord::RecordNotFound
   end
 end

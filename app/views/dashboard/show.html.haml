@@ -1,40 +1,5 @@
 -@page_title = "#{current_user.display_name}'s dashboard"
 =breadcrumbs 'Dashboard'
 %h1.major=@page_title
-%h2.major My recent issues
--if @issues.empty?
-  %p None.
--else
-  %table.table
-    %thead
-      %tr
-        %th Issue
-        %th Summary
-        %th When
-    %tbody
-      - @issues.each do |issue|
-        %tr.issue(id="issue_#{issue.id}")
-          %td=link_to "#{issue.kind_string} \##{issue.id}", issue_path(issue)
-          %td=truncate issue.summary, :length => 60
-          %td=timeinfo issue
-%h2.major My recent comments
--if @comments.empty?
-  %p None.
--else
-  %table.table
-    %thead
-      %tr
-        %th Comment
-        %th On
-        %th Kind
-        %th When
-    %tbody
-      - @comments.each do |comment|
-        %tr.comment(id="comment_#{comment.id}")
-          %td=wikitext_truncate_and_strip comment.body, :length => 60
-          -# BUG: N + 1 select problem here, and can't do eager loading on a polymorphic association
-          %td=link_to_model comment.commentable
-          %td=comment.commentable_type
-          %td=timeinfo comment
 .links
   =link_to 'My public profile', user_path(current_user)

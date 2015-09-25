@@ -9,8 +9,6 @@ module ApplicationHelper
       item == 'wiki'
     when CommentsController
       false
-    when IssuesController
-      item == 'issues'
     when ProductsController
       item == 'products'
     when PostsController
@@ -171,57 +169,16 @@ module ApplicationHelper
 
   def link_to_model model
     case model
-    when Issue
-      link_to model.summary, model
+    when Article, Post
+      link_to model.title, model
     when Snippet
       link_to snippet_title(model), model
     when NilClass
       # could get here for an orphaned comment (shouldn't happen)
       'deleted record'
-    else # Article, Post
-      link_to model.title, model
+    else
+      # Could be a deleted model, like an Issue
+      'missing record'
     end
-  end
-
-  # in the interests of readable JavaScript source code in helpers this allows
-  # us to use indentation and neatly format our JS across multiple lines, but
-  # "compress" the output when it is actually used in templates inline.
-  def inline_js js
-    js.gsub(/\s+/, ' ').strip
-  end
-
-  def button_to_destroy_model model, options = {}
-    button_to 'destroy', model, options.reverse_merge!(
-      method: :delete,
-      class:  'destructive',
-      data:   { confirm:  'Are you sure?' },
-    )
-  end
-
-  # TODO: unobtrusive
-  def button_to_moderate_model_as_ham model, url
-    form_id = "#{model.class.to_s.downcase}_#{model.id}_ham_form"
-    haml_tag :form, { :id => form_id, :style => 'display:inline;' } do
-      onclick = inline_js <<-JS
-          $.ajax({
-            'url': '#{url}',
-            'type': 'post',
-            'dataType': 'json',
-            'data': '_method=put&button=ham',
-            'success': function() {
-              $('\##{form_id}').fadeOut('slow');
-            },
-            'error': function() {
-              alert('Failed to mark as ham');
-            }
-          });
-        JS
-      haml_tag :input, { :name => 'button', :onclick => onclick,
-        :type => 'button', :value => 'ham' }
-    end
-  end
-
-  def button_to_moderate_issue_as_ham issue
-    button_to_moderate_model_as_ham issue, issue_path(issue)
   end
 end
