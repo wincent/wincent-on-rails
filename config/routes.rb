@@ -60,9 +60,10 @@ Wincent::Application.routes.draw do
     end
   end
 
-  resources :tweets, only: %i[index show], path: 'twitter'
+  get 'twitter', to: redirect(APP_CONFIG['twitter_url'])
+  get 'twitter/*rest', to: redirect(APP_CONFIG['twitter_url'])
 
-  resources :users do
+  resources :users, only: %i[index show] do
     resources :emails, id: /[^\/]+/
   end
 
