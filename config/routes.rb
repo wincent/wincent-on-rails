@@ -13,7 +13,6 @@ Wincent::Application.routes.draw do
     end
   end
 
-  resources :attachments
   resources :comments, except: %i[create new update]
   resources :confirmations, path: 'confirm'
 

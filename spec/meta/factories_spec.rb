@@ -3,7 +3,6 @@ require 'spec_helper'
 describe 'Factories' do
   %w[
     Article
-    Attachment
     Comment
     Confirmation
     Email
