@@ -24,13 +24,7 @@ Wincent::Application.routes.draw do
     end
   end
 
-  resources :products do
-    resources :pages, except: %i[index show]
-  end
-
-  # mapping to "product_page" would overwrite the nested RESTful route above
-  get 'products/:id/:page_id' => 'products#show',
-      :as => 'embedded_product_page'
+  resources :products, only: %i[index show]
 
   get 'repos', to: redirect('https://github.com/wincent')
   get 'repos/*rest', to: redirect('https://github.com/wincent')

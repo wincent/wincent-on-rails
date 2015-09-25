@@ -1,8 +1,0 @@
-= render 'shared/error_messages', model: page
-= form_for [product, page] do |f|
-  = f.text_field :title
-  = f.text_field :permalink
-  = f.text_area :body, rows: 30
-  = f.select :markup_type, Page::MARKUP_TYPES, label: 'Markup'
-  = f.check_box :front, label: 'Front page?'
-  = f.submit

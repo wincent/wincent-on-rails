@@ -1,8 +1,0 @@
-- @page_title = 'New page'
-= breadcrumbs link_to('Products', products_path),
-  link_to(@product, edit_product_path(@product)),
-  @page_title
-%h1.major= @page_title
-= render 'form', product: @product, page: @page
-.links
-  = link_to 'show product', product_path(@product)

@@ -1,7 +1,6 @@
 class ProductsController < ApplicationController
-  before_filter :require_admin, :except => [ :index, :show ]
-  before_filter :get_product, :only => [ :edit, :show, :update ]
-  before_filter :get_page, :only => :show
+  before_filter :get_product, only: :show
+  before_filter :get_page, only: :show
 
   def index
     @products = Product.front_page.group_by(&:category)
