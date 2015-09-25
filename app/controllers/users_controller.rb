@@ -11,10 +11,6 @@ class UsersController < ApplicationController
     render
   end
 
-  def edit
-    render
-  end
-
 private
 
   def get_user

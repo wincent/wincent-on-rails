@@ -258,14 +258,6 @@ $('.lightbox').each(function() {
     return setCookie(name, null, -86400);
   }
 
-  var setUpLoginLogoutLinks = function() {
-    if (getCookie('user_id')) {
-      $('#login').remove();
-    } else {
-      $('#logout').remove();
-    }
-  }
-
   // TODO: live update these every 60 secs?
   $.fn.relativizeDates = function() {
     this.find('time[data-relative=true]')
@@ -458,8 +450,6 @@ $('.lightbox').each(function() {
   };
 
   // ready
-  setUpLoginLogoutLinks();
-
   $('body')
     .syntaxHighlight()
     .relativizeDates();

@@ -9,15 +9,11 @@
   .excerpt=@post.excerpt.w :base_heading_level => 1
   #body=@post.body.w :base_heading_level => 1
 = render 'shared/tags', taggable: @post
-%p.links
-  -if admin?
-    =link_to 'edit', edit_post_path(@post)
-  =link_to 'all posts', posts_path
 -if @post.accepts_comments? || @post.comments_count != 0
   -# TODO: likely able to extract this into a shared partial
-  %h2.major Comments
+  %h3.major Comments
   %ol#comments.boxed
     =render @comments
-  %h2.major Add a comment
+  %h4.major Add a comment
   %p
     Comments are now closed for this post.

@@ -1,9 +1,0 @@
-= render 'shared/error_messages', model: @comment
-- if !logged_in?
-  = render 'shared/anonymous'
-- elsif !current_user.verified?
-  = render 'shared/unverified'
-= form_for [@comment.commentable, @comment], remote: request.xhr? do |f|
-  = f.text_area :body, rows: 10, annotation: wikitext_cheatsheet
-  = f.check_box :public, label: 'Public?' if admin?
-  = f.submit
