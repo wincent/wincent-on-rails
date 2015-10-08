@@ -15,11 +15,3 @@ if [ $(ps x | grep -v grep | grep -c 'nginx: master process') -eq 0 ]; then
 else
   echo "running"
 fi
-
-/bin/echo -n "memcached: "
-if [ $(ps x | grep -v grep | grep -c 'memcached -d') -eq 0 ]; then
-  echo "stopped"
-  check_stale_pid_file 'tmp/memcached.pid'
-else
-  echo "running"
-fi
