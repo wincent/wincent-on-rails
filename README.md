@@ -14,7 +14,7 @@ One of the reasons I never got around to open sourcing was that I wanted to do a
 
 The repo is huge: over 4,300 commits and a bunch of stuff committed under `vendor` and `node_modules` because I wanted to have resilient deploys with no external dependencies beyond the repo itself.
 
-The code as of commit [6d84f8a](https://github.com/wincent/wincent-on-rails/commit/6d84f8a) (July 2015) is representative of what the app looked like in its last days before I got serious about gutting functionality and replacing dynamic features with static mirrors. If you look at the [current HEAD](https://github.com/wincent/wincent-on-rails/tree/master) you'll find a much reduced subset of the app.
+[The code as of commit 6d84f8a](https://github.com/wincent/wincent-on-rails/tree/6d84f8a0de2017d8d0a1674f04c58fa9299ddf0c) (July 2015) is representative of what the app looked like in its last days before I got serious about gutting functionality and replacing dynamic features with static mirrors. If you look at the [current HEAD](https://github.com/wincent/wincent-on-rails/tree/master) you'll find a much reduced subset of the app.
 
 Tags in the repo correspond to deployments to production.
 
