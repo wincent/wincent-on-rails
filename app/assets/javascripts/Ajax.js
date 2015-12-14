@@ -134,36 +134,6 @@ var Ajax = {
       .empty();
   },
 
-  // TODO: this is classic replace.js right here, most of which can be deleted
-  commentForm: function(url) {
-    var commentSelector = '#comment-form',
-        $commentDiv = $(commentSelector),
-        $anchor = $commentDiv.find('a').attr('href', '#comment-form');
-    var click = function() {
-      $anchor.off('click').addClass('disabled');
-      var spinner = new Wincent.Spinner(commentSelector, 'small');
-      Ajax.clearFlash();
-      $.ajax({
-        url       : url,
-        type      : 'get',
-        dataType  : 'html',
-        success   : function(html) {
-          Ajax.clearFlash();
-          $commentDiv.append(html).find('.links').hide();
-        },
-        error: function(req) {
-          Ajax.insertFlash('error', req.responseText);
-          $anchor.on('click', click);
-        },
-        complete: function() {
-          spinner.stop();
-          $anchor.removeClass('disabled');
-        }
-      });
-    }
-    $anchor.on('click', click);
-  },
-
   setupPreviewLink: function(options) {
     $('<a href="#"><i class="fa fa-refresh"></i></a>')
       .appendTo('#preview_link')
